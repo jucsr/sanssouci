@@ -23,7 +23,7 @@ public class MovimentacaoRanhuraPerfilQuadradoUTest {
 		Bloco bloco = new Bloco(200, 150, 80);
 		Face face = (Face) bloco.faces.get(Face.XY);
 		double retractPlane = 21;
-		RanhuraPerfilQuadradoU ranhuraQuadU = new RanhuraPerfilQuadradoU("RANHURAPERFILQUADRADOU",10,0,0,0,0,0,50,25,Ranhura.VERTICAL,5,30,21.132);
+		RanhuraPerfilQuadradoU ranhuraQuadU = new RanhuraPerfilQuadradoU("RANHURAPERFILQUADRADOU",10,0,0,0,0,0,50,25,Ranhura.VERTICAL,5,90,21.132);
 		ranhuraQuadU.setComprimento(150);
 		
 		
@@ -45,6 +45,9 @@ public class MovimentacaoRanhuraPerfilQuadradoUTest {
 		
 		MovimentacaoRanhuraPerfilQuadradoU mbe = new MovimentacaoRanhuraPerfilQuadradoU(ws);
 		ArrayList<LinearPath> lado2 = mbe.getMovimentacaoDesbasteRanhuraPerfilQuadradoU();
+		
+		ws.setPontosMovimentacao(mbe.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU(lado2));
+		
 		for(int i = 0; i < lado2.size(); i++){
 			System.out.println(lado2.get(i).getFinalPoint());
 		}

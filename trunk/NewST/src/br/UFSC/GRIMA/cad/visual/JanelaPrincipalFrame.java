@@ -109,6 +109,7 @@ public class JanelaPrincipalFrame extends JFrame {
 		scrollPaneTree = new JScrollPane();
 		tree2 = new JTree();
 		panel7 = new JPanel();
+		buttonBoss = new JButton();
 		panel8 = new JPanel();
 		buttonRemover = new JButton();
 		buttonEditar = new JButton();
@@ -689,10 +690,16 @@ public class JanelaPrincipalFrame extends JFrame {
 								//======== panel7 ========
 								{
 									panel7.setLayout(new GridBagLayout());
-									((GridBagLayout)panel7.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel7.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
 									((GridBagLayout)panel7.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel7.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel7.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0, 1.0E-4};
 									((GridBagLayout)panel7.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+									//---- buttonBoss ----
+									buttonBoss.setText("Create Boss");
+									panel7.add(buttonBoss, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
 
 									//======== panel8 ========
 									{
@@ -719,7 +726,7 @@ public class JanelaPrincipalFrame extends JFrame {
 											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 											new Insets(0, 0, 0, 0), 0, 0));
 									}
-									panel7.add(panel8, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+									panel7.add(panel8, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 								}
@@ -1064,6 +1071,7 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JScrollPane scrollPaneTree;
 	public JTree tree2;
 	private JPanel panel7;
+	public JButton buttonBoss;
 	private JPanel panel8;
 	public JButton buttonRemover;
 	public JButton buttonEditar;

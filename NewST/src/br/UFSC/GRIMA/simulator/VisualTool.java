@@ -19,6 +19,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
@@ -26,9 +27,11 @@ import br.UFSC.GRIMA.entidades.features.Furo;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
 import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
+import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.Ponto;
 
@@ -230,9 +233,65 @@ public class VisualTool {
 				setNextY(point3d.getY());
 				setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-			} else {
-				System.out.println("Feature Class Desconhecida (goToNextWorkingstepPoint): " + projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFeature().getClass());
-			}
+			} else if(featClass.equals(RanhuraPerfilQuadradoU.class) && wsTmp.getTipo() == Workingstep.DESBASTE) {
+				
+				wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
+				Vector movimentacao = new Vector();
+				MovimentacaoRanhuraPerfilQuadradoU detMov = new MovimentacaoRanhuraPerfilQuadradoU(wsTmp);
+				ArrayList<LinearPath> path = detMov.getMovimentacaoDesbasteRanhuraPerfilQuadradoU();
+				
+				 for(int j = 0; j < path.size(); j++)
+					{
+						double xAux = path.get(j).getFinalPoint().getX();
+						double yAux = path.get(j).getFinalPoint().getY();
+						double zAux = -path.get(j).getFinalPoint().getZ();
+						
+						movimentacao.add(new Ponto(xAux, yAux, zAux));
+					}
+				 
+				wsTmp.setPontosMovimentacao(movimentacao);
+				calculouMov = true;
+				
+				Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+//				System.out.println("PONTOS MOVIMENTAÇAO: " + wsTmp.getPontosMovimentacao() );
+				iterator = wsTmp.getPontosMovimentacao().iterator();
+				trajetoriaAtualIndex = 0;
+				setNextX(point3d.getX());
+				setNextY(point3d.getY());
+				setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+			
+				
+				}else if(featClass.equals(RanhuraPerfilQuadradoU.class) && wsTmp.getTipo() == Workingstep.ACABAMENTO){
+					
+					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
+					Vector movimentacao = new Vector();
+					MovimentacaoRanhuraPerfilQuadradoU detMov = new MovimentacaoRanhuraPerfilQuadradoU(wsTmp);
+					ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU();
+					
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					calculouMov = true;
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+//					System.out.println("PONTOS MOVIMENTAÇAO: " + wsTmp.getPontosMovimentacao() );
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				
+				}
+				else{
+					System.out.println("Feature Class Desconhecida (goToNextWorkingstepPoint): " + projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFeature().getClass());
+				}
 		}
 	}
 
@@ -320,7 +379,7 @@ public class VisualTool {
 				}
 			}
 			
-		}else if (featClass.equals(Ranhura.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class)) {
+		}else if (featClass.equals(Ranhura.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class)) {
 			
 			if (!isMoving) {
 				isMoving = true;

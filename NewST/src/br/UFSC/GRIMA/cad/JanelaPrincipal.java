@@ -68,6 +68,8 @@ import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.entidades.StepNcProject;
+import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
@@ -420,6 +422,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.setVisible(true);
 		this.buttonRemover.addActionListener(ouvidorBotao);
 		this.buttonEditar.addActionListener(ouvidorBotao);
+		this.buttonBoss.addActionListener(ouvidorBotao);
 		this.zoomMais.addActionListener(ouvidorBotao);
 		this.zoomMenos.addActionListener(ouvidorBotao);
 		this.girar2.addActionListener(ouvidorBotao);
@@ -2197,6 +2200,45 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		
 		
 	}
+	
+	public void criarBoss(){
+		// descobrir se clicou numa cavidade
+		boolean ok = false;
+		DefaultMutableTreeNode node1 = null, node2 = null;
+		node1 = (DefaultMutableTreeNode) tree2.getLastSelectedPathComponent();
+		if (node1 != null) {
+			node2 = (DefaultMutableTreeNode) node1.getParent();
+			if (node2 != null)
+				ok = true;
+		}
+		if (ok) {
+			Object objPai = node1.getUserObject();
+			Object objFilho = node2.getUserObject();
+
+			String stringPai = (String) objFilho;
+			String stringFilho = (String) objPai;
+			
+			Face face = this.getFace(stringPai);
+			if (face != null) {
+				int pos = getPosicaoFeature(stringFilho, face);
+				Feature feature = (Feature)face.features.elementAt(pos);
+				if(feature.getClass() == Cavidade.class)
+				{
+//					System.out.println("CAVIDADEEEEEE");
+					CriarBoss cb = new CriarBoss(this, feature); //criar no .cad
+					cb.setVisible(true);
+				} else if (feature.getClass() == Degrau.class)
+				{
+					
+				} else
+				{
+					JOptionPane.showConfirmDialog(null, "testeeeeeeeee");
+				}
+			}
+		}
+		
+		
+	}
 	public AcessaBD getBancoDeDados() {
 		return bancoDeDados;
 	}
@@ -2246,6 +2288,8 @@ class JanelaPrincipal_button_actionAdapter implements ActionListener {
 			this.parent.editarWS2();
 		}else if (origem == this.parent.buttonAlterarWorkplan2) {
 			this.parent.alterarSequencia2();
+		}else if(origem == this.parent.buttonBoss){
+			this.parent.criarBoss();
 		}
 }
 }

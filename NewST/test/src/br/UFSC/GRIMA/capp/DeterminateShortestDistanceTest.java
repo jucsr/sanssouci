@@ -47,7 +47,7 @@ public class DeterminateShortestDistanceTest
 		this.cavidade.setNome("Lucas");
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(10);
-		this.cavidade.setRaio(0);
+		this.cavidade.setRaio(20);
 		this.cavidade.setComprimento(50);
 		this.cavidade.setLargura(50);
 		this.cavidade.createGeometricalElements();
@@ -57,7 +57,7 @@ public class DeterminateShortestDistanceTest
 		this.boss.setDiametro1(20);
 		this.boss.setDiametro2(20);
 		this.boss.setAltura(10);
-		this.boss.setPosicao(45, 35, 0);
+		this.boss.setPosicao(45, 45, 0);
 		this.boss.setNome("lucas");
 		this.boss.createGeometricalElements();
 		itsBoss.add(this.boss);

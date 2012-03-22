@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Point3d;
 
 import jsdai.SCombined_schema.EClosed_pocket;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -213,11 +214,12 @@ public class Cavidade extends Feature implements Serializable {
 	}
 	public void createGeometricalElements()
 	{
+		int n = 50;
 		this.geometricalElements = new ArrayList<LimitedElement>();
-		this.geometricalElements.add(new LimitedCircle(new Point3d(this.X + this.raio, this.Y + this.raio, this.Z), this.raio));
-		this.geometricalElements.add(new LimitedCircle(new Point3d(this.X + this.raio, this.Y + this.largura - this.raio, this.Z), this.raio));
-		this.geometricalElements.add(new LimitedCircle(new Point3d(this.X + this.comprimento - this.raio, this.Y + this.largura - this.raio, this.Z), this.raio));
-		this.geometricalElements.add(new LimitedCircle(new Point3d(this.X + this.comprimento - this.raio, this.Y + this.raio, this.Z), this.raio));
+		this.geometricalElements.add(new LimitedArc(new Point3d(this.X + this.raio, this.Y + this.raio, this.Z), new Point3d(this.X, this.Y + this.raio, this.Z), 90, LimitedArc.CCW, n));
+		this.geometricalElements.add(new LimitedArc(new Point3d(this.X + this.raio, this.Y + this.largura - this.raio, this.Z), new Point3d(this.X + this.raio, this.Y + this.largura, this.Z), 90, LimitedArc.CCW, n));
+		this.geometricalElements.add(new LimitedArc(new Point3d(this.X + this.comprimento - this.raio, this.Y + this.largura - this.raio, this.Z), new Point3d(this.X + this.comprimento, this.Y + this.largura - this.raio, this.Z), 90, LimitedArc.CCW, n));
+		this.geometricalElements.add(new LimitedArc(new Point3d(this.X + this.comprimento - this.raio, this.Y + this.raio, this.Z), new Point3d(this.X + this.comprimento - this.raio, this.Y, this.Z), 90, LimitedArc.CCW, n));
 		this.geometricalElements.add(new LimitedLine(new Point3d(this.X, this.Y + this.raio, this.Z), new Point3d(this.X, this.Y + this.largura - this.raio, this.Z)));
 		this.geometricalElements.add(new LimitedLine(new Point3d(this.X + this.raio, this.Y + this.largura, this.Z), new Point3d(this.X + this.comprimento - this.raio, this.Y + this.largura, this.Z)));
 		this.geometricalElements.add(new LimitedLine(new Point3d(this.X + this.comprimento, this.Y + this.largura - this.raio, this.Z), new Point3d(this.X + this.comprimento, this.Y + this.raio, this.Z)));

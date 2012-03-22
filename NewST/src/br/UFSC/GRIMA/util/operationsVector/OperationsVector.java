@@ -177,27 +177,28 @@ public class OperationsVector
 	}
 	/**
 	 * This method calculate the distance between a circle and a limited line in plane XY
-	 * @param ll --> limited line  
-	 * @param cl --> circle
+	 * @param limitedLine --> limited line  
+	 * @param limitedCircle --> circle
 	 * @return --> distance
 	 */
 	
-	public static double calculateShortestDistanceBetweenCircleAndLine(LimitedLine ll, LimitedCircle cl, int N)
+	public static double calculateShortestDistanceBetweenCircleAndLine(LimitedLine limitedLine, LimitedCircle limitedCircle, int N)
 	{		
-		PointsGenerator rpg=new PointsGenerator(ll,N);
+		PointsGenerator rpg=new PointsGenerator(limitedLine,N);
 		Point3d pL = new Point3d();
 		Point3d pC = new Point3d();
 		rpg.fillPoints();
-		
+//		rpg.generatePointsInLine();
+//		System.out.println("points in line = " + rpg.getPoints());
 		double distancia=0;
 		int n=1;
 		
 		
 		for (Point3d rPoint:rpg.getPoints())
 		{
-			pL=nearestPoint(rPoint, ll);
+			pL=nearestPoint(rPoint, limitedLine);
 			
-			if(pL.x >= ll.xminl && pL.x <= ll.xmaxl && pL.y >= ll.yminl && pL.y <= ll.ymaxl)
+			if(pL.x >= limitedLine.xminl && pL.x <= limitedLine.xmaxl && pL.y >= limitedLine.yminl && pL.y <= limitedLine.ymaxl)
 			{
 				
 			}
@@ -206,7 +207,7 @@ public class OperationsVector
 				continue;
 			}
 
-			pC=nearestPoint(rPoint,cl);
+			pC=nearestPoint(rPoint,limitedCircle);
 			double distanciaTemp = distanceVector(new Vector3d(pL),new Vector3d(pC));
 			if (n==1)
 			{
@@ -327,31 +328,17 @@ public class OperationsVector
 	 */
 	public static double calculateShortestDistanceBeetweenArcAndCircle(LimitedCircle circle, LimitedArc arc)
 	{
-		double shortestDistance = 0;
-		
+		double shortestDistance = distanceVector(circle.getCenter(), arc.getPointsInArc().get(0)) - circle.getRadius();
+		double distanceTmp = distanceVector(circle.getCenter(), arc.getPointsInArc().get(0)) - circle.getRadius();
+		for(int i = 0; i < arc.getPointsInArc().size(); i++)
+		{
+			distanceTmp = distanceVector(circle.getCenter(), arc.getPointsInArc().get(i)) - circle.getRadius();
+			if(distanceTmp < shortestDistance)
+			{
+				shortestDistance = distanceTmp;
+			}
+		}
 		return shortestDistance;
 	}
-	/**
-	 * @param anguloInicial -> angulo de onde se inicia a interpolacao
-	 * @param deltaAngulo -> angulo percorrido
-	 * @param raio -> raio de interpolacao do arco circular
-	 * @param numeroDePontos -> numero de pontos de interoplacao
-	 * @param zAtual -> posicao Z atual
-	 * @return -> Array de pontos de interpolacao de um arco circular
-	 */
-	public static ArrayList<Point3d> determinarPontosEmCircunferencia(double anguloInicial, double deltaAngulo, double raio, int numeroDePontos, double zAtual)
-	{
-		ArrayList<Point3d> saida = new ArrayList<Point3d>();
-		double x, y, dAngulo = 0;
-
-		dAngulo = deltaAngulo / numeroDePontos;
-		for(int i = 0; i < numeroDePontos + 1; i++)
-		{
-			x = raio * Math.cos(anguloInicial + i * dAngulo);
-			y = raio * Math.sin(anguloInicial + i * dAngulo);
-			saida.add(i, new Point3d(x, y, zAtual));
-		}
-
-		return saida;
-	}
+	
 }

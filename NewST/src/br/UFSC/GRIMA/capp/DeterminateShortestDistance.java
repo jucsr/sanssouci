@@ -1,10 +1,10 @@
 package br.UFSC.GRIMA.capp;
 
-import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
@@ -27,7 +27,6 @@ public class DeterminateShortestDistance
 			Cavidade cavidade = (Cavidade)this.feature;
 			for(int i = 0; i < cavidade.getItsBoss().size(); i++)
 			{
-				
 				if(cavidade.getItsBoss().get(i).getClass() == CircularBoss.class)
 				{
 					CircularBoss circularBossTmp = (CircularBoss)cavidade.getItsBoss().get(i);
@@ -44,14 +43,20 @@ public class DeterminateShortestDistance
 								if(cavidade.getGeometricalElements().get(k).getClass() == LimitedCircle.class)
 								{
 									LimitedCircle limCircleCavidadeTmp = (LimitedCircle)cavidade.getGeometricalElements().get(k);
-									distanceTmp = OperationsVector.distanceVector(limitedCircleBossTmp.getCenter(), limCircleCavidadeTmp.getCenter())- limitedCircleBossTmp.getRadius() - limCircleCavidadeTmp.getRadius();
-									System.out.println("distanceTmpCirc = " + distanceTmp);
+									distanceTmp = OperationsVector.distanceVector(limitedCircleBossTmp.getCenter(), limCircleCavidadeTmp.getCenter()) - limitedCircleBossTmp.getRadius() - limCircleCavidadeTmp.getRadius();
+//									System.out.println("distanceTmpCirc = " + distanceTmp);
 								
 								} else if(cavidade.getGeometricalElements().get(k).getClass() == LimitedLine.class)
 								{
 									LimitedLine limitedLineCavidadeTmp = (LimitedLine)cavidade.getGeometricalElements().get(k);
 									distanceTmp = OperationsVector.calculateShortestDistanceBetweenCircleAndLine(limitedLineCavidadeTmp, limitedCircleBossTmp, 50);
 									System.out.println("distanceTmp = " + distanceTmp);
+								} else if(cavidade.getGeometricalElements().get(k).getClass() == LimitedArc.class)
+								{
+									LimitedArc limitedArcCavidadeTmp = (LimitedArc)cavidade.getGeometricalElements().get(k);
+									distanceTmp = OperationsVector.calculateShortestDistanceBeetweenArcAndCircle(limitedCircleBossTmp, limitedArcCavidadeTmp);
+									System.out.println("distanceTmpARC = " + distanceTmp);
+
 								}
 								if (k==0)
 								{
@@ -63,9 +68,12 @@ public class DeterminateShortestDistance
 									this.shortestDistance = distanceTmp;
 								}
 							}
+						} else if (circularBossTmp.getGeometricalElements().get(j).getClass() == LimitedLine.class)
+						{
+							// circularBoss naum tem elementos geometricos do tipo linha.
 						}
 					}
-				}
+				} //else if (cavidade.getItsBoss().get(i).getClass() == RectangularBoss.class)
 			}
 //			cavidade.getGeometricalElements();
 		} 

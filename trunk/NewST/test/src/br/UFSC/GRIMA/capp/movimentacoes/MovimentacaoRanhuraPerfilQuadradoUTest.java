@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
@@ -28,7 +29,8 @@ public class MovimentacaoRanhuraPerfilQuadradoUTest {
 		
 		
 		// ---- MILLING
-		BottomAndSideRoughMilling milling = new BottomAndSideRoughMilling("Fresamento", retractPlane);
+		BottomAndSideFinishMilling milling = new BottomAndSideFinishMilling("Fresamento", retractPlane);
+		//BottomAndSideRoughMilling milling = new BottomAndSideRoughMilling("Fresamento", retractPlane);
 		milling.setCoolant(true);
 		milling.setStartPoint(new Point3d(0, 0, 0));
 		milling.setAllowanceSide(0.5);
@@ -44,9 +46,9 @@ public class MovimentacaoRanhuraPerfilQuadradoUTest {
 		ws.setFerramenta(faceMill);
 		
 		MovimentacaoRanhuraPerfilQuadradoU mbe = new MovimentacaoRanhuraPerfilQuadradoU(ws);
-		ArrayList<LinearPath> lado2 = mbe.getMovimentacaoDesbasteRanhuraPerfilQuadradoU();
+		ArrayList<LinearPath> lado2 = mbe.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU();
 		
-		ws.setPontosMovimentacao(mbe.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU(lado2));
+		//ws.setPontosMovimentacao(mbe.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU(lado2));
 		
 		for(int i = 0; i < lado2.size(); i++){
 			System.out.println(lado2.get(i).getFinalPoint());

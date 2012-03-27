@@ -19,6 +19,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoDegrau;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
 import br.UFSC.GRIMA.entidades.features.Cavidade;

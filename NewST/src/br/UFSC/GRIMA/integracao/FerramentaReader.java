@@ -1,5 +1,13 @@
 package br.UFSC.GRIMA.integracao;
 
+import jsdai.SCombined_schema.CBall_endmill;
+import jsdai.SCombined_schema.CBoring_tool;
+import jsdai.SCombined_schema.CBullnose_endmill;
+import jsdai.SCombined_schema.CCenter_drill;
+import jsdai.SCombined_schema.CEndmill;
+import jsdai.SCombined_schema.CFacemill;
+import jsdai.SCombined_schema.CReamer;
+import jsdai.SCombined_schema.CTwist_drill;
 import jsdai.SCombined_schema.EBall_endmill;
 import jsdai.SCombined_schema.EBoring_tool;
 import jsdai.SCombined_schema.EBullnose_endmill;
@@ -33,11 +41,10 @@ public class FerramentaReader {
 				.getIts_operation(null).getIts_tool(null);
 
 		ETool_body eTool_body = cutting_tool.getIts_tool_body(null);
-
 		ECutting_component cutting_component = cutting_tool
 				.getIts_cutting_edge(null).getByIndex(1);
 
-		if (eTool_body.isKindOf(ECenter_drill.class)) {
+		if (eTool_body.getClass() == (CCenter_drill.class)) {
 
 			ECenter_drill center_drill = (ECenter_drill) eTool_body;
 
@@ -59,7 +66,7 @@ public class FerramentaReader {
 
 			return centerDrill;
 
-		} else if (eTool_body.isKindOf(ETwist_drill.class)) {
+		} else if (eTool_body.getClass() == (CTwist_drill.class)) {
 
 			ETwist_drill twist_drill = (ETwist_drill) eTool_body;
 
@@ -81,7 +88,7 @@ public class FerramentaReader {
 
 			return twistDrill;
 
-		} else if (eTool_body.isKindOf(EFacemill.class)) {
+		} else if (eTool_body.getClass() == (CFacemill.class)) {
 
 			EFacemill facemill = (EFacemill) eTool_body;
 
@@ -98,10 +105,9 @@ public class FerramentaReader {
 
 			FaceMill faceMill = new FaceMill(name, material, diametro,
 					cuttingEdge, profundidade, offSetLength, 0, 0, 0, handOfCut);
-
 			return faceMill;
 
-		} else if (eTool_body.isKindOf(EEndmill.class)) {
+		} else if (eTool_body.getClass().equals(CEndmill.class)) {
 
 			EEndmill endmill = (EEndmill) eTool_body;
 
@@ -121,7 +127,7 @@ public class FerramentaReader {
 
 			return endMill;
 
-		} else if (eTool_body.isKindOf(EBall_endmill.class)) {
+		} else if (eTool_body.getClass() == (CBall_endmill.class)) {
 
 			EBall_endmill ball_endmill = (EBall_endmill) eTool_body;
 
@@ -141,10 +147,9 @@ public class FerramentaReader {
 			BallEndMill ballEndMill = new BallEndMill(name, material, diametro,
 					edgeRadius, edgeCenterVertical, cuttingEdge, profundidade,
 					offSetLength, 0, 0, 0, handOfCut);
-
 			return ballEndMill;
 
-		} else if (eTool_body.isKindOf(EBullnose_endmill.class)) {
+		} else if (eTool_body.getClass() == (CBullnose_endmill.class)) {
 
 			EBullnose_endmill bullnose_endmill = (EBullnose_endmill) eTool_body;
 
@@ -167,10 +172,10 @@ public class FerramentaReader {
 					material, diametro, edgeRadius, edgeCenterVertical,
 					edgeCenterHorizontal, cuttingEdge, profundidade,
 					offSetLength, 0, 0, 0, handOfCut);
-
+			
 			return bullnoseEndMill;
 
-		} else if (eTool_body.isKindOf(EReamer.class)) {
+		} else if (eTool_body.getClass() == (CReamer.class)) {
 
 			EReamer eReamer = (EReamer) eTool_body;
 
@@ -189,10 +194,9 @@ public class FerramentaReader {
 			Reamer reamer = new Reamer(name, material, diametro, cuttingEdge,
 					profundidade, offSetLength, 0, 0, 0, handOfCut,
 					numberOfTeeth);
-
 			return reamer;
 
-		} else if (eTool_body.isKindOf(EBoring_tool.class)) {
+		} else if (eTool_body.getClass() == (CBoring_tool.class)) {
 
 			EBoring_tool boring_tool = (EBoring_tool) eTool_body;
 

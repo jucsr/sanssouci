@@ -4,11 +4,10 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.Frame3D;
-import br.UFSC.GRIMA.cad.visual.RanhuraPerfilRoundedUFrame;
-import br.UFSC.GRIMA.cad.visual.RanhuraPerfilVeeFrame;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
@@ -404,6 +403,30 @@ public class Generate3Dview extends Frame3D
 							e.printStackTrace();
 						}
 						break;
+					case Feature.BOSS:
+						if (feature.getClass() == CircularBoss.class)
+						{
+							CircularBoss bossTmp = (CircularBoss) faceTmp.features.elementAt(j);	
+							
+							OperationTaperHole boss = new OperationTaperHole("",  
+									(float) bossTmp.getAltura(), (float) bossTmp.getDiametro1(),(float) bossTmp.getDiametro2());
+							boss.translate( - faceTmp.getComprimento()/2 + bossTmp.X, 
+									faceTmp.getProfundidadeMaxima()/2- bossTmp.Z, 
+									faceTmp.getLargura()/2 - bossTmp.Y);
+							try 
+							{
+								rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, boss);
+							} catch (InvalidBooleanOperationException e) {
+								e.printStackTrace();
+							}
+						}
+//						else if(feature.getClass() == RetangularBoss.class)
+//						{
+							
+							
+						
+						break;
+						
 						default:
 							break;
 					}

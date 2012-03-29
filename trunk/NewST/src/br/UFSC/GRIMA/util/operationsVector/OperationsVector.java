@@ -149,18 +149,29 @@ public class OperationsVector
 	 * @param point --> point
 	 * @return --> double distance
 	 */
-	public double calculateDistanceBetweenLineAndPoint(LimitedLine line, Point3d point)
+	public static double calculateDistanceBetweenLineAndPoint(LimitedLine line, Point3d point)
 	{
 		double d = 0;
 		Point3d v0 = point;
 		Point3d v1 = line.getFp();
 		Point3d v2 = line.getSp();
 
-		d = moduleVector(crossVector(plusVector(v0, negativeVector(v1)),
-				plusVector(v0, negativeVector(v2))))
-				/ moduleVector(plusVector(v2, negativeVector(v1)));
+		d = moduleVector(crossVector(plusVector(v0, negativeVector(v1)), plusVector(v0, negativeVector(v2)))) / moduleVector(plusVector(v2, negativeVector(v1)));
 
 		return d;
+	}
+	/***
+	 * 
+	 * @param line
+	 * @param point
+	 * @return
+	 */
+	public static double calculateDistanceBetweenLimitedLineAndPoint(LimitedLine line, Point3d point)
+	{
+		double distance = 0;
+	
+		distance = calculateDistanceBetweenLimitedLineAndPoint(line, point);
+		return distance;
 	}
 	/**
 	 * This method calculate the distance between a circle and a point in plane XY
@@ -328,11 +339,34 @@ public class OperationsVector
 	 */
 	public static double calculateShortestDistanceBeetweenArcAndCircle(LimitedCircle circle, LimitedArc arc)
 	{
-		double shortestDistance = distanceVector(circle.getCenter(), arc.getPointsInArc().get(0)) - circle.getRadius();
-		double distanceTmp = distanceVector(circle.getCenter(), arc.getPointsInArc().get(0)) - circle.getRadius();
+		double shortestDistance = 1000;
+		double distanceTmp;// = distanceVector(circle.getCenter(), arc.getPointsInArc().get(0)) - circle.getRadius();
 		for(int i = 0; i < arc.getPointsInArc().size(); i++)
 		{
 			distanceTmp = distanceVector(circle.getCenter(), arc.getPointsInArc().get(i)) - circle.getRadius();
+//			System.err.println("distancetmp = " + distanceTmp);
+			if(distanceTmp < shortestDistance)
+			{
+				shortestDistance = distanceTmp;
+			}
+		}
+//		System.err.println("POINTS IN ARC = " + arc.getPointsInArc());
+		return shortestDistance;
+	}
+
+	public static double calculateShortestDistanceBeetweenArcAndLine(LimitedLine line, LimitedArc arc) 
+	{
+		double shortestDistance = 0;
+		double distanceTmp = 0;
+		Point3d pointTmp;
+		for (int i = 0; i < arc.getPointsInArc().size(); i++)
+		{
+			pointTmp = arc.getPointsInArc().get(i);
+			distanceTmp = calculateDistanceBetweenLineAndPoint(line, pointTmp);
+			if (i == 0)
+			{
+				shortestDistance = calculateDistanceBetweenLineAndPoint(line, arc.getPointsInArc().get(0));
+			}
 			if(distanceTmp < shortestDistance)
 			{
 				shortestDistance = distanceTmp;

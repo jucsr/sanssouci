@@ -1,86 +1,96 @@
 package br.UFSC.GRIMA.util.findPoints;
+
 import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
-
-
-public class PointsGenerator 
-{
-	private ArrayList<Point3d> points=new ArrayList<Point3d>();
+public class PointsGenerator {
+	private ArrayList<Point3d> points = new ArrayList<Point3d>();
 	private double xmin;
 	private double xmax;
 	private double ymin;
 	private double ymax;
-	
+
 	private double h;
 	private int N;
-	private LimitedCircle c= new LimitedCircle();
-	private LimitedLine l= new LimitedLine();
-	
-	public PointsGenerator()
-	{
-		
-	}
-	
-	public PointsGenerator(LimitedCircle c, LimitedLine l, int N)
-	{
-		this.N=N;
-		this.c=c;
-		this.l=l;
-				
-		this.xmin=l.xminl;
-		this.xmax=l.xmaxl;
-		this.ymin=l.yminl;
-		this.ymax=l.ymaxl;
+	private LimitedCircle c = new LimitedCircle();
+	private LimitedLine limitedLine = new LimitedLine();
+
+	public PointsGenerator() {
+
 	}
 
-	public PointsGenerator(LimitedLine l, int N)
-	{
-		this.N=N;
-		this.l=l;
-				
-		this.xmin=l.xminl;
-		this.xmax=l.xmaxl;
-		this.ymin=l.yminl;
-		this.ymax=l.ymaxl;
+	public PointsGenerator(LimitedCircle c, LimitedLine l, int N) {
+		this.N = N;
+		this.c = c;
+		this.limitedLine = l;
+
+		this.xmin = l.xminl;
+		this.xmax = l.xmaxl;
+		this.ymin = l.yminl;
+		this.ymax = l.ymaxl;
 	}
 
-	
-	public void fillPoints()
-	{	
-		if (l.vertical)
-		{
-			this.h=(l.getYmaxl()-l.getYminl())/this.N;
+	public PointsGenerator(LimitedLine l, int N) {
+		this.N = N;
+		this.limitedLine = l;
+
+		this.xmin = l.xminl;
+		this.xmax = l.xmaxl;
+		this.ymin = l.yminl;
+		this.ymax = l.ymaxl;
+	}
+
+	public void fillPoints() {
+		if (limitedLine.vertical) {
+			this.h = (limitedLine.getYmaxl() - limitedLine.getYminl()) / this.N;
+		} else {
+			this.h = (limitedLine.getXmaxl() - limitedLine.getXminl()) / this.N;
 		}
-		else
-		{
-			this.h=(l.getXmaxl()-l.getXminl())/this.N;
-		}
-		
-		if (!l.vertical)
-		{
-			for (int i=0;i<this.N;i++)
-			{
-				points.add(new Point3d());			
-				points.get(points.size()-1).x=this.xmin+i*this.h;
-				points.get(points.size()-1).y=this.l.getY0()+points.get(points.size()-1).x*this.l.getM();
-				points.get(points.size()-1).z=0;
+
+		if (!limitedLine.vertical) {
+			for (int i = 0; i < this.N; i++) {
+				points.add(new Point3d());
+				points.get(points.size() - 1).x = this.xmin + i * this.h;
+				points.get(points.size() - 1).y = this.limitedLine.getY0() + points.get(points.size() - 1).x * this.limitedLine.getM();
+				points.get(points.size() - 1).z = 0;
 			}
-		}
-		else
-		{
-			for (int i=0;i<this.N;i++)
-			{
-				points.add(new Point3d());			
-				points.get(points.size()-1).x=this.xmin;
-				points.get(points.size()-1).y=l.getYminl()+i*this.h;
-				points.get(points.size()-1).z=0;
+		} else {
+			for (int i = 0; i < this.N; i++) {
+				points.add(new Point3d());
+				points.get(points.size() - 1).x = this.xmin;
+				points.get(points.size() - 1).y = limitedLine.getYminl() + i * this.h;
+				points.get(points.size() - 1).z = 0;
 			}
+
+		}
+	}
+	public void generatePointsInLine()
+	{
+		this.points = new ArrayList<Point3d>();
+		double xTmp = 0, yTmp = 0, zTmp = 0;
+		if(!this.limitedLine.vertical)
+		{
+			this.h = (limitedLine.getSp().x - limitedLine.getFp().x) / (this.N - 1);
+			System.out.println("point FP = " + limitedLine.getFp());
+			System.out.println("point SP = " + limitedLine.getSp());
+			
+			System.out.println("h = " + h);
+			
+			
+			for(int i = 0; i< N; i++)
+			{
+				xTmp = this.limitedLine.getFp().x + i * this.h;
+				yTmp = this.limitedLine.getFp().y + this.limitedLine.getM() * (xTmp - this.limitedLine.getFp().x);
+				zTmp = this.limitedLine.getFp().z;
+				this.points.add(new Point3d(xTmp, yTmp, zTmp));
+			}
+		} else
+		{
 			
 		}
+		System.out.println("point in line = " + points);
 	}
-
 	public double getXmin() {
 		return xmin;
 	}
@@ -146,11 +156,10 @@ public class PointsGenerator
 	}
 
 	public LimitedLine getL() {
-		return l;
+		return limitedLine;
 	}
 
 	public void setL(LimitedLine l) {
-		this.l = l;
+		this.limitedLine = l;
 	}
 }
-

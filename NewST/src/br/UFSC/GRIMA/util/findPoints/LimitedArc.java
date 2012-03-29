@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
+/**
+ * 
+ * @author Jc
+ *
+ */
 public class LimitedArc extends LimitedElement
 {
 	private Point3d center, initialPoint, finalPoint;
@@ -13,6 +19,7 @@ public class LimitedArc extends LimitedElement
 	public static final int CW = 0;
 	public static final int CCW = 1;
 	private int sense = 0, n = 50; // n = number of points in arc
+	
 	public LimitedArc(Point3d center, Point3d initialPoint, Point3d finalPoint, int sense, int n)
 	{
 		this.center = center;
@@ -20,15 +27,50 @@ public class LimitedArc extends LimitedElement
 		this.finalPoint = finalPoint;
 		this.sense = sense;
 		this.n = n;
-		
+		this.radius = OperationsVector.distanceVector(this.initialPoint, this.center);
 	}
+	/**
+	 * 
+	 * @param center
+	 * @param initialPoint
+	 * @param deltaAngle --> em graus sexagessimais
+	 * @param sense
+	 * @param n
+	 */
 	public LimitedArc(Point3d center, Point3d initialPoint, double deltaAngle, int sense, int n)
 	{
 		this.center = center;
 		this.initialPoint = initialPoint;
-		this.deltaAngle = deltaAngle;
+		this.deltaAngle = deltaAngle * Math.PI/180;
 		this.sense = sense;
 		this.n = n;
+		this.radius = OperationsVector.distanceVector(this.initialPoint, this.center);
+//		System.out.println("radius = " +radius);
+//		System.out.println("inicialPoint = " +initialPoint);
+		this.determinatePointsInArc();
+	}
+	/**
+	 * 
+	 * @return pontos no arco
+	 */
+	public ArrayList<Point3d> determinatePointsInArc()
+	{
+		double initialAngle = Math.atan2((initialPoint.y - center.y), (initialPoint.x - center.x));
+//		System.out.println("INICIAL ANGLE = " + initialAngle * 180 / Math.PI );
+		this.pointsInArc = new ArrayList<Point3d>();
+		double x, y, z, dAngulo = 0;
+
+		// no sentido ANTIHORARIO
+		dAngulo = deltaAngle / (n - 1);
+		for(int i = 0; i < n; i++)
+		{
+			x = center.x + radius * Math.cos(initialAngle + i * dAngulo);
+			y = center.y + radius * Math.sin(initialAngle + i * dAngulo);
+			z = center.z;
+			pointsInArc.add(i, new Point3d(x, y, z));
+		}
+//		System.out.println("SAIDA = " + pointsInArc);
+		return pointsInArc;
 	}
 	public Point3d getCenter() {
 		return center;
@@ -66,5 +108,4 @@ public class LimitedArc extends LimitedElement
 	public void setSense(int sense) {
 		this.sense = sense;
 	}
-	
 }

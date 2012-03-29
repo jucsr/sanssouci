@@ -33,5 +33,15 @@ public class OperationVectorTest
 		LimitedArc la = new LimitedArc(center, initialPoint, deltaAngle, LimitedArc.CCW, 5);
 		System.out.println("points in arc = " + la.getPointsInArc());
 	}
-	
+	@Test
+	public void calculateShortestDistanceBeetweenArcAndLineTest()
+	{
+		Point3d center = new Point3d(50, 50, 0);
+		Point3d initialPoint = new Point3d(50, 30, 0);
+		double deltaAngle = 180;
+		LimitedArc arc = new LimitedArc(center, initialPoint, deltaAngle, LimitedArc.CCW, 33);
+		LimitedLine line = new LimitedLine(new Point3d(0, 0, 0), new Point3d(10, 10, 0));
+		
+		System.out.println("shortest distance = " + OperationsVector.calculateShortestDistanceBeetweenArcAndLine(line, arc));
+	}
 }

@@ -214,7 +214,7 @@ public class Cavidade extends Feature implements Serializable {
 	}
 	public void createGeometricalElements()
 	{
-		int n = 50;
+		int n = 21;
 		this.geometricalElements = new ArrayList<LimitedElement>();
 		this.geometricalElements.add(new LimitedArc(new Point3d(this.X + this.raio, this.Y + this.raio, this.Z), new Point3d(this.X, this.Y + this.raio, this.Z), 90, LimitedArc.CCW, n));
 		this.geometricalElements.add(new LimitedArc(new Point3d(this.X + this.raio, this.Y + this.largura - this.raio, this.Z), new Point3d(this.X + this.raio, this.Y + this.largura, this.Z), 90, LimitedArc.CCW, n));

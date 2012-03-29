@@ -37,33 +37,232 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		double yProximo;
 		double zAtual = this.ranhuraQuadU.getPosicaoZ();
 		double zLimite;
-		double aeUtilizado;
-		double apUtilizado;
+		double aeUtilizado=0;
+		double apUtilizado=0;
 		double xParaDescerAp;
 		double yParaDescerAp;
 		double h;
 		double alfa = this.ranhuraQuadU.getAngulo() * Math.PI / 180;
 		double allowanceBottom = ((BottomAndSideRoughMilling) this.ws.getOperation()).getAllowanceBottom();
+		double zInicioDaCurva;
+		double profundidade = this.ranhuraQuadU.getProfundidade();
+		double R = this.ranhuraQuadU.getRaio();
+		double diametroFerramenta = this.ferramenta.getDiametroFerramenta();
+		double xInicial;
+		double xLimiteEsquerda;
+		double xLimiteDireita;
+		double largura = this.ranhuraQuadU.getLargura();
+		double r = this.ferramenta.getEdgeRadius();
+		double temp=0;
+		double tempFinal=0;
+		double z=0;
+		int i=0;
+		double ptoFinal;
+		double xTemp=0;
+		
+		boolean direita = true; 
+		boolean movimentoLateral = false; 
 		boolean terminouZLimite = false;
 		boolean terminouXY = false;
 		boolean vaiVolta = true;
 		boolean fundo = false;
-
+		boolean couber = true;
+		boolean inicioDaCurva = false;
+		boolean parteCurva = true;
+		
 		Point3d pontoInicial;
 		Point3d pontoFinal;
 
-		h = (this.ranhuraQuadU.getLargura()-this.ferramenta.getDiametroFerramenta() - 2 * allowanceBottom) / 2;
+		
+		zInicioDaCurva = profundidade+R*(Math.sin(alfa)-1);
+		
+		
+		
+		h = (this.ranhuraQuadU.getLargura()-diametroFerramenta - 2 * allowanceBottom) / 2;
+		
 		if(this.ranhuraQuadU.getAngulo() == 90){
-			zLimite = this.ranhuraQuadU.getProfundidade() - this.ranhuraQuadU.getRaio();					
+			zLimite = profundidade - R;					
 		}else{
 			zLimite = h / Math.tan(alfa);
 		}
 		
-		if (zLimite > this.ranhuraQuadU.getProfundidade())
-			zLimite = this.ranhuraQuadU.getProfundidade();
+		if (zLimite > profundidade)
+			zLimite = profundidade;
+		
+		xInicial = this.ranhuraQuadU.getPosicaoX() + allowanceBottom + diametroFerramenta/2 + (r*(1-Math.sin((Math.PI/2)-alfa)));
+		xLimiteEsquerda = xInicial;
+		xLimiteDireita = largura + this.ranhuraQuadU.getPosicaoX()- allowanceBottom - diametroFerramenta/2;
+		xAtual = xInicial;
+		
 		
 		if (this.ranhuraQuadU.getEixo() == Ranhura.VERTICAL && ws.getOperation().getClass() == BottomAndSideRoughMilling.class) {
 			pontoInicial = new Point3d(this.ranhuraQuadU.getPosicaoX(),0,this.ranhuraQuadU.getPosicaoZ());
+			/*
+			while(!inicioDaCurva){
+				if(largura-2*allowanceBottom >= diametroFerramenta){
+					if(this.ws.getCondicoesUsinagem().getAp()-zAtual <= zInicioDaCurva){
+						apUtilizado = this.ws.getCondicoesUsinagem().getAp();
+						temp = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
+						largura = largura - 2*temp;
+						if(this.ws.getCondicoesUsinagem().getAp()-zAtual == zInicioDaCurva){
+							inicioDaCurva = true;
+							parteCurva = false;
+						}
+					}
+					else{
+						apUtilizado = zInicioDaCurva + zAtual;
+						tempFinal = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
+						largura = largura - 2*tempFinal;
+						inicioDaCurva = true;
+						parteCurva = false;
+					}
+					zAtual = zAtual - apUtilizado;
+					terminouXY = false;
+				}
+				else{
+					inicioDaCurva = true;
+					parteCurva = false;
+					terminouXY = true;
+				}
+				
+				while(!terminouXY){
+					if(vaiVolta){
+						yAtual = 0;
+						yProximo = this.ranhuraQuadU.getComprimento();
+						vaiVolta = false;
+					}else{
+						yAtual = this.ranhuraQuadU.getComprimento();
+						yProximo = 0;
+						vaiVolta = true;
+					}
+					xLimiteEsquerda = xLimiteEsquerda + temp;
+					xLimiteDireita = xLimiteDireita - temp;
+					
+					if(direita){
+						if(xAtual+this.ws.getCondicoesUsinagem().getAe() <= xLimiteDireita){
+							aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
+							if(xAtual+this.ws.getCondicoesUsinagem().getAe() == xLimiteDireita){
+								terminouXY = true;
+								direita = false;
+							}
+						}
+						else{
+								aeUtilizado = xLimiteDireita - xAtual;
+								terminouXY = true;
+								direita = false;
+						}						
+					}
+					else{
+						if(xAtual-this.ws.getCondicoesUsinagem().getAe() >= xLimiteEsquerda){
+							aeUtilizado = -this.ws.getCondicoesUsinagem().getAe();
+							if(xAtual-this.ws.getCondicoesUsinagem().getAe() == xLimiteEsquerda){
+								terminouXY = true;
+								direita = true;
+							}
+						}
+						else{
+								aeUtilizado = xLimiteEsquerda - xAtual;
+								terminouXY = true;
+								direita = true;
+							}
+						}
+					
+					xAtual = xAtual + aeUtilizado;
+					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					desbaste.add(verticalTemp);
+					LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xAtual,yProximo, zAtual));
+					desbaste.add(horizontalTemp);
+					pontoInicial = new Point3d(xAtual, yProximo, zAtual);
+				}
+			}
+			
+			while(!parteCurva){
+				System.out.println("entrou");
+				if(largura-2*allowanceBottom >= diametroFerramenta){
+					if(this.ws.getCondicoesUsinagem().getAp()-zAtual <= profundidade){
+						apUtilizado = this.ws.getCondicoesUsinagem().getAp();
+						if(this.ws.getCondicoesUsinagem().getAp()-zAtual == profundidade)
+							parteCurva = true;
+					}
+					else{
+						apUtilizado = profundidade + zAtual;
+						parteCurva = true;
+					}
+					zAtual = zAtual - apUtilizado;
+					terminouXY = false;
+				}
+				else{
+					parteCurva = true;
+					terminouXY = true;
+				}
+				
+				while(!terminouXY){
+					if(vaiVolta){
+						yAtual = 0;
+						yProximo = this.ranhuraQuadU.getComprimento();
+						vaiVolta = false;
+					}else{
+						yAtual = this.ranhuraQuadU.getComprimento();
+						yProximo = 0;
+						vaiVolta = true;
+					}
+					
+					z = profundidade + zAtual;
+					
+					if(Math.tan(Math.asin((R-z-r)/(R-r))) != 0){ 
+						temp = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
+					}
+					largura = largura - 2*temp;
+					
+					if(i == 0){
+						xLimiteEsquerda = xLimiteEsquerda + tempFinal;
+						xLimiteDireita = xLimiteDireita - tempFinal;
+						i++;
+					}
+					else{
+						xLimiteEsquerda = xLimiteEsquerda + temp;
+						xLimiteDireita = xLimiteDireita - temp;					
+					}
+					
+					if(direita){
+						if(xAtual+this.ws.getCondicoesUsinagem().getAe() <= xLimiteDireita){
+							aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
+							if(xAtual+this.ws.getCondicoesUsinagem().getAe() == xLimiteDireita){
+								terminouXY = true;
+								direita = false;
+							}
+						}
+						else{
+								aeUtilizado = xLimiteDireita - xAtual;
+								terminouXY = true;
+								direita = false;
+						}						
+					}
+					else{
+						if(xAtual-this.ws.getCondicoesUsinagem().getAe() >= xLimiteEsquerda){
+							aeUtilizado = -this.ws.getCondicoesUsinagem().getAe();
+							if(xAtual-this.ws.getCondicoesUsinagem().getAe() == xLimiteEsquerda){
+								terminouXY = true;
+								direita = true;
+							}
+						}
+						else{
+								aeUtilizado = xLimiteEsquerda - xAtual;
+								terminouXY = true;
+								direita = true;
+						}
+					}
+					xAtual = xAtual + aeUtilizado;
+					
+					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					desbaste.add(verticalTemp);
+					LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xAtual,yProximo, zAtual));
+					desbaste.add(horizontalTemp);
+					pontoInicial = new Point3d(xAtual, yProximo, zAtual);
+				}
+			}*/
 			while (!terminouZLimite) {
 				if (this.ws.getCondicoesUsinagem().getAp() - zAtual <= zLimite) {
 					apUtilizado = this.ws.getCondicoesUsinagem().getAp();
@@ -75,18 +274,40 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 				}
 				zAtual = zAtual - apUtilizado;
 				
-				if(this.ranhuraQuadU.getAngulo() == 90){
-					xParaDescerAp = 0;
-				}else{
-					xParaDescerAp = Math.tan(alfa)*(-zAtual)+allowanceBottom;
+				if(zInicioDaCurva >= -zAtual){
+					if(this.ranhuraQuadU.getAngulo() == 90){
+						xParaDescerAp = 0;
+					}else{
+						xParaDescerAp = Math.tan(alfa)*(-zAtual)+allowanceBottom;
 					}
+					xTemp = xAtual;
+				}
+				else{
+					z = profundidade + zAtual;
+					if(Math.asin((R-z)/(R)) != Math.PI/2){
+						xParaDescerAp = Math.tan(Math.asin((R-z)/(R)))*apUtilizado+allowanceBottom;
+					}
+					else{
+						ptoFinal = xTemp + R*Math.cos(alfa); 
+						xParaDescerAp = ptoFinal - xAtual+allowanceBottom;
+					}
+//					
+//					z = profundidade + zAtual;
+//					xParaDescerAp = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
+//				
+//					if(this.ranhuraQuadU.getAngulo() == 90){
+//						xParaDescerAp = 0;
+//					}else{
+//						xParaDescerAp = Math.tan(alfa)*(-zAtual)+allowanceBottom;
+//					}
+				}
 				
 				if(fundo){
-					xAtual = this.ws.getCondicoesUsinagem().getAe()+this.ranhuraQuadU.getLargura()+this.ranhuraQuadU.getPosicaoX()-xParaDescerAp-this.ferramenta.getDiametroFerramenta()/2;
+					xAtual = this.ws.getCondicoesUsinagem().getAe()+this.ranhuraQuadU.getLargura()+this.ranhuraQuadU.getPosicaoX()-xParaDescerAp-diametroFerramenta/2;
 					fundo = false;
 				}
 				else{
-					xAtual = this.ranhuraQuadU.getPosicaoX()+xParaDescerAp-this.ws.getCondicoesUsinagem().getAe()+this.ferramenta.getDiametroFerramenta()/2;
+					xAtual = this.ranhuraQuadU.getPosicaoX()+xParaDescerAp-this.ws.getCondicoesUsinagem().getAe()+diametroFerramenta/2;
 					fundo = true;
 				}
 				terminouXY = false;
@@ -103,26 +324,26 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						}
 						
 						if(fundo){
-							if(xAtual+this.ws.getCondicoesUsinagem().getAe()>this.ranhuraQuadU.getPosicaoX()+this.ranhuraQuadU.getLargura()-xParaDescerAp-this.ferramenta.getDiametroFerramenta()/2){
-								aeUtilizado = this.ranhuraQuadU.getPosicaoX()+this.ranhuraQuadU.getLargura()-xParaDescerAp-this.ferramenta.getDiametroFerramenta()/2-xAtual;
+							if(xAtual+this.ws.getCondicoesUsinagem().getAe()>this.ranhuraQuadU.getPosicaoX()+this.ranhuraQuadU.getLargura()-xParaDescerAp-diametroFerramenta/2){
+								aeUtilizado = this.ranhuraQuadU.getPosicaoX()+this.ranhuraQuadU.getLargura()-xParaDescerAp-diametroFerramenta/2-xAtual;
 								terminouXY = true;
 							}
 							else{
 								aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
-								if(xAtual+this.ws.getCondicoesUsinagem().getAe()==this.ranhuraQuadU.getPosicaoX()+this.ranhuraQuadU.getLargura()-xParaDescerAp-this.ferramenta.getDiametroFerramenta()/2){
+								if(xAtual+this.ws.getCondicoesUsinagem().getAe()==this.ranhuraQuadU.getPosicaoX()+this.ranhuraQuadU.getLargura()-xParaDescerAp-diametroFerramenta/2){
 									terminouXY = true;
 								}
 							}
 							xAtual = xAtual + aeUtilizado;
 							}
 						else{
-							if(xAtual-this.ws.getCondicoesUsinagem().getAe()<this.ranhuraQuadU.getPosicaoX()+xParaDescerAp+this.ferramenta.getDiametroFerramenta()/2){
-								aeUtilizado = xAtual-xParaDescerAp-this.ferramenta.getDiametroFerramenta()/2-this.ranhuraQuadU.getPosicaoX();
+							if(xAtual-this.ws.getCondicoesUsinagem().getAe()<this.ranhuraQuadU.getPosicaoX()+xParaDescerAp+diametroFerramenta/2){
+								aeUtilizado = xAtual-xParaDescerAp-diametroFerramenta/2-this.ranhuraQuadU.getPosicaoX();
 								terminouXY = true;
 							}
 							else{
 								aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
-								if(xAtual-this.ws.getCondicoesUsinagem().getAe()==this.ranhuraQuadU.getPosicaoX()+xParaDescerAp+this.ferramenta.getDiametroFerramenta()/2)
+								if(xAtual-this.ws.getCondicoesUsinagem().getAe()==this.ranhuraQuadU.getPosicaoX()+xParaDescerAp+diametroFerramenta/2)
 									terminouXY = true;
 							}
 							xAtual = xAtual-aeUtilizado;
@@ -135,7 +356,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						desbaste.add(horizontalTemp);
 						pontoInicial = new Point3d(xAtual, yProximo, zAtual);						
 					}
-				}
+				}		
 			}
 		else{
 			if(this.ranhuraQuadU.getEixo()==Ranhura.HORIZONTAL && ws.getOperation().getClass() == BottomAndSideRoughMilling.class){
@@ -232,16 +453,19 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		double xTemp=0;
 		double andarX;
 		double ptoFinal;
-		double temp;
+		double temp=0;
+		double temp1=0;
 		double z;
 		double alfa = this.ranhuraQuadU.getAngulo() * Math.PI / 180;
 		double largura  = this.ranhuraQuadU.getLargura();
 		double largura2 = this.ranhuraQuadU.getLargura2();
 		double R = this.ranhuraQuadU.getRaio();
-		double r = 4;//this.ferramenta.getEdgeRadius();
+		double r = this.ferramenta.getEdgeRadius();
 		double diametroFerramenta = this.ferramenta.getDiametroFerramenta();
 		double profundidade = this.ranhuraQuadU.getProfundidade();
 		double x = R*Math.cos(alfa);
+		double tempFinal=0;
+		int i=0;
 		
 		boolean terminouTudo = false;
 		boolean terminouX = true;
@@ -254,22 +478,12 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		Point3d pontoInicial;
 		Point3d pontoFinal;
 				
-//		System.out.println(ferramenta.getClass());
-//		if(this.ferramenta.getClass() == BallEndMill.class){
-//			r = this.ferramenta.getDiametroFerramenta()/2;
-//		}else if(this.ferramenta.getClass() == BullnoseEndMill.class){
-//			BullnoseEndMill ferramentaTemp = (BullnoseEndMill) ferramenta;
-//			r = ferramentaTemp.getEdgeRadius();
-//			System.out.println("valor de r no começo " + r);
-//		}
-		
-//		System.out.println(r);
-		
 		zAtual = -r*(1-Math.cos(alfa));
 		zLimite = profundidade+R*(Math.sin(alfa)-1);
-		xAtual = this.ferramenta.getDiametroFerramenta()/2 + this.ranhuraQuadU.getPosicaoX() + (r*(1-Math.sin((Math.PI/2)-alfa)));
-		yAtual = this.ferramenta.getDiametroFerramenta()/2 + this.ranhuraQuadU.getPosicaoY() + (r*(1-Math.sin((Math.PI/2)-alfa)));
-
+		xAtual = diametroFerramenta/2 + this.ranhuraQuadU.getPosicaoX() + (r*(1-Math.sin((Math.PI/2)-alfa)));
+		yAtual = diametroFerramenta/2 + this.ranhuraQuadU.getPosicaoY() + (r*(1-Math.sin((Math.PI/2)-alfa)));
+		
+		
 		if(this.ranhuraQuadU.getEixo() == Ranhura.VERTICAL && ws.getOperation().getClass() == BottomAndSideFinishMilling.class){
 
 			/****************** DESCIDA LINEAR ATÉ COMEÇAR A CURVATURA ***********************/
@@ -280,6 +494,8 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 				while(!terminouZ){
 					if(-(zAtual-this.ws.getCondicoesUsinagem().getAp()) <= zLimite){
 						apUtilizado = this.ws.getCondicoesUsinagem().getAp();
+						temp = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
+						i=1;
 						if(-zAtual == zLimite){
 							terminouZ1 = false;
 							terminouZ = true;
@@ -287,8 +503,10 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					}
 					else{
 						apUtilizado = zLimite + zAtual;
+						tempFinal = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
 						terminouZ = true;
 						terminouZ1 = false;
+						i=0;
 					}
 					zAtual = zAtual - apUtilizado;
 
@@ -303,11 +521,14 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						vaiVolta = true;
 					}
 
-					temp = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
-					xAtual = xAtual + temp;
-					
+					if(i==0){
+						xAtual = xAtual + tempFinal;
+					}
+					else{
+						xAtual = xAtual + temp;
+					}
 					xTemp = xAtual;
-					
+										
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					acabamento.add(verticalTemp);
@@ -343,20 +564,18 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						vaiVolta = true;
 					}
 					
-
 					z = profundidade + zAtual;
-					if(Math.tan(Math.acos((R-z-r)/(R-r))) != 0){
-						andarX = Math.tan(Math.acos((R-z-r)/(R-r)));
+					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2){
+						andarX = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
 					}
 					else{
-						ptoFinal = xTemp + R*Math.sin(alfa); 
+						ptoFinal = xTemp + R*Math.cos(alfa); 
 						andarX = ptoFinal - xAtual;
+						temp1 = andarX;
 					}
-					xAtual = xAtual + andarX;//(r*Math.sin(Math.acos((R-z-r)/(R-r))));
 					
-//					System.out.println((r*Math.sin(Math.acos((R-z-r)/(R-r)))));
-//					System.out.println("tangente : " + (apUtilizado / Math.tan(Math.acos((R-z-r)/(R-r)))));
-//					System.out.println((Math.tan(Math.acos((R-z-r)/(R-r)))));
+					xAtual = xAtual + andarX;
+					
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					acabamento.add(verticalTemp);
@@ -416,6 +635,18 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						terminouZ3 = false;
 						terminouZ2 = true;
 					}
+					
+					z = profundidade + zAtual;
+					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2){
+						andarX = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
+					}
+					else{
+						andarX = temp1;
+					}
+					
+					xAtual = xAtual + andarX;
+					
+					
 					zAtual = zAtual + apUtilizado;
 
 					if(vaiVolta){
@@ -428,9 +659,6 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						yProximo = 0;
 						vaiVolta = true;
 					}
-			
-					z = profundidade + zAtual;
-					xAtual = xAtual + ((diametroFerramenta/2 - r) + r*Math.sin(Math.acos((R-z-r)/(R-r))));
 
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
@@ -465,9 +693,14 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						yProximo = 0;
 						vaiVolta = true;
 					}
-
-					temp = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
-					xAtual = xAtual + temp;
+					
+					if(i == 0){
+						xAtual = xAtual + tempFinal;
+						i++;
+					}
+					else{
+						xAtual = xAtual + temp;
+					}
 					
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
@@ -488,6 +721,8 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 				while(!terminouZ){
 					if(-(zAtual-this.ws.getCondicoesUsinagem().getAp()) <= zLimite){
 						apUtilizado = this.ws.getCondicoesUsinagem().getAp();
+						temp = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
+						i=1;
 						if(-zAtual == zLimite){
 							terminouZ1 = false;
 							terminouZ = true;
@@ -495,8 +730,10 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					}
 					else{
 						apUtilizado = zLimite + zAtual;
+						tempFinal = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
 						terminouZ = true;
 						terminouZ1 = false;
+						i=0;
 					}
 					zAtual = zAtual - apUtilizado;
 
@@ -511,17 +748,22 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						vaiVolta = true;
 					}
 
-					temp = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
-					yAtual = yAtual + temp;
-
+					if(i==0){
+						yAtual = yAtual + tempFinal;
+					}
+					else{
+						yAtual = yAtual + temp;
+					}
+					xTemp = yAtual;
+										
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					acabamento.add(verticalTemp);
 					LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
 					acabamento.add(horizontalTemp);
 					pontoInicial = new Point3d(xProximo, yAtual, zAtual);	
-
 				}
+				
 				/*********************  ACABAMENTO DA CURVA  DESCIDA   *********************/
 				while(!terminouZ1){
 					if(-(zAtual-this.ws.getCondicoesUsinagem().getAp()) <= profundidade){
@@ -548,10 +790,18 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						xProximo = 0;
 						vaiVolta = true;
 					}
+					
 					z = profundidade + zAtual;
-					yAtual = yAtual + ((diametroFerramenta/2 - r) + r*Math.sin(Math.acos((R-z-r)/(R-r))));
-
-
+					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2){
+						andarX = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
+					}
+					else{
+						ptoFinal = xTemp + R*Math.cos(alfa); 
+						andarX = ptoFinal - yAtual;
+						temp1 = andarX;
+					}
+					
+					yAtual = yAtual + andarX;
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					acabamento.add(verticalTemp);
@@ -559,8 +809,6 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					acabamento.add(horizontalTemp);
 					pontoInicial = new Point3d(xProximo, yAtual, zAtual);	
 				}
-
-
 				/************************ ACABAMENTO DA LARGURA 2 ****************************/
 
 				x = this.ranhuraQuadU.getPosicaoY()+largura/2-yAtual;
@@ -569,7 +817,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 				while(!terminouX){
 					if(yAtual+this.ws.getCondicoesUsinagem().getAe() <= largura2){
 						aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
-						if(yAtual == largura2){
+						if(yAtual+this.ws.getCondicoesUsinagem().getAe() == largura2){
 							terminouZ2 = false;
 							terminouX = true;
 						}
@@ -591,7 +839,6 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						xProximo = 0;
 						vaiVolta = true;
 					}
-
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					acabamento.add(verticalTemp);
@@ -599,8 +846,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					acabamento.add(horizontalTemp);
 					pontoInicial = new Point3d(xProximo, yAtual, zAtual);	
 				}
-
-
+				
 				/********************** ACABAMENTO DA CURVA SUBIDA **********************/
 				while(!terminouZ2){
 					if(-(zAtual+this.ws.getCondicoesUsinagem().getAp()) >= zLimite){
@@ -615,6 +861,18 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						terminouZ3 = false;
 						terminouZ2 = true;
 					}
+					
+					z = profundidade + zAtual;
+					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2){
+						andarX = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
+					}
+					else{
+						andarX = temp1;
+					}
+					
+					yAtual = yAtual + andarX;
+					
+					
 					zAtual = zAtual + apUtilizado;
 
 					if(vaiVolta){
@@ -628,18 +886,13 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						vaiVolta = true;
 					}
 
-					z = profundidade + zAtual;
-					yAtual = yAtual + ((diametroFerramenta/2 - r) + r*Math.sin(Math.acos((R-z-r)/(R-r))));
-
-
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					acabamento.add(verticalTemp);
 					LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
 					acabamento.add(horizontalTemp);
 					pontoInicial = new Point3d(xProximo, yAtual, zAtual);	
-				}
-
+				}				
 				/********************** SUBIDA LINEAR **********************/
 				while(!terminouZ3){
 					if(-(zAtual-this.ws.getCondicoesUsinagem().getAp()) >= r*(1-Math.sin((Math.PI/2)-alfa))){
@@ -666,10 +919,15 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						xProximo = 0;
 						vaiVolta = true;
 					}
-
-					temp = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
-					yAtual = yAtual + temp;
-
+					
+					if(i == 0){
+						yAtual = yAtual + tempFinal;
+						i++;
+					}
+					else{
+						yAtual = yAtual + temp;
+					}
+					
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					acabamento.add(verticalTemp);
@@ -709,5 +967,4 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		saida.add(planoSeguro);
 		return saida;
 	}
-	
 }

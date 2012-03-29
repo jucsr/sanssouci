@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import Jama.Matrix;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -144,7 +145,7 @@ public class OperationsVector
 	}
 	
 	/**
-	 * This method calculate the distance between a line and a point in space 3d
+	 * This method calculate the distance between a INFINITE line and a point in space 3d
 	 * @param line --> the line 
 	 * @param point --> point
 	 * @return --> double distance
@@ -353,7 +354,12 @@ public class OperationsVector
 //		System.err.println("POINTS IN ARC = " + arc.getPointsInArc());
 		return shortestDistance;
 	}
-
+	/**
+	 *  AINDA FALTA DEBUGAR
+	 * @param line
+	 * @param arc
+	 * @return
+	 */
 	public static double calculateShortestDistanceBeetweenArcAndLine(LimitedLine line, LimitedArc arc) 
 	{
 		double shortestDistance = 0;
@@ -374,5 +380,26 @@ public class OperationsVector
 		}
 		return shortestDistance;
 	}
-	
+	public static ArrayList<Double> calculateDistanceBeetweenAPointAndAPointsList(ArrayList<Point3d> matrizDePontos, Point3d point)
+	{
+		ArrayList<Double> distancia = new ArrayList<Double>();
+		double distanciaTmp;
+		for(Point3d pointTmp: matrizDePontos)
+		{
+			distanciaTmp = Math.sqrt((point.x - pointTmp.x) * (point.x - pointTmp.x) + (point.y - pointTmp.y) * (point.y - pointTmp.y));
+			distancia.add(distanciaTmp);
+		}
+		return distancia;
+	}
+	public static ArrayList<Double> calculateDistanceBeetweenAPointsListAndALine(ArrayList<Point3d> matrizDePontos, LimitedLine line)
+	{
+		ArrayList<Double> menorDistancia = new ArrayList<Double>();
+		double menorDistanceTmp;
+		for(Point3d pointTmp: matrizDePontos)
+		{
+			menorDistanceTmp = calculateDistanceBetweenLineAndPoint(line, pointTmp);
+			menorDistancia.add(menorDistanceTmp);
+		}
+		return menorDistancia;
+	}
 }

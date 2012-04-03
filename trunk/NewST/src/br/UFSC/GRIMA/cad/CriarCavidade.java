@@ -181,7 +181,7 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				ok = false;
 			}
 		}
-		/** ****** validacao dos dados introduzidos no campo "Posi��o Z" ********
+		/** ****** validacao dos dados introduzidos no campo "Posicao Z" ********
 		 * 
 		 */
 		if (ok) {

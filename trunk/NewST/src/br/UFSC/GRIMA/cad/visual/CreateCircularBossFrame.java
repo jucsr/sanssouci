@@ -30,12 +30,11 @@ public class CreateCircularBossFrame extends JDialog {
 		contentPanel = new JPanel();
 		panel9 = new JPanel();
 		layeredPane1 = new JLayeredPane();
+		spinner1 = new JSpinner();
 		spinner2 = new JSpinner();
 		spinner3 = new JSpinner();
 		spinner5 = new JSpinner();
 		spinner6 = new JSpinner();
-		spinner1 = new JSpinner();
-		spinner8 = new JSpinner();
 		spinner7 = new JSpinner();
 		label1 = new JLabel();
 		panel10 = new JPanel();
@@ -54,14 +53,12 @@ public class CreateCircularBossFrame extends JDialog {
 		label11 = new JLabel();
 		cavidadeRug = new JSpinner();
 		labelDepth = new JLabel();
-		label2 = new JLabel();
-		checkBox1 = new JCheckBox();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
 
 		//======== this ========
-		setTitle("Create Closed Pocket");
+		setTitle("Create Circular Boss");
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
@@ -94,45 +91,40 @@ public class CreateCircularBossFrame extends JDialog {
 						//======== layeredPane1 ========
 						{
 
+							//---- spinner1 ----
+							spinner1.setModel(new SpinnerNumberModel(5.0, 0.0, null, 1.0));
+							layeredPane1.add(spinner1, JLayeredPane.DEFAULT_LAYER);
+							spinner1.setBounds(new Rectangle(new Point(240, 45), spinner1.getPreferredSize()));
+
 							//---- spinner2 ----
 							spinner2.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner2, JLayeredPane.DEFAULT_LAYER);
-							spinner2.setBounds(215, 165, 40, spinner2.getPreferredSize().height);
+							spinner2.setBounds(new Rectangle(new Point(240, 140), spinner2.getPreferredSize()));
 
 							//---- spinner3 ----
-							spinner3.setModel(new SpinnerNumberModel(7.5, 0.0, null, 1.0));
+							spinner3.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner3, JLayeredPane.DEFAULT_LAYER);
-							spinner3.setBounds(84, 25, 41, spinner3.getPreferredSize().height);
+							spinner3.setBounds(new Rectangle(new Point(90, 285), spinner3.getPreferredSize()));
 
 							//---- spinner5 ----
-							spinner5.setModel(new SpinnerNumberModel(70.0, 0.0, null, 1.0));
+							spinner5.setModel(new SpinnerNumberModel(15.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner5, JLayeredPane.DEFAULT_LAYER);
-							spinner5.setBounds(195, 20, 40, spinner5.getPreferredSize().height);
+							spinner5.setBounds(new Rectangle(new Point(285, 135), spinner5.getPreferredSize()));
 
 							//---- spinner6 ----
-							spinner6.setModel(new SpinnerNumberModel(50.0, 0.0, null, 1.0));
+							spinner6.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner6, JLayeredPane.DEFAULT_LAYER);
-							spinner6.setBounds(101, 78, 40, spinner6.getPreferredSize().height);
-
-							//---- spinner1 ----
-							spinner1.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-							layeredPane1.add(spinner1, JLayeredPane.DEFAULT_LAYER);
-							spinner1.setBounds(85, 166, 35, spinner1.getPreferredSize().height);
-
-							//---- spinner8 ----
-							spinner8.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-							layeredPane1.add(spinner8, JLayeredPane.DEFAULT_LAYER);
-							spinner8.setBounds(106, 298, 40, spinner8.getPreferredSize().height);
+							spinner6.setBounds(new Rectangle(new Point(125, 150), spinner6.getPreferredSize()));
 
 							//---- spinner7 ----
 							spinner7.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner7, JLayeredPane.DEFAULT_LAYER);
-							spinner7.setBounds(5, 275, 40, spinner7.getPreferredSize().height);
+							spinner7.setBounds(new Rectangle(new Point(10, 210), spinner7.getPreferredSize()));
 
 							//---- label1 ----
-							label1.setIcon(new ImageIcon(getClass().getResource("/images/CavidadeBasePlana.png")));
+							label1.setIcon(new ImageIcon(getClass().getResource("/images/circularBoss1.png")));
 							layeredPane1.add(label1, JLayeredPane.DEFAULT_LAYER);
-							label1.setBounds(new Rectangle(new Point(0, 0), label1.getPreferredSize()));
+							label1.setBounds(0, 0, 370, 395);
 						}
 						panel9.add(layeredPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -211,7 +203,7 @@ public class CreateCircularBossFrame extends JDialog {
 								new Insets(0, 0, 5, 5), 0, 0));
 
 							//---- textField9 ----
-							textField9.setText("Closed pocket");
+							textField9.setText("Circular Boss");
 							textField9.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
 							panel8.add(textField9, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -271,19 +263,6 @@ public class CreateCircularBossFrame extends JDialog {
 							panel5.add(labelDepth, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 0), 0, 0));
-
-							//---- label2 ----
-							label2.setText("through pocket");
-							label2.setHorizontalAlignment(SwingConstants.RIGHT);
-							panel5.add(label2, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
-								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-								new Insets(0, 0, 5, 5), 0, 0));
-
-							//---- checkBox1 ----
-							checkBox1.setHorizontalAlignment(SwingConstants.LEFT);
-							panel5.add(checkBox1, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
-								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-								new Insets(0, 0, 5, 5), 0, 0));
 						}
 						panel10.add(panel5, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -318,7 +297,7 @@ public class CreateCircularBossFrame extends JDialog {
 			}
 			scrollPane2.setViewportView(dialogPane);
 		}
-		contentPane.add(scrollPane2, BorderLayout.CENTER);
+		contentPane.add(scrollPane2, BorderLayout.SOUTH);
 		pack();
 		setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -330,14 +309,13 @@ public class CreateCircularBossFrame extends JDialog {
 	private JPanel contentPanel;
 	protected JPanel panel9;
 	private JLayeredPane layeredPane1;
+	protected JSpinner spinner1;
 	protected JSpinner spinner2;
 	protected JSpinner spinner3;
 	protected JSpinner spinner5;
 	protected JSpinner spinner6;
-	protected JSpinner spinner1;
-	protected JSpinner spinner8;
 	protected JSpinner spinner7;
-	private JLabel label1;
+	protected JLabel label1;
 	private JPanel panel10;
 	private JPanel panel11;
 	private JLabel label17;
@@ -354,8 +332,6 @@ public class CreateCircularBossFrame extends JDialog {
 	private JLabel label11;
 	protected JSpinner cavidadeRug;
 	private JLabel labelDepth;
-	private JLabel label2;
-	protected JCheckBox checkBox1;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

@@ -2225,7 +2225,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 				if(feature.getClass() == Cavidade.class)
 				{
 //					System.out.println("CAVIDADEEEEEE");
-					CriarBoss cb = new CriarBoss(this, feature); //criar no .cad
+					CriarBoss cb = new CriarBoss(this, face, feature); //criar no .cad
 					cb.setVisible(true);
 				} else if (feature.getClass() == Degrau.class)
 				{

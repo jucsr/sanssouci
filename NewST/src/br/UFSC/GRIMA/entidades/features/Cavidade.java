@@ -22,7 +22,7 @@ public class Cavidade extends Feature implements Serializable {
 	private double largura;
 	private double comprimento;
 	private double profundidade;
-	private ArrayList<Boss> itsBoss;
+	private ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 	private ArrayList<LimitedElement> geometricalElements;
 	
 	private transient EClosed_pocket eClosed_pocket;

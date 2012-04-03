@@ -1,16 +1,24 @@
 package br.UFSC.GRIMA.cad;
 
-import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import br.UFSC.GRIMA.cad.visual.CriarBossFrame;
+import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.Degrau;
+import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 
 public class CriarBoss extends CriarBossFrame implements ActionListener{
 
-	public CriarBoss(JanelaPrincipal owner, Feature feature) {  //primeiro arg. eh referente a subordinacao a janela principal
+	private Feature feature;
+	private JanelaPrincipal owner;
+	private Face face;
+	public CriarBoss(JanelaPrincipal owner, Face face, Feature feature) {  //primeiro arg. eh referente a subordinacao a janela principal
 		super(owner);
+		this.feature = feature;
+		this.owner = owner;
+		this.face = face;
 		this.buttonCancel.addActionListener(this);
 		this.buttonOK.addActionListener(this);
 		this.buttonCircular.addActionListener(this);
@@ -33,13 +41,21 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 	private void ok() {
 		if(buttonCircular.isSelected())
 		{
-			CreateCircularBoss ccb = new CreateCircularBoss(owner, feature);
-			ccb.setVisible(true);
+			
+			if(feature.getClass() == Cavidade.class)
+			{
+				Cavidade cavidade = (Cavidade)this.feature;
+				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidade);
+				ccb.setVisible(true);
+			} else if(feature.getClass() == Degrau.class){
+				
+			}
+			
 			
 		}else if(this.buttonRectangular.isSelected())
 		{
-			CreateRectangularBoss crb = new CreateRectangularBoss(owner, feature);
-			crb.setVisible(true);
+//			CreateRectangularBoss crb = new CreateRectangularBoss(owner, feature);
+//			crb.setVisible(true);
 		}
 	}
 

@@ -49,6 +49,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		double yLimiteEsquerda, yLimiteDireita;
 		double yTemp=0;
 		int i;
+		int p=0;
 		
 		boolean terminouZLimite = false;
 		boolean terminouXY = false;
@@ -88,6 +89,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 				}
 				zAtual = zAtual - apUtilizado;
 					
+				
 				if(zInicioDaCurva >= -zAtual){
 					if(this.ranhuraQuadU.getAngulo() == 90){
 						xParaDescerAp = 0;
@@ -117,64 +119,80 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						}
 					}
 				}
-				
+								
 				xLimiteDireita = xLimiteDireita - xParaDescerAp;
 				xLimiteEsquerda = xLimiteEsquerda + xParaDescerAp;
 				
 				terminouXY = false;
 				i=1;
 				
-				while (!terminouXY) {
-					if(i==0){
-						
-						if (vaiVolta) {
-							yAtual = this.ranhuraQuadU.getPosicaoY();
-							yProximo = this.ranhuraQuadU.getComprimento();
-							vaiVolta = false;
-						} else {
-							yAtual = this.ranhuraQuadU.getComprimento();
-							yProximo = this.ranhuraQuadU.getPosicaoY();
-							vaiVolta = true;
-						}
-						
-						if(fundo){
-							if(xAtual+this.ws.getCondicoesUsinagem().getAe()>xLimiteDireita){	
-								aeUtilizado = xLimiteDireita - xAtual;
-								terminouXY = true;
+				if(p==0){
+					p++;
+					xAtual = xAtual + xParaDescerAp;
+					yAtual = this.ranhuraQuadU.getPosicaoY();
+					yProximo = this.ranhuraQuadU.getComprimento();
+					vaiVolta = false;
+					
+					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					desbaste.add(verticalTemp);
+					LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xAtual,yProximo, zAtual));
+					desbaste.add(horizontalTemp);
+					pontoInicial = new Point3d(xAtual, yProximo, zAtual);
+				}
+				else{
+
+					while (!terminouXY) {
+						if(i==0){
+
+							if (vaiVolta) {
+								yAtual = this.ranhuraQuadU.getPosicaoY();
+								yProximo = this.ranhuraQuadU.getComprimento();
+								vaiVolta = false;
+							} else {
+								yAtual = this.ranhuraQuadU.getComprimento();
+								yProximo = this.ranhuraQuadU.getPosicaoY();
+								vaiVolta = true;
 							}
-							else{
-								aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
-								if(xAtual+this.ws.getCondicoesUsinagem().getAe()==xLimiteDireita){	
+
+							if(fundo){
+								if(xAtual+this.ws.getCondicoesUsinagem().getAe()>xLimiteDireita){	
+									aeUtilizado = xLimiteDireita - xAtual;
 									terminouXY = true;
 								}
-							}
-							xAtual = xAtual + aeUtilizado;
-							}
-						else{
-							if(xAtual-this.ws.getCondicoesUsinagem().getAe()<xLimiteEsquerda){
-								aeUtilizado = xAtual - xLimiteEsquerda;
-								terminouXY = true;
+								else{
+									aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
+									if(xAtual+this.ws.getCondicoesUsinagem().getAe()==xLimiteDireita){	
+										terminouXY = true;
+									}
+								}
+								xAtual = xAtual + aeUtilizado;
 							}
 							else{
-								aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
-								if(xAtual-this.ws.getCondicoesUsinagem().getAe()==xLimiteEsquerda)	
+								if(xAtual-this.ws.getCondicoesUsinagem().getAe()<xLimiteEsquerda){
+									aeUtilizado = xAtual - xLimiteEsquerda;
 									terminouXY = true;
+								}
+								else{
+									aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
+									if(xAtual-this.ws.getCondicoesUsinagem().getAe()==xLimiteEsquerda)	
+										terminouXY = true;
+								}
+								xAtual = xAtual-aeUtilizado;
 							}
-							xAtual = xAtual-aeUtilizado;
-						}
-					}
-					else{
-						if(fundo){
-							xAtual = xAtual - xParaDescerAp;
-							fundo = false;
 						}
 						else{
-							xAtual = xAtual + xParaDescerAp;
-							fundo = true;
+							if(fundo){
+								xAtual = xAtual - xParaDescerAp;
+								fundo = false;
+							}
+							else{
+								xAtual = xAtual + xParaDescerAp;
+								fundo = true;
+							}
+							i=0;
 						}
-						i=0;
-					}
-						
+
 						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 						LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 						desbaste.add(verticalTemp);
@@ -182,6 +200,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						desbaste.add(horizontalTemp);
 						pontoInicial = new Point3d(xAtual, yProximo, zAtual);						
 					}
+				}
 			}
 		}
 
@@ -248,57 +267,72 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					terminouXY = false;
 					i=1;
 					
-					while (!terminouXY) {
-						if(i==0){
-							
-							if (vaiVolta) {
-								xAtual = this.ranhuraQuadU.getPosicaoY();
-								xProximo = this.ranhuraQuadU.getComprimento();
-								vaiVolta = false;
-							} else {
-								xAtual = this.ranhuraQuadU.getComprimento();
-								xProximo = this.ranhuraQuadU.getPosicaoY();
-								vaiVolta = true;
-							}
-							
-							if(fundo){
-								if(yAtual+this.ws.getCondicoesUsinagem().getAe()>yLimiteDireita){	
-									aeUtilizado = yLimiteDireita - yAtual;
-									terminouXY = true;
+					if(p==0){
+						p++;
+						xAtual = xAtual + xParaDescerAp;
+						yAtual = this.ranhuraQuadU.getPosicaoY();
+						yProximo = this.ranhuraQuadU.getComprimento();
+						vaiVolta = false;
+						
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+						desbaste.add(verticalTemp);
+						LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xAtual,yProximo, zAtual));
+						desbaste.add(horizontalTemp);
+						pontoInicial = new Point3d(xAtual, yProximo, zAtual);
+					}
+					else{
+						while (!terminouXY) {
+							if(i==0){
+
+								if (vaiVolta) {
+									xAtual = this.ranhuraQuadU.getPosicaoY();
+									xProximo = this.ranhuraQuadU.getComprimento();
+									vaiVolta = false;
+								} else {
+									xAtual = this.ranhuraQuadU.getComprimento();
+									xProximo = this.ranhuraQuadU.getPosicaoY();
+									vaiVolta = true;
 								}
-								else{
-									aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
-									if(yAtual+this.ws.getCondicoesUsinagem().getAe()==yLimiteDireita){	
+
+								if(fundo){
+									if(yAtual+this.ws.getCondicoesUsinagem().getAe()>yLimiteDireita){	
+										aeUtilizado = yLimiteDireita - yAtual;
 										terminouXY = true;
 									}
-								}
-								yAtual = yAtual + aeUtilizado;
-								}
-							else{
-								if(yAtual-this.ws.getCondicoesUsinagem().getAe()<yLimiteEsquerda){
-									aeUtilizado = yAtual - yLimiteEsquerda;
-									terminouXY = true;
+									else{
+										aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
+										if(yAtual+this.ws.getCondicoesUsinagem().getAe()==yLimiteDireita){	
+											terminouXY = true;
+										}
+									}
+									yAtual = yAtual + aeUtilizado;
 								}
 								else{
-									aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
-									if(yAtual-this.ws.getCondicoesUsinagem().getAe()==yLimiteEsquerda)	
+									if(yAtual-this.ws.getCondicoesUsinagem().getAe()<yLimiteEsquerda){
+										aeUtilizado = yAtual - yLimiteEsquerda;
 										terminouXY = true;
+									}
+									else{
+										aeUtilizado = this.ws.getCondicoesUsinagem().getAe();
+										if(yAtual-this.ws.getCondicoesUsinagem().getAe()==yLimiteEsquerda)	
+											terminouXY = true;
+									}
+									yAtual = yAtual-aeUtilizado;
 								}
-								yAtual = yAtual-aeUtilizado;
-							}
-						}
-						else{
-							if(fundo){
-								yAtual = yAtual - yParaDescerAp;
-								fundo = false;
 							}
 							else{
-								yAtual = yAtual + yParaDescerAp;
-								fundo = true;
+								if(fundo){
+									yAtual = yAtual - yParaDescerAp;
+									fundo = false;
+								}
+								else{
+									yAtual = yAtual + yParaDescerAp;
+									fundo = true;
+								}
+								i=0;
 							}
-							i=0;
-						}
-							
+
 							pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 							LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 							desbaste.add(verticalTemp);
@@ -306,6 +340,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 							desbaste.add(horizontalTemp);
 							pontoInicial = new Point3d(xProximo, yAtual, zAtual);						
 						}
+					}
 				}
 			}
 		}

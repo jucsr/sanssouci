@@ -476,12 +476,26 @@ public class GCodeGenerator {
 			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
 			    			lineNumber = lineNumber + 10;
 			    		}
+			    		
+			    		double xAux = desbaste.get(0).getInitialPoint().getX();
+		    			double yAux = desbaste.get(0).getInitialPoint().getY();
+		    			double zAux = desbaste.get(0).getInitialPoint().getZ();
+		    			
+		    			
+		    			if(desbaste.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+		    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+		    			else{
+		    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
 
 			    		for(int j = 0; j < desbaste.size(); j++)
 			    		{
-			    			double xAux = desbaste.get(j).getFinalPoint().getX();
-			    			double yAux = desbaste.get(j).getFinalPoint().getY();
-			    			double zAux = desbaste.get(j).getFinalPoint().getZ();
+			    			xAux = desbaste.get(j).getFinalPoint().getX();
+			    			yAux = desbaste.get(j).getFinalPoint().getY();
+			    			zAux = desbaste.get(j).getFinalPoint().getZ();
 
 			    			if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
 			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
@@ -496,8 +510,8 @@ public class GCodeGenerator {
 /********************************************************ACABAMENTO***************************************************/	
 			    	if(wsTmp.getOperation().getClass() == BottomAndSideFinishMilling.class){
 				    	ArrayList<LinearPath> acabamento = ranhuraQuadU.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU();
-			    		System.out.println("ahsyudgagudu");
-			    		int GAux = 0;
+			    		
+				    	int GAux = 0;
 			    		if (rotationDirection == 1){GAux = 3;}
 			    		else if (rotationDirection == 2){GAux = 4;}
 			    		else if (rotationDirection == 3){GAux = 5;}
@@ -516,12 +530,26 @@ public class GCodeGenerator {
 			    			lineNumber = lineNumber + 10;
 			    		}
 
+			    		double xAux = acabamento.get(0).getInitialPoint().getX();
+		    			double yAux = acabamento.get(0).getInitialPoint().getY();
+		    			double zAux = acabamento.get(0).getInitialPoint().getZ();
+		    			
+		    			
+		    			if(acabamento.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+		    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+		    			else{
+		    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+			    		
 			    		for(int j = 0; j < acabamento.size(); j++)
 			    		{
 
-			    			double xAux = acabamento.get(j).getFinalPoint().getX();
-			    			double yAux = acabamento.get(j).getFinalPoint().getY();
-			    			double zAux = acabamento.get(j).getFinalPoint().getZ();
+			    			xAux = acabamento.get(j).getFinalPoint().getX();
+			    			yAux = acabamento.get(j).getFinalPoint().getY();
+			    			zAux = acabamento.get(j).getFinalPoint().getZ();
 
 
 			    			//********** Testar se é fast(G0) ou slow(G1)

@@ -9,6 +9,7 @@ import br.UFSC.GRIMA.capp.DeterminarMovimentacao;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.*;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.StepNcProject;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
@@ -446,134 +447,100 @@ public class GCodeGenerator {
 			    }
 			    
 			    if(wsTmp.getFeature().getClass().equals(RanhuraPerfilQuadradoU.class)){
-			    	// Criar determinador de movimentacao
-			    	
-			    	RanhuraPerfilQuadradoU ranhuraPQUTmp = (RanhuraPerfilQuadradoU)wsTmp.getFeature();
-			    	int GAux = 0;
-			    	
-			    	this.feedRate = wsTmp.getCondicoesUsinagem().getVf();
-					this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
-					this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
-					
-					if (rotationDirection == 1){GAux = 3;}
-					else if (rotationDirection == 2){GAux = 4;}
-					else if (rotationDirection == 3){GAux = 5;}
-					
-					GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
-					lineNumber = lineNumber + 10;
-					
-					GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
-					lineNumber = lineNumber + 10;
-					
-					GCode = GCode +"N"+lineNumber+ " M6" + "\n";
-					lineNumber = lineNumber + 10;
-					
-					if (wsTmp.getOperation().isCoolant()){
-						GCode = GCode +"N" + lineNumber + " M8" + "\n";
-						lineNumber = lineNumber + 10;
-					}
-					
-					if(wsTmp.getFerramenta().getClass().equals(BullnoseEndMill.class))
-					{
-						System.out.println("A ferramenta eh um BullNose");
-						DeterminarMovimentacao dm = new DeterminarMovimentacao();
-						ArrayList<ArrayList<Path>> arrayArrayPaths = dm.getTrajetoriasAcabamentoRPQU(wsTmp);
-						
-						ArrayList<Path> arrayEsqInf = arrayArrayPaths.get(0);
-						
-						if(((Ranhura)wsTmp.getFeature()).getEixo() == Ranhura.HORIZONTAL)
-						{
-							GCode = GCode +"N" + lineNumber + " G19" + "\n";	
-						}
-						 
-						for(int j = 0; j < arrayEsqInf.size(); j++)
-						{
-						
-							double xAux = arrayEsqInf.get(j).getFinalPoint().getX();
-							double yAux = arrayEsqInf.get(j).getFinalPoint().getY();
-							double zAux = arrayEsqInf.get(j).getFinalPoint().getZ();
-							
-							if (arrayEsqInf.get(j).getClass().equals(LinearPath.class) ){
-								int tipoDeMovimento = 0;
-								
-								if(((LinearPath)arrayEsqInf.get(j)).getTipoDeMovimento() == 0){tipoDeMovimento = 1;}
-								else if (((LinearPath)arrayEsqInf.get(j)).getTipoDeMovimento() ==1){tipoDeMovimento =0;}
-								
-								GCode = GCode +"N" + lineNumber + " G"+tipoDeMovimento + " X"+xAux+ " Y" +yAux + " Z"+(zAux) + "\n";
-								
-								lineNumber = lineNumber + 10;
-							}
-							
-							if (arrayEsqInf.get(j).getClass().equals(CircularPath.class) ){
-							
-								double rAux = ((CircularPath)arrayEsqInf.get(j)).getRadius();
-								int senseCP = ((CircularPath)arrayEsqInf.get(j)).getSense();
-								int senseRot = 0;
-								if(((CircularPath)arrayEsqInf.get(j)).getSense() == 0){
-									senseRot = 2;
-								}
-								else if(((CircularPath)arrayEsqInf.get(j)).getSense() == 1){
-									senseRot = 3;
-								}
-																		
-								GCode = GCode + "N" + lineNumber + " G"+senseRot + " X"+xAux + " Y"+yAux+ " Z"+zAux +
-										" CR="+rAux+
-								
-								
-								"\n";
-								
-								lineNumber = lineNumber + 10;
-							}
-														
-						}
-						
-						if(((Ranhura)wsTmp.getFeature()).getEixo() == Ranhura.HORIZONTAL)
-						{
-							GCode = GCode +"N" + lineNumber + " G17" + "\n";	
-						}
-						
-						
-						
-					}
-					
-					else
-					{
 
-						System.out.println("A ferramenta nao eh um BullNose");
-						DeterminarMovimentacao dm = new DeterminarMovimentacao();
-						
-						ArrayList<ArrayList<Path>> arrayArrayPaths = dm.getTrajetoriasRanhuraPerfilQuadradoU(wsTmp);
-						System.out.println("Quantidade de Trajetorias possiveis: " + arrayArrayPaths.size());
-						ArrayList<Path> arrayEsqInf = arrayArrayPaths.get(0);
-						System.out.println("Quantidade de Movimentacoes: " + arrayEsqInf.size());
-						
-						for(int j = 0; j < arrayEsqInf.size(); j++)
-						{
-							double xAux = arrayEsqInf.get(j).getFinalPoint().getX();
-							double yAux = arrayEsqInf.get(j).getFinalPoint().getY();
-							double zAux = arrayEsqInf.get(j).getFinalPoint().getZ();
-							
-							if (arrayEsqInf.get(j).getClass().equals(LinearPath.class) ){
-								int tipoDeMovimento = 0;
-								
-								if(((LinearPath)arrayEsqInf.get(j)).getTipoDeMovimento() == 0){tipoDeMovimento = 1;}
-								else if (((LinearPath)arrayEsqInf.get(j)).getTipoDeMovimento() ==1){tipoDeMovimento =0;}
-								
-								GCode = GCode +"N" + lineNumber + " G"+tipoDeMovimento + " X"+xAux+ " Y" +yAux + " Z"+(zAux) + "\n";
-								
-								lineNumber = lineNumber + 10;
-							}
-							
-						}
-						
-						
-					}
-					   
-					   if (wsTmp.getOperation().isCoolant()){
-							GCode = GCode +"N" + lineNumber + " M9" + "\n";
-							lineNumber = lineNumber + 10;
-						}
-										
+			    	MovimentacaoRanhuraPerfilQuadradoU ranhuraQuadU = new MovimentacaoRanhuraPerfilQuadradoU(wsTmp);
+
+
+			    	this.feedRate = wsTmp.getCondicoesUsinagem().getVf();
+			    	this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
+			    	this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
+
+/********************************************************DESBASTE***************************************************/	
+			    	if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
+				    	ArrayList<LinearPath> desbaste = ranhuraQuadU.getMovimentacaoDesbasteRanhuraPerfilQuadradoU();
+			    		int GAux = 0;
+			    		if (rotationDirection == 1){GAux = 3;}
+			    		else if (rotationDirection == 2){GAux = 4;}
+			    		else if (rotationDirection == 3){GAux = 5;}
+
+			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		if (wsTmp.getOperation().isCoolant()){
+			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+			    			lineNumber = lineNumber + 10;
+			    		}
+
+			    		for(int j = 0; j < desbaste.size(); j++)
+			    		{
+			    			double xAux = desbaste.get(j).getFinalPoint().getX();
+			    			double yAux = desbaste.get(j).getFinalPoint().getY();
+			    			double zAux = desbaste.get(j).getFinalPoint().getZ();
+
+			    			if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    			else{
+			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    		}
+			    	}
+/********************************************************ACABAMENTO***************************************************/	
+			    	if(wsTmp.getOperation().getClass() == BottomAndSideFinishMilling.class){
+				    	ArrayList<LinearPath> acabamento = ranhuraQuadU.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU();
+			    		System.out.println("ahsyudgagudu");
+			    		int GAux = 0;
+			    		if (rotationDirection == 1){GAux = 3;}
+			    		else if (rotationDirection == 2){GAux = 4;}
+			    		else if (rotationDirection == 3){GAux = 5;}
+
+			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		if (wsTmp.getOperation().isCoolant()){
+			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+			    			lineNumber = lineNumber + 10;
+			    		}
+
+			    		for(int j = 0; j < acabamento.size(); j++)
+			    		{
+
+			    			double xAux = acabamento.get(j).getFinalPoint().getX();
+			    			double yAux = acabamento.get(j).getFinalPoint().getY();
+			    			double zAux = acabamento.get(j).getFinalPoint().getZ();
+
+
+			    			//********** Testar se é fast(G0) ou slow(G1)
+			    			if(acabamento.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    			else{
+			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}					
+			    		}
+			    	}
+/*************************************************************************************************************************************/
+
+			    	if (wsTmp.getOperation().isCoolant()){
+			    		GCode = GCode +"N" + lineNumber + " M9" + "\n";
+			    		lineNumber = lineNumber + 10;
+			    	}
 			    }
 			    
 			    if (wsTmp.getFeature().getClass().equals(Ranhura.class))

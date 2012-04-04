@@ -392,12 +392,14 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		double y = R*Math.cos(alfa);
 		double tempFinal=0;
 		double tempAp=0;
+		double xTemp2=0;
 		double tempZFinal1=0;
 		int contadorAp=0;
 		int contador=0;
 		int n=0;
 		int i=0;
 		int p=0;
+		int variavel = 0;
 		
 		boolean terminouTudo = false;
 		boolean terminouX = true;
@@ -410,7 +412,11 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		Point3d pontoInicial;
 		Point3d pontoFinal;
 				
-		zLimite = profundidade+R*(Math.sin(alfa)-1);
+				
+		if(alfa == Math.PI/2)
+			zLimite = profundidade-R+r;
+		else
+			zLimite = profundidade+R*(Math.sin(alfa)-1)+r-(r*Math.cos(alfa));
 		
 		if(zLimite != zAtual){
 			if(this.ranhuraQuadU.getAngulo() == 90)
@@ -436,7 +442,11 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 				if(p==0){
 					contador++;
 					p++;
-					zAtual = zAtual - (r-(r*Math.cos(alfa)));
+					if(alfa == Math.PI/2)
+						zAtual = zAtual - r;
+					else
+						zAtual = zAtual - (r-(r*Math.cos(alfa)));
+					
 					tempZFinal1 = (r-(r*Math.cos(alfa)));
 
 					yAtual   = 0;
@@ -539,15 +549,20 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					
 					z = profundidade + zAtual;
 					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2){
-						andarX = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
+						andarX = Math.abs(Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado);
 					}
 					else{
 						ptoFinal = xTemp + R*Math.cos(alfa); 
 						andarX = ptoFinal - xAtual;
 						temp1 = andarX;
 					}
-					
+					if(variavel == 0){
+						andarX = 0;
+						xTemp2 = xAtual - xTemp;
+					}
+					variavel++;
 					xAtual = xAtual + andarX;
+					
 					
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
@@ -611,12 +626,15 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					
 					z = profundidade + zAtual;
 					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2){
-						andarX = Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado;
+						andarX = Math.abs(Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado);
 					}
 					else{
 						andarX = temp1;
 					}
-					
+					variavel--;
+					if(variavel == 0){
+						andarX = xTemp2;
+					}
 					xAtual = xAtual + andarX;
 					
 					if(contadorAp == 0){

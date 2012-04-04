@@ -156,7 +156,6 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 
 					while (!terminouXY) {
 						if(i==0){
-
 							if (vaiVolta) {
 								yAtual = this.ranhuraQuadU.getPosicaoY();
 								yProximo = this.ranhuraQuadU.getComprimento();
@@ -166,7 +165,6 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 								yProximo = this.ranhuraQuadU.getPosicaoY();
 								vaiVolta = true;
 							}
-
 							if(fundo){
 								if(xAtual+this.ws.getCondicoesUsinagem().getAe()>xLimiteDireita){	
 									aeUtilizado = xLimiteDireita - xAtual;
@@ -413,11 +411,12 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		Point3d pontoFinal;
 				
 				
-		if(alfa == Math.PI/2)
+		if(alfa == 0)
 			zLimite = profundidade-R+r;
 		else
 			zLimite = profundidade+R*(Math.sin(alfa)-1)+r-(r*Math.cos(alfa));
 		
+		System.out.println(zLimite);
 		if(zLimite != zAtual){
 			if(this.ranhuraQuadU.getAngulo() == 90)
 				temp = 0;

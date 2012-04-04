@@ -101,8 +101,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					}
 				}
 				zAtual = zAtual - apUtilizado;
-					
-				
+								
 				if(zInicioDaCurva >= -zAtual){
 					if(this.ranhuraQuadU.getAngulo() == 90){
 						xParaDescerAp = 0;
@@ -143,17 +142,11 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 					p++;
 					xAtual = xAtual + xParaDescerAp;
 					yAtual = this.ranhuraQuadU.getPosicaoY();
-					yProximo = this.ranhuraQuadU.getComprimento();
-					vaiVolta = false;
 					
 					pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 					desbaste.add(verticalTemp);
-					LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xAtual,yProximo, zAtual));
-					desbaste.add(horizontalTemp);
-					pontoInicial = new Point3d(xAtual, yProximo, zAtual);
 				}
-
 					while (!terminouXY) {
 						if(i==0){
 							if (vaiVolta) {
@@ -202,7 +195,6 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 							}
 							i=0;
 						}
-
 						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 						LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 						desbaste.add(verticalTemp);
@@ -210,7 +202,6 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 						desbaste.add(horizontalTemp);
 						pontoInicial = new Point3d(xAtual, yProximo, zAtual);						
 					}
-				
 			}
 		}
 

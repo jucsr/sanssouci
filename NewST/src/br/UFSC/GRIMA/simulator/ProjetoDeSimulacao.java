@@ -17,7 +17,7 @@ public class ProjetoDeSimulacao {
 	
 	private Rectangle3D block;
 	
-	public final static int PLANODETROCA = 200;
+	public final static int PLANODETROCA = 250;
 
 	public static int PLANODEMOVIMENTO = 50;
 	

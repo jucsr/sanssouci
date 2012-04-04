@@ -44,4 +44,13 @@ public class OperationVectorTest
 		
 		System.out.println("shortest distance = " + OperationsVector.calculateShortestDistanceBeetweenArcAndLine(line, arc));
 	}
+	@Test
+	public void calculateCoordinatesOfPointInshortestDistanceBeetweenLineAndPoint()
+	{
+		Point3d p1 = new Point3d(30, 20, 0);
+		Point3d p2 = new Point3d(10, 10, 0);
+		Point3d p0 = new Point3d(0, 0, 0);
+//		OperationsVector.distanceToSegment(p1, p2, p0);
+		System.out.println("distance = " + OperationsVector.distanceToSegment(p1, p2, p0));
+	}
 }

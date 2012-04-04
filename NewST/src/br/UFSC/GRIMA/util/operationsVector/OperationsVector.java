@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import Jama.Matrix;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -401,5 +400,126 @@ public class OperationsVector
 			menorDistancia.add(menorDistanceTmp);
 		}
 		return menorDistancia;
+	}
+	/**
+	 * 
+	 * @param matrizDePontos
+	 * @param point
+	 * @return
+	 */
+	public static double [] [] calculateDistanceBeetweenAPointAndAPointsMatrix( Point3d[][] matrizDePontos, Point3d point)
+	{
+		double [][] distance = new double[matrizDePontos.length][];
+		double distanciaTmp = 0;
+		for(int i = 0; i < matrizDePontos.length; i++)
+		{
+			for(int j = 0; j < matrizDePontos[i].length; j++)
+			{
+				Point3d pointTmp = matrizDePontos[i][j];
+				distanciaTmp = Math.sqrt((point.x - pointTmp.x) * (point.x - pointTmp.x) + (point.y - pointTmp.y) * (point.y - pointTmp.y));
+				distance [i][j] = distanciaTmp;
+			}
+		}
+		return distance;
+	}
+	public static double distanceToSegment(double x3, double y3, double x1, double y1, double x2, double y2) {
+		final Point3d p3 = new Point3d(x3, y3, 0);
+		final Point3d p1 = new Point3d(x1, y1, 0);
+		final Point3d p2 = new Point3d(x2, y2, 0);
+		return distanceToSegment(p1, p2, p3);
+	    }
+
+	    /**
+	     * Returns the distance of p3 to the segment defined by p1,p2;
+	     * 
+	     * @param p1   First point of the segment
+	     * @param p2   Second point of the segment
+	     * @param p3    Point to which we want to know the distance of the segment defined by p1,p2
+	     * @return The distance of p3 to the segment defined by p1,p2
+	     */
+	public static double distanceToSegment(Point3d p1, Point3d p2, Point3d p3)
+	{
+		final double xDelta = p2.getX() - p1.getX();
+		final double yDelta = p2.getY() - p1.getY();
+
+		if ((xDelta == 0) && (yDelta == 0)) {
+			throw new IllegalArgumentException(
+					"p1 and p2 cannot be the same point");
+		}
+
+		final double u = ((p3.getX() - p1.getX()) * xDelta + (p3.getY() - p1.getY()) * yDelta)	/ (xDelta * xDelta + yDelta * yDelta);
+
+		final Point3d closestPoint;
+		if (u < 0) 
+		{
+			closestPoint = p1;
+		} else if (u > 1) 
+		{
+			closestPoint = p2;
+		} else 
+		{
+			closestPoint = new Point3d(p1.getX() + u * xDelta, p1.getY() + u * yDelta, 0);
+		}
+		System.out.println("closest point : " + closestPoint);
+		return closestPoint.distance(p3);
+	}
+	public static Point3d pointInDistanceToSegment(Point3d p1, Point3d p2, Point3d p3)
+	{
+		final double xDelta = p2.getX() - p1.getX();
+		final double yDelta = p2.getY() - p1.getY();
+
+		if ((xDelta == 0) && (yDelta == 0)) {
+			throw new IllegalArgumentException(
+					"p1 and p2 cannot be the same point");
+		}
+
+		final double u = ((p3.getX() - p1.getX()) * xDelta + (p3.getY() - p1.getY()) * yDelta)	/ (xDelta * xDelta + yDelta * yDelta);
+
+		final Point3d closestPoint;
+		if (u < 0) 
+		{
+			closestPoint = p1;
+		} else if (u > 1) 
+		{
+			closestPoint = p2;
+		} else 
+		{
+			closestPoint = new Point3d(p1.getX() + u * xDelta, p1.getY() + u * yDelta, 0);
+		}
+		return closestPoint;
+	}
+	/**
+	 * 
+	 * @param line
+	 * @param ponto
+	 * @return
+	 */
+	public static Point3d pointInDistanceToSegment(LimitedLine line, Point3d ponto)
+	{
+		Point3d p1 = line.getFp();
+		Point3d p2 = line.getSp();
+		
+		final double xDelta = p2.getX() - p1.getX();
+		final double yDelta = p2.getY() - p1.getY();
+
+		if ((xDelta == 0) && (yDelta == 0)) {
+			throw new IllegalArgumentException(
+					"p1 and p2 cannot be the same point");
+		}
+
+		final double u = ((ponto.getX() - p1.getX()) * xDelta + (ponto.getY() - p1.getY()) * yDelta)	/ (xDelta * xDelta + yDelta * yDelta);
+
+		final Point3d closestPoint;
+		if (u < 0) 
+		{
+			closestPoint = p1;
+		} else if (u > 1) 
+		{
+			closestPoint = p2;
+		} else 
+		{
+			closestPoint = new Point3d(p1.getX() + u * xDelta, p1.getY() + u * yDelta, 0);
+		}
+		return closestPoint;
 	}
 }

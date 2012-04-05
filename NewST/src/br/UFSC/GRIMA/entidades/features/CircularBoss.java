@@ -2,6 +2,7 @@ package br.UFSC.GRIMA.entidades.features;
 
 import java.util.ArrayList;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
@@ -61,5 +62,17 @@ public class CircularBoss extends Boss
 
 	public void setCentre(Point3d centre) {
 		this.centre = centre;
+	}
+
+	public DefaultMutableTreeNode getNodo() {
+		DefaultMutableTreeNode nodo = new DefaultMutableTreeNode("Circular Boss -" + this.getIndice());
+		nodo.add(new DefaultMutableTreeNode("Diameter 1 : " + this.getDiametro1()));
+		nodo.add(new DefaultMutableTreeNode("Diameter 2 : " + this.getDiametro2()));
+		nodo.add(new DefaultMutableTreeNode("Posicao X, Y, Z  : " + this.getPosition().getCoordinates()));
+		nodo.add(new DefaultMutableTreeNode("Altura : " + this.getAltura()));
+		nodo.add(new DefaultMutableTreeNode("Rugosidade : " + this.getRugosidade()));
+		nodo.add(new DefaultMutableTreeNode("Tolerancia : " + this.getTolerancia()));
+
+		return nodo;
 	}
 }

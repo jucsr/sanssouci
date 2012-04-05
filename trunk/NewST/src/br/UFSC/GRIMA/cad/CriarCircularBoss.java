@@ -88,7 +88,6 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 		double diametro2 = 0.0;
 		double raio1 = 0.0;
 		double raio2 = 0.0;
-		// double comprimento = 0.0;
 		double alturaBoss = 0.0; // em relacao a base da cavidade
 		double posicaoX = 0.0;
 		double posicaoY = 0.0;
@@ -369,23 +368,23 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 			double X = 0, Y = 0, Z = 0;
 			switch (face.verticeAtivado) {
 			case 0:
-				X = posicaoX;
-				Y = posicaoY;
+				X = posicaoX + cavidade.getPosicaoX();
+				Y = posicaoY + cavidade.getPosicaoY();
 				Z = cavidade.getProfundidade() - alturaBoss;
 				break;
 			case 1:
-				X = posicaoY;
-				Y = (face.getLargura() - cavidade.getPosicaoX() - cavidade.getLargura()/2) + (cavidade.getLargura() - posicaoX);
+				X = posicaoX;
+				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
 				Z = cavidade.getProfundidade() - alturaBoss;
 				break;
 			case 2:
-				X = (face.getComprimento() - cavidade.getPosicaoX() - cavidade.getComprimento()/2) + (cavidade.getComprimento() - posicaoX);
-				Y = (face.getLargura() - cavidade.getPosicaoY() - cavidade.getLargura()/2) + (cavidade.getLargura() - posicaoY);
+				X = (face.getComprimento() - cavidade.getPosicaoX() - posicaoX);
+				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
 				Z = cavidade.getProfundidade() - alturaBoss;
 				break;
 			case 3:
-				X = (face.getComprimento() - cavidade.getPosicaoY() - cavidade.getComprimento()/2) + (cavidade.getComprimento() - posicaoY);
-				Y = posicaoX;
+				X = (-face.getComprimento() + cavidade.getPosicaoX() + posicaoX);
+				Y = posicaoY;
 				Z = cavidade.getProfundidade() - alturaBoss;
 				break;
 			default:

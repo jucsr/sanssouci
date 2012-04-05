@@ -2,6 +2,8 @@ package br.UFSC.GRIMA.entidades.features;
 
 import java.util.ArrayList;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
@@ -77,5 +79,9 @@ public class RectangularBoss extends Boss
 
 	public void setGeometricalElements(ArrayList<LimitedElement> geometricalElements) {
 		this.geometricalElements = geometricalElements;
+	}
+
+	public DefaultMutableTreeNode getNodo() {
+		return null;
 	}
 }

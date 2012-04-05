@@ -1438,6 +1438,13 @@ public class Face implements Serializable{
 					break;
 				case Feature.CAVIDADE_FUNDO_ARREDONDADO:
 					tmp = ((CavidadeFundoArredondado)ftmp).getNodo();
+				case Feature.BOSS:
+					if(ftmp.getClass() == CircularBoss.class)
+						tmp = ((CircularBoss)ftmp).getNodo();
+					else if(ftmp.getClass() == RectangularBoss.class) {
+						tmp = ((RectangularBoss)ftmp).getNodo();
+					}
+					break;
 				default:
 					break;
 			}

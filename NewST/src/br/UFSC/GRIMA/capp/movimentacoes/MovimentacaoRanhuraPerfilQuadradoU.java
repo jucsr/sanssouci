@@ -49,7 +49,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		double yLimiteEsquerda, yLimiteDireita;
 		double yTemp=0;
 		double andarX;
-		
+		 
 		boolean terminouZLimite = false;
 		boolean terminouXY = false;
 		boolean vaiVolta = true;

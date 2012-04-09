@@ -15,7 +15,6 @@ import javax.swing.text.StyleContext;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.CreateCircularBossFrame;
-import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
@@ -72,6 +71,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 		this.setLocation(posX, posY);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		Object origem = event.getSource();
 		if (origem == okButton) {
@@ -145,7 +145,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 					JOptionPane
 							.showMessageDialog(
 									null,
-									"Digite um Número positivo para o deslocamento em Y",
+									"Digite um Numero positivo para o deslocamento em Y",
 									"Erro no deslocamento em Y",
 									JOptionPane.OK_CANCEL_OPTION);
 				}
@@ -153,8 +153,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"Digite um Número positivo para o deslocamento em Y"
-										+ "\n               Não digite letras nem simbolos",
+								"Digite um Numero positivo para o deslocamento em Y"
+										+ "\n               Nao digite letras nem simbolos",
 								"Erro no deslocamento em Y",
 								JOptionPane.OK_CANCEL_OPTION);
 				ok = false;
@@ -264,8 +264,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						JOptionPane
 								.showMessageDialog(
 										null,
-										"A br.UFSC.GRIMA.feature não esta dentro dos limites da face"
-												+ "\n               (revise a L2 ou a posição Y)",
+										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+												+ "\n               (revise a L2 ou a posicaoo Y)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
@@ -283,8 +283,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						JOptionPane
 								.showMessageDialog(
 										null,
-										"A br.UFSC.GRIMA.feature não esta dentro dos limites da face"
-												+ "\n               (revise a L2 ou a posi��o Y)",
+										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+												+ "\n               (revise a L2 ou a posicaoo Y)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
@@ -300,8 +300,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"Digite um Número positivo para a largura da cavidade"
-										+ "\n               Não digite letras nem simbolos",
+								"Digite um Numero positivo para a largura da cavidade"
+										+ "\n               Nao digite letras nem simbolos",
 								"Erro na largura", JOptionPane.OK_CANCEL_OPTION);
 				ok = false;
 			}
@@ -401,14 +401,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 			novoCircularBoss.setRugosidade(rugosidade*0.001);
 			
 			if (this.face.validarFeature(novoCircularBoss)) {
-//				try {
-//					ProjectManager.getHoleProject().addHoleWorkingStep("Hole" + holeIndex++, 0.01, X, Y, Z);
-//				} catch (SdaiException e) {
-//					e.printStackTrace();
-//				} catch (MissingDataException e) {
-//					e.printStackTrace();
-//				}
-//				
+				
 				
 				Point3d coordinates = null;
 				ArrayList<Double> axis = null, refDirection = null;

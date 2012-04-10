@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.entidades.features;
 
+import java.awt.geom.RoundRectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -7,8 +8,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Point3d;
 
 import jsdai.SCombined_schema.EClosed_pocket;
+import br.UFSC.GRIMA.cad.JanelaPrincipal;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
-import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
@@ -28,6 +29,7 @@ public class Cavidade extends Feature implements Serializable {
 	private transient EClosed_pocket eClosed_pocket;
 	
 	private boolean passante = false;
+	private int [] indices = {0, 0, 0, 0, 0, 0, 0};
 	
 	public Cavidade() {
 		super(Feature.CAVIDADE);
@@ -87,7 +89,12 @@ public class Cavidade extends Feature implements Serializable {
 		this.createGeometricalElements();
 
 	}
-
+	public void addBoss(Boss boss){
+		indices[boss.getTipo()]++;
+		boss.setIndice(indices[boss.getTipo()]);
+		this.itsBoss.add(boss);
+		JanelaPrincipal.setDoneCAPP(false);
+	}
 	public DefaultMutableTreeNode getNodo() {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Closed Pocket -"
 				+ this.getIndice());
@@ -107,7 +114,21 @@ public class Cavidade extends Feature implements Serializable {
 				+ this.getPosicaoZ()));
 		root.add(new DefaultMutableTreeNode("Tolerance = " + this.getTolerancia()));
 		root.add(new DefaultMutableTreeNode("Roughness = " + this.getRugosidade()));
-
+		
+		DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
+		root.add(bossNode);
+		
+		for(int i = 0; i < this.itsBoss.size(); i++)
+		{
+			if(this.itsBoss.get(i).getClass() == CircularBoss.class)
+			{
+				CircularBoss circular = (CircularBoss)this.itsBoss.get(i);
+				bossNode.add(circular.getNode());
+			} else if(this.itsBoss.get(i).getClass() == RectangularBoss.class)
+			{
+				
+			}
+		}
 		this.getNodoWorkingSteps(root);
 		
 		return root;
@@ -224,5 +245,17 @@ public class Cavidade extends Feature implements Serializable {
 		this.geometricalElements.add(new LimitedLine(new Point3d(this.X + this.raio, this.Y + this.largura, this.Z), new Point3d(this.X + this.comprimento - this.raio, this.Y + this.largura, this.Z)));
 		this.geometricalElements.add(new LimitedLine(new Point3d(this.X + this.comprimento, this.Y + this.largura - this.raio, this.Z), new Point3d(this.X + this.comprimento, this.Y + this.raio, this.Z)));
 		this.geometricalElements.add(new LimitedLine(new Point3d(this.X + this.comprimento - this.raio, this.Y, this.Z), new Point3d(this.X + this.raio, this.Y, this.Z)));
+	}
+	/**
+	 * This method should check the bosses are within closed pocked, and they do not collide between they self and the closed pocket
+	 * @param boss
+	 * @return is valid condition
+	 */
+	public boolean validarBoss(Boss boss)
+	{
+		boolean isValid = false;
+		RoundRectangle2D cavidade = new RoundRectangle2D.Double(X, Y, comprimento, largura, raio, raio);
+		
+		return isValid;
 	}
 }

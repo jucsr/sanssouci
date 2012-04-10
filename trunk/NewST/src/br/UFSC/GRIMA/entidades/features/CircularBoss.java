@@ -64,8 +64,9 @@ public class CircularBoss extends Boss
 		this.centre = centre;
 	}
 
-	public DefaultMutableTreeNode getNodo() {
+	public DefaultMutableTreeNode getNode() {
 		DefaultMutableTreeNode nodo = new DefaultMutableTreeNode("Circular Boss -" + this.getIndice());
+		nodo.add(new DefaultMutableTreeNode("Nome: " + this.getNome()));
 		nodo.add(new DefaultMutableTreeNode("Diameter 1 : " + this.getDiametro1()));
 		nodo.add(new DefaultMutableTreeNode("Diameter 2 : " + this.getDiametro2()));
 		nodo.add(new DefaultMutableTreeNode("Posicao X, Y, Z  : " + this.getPosition().getCoordinates()));

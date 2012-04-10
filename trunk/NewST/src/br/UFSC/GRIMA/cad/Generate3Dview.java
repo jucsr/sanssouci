@@ -5,6 +5,7 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.Frame3D;
 import br.UFSC.GRIMA.entidades.features.Bloco;
+import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -23,6 +24,7 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.j3d.InvalidBooleanOperationException;
 import br.UFSC.GRIMA.j3d.J3D;
 import br.UFSC.GRIMA.operationSolids.CSGSolid;
@@ -389,6 +391,29 @@ public class Generate3Dview extends Frame3D
 							rawBlock = new CompoundSolid("", CompoundSolid.DIFFERENCE, rawBlock, pocket);
 						} catch (InvalidBooleanOperationException e) {
 							e.printStackTrace();
+						}
+						for(int k = 0; k < cavidadeTmp.getItsBoss().size(); k++)
+						{
+							Boss bossG = cavidadeTmp.getItsBoss().get(k);
+							if (bossG.getClass() == CircularBoss.class)
+							{
+								CircularBoss bossTmp = (CircularBoss) cavidadeTmp.getItsBoss().get(k);	
+								
+								OperationTaperHole boss = new OperationTaperHole("",  
+										(float) bossTmp.getAltura(), (float) bossTmp.getDiametro1(),(float) bossTmp.getDiametro2());
+								boss.translate( - faceTmp.getComprimento()/2 + bossTmp.X, 
+										faceTmp.getProfundidadeMaxima()/2- bossTmp.Z, 
+										faceTmp.getLargura()/2 - bossTmp.Y);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, boss);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
+							} else if(bossG.getClass() == RectangularBoss.class)
+							{
+								
+							}
 						}
 						break;
 					case Feature.CAVIDADE_FUNDO_ARREDONDADO:

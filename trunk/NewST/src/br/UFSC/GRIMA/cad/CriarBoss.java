@@ -47,6 +47,7 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 				Cavidade cavidade = (Cavidade)this.feature;
 				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidade);
 				ccb.setVisible(true);
+				dispose();
 			} else if(feature.getClass() == Degrau.class){
 				
 			}

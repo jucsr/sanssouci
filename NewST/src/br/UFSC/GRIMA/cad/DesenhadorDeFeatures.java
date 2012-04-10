@@ -964,7 +964,8 @@ public class DesenhadorDeFeatures
 					largura2 = (int)Math.round(cb.getDiametro2() * zoom);
 					
 					g2d.setColor(new Color(0, 0, 255));
-					g2d.drawRect(posX, posY, comprimento, largura);
+					g2d.drawLine(posX, posY, comprimento, largura);
+					g2d.drawRect(posX, posY2, comprimento, largura2);
 					
 					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
@@ -989,6 +990,7 @@ public class DesenhadorDeFeatures
 					largura = (int)Math.round(cb.getAltura() * zoom);
 					g2d.setColor(new Color(0, 0, 255));
 					g2d.drawRect(posX, posY, comprimento, largura);
+					g2d.drawRect(posX2, posY, comprimento2, largura);
 					
 					p1X = p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX()) * zoom + origem.x) ;
 					
@@ -1014,6 +1016,7 @@ public class DesenhadorDeFeatures
 					
 					g2d.setColor(new Color(0, 0, 255));
 					g2d.drawRect(posX, posY, comprimento, largura);
+					g2d.drawRect(posX, posY2, comprimento, largura2);
 					
 					p1X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getAltura() - cb.getPosicaoZ() - 5) * zoom + origem.x);
 					p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoZ() + 5) * zoom + origem.x);
@@ -1034,12 +1037,13 @@ public class DesenhadorDeFeatures
 					posX2 = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.x);
 					posY = (int)Math.round((cb.getPosicaoZ()) * zoom + origem.y);
 					comprimento = (int)Math.round(cb.getDiametro1() * zoom);
-					comprimento = (int)Math.round(cb.getDiametro2() * zoom);
+					comprimento2 = (int)Math.round(cb.getDiametro2() * zoom);
 					largura = (int)Math.round(cb.getAltura() * zoom);
 		
 					g2d.setColor(new Color(0, 0, 255));
 					g2d.drawRect(posX, posY, comprimento, largura);
-					
+					g2d.drawRect(posX2, posY, comprimento2, largura);
+
 					p1X = p2X = (int)Math.round((cb.getPosicaoX()) * zoom + origem.x);
 					p1Y = (int)Math.round((cb.getPosicaoZ() - 5) * zoom + origem.y);
 					p2Y = (int)Math.round((cb.getPosicaoZ() + cb.getAltura() + 5) * zoom + origem.y);

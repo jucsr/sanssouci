@@ -1440,7 +1440,7 @@ public class Face implements Serializable{
 					tmp = ((CavidadeFundoArredondado)ftmp).getNodo();
 				case Feature.BOSS:
 					if(ftmp.getClass() == CircularBoss.class)
-						tmp = ((CircularBoss)ftmp).getNodo();
+						tmp = ((CircularBoss)ftmp).getNode();
 					else if(ftmp.getClass() == RectangularBoss.class) {
 						tmp = ((RectangularBoss)ftmp).getNodo();
 					}
@@ -1526,7 +1526,11 @@ public class Face implements Serializable{
 			{
 				Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
 				if (rect2dTmp.contains(rect2d)){
-					
+					if(features.elementAt(i).getClass() == CircularBoss.class || features.elementAt(i).getClass() == RectangularBoss.class)
+					{
+						CircularBoss cb = (CircularBoss)features.elementAt(i);
+						System.out.println("POS Z = " + cb.Z);
+					}
 					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
 
 						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
@@ -1729,6 +1733,7 @@ public class Face implements Serializable{
 	}
 	public double getProfundidade(Feature f)
 	{
+		System.out.println("PROFUNDIDADE");
 		switch (f.tipo)
 		{
 			case Feature.FURO:
@@ -1814,6 +1819,27 @@ public class Face implements Serializable{
 				
 				Rectangle2D cavidadeFRectangle = new Rectangle2D.Double(x, y, comprimento, largura);
 				return cavidadeFRectangle;
+			case Feature.BOSS:
+				Boss boss = (Boss)feature;
+				if(boss.getClass() == CircularBoss.class)
+				{
+					CircularBoss c = (CircularBoss)boss;
+					x = c.X - c.getDiametro2() / 2;
+					y = c.Y - c.getDiametro2() / 2;
+					comprimento = c.getDiametro2();
+					largura = c.getDiametro2();
+					Rectangle2D rectangle = new Rectangle2D.Double(x, y, comprimento, largura);
+					return rectangle;
+				}else if(boss.getClass() == RectangularBoss.class)
+				{
+					RectangularBoss r = (RectangularBoss)boss;
+					x = r.X - r.getL1() / 2;
+					y = r.Y - r.getL2() / 2;
+					comprimento = r.getL1();
+					largura = r.getL2();
+					Rectangle2D rectangle = new Rectangle2D.Double(x, y, comprimento, largura);
+					return rectangle;
+				}
 			default:
 				break;
 		}

@@ -400,9 +400,9 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 			novoCircularBoss.setTolerancia(tolerancia*0.001);
 			novoCircularBoss.setRugosidade(rugosidade*0.001);
 			
-			if (this.face.validarFeature(novoCircularBoss)) {
+			/*if (this.face.validarFeature(novoCircularBoss)) */{
 				
-				
+//				System.out.println("validar BOSSS");
 				Point3d coordinates = null;
 				ArrayList<Double> axis = null, refDirection = null;
 				if (this.face.getTipo() == Face.XY)
@@ -486,9 +486,9 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
 				position.setName(novoCircularBoss.getNome() + " placement");
 				novoCircularBoss.setPosition(position);	
-				this.face.addFeature(novoCircularBoss);
+//				this.face.addFeature(novoCircularBoss);
 				
-				this.cavidade.getItsBoss().add(novoCircularBoss);
+				this.cavidade.addBoss(novoCircularBoss);
 				/** fazer isto em todas as janelas */
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
@@ -499,15 +499,16 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" + "Furo: " + novoCircularBoss.getNome() + " adicionado com sucesso!");
 				this.dispose();
-			} else {
-				JOptionPane.showMessageDialog(null, "Erro ao criar Furo",
-						"Feature invalida", JOptionPane.OK_CANCEL_OPTION);
-				String erro = "";
-				StyleContext sc = StyleContext.getDefaultStyleContext();
-				AttributeSet aSet = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
-				
-				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n Erro ao criar o Furo!");
-			}
+			} 
+//			else {
+//				JOptionPane.showMessageDialog(null, "Erro ao criar Furo",
+//						"Feature invalida", JOptionPane.OK_CANCEL_OPTION);
+//				String erro = "";
+//				StyleContext sc = StyleContext.getDefaultStyleContext();
+//				AttributeSet aSet = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
+//				
+//				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n Erro ao criar o Furo!");
+//			}
 
 		}
 		

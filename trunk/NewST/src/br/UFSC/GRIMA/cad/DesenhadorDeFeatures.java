@@ -7,7 +7,7 @@ public class DesenhadorDeFeatures
 	public double zoom = 1.0;
 	public boolean dFeaturesSecundarias = true;
 	boolean alteraComposite = true;
-	int posX, posY, comprimento, largura, p1X, p2X, p3X, p4X, p1Y, p2Y, p3Y, p4Y;
+	int posX, posX2, posY, posY2, comprimento, comprimento2, largura, largura2, p1X, p2X, p3X, p4X, p1Y, p2Y, p3Y, p4Y;
 	
 	public DesenhadorDeFeatures()
 	{
@@ -945,108 +945,117 @@ public class DesenhadorDeFeatures
 		}
 	}
 	
-//	public void desenharCircularBossOrtogonal(CircularBoss cb, Face faceDesenhada, int verticeAtivado, Point origem, int posicao, Graphics2D g2d){
-//
-//		float dash1[] = {5.0f, 2.5f};		//determina o padrao da linha tracejada
-//		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
-//				BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
-//		float dash2[] = {15.0f, 2.5f, 1f, 2.5f};
-//		switch(posicao)
-//		{
-//			case 0:
-//				if (this.dFeaturesSecundarias)
-//				{
-//					posX = (int)Math.round((cb.getPosicaoZ()) * zoom + origem.x);
-//					posY = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX() - cb.getRaio()) * zoom + origem.y));
-//					comprimento = (int)Math.round((cb.getProfundidade()) * zoom);
-//					largura = (int)Math.round((cb.getRaio() * 2 ) * zoom);
-//					
-//					g2d.setColor(new Color(0, 0, 255));
-//					g2d.drawRect(posX, posY, comprimento, largura);
-//					
-//					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
-//							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
-//					
-//					p1X = (int)Math.round(( - 5 + cb.getPosicaoZ()) * zoom + origem.x);
-//					p2X = (int)Math.round((cb.getPosicaoZ() + cb.getProfundidade() + 5) * zoom + origem.x);
-//					p1Y = p2Y =(int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX()) * zoom + origem.y);
-//					
-//					g2d.setColor(Color.RED);
-//					g2d.drawLine(p1X, p1Y, p2X , p2Y);
-//				}
-//				break;
-//			case 1:
-//				if (this.dFeaturesSecundarias)
-//				{
-//					posX = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() - cb.getRaio()) * zoom + origem.x);
-//					posY = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getProfundidade() - cb.getPosicaoZ()) * zoom + origem.y);
-//					comprimento = (int)Math.round(cb.getRaio() * 2 * zoom);
-//					largura = (int)Math.round(cb.getProfundidade() * zoom);
-//					g2d.setColor(new Color(0, 0, 255));
-//					g2d.drawRect(posX, posY, comprimento, largura);
-//					
-//					p1X = p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX()) * zoom + origem.x) ;
-//					
-//					p1Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoZ() + 5) * zoom + origem.y);
-//					p2Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getProfundidade() - cb.getPosicaoZ() - 5) * zoom + origem.y);
-//					
-//					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
-//							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
-//					
-//					g2d.setColor(Color.RED);
-//					g2d.drawLine(p1X, p1Y, p2X, p2Y);		
-//				}
-//				break;
-//			case 2:
-//				if (this.dFeaturesSecundarias)
-//				{
-//					posX = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getProfundidade() - cb.getPosicaoZ()) * zoom + origem.x);
-//					posY = (int)Math.round((cb.getPosicaoX() - cb.getRaio()) * zoom + origem.y);
-//					comprimento = (int)Math.round(cb.getProfundidade() * zoom);
-//					largura = (int)Math.round(cb.getRaio() * 2 * zoom);
-//					
-//					g2d.setColor(new Color(0, 0, 255));
-//					g2d.drawRect(posX, posY, comprimento, largura);
-//					
-//					p1X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getProfundidade() - cb.getPosicaoZ() - 5) * zoom + origem.x);
-//					p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoZ() + 5) * zoom + origem.x);
-//					p1Y = p2Y = (int)Math.round((cb.getPosicaoX()) * zoom + origem.y);
-//					
-//					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
-//							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
-//					
-//					g2d.setColor(Color.RED);
-//					g2d.drawLine(p1X, p1Y, p2X, p2Y);
-//				}
-//				
-//				break;
-//			case 3:
-//				if (this.dFeaturesSecundarias)
-//				{
-//					posX = (int)Math.round((cb.getPosicaoX() - cb.getRaio()) * zoom + origem.x);
-//					posY = (int)Math.round((cb.getPosicaoZ()) * zoom + origem.y);
-//					comprimento = (int)Math.round(cb.getRaio() * 2 * zoom);
-//					largura = (int)Math.round(cb.getProfundidade() * zoom);
-//					
-//					g2d.setColor(new Color(0, 0, 255));
-//					g2d.drawRect(posX, posY, comprimento, largura);
-//					
-//					p1X = p2X = (int)Math.round((cb.getPosicaoX()) * zoom + origem.x);
-//					p1Y = (int)Math.round((cb.getPosicaoZ() - 5) * zoom + origem.y);
-//					p2Y = (int)Math.round((cb.getPosicaoZ() + cb.getProfundidade() + 5) * zoom + origem.y);
-//					
-//					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
-//							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
-//					
-//					g2d.setColor(Color.RED);
-//					g2d.drawLine(p1X, p1Y, p2X, p2Y);
-//				}
-//				
-//				break;
-//			default:
-//				break;
-//		}
-//	
-//	}
+	public void desenharCircularBossOrtogonal(CircularBoss cb, Face faceDesenhada, int verticeAtivado, Point origem, int posicao, Graphics2D g2d){
+
+		float dash1[] = {5.0f, 2.5f};		//determina o padrao da linha tracejada
+		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
+				BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+		float dash2[] = {15.0f, 2.5f, 1f, 2.5f};
+		switch(posicao)
+		{
+			case 0:
+				if (this.dFeaturesSecundarias)
+				{
+					posX  = (int)Math.round((cb.getPosicaoZ()) * zoom + origem.x);
+					posY  = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.y));
+					posY2 = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.y));
+					comprimento = (int)Math.round((cb.getAltura()) * zoom);
+					largura = (int)Math.round(cb.getDiametro1() * zoom);
+					largura2 = (int)Math.round(cb.getDiametro2() * zoom);
+					
+					g2d.setColor(new Color(0, 0, 255));
+					g2d.drawRect(posX, posY, comprimento, largura);
+					
+					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
+							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
+					
+					p1X = (int)Math.round(( - 5 + cb.getPosicaoZ()) * zoom + origem.x);
+					p2X = (int)Math.round((cb.getPosicaoZ() + cb.getAltura() + 5) * zoom + origem.x);
+					p1Y = p2Y =(int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX()) * zoom + origem.y);
+					
+					g2d.setColor(Color.RED);
+					g2d.drawLine(p1X, p1Y, p2X , p2Y);
+				}
+				break;
+			case 1:
+				if (this.dFeaturesSecundarias)
+				{
+					posX = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.x);
+					posX2 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.x);
+					posY = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getAltura() - cb.getPosicaoZ()) * zoom + origem.y);
+					comprimento = (int)Math.round(cb.getDiametro1() * zoom);
+					comprimento2 = (int)Math.round(cb.getDiametro2() * zoom);
+
+					largura = (int)Math.round(cb.getAltura() * zoom);
+					g2d.setColor(new Color(0, 0, 255));
+					g2d.drawRect(posX, posY, comprimento, largura);
+					
+					p1X = p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX()) * zoom + origem.x) ;
+					
+					p1Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoZ() + 5) * zoom + origem.y);
+					p2Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getAltura() - cb.getPosicaoZ() - 5) * zoom + origem.y);
+					
+					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
+							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
+					
+					g2d.setColor(Color.RED);
+					g2d.drawLine(p1X, p1Y, p2X, p2Y);		
+				}
+				break;
+			case 2:
+				if (this.dFeaturesSecundarias)
+				{
+					posX  = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getAltura() - cb.getPosicaoZ()) * zoom + origem.x);
+					posY  = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.y);
+					posY2 = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.y);
+					comprimento = (int)Math.round(cb.getAltura() * zoom);
+					largura  = (int)Math.round(cb.getDiametro1() * zoom);
+					largura2 = (int)Math.round(cb.getDiametro2() * zoom);
+					
+					g2d.setColor(new Color(0, 0, 255));
+					g2d.drawRect(posX, posY, comprimento, largura);
+					
+					p1X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getAltura() - cb.getPosicaoZ() - 5) * zoom + origem.x);
+					p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoZ() + 5) * zoom + origem.x);
+					p1Y = p2Y = (int)Math.round((cb.getPosicaoX()) * zoom + origem.y);
+					
+					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
+							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
+					
+					g2d.setColor(Color.RED);
+					g2d.drawLine(p1X, p1Y, p2X, p2Y);
+				}
+				
+				break;
+			case 3:
+				if (this.dFeaturesSecundarias)
+				{
+					posX = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.x);
+					posX2 = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.x);
+					posY = (int)Math.round((cb.getPosicaoZ()) * zoom + origem.y);
+					comprimento = (int)Math.round(cb.getDiametro1() * zoom);
+					comprimento = (int)Math.round(cb.getDiametro2() * zoom);
+					largura = (int)Math.round(cb.getAltura() * zoom);
+		
+					g2d.setColor(new Color(0, 0, 255));
+					g2d.drawRect(posX, posY, comprimento, largura);
+					
+					p1X = p2X = (int)Math.round((cb.getPosicaoX()) * zoom + origem.x);
+					p1Y = (int)Math.round((cb.getPosicaoZ() - 5) * zoom + origem.y);
+					p2Y = (int)Math.round((cb.getPosicaoZ() + cb.getAltura() + 5) * zoom + origem.y);
+					
+					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
+							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
+					
+					g2d.setColor(Color.RED);
+					g2d.drawLine(p1X, p1Y, p2X, p2Y);
+				}
+				
+				break;
+			default:
+				break;
+		}
+	
+	}
 
 }

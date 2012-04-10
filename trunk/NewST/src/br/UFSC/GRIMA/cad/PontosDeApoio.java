@@ -351,7 +351,7 @@ public class PontosDeApoio extends PontosDeApoioFrame implements ActionListener 
 		
 		if (arg0.getSource().equals(buttonManual) && buttonManual.isSelected())
 		{
-			buttonAutomatic.setSelected(false);
+//			buttonAutomatic.setSelected(false);
 			
 			this.addClampPointButton.addActionListener(this);
 			this.removeClampPointButton.addActionListener(this);
@@ -361,7 +361,7 @@ public class PontosDeApoio extends PontosDeApoioFrame implements ActionListener 
 		
 		if (arg0.getSource().equals(buttonManual) && !(buttonManual.isSelected()))
 		{
-			buttonAutomatic.setSelected(false);
+//			buttonAutomatic.setSelected(false);
 			
 			this.addClampPointButton.removeActionListener(this);
 			this.removeClampPointButton.removeActionListener(this);

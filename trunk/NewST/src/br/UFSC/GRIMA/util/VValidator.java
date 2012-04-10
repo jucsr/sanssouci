@@ -160,7 +160,6 @@ public class VValidator {
 					if (tipo == Feature.FURO) {
 						Furo furo = (Furo) feature;
 						if(furo.isPassante()){
-						
 							if (pVerificador.verificarValoresFuro(furo)){throw new ProjetoInvalidoException("Erro no furo: " + furo.getNome());}
 						//else if ((pVerificador.validateFurocomFeatures(furo, posic, arrayList)) == false){throw new ProjetoInvalidoException("Colisao do furo: " + furo.getNome());}
 							else if ((pVerificador.validateFuroComArrayBase(furo, raioApoio, listaApoiosBase)) == false){

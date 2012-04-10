@@ -69,6 +69,7 @@ public class PontosDeApoioFrame extends JDialog {
 
 			//---- buttonManual ----
 			buttonManual.setText("Manual");
+			buttonManual.setSelected(true);
 			panel1.add(buttonManual, cc.xy(1, 5));
 		}
 		contentPane.add(panel1, cc.xy(3, 3));

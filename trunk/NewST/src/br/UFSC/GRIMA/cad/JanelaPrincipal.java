@@ -1621,11 +1621,12 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	public void definirPontosApoio()
 	{
 		// chamar a sua janela
-		
-		PontosDeApoio pDeApoioFrame = new PontosDeApoio(this, this.projeto);
-		
+//		
+//		PontosDeApoio pDeApoioFrame = new PontosDeApoio(this, this.projeto);
+//		
+//		pDeApoioFrame.setVisible(true);
+		PontosDeApoio2 pDeApoioFrame = new PontosDeApoio2(this, this.projeto);
 		pDeApoioFrame.setVisible(true);
-		
 	}
 
 	public void removerWS() {

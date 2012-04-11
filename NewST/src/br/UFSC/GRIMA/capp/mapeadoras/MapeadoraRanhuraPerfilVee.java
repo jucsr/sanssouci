@@ -138,10 +138,10 @@ public class MapeadoraRanhuraPerfilVee {
 			// BOTTOM AND SIDE FINISH MILLING
 			BottomAndSideFinishMilling operation3 = new BottomAndSideFinishMilling(
 					"Bottom And Side Finish Milling", retractPlane);
-			operation2.setAllowanceSide(0);
-			operation2.setAllowanceBottom(0);
+			operation3.setAllowanceSide(0);
+			operation3.setAllowanceBottom(0);
 			// Start Point vai ser setado na otimizacao
-			operation2.setStartPoint(new Point3d(0,0,0));
+			operation3.setStartPoint(new Point3d(0,0,0));
 
 			// FERRAMENTA É A MESMA QUE A ANTERIOR
 			

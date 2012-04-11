@@ -566,13 +566,15 @@ public class GCodeGenerator {
 			    			}					
 			    		}
 			    	}
-/*************************************************************************************************************************************/
 
 			    	if (wsTmp.getOperation().isCoolant()){
 			    		GCode = GCode +"N" + lineNumber + " M9" + "\n";
 			    		lineNumber = lineNumber + 10;
 			    	}
 			    }
+
+/*************************************************************************************************************************************/
+			    
 			    
 			    if(wsTmp.getFeature().getClass().equals(RanhuraPerfilVee.class)){
 
@@ -691,14 +693,16 @@ public class GCodeGenerator {
 			    			}					
 			    		}
 			    	}
-/*************************************************************************************************************************************/
 
 			    	if (wsTmp.getOperation().isCoolant()){
 			    		GCode = GCode +"N" + lineNumber + " M9" + "\n";
 			    		lineNumber = lineNumber + 10;
 			    	}
 			    }
+
+/*************************************************************************************************************************************/
 			    
+			 
 			    if (wsTmp.getFeature().getClass().equals(Ranhura.class))
 				{
 			    	Ranhura ranhuraTmp = (Ranhura)wsTmp.getFeature();

@@ -29,6 +29,22 @@ public class DesenhadorDeFeatures
 				break;
 			case Feature.CAVIDADE:
 				this.desenharCavidade((Cavidade)feature, origem, modo, g2d);
+				Cavidade cavidade = (Cavidade)feature;
+				for(int i = 0; i< cavidade.getItsBoss().size(); i++)
+				{
+					Boss bossTmp = cavidade.getItsBoss().get(i);
+
+					if (bossTmp.getClass() == CircularBoss.class)
+					{
+						CircularBoss cb = (CircularBoss)bossTmp;
+						this.desenharCircularBoss(cb, origem, modo, g2d);
+					} else if(bossTmp.getClass() == RectangularBoss.class)
+					{
+						/**
+						 *  IMPLEMENTAR PARA RECTANGULAR BOSS!!!
+						 */
+					}
+				}
 				break;
 			case Feature.CAVIDADE_FUNDO_ARREDONDADO:
 				CavidadeFundoArredondado cfa = (CavidadeFundoArredondado)feature;
@@ -40,7 +56,7 @@ public class DesenhadorDeFeatures
 				c.setRaio(cfa.getVerticeRaio());
 				this.desenharCavidade(c, origem, modo, g2d);
 				break;
-			case Feature.BOSS:
+			case Feature.BOSS:	//tem de ser tirado daqui!
 				if (feature.getClass() == CircularBoss.class){
 					CircularBoss cb = (CircularBoss)feature;
 					this.desenharCircularBoss(cb, origem, modo, g2d);

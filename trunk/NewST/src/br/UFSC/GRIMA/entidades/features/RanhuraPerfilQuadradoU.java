@@ -45,6 +45,7 @@ public class RanhuraPerfilQuadradoU extends Ranhura
 		root.add(new DefaultMutableTreeNode("Largura 1 = " + this.getLargura()));
 		root.add(new DefaultMutableTreeNode("Largura 2 = " + this.getLargura2()));
 		root.add(new DefaultMutableTreeNode("ângulo = " + this.getAngulo()));
+		root.add(new DefaultMutableTreeNode("raio = " + this.raio));
 		root.add(new DefaultMutableTreeNode("Profundidade = " + this.getProfundidade()));
 		root.add(new DefaultMutableTreeNode("posição Z = " + this.getPosicaoZ()));
 		root.add(new DefaultMutableTreeNode("Deslocamento : " + this.getDeslocamento()));

@@ -1,5 +1,7 @@
 package br.UFSC.GRIMA.entidades.features;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 /**
  * 
  * @author Jc
@@ -33,5 +35,23 @@ public class RanhuraPerfilVee extends Ranhura
 	}
 	public void setRaio(double raio) {
 		this.raio = raio;
+	}
+	public DefaultMutableTreeNode getNodo()
+	{
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Ranhura -" + this.getIndice());
+		root.add(new DefaultMutableTreeNode("Nome: " + this.getNome()));
+		root.add(new DefaultMutableTreeNode("Largura = " + this.getLargura()));
+		root.add(new DefaultMutableTreeNode("ângulo = " + this.getAngulo()));
+		root.add(new DefaultMutableTreeNode("raio = " + this.raio));
+		root.add(new DefaultMutableTreeNode("Profundidade = " + this.getProfundidade()));
+		root.add(new DefaultMutableTreeNode("posição Z = " + this.getPosicaoZ()));
+		root.add(new DefaultMutableTreeNode("Deslocamento : " + this.getDeslocamento()));
+		root.add(new DefaultMutableTreeNode("Eixo : " + this.getStringEixo()));
+		root.add(new DefaultMutableTreeNode("Tolerancia = " + this.getTolerancia()));
+		root.add(new DefaultMutableTreeNode("Rugosidade = " + this.getRugosidade()));
+		
+		this.getNodoWorkingSteps(root);
+		
+		return root;
 	}
 }

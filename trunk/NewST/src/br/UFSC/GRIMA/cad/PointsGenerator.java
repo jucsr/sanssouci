@@ -13,6 +13,7 @@ public class PointsGenerator {
 	private ArrayList <Face>setups;
 	private int setupNumber;
 	private double raio;
+	private double xForbiddenInitial;
 	public PointsGenerator(Projeto projeto, double raio){
 		this.projeto = projeto;
 		this.raio = raio;

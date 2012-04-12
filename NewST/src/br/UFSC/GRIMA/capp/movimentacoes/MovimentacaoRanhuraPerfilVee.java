@@ -7,6 +7,7 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.LinearPath;
@@ -60,7 +61,7 @@ public class MovimentacaoRanhuraPerfilVee {
 			if(this.ranhuraV.getAngulo() == 90)
 				andarX = 0;
 			else
-				andarX = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
+				andarX = apUtilizado*Math.tan(alfa);
 		}
 		else
 			andarX = Math.tan(Math.asin((R-z)/(R)))*apUtilizado;
@@ -69,12 +70,13 @@ public class MovimentacaoRanhuraPerfilVee {
 		yAtual = this.ranhuraV.getPosicaoY()+diametroFerramenta/2+andarX+allowanceBottom;
 		
 		if(this.ranhuraV.getEixo() == RanhuraPerfilVee.VERTICAL && ws.getOperation().getClass() == BottomAndSideRoughMilling.class){
+			
 			pontoInicial = new Point3d(xAtual,this.ranhuraV.getPosicaoY(),this.ws.getOperation().getRetractPlane());
 			xAtual = this.ranhuraV.getPosicaoX()+diametroFerramenta/2+allowanceBottom;
-			xLimiteEsquerda = xAtual-andarX;
+			xLimiteEsquerda = xAtual+andarX;
 			xLimiteDireita = this.ranhuraV.getPosicaoX()+this.ranhuraV.getLargura()-allowanceBottom-diametroFerramenta/2-andarX;
 			largura = xLimiteDireita - xLimiteEsquerda;		
-			
+				
 			while(!terminouZ){
 				terminouXY = false;
 				if(-zAtual+this.ws.getCondicoesUsinagem().getAp()<=profundidade && largura>=diametroFerramenta){
@@ -92,7 +94,6 @@ public class MovimentacaoRanhuraPerfilVee {
 					}
 					terminouZ = true;
 				}
-				zAtual = zAtual - apUtilizado;
 				
 				if(vaiVolta){
 					yAtual = this.ranhuraV.getPosicaoY();
@@ -107,19 +108,26 @@ public class MovimentacaoRanhuraPerfilVee {
 				
 				z=profundidade + zAtual;
 				if(-zAtual<=zLimite)
-					andarX = apUtilizado/Math.abs(Math.tan((Math.PI/2)-alfa));
+					andarX = apUtilizado*Math.tan(alfa);
 				else
 					andarX = Math.tan(Math.asin((R-z)/(R)))*apUtilizado;
 				
-				if(fundo)
-					xAtual = xAtual - andarX;
-				else
-					xAtual = xAtual + andarX;
-					
 				xLimiteDireita = xLimiteDireita - andarX;
 				xLimiteEsquerda = xLimiteEsquerda + andarX;
 				largura = xLimiteDireita - xLimiteEsquerda;
 				
+				if(largura<diametroFerramenta){
+					terminouZ = true;
+					terminouXY = true;
+				}
+				else{
+					zAtual = zAtual - apUtilizado;
+					if(fundo)
+						xAtual = xAtual - andarX;
+					else
+						xAtual = xAtual + andarX;
+				}
+					
 				pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 				LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 				desbaste.add(verticalTemp);
@@ -332,10 +340,10 @@ public class MovimentacaoRanhuraPerfilVee {
 		if(alfa == 0)
 			zLimite = profundidade-R+r;
 		else
-			zLimite = profundidade+R*(Math.sin(alfa)-1);
+			zLimite = profundidade+R*(Math.sin(alfa)-1)+r-(r*Math.cos(alfa));
 
-		xAtual = diametroFerramenta/2 + this.ranhuraV.getPosicaoX()+r-r*Math.cos(alfa/2);
-		yAtual = diametroFerramenta/2 + this.ranhuraV.getPosicaoY()+r-r*Math.cos(alfa/2);
+		xAtual = diametroFerramenta/2 + this.ranhuraV.getPosicaoX()+r-r*Math.cos(Math.PI/2-alfa);
+		yAtual = diametroFerramenta/2 + this.ranhuraV.getPosicaoY()+r-r*Math.cos(Math.PI/2-alfa);
 		
 
 		if(this.ranhuraV.getEixo() == RanhuraPerfilVee.VERTICAL && ws.getOperation().getClass() == BottomAndSideFinishMilling.class){
@@ -366,7 +374,7 @@ public class MovimentacaoRanhuraPerfilVee {
 					vaiVolta = true;
 				}
 				
-				xEstatico = Math.tan(alfa/2)*apUtilizado;
+				xEstatico = Math.tan(alfa)*apUtilizado;
 				ultimoXEstatico = xEstatico;
 				xAtual = xAtual+xEstatico;		
 				
@@ -393,7 +401,7 @@ public class MovimentacaoRanhuraPerfilVee {
 						terminouFundoDescida = true;
 					}						
 					zAtual = zAtual-apUtilizado; 
-					if(this.ferramenta.getDiametroFerramenta() == 2*R*Math.cos(alfa/2)){
+					if(this.ferramenta.getDiametroFerramenta() == 2*R*Math.cos(alfa)){
 						xAtual = this.ranhuraV.getPosicaoX()+this.ranhuraV.getLargura()/2;
 					}
 					else{
@@ -429,7 +437,6 @@ public class MovimentacaoRanhuraPerfilVee {
 						xAtual = xAtual+xVariavel;
 					}
 					zAtual = zAtual+apUtilizado;
-					System.out.println("bbbbbbbbbb");
 				}
 				
 				if(vaiVolta){
@@ -451,7 +458,6 @@ public class MovimentacaoRanhuraPerfilVee {
 				pontoInicial = new Point3d(xAtual, yProximo, zAtual);
 			}
 			
-			System.out.println("terminou fundo");
 			while(!chegouNoTopo){
 				if(primeiroZSubidaEstatica){
 					zAtual=zAtual+ultimoApEstatico;

@@ -1508,9 +1508,7 @@ public class Face implements Serializable{
 		JanelaPrincipal.setDoneCAPP(false);
 	}
 	public boolean validarFeature(Feature feature)
-	{	
-		System.out.println("VALIDADOR");
-		
+	{			
 		if (feature.getPosicaoZ() == 0)  //---------------------   Z == 0 -------------------
 		{
 			//Nao tem br.UFSC.GRIMA.feature mae
@@ -1525,12 +1523,9 @@ public class Face implements Serializable{
 			for (int i = 0; i < this.features.size(); i++)
 			{
 				Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
-				if (rect2dTmp.contains(rect2d)){
-					if(features.elementAt(i).getClass() == CircularBoss.class || features.elementAt(i).getClass() == RectangularBoss.class)
-					{
-						CircularBoss cb = (CircularBoss)features.elementAt(i);
-						System.out.println("POS Z = " + cb.Z);
-					}
+				if (rect2dTmp.contains(rect2d))
+				{
+					
 					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
 
 						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);

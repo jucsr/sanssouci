@@ -77,8 +77,18 @@
           </void>
          </object>
         </void>
+        <void method="setProperty">
+         <string>enabled</string>
+         <boolean>false</boolean>
+        </void>
         <void property="name">
-         <string>comboBox1</string>
+         <string>setupComboBox</string>
+        </void>
+        <void method="auxiliary">
+         <void method="setProperty">
+          <string>JavaCodeGenerator.variableModifiers</string>
+          <int>4</int>
+         </void>
         </void>
        </object>
        <object class="com.jformdesigner.model.FormLayoutConstraints">

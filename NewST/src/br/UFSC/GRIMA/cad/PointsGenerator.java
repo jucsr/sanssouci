@@ -13,14 +13,14 @@ public class PointsGenerator {
 	private ArrayList <Face>setups;
 	private int setupNumber;
 	private double raio;
-	private double xForbiddenInitial;
+	public double xForbiddenInitial;
 	public PointsGenerator(Projeto projeto, double raio){
 		this.projeto = projeto;
 		this.raio = raio;
 		this.pointgen();
 	}
 	private void pointgen() {
-		//Procura por FEATURES nas faces
+		//****Procura por FEATURES nas faces*****//
 		for (int i=0; i<projeto.getBloco().faces.size(); i++)						//Procura por FEATURES em cada face
 		{
 			Face faceTmp = (Face)projeto.getBloco().faces.elementAt(i);	
@@ -31,8 +31,9 @@ public class PointsGenerator {
 					if (featureTmp.getClass() == Cavidade.class){					//caso CAVIDADE
 						Cavidade cavidade = (Cavidade)featureTmp;
 						if(cavidade.isPassante()){
-							cavidade.X
-							point3d.
+							xForbiddenInitial = cavidade.X;
+							System.out.println(xForbiddenInitial);
+							
 							/**
 							 * 
 							 */
@@ -42,9 +43,9 @@ public class PointsGenerator {
 					if (featureTmp.getClass() == FuroBasePlana.class){				//caso FURO
 						FuroBasePlana furo = (FuroBasePlana)featureTmp;
 						if(furo.isPassante()){
-							/**
-							 * 
-							 */
+							if (xForbiddenInitial>furo.X)							//verifica se está mais próximo da borda
+																					//que a cavidade
+							
 						}
 					}
 				}

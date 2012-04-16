@@ -3,10 +3,8 @@ package br.UFSC.GRIMA.cad;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import br.UFSC.GRIMA.cad.visual.PontosDeApoioFrame2;
-import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListener{
@@ -28,6 +26,7 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 	}
 	private void gneratePoints() {
 			System.out.println("gerar pontos");
+			this.setupComboBox.setEnabled(true);
 			
 			
 	}

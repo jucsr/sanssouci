@@ -448,6 +448,42 @@ public class Face implements Serializable{
 						cavidadeNova.setComprimento(cavidadeOriginal.getLargura());
 						cavidadeNova.setLargura(cavidadeOriginal.getComprimento());
 						cavidadeNova.setPassante(cavidadeOriginal.isPassante());
+						/**
+						 *  PASSAR OS BOSS DA CAVIDADE ORIGINAL PARA A CAVIDADE ALTERADA!!!
+						 */
+						ArrayList<Boss> itsBoss = new ArrayList<Boss>();      // cria um array de parametros do boss
+						
+						for(int i = 0; i< cavidadeOriginal.getItsBoss().size(); i++)
+						{
+							Boss bossTmp = cavidadeOriginal.getItsBoss().get(i);   
+
+							if (bossTmp.getClass() == CircularBoss.class)
+							{
+								CircularBoss cb = (CircularBoss)bossTmp;
+								CircularBoss tmp = new CircularBoss();
+								
+								posX = this.largura - cavidadeOriginal.getPosicaoY() - cavidadeOriginal.getLargura();
+								posY = cavidadeOriginal.getPosicaoX();
+								posZ = cavidadeOriginal.getPosicaoZ();
+								tmp.setPosicao(posX, posY, posZ);
+								tmp.setProfundidade(cavidadeOriginal.getProfundidade());
+								tmp.setRaio(cavidadeOriginal.getRaio());
+								tmp.setComprimento(cavidadeOriginal.getLargura());
+								tmp.setLargura(cavidadeOriginal.getComprimento());
+								tmp.setPassante(cavidadeOriginal.isPassante());
+								itsBoss.add(tmp);
+							
+								
+							} else if(bossTmp.getClass() == RectangularBoss.class)
+							{
+								/**
+								 *  IMPLEMENTAR PARA RECTANGULAR BOSS!!!
+								 */
+							}
+							cavidadeNova.setItsBoss(itsBoss);  // seta todos os boss tmp que foi criado
+						}
+						
+						
 						
 						return cavidadeNova;
 					case Feature.CAVIDADE_FUNDO_ARREDONDADO:

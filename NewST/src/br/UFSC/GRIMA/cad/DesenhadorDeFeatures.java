@@ -7,7 +7,7 @@ public class DesenhadorDeFeatures
 	public double zoom = 1.0;
 	public boolean dFeaturesSecundarias = true;
 	boolean alteraComposite = true;
-	int posX, posX2, posY, posY2, altura, comprimento, comprimento2, largura, largura2, p1X, p2X, p3X, p4X, p1Y, p2Y, p3Y, p4Y;
+	int posX, posX1, posX2, posY, posY2, posY3, posY4, altura, comprimento, comprimento2, largura, largura2, p1X, p2X, p3X, p4X, p1Y, p2Y, p3Y, p4Y;
 	
 	public DesenhadorDeFeatures()
 	{
@@ -56,12 +56,7 @@ public class DesenhadorDeFeatures
 				c.setRaio(cfa.getVerticeRaio());
 				this.desenharCavidade(c, origem, modo, g2d);
 				break;
-			case Feature.BOSS:	//tem de ser tirado daqui!
-				if (feature.getClass() == CircularBoss.class){
-					CircularBoss cb = (CircularBoss)feature;
-					this.desenharCircularBoss(cb, origem, modo, g2d);
-
-				}
+			
 			default:
 				break;
 		}
@@ -320,6 +315,25 @@ public class DesenhadorDeFeatures
 				break;
 			case Feature.CAVIDADE:
 				this.desenharCavidadeOrtogonal((Cavidade)feature, face, verticeAtivado, origem, posicao, g2d);
+				Cavidade cavidade = (Cavidade)feature;
+				System.out.println("ITS_BOSS: "  + cavidade.getItsBoss().size());
+				System.out.println("posicao = " + posicao);
+				for(int i = 0; i< cavidade.getItsBoss().size(); i++)
+				{
+					Boss bossTmp = cavidade.getItsBoss().get(i);
+
+					if (bossTmp.getClass() == CircularBoss.class)
+					{
+						System.out.println("testeeeee");
+						CircularBoss cb = (CircularBoss)bossTmp;
+						this.desenharCircularBossOrtogonal(cb, face, verticeAtivado, origem, posicao, g2d);
+					} else if(bossTmp.getClass() == RectangularBoss.class)
+					{
+						/**
+						 *  IMPLEMENTAR PARA RECTANGULAR BOSS!!!
+						 */
+					}
+				}
 				break;
 			case Feature.CAVIDADE_FUNDO_ARREDONDADO:
 				CavidadeFundoArredondado cfa = (CavidadeFundoArredondado)feature;
@@ -331,6 +345,7 @@ public class DesenhadorDeFeatures
 				c.setLargura(cfa.getLargura());
 				c.setProfundidade(cfa.getProfundidade());
 				c.setRaio(cfa.getVerticeRaio());
+				
 				
 				this.desenharCavidadeOrtogonal(c, face, verticeAtivado, origem, posicao, g2d);
 			default:
@@ -878,6 +893,8 @@ public class DesenhadorDeFeatures
 		float dash1[] = {5.0f, 2.5f};
 		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 				BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+		System.out.println("ppp cav = " + posicao);
+
 		switch(posicao)
 		{
 			case 0:
@@ -967,32 +984,38 @@ public class DesenhadorDeFeatures
 		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 				BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
 		float dash2[] = {15.0f, 2.5f, 1f, 2.5f};
+		System.out.println("ppp = " + posicao);
 		switch(posicao)
 		{
-			case 0:		//face ZX
+			case 0:		//face YZ
 				if (this.dFeaturesSecundarias)
 				{
+					System.out.println("case 0");
 					posX  = (int)Math.round((cb.getPosicaoZ()) * zoom + origem.x);
-					posX2  = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.y));
-					posY2 = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.y));
-					comprimento = (int)Math.round((cb.getAltura()) * zoom);
-					largura = (int)Math.round(cb.getDiametro1() * zoom);
-					largura2 = (int)Math.round(cb.getDiametro2() * zoom);
-					altura = (int)Math.round(cb.getAltura() * zoom);
+					posX1  = (int)Math.round((cb.getPosicaoZ() + cb.getAltura()) * zoom + origem.x);
+					posY = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() - (cb.getDiametro2()/2)) * zoom + origem.y));    //coord. Y do ponto a direita embaixo
+					posY2 = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() + (cb.getDiametro2()/2)) * zoom + origem.y));   //coord. Y do ponto a direita em cima
+					posY3 = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() - (cb.getDiametro1()/2)) * zoom + origem.y));   //coord. Y do ponto a esquerda em cima
+					posY4 = (int)Math.round(((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() + (cb.getDiametro1()/2)) * zoom + origem.y));	
+//					comprimento = (int)Math.round((cb.getAltura()) * zoom);
+//					largura = (int)Math.round(cb.getDiametro1() * zoom);
+//					largura2 = (int)Math.round(cb.getDiametro2() * zoom);
+//					altura = (int)Math.round(cb.getAltura() * zoom);
 					
 					//Desenha as linhas
 					
 					g2d.setColor(new Color(0, 0, 255));
-					g2d.drawLine(posX, 0, posX2, altura);
-					g2d.drawLine(posX2, altura, posX2 + ((int)Math.round(cb.getDiametro2())), altura);
-					g2d.drawLine(posX2 + ((int)Math.round(cb.getDiametro2())), altura, posX + ((int)Math.round(cb.getDiametro1())), altura);
+					g2d.drawLine(posX1, -posY, posX1, -posY2 );  //linha da base maior
+					g2d.drawLine(posX1, -posY2, posX, posY3);
+					g2d.drawLine(posX, posY3, posX, posY4);       //linha base menor
+					g2d.drawLine( posX, posY4, posX, -posY);
 					
 					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
 					
 					p1X = (int)Math.round(( - 5 + cb.getPosicaoZ()) * zoom + origem.x);
 					p2X = (int)Math.round((cb.getPosicaoZ() + cb.getAltura() + 5) * zoom + origem.x);
-					p1Y = p2Y =(int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoX()) * zoom + origem.y);
+					p1Y = p2Y =(int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY()) * zoom + origem.y);
 					
 					g2d.setColor(Color.RED);
 					g2d.drawLine(p1X, p1Y, p2X , p2Y);
@@ -1001,6 +1024,7 @@ public class DesenhadorDeFeatures
 			case 1:
 				if (this.dFeaturesSecundarias)
 				{
+					System.out.println("case 1");
 					posX = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.x);
 					posX2 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.x);
 					posY = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getAltura() - cb.getPosicaoZ()) * zoom + origem.y);
@@ -1027,6 +1051,7 @@ public class DesenhadorDeFeatures
 			case 2:
 				if (this.dFeaturesSecundarias)
 				{
+					System.out.println("CASE 2");
 					posX  = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getAltura() - cb.getPosicaoZ()) * zoom + origem.x);
 					posY  = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.y);
 					posY2 = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.y);
@@ -1053,6 +1078,7 @@ public class DesenhadorDeFeatures
 			case 3:
 				if (this.dFeaturesSecundarias)
 				{
+					System.out.println("case 3");
 					posX = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.x);
 					posX2 = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.x);
 					posY = (int)Math.round((cb.getPosicaoZ()) * zoom + origem.y);

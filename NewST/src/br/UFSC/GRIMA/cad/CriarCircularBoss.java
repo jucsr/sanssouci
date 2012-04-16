@@ -46,7 +46,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 		super.okButton.addActionListener(this);
 		super.cancelButton.addActionListener(this);
 		// this.checkBox1.addActionListener(this);
-
+		super.spinner7.setVisible(false);
+		
 		this.setVisible(true);
 
 	}

@@ -363,6 +363,8 @@ public class Face implements Serializable{
 			case 0:			/**
 							*    VERTICE 0
 							*/
+				
+				System.out.println("posx case 0" );
 				return feature;
 				
 			case 1:			/**
@@ -462,7 +464,7 @@ public class Face implements Serializable{
 								CircularBoss cb = (CircularBoss)bossTmp;
 								CircularBoss tmp = new CircularBoss();
 								
-								posX = this.largura - cavidadeOriginal.getPosicaoY() - cb.getPosicaoY();
+								posX = this.largura - cb.getPosicaoY();
 								posY = cb.getPosicaoX();
 								posZ = cb.getPosicaoZ();
 								tmp.setPosicao(posX, posY, posZ);
@@ -475,6 +477,7 @@ public class Face implements Serializable{
 								
 								itsBoss.add(tmp);
 							
+								System.out.println("posX" + posX);
 								
 							} else if(bossTmp.getClass() == RectangularBoss.class)
 							{
@@ -586,7 +589,7 @@ public class Face implements Serializable{
 						cavidadeNova.setComprimento(cavidadeOriginal.getComprimento());
 						cavidadeNova.setLargura(cavidadeOriginal.getLargura());
 						cavidadeNova.setPassante(cavidadeOriginal.isPassante());
-
+						System.out.println("CAV X = " + posX);
 						/**
 						 *  PASSAR OS BOSS DA CAVIDADE ORIGINAL PARA A CAVIDADE ALTERADA!!!
 						 */
@@ -601,8 +604,8 @@ public class Face implements Serializable{
 								CircularBoss cb = (CircularBoss)bossTmp;
 								CircularBoss tmp = new CircularBoss();
 								
-								posX = this.comprimento - cavidadeOriginal.getPosicaoX() - cb.getPosicaoX();
-								posY = this.largura - cavidadeOriginal.getPosicaoY() - cb.getPosicaoY();
+								posX = this.comprimento - cb.getPosicaoX();
+								posY = this.largura - cb.getPosicaoY();
 								posZ = cb.getPosicaoZ();
 								tmp.setPosicao(posX, posY, posZ);
 								tmp.setAltura(cb.getAltura());
@@ -610,7 +613,7 @@ public class Face implements Serializable{
 								tmp.setDiametro2(cb.getDiametro2());
 								
 								itsBoss.add(tmp);
-							
+								System.out.println("posX case 2" + posX);
 								
 							} else if(bossTmp.getClass() == RectangularBoss.class)
 							{
@@ -733,8 +736,8 @@ public class Face implements Serializable{
 								CircularBoss cb = (CircularBoss)bossTmp;
 								CircularBoss tmp = new CircularBoss();
 								
-								posX = cavidadeOriginal.getPosicaoY() + cb.getPosicaoY();
-								posY = cavidadeOriginal.getComprimento() - cavidadeOriginal.getPosicaoX() - cb.getPosicaoX() ;
+								posX = cb.getPosicaoY();
+								posY = this.getComprimento() - cb.getPosicaoX() ;
 								posZ = cb.getPosicaoZ();
 								tmp.setPosicao(posX, posY, posZ);
 								tmp.setAltura(cb.getAltura());
@@ -742,7 +745,7 @@ public class Face implements Serializable{
 								tmp.setDiametro2(cb.getDiametro2());
 								
 								itsBoss.add(tmp);
-							
+								System.out.println("posX case 3" );
 								
 							} else if(bossTmp.getClass() == RectangularBoss.class)
 							{

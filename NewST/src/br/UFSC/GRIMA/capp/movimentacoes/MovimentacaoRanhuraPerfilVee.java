@@ -234,9 +234,9 @@ public class MovimentacaoRanhuraPerfilVee {
 				
 				z=profundidade + zAtual;
 				if(-zAtual<=zLimite)
-					andarX = apUtilizado*Math.tan(alfa);//calcula quanto tem que andar em Y depois de descer em Z
+					andarY = apUtilizado*Math.tan(alfa);//calcula quanto tem que andar em Y depois de descer em Z
 				else
-					andarX = Math.tan(Math.asin((R-z)/(R)))*apUtilizado;
+					andarY = Math.tan(Math.asin((R-z)/(R)))*apUtilizado;
 				
 				zAtual = zAtual - apUtilizado;
 				if(fundo)

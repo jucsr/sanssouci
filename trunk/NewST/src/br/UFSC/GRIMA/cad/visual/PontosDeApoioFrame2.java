@@ -25,7 +25,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		autoGenButton = new JButton();
-		comboBox1 = new JComboBox();
+		setupComboBox = new JComboBox();
 		panel1 = new JPanel();
 
 		//======== this ========
@@ -43,13 +43,14 @@ public class PontosDeApoioFrame2 extends JDialog {
 			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 			new Insets(0, 0, 0, 0), 0, 0));
 
-		//---- comboBox1 ----
-		comboBox1.setModel(new DefaultComboBoxModel(new String[] {
+		//---- setupComboBox ----
+		setupComboBox.setModel(new DefaultComboBoxModel(new String[] {
 			"Setup1",
 			"Setup2",
 			"\t"
 		}));
-		contentPane.add(comboBox1, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+		setupComboBox.setEnabled(false);
+		contentPane.add(setupComboBox, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 			new Insets(0, 0, 0, 0), 0, 0));
 
@@ -71,7 +72,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	protected JButton autoGenButton;
-	private JComboBox comboBox1;
+	protected JComboBox setupComboBox;
 	private JPanel panel1;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

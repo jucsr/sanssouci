@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.vecmath.Point3d;
 
@@ -80,6 +81,7 @@ public class MovimentacaoRanhuraPerfilVee {
 		//se a ranhura for VERTICAL
 		if(this.ranhuraV.getEixo() == RanhuraPerfilVee.VERTICAL && ws.getOperation().getClass() == BottomAndSideRoughMilling.class){
 			
+			//pegar o ws anterior a esse e ver se ele é vazio, se for vazio o pontoInicial é esse mesmo, se nao for o pontoInicial é o ultimo ponto do array
 			pontoInicial = new Point3d(xAtual,this.ranhuraV.getPosicaoY(),this.ws.getOperation().getRetractPlane());//ponto inicializador do Array
 			
 			//calcula os limites em que o x pode chegar
@@ -95,17 +97,26 @@ public class MovimentacaoRanhuraPerfilVee {
 						terminouZ = true;
 					}
 				}
-				//já chegou no fim ou a largura é menor que o diametro da ferramenta
-				else{
-					if(largura>=diametroFerramenta || -zAtual+this.ws.getCondicoesUsinagem().getAp()<=profundidade)
+				else{//já chegou no fim ou a largura é menor que o diametro da ferramenta
+					if(-zAtual+this.ws.getCondicoesUsinagem().getAp()>profundidade && largura>=diametroFerramenta)
 						apUtilizado = profundidade + zAtual;//calculo para ver quanto vai descer, esse valor é sempre menor que AP
-					else{
-						apUtilizado = 0;
+					else if(largura<diametroFerramenta){
+						apUtilizado=0;
 						terminouXY = true;
 					}
 					terminouZ = true;
 				}
-				
+				z=profundidade + zAtual;
+				if(-zAtual<=zLimite)
+					andarX = apUtilizado*Math.tan(alfa);//calcula quanto tem que andar em X depois de descer em Z
+				else
+					andarX = Math.tan(Math.asin((R-z)/(R)))*apUtilizado;
+
+				if(fundo)
+					xAtual = xAtual - andarX;//se a ferramenta tiver vindo da direita pra esquerda
+				else
+					xAtual = xAtual + andarX;//se a ferramenta tiver vindo da esquerda pra direita
+
 				if(vaiVolta){
 					yAtual = this.ranhuraV.getPosicaoY();
 					yProximo = this.ranhuraV.getComprimento();
@@ -117,17 +128,7 @@ public class MovimentacaoRanhuraPerfilVee {
 					vaiVolta = true;
 				}
 				
-				z=profundidade + zAtual;
-				if(-zAtual<=zLimite)
-					andarX = apUtilizado*Math.tan(alfa);//calcula quanto tem que andar em X depois de descer em Z
-				else
-					andarX = Math.tan(Math.asin((R-z)/(R)))*apUtilizado;
-				
 				zAtual = zAtual - apUtilizado;
-				if(fundo)
-					xAtual = xAtual - andarX;//se a ferramenta tiver vindo da direita pra esquerda
-				else
-					xAtual = xAtual + andarX;//se a ferramenta tiver vindo da esquerda pra direita
 
 					
 				pontoFinal = new Point3d(xAtual, yAtual, zAtual);
@@ -318,7 +319,6 @@ public class MovimentacaoRanhuraPerfilVee {
 		double xProximo;
 		double yAtual=this.ranhuraV.getPosicaoY();
 		double yProximo;
-		double zAtual=this.ranhuraV.getPosicaoZ();
 		double zLimite;
 		double apUtilizado=0;
 		double xEstatico=0;
@@ -336,6 +336,7 @@ public class MovimentacaoRanhuraPerfilVee {
 		double R=this.ranhuraV.getRaio();
 		double diametroFerramenta=this.ferramenta.getDiametroFerramenta();
 		double r=diametroFerramenta/2;//this.ferramenta.getEdgeRadius();
+		double zAtual=this.ranhuraV.getPosicaoZ();
 		
 		boolean primeiroApCurvaSubida = true;
 		boolean vaiVolta = true;
@@ -344,37 +345,46 @@ public class MovimentacaoRanhuraPerfilVee {
 		boolean terminouFundoSubida = false;
 		boolean chegouNoTopo = false;
 		boolean primeiroZSubidaEstatica = true;
+		boolean primeiroPonto = true;
 		
 		Point3d pontoInicial;
 		Point3d pontoFinal;
-				
+						
 		//calculo a profundidade em que começa a curva
 		if(alfa == 0)
 			zLimite = profundidade-R+r;
+		else if(R==r)
+			zLimite = profundidade;
 		else
 			zLimite = profundidade+R*(Math.sin(alfa)-1)+r-(r*Math.cos(alfa));
 
 		xAtual = this.ranhuraV.getPosicaoX()+r*Math.cos(alfa);
 		yAtual = this.ranhuraV.getPosicaoY()+r*Math.cos(alfa);
 		
-
 		if(this.ranhuraV.getEixo() == RanhuraPerfilVee.VERTICAL && ws.getOperation().getClass() == BottomAndSideFinishMilling.class){
 			pontoInicial = new Point3d(xAtual,this.ranhuraV.getPosicaoY(),this.ws.getOperation().getRetractPlane());
 			
 			while(!terminouZLimite){
-				if(-zAtual+this.ws.getCondicoesUsinagem().getAp() <= zLimite){
-					apUtilizado = this.ws.getCondicoesUsinagem().getAp();
-					ultimoApEstatico = apUtilizado;
-					if(-zAtual+this.ws.getCondicoesUsinagem().getAp() == zLimite){
-						terminouZLimite = true;
-					}
+				if(primeiroPonto){//LOOP INFINITO!!!!
+					apUtilizado = r-r*Math.sin(alfa);
+					zAtual-= apUtilizado;
+					primeiroPonto=false;
 				}
 				else{
-					apUtilizado = zLimite+zAtual;
-					ultimoApEstatico = apUtilizado;
-					terminouZLimite = true;
+					if(-zAtual+this.ws.getCondicoesUsinagem().getAp() <= zLimite){
+						apUtilizado = this.ws.getCondicoesUsinagem().getAp();
+						ultimoApEstatico = apUtilizado;
+						if(-zAtual+this.ws.getCondicoesUsinagem().getAp() == zLimite){
+							terminouZLimite = true;
+						}
+					}
+					else{
+						apUtilizado = zLimite+zAtual;
+						ultimoApEstatico = apUtilizado;
+						terminouZLimite = true;
+					}
+					zAtual = zAtual-apUtilizado;
 				}
-				zAtual = zAtual-apUtilizado;
 				if(vaiVolta){
 					yAtual = this.ranhuraV.getPosicaoY();
 					yProximo = this.ranhuraV.getComprimento();
@@ -397,8 +407,7 @@ public class MovimentacaoRanhuraPerfilVee {
 				acabamento.add(horizontalTemp);
 				pontoInicial = new Point3d(xAtual, yProximo, zAtual);
 			}		
-
-			while(!terminouFundoDescida){
+			while(!terminouFundoDescida && R!=r){
 				if(-zAtual+this.ws.getCondicoesUsinagem().getAp() <= profundidade){
 					apUtilizado = this.ws.getCondicoesUsinagem().getAp();
 					if(-zAtual+this.ws.getCondicoesUsinagem().getAp() == profundidade){
@@ -417,8 +426,8 @@ public class MovimentacaoRanhuraPerfilVee {
 					xAtual = this.ranhuraV.getPosicaoX()+this.ranhuraV.getLargura()/2;
 				}
 				else{
-					z=profundidade+zAtual;
-					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2){
+					z=profundidade+zAtual;						
+					if(Math.asin((R-z-r)/(R-r)) != Math.PI/2 && R!=r){
 						xVariavel = Math.abs(Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado);
 					}
 					else{
@@ -445,7 +454,7 @@ public class MovimentacaoRanhuraPerfilVee {
 				pontoInicial = new Point3d(xAtual, yProximo, zAtual);
 			}
 			
-			while(!terminouFundoSubida){
+			while(!terminouFundoSubida && R!=r){
 
 				if(primeiroApCurvaSubida){
 					apUtilizado = ultimoAp;
@@ -460,9 +469,10 @@ public class MovimentacaoRanhuraPerfilVee {
 						terminouFundoSubida = true;
 					}
 					z=profundidade+zAtual;
-					xVariavel = Math.abs(Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado);
+					if(R!=r)
+						xVariavel = Math.abs(Math.tan(Math.asin((R-z-r)/(R-r)))*apUtilizado);
+					xAtual = xAtual+xVariavel;
 				}
-				xAtual = xAtual+xVariavel;
 				zAtual = zAtual+apUtilizado;
 
 				if(vaiVolta){
@@ -490,21 +500,26 @@ public class MovimentacaoRanhuraPerfilVee {
 					zAtual=zAtual+ultimoApEstatico;
 					xAtual=xAtual+ultimoXEstatico;
 					primeiroZSubidaEstatica = false;
+				}
+				else if(R==r){
+					xEstatico = Math.tan(alfa)*apUtilizado;
+					if(-zAtual-this.ws.getCondicoesUsinagem().getAp()>=0){
+						zAtual+=this.ws.getCondicoesUsinagem().getAp();
+						if(-zAtual-this.ws.getCondicoesUsinagem().getAp()==0)
+							chegouNoTopo = true;
 					}
-				else if(-zAtual-this.ws.getCondicoesUsinagem().getAp()>=0){//r-r*Math.sin(alfa/2)){
+					xAtual+=xEstatico;
+				}
+				else if(-zAtual-this.ws.getCondicoesUsinagem().getAp()>=0){
 					apUtilizado = this.ws.getCondicoesUsinagem().getAp();
 					xEstatico = Math.tan(alfa)*apUtilizado;
-					if(-zAtual-this.ws.getCondicoesUsinagem().getAp()<=0){//r-r*Math.sin(alfa/2)){
+					if(-zAtual-this.ws.getCondicoesUsinagem().getAp()<=0){
 						chegouNoTopo = true;
 					}
 					zAtual = zAtual + apUtilizado;
 					xAtual = xAtual+xEstatico;
 				}
-//				else{
-//					apUtilizado = zAtual+r-r*Math.sin(alfa/2);
-//					chegouNoTopo = true;
-//				}
-//				
+				
 				if(vaiVolta){
 					yAtual = this.ranhuraV.getPosicaoY();
 					yProximo = this.ranhuraV.getComprimento();
@@ -515,8 +530,6 @@ public class MovimentacaoRanhuraPerfilVee {
 					yProximo = this.ranhuraV.getPosicaoY();
 					vaiVolta = true;
 				}
-				//xAtual = xAtual+xEstatico;
-				
 
 				pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 				LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);

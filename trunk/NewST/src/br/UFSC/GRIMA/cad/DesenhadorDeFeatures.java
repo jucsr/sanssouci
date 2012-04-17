@@ -1050,18 +1050,20 @@ public class DesenhadorDeFeatures
 					g2d.drawLine(p1X, p1Y, p2X, p2Y);		
 				}
 				break;
-			case 2:
+			case 2:  //face ZY
 				if (this.dFeaturesSecundarias)
 				{
 					System.out.println("CASE 2");
 					posX  = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() + cavidade.getProfundidade())) * zoom + origem.x);  //coord X esq.
 					posX1 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() -cb.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura()) ) ) * zoom + origem.x); //coord X dir.
-					posY  = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() - (cb.getDiametro2()/2)) * zoom + origem.y);  //coord Y inferior esq
-					posY1 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() - (cb.getDiametro1()/2)) * zoom + origem.y);  //coord Y inf dir
-					posY2 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() + (cb.getDiametro1()/2)) * zoom + origem.y);  //coord Y superior dir
-					posY3 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.getPosicaoY() + (cb.getDiametro2()/2)) * zoom + origem.y);  //coord Y superior esq
+					posY  = (int)Math.round(((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.y));  //coord Y inferior esq
+					posY1 = (int)Math.round(((cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.y));  //coord Y inf dir
+					posY2 = (int)Math.round(((cb.getPosicaoX() + (cb.getDiametro1()/2)) * zoom + origem.y));  //coord Y superior dir
+					posY3 = (int)Math.round(((cb.getPosicaoX() + (cb.getDiametro2()/2)) * zoom + origem.y));  //coord Y superior esq
 					
-					
+					System.out.println("posY: " + posY);
+				
+					System.out.println("vertice ativado: " + verticeAtivado);
 					g2d.setColor(new Color(0, 0, 255));
 					g2d.drawLine(posX, posY, posX1, posY1);
 					g2d.drawLine(posX1, posY1, posX1, posY2);
@@ -1069,8 +1071,8 @@ public class DesenhadorDeFeatures
 					g2d.drawLine(posX, posY3, posX, posY);
 					
 					p1X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() - cavidade.getProfundidade()) - 5) * zoom + origem.x);
-					p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura()) )  + 5) * zoom + origem.x);
-					p1Y = p2Y = (int)Math.round((cb.getPosicaoY()) * zoom + origem.y);
+					p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() -cb.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura()) )  + 5) * zoom + origem.x);
+					p1Y = p2Y = (int)Math.round((cb.getPosicaoX()) * zoom + origem.y);
 					
 					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
@@ -1088,14 +1090,14 @@ public class DesenhadorDeFeatures
 					posX1 = (int)Math.round((cb.getPosicaoX() + (cb.getDiametro1()/2)) * zoom + origem.x);  //coord. X do ponto inferior a direita.
 					posX2 = (int)Math.round((cb.getPosicaoX() + (cb.getDiametro2()/2)) * zoom + origem.x);
 					posX3 = (int)Math.round((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.x);
-					posY  = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (-cavidade.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura()))) * zoom + origem.y);           //coord. Y do ponto inferior a esq e dir.
-					posY1 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (-cavidade.getPosicaoZ() + cavidade.getProfundidade()))  * zoom + origem.y);   //coord. Y do ponto inferior a dir.
+					posY  = (int)Math.round((-cavidade.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura())) * zoom + origem.y);           //coord. Y do ponto inferior a esq e dir.
+					posY1 = (int)Math.round(((-cavidade.getPosicaoZ() + cavidade.getProfundidade()))  * zoom + origem.y);   //coord. Y do ponto inferior a dir.
 		
 					g2d.setColor(new Color(0, 0, 255));
-					g2d.drawLine(posX, posY, posX1, posY1);
-					g2d.drawLine(posX1, posY1, posX2, posY2);
-					g2d.drawLine(posX2, posY2, posX3, posY2);
-					g2d.drawLine(posX3, posY2, posX, posY);
+					g2d.drawLine(posX, posY, posX1, posY);
+					g2d.drawLine(posX1, posY, posX2, posY1);
+					g2d.drawLine(posX2, posY1, posX3, posY1);
+					g2d.drawLine(posX3, posY1, posX, posY);
 					
 					p1X = p2X = (int)Math.round((cb.getPosicaoX()) * zoom + origem.x);
 					p1Y = (int)Math.round((cb.getPosicaoZ() - 5) * zoom + origem.y);

@@ -26,7 +26,7 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 	}
 	private void gneratePoints() {
 			System.out.println("gerar pontos");
-			this.setupComboBox.setEnabled(true);
+			
 			
 			
 	}

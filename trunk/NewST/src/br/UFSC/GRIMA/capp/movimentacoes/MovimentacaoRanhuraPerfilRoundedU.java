@@ -719,7 +719,7 @@ public class MovimentacaoRanhuraPerfilRoundedU {
 		double profundidade=this.ranhuraRoundedU.getProfundidade();
 		double R=this.ranhuraRoundedU.getLargura()/2;
 		double xAtual;
-		double xProximo;
+		double xProximo=0;
 		double yAtual;
 		double yProximo=0;
 		double zAtual=this.ranhuraRoundedU.getPosicaoZ();
@@ -738,9 +738,9 @@ public class MovimentacaoRanhuraPerfilRoundedU {
 		
 		zLimite = profundidade-R;
 		ultimoApLinear= zLimite%ap;
-		numeroDeApsLinear = ((zLimite-ultimoApLinear)/ap)-1;
+		numeroDeApsLinear = (zLimite-ultimoApLinear)/ap;
 		ultimoApCurva= (R-r)%ap;
-		numeroDeApsCurva = (((R-r)-ultimoApCurva)/ap)-1;	
+		numeroDeApsCurva = ((R-r)-ultimoApCurva)/ap;	
 		
 		xAtual = this.ranhuraRoundedU.getPosicaoX()+diametroFerramenta/2;
 		yAtual = this.ranhuraRoundedU.getPosicaoY()+diametroFerramenta/2;
@@ -774,7 +774,7 @@ public class MovimentacaoRanhuraPerfilRoundedU {
 			else{
 				/****************************************************MOVIMENTACAO DA PARTE LINEAR***********************************************************/
 				if(zLimite!=zAtual && this.ferramenta.getClass() == EndMill.class){
-					for(i=(int)numeroDeApsLinear;i>=0;i--){
+					for(i=(int)numeroDeApsLinear;i>0;i--){
 						zAtual -= ap;//desce a ferramenta
 						/******************MOVIMENTACAO EM Y***********************/
 						if(vaiVolta){
@@ -830,7 +830,7 @@ public class MovimentacaoRanhuraPerfilRoundedU {
 					pontoInicial = new Point3d(xAtual, yProximo, this.ws.getOperation().getRetractPlane());
 					
 					/*****************MOVIMENTACAO DA SUBIDA LINEAR*******************/
-					for(i=(int)numeroDeApsLinear;i>=0;i--){
+					for(i=(int)numeroDeApsLinear;i>0;i--){
 						zAtual -= ap;//desce a ferramenta
 						/******************MOVIMENTACAO EM Y***********************/
 						if(vaiVolta){
@@ -884,7 +884,7 @@ public class MovimentacaoRanhuraPerfilRoundedU {
 					acabamento.add(verticalTemp);
 					pontoInicial = new Point3d(xAtual, this.ranhuraRoundedU.getPosicaoY(), zAtual);
 						
-					for(i=(int)numeroDeApsCurva;i>=0;i--){
+					for(i=(int)numeroDeApsCurva;i>0;i--){
 						/******CALCULO DE QUANTO VAI ANDAR O X NA PARTE CURVA********/
 						zAtual -= ap;//desce a ferramenta
 						z=profundidade + zAtual;
@@ -964,7 +964,7 @@ public class MovimentacaoRanhuraPerfilRoundedU {
 						pontoInicial = new Point3d(xAtual, yProximo, zAtual);
 					}
 					/**************************************************************/
-					for(i=(int)numeroDeApsCurva;i>=0;i--){
+					for(i=(int)numeroDeApsCurva;i>0;i--){
 						/******CALCULO DE QUANTO VAI ANDAR O X NA PARTE CURVA********/
 						z=profundidade + zAtual;
 						if(Math.asin((R-z-r)/(R-r))!=Math.PI/2)
@@ -996,7 +996,254 @@ public class MovimentacaoRanhuraPerfilRoundedU {
 			/**********************************************************************************************************/
 		}
 		else if(this.ranhuraRoundedU.getEixo() == RanhuraPerfilRoundedU.HORIZONTAL && this.ws.getOperation().getClass() == BottomAndSideFinishMilling.class){
-			
+			pontoInicial = new Point3d(this.ranhuraRoundedU.getPosicaoX(),yAtual,this.ws.getOperation().getRetractPlane());//ponto inicializador do Array
+
+			meio=this.ranhuraRoundedU.getPosicaoY()+this.ranhuraRoundedU.getLargura()/2;
+
+			if(R==r && this.ferramenta.getClass()==BallEndMill.class){
+				yAtual = meio;
+				zAtual = -zLimite-r-this.ranhuraRoundedU.getPosicaoZ();
+				/******************MOVIMENTACAO EM Y***********************/
+				if(vaiVolta){
+					xAtual = this.ranhuraRoundedU.getPosicaoX();
+					xProximo = this.ranhuraRoundedU.getComprimento();
+					vaiVolta = false;
+				}
+				else{
+					xAtual = this.ranhuraRoundedU.getComprimento();
+					xProximo = this.ranhuraRoundedU.getPosicaoX();
+					vaiVolta = true;
+				}
+				pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+				LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+				acabamento.add(verticalTempp);
+				LinearPath horizontalTemp = new LinearPath(verticalTempp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+				acabamento.add(horizontalTemp);
+				pontoInicial = new Point3d(xProximo, yAtual, zAtual);
+			}
+			else{
+				/****************************************************MOVIMENTACAO DA PARTE LINEAR***********************************************************/
+				if(zLimite!=zAtual && this.ferramenta.getClass() == EndMill.class){
+					for(i=(int)numeroDeApsLinear;i>0;i--){
+						zAtual -= ap;//desce a ferramenta
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/*********************************************************/
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTemp);
+						LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTemp);
+						pontoInicial = new Point3d(xProximo, yAtual, zAtual);
+					}
+					/****************MOVIMENTACAO DA PARTE QUE FALTA************************/
+					if(ultimoApLinear>0){
+						zAtual -= ultimoApLinear;
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/**********************************************************/
+
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTempp);
+						LinearPath horizontalTempp = new LinearPath(verticalTempp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTempp);
+					}				
+					/********VAI PARA O PLANO SEGURO*/
+
+					zAtual = this.ranhuraRoundedU.getPosicaoZ();
+					yAtual = this.ranhuraRoundedU.getPosicaoY()+this.ranhuraRoundedU.getLargura()-diametroFerramenta/2;//muda o x de lado!
+					
+					Point3d ultimoPonto = acabamento.get(acabamento.size()-1).getFinalPoint();
+					LinearPath planoSeguro = new LinearPath(ultimoPonto, new Point3d (xProximo, yAtual,this.ws.getOperation().getRetractPlane()));
+					planoSeguro.setTipoDeMovimento(LinearPath.FAST_MOV);
+					acabamento.add(planoSeguro);
+					/*******************************/
+					pontoInicial = new Point3d(xProximo, yAtual, this.ws.getOperation().getRetractPlane());
+					
+					/*****************MOVIMENTACAO DA SUBIDA LINEAR*******************/
+					for(i=(int)numeroDeApsLinear;i>0;i--){
+						zAtual -= ap;//desce a ferramenta
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/*********************************************************/
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTemp);
+						LinearPath horizontalTemp = new LinearPath(verticalTemp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTemp);
+						pontoInicial = new Point3d(xProximo, yAtual, zAtual);
+					}
+					if(ultimoApLinear>0){
+						zAtual -= ultimoApLinear;
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/**********************************************************/
+
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTempp);
+						LinearPath horizontalTempp = new LinearPath(verticalTempp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTempp);
+						pontoInicial = new Point3d(xProximo, yAtual	, zAtual);
+					}
+				}
+/****************************************************MOVIMENTACAO DA PARTE CURVA************************************************************/
+				if(this.ferramenta.getClass()==BallEndMill.class){
+
+					zAtual = -zLimite-r-this.ranhuraRoundedU.getPosicaoZ();
+					
+					pontoFinal = new Point3d(this.ranhuraRoundedU.getPosicaoX(), yAtual, zAtual);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					acabamento.add(verticalTemp);
+					pontoInicial = new Point3d(this.ranhuraRoundedU.getPosicaoX(),yAtual, zAtual);
+						
+					for(i=(int)numeroDeApsCurva;i>0;i--){
+						/******CALCULO DE QUANTO VAI ANDAR O X NA PARTE CURVA********/
+						zAtual -= ap;//desce a ferramenta
+						z=profundidade + zAtual;
+						if(Math.asin((R-z-r)/(R-r))!=Math.PI/2)
+							temp = Math.abs(Math.tan(Math.asin((R-z-r)/(R-r)))*ap);
+						else
+							temp = meio-yAtual;
+						yAtual += temp;
+
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/**********************************************************/
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTempp);
+						LinearPath horizontalTempp = new LinearPath(verticalTempp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTempp);
+						pontoInicial = new Point3d(xProximo, yAtual, zAtual);
+					}
+					/**************************MOVIMENTACAO DA PARTE QUE FALTA*******************/
+					if(ultimoApCurva>0){
+						zAtual -= ultimoApCurva;
+
+						temp = meio-xAtual;
+						yAtual += temp;
+
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/**********************************************************/
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTempp);
+						LinearPath horizontalTempp = new LinearPath(verticalTempp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTempp);
+						pontoInicial = new Point3d(xProximo, yAtual, zAtual);
+					}
+					/***********************MOVIMENTACAO DA SUBIDA CURVA********************/
+					if(ultimoApCurva>0){
+						zAtual += ultimoApCurva;
+						yAtual += temp;
+
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/**********************************************************/
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTempp);
+						LinearPath horizontalTempp = new LinearPath(verticalTempp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTempp);
+						pontoInicial = new Point3d(xProximo, yAtual, zAtual);
+					}
+					/**************************************************************/
+					for(i=(int)numeroDeApsCurva;i>0;i--){
+						/******CALCULO DE QUANTO VAI ANDAR O X NA PARTE CURVA********/
+						z=profundidade + zAtual;
+						if(Math.asin((R-z-r)/(R-r))!=Math.PI/2)
+							temp = Math.abs(Math.tan(Math.asin((R-z-r)/(R-r)))*ap);
+						
+						yAtual +=temp;
+						zAtual += ap;//desce a ferramenta
+						/******************MOVIMENTACAO EM Y***********************/
+						if(vaiVolta){
+							xAtual = this.ranhuraRoundedU.getPosicaoX();
+							xProximo = this.ranhuraRoundedU.getComprimento();
+							vaiVolta = false;
+						}
+						else{
+							xAtual = this.ranhuraRoundedU.getComprimento();
+							xProximo = this.ranhuraRoundedU.getPosicaoX();
+							vaiVolta = true;
+						}
+						/**********************************************************/
+						pontoFinal = new Point3d(xAtual, yAtual, zAtual);
+						LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+						acabamento.add(verticalTempp);
+						LinearPath horizontalTempp = new LinearPath(verticalTempp.getFinalPoint(), new Point3d(xProximo,yAtual, zAtual));
+						acabamento.add(horizontalTempp);
+						pontoInicial = new Point3d(xProximo, yAtual, zAtual);
+					}
+				}
+			}
+			/**********************************************************************************************************/
 		}
 		
 		return acabamento;

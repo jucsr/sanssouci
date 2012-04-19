@@ -6,6 +6,7 @@ package br.UFSC.GRIMA.cad.visual;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.*;
 import com.jgoodies.forms.layout.*;
 
 /**
@@ -32,14 +33,14 @@ public class PontosDeApoioFrame2 extends JDialog {
 		setupComboBox = new JComboBox();
 		panel1 = new JPanel();
 		scrollPane1 = new JScrollPane();
-		table1 = new JTable();
+		pointsTable = new JTable();
 
 		//======== this ========
 		setTitle("Define Climp Points");
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new GridBagLayout());
 		((GridBagLayout)contentPane.getLayout()).columnWidths = new int[] {0, 5, 150, 5, 173, 5, 263, 0};
-		((GridBagLayout)contentPane.getLayout()).rowHeights = new int[] {0, 0, 5, 0, 5, 0, 0};
+		((GridBagLayout)contentPane.getLayout()).rowHeights = new int[] {0, 0, 5, 0, 5, 227, 0};
 		((GridBagLayout)contentPane.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 		((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
@@ -102,9 +103,26 @@ public class PontosDeApoioFrame2 extends JDialog {
 
 		//======== scrollPane1 ========
 		{
-			scrollPane1.setViewportView(table1);
+
+			//---- pointsTable ----
+			pointsTable.setModel(new DefaultTableModel(
+				new Object[][] {
+					{"", null, null},
+					{null, null, null},
+					{null, null, null},
+					{null, null, null},
+					{null, null, null},
+					{null, null, null},
+					{null, null, null},
+					{null, null, null},
+				},
+				new String[] {
+					"X", "Y", "Z"
+				}
+			));
+			scrollPane1.setViewportView(pointsTable);
 		}
-		contentPane.add(scrollPane1, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0,
+		contentPane.add(scrollPane1, new GridBagConstraints(2, 5, 3, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 			new Insets(0, 0, 0, 0), 0, 0));
 		pack();
@@ -126,6 +144,6 @@ public class PontosDeApoioFrame2 extends JDialog {
 	protected JComboBox setupComboBox;
 	private JPanel panel1;
 	private JScrollPane scrollPane1;
-	private JTable table1;
+	private JTable pointsTable;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

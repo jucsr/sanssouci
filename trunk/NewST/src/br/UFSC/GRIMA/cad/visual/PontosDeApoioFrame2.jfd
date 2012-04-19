@@ -17,7 +17,7 @@
        </void>
        <void method="setProperty">
         <string>$rowSpecs</string>
-        <string>0, center:0, center:5, center:0, center:5, center:227</string>
+        <string>0, center:0, center:5, center:30, center:5, center:227</string>
        </void>
        <void method="setProperty">
         <string>$alignTop</string>
@@ -100,6 +100,14 @@
           <void property="name">
            <string>pinRadioButton</string>
           </void>
+          <void method="addEvent">
+           <object class="com.jformdesigner.model.FormEvent">
+            <string>java.awt.event.ActionListener</string>
+            <string>actionPerformed</string>
+            <string>pinRadioButtonActionPerformed</string>
+            <boolean>true</boolean>
+           </object>
+          </void>
          </object>
          <object class="com.jformdesigner.model.FormLayoutConstraints">
           <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
@@ -120,6 +128,14 @@
           </void>
           <void property="name">
            <string>viseRadioButton</string>
+          </void>
+          <void method="addEvent">
+           <object class="com.jformdesigner.model.FormEvent">
+            <string>java.awt.event.ActionListener</string>
+            <string>actionPerformed</string>
+            <string>viseRadioButtonActionPerformed</string>
+            <boolean>true</boolean>
+           </object>
           </void>
          </object>
          <object class="com.jformdesigner.model.FormLayoutConstraints">
@@ -159,6 +175,14 @@
           <int>4</int>
          </void>
         </void>
+        <void method="addEvent">
+         <object class="com.jformdesigner.model.FormEvent">
+          <string>java.awt.event.ActionListener</string>
+          <string>actionPerformed</string>
+          <string>autoGenButtonActionPerformed</string>
+          <boolean>true</boolean>
+         </object>
+        </void>
        </object>
        <object class="com.jformdesigner.model.FormLayoutConstraints">
         <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
@@ -173,37 +197,136 @@
        </object>
       </void>
       <void method="add">
-       <object class="com.jformdesigner.model.FormComponent">
-        <string>javax.swing.JComboBox</string>
-        <void method="setProperty">
-         <string>model</string>
-         <object class="javax.swing.DefaultComboBoxModel">
-          <void property="selectedItem">
-           <string>Setup1</string>
+       <object class="com.jformdesigner.model.FormContainer">
+        <string>javax.swing.JPanel</string>
+        <object class="com.jformdesigner.model.FormLayoutManager">
+         <class>java.awt.GridBagLayout</class>
+         <void method="setProperty">
+          <string>$columnSpecs</string>
+          <string>90, 26, 36</string>
+         </void>
+         <void method="setProperty">
+          <string>$rowSpecs</string>
+          <string>27, 32</string>
+         </void>
+         <void method="setProperty">
+          <string>$hGap</string>
+          <int>5</int>
+         </void>
+         <void method="setProperty">
+          <string>$vGap</string>
+          <int>5</int>
+         </void>
+         <void method="setProperty">
+          <string>$alignLeft</string>
+          <boolean>true</boolean>
+         </void>
+         <void method="setProperty">
+          <string>$alignTop</string>
+          <boolean>true</boolean>
+         </void>
+        </object>
+        <void property="name">
+         <string>panel3</string>
+        </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormComponent">
+          <string>javax.swing.JLabel</string>
+          <void method="setProperty">
+           <string>text</string>
+           <string>Support Diameter:</string>
           </void>
-          <void method="addElement">
-           <string>Setup1</string>
+          <void property="name">
+           <string>diameterLabel</string>
           </void>
-          <void method="addElement">
-           <string>Setup2</string>
+         </object>
+         <object class="com.jformdesigner.model.FormLayoutConstraints">
+          <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormComponent">
+          <string>javax.swing.JTextField</string>
+          <void method="setProperty">
+           <string>text</string>
+           <string>15</string>
           </void>
-          <void method="addElement">
-           <string>	</string>
+          <void property="name">
+           <string>diameterTextField</string>
+          </void>
+         </object>
+         <object class="com.jformdesigner.model.FormLayoutConstraints">
+          <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
+          <void method="setProperty">
+           <string>gridx</string>
+           <int>1</int>
           </void>
          </object>
         </void>
-        <void method="setProperty">
-         <string>enabled</string>
-         <boolean>false</boolean>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormComponent">
+          <string>javax.swing.JLabel</string>
+          <void method="setProperty">
+           <string>text</string>
+           <string>mm</string>
+          </void>
+          <void property="name">
+           <string>diameterMMLabel</string>
+          </void>
+         </object>
+         <object class="com.jformdesigner.model.FormLayoutConstraints">
+          <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
+          <void method="setProperty">
+           <string>gridx</string>
+           <int>2</int>
+          </void>
+         </object>
         </void>
-        <void property="name">
-         <string>setupComboBox</string>
-        </void>
-        <void method="auxiliary">
-         <void method="setProperty">
-          <string>JavaCodeGenerator.variableModifiers</string>
-          <int>4</int>
-         </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormComponent">
+          <string>javax.swing.JComboBox</string>
+          <void method="setProperty">
+           <string>model</string>
+           <object class="javax.swing.DefaultComboBoxModel">
+            <void property="selectedItem">
+             <string>Setup1</string>
+            </void>
+            <void method="addElement">
+             <string>Setup1</string>
+            </void>
+            <void method="addElement">
+             <string>Setup2</string>
+            </void>
+            <void method="addElement">
+             <string>	</string>
+            </void>
+           </object>
+          </void>
+          <void method="setProperty">
+           <string>enabled</string>
+           <boolean>false</boolean>
+          </void>
+          <void property="name">
+           <string>setupComboBox</string>
+          </void>
+          <void method="auxiliary">
+           <void method="setProperty">
+            <string>JavaCodeGenerator.variableModifiers</string>
+            <int>4</int>
+           </void>
+          </void>
+         </object>
+         <object class="com.jformdesigner.model.FormLayoutConstraints">
+          <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
+          <void method="setProperty">
+           <string>gridy</string>
+           <int>1</int>
+          </void>
+          <void method="setProperty">
+           <string>gridwidth</string>
+           <int>3</int>
+          </void>
+         </object>
         </void>
        </object>
        <object class="com.jformdesigner.model.FormLayoutConstraints">
@@ -216,6 +339,10 @@
          <string>gridy</string>
          <int>3</int>
         </void>
+        <void method="setProperty">
+         <string>gridwidth</string>
+         <int>2</int>
+        </void>
        </object>
       </void>
       <void method="add">
@@ -225,7 +352,7 @@
          <class>java.awt.GridBagLayout</class>
          <void method="setProperty">
           <string>$columnSpecs</string>
-          <string>0, 0</string>
+          <string>0, 0, 0</string>
          </void>
          <void method="setProperty">
           <string>$rowSpecs</string>
@@ -431,6 +558,10 @@
             </object>
            </object>
           </void>
+          <void method="setProperty">
+           <string>visible</string>
+           <boolean>false</boolean>
+          </void>
           <void property="name">
            <string>pointsTable</string>
           </void>
@@ -450,6 +581,10 @@
         <void method="setProperty">
          <string>gridwidth</string>
          <int>3</int>
+        </void>
+        <void method="setProperty">
+         <string>vAlign</string>
+         <int>1</int>
         </void>
        </object>
       </void>

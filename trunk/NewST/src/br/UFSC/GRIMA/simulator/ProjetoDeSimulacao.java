@@ -14,7 +14,7 @@ import br.UFSC.GRIMA.entidades.features.Feature;
 public class ProjetoDeSimulacao {
 
 	private Bloco bloco;
-	
+	private Face face;
 	private Rectangle3D block;
 	
 	public final static int PLANODETROCA = 250;
@@ -44,8 +44,9 @@ public class ProjetoDeSimulacao {
 	
 	public ProjetoDeSimulacao(Bloco bloco,
 			ArrayList<Point3d> apoiosFaceInferior, Vector<Vector<Workingstep>> workingsteps) {
-
+		int indiceFace=Face.XY;
 		this.bloco = bloco;
+		this.face = (Face) bloco.getFaces().get(indiceFace);
 		this.block = this.setBlock();
 //		this.features = ((Face)bloco.faces.elementAt(0)).features;
 //		System.out.println("FEATURES : " + this.features);
@@ -54,8 +55,8 @@ public class ProjetoDeSimulacao {
 		this.workingstepsAllFaces = workingsteps;
 		System.out.println("AAAAAABBBBBBBB: " + workingsteps);
 		// Simulador funcionando corretamente apenas para uma face - nesse caso: XY
-		this.workingsteps = workingsteps.get(0);
-		ProjetoDeSimulacao.PLANODEMOVIMENTO = (int)(this.workingsteps.get(0).getOperation().getRetractPlane() + this.bloco.getProfundidade() + 8);
+		this.workingsteps = workingsteps.get(indiceFace);
+		ProjetoDeSimulacao.PLANODEMOVIMENTO = (int)(this.workingsteps.get(indiceFace).getOperation().getRetractPlane() + this.bloco.getProfundidade() + 8);
 	}
 
 	public Bloco getBloco() {
@@ -121,6 +122,14 @@ public class ProjetoDeSimulacao {
 	public void setWorkingstepsAllFaces(
 			Vector<Vector<Workingstep>> workingstepsAllFaces) {
 		this.workingstepsAllFaces = workingstepsAllFaces;
+	}
+
+	public Face getFace() {
+		return face;
+	}
+
+	public void setFace(Face face) {
+		this.face = face;
 	}
 
 

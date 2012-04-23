@@ -1,7 +1,6 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.vecmath.Point3d;
 
@@ -54,8 +53,15 @@ public class MovimentacaoRanhuraPerfilVee {
 		
 		Point3d pontoInicial;
 		Point3d pontoFinal;
+/*
+		zLimite = profundidade+R*Math.sin(alfa)-R;
+		ultimoApLinear= zLimite%ap;
+		numeroDeApsLinear = (zLimite-ultimoApLinear)/ap;
+		ultimoApCurva= (profundidade-zLimite)%ap;
+		numeroDeApsCurva = ((profundidade-zLimite)-ultimoApCurva)/ap;
+	
 		
-		
+*/	
 		zLimite = profundidade+R*(Math.sin(alfa)-1);//calcula a profundidade em que começa a curva
 		
 		if(zLimite != zAtual){

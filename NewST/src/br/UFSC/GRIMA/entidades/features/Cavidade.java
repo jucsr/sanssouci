@@ -258,7 +258,7 @@ public class Cavidade extends Feature implements Serializable {
 	public boolean validarBoss(Boss boss)
 	{
 		boolean isValid = false;
-		RoundRectangle2D cavidade = new RoundRectangle2D.Double(X, Y, comprimento, largura, raio, raio);
+		RoundRectangle2D cavidade = new RoundRectangle2D.Double(X, Y, comprimento, largura, 2 * raio, 2 * raio);
 		
 		if(boss.getClass() == CircularBoss.class)
 		{

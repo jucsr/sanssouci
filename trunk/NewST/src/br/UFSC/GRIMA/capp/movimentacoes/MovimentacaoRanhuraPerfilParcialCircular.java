@@ -46,14 +46,13 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 		double ap=this.ws.getCondicoesUsinagem().getAp();
 		double ae=this.ws.getCondicoesUsinagem().getAe();
 		double meio;
-		double alfa=60*Math.PI/180;
+		double alfa=120*Math.PI/180;
 		double Dz=this.ranhuraParcCirc.getDz();
 		double xQueSobrou=0;
 		double hold=0;
 		double ultimoAp,numeroDeAps, ultimoAe, numeroDeAes;
-		double cima;
+		double cima,hold1=0;
 		int i,k,cont;
-		
 		
 		boolean fundo = false;
 		boolean vaiVolta = true;
@@ -71,11 +70,8 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 		
 		if(alfa==Math.PI/2)
 			cima=0;
-		else if(alfa<Math.PI/2)
-			cima=this.face.getLargura()/Math.tan(alfa);
 		else
-			cima=-this.face.getLargura()/Math.tan(alfa);
-		
+			cima=this.face.getLargura()/Math.tan(alfa);
 		
 		//yAtual=this.ranhuraParcCirc.getPosicaoY()+diametroFerramenta/2+allowanceBottom;
 		
@@ -169,29 +165,30 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 						else{
 							if(vaiVolta){//VAI PRA CIMA
 								hold=xAtual;
-								if(!fundo){//MOVIMENTACAO DA ESQUERDA PRA DIREITA
-									if(xAtual+cima<xLimiteEsquerda)
-										xAtual=xLimiteEsquerda;
-									else{
-										if(xAtual+cima<=xLimiteDireita)
-											xAtual+=cima;
-										else
-											xAtual=xLimiteDireita;
-									}
-								}else{//MOVIMENTACAO DA DIREITA PRA ESQUERDA
-									if(xAtual+cima>xLimiteDireita)
-										xAtual=xLimiteDireita;
-									else{
-										if(xAtual+cima>=xLimiteEsquerda)
-											xAtual+=cima;	
-										else
+									if(!fundo){//MOVIMENTACAO DA ESQUERDA PRA DIREITA
+										if(xAtual+cima<xLimiteEsquerda)
 											xAtual=xLimiteEsquerda;
+										else{
+											if(xAtual+cima<=xLimiteDireita)
+												xAtual+=cima;
+											else
+												xAtual=xLimiteDireita;
+										}
+									}else{//MOVIMENTACAO DA DIREITA PRA ESQUERDA
+										if(xAtual+cima>xLimiteDireita)
+											xAtual=xLimiteDireita;
+										else{
+											if(xAtual+cima>=xLimiteEsquerda)
+												xAtual+=cima;	
+											else
+												xAtual=xLimiteEsquerda;
+										}
 									}
-								}
-								if(alfa==Math.PI/2)
-									yAtual=this.ranhuraParcCirc.getComprimento();
-								else
-									yAtual=Math.abs(Math.tan(alfa)*(xAtual-hold));
+									if(alfa==Math.PI/2)
+										yAtual=this.ranhuraParcCirc.getComprimento();
+									else
+										yAtual=Math.abs(Math.tan(alfa)*(xAtual-hold));
+
 							}
 							else{//VAI PRA BAIXO!
 								yAtual= this.ranhuraParcCirc.getPosicaoY();
@@ -214,97 +211,125 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 							pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 
 							if(k!=1){
-								if(vaiVolta){
+								if(vaiVolta){//VAI PRA CIMA
 									if(!fundo)//MOVIMENTACAO DA ESQUERDA PRA DIREITA
 										if(xAtual+ae>=xLimiteDireita){
-											hold = xAtual+ae;
+											hold1 = xAtual+ae;
 											xAtual=xLimiteDireita;
 										}
 										else
 											xAtual+=ae;
 									else//MOVIMENTACAO DA DIREITA PRA ESQUERDA
 										if(xAtual-ae<=xLimiteEsquerda){
-											hold = xAtual-ae;
+											hold1 = xAtual-ae;
 											xAtual=xLimiteEsquerda;
 										}
 										else
 											xAtual-=ae;
-									//Math.abs(hold-xAtual) Partezinha...
-									//tem que andar alguma coisa em y...  y=Math.tan(alfa)*Math.abs(hold-xAtual);
-									if(hold-xAtual!=0 && cont==0){
-										yVar = yAtual;
+									if(yAtual<this.face.getLargura()-0.005 && cont==0){//o calculo do yAtual tem um erro com escala 10E-10 .. por isso -0.005
+										hold1=xAtual;
+										if(alfa>90*Math.PI/180)
+											xAtual=0;
+										else if(alfa<90*Math.PI/180)
+											xAtual = this.face.getComprimento();
+										yAtual = this.face.getLargura();
 										cont++;
-										
-										pontoFinal = new Point3d(xAtual, yVar, zAtual);
+										pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 										LinearPath horizontalTemp = new LinearPath(pontoInicial,pontoFinal);
 										desbaste.add(horizontalTemp);
-										pontoInicial = new Point3d(xAtual, yVar, zAtual);
+										pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 										
-										temp2+= (Math.tan(alfa)*(ae-Math.abs(hold-xAtual)));
-									}										
-									if(xQueSobrou>0 && vaiVolta && (xAtual==xLimiteDireita || xAtual==xLimiteDireita)){
-										temp2-=Math.tan(alfa)*ae;
-										yVar=temp2;
+										xAtual=hold1;
+									}			
+									if(xQueSobrou>0 && (xAtual==this.face.getComprimento() || xAtual==0)){
+										if(k!=2){
+											if(!fundo)
+												yAtual=Math.abs(hold+ae-xAtual)*Math.tan(alfa);
+											else
+												yAtual=Math.abs(hold-ae-xAtual)*Math.tan(alfa);
+										}
+										else{
+											if(!fundo)
+												yAtual=Math.abs(hold+ultimoAe-xAtual)*Math.tan(alfa);
+											else
+												yAtual=Math.abs(hold-ultimoAe-xAtual)*Math.tan(alfa);
+										}
 									}
-									else if(vaiVolta)
-										yVar=yAtual;
 									vaiVolta=false;
 								}
-								else{
+								else{//VAI PRA BAIXO
 									if(!fundo)//MOVIMENTACAO DA ESQUERDA PRA DIREITA
-										if(xAtual+ae>=limiteDireita)
+										if(xAtual+ae>=limiteDireita){
+											hold1=xAtual+ae;
 											xAtual=limiteDireita;
+										}
 										else
 											xAtual+=ae;
 									else//MOVIMENTACAO DA DIREITA PRA ESQUERDA
-										if(xAtual-ae<=limiteEsquerda)
+										if(xAtual-ae<=limiteEsquerda){
+											hold1=xAtual-ae;
 											xAtual=limiteEsquerda;
+										}
 										else
 											xAtual-=ae;
-									yVar=yAtual;
 									vaiVolta=true;
 								}
-								pontoFinal = new Point3d(xAtual, yVar, zAtual);
+								
+								if(yAtual>this.face.getLargura())
+									yAtual=this.face.getLargura();
+								
+								pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 								LinearPath horizontalTemp = new LinearPath(pontoInicial,pontoFinal);
 								desbaste.add(horizontalTemp);
-								pontoInicial = new Point3d(xAtual, yVar, zAtual);
+								pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 							}
-							else{
-								if(vaiVolta){
+							else{//ULTIMO AE
+								if(vaiVolta){//VAI PRA CIMA
 									if(fundo){//MOVIMENTACAO DA DIREITA PRA ESQUERDA
-										if(xAtual-ultimoAe<=xLimiteEsquerda)
+										if(xAtual-ultimoAe<=xLimiteEsquerda){
+											hold1=xAtual-ultimoAe;
 											xAtual=xLimiteEsquerda;
+										}
 										else
 											xAtual-=ultimoAe;
 										fundo=false;
 									}
 									else{//MOVIMENTACAO DA ESQUERDA PRA DIREITA
-										if(xAtual+ultimoAe>=xLimiteDireita)
+										if(xAtual+ultimoAe>=xLimiteDireita){
+											hold1=xAtual+ultimoAe;
 											xAtual=xLimiteDireita;
+										}
 										else
 											xAtual+=ultimoAe;
 										fundo=true;
 									}
-									if(hold-xAtual!=0 && cont==0){
-										yVar = yAtual;
+									if(yAtual<this.face.getLargura()-0.005 && cont==0){//o calculo do yAtual tem um erro com escala 10E-10 .. por isso -0.005
+										hold1=xAtual;
+										if(alfa>90*Math.PI/180)
+											xAtual=0;
+										else if(alfa<90*Math.PI/180)
+											xAtual = this.face.getComprimento();
+										if(yAtual-this.face.getLargura()<=Math.abs(Math.tan(alfa))*ae)
+											yAtual = this.face.getLargura();
+										else
+											yAtual = Math.abs(Math.tan(alfa))*ae;
 										cont++;
-										
-										pontoFinal = new Point3d(xAtual, yVar, zAtual);
+										pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 										LinearPath horizontalTemp = new LinearPath(pontoInicial,pontoFinal);
 										desbaste.add(horizontalTemp);
-										pontoInicial = new Point3d(xAtual, yVar, zAtual);
+										pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 										
-										temp2+= (Math.tan(alfa)*(ae-Math.abs(hold-xAtual)));
-									}	
-									if(xQueSobrou>0 && vaiVolta && (xAtual==xLimiteDireita || xAtual==xLimiteDireita)){
-										temp2-=Math.tan(alfa)*ae;
-										yVar=temp2;
+										xAtual=hold1;
+									}			
+									if(xQueSobrou>0 && (xAtual==this.face.getComprimento() || xAtual==0)){
+										if(!fundo)
+											yAtual=Math.abs(hold+ultimoAe-this.face.getComprimento())*Math.tan(alfa);
+										else
+											yAtual=Math.abs(hold-ultimoAe-this.face.getComprimento())*Math.tan(alfa);
 									}
-									else if(vaiVolta)
-										yVar=yAtual;
 									vaiVolta=false;
 								}
-								else{
+								else{//VAI PRA BAIXO
 									if(fundo){//MOVIMENTACAO DA DIREITA PRA ESQUERDA
 										if(xAtual-ultimoAe<=limiteEsquerda)
 											xAtual=limiteEsquerda;
@@ -319,13 +344,16 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 											xAtual+=ultimoAe;
 										fundo=true;
 									}
-									yVar=yAtual;
 									vaiVolta=true;
 								}
-								pontoFinal = new Point3d(xAtual, yVar, zAtual);
+
+								if(yAtual>this.face.getLargura())
+									yAtual=this.face.getLargura();
+								
+								pontoFinal = new Point3d(xAtual, yAtual, zAtual);
 								LinearPath horizontalTemp = new LinearPath(pontoInicial,pontoFinal);
 								desbaste.add(horizontalTemp);
-								pontoInicial = new Point3d(xAtual, yVar, zAtual);
+								pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 							}
 						}
 					}

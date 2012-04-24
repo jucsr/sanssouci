@@ -19,7 +19,7 @@ public class TaperHoleBrep
 		this.diameter = diameter;
 		this.finalDiameter = finalDiameter;
 		this.generateVertexArray();
-		this.generateIndexArray();
+		this.generateIndexArray();   // vai ter as posicoes de como se ligam os pontos. Neste array lê-se 3 em 3. cada grupo de 3 numeros representa uma area
 		this.generateColorArray();
 	}
 	public TaperHoleBrep(String name, float depth, float diameter, float finalDiameter, int numberOfPointsInArc)
@@ -75,7 +75,7 @@ public class TaperHoleBrep
 		for (int i = 0; i < numberOfPointsInArc - 1; i++)
 		{		
 			//generate index in top face
-			indexArray[3 * i] = 0;
+			indexArray[3 * i] = 0; // dentro do colchete eh a posicao do elemento
 			indexArray[3 * i + 2] = i + 1;
 			indexArray[3 * i + 1] = i + 2;
 			

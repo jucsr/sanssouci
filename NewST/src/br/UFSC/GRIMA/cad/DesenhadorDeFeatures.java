@@ -324,7 +324,6 @@ public class DesenhadorDeFeatures
 
 					if (bossTmp.getClass() == CircularBoss.class)
 					{
-						System.out.println("testeeeee");
 						CircularBoss cb = (CircularBoss)bossTmp;
 						this.desenharCircularBossOrtogonal(cavidade, cb, face, verticeAtivado, origem, posicao, g2d);
 					} else if(bossTmp.getClass() == RectangularBoss.class)
@@ -985,19 +984,27 @@ public class DesenhadorDeFeatures
 				BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
 		float dash2[] = {15.0f, 2.5f, 1f, 2.5f};
 		System.out.println("ppp = " + posicao);
+//		float dash2[] = {5.0f, 2.5f};
 		switch(posicao)
 		{
 			case 0:		//face YZ
 				if (this.dFeaturesSecundarias)
 				{
 					System.out.println("case 0");
-					posX  = (int)Math.round((-cavidade.getPosicaoZ() - cb.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura())) * zoom + origem.x);
-					posX1  = (int)Math.round((-cavidade.getPosicaoZ() + cavidade.getProfundidade()) * zoom + origem.x);
-					posY = (int)Math.round((cb.getPosicaoY() - (cb.getDiametro2()/2)) * zoom + origem.y);    //coord. Y do ponto a direita embaixo
-					posY1 = (int)Math.round((cb.getPosicaoY() + (cb.getDiametro2()/2)) * zoom + origem.y);   //coord. Y do ponto a direita em cima
-					posY2 = (int)Math.round((cb.getPosicaoY() + (cb.getDiametro1()/2)) * zoom + origem.y);   //coord. Y do ponto a esquerda em cima
-					posY3 = (int)Math.round((cb.getPosicaoY() - (cb.getDiametro1()/2)) * zoom + origem.y);	
-//				
+					posX  = (int)Math.round((cb.Z) * zoom + origem.x);
+					posX1  = (int)Math.round((cavidade.getPosicaoZ() + cavidade.getProfundidade()) * zoom + origem.x);
+					posY = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (cb.getPosicaoX() - (cb.getDiametro2()/2))) * zoom + origem.y);    //coord. Y do ponto a direita embaixo
+					posY1 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (cb.getPosicaoX() + (cb.getDiametro2()/2))) * zoom + origem.y);   //coord. Y do ponto a direita em cima
+					posY2 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (cb.getPosicaoX() + (cb.getDiametro1()/2))) * zoom + origem.y);   //coord. Y do ponto a esquerda em cima
+					posY3 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (cb.getPosicaoX() - (cb.getDiametro1()/2))) * zoom + origem.y);	
+
+//					posX  = (int)Math.round((cb.Z) * zoom + origem.x);
+//					posX1  = (int)Math.round((cavidade.getPosicaoZ() + cavidade.getProfundidade()) * zoom + origem.x);
+//					posY = (int)Math.round(((cb.getPosicaoY() - (cb.getDiametro2()/2))) * zoom + origem.y);    //coord. Y do ponto a direita embaixo
+//					posY1 = (int)Math.round(((cb.getPosicaoY() + (cb.getDiametro2()/2))) * zoom + origem.y);   //coord. Y do ponto a direita em cima
+//					posY2 = (int)Math.round(((cb.getPosicaoY() + (cb.getDiametro1()/2))) * zoom + origem.y);   //coord. Y do ponto a esquerda em cima
+//					posY3 = (int)Math.round(((cb.getPosicaoY() - (cb.getDiametro1()/2))) * zoom + origem.y);	
+					//				
 					//Desenha as linhas
 					
 					g2d.setColor(new Color(0, 0, 255));
@@ -1009,9 +1016,10 @@ public class DesenhadorDeFeatures
 					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
 					
-					p1X = (int)Math.round(( - 5 + (cavidade.getProfundidade() + cb.getAltura())) * zoom + origem.x);
+					p1X = (int)Math.round(( - 5 + (cavidade.getProfundidade() - cb.getAltura())) * zoom + origem.x);
 					p2X = (int)Math.round((cavidade.getProfundidade() + 5) * zoom + origem.x);
 					p1Y = p2Y =(int)Math.round((cb.getPosicaoY()) * zoom + origem.y);
+					System.out.println("coordenada x, y: " + p1X + "\t" + p2X + "\t" + p1Y);
 					
 										
 					g2d.setColor(Color.RED);
@@ -1027,8 +1035,8 @@ public class DesenhadorDeFeatures
 					posX1 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() + (cb.getDiametro2()/2)) * zoom + origem.x);  //coord. X do ponto inferior a direita.
 					posX2 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() + (cb.getDiametro1()/2)) * zoom + origem.x);
 					posX3 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.x);
-					posY = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (-cavidade.getPosicaoZ() - cb.getPosicaoZ() + cavidade.getProfundidade())) * zoom + origem.y);           //coord. Y do ponto inferior a esq e dir.
-					posY1 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (-cavidade.getPosicaoZ() - cb.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura())))  * zoom + origem.y);   //coord. Y do ponto superior.
+					posY = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cavidade.getPosicaoZ() - cavidade.getProfundidade()) * zoom + origem.y);           //coord. Y do ponto inferior a esq e dir.
+					posY1 = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.Z)  * zoom + origem.y);   //coord. Y do ponto superior.
 					
 					System.out.println("cb.getPosicaoX() = "+ cb.getPosicaoX());
 					
@@ -1038,10 +1046,17 @@ public class DesenhadorDeFeatures
 					g2d.drawLine(posX2, posY1, posX3, posY1);
 					g2d.drawLine(posX3, posY1, posX, posY);
 					
-					p1X = p2X = (int)Math.round((cb.getPosicaoX()) * zoom + origem.x) ;
+					p1X = p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado)- cb.getPosicaoX()) * zoom + origem.x) ;
 					
-					p1Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (-cavidade.getPosicaoZ() - cb.getPosicaoZ() + cavidade.getProfundidade()) + 5) * zoom + origem.y);
-					p2Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (-cavidade.getPosicaoZ() - cb.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura())) - 5) * zoom + origem.y);
+					p1Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.Z + 5) * zoom + origem.y); // y de cima  E cb.Z é a dist. do topo do boss até o z=0 da primeira cavidade feita
+					p2Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cavidade.getPosicaoZ() - cavidade.getProfundidade() - 5) * zoom + origem.y);
+					
+//					// do furo
+//					p1X = p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - furo.getPosicaoX()) * zoom + origem.x) ;
+//					
+//					p1Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - furo.getPosicaoZ() + 5) * zoom + origem.y);
+//					p2Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - furo.getProfundidade() - furo.getPosicaoZ() - 5) * zoom + origem.y);
+					
 					
 					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));
@@ -1054,9 +1069,9 @@ public class DesenhadorDeFeatures
 				if (this.dFeaturesSecundarias)
 				{
 					System.out.println("CASE 2");
-					posX  = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() + cavidade.getProfundidade())) * zoom + origem.x);  //coord X esq.
-					posX1 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() -cb.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura()) ) ) * zoom + origem.x); //coord X dir.
-					posY  = (int)Math.round(((cb.getPosicaoX() - (cb.getDiametro2()/2)) * zoom + origem.y));  //coord Y inferior esq
+					posX  = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (cavidade.getPosicaoZ() + cavidade.getProfundidade())) * zoom + origem.x);  //coord X esq.
+					posX1 = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (cb.Z) ) * zoom + origem.x); //coord X dir.
+					posY  = (int)Math.round(((cb.getPosicaoX() - (cb.getDiametro2()/2))) * zoom + origem.y);  //coord Y inferior esq
 					posY1 = (int)Math.round(((cb.getPosicaoX() - (cb.getDiametro1()/2)) * zoom + origem.y));  //coord Y inf dir
 					posY2 = (int)Math.round(((cb.getPosicaoX() + (cb.getDiametro1()/2)) * zoom + origem.y));  //coord Y superior dir
 					posY3 = (int)Math.round(((cb.getPosicaoX() + (cb.getDiametro2()/2)) * zoom + origem.y));  //coord Y superior esq
@@ -1070,9 +1085,9 @@ public class DesenhadorDeFeatures
 					g2d.drawLine(posX1, posY2, posX, posY3);
 					g2d.drawLine(posX, posY3, posX, posY);
 					
-					p1X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() - cavidade.getProfundidade()) - 5) * zoom + origem.x);
-					p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (-cavidade.getPosicaoZ() -cb.getPosicaoZ() + (cavidade.getProfundidade() - cb.getAltura()) )  + 5) * zoom + origem.x);
-					p1Y = p2Y = (int)Math.round((cb.getPosicaoX()) * zoom + origem.y);
+					p1X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (cavidade.getPosicaoZ() + cavidade.getProfundidade()) - 5) * zoom + origem.x);
+					p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado) - (cb.Z)  + 5) * zoom + origem.x);
+					p1Y = p2Y = (int)Math.round((cb.getPosicaoY()) * zoom + origem.y);
 					
 					g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 							BasicStroke.JOIN_MITER, 10.0f, dash2, 0.0f));

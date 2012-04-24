@@ -371,22 +371,22 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 			case 0:
 				X = posicaoX + cavidade.getPosicaoX();
 				Y = posicaoY + cavidade.getPosicaoY();
-				Z = cavidade.getProfundidade() - alturaBoss;
+				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				break;
 			case 1:
 				X = posicaoX;
 				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
-				Z = cavidade.getProfundidade() - alturaBoss;
+				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				break;
 			case 2:
 				X = (face.getComprimento() - cavidade.getPosicaoX() - posicaoX);
 				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
-				Z = cavidade.getProfundidade() - alturaBoss;
+				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				break;
 			case 3:
 				X = (-face.getComprimento() + cavidade.getPosicaoX() + posicaoX);
 				Y = posicaoY;
-				Z = cavidade.getProfundidade() - alturaBoss;
+				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				break;
 			default:
 				break;

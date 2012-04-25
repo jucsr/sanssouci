@@ -94,27 +94,27 @@ public class CreateCircularBossFrame extends JDialog {
 							//---- spinner1 ----
 							spinner1.setModel(new SpinnerNumberModel(5.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner1, JLayeredPane.DEFAULT_LAYER);
-							spinner1.setBounds(new Rectangle(new Point(240, 45), spinner1.getPreferredSize()));
+							spinner1.setBounds(240, 240, 36, spinner1.getPreferredSize().height);
 
 							//---- spinner2 ----
 							spinner2.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner2, JLayeredPane.DEFAULT_LAYER);
-							spinner2.setBounds(new Rectangle(new Point(240, 140), spinner2.getPreferredSize()));
+							spinner2.setBounds(new Rectangle(new Point(105, 40), spinner2.getPreferredSize()));
 
 							//---- spinner3 ----
 							spinner3.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner3, JLayeredPane.DEFAULT_LAYER);
-							spinner3.setBounds(new Rectangle(new Point(90, 285), spinner3.getPreferredSize()));
+							spinner3.setBounds(new Rectangle(new Point(85, 290), spinner3.getPreferredSize()));
 
 							//---- spinner5 ----
 							spinner5.setModel(new SpinnerNumberModel(15.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner5, JLayeredPane.DEFAULT_LAYER);
-							spinner5.setBounds(new Rectangle(new Point(285, 135), spinner5.getPreferredSize()));
+							spinner5.setBounds(new Rectangle(new Point(240, 135), spinner5.getPreferredSize()));
 
 							//---- spinner6 ----
 							spinner6.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner6, JLayeredPane.DEFAULT_LAYER);
-							spinner6.setBounds(new Rectangle(new Point(125, 150), spinner6.getPreferredSize()));
+							spinner6.setBounds(new Rectangle(new Point(100, 140), spinner6.getPreferredSize()));
 
 							//---- spinner7 ----
 							spinner7.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
@@ -122,7 +122,7 @@ public class CreateCircularBossFrame extends JDialog {
 							spinner7.setBounds(new Rectangle(new Point(10, 210), spinner7.getPreferredSize()));
 
 							//---- label1 ----
-							label1.setIcon(new ImageIcon(getClass().getResource("/images/circularBoss1.png")));
+							label1.setIcon(new ImageIcon(getClass().getResource("/images/CircularBoss3.png")));
 							layeredPane1.add(label1, JLayeredPane.DEFAULT_LAYER);
 							label1.setBounds(0, 0, 370, 395);
 						}

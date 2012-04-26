@@ -20,6 +20,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilGenerico;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilParcialCircular;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilRoundedU;
@@ -32,6 +33,7 @@ import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
@@ -438,6 +440,60 @@ public class VisualTool {
 					Vector movimentacao = new Vector();
 					MovimentacaoRanhuraPerfilRoundedU detMov = new MovimentacaoRanhuraPerfilRoundedU(wsTmp);
 					ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilRoundedU();
+					
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					calculouMov = true;
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+//					System.out.println("PONTOS MOVIMENTAÇAO: " + wsTmp.getPontosMovimentacao() );
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				
+				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getTipo() == Workingstep.DESBASTE){
+					
+					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
+					Vector movimentacao = new Vector();
+					MovimentacaoRanhuraPerfilGenerico detMov = new MovimentacaoRanhuraPerfilGenerico(wsTmp);
+					ArrayList<LinearPath> path = detMov.getMovimentacaoDesbasteRanhuraPerfilGenerico();
+					
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					calculouMov = true;
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+//					System.out.println("PONTOS MOVIMENTAÇAO: " + wsTmp.getPontosMovimentacao() );
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				
+				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getTipo() == Workingstep.ACABAMENTO){
+					
+					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
+					Vector movimentacao = new Vector();
+					MovimentacaoRanhuraPerfilGenerico detMov = new MovimentacaoRanhuraPerfilGenerico(wsTmp);
+					ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilGenerico();
 					
 					 for(int j = 0; j < path.size(); j++)
 						{

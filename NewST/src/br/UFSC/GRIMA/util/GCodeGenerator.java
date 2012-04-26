@@ -14,6 +14,8 @@ import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilGenerico;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilParcialCircular;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilRoundedU;
@@ -23,9 +25,11 @@ import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.Furo;
+import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
@@ -454,6 +458,142 @@ public class GCodeGenerator {
 			    	// Criar determinador de movimentacao
 			    }
 			    
+//			    if(wsTmp.getFeature().getClass().equals(FuroBaseArredondada.class)){
+//
+//			    	MovimentacaoFuroBaseArredondada furoBaseArredondada = new MovimentacaoFuroBaseArredondada(wsTmp);
+//
+//
+//			    	this.feedRate = wsTmp.getCondicoesUsinagem().getVf();
+//			    	this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
+//			    	this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
+//
+///********************************************************DESBASTE***************************************************/	
+//			    	if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
+//				    	ArrayList<Path> desbaste = furoBaseArredondada.desbaste();
+//			    		int GAux = 0;
+//			    		if (rotationDirection == 1){GAux = 3;}
+//			    		else if (rotationDirection == 2){GAux = 4;}
+//			    		else if (rotationDirection == 3){GAux = 5;}
+//
+//			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+//			    		lineNumber = lineNumber + 10;
+//
+//			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+//			    		lineNumber = lineNumber + 10;
+//
+//			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+//			    		lineNumber = lineNumber + 10;
+//
+//			    		if (wsTmp.getOperation().isCoolant()){
+//			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+//			    			lineNumber = lineNumber + 10;
+//			    		}
+//			    		
+//			    		double xAux = desbaste.get(0).getInitialPoint().getX();
+//		    			double yAux = desbaste.get(0).getInitialPoint().getY();
+//		    			double zAux = desbaste.get(0).getInitialPoint().getZ();
+//		    			
+//		    			if(desbaste.get(0).getClass()==LinearPath.class){
+//		    				if(((LinearPath) desbaste.get(0)).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+//		    					GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//		    					lineNumber = lineNumber + 10;
+//		    				}
+//		    				else{
+//		    					GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//		    					lineNumber = lineNumber + 10;
+//		    				}
+//		    			}
+//		    			else{
+//		    				if(((CircularPath) desbaste.get(0)).getSense()==CircularPath.CCW){
+//		    					GCode = GCode + "N" + lineNumber + " G2" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//		    					lineNumber = lineNumber + 10;
+//		    				}
+//		    				else if(((CircularPath) desbaste.get(0)).getSense()==CircularPath.CW){
+//		    					GCode = GCode + "N" + lineNumber + " G3" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//		    					lineNumber = lineNumber + 10;
+//		    				}
+//		    			}
+//			    		for(int j = 0; j < desbaste.size(); j++)
+//			    		{
+//			    			xAux = desbaste.get(j).getFinalPoint().getX();
+//			    			yAux = desbaste.get(j).getFinalPoint().getY();
+//			    			zAux = desbaste.get(j).getFinalPoint().getZ();
+//
+//			    			if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+//			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//			    				lineNumber = lineNumber + 10;
+//			    			}
+//			    			else{
+//			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//			    				lineNumber = lineNumber + 10;
+//			    			}
+//			    		}
+//			    	}
+///********************************************************ACABAMENTO***************************************************/	
+//			    	if(wsTmp.getOperation().getClass() == BottomAndSideFinishMilling.class){
+//				    	ArrayList<LinearPath> acabamento = ranhuraQuadU.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU();
+//			    		
+//				    	int GAux = 0;
+//			    		if (rotationDirection == 1){GAux = 3;}
+//			    		else if (rotationDirection == 2){GAux = 4;}
+//			    		else if (rotationDirection == 3){GAux = 5;}
+//
+//			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+//			    		lineNumber = lineNumber + 10;
+//
+//			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+//			    		lineNumber = lineNumber + 10;
+//
+//			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+//			    		lineNumber = lineNumber + 10;
+//
+//			    		if (wsTmp.getOperation().isCoolant()){
+//			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+//			    			lineNumber = lineNumber + 10;
+//			    		}
+//
+//			    		double xAux = acabamento.get(0).getInitialPoint().getX();
+//		    			double yAux = acabamento.get(0).getInitialPoint().getY();
+//		    			double zAux = acabamento.get(0).getInitialPoint().getZ();
+//		    			
+//		    			
+//		    			if(acabamento.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+//		    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//		    				lineNumber = lineNumber + 10;
+//		    			}
+//		    			else{
+//		    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//		    				lineNumber = lineNumber + 10;
+//		    			}
+//			    		
+//			    		for(int j = 0; j < acabamento.size(); j++)
+//			    		{
+//
+//			    			xAux = acabamento.get(j).getFinalPoint().getX();
+//			    			yAux = acabamento.get(j).getFinalPoint().getY();
+//			    			zAux = acabamento.get(j).getFinalPoint().getZ();
+//
+//
+//			    			//********** Testar se é fast(G0) ou slow(G1)
+//			    			if(acabamento.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+//			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//			    				lineNumber = lineNumber + 10;
+//			    			}
+//			    			else{
+//			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//			    				lineNumber = lineNumber + 10;
+//			    			}					
+//			    		}
+//			    	}
+//
+//			    	if (wsTmp.getOperation().isCoolant()){
+//			    		GCode = GCode +"N" + lineNumber + " M9" + "\n";
+//			    		lineNumber = lineNumber + 10;
+//			    	}
+//			    }
+
+/*************************************************************************************************************************************/
+			    
 			    if(wsTmp.getFeature().getClass().equals(RanhuraPerfilQuadradoU.class)){
 
 			    	MovimentacaoRanhuraPerfilQuadradoU ranhuraQuadU = new MovimentacaoRanhuraPerfilQuadradoU(wsTmp);
@@ -579,6 +719,133 @@ public class GCodeGenerator {
 			    }
 
 /*************************************************************************************************************************************/
+			    
+			    if(wsTmp.getFeature().getClass().equals(RanhuraPerfilBezier.class)){
+
+			    	MovimentacaoRanhuraPerfilGenerico ranhuraBezier= new MovimentacaoRanhuraPerfilGenerico(wsTmp);
+
+
+			    	this.feedRate = wsTmp.getCondicoesUsinagem().getVf();
+			    	this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
+			    	this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
+
+/********************************************************DESBASTE***************************************************/	
+			    	if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
+				    	ArrayList<LinearPath> desbaste = ranhuraBezier.getMovimentacaoDesbasteRanhuraPerfilGenerico();
+			    		int GAux = 0;
+			    		if (rotationDirection == 1){GAux = 3;}
+			    		else if (rotationDirection == 2){GAux = 4;}
+			    		else if (rotationDirection == 3){GAux = 5;}
+
+			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		if (wsTmp.getOperation().isCoolant()){
+			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+			    			lineNumber = lineNumber + 10;
+			    		}
+			    		
+			    		double xAux = desbaste.get(0).getInitialPoint().getX();
+		    			double yAux = desbaste.get(0).getInitialPoint().getY();
+		    			double zAux = desbaste.get(0).getInitialPoint().getZ();
+		    			
+		    			
+		    			if(desbaste.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+		    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+		    			else{
+		    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+
+			    		for(int j = 0; j < desbaste.size(); j++)
+			    		{
+			    			xAux = desbaste.get(j).getFinalPoint().getX();
+			    			yAux = desbaste.get(j).getFinalPoint().getY();
+			    			zAux = desbaste.get(j).getFinalPoint().getZ();
+
+			    			if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    			else{
+			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    		}
+			    	}
+/********************************************************ACABAMENTO***************************************************/	
+			    	if(wsTmp.getOperation().getClass() == BottomAndSideFinishMilling.class){
+				    	ArrayList<LinearPath> acabamento = ranhuraBezier.getMovimentacaoAcabamentoRanhuraPerfilGenerico();
+			    		
+				    	int GAux = 0;
+			    		if (rotationDirection == 1){GAux = 3;}
+			    		else if (rotationDirection == 2){GAux = 4;}
+			    		else if (rotationDirection == 3){GAux = 5;}
+
+			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		if (wsTmp.getOperation().isCoolant()){
+			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+			    			lineNumber = lineNumber + 10;
+			    		}
+
+			    		double xAux = acabamento.get(0).getInitialPoint().getX();
+		    			double yAux = acabamento.get(0).getInitialPoint().getY();
+		    			double zAux = acabamento.get(0).getInitialPoint().getZ();
+		    			
+		    			
+		    			if(acabamento.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+		    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+		    			else{
+		    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+			    		
+			    		for(int j = 0; j < acabamento.size(); j++)
+			    		{
+
+			    			xAux = acabamento.get(j).getFinalPoint().getX();
+			    			yAux = acabamento.get(j).getFinalPoint().getY();
+			    			zAux = acabamento.get(j).getFinalPoint().getZ();
+
+
+			    			//********** Testar se é fast(G0) ou slow(G1)
+			    			if(acabamento.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    			else{
+			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}					
+			    		}
+			    	}
+
+			    	if (wsTmp.getOperation().isCoolant()){
+			    		GCode = GCode +"N" + lineNumber + " M9" + "\n";
+			    		lineNumber = lineNumber + 10;
+			    	}
+			    }
+
+/*************************************************************************************************************************************/
+			    
 			    if(wsTmp.getFeature().getClass().equals(RanhuraPerfilCircularParcial.class)){
 
 			    	MovimentacaoRanhuraPerfilParcialCircular ranhuraParcCirc= new MovimentacaoRanhuraPerfilParcialCircular(wsTmp, (Face) projeto.getBloco().getFaces().get(i));

@@ -12,7 +12,7 @@ public abstract class MachiningOperation implements Serializable
 {
 	private String id = "";
 	private double retractPlane; // plano de retracao
-	private Point3d startPoint; // ponto de inicio da operacao
+	private Point3d startPoint = new Point3d(); // ponto de inicio da operacao
 	private boolean coolant = true;
 	public MachiningOperation(String id, double retractPlane)
 	{

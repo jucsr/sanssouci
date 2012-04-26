@@ -1,12 +1,15 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
-import javax.swing.JOptionPane;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
+import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
+import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
@@ -21,10 +24,11 @@ public class MovimentacaoFuroBaseArredondada
 	public MovimentacaoFuroBaseArredondada(Workingstep ws)
 	{
 		this.ws = ws;
+		this.furo = (FuroBaseArredondada)this.ws.getFeature();
 	}
 	public ArrayList<Path> desbaste()
 	{
-		this.furo = (FuroBaseArredondada)this.ws.getFeature();
+		
 		/**
 		 *  ===== Parte cilindrica == 
 		 */
@@ -111,6 +115,7 @@ public class MovimentacaoFuroBaseArredondada
 			}
 			System.out.println("zatual = " + zAtual);
 			LinearPath voltaAoCentro = new LinearPath(this.movimentacaoDesbaste.get(this.movimentacaoDesbaste.size() - 1).getFinalPoint(), new Point3d());
+			this.movimentacaoDesbaste.add(voltaAoCentro);
 		}
 		
 		/**
@@ -119,29 +124,142 @@ public class MovimentacaoFuroBaseArredondada
 		
 		return this.movimentacaoDesbaste;
 	}
+	public ArrayList<Path> movimentacaoFuracao()
+	{
+		ArrayList<Path> mov = new ArrayList<Path>();
+		MachiningOperation operation = this.ws.getOperation();
+		
+		if (operation.getClass().equals(Drilling.class))
+		{
+			double zAtual = 0;
+			double x = furo.X, y = furo.Y;
+			double profundidadeDeQuedra = 4;
+			double alturaDeQuebra = 2;
+			double profundidadeDeQuebraUsada = profundidadeDeQuedra;
+			double limiteProfundidade;
+			if(((Drilling)operation).getCuttingDepth() != 0)
+				limiteProfundidade = ((Drilling)operation).getCuttingDepth();
+			else
+				limiteProfundidade = this.furo.getProfundidade() + this.furo.getR1();
+			
+			boolean terminouZ = false;
+			Point3d pontoInicial = new Point3d(x, y, operation.getRetractPlane());
+			Point3d descendo = new Point3d(x, y, -this.furo.Z + this.ws.getOperation().getStartPoint().z);
+			LinearPath init = new LinearPath(pontoInicial, descendo);
+			zAtual = init.getFinalPoint().z;
+			init.setTipoDeMovimento(LinearPath.FAST_MOV);
+			mov.add(init);
+			
+			// movimentacao pica-pau
+			while(!terminouZ)
+			{
+				if(zAtual - profundidadeDeQuedra > -(this.furo.Z + limiteProfundidade))
+				{
+					profundidadeDeQuebraUsada = profundidadeDeQuedra;
+				} else
+				{
+					profundidadeDeQuebraUsada = this.furo.Z + limiteProfundidade + zAtual;
+					terminouZ = true;
+				}
+				zAtual = zAtual - profundidadeDeQuebraUsada;
+				LinearPath verticalDescendo = new LinearPath(new Point3d(x, y, mov.get(mov.size() - 1).getFinalPoint().z), new Point3d(x, y, zAtual));
+				verticalDescendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
+				mov.add(verticalDescendo);
+				// subir um pouco
+				zAtual = zAtual + alturaDeQuebra;
+				LinearPath verticalSubindo = new LinearPath(new Point3d(x, y, mov.get(mov.size() - 1).getFinalPoint().z), new Point3d(x, y, zAtual));
+				verticalSubindo.setTipoDeMovimento(LinearPath.FAST_MOV);
+				mov.add(verticalSubindo);
+//				System.out.println("ZATUAL = " + zAtual);
+			}
+			LinearPath verticalFinal = new LinearPath(new Point3d(x, y, mov.get(mov.size() - 1).getFinalPoint().z), new Point3d(x, y, operation.getRetractPlane()));
+			verticalFinal.setTipoDeMovimento(LinearPath.FAST_MOV);
+			mov.add(verticalFinal);
+		}
+		return mov;
+	}
+	public ArrayList<Path> movimentacaoCenterDrilling()
+	{
+		ArrayList<Path> mov = new ArrayList<Path>();
+		
+		
+		if (this.ws.getOperation().getClass().equals(CenterDrilling.class))
+		{
+			CenterDrilling operation = (CenterDrilling)this.ws.getOperation();
+			Point3d initialPoint = new Point3d(furo.X, furo.Y, - (operation.getRetractPlane()));
+			Point3d point2 = new Point3d(furo.X, furo.Y, - (furo.Z + operation.getStartPoint().z));
+			LinearPath approach = new LinearPath(initialPoint, point2);
+			approach.setTipoDeMovimento(LinearPath.FAST_MOV);
+			mov.add(approach);
+			
+			Point3d finalPoint = new Point3d(furo.X, furo.Y, -(furo.Z + operation.getCuttingDepth()));
+			LinearPath penetration = new LinearPath(point2, finalPoint);
+			mov.add(penetration);
+			
+			LinearPath exit = new LinearPath(penetration.getFinalPoint(), new Point3d(furo.X, furo.Y, operation.getRetractPlane()));
+		}
+		return mov;
+	}
 	public ArrayList<Path> acabamento()
 	{
 		ArrayList<Path> movimentacaoAcabamento = new ArrayList<Path>();
 		
 		return acabamento();
 	}
-	public static ArrayList<Point3d> interpolateCircularPath(ArrayList<Path> mov)
+	public static Vector<Point3d> transformCircularPathInPoints3d(ArrayList<Path> mov)
 	{
-		ArrayList<Point3d> saida = new ArrayList<Point3d>();
+		Vector<Point3d> saida = new Vector<Point3d>();
 		Point3d pontoInicial = mov.get(0).getInitialPoint();
 		saida.add(pontoInicial);
 		for(Path pathTmp: mov)
 		{
 			if(pathTmp.getClass().equals(LinearPath.class))
 			{
-//				Point3d pontoTmp = new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, pathTmp.getFinalPoint().z);
-				Point3d pontoTmp = pathTmp.getFinalPoint(); // CUIDADO!!! veja se vai criar um novo ponto
+				Point3d pontoTmp = new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, pathTmp.getFinalPoint().z); 
 				saida.add(pontoTmp);
 			}else if(pathTmp.getClass().equals(CircularPath.class))
 			{
-				
+				ArrayList<Point3d> interpolacao = interpolarCircularPath((CircularPath)pathTmp, 10);
+				{
+					for(int i = 0; i < interpolacao.size(); i++)
+					{
+						saida.add(interpolacao.get(i));
+					}
+				}
 			}
 		}
 		return saida;
 	}
+	public static ArrayList<Point3d> interpolarCircularPath(CircularPath path, int numeroDePontosNaInterpolacao)
+	{
+		ArrayList<Point3d> saida = new ArrayList<Point3d>();
+		double deltaAngulo = path.getAngulo() / (numeroDePontosNaInterpolacao - 1);
+		double anguloTmp = path.getinicialAngle() + deltaAngulo;
+		double x, y, z;
+		saida.add(path.getInitialPoint());
+		for(int i = 1; i < numeroDePontosNaInterpolacao - 1; i++)
+		{
+			x = path.getCenter().x +
+			path.getRadius() * Math.cos(anguloTmp);
+			y = path.getCenter().y + path.getRadius() * Math.sin(anguloTmp);
+			z = path.getCenter().z;
+			saida.add(new Point3d(x, y, z));
+			anguloTmp = anguloTmp + deltaAngulo;
+		}
+		saida.add(path.getFinalPoint());
+		return saida;
+	}
+//	private static Vector<Point3d> interpolarCircularPath(CircularPath path, int numeroDePontosNaInterpolacao)
+//	{
+//		Vector<Point3d> saida = new Vector<Point3d>();
+//		double delytAngulo = path.getAngulo() / numeroDePontosNaInterpolacao;
+//		double anguloTmp = path.getAngulo();
+//		double x, y, z;
+//		for(int i = 0; i < numeroDePontosNaInterpolacao; i++)
+//		{
+//			x = path.getCenter().x +  path.getCenter().x * Math.cos(anguloTmp);
+//			anguloTmp = anguloTmp + delytAngulo;
+//		}
+//		return saida;
+//	}
 }

@@ -46,7 +46,7 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 		double ap=this.ws.getCondicoesUsinagem().getAp();
 		double ae=this.ws.getCondicoesUsinagem().getAe();
 		double meio;
-		double alfa=90*Math.PI/180;
+		double alfa=80*Math.PI/180;
 		double Dz=this.ranhuraParcCirc.getDz();
 		double xQueSobrou=0;
 		double hold=0;
@@ -134,7 +134,7 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 						zAtual-=ultimoAp;
 
 					cont=0;
-					//Renovação dos limites de X.......
+					//Renovaï¿½ï¿½o dos limites de X.......
 					limiteEsquerda+=temp;
 					limiteDireita-=temp;
 
@@ -189,8 +189,8 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 					desbaste.add(verticalTemp);
 					pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 
-					for(k=(int)numeroDeAes;k>0;k--){//COMEÇA A FAZER A MOVIMENTAÇAO DE UM AP
-						if(k==1 && ultimoAe==0){//SE O ULTIMOAE FOR ZERO ELE SAI DO LAÇO
+					for(k=(int)numeroDeAes;k>0;k--){//COMEï¿½A A FAZER A MOVIMENTAï¿½AO DE UM AP
+						if(k==1 && ultimoAe==0){//SE O ULTIMOAE FOR ZERO ELE SAI DO LAï¿½O
 							if(fundo)
 								fundo=false;//TROCA OS PARAMETROS
 							else
@@ -295,14 +295,14 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 													desbaste.add(horizontalTemp);
 													pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 													
-													yAtual+=(xAtual-ae)/Math.abs(Math.tan(alfa));//xAtual-ae é um numero negativo, por isso soma
+													yAtual+=(xAtual-ae)/Math.abs(Math.tan(alfa));//xAtual-ae ï¿½ um numero negativo, por isso soma
 												}
 											}
 										}
 										else if(alfa<90*Math.PI/180){//ranhura deitada para direita
 											if(!fundo){//MOVIMENTO DA ESQUERDA PARA DIREITA ---->
 												if(xAtual==this.face.getComprimento())
-													yAtual-=Math.tan(alfa)*ae;//O XATUAL ESTÁ BUGANDO O cima....
+													yAtual-=Math.tan(alfa)*ae;//O XATUAL ESTï¿½ BUGANDO O cima....
 												else if(xAtual+ae>this.face.getComprimento()){
 													hold2=xAtual;
 													xAtual=this.face.getComprimento();
@@ -416,7 +416,7 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 													desbaste.add(horizontalTemp);
 													pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 													
-													yAtual+=(xAtual-ultimoAe)/Math.abs(Math.tan(alfa));//xAtual-ae é um numero negativo, por isso soma
+													yAtual+=(xAtual-ultimoAe)/Math.abs(Math.tan(alfa));//xAtual-ae ï¿½ um numero negativo, por isso soma
 												}
 												fundo=true;
 											}
@@ -424,7 +424,7 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 										else if(alfa<90*Math.PI/180){//ranhura deitada para direita
 											if(!fundo){//MOVIMENTO DA ESQUERDA PARA DIREITA ---->
 												if(xAtual==this.face.getComprimento())
-													yAtual-=Math.tan(alfa)*ultimoAe;//O XATUAL ESTÁ BUGANDO O cima....
+													yAtual-=Math.tan(alfa)*ultimoAe;//O XATUAL ESTï¿½ BUGANDO O cima....
 												else if(xAtual+ae>this.face.getComprimento()){
 													hold2=xAtual;
 													xAtual=this.face.getComprimento();
@@ -567,7 +567,7 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 						zAtual-=ultimoAp;
 
 					cont=0;
-					//Renovação dos limites de X.......
+					//Renovaï¿½ï¿½o dos limites de X.......
 					limiteEsquerda+=temp;
 					limiteDireita-=temp;
 
@@ -622,8 +622,8 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 					desbaste.add(verticalTemp);
 					pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 
-					for(k=(int)numeroDeAes;k>0;k--){//COMEÇA A FAZER A MOVIMENTAÇAO DE UM AP
-						if(k==1 && ultimoAe==0){//SE O ULTIMOAE FOR ZERO ELE SAI DO LAÇO
+					for(k=(int)numeroDeAes;k>0;k--){//COMEï¿½A A FAZER A MOVIMENTAï¿½AO DE UM AP
+						if(k==1 && ultimoAe==0){//SE O ULTIMOAE FOR ZERO ELE SAI DO LAï¿½O
 							if(fundo)
 								fundo=false;//TROCA OS PARAMETROS
 							else
@@ -728,14 +728,14 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 													desbaste.add(horizontalTemp);
 													pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 													
-													xAtual+=(yAtual-ae)/Math.abs(Math.tan(alfa));//xAtual-ae é um numero negativo, por isso soma
+													xAtual+=(yAtual-ae)/Math.abs(Math.tan(alfa));//xAtual-ae ï¿½ um numero negativo, por isso soma
 												}
 											}
 										}
 										else if(alfa<90*Math.PI/180){//ranhura deitada para direita
 											if(!fundo){//MOVIMENTO DA ESQUERDA PARA DIREITA ---->
 												if(yAtual==this.face.getLargura())
-													xAtual-=Math.tan(alfa)*ae;//O XATUAL ESTÁ BUGANDO O cima....
+													xAtual-=Math.tan(alfa)*ae;//O XATUAL ESTï¿½ BUGANDO O cima....
 												else if(yAtual+ae>this.face.getLargura()){
 													hold2=yAtual;
 													yAtual=this.face.getComprimento();
@@ -849,7 +849,7 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 													desbaste.add(horizontalTemp);
 													pontoInicial = new Point3d(xAtual, yAtual, zAtual);
 													
-													xAtual+=(yAtual-ultimoAe)/Math.abs(Math.tan(alfa));//xAtual-ae é um numero negativo, por isso soma
+													xAtual+=(yAtual-ultimoAe)/Math.abs(Math.tan(alfa));//xAtual-ae ï¿½ um numero negativo, por isso soma
 												}
 												fundo=true;
 											}
@@ -857,7 +857,7 @@ public class MovimentacaoRanhuraPerfilParcialCircular {
 										else if(alfa<90*Math.PI/180){//ranhura deitada para direita
 											if(!fundo){//MOVIMENTO DA ESQUERDA PARA DIREITA ---->
 												if(yAtual==this.face.getLargura())
-													xAtual-=Math.tan(alfa)*ultimoAe;//O XATUAL ESTÁ BUGANDO O cima....
+													xAtual-=Math.tan(alfa)*ultimoAe;//O XATUAL ESTï¿½ BUGANDO O cima....
 												else if(yAtual+ae>this.face.getLargura()){
 													hold2=yAtual;
 													xAtual=this.face.getComprimento();

@@ -27,7 +27,6 @@ import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
-import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Furo;
 import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
@@ -460,11 +459,60 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}  else if (featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(CenterDrilling.class))
-				{
+				}  else if (featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(CenterDrilling.class)){
 					
-				} else if(featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(Drilling.class))
-				{
+					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
+					Vector movimentacao = new Vector();
+					MovimentacaoFuroBaseArredondada detMov = new MovimentacaoFuroBaseArredondada(wsTmp);
+					ArrayList<Path> path = detMov.movimentacaoCenterDrilling();
+					
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					calculouMov = true;
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+//					System.out.println("PONTOS MOVIMENTAÇAO: " + wsTmp.getPontosMovimentacao() );
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+					
+				} else if(featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(Drilling.class)){
+
+					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
+					Vector movimentacao = new Vector();
+					MovimentacaoFuroBaseArredondada detMov = new MovimentacaoFuroBaseArredondada(wsTmp);
+					ArrayList<Path> path = detMov.movimentacaoFuracao();
+					
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					calculouMov = true;
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+//					System.out.println("PONTOS MOVIMENTAÇAO: " + wsTmp.getPontosMovimentacao() );
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				
 					
 				}else if (featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(BottomAndSideRoughMilling.class))
 				{

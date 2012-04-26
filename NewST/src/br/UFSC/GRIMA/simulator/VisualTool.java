@@ -19,6 +19,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilParcialCircular;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilRoundedU;
@@ -28,6 +29,7 @@ import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Furo;
+import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
@@ -458,6 +460,25 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
+				}  else if (featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(CenterDrilling.class))
+				{
+					
+				} else if(featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(Drilling.class))
+				{
+					
+				}else if (featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(BottomAndSideRoughMilling.class))
+				{
+					MovimentacaoFuroBaseArredondada mov = new MovimentacaoFuroBaseArredondada(wsTmp);
+					wsTmp.setPontosMovimentacao(MovimentacaoFuroBaseArredondada.transformCircularPathInPoints3d(mov.desbaste()));
+					calculouMov = true;
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+//					System.out.println("PONTOS MOVIMENTAÇAO: " + wsTmp.getPontosMovimentacao() );
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				}
 				else{
 					System.out.println("Feature Class Desconhecida (goToNextWorkingstepPoint): " + projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFeature().getClass());
@@ -549,7 +570,7 @@ public class VisualTool {
 				}
 			}
 			
-		}else if (featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class)) {
+		}else if (featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class) || featClass.equals(FuroBaseArredondada.class)) {
 			
 			if (!isMoving) {
 				isMoving = true;

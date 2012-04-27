@@ -16,6 +16,7 @@ import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
+import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
@@ -38,7 +39,11 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
+import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
+import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.util.LinearPath;
@@ -243,7 +248,7 @@ public class VisualTool {
 				setNextY(point3d.getY());
 				setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-			}else if(featClass.equals(RanhuraPerfilCircularParcial.class) && wsTmp.getTipo() == Workingstep.DESBASTE) {
+			}else if(featClass.equals(RanhuraPerfilCircularParcial.class) && wsTmp.getFerramenta().getClass().equals(FaceMill.class)) {
 				
 				wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 				Vector movimentacao = new Vector();
@@ -271,7 +276,7 @@ public class VisualTool {
 				setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 			
 				
-				}else if(featClass.equals(RanhuraPerfilCircularParcial.class) && wsTmp.getTipo() == Workingstep.ACABAMENTO){
+				}else if(featClass.equals(RanhuraPerfilCircularParcial.class) && wsTmp.getFerramenta().getClass().equals(BallEndMill.class)){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -298,7 +303,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}else if(featClass.equals(RanhuraPerfilQuadradoU.class) && wsTmp.getTipo() == Workingstep.DESBASTE) {
+				}else if(featClass.equals(RanhuraPerfilQuadradoU.class) && wsTmp.getFerramenta().getClass().equals(FaceMill.class)) {
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -326,7 +331,7 @@ public class VisualTool {
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
 					
-					}else if(featClass.equals(RanhuraPerfilQuadradoU.class) && wsTmp.getTipo() == Workingstep.ACABAMENTO){
+					}else if(featClass.equals(RanhuraPerfilQuadradoU.class) && (wsTmp.getFerramenta().getClass().equals(BullnoseEndMill.class) || wsTmp.getFerramenta().getClass().equals(BallEndMill.class))){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -353,7 +358,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}else if(featClass.equals(RanhuraPerfilVee.class) && wsTmp.getTipo() == Workingstep.DESBASTE){
+				}else if(featClass.equals(RanhuraPerfilVee.class) && wsTmp.getFerramenta().getClass().equals(FaceMill.class)){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -380,7 +385,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}else if(featClass.equals(RanhuraPerfilVee.class) && wsTmp.getTipo() == Workingstep.ACABAMENTO){
+				}else if(featClass.equals(RanhuraPerfilVee.class) && wsTmp.getFerramenta().getClass().equals(BallEndMill.class)){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -407,7 +412,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 					
-				}else if(featClass.equals(RanhuraPerfilRoundedU.class) && wsTmp.getTipo() == Workingstep.DESBASTE){
+				}else if(featClass.equals(RanhuraPerfilRoundedU.class) && wsTmp.getFerramenta().getClass().equals(FaceMill.class)){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -434,7 +439,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}else if(featClass.equals(RanhuraPerfilRoundedU.class) && wsTmp.getTipo() == Workingstep.ACABAMENTO){
+				}else if(featClass.equals(RanhuraPerfilRoundedU.class) && (wsTmp.getFerramenta().getClass().equals(BallEndMill.class) || wsTmp.getFerramenta().getClass().equals(EndMill.class))){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -461,7 +466,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getTipo() == Workingstep.DESBASTE){
+				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getFerramenta().getClass().equals(FaceMill.class)){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -488,7 +493,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getTipo() == Workingstep.ACABAMENTO){
+				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getOperation().getClass().equals(FreeformOperation.class)){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();
@@ -681,7 +686,7 @@ public class VisualTool {
 				}
 			}
 			
-		}else if (featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class) || featClass.equals(FuroBaseArredondada.class)) {
+		}else if (featClass.equals(RanhuraPerfilBezier.class) || featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class) || featClass.equals(FuroBaseArredondada.class)) {
 			
 			if (!isMoving) {
 				isMoving = true;

@@ -12,6 +12,7 @@ import jsdai.SCombined_schema.EPlus_minus_value;
 import jsdai.SCombined_schema.ESlot;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
+import br.UFSC.GRIMA.bReps.Bezier_1;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
@@ -138,8 +139,14 @@ public class RanhuraPerfilBezierReader {
 		}
 		
 		double tolerancia = ((EPlus_minus_value)((ELinear_path)slot.getCourse_of_travel(null)).getDistance(null).getImplicit_tolerance(null)).getUpper_limit(null);
-				
+
+		Point3d[] pontosDaCurva = (new Bezier_1(pontosDeControle, 101)).meshArray;
+		for(i=0;i<pontosDaCurva.length;i++){
+			if(pontosDaCurva[i].getZ()<profundidadeRanhura)
+				profundidadeRanhura=-pontosDaCurva[i].getZ();
+		}
 		RanhuraPerfilBezier ranhura = new RanhuraPerfilBezier(id, x, y, z,locX,locY,locZ,larguraRanhura,profundidadeRanhura,eixoAtual,pontosDeControle);
+		ranhura.setPontosDaCurva(pontosDaCurva);
 		ranhura.setTolerancia(tolerancia);
 		ranhura.setComprimento(comprimentoRanhura);
 

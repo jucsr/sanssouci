@@ -29,6 +29,8 @@ public class CreateRectangularBossFrame extends JFrame {
 		spinner3 = new JSpinner();
 		spinner5 = new JSpinner();
 		spinner6 = new JSpinner();
+		spinner7 = new JSpinner();
+		spinner8 = new JSpinner();
 		label1 = new JLabel();
 		panel10 = new JPanel();
 		panel11 = new JPanel();
@@ -92,7 +94,7 @@ public class CreateRectangularBossFrame extends JFrame {
 							//---- spinner2 ----
 							spinner2.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner2, JLayeredPane.DEFAULT_LAYER);
-							spinner2.setBounds(235, 145, 36, spinner2.getPreferredSize().height);
+							spinner2.setBounds(245, 150, 36, spinner2.getPreferredSize().height);
 
 							//---- spinner3 ----
 							spinner3.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
@@ -102,17 +104,22 @@ public class CreateRectangularBossFrame extends JFrame {
 							//---- spinner5 ----
 							spinner5.setModel(new SpinnerNumberModel(15.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner5, JLayeredPane.DEFAULT_LAYER);
-							spinner5.setBounds(250, 40, 35, spinner5.getPreferredSize().height);
+							spinner5.setBounds(95, 40, 35, spinner5.getPreferredSize().height);
 
 							//---- spinner6 ----
 							spinner6.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner6, JLayeredPane.DEFAULT_LAYER);
 							spinner6.setBounds(85, 290, 36, spinner6.getPreferredSize().height);
+							layeredPane1.add(spinner7, JLayeredPane.DEFAULT_LAYER);
+							spinner7.setBounds(245, 90, 35, spinner7.getPreferredSize().height);
+							layeredPane1.add(spinner8, JLayeredPane.DEFAULT_LAYER);
+							spinner8.setBounds(165, 240, 34, 20);
 
 							//---- label1 ----
+							label1.setText("text");
 							label1.setIcon(new ImageIcon(getClass().getResource("/images/RectangularBoss.png")));
 							layeredPane1.add(label1, JLayeredPane.DEFAULT_LAYER);
-							label1.setBounds(0, 0, 370, 395);
+							label1.setBounds(5, 5, 360, 385);
 						}
 						panel9.add(layeredPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -302,7 +309,9 @@ public class CreateRectangularBossFrame extends JFrame {
 	protected JSpinner spinner3;
 	protected JSpinner spinner5;
 	protected JSpinner spinner6;
-	protected JLabel label1;
+	protected JSpinner spinner7;
+	protected JSpinner spinner8;
+	private JLabel label1;
 	private JPanel panel10;
 	private JPanel panel11;
 	private JLabel label17;

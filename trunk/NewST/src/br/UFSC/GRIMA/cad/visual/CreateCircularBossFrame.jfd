@@ -177,7 +177,7 @@
                   </void>
                   <void method="setProperty">
                    <string>width</string>
-                   <int>36</int>
+                   <int>30</int>
                   </void>
                  </object>
                 </void>
@@ -212,11 +212,15 @@
                   <null/>
                   <void method="setProperty">
                    <string>x</string>
-                   <int>105</int>
+                   <int>100</int>
                   </void>
                   <void method="setProperty">
                    <string>y</string>
                    <int>40</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>width</string>
+                   <int>36</int>
                   </void>
                  </object>
                 </void>
@@ -251,11 +255,15 @@
                   <null/>
                   <void method="setProperty">
                    <string>x</string>
-                   <int>85</int>
+                   <int>80</int>
                   </void>
                   <void method="setProperty">
                    <string>y</string>
                    <int>290</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>width</string>
+                   <int>36</int>
                   </void>
                  </object>
                 </void>
@@ -296,6 +304,10 @@
                    <string>y</string>
                    <int>135</int>
                   </void>
+                  <void method="setProperty">
+                   <string>width</string>
+                   <int>35</int>
+                  </void>
                  </object>
                 </void>
                 <void method="add">
@@ -329,11 +341,15 @@
                   <null/>
                   <void method="setProperty">
                    <string>x</string>
-                   <int>100</int>
+                   <int>95</int>
                   </void>
                   <void method="setProperty">
                    <string>y</string>
                    <int>140</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>width</string>
+                   <int>36</int>
                   </void>
                  </object>
                 </void>

@@ -572,8 +572,15 @@ public class VisualTool {
 					
 				}else if (featClass.equals(FuroBaseArredondada.class) && (wsTmp.getOperation().getClass()).equals(BottomAndSideRoughMilling.class))
 				{
+					Vector movimentacao = new Vector();
 					MovimentacaoFuroBaseArredondada mov = new MovimentacaoFuroBaseArredondada(wsTmp);
-					wsTmp.setPontosMovimentacao(MovimentacaoFuroBaseArredondada.transformCircularPathInPoints3d(mov.desbaste()));
+					Vector <Point3d> path = MovimentacaoFuroBaseArredondada.transformCircularPathInPoints3d(mov.desbaste());
+					for(Point3d pointTmp: path)
+					{
+						Ponto ponto = new Ponto(pointTmp.x, pointTmp.y, -pointTmp.z);
+						movimentacao.add(ponto);
+					}
+					wsTmp.setPontosMovimentacao(movimentacao);
 					calculouMov = true;
 					
 					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);

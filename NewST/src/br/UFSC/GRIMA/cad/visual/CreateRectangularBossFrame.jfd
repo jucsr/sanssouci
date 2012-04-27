@@ -212,11 +212,11 @@
                   <null/>
                   <void method="setProperty">
                    <string>x</string>
-                   <int>235</int>
+                   <int>245</int>
                   </void>
                   <void method="setProperty">
                    <string>y</string>
-                   <int>145</int>
+                   <int>150</int>
                   </void>
                   <void method="setProperty">
                    <string>width</string>
@@ -298,7 +298,7 @@
                   <null/>
                   <void method="setProperty">
                    <string>x</string>
-                   <int>250</int>
+                   <int>95</int>
                   </void>
                   <void method="setProperty">
                    <string>y</string>
@@ -355,16 +355,9 @@
                 </void>
                 <void method="add">
                  <object class="com.jformdesigner.model.FormComponent">
-                  <string>javax.swing.JLabel</string>
-                  <void method="setProperty">
-                   <string>icon</string>
-                   <object class="com.jformdesigner.model.SwingIcon">
-                    <int>0</int>
-                    <string>/images/RectangularBoss.png</string>
-                   </object>
-                  </void>
+                  <string>javax.swing.JSpinner</string>
                   <void property="name">
-                   <string>label1</string>
+                   <string>spinner7</string>
                   </void>
                   <void method="auxiliary">
                    <void method="setProperty">
@@ -377,19 +370,86 @@
                   <null/>
                   <void method="setProperty">
                    <string>x</string>
-                   <int>0</int>
+                   <int>245</int>
                   </void>
                   <void method="setProperty">
                    <string>y</string>
-                   <int>0</int>
+                   <int>90</int>
                   </void>
                   <void method="setProperty">
                    <string>width</string>
-                   <int>370</int>
+                   <int>35</int>
+                  </void>
+                 </object>
+                </void>
+                <void method="add">
+                 <object class="com.jformdesigner.model.FormComponent">
+                  <string>javax.swing.JSpinner</string>
+                  <void property="name">
+                   <string>spinner8</string>
+                  </void>
+                  <void method="auxiliary">
+                   <void method="setProperty">
+                    <string>JavaCodeGenerator.variableModifiers</string>
+                    <int>4</int>
+                   </void>
+                  </void>
+                 </object>
+                 <object class="com.jformdesigner.model.FormLayoutConstraints">
+                  <null/>
+                  <void method="setProperty">
+                   <string>x</string>
+                   <int>165</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>y</string>
+                   <int>240</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>width</string>
+                   <int>34</int>
                   </void>
                   <void method="setProperty">
                    <string>height</string>
-                   <int>395</int>
+                   <int>20</int>
+                  </void>
+                 </object>
+                </void>
+                <void method="add">
+                 <object class="com.jformdesigner.model.FormComponent">
+                  <string>javax.swing.JLabel</string>
+                  <void method="setProperty">
+                   <string>text</string>
+                   <string>text</string>
+                  </void>
+                  <void method="setProperty">
+                   <string>icon</string>
+                   <object class="com.jformdesigner.model.SwingIcon">
+                    <int>0</int>
+                    <string>/images/RectangularBoss.png</string>
+                   </object>
+                  </void>
+                  <void property="name">
+                   <string>label1</string>
+                  </void>
+                 </object>
+                 <object class="com.jformdesigner.model.FormLayoutConstraints">
+                  <null/>
+                  <void method="setProperty">
+                   <string>x</string>
+                   <int>5</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>y</string>
+                   <int>5</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>width</string>
+                   <int>360</int>
+                  </void>
+                  <void method="setProperty">
+                   <string>height</string>
+                   <int>385</int>
                   </void>
                  </object>
                 </void>

@@ -14,6 +14,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
+import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.Path;
@@ -77,6 +78,21 @@ public class MovimentacaoFuroBaseArredondadaTest
 		{
 			System.out.println(patTmp.getFinalPoint());
 		}
+	}
+	@Test
+	public void movBullNoseEndMillTest()
+	{
+		BottomAndSideRoughMilling operation = new BottomAndSideRoughMilling("OP 1", retractPlane);
+		CondicoesDeUsinagem cu = new CondicoesDeUsinagem(100, 0.04, 0, 2000, 2, 5);
+		BullnoseEndMill b = new BullnoseEndMill(10,50);
+		b.setEdgeRadius(3);
+		Workingstep ws = new Workingstep(feature, face);
+		ws.setCondicoesUsinagem(cu);
+		ws.setFerramenta(b);
+		ws.setOperation(operation);
+		
+		MovimentacaoFuroBaseArredondada m = new MovimentacaoFuroBaseArredondada(ws);
+		m.operacaoComBullnoseEndMill();
 	}
 	@Test
 	public void interpolarCircularPathTest()

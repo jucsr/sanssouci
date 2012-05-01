@@ -13,7 +13,7 @@
        <class>java.awt.GridBagLayout</class>
        <void method="setProperty">
         <string>$columnSpecs</string>
-        <string>0, 5, 150, 5, 173, 5, 263</string>
+        <string>0, 5, 159, 5, 173, 5, 263</string>
        </void>
        <void method="setProperty">
         <string>$rowSpecs</string>
@@ -203,7 +203,7 @@
          <class>java.awt.GridBagLayout</class>
          <void method="setProperty">
           <string>$columnSpecs</string>
-          <string>90, 26, 36</string>
+          <string>90, 26, 0</string>
          </void>
          <void method="setProperty">
           <string>$rowSpecs</string>
@@ -216,10 +216,6 @@
          <void method="setProperty">
           <string>$vGap</string>
           <int>5</int>
-         </void>
-         <void method="setProperty">
-          <string>$alignLeft</string>
-          <boolean>true</boolean>
          </void>
          <void method="setProperty">
           <string>$alignTop</string>
@@ -246,13 +242,24 @@
         </void>
         <void method="add">
          <object class="com.jformdesigner.model.FormComponent">
-          <string>javax.swing.JTextField</string>
+          <string>javax.swing.JSpinner</string>
           <void method="setProperty">
-           <string>text</string>
-           <string>15</string>
+           <string>model</string>
+           <object class="javax.swing.SpinnerNumberModel">
+            <double>3.0</double>
+            <double>3.0</double>
+            <double>50.0</double>
+            <double>1.0</double>
+           </object>
           </void>
           <void property="name">
-           <string>diameterTextField</string>
+           <string>diameterSpinner</string>
+          </void>
+          <void method="auxiliary">
+           <void method="setProperty">
+            <string>JavaCodeGenerator.variableModifiers</string>
+            <int>4</int>
+           </void>
           </void>
          </object>
          <object class="com.jformdesigner.model.FormLayoutConstraints">

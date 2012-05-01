@@ -9,6 +9,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
+
+import br.UFSC.GRIMA.cad.PointsGenerator;
+import br.UFSC.GRIMA.util.projeto.Projeto;
+
 import com.jgoodies.forms.layout.*;
 
 /**
@@ -28,13 +32,13 @@ public class PontosDeApoioFrame2 extends JDialog {
 	private void pinRadioButtonActionPerformed(ActionEvent e) {
 		this.diameterLabel.setVisible(true);
 		this.diameterMMLabel.setVisible(true);
-		this.diameterTextField.setVisible(true);
+		this.diameterSpinner.setVisible(true);
 	}
 
 	private void viseRadioButtonActionPerformed(ActionEvent e) {
 		this.diameterLabel.setVisible(false);
 		this.diameterMMLabel.setVisible(false);
-		this.diameterTextField.setVisible(false);
+		this.diameterSpinner.setVisible(false);
 	}
 
 	private void autoGenButtonActionPerformed(ActionEvent e) {
@@ -51,7 +55,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 		autoGenButton = new JButton();
 		panel3 = new JPanel();
 		diameterLabel = new JLabel();
-		diameterTextField = new JTextField();
+		diameterSpinner = new JSpinner();
 		diameterMMLabel = new JLabel();
 		setupComboBox = new JComboBox();
 		panel1 = new JPanel();
@@ -62,7 +66,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 		setTitle("Define Climp Points");
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new GridBagLayout());
-		((GridBagLayout)contentPane.getLayout()).columnWidths = new int[] {0, 5, 150, 5, 173, 5, 263, 0};
+		((GridBagLayout)contentPane.getLayout()).columnWidths = new int[] {0, 5, 159, 5, 173, 5, 263, 0};
 		((GridBagLayout)contentPane.getLayout()).rowHeights = new int[] {0, 0, 5, 30, 5, 227, 0};
 		((GridBagLayout)contentPane.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 		((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
@@ -122,9 +126,8 @@ public class PontosDeApoioFrame2 extends JDialog {
 		//======== panel3 ========
 		{
 			panel3.setLayout(new GridBagLayout());
-			((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {95, 31, 36, 0};
+			((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {95, 31, 0};
 			((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {32, 32, 0};
-			((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 			((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
 
 			//---- diameterLabel ----
@@ -133,9 +136,9 @@ public class PontosDeApoioFrame2 extends JDialog {
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 5), 0, 0));
 
-			//---- diameterTextField ----
-			diameterTextField.setText("15");
-			panel3.add(diameterTextField, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+			//---- diameterSpinner ----
+			diameterSpinner.setModel(new SpinnerNumberModel(3.0, 3.0, 50.0, 1.0));
+			panel3.add(diameterSpinner, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 5), 0, 0));
 
@@ -215,7 +218,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 	protected JButton autoGenButton;
 	private JPanel panel3;
 	private JLabel diameterLabel;
-	private JTextField diameterTextField;
+	protected JSpinner diameterSpinner;
 	private JLabel diameterMMLabel;
 	protected JComboBox setupComboBox;
 	private JPanel panel1;

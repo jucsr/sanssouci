@@ -8,7 +8,7 @@ import br.UFSC.GRIMA.cad.visual.PontosDeApoioFrame2;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListener{
-	
+	private PointsGenerator gerador;
 	private Projeto projeto;
 	public PontosDeApoio2(Frame owner, Projeto projeto)
 	{
@@ -26,7 +26,7 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 	}
 	private void gneratePoints() {
 			System.out.println("gerar pontos");
-			
+			PointsGenerator generator = new PointsGenerator(this.projeto, ((Double)this.diameterSpinner.getValue()).doubleValue());			//teste
 			
 			
 	}

@@ -82,7 +82,6 @@ public class CriarBossFrame extends JDialog {
 
 					//---- buttonRectangular ----
 					buttonRectangular.setText("Rectangular");
-					buttonRectangular.setEnabled(false);
 					panel3.add(buttonRectangular, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));

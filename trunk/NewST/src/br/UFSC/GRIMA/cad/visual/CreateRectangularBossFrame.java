@@ -118,7 +118,7 @@ public class CreateRectangularBossFrame extends JDialog {
 
 							//---- label1 ----
 							label1.setText("text");
-							label1.setIcon(new ImageIcon(getClass().getResource("src/images/RectangularBoss.png")));
+							label1.setIcon(new ImageIcon(getClass().getResource("/images/RectangularBoss.png")));
 							layeredPane1.add(label1, JLayeredPane.DEFAULT_LAYER);
 							label1.setBounds(5, 5, 360, 385);
 						}

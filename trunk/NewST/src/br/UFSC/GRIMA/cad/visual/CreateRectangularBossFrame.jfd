@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.7.0_01" class="java.beans.XMLDecoder">
+<java version="1.7.0_04" class="java.beans.XMLDecoder">
  <object class="com.jformdesigner.model.FormModel">
   <void property="contentType">
    <string>form/swing</string>
@@ -14,7 +14,11 @@
       </object>
       <void method="setProperty">
        <string>title</string>
-       <string>Create Circular Boss</string>
+       <string>Create Rectangular Boss</string>
+      </void>
+      <void method="setProperty">
+       <string>$locationPolicy</string>
+       <int>0</int>
       </void>
       <void method="add">
        <object class="com.jformdesigner.model.FormContainer">
@@ -426,7 +430,7 @@
                    <string>icon</string>
                    <object class="com.jformdesigner.model.SwingIcon">
                     <int>0</int>
-                    <string>/images/RectangularBoss.png</string>
+                    <string>src/images/RectangularBoss.png</string>
                    </object>
                   </void>
                   <void property="name">
@@ -757,7 +761,7 @@
                   <string>javax.swing.JTextField</string>
                   <void method="setProperty">
                    <string>text</string>
-                   <string>Circular Boss</string>
+                   <string>Rectangular Boss</string>
                   </void>
                   <void method="setProperty">
                    <string>font</string>

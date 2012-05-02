@@ -12,8 +12,9 @@ import com.jgoodies.forms.factories.*;
 /**
  * @author Lucas
  */
-public class CreateRectangularBossFrame extends JFrame {
-	public CreateRectangularBossFrame() {
+public class CreateRectangularBossFrame extends JDialog {
+	public CreateRectangularBossFrame(Frame owner) {
+		super(owner);
 		initComponents();
 	}
 
@@ -53,7 +54,7 @@ public class CreateRectangularBossFrame extends JFrame {
 		cancelButton = new JButton();
 
 		//======== this ========
-		setTitle("Create Circular Boss");
+		setTitle("Create Rectangular Boss");
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
@@ -117,7 +118,7 @@ public class CreateRectangularBossFrame extends JFrame {
 
 							//---- label1 ----
 							label1.setText("text");
-							label1.setIcon(new ImageIcon(getClass().getResource("/images/RectangularBoss.png")));
+							label1.setIcon(new ImageIcon(getClass().getResource("src/images/RectangularBoss.png")));
 							layeredPane1.add(label1, JLayeredPane.DEFAULT_LAYER);
 							label1.setBounds(5, 5, 360, 385);
 						}
@@ -198,7 +199,7 @@ public class CreateRectangularBossFrame extends JFrame {
 								new Insets(0, 0, 5, 5), 0, 0));
 
 							//---- textField9 ----
-							textField9.setText("Circular Boss");
+							textField9.setText("Rectangular Boss");
 							textField9.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
 							panel8.add(textField9, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,

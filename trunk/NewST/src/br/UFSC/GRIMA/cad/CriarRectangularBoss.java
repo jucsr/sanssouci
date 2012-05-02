@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JOptionPane;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -17,11 +16,8 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.CreateRectangularBossFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
-import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
-import br.UFSC.GRIMA.util.findPoints.LimitedElement;
-import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
 /**
@@ -373,7 +369,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 				break;
 			}
 			
-			RectangularBoss novoRectangularBoss = new RectangularBoss();
+			RectangularBoss novoRectangularBoss = new RectangularBoss(comprimento, largura, alturaBoss, raio);
 			novoRectangularBoss.setPosicao(X, Y, Z);
 			novoRectangularBoss.setH(alturaBoss);
 			novoRectangularBoss.setNome(this.textField9.getText());
@@ -494,5 +490,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 		
 	}
 		
-		
+	private void cancel() {
+		this.parent.setEnabled(true);
+		dispose();
+	}
 }

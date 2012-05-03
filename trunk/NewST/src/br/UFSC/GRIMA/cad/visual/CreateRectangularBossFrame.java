@@ -98,7 +98,7 @@ public class CreateRectangularBossFrame extends JDialog {
 							spinner2.setBounds(245, 150, 36, spinner2.getPreferredSize().height);
 
 							//---- spinner3 ----
-							spinner3.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+							spinner3.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner3, JLayeredPane.DEFAULT_LAYER);
 							spinner3.setBounds(5, 205, 36, spinner3.getPreferredSize().height);
 
@@ -118,7 +118,7 @@ public class CreateRectangularBossFrame extends JDialog {
 
 							//---- label1 ----
 							label1.setText("text");
-							label1.setIcon(new ImageIcon(getClass().getResource("/images/RectangularBoss.png")));
+							label1.setIcon(new ImageIcon("C:\\Users\\RedSox\\Desktop\\GRIMA\\WorkSpace_Eclipse\\Step_robot_v2\\src\\images\\RectangularBoss.png"));
 							layeredPane1.add(label1, JLayeredPane.DEFAULT_LAYER);
 							label1.setBounds(5, 5, 360, 385);
 						}

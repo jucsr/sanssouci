@@ -55,8 +55,15 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 			
 		}else if(this.buttonRectangular.isSelected())
 		{
-//			CreateRectangularBoss crb = new CreateRectangularBoss(owner, feature);
-//			crb.setVisible(true);
+			if(feature.getClass() == Cavidade.class)
+			{
+				Cavidade cavidade = (Cavidade)this.feature;
+				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidade);
+				crb.setVisible(true);
+			} else if(feature.getClass() == Degrau.class){
+				
+			}
+			
 		}
 	}
 

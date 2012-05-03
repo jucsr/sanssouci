@@ -188,7 +188,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 			}
 		}
 
-		/** Validacao dos diametros **/
+		/** Validacao da largura **/
 
 		if (ok) {
 			try {
@@ -210,8 +210,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 					else
 					{
 						JOptionPane.showMessageDialog(null,
-								"A br.UFSC.GRIMA.feature não esta dentro dos limites da face"
-								+ "\n               (revise a L2 ou a posição Y)",
+								"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+								+ "\n               (revise a largura ou a posicao Y)",
 								"Erro ao criar Cavidade", JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
 					}
@@ -227,8 +227,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 					else
 					{
 						JOptionPane.showMessageDialog(null,
-								"A br.UFSC.GRIMA.feature não esta dentro dos limites da face"
-								+ "\n               (revise a L2 ou a posição Y)",
+								"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+								+ "\n               (revise a largura ou a posicao Y)",
 								"Erro ao criar Cavidade", JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
 					}
@@ -245,8 +245,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 					else
 					{
 						JOptionPane.showMessageDialog(null,
-								"A br.UFSC.GRIMA.feature não esta dentro dos limites da face"
-								+ "\n               (revise a L2 ou a posição Y)",
+								"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+								+ "\n               (revise a L2 ou a posicao Y)",
 								"Erro ao criar Cavidade", JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
 					}
@@ -262,8 +262,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 					else
 					{
 						JOptionPane.showMessageDialog(null,
-								"A br.UFSC.GRIMA.feature não esta dentro dos limites da face"
-								+ "\n               (revise a L2 ou a posi��o Y)",
+								"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+								+ "\n               (revise a L2 ou a posicao Y)",
 								"Erro ao criar Cavidade", JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
 					}
@@ -341,29 +341,52 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 		 rugosidade = ((Double) cavidadeRug.getValue()).doubleValue();
 		 }
 
-		// CONTINUAR A PARTIR DA LINHA 409 DO CriarFuroBasePlana
+		
 		if (ok) {
 			double X = 0, Y = 0, Z = 0;
+			double tmp;
 			switch (face.verticeAtivado) {
 			case 0:
-				X = posicaoX + cavidade.getPosicaoX();
-				Y = posicaoY + cavidade.getPosicaoY();
-				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
-				break;
+//				X = posicaoX + cavidade.getPosicaoX();
+//				Y = posicaoY + cavidade.getPosicaoY();
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				break;
+				
+				X= posicaoX;
+				Y= posicaoY;
+				Z= posicaoZ;
 			case 1:
-				X = posicaoX;
-				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
-				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				X = posicaoX;
+//				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+				
+				X = posicaoY;
+				Y = cavidade.getLargura() - posicaoY - largura;
+				Z = posicaoZ;
+//				tmp = comprimento;
+//				comprimento = largura;
+//				largura = tmp;
 				break;
 			case 2:
-				X = (face.getComprimento() - cavidade.getPosicaoX() - posicaoX);
-				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
-				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				X = (face.getComprimento() - cavidade.getPosicaoX() - posicaoX);
+//				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+				
+				X = cavidade.getComprimento() - comprimento - posicaoX;
+				Y = cavidade.getLargura() - largura - posicaoY;
+				Z = posicaoZ;
 				break;
 			case 3:
-				X = (-face.getComprimento() + cavidade.getPosicaoX() + posicaoX);
-				Y = posicaoY;
-				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				X = (-face.getComprimento() + cavidade.getPosicaoX() + posicaoX);
+//				Y = posicaoY;
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+				
+				X = posicaoY;
+				Y = cavidade.getComprimento() - posicaoX - comprimento;
+				Z = posicaoZ;
+//				tmp = comprimento;
+//				comprimento = largura;
+//				largura = tmp;
 				break;
 			default:
 				break;

@@ -284,7 +284,7 @@
                      <double>1.0</double>
                     </void>
                     <void property="value">
-                     <double>15.0</double>
+                     <double>5.0</double>
                     </void>
                    </object>
                   </void>
@@ -360,6 +360,17 @@
                 <void method="add">
                  <object class="com.jformdesigner.model.FormComponent">
                   <string>javax.swing.JSpinner</string>
+                  <void method="setProperty">
+                   <string>model</string>
+                   <object class="javax.swing.SpinnerNumberModel">
+                    <void property="stepSize">
+                     <double>1.0</double>
+                    </void>
+                    <void property="value">
+                     <double>10.0</double>
+                    </void>
+                   </object>
+                  </void>
                   <void property="name">
                    <string>spinner7</string>
                   </void>
@@ -389,6 +400,17 @@
                 <void method="add">
                  <object class="com.jformdesigner.model.FormComponent">
                   <string>javax.swing.JSpinner</string>
+                  <void method="setProperty">
+                   <string>model</string>
+                   <object class="javax.swing.SpinnerNumberModel">
+                    <void property="stepSize">
+                     <double>1.0</double>
+                    </void>
+                    <void property="value">
+                     <double>15.0</double>
+                    </void>
+                   </object>
+                  </void>
                   <void property="name">
                    <string>spinner8</string>
                   </void>

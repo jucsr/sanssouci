@@ -103,7 +103,7 @@ public class CreateRectangularBossFrame extends JDialog {
 							spinner3.setBounds(5, 205, 36, spinner3.getPreferredSize().height);
 
 							//---- spinner5 ----
-							spinner5.setModel(new SpinnerNumberModel(15.0, 0.0, null, 1.0));
+							spinner5.setModel(new SpinnerNumberModel(5.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner5, JLayeredPane.DEFAULT_LAYER);
 							spinner5.setBounds(95, 40, 35, spinner5.getPreferredSize().height);
 
@@ -111,8 +111,14 @@ public class CreateRectangularBossFrame extends JDialog {
 							spinner6.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
 							layeredPane1.add(spinner6, JLayeredPane.DEFAULT_LAYER);
 							spinner6.setBounds(85, 290, 36, spinner6.getPreferredSize().height);
+
+							//---- spinner7 ----
+							spinner7.setModel(new SpinnerNumberModel(10.0, null, null, 1.0));
 							layeredPane1.add(spinner7, JLayeredPane.DEFAULT_LAYER);
 							spinner7.setBounds(245, 90, 35, spinner7.getPreferredSize().height);
+
+							//---- spinner8 ----
+							spinner8.setModel(new SpinnerNumberModel(15.0, null, null, 1.0));
 							layeredPane1.add(spinner8, JLayeredPane.DEFAULT_LAYER);
 							spinner8.setBounds(165, 240, 34, 20);
 

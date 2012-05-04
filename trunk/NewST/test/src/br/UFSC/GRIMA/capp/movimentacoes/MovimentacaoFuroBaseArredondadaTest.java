@@ -7,6 +7,7 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.bReps.Bezier_1;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
@@ -92,7 +93,12 @@ public class MovimentacaoFuroBaseArredondadaTest
 		ws.setOperation(operation);
 		
 		MovimentacaoFuroBaseArredondada m = new MovimentacaoFuroBaseArredondada(ws);
-		m.operacaoComBullnoseEndMill();
+		
+		ArrayList<Path> path = m.operacaoComBullnoseEndMill();
+		for(Path patTmp:path)
+		{
+			System.out.println(patTmp.getFinalPoint());
+		}
 	}
 	@Test
 	public void interpolarCircularPathTest()
@@ -110,5 +116,31 @@ public class MovimentacaoFuroBaseArredondadaTest
 		System.out.println("sentido = " + path.getSense());
 		System.out.println(MovimentacaoFuroBaseArredondada.interpolarCircularPath(path, 10));
 		System.out.println(MovimentacaoFuroBaseArredondada.interpolarCircularPath(path, 10).size());
+	}
+	@Test
+	public void getTrechosTest()
+	{
+		Point3d[] pontosDeControle = new Point3d[7];
+		pontosDeControle[0] = new Point3d(0, 0, 0);
+		pontosDeControle[1] = new Point3d(20, 0, -40);
+		pontosDeControle[2] = new Point3d(40, 0, -20);
+		pontosDeControle[3] = new Point3d(60, 0, 40);
+		pontosDeControle[4] = new Point3d(80, 0, -20);
+		pontosDeControle[5] = new Point3d(100, 0, -40);
+		pontosDeControle[6] = new Point3d(120, 0, 0);
+		
+		
+		Point3d[] entrada = new Bezier_1(pontosDeControle, 11).meshArray;
+		
+		for(Point3d ponto: entrada)
+		{
+			System.out.println("ponto = " + ponto);
+		}
+		ArrayList<ArrayList<Point3d>> trechos = MovimentacaoFuroBaseArredondada.getTrechos(entrada, -10);
+		System.out.println("size = " + trechos.size());
+		for(int i = 0; i < trechos.size(); i++)
+		{
+			System.out.println(trechos);
+		}
 	}
 }

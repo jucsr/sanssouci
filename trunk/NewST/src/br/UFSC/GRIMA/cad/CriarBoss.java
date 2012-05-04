@@ -3,6 +3,8 @@ package br.UFSC.GRIMA.cad;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+
 import br.UFSC.GRIMA.cad.visual.CriarBossFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
@@ -23,6 +25,7 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 		this.buttonOK.addActionListener(this);
 		this.buttonCircular.addActionListener(this);
 		this.buttonRectangular.addActionListener(this);
+		this.radioButtonGeneral.addActionListener(this);
 	}
 
 	@Override
@@ -35,13 +38,22 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 		}else if (o == buttonOK)
 		{
 			this.ok();
+		}else if (o == buttonCircular)
+		{
+			labelTipoBoss.setIcon(new ImageIcon(getClass().getResource("/images/circBoss.png")));
+		}else if (o == buttonRectangular)
+		{
+			labelTipoBoss.setIcon(new ImageIcon(getClass().getResource("/images/recBoss.png")));
+		}else if (o == radioButtonGeneral)
+		{
+			
 		}
 	}
 
-	private void ok() {
+	private void ok() 
+	{
 		if(buttonCircular.isSelected())
 		{
-			
 			if(feature.getClass() == Cavidade.class)
 			{
 				Cavidade cavidade = (Cavidade)this.feature;
@@ -52,7 +64,6 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 				
 			}
 			
-			
 		}else if(this.buttonRectangular.isSelected())
 		{
 			if(feature.getClass() == Cavidade.class)
@@ -60,16 +71,15 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 				Cavidade cavidade = (Cavidade)this.feature;
 				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidade);
 				crb.setVisible(true);
+				dispose();
 			} else if(feature.getClass() == Degrau.class){
 				
 			}
-			
 		}
 	}
 
-	private void cancel() {
+	private void cancel() 
+	{
 		this.dispose();
 	}
-	
-
 }

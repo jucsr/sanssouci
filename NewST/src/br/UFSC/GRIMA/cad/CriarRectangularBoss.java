@@ -103,6 +103,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 		
 		double tolerancia = 0.0;
 		double rugosidade = 0.0;
+		
+		
 
 		/** Validacao da posicao X **/
 
@@ -314,6 +316,31 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 				ok = false;
 			}
 		}
+		
+		if (ok) {
+			
+			raio = ((Double) this.spinner5.getValue()).doubleValue();
+			if (raio >= 0 ) {
+				// System.out.println("deslocamento X: " + posicaoX);
+				ok = true;
+			} else {
+				ok = false;
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Digite um numero positivo ou nulo para o raio do boss",
+								"Erro no raio",
+								JOptionPane.OK_CANCEL_OPTION);
+			}
+		} else if (raio > largura && raio > comprimento){
+			ok = false;
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"Digite um numero para o raio menor que a largura e o comprimento",
+							"Erro no raio",
+							JOptionPane.OK_CANCEL_OPTION);
+		}
 
 		/** Validacao da Tolerancia **/
 
@@ -352,9 +379,10 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 //				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 //				break;
 				
-				X= posicaoX;
-				Y= posicaoY;
-				Z= posicaoZ;
+				X= posicaoX + cavidade.getPosicaoX();
+				Y= posicaoY + cavidade.getPosicaoY();
+				Z= cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+				break;
 			case 1:
 //				X = posicaoX;
 //				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
@@ -398,6 +426,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 			novoRectangularBoss.setNome(this.textField9.getText());
 			novoRectangularBoss.setTolerancia(tolerancia*0.001);
 			novoRectangularBoss.setRugosidade(rugosidade*0.001);
+			
 			
 			if (this.cavidade.validarBoss(novoRectangularBoss)) 
 			{

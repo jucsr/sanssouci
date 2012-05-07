@@ -81,7 +81,17 @@ public class RectangularBoss extends Boss
 		this.geometricalElements = geometricalElements;
 	}
 
-	public DefaultMutableTreeNode getNodo() {
-		return null;
+	
+	public DefaultMutableTreeNode getNode() {
+		DefaultMutableTreeNode nodo = new DefaultMutableTreeNode("Rectangular Boss -" + this.getIndice());
+		nodo.add(new DefaultMutableTreeNode("Nome: " + this.getNome()));
+		nodo.add(new DefaultMutableTreeNode("Largura: " + this.getL1()));
+		nodo.add(new DefaultMutableTreeNode("Comprimento: " + this.getL2()));
+		nodo.add(new DefaultMutableTreeNode("Posicao X, Y, Z  : " + this.getPosition().getCoordinates()));
+		nodo.add(new DefaultMutableTreeNode("Altura : " + this.getH()));
+		nodo.add(new DefaultMutableTreeNode("Rugosidade : " + this.getRugosidade()));
+		nodo.add(new DefaultMutableTreeNode("Tolerancia : " + this.getTolerancia()));
+
+		return nodo;
 	}
 }

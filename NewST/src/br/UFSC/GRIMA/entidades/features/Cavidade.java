@@ -13,6 +13,8 @@ import javax.vecmath.Point3d;
 
 import jsdai.SCombined_schema.EClosed_pocket;
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.Ponto;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -130,7 +132,8 @@ public class Cavidade extends Feature implements Serializable {
 				bossNode.add(circular.getNode());
 			} else if(this.itsBoss.get(i).getClass() == RectangularBoss.class)
 			{
-				
+				RectangularBoss rectangular = (RectangularBoss)this.itsBoss.get(i);
+				bossNode.add(rectangular.getNode());
 			}
 		}
 		this.getNodoWorkingSteps(root);
@@ -323,7 +326,10 @@ public class Cavidade extends Feature implements Serializable {
 			 *  implementar para rectangular boss!!!
 			 */
 			RectangularBoss rectangularBoss = (RectangularBoss)boss;
-			Rectangle2D novoRecBossRect2D = new Rectangle2D.Double(rectangularBoss.X, rectangularBoss.Y, rectangularBoss.getL1(),rectangularBoss.getL2());
+			RoundRectangle2D novoRecBossRect2D = new RoundRectangle2D.Double(rectangularBoss.X, rectangularBoss.Y, rectangularBoss.getL1(),rectangularBoss.getL2(), rectangularBoss.getRadius(),rectangularBoss.getRadius());
+			Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+			
+			
 			if(!cavidade.contains(novoRecBossRect2D)) // verifica se o novo boss esta dentro da cavidade
 			{
 				isValid = false;
@@ -395,5 +401,29 @@ public class Cavidade extends Feature implements Serializable {
 //			}
 //		}
 		return isValid;
+	}
+	/**
+	 * 
+	 * @param center
+	 * @param anguloInicial --> em radianos
+	 * @param deltaAngulo --> eh ang de varredura total em radianos
+	 * @param raio 
+	 * @param numeroDePontos
+	 * @return
+	 */
+	public static Point3d[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  
+	{
+		Point3d[] saida = new Point3d [numeroDePontos + 1];
+		double x, y, dAngulo = 0;
+
+		dAngulo = deltaAngulo / numeroDePontos;
+		for(int i = 0; i < numeroDePontos + 1; i++)
+		{
+			x = center.x + raio * Math.cos(anguloInicial + i * dAngulo);
+			y = center.y + raio * Math.sin(anguloInicial + i * dAngulo);
+			saida[i] = new Point3d(x, y, 0);
+		}
+
+		return saida;
 	}
 }

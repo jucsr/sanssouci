@@ -1552,7 +1552,7 @@ public class Face implements Serializable{
 					if(ftmp.getClass() == CircularBoss.class)
 						tmp = ((CircularBoss)ftmp).getNode();
 					else if(ftmp.getClass() == RectangularBoss.class) {
-						tmp = ((RectangularBoss)ftmp).getNodo();
+						tmp = ((RectangularBoss)ftmp).getNode();
 					}
 					break;
 				default:

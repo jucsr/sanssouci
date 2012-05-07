@@ -410,9 +410,20 @@ public class Generate3Dview extends Frame3D
 								} catch (InvalidBooleanOperationException e) {
 									e.printStackTrace();
 								}
+								
 							} else if(bossG.getClass() == RectangularBoss.class)
 							{
+								RectangularBoss bossTmp = (RectangularBoss) cavidadeTmp.getItsBoss().get(k);	
 								
+								OperationPocket_1 pocketRectangular = new OperationPocket_1("", (float)bossTmp.getL2(), (float)bossTmp.getL1(), (float)bossTmp.getH(), (float)bossTmp.getRadius());
+								pocketRectangular.translate(-faceTmp.getComprimento()/2 + bossTmp.X + bossTmp.getL2()/2, faceTmp.getProfundidadeMaxima()/2 - bossTmp.Z - bossTmp.getH()/2, +faceTmp.getLargura()/2 - bossTmp.getL1()/2 - bossTmp.Y);
+							
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, pocketRectangular);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
 							}
 						}
 						break;

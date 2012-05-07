@@ -270,7 +270,7 @@ public class Cavidade extends Feature implements Serializable {
 				radius = circularBoss.getDiametro2() / 2;
 			
 			Rectangle2D novoCircBossRect2D = new Rectangle2D.Double(circularBoss.X - radius, circularBoss.Y - radius, radius * 2,radius * 2);
-			if(!cavidade.contains(novoCircBossRect2D)) // verifica se o novo boss está dentro da cavidade
+			if(!cavidade.contains(novoCircBossRect2D)) // verifica se o novo boss esta dentro da cavidade
 			{
 				isValid = false;
 				JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
@@ -322,6 +322,57 @@ public class Cavidade extends Feature implements Serializable {
 			/**
 			 *  implementar para rectangular boss!!!
 			 */
+			RectangularBoss rectangularBoss = (RectangularBoss)boss;
+			Rectangle2D novoRecBossRect2D = new Rectangle2D.Double(rectangularBoss.X, rectangularBoss.Y, rectangularBoss.getL1(),rectangularBoss.getL2());
+			if(!cavidade.contains(novoRecBossRect2D)) // verifica se o novo boss esta dentro da cavidade
+			{
+				isValid = false;
+				JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
+			} else
+			{
+				isValid = true;
+				/** verificacao de intersecao entre o novo rectangularBoss e os outros Boss*/
+				for (int i = 0; i < this.itsBoss.size(); i ++)
+				{
+					Boss bossTmp = this.itsBoss.get(i);
+					if(bossTmp.getClass() == CircularBoss.class)
+					{
+						double rad = 0;
+						CircularBoss cbTmp = (CircularBoss)bossTmp;
+						if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
+							rad = cbTmp.getDiametro1() / 2;							
+						else
+							rad = cbTmp.getDiametro2() / 2;
+						
+//						RectangularBoss rbTmp = (RectangularBoss)bossTmp;
+						
+						Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+						Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+						if (bossCTmp.intersects(novoRecBossRect2D) || bossCTmp.contains(novoRecBossRect2D) || novoRecBossRect2D.contains(bossAux))
+						{
+							JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
+							isValid = false;
+						} else
+						{
+							isValid = true;
+						}
+						break;
+					}else if(bossTmp.getClass() == RectangularBoss.class)
+					{
+//						RectangularBoss rectangularBoss = (RectangularBoss)boss;
+						Rectangle2D bossAuxTmp = new Rectangle2D.Double(rectangularBoss.X, rectangularBoss.Y, rectangularBoss.getL1(), rectangularBoss.getL2());
+						if(bossAuxTmp.contains(novoRecBossRect2D) || bossAuxTmp.intersects(novoRecBossRect2D) || novoRecBossRect2D.contains(bossAuxTmp))
+						{
+							JOptionPane.showMessageDialog(null, "The Boss intersects a Rectangular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
+							isValid = false;
+						} else
+						{
+							isValid = true;
+						}
+						break;
+					}
+				}
+			}
 		}
 		
 //		for(int i = 0; i < this.itsBoss.size(); i++)

@@ -494,7 +494,7 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				
-				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getOperation().getClass().equals(FreeformOperation.class)){
+				}else if(featClass.equals(RanhuraPerfilBezier.class) && wsTmp.getFerramenta().getClass().equals(BallEndMill.class)){
 					
 					wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 					Vector movimentacao = new Vector();

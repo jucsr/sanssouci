@@ -18,6 +18,120 @@ public class MovimentacaoRanhuraSimples {
 		this.ranhura = (Ranhura) this.ws.getFeature();
 		this.ferramenta = this.ws.getFerramenta();
 	}
+	private ArrayList<LinearPath> desbaste2(){
+		ArrayList<LinearPath> desbaste = new ArrayList<LinearPath>();
+		/*
+		***posso guardar o x em baixo, e o x de cima pra alguma coisa....***
+		if(xCima>this.face.Comprimento)
+			xCima=this.face.Comprimento.
+		else if(xCima<0)
+			xCima=0;
+		*/
+		
+		double x=this.ranhura.getPosicaoX();
+		double y=this.ranhura.getPosicaoY();
+		double z=this.ranhura.getPosicaoZ();
+		double diametroFerramenta=this.ferramenta.getDiametroFerramenta();
+		double ultimoAp,ultimoAe,numeroDeAes,numeroDeAps;
+		double ae=this.ws.getCondicoesUsinagem().getAe();
+		double ap=this.ws.getCondicoesUsinagem().getAp();
+		double largura;
+		double allowanceBottom= ((BottomAndSideRoughMilling) this.ws.getOperation()).getAllowanceBottom();
+		double profundidade=this.ranhura.getProfundidade();
+		int i,k;
+		
+		boolean vaiVolta=true;
+		boolean fundo=false;
+		
+		Point3d pontoInicial=null;
+		Point3d pontoFinal;
+		
+		largura=this.ranhura.getLargura()-2*allowanceBottom-diametroFerramenta;
+		ultimoAp=profundidade%ap;
+		numeroDeAps=(profundidade-ultimoAp)/ap;
+		ultimoAe=largura%ae;
+		numeroDeAes=(largura-ultimoAe)/ae;
+		
+		if(this.ranhura.getEixo()==Ranhura.VERTICAL){
+			x=this.ranhura.getPosicaoX()+allowanceBottom+diametroFerramenta/2;
+			pontoInicial = new Point3d(x,this.ranhura.getPosicaoY(),this.ws.getOperation().getRetractPlane());
+		}
+		else if(this.ranhura.getEixo()==Ranhura.HORIZONTAL){
+			y=this.ranhura.getPosicaoY()+allowanceBottom+diametroFerramenta/2;
+			pontoInicial= new Point3d(this.ranhura.getPosicaoX(),y,this.ws.getOperation().getRetractPlane());
+		}
+			
+		for(i=0;i<=numeroDeAps;i++){
+			if(i==numeroDeAps)
+				z-=ultimoAp;
+			else
+				z-=ap;
+		
+			if(vaiVolta){
+				y=this.ranhura.getComprimento();
+				vaiVolta=false;
+			}
+			else{
+				y=this.ranhura.getPosicaoY();
+				vaiVolta=true;
+			}
+
+			if(this.ranhura.getEixo()==Ranhura.VERTICAL){
+					pontoFinal = new Point3d(x, y, z);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					desbaste.add(verticalTemp);
+					pontoInicial = new Point3d(x, y, z);
+				}
+			else if(this.ranhura.getEixo()==Ranhura.HORIZONTAL){
+					pontoFinal = new Point3d(y, x, z);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					desbaste.add(verticalTemp);
+					pontoInicial = new Point3d(y, x, z);
+				}
+				
+			for(k=0;k<=numeroDeAes;k++){
+				if(fundo){
+					if(k==numeroDeAes)
+						x-=ultimoAe;
+					else
+						x-=ae;
+					fundo=false;
+				}
+				else{
+					if(k==numeroDeAes)
+						x+=ultimoAe;
+					else
+						x+=ae;
+					fundo=true;
+				}
+				
+				if(vaiVolta){
+					y=this.ranhura.getComprimento();
+					vaiVolta=false;
+				}
+				else{
+					y=this.ranhura.getPosicaoY();
+					vaiVolta=true;
+				}
+
+				if(this.ranhura.getEixo()==Ranhura.VERTICAL){
+					pontoFinal = new Point3d(x, y, z);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					desbaste.add(verticalTemp);
+					pontoInicial = new Point3d(x, y, z);
+				}
+				else if(this.ranhura.getEixo()==Ranhura.HORIZONTAL){
+					pontoFinal = new Point3d(y, x, z);
+					LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+					desbaste.add(verticalTemp);
+					pontoInicial = new Point3d(y, x, z);
+				}
+			}
+		}
+		
+		
+		return desbaste;
+	}
 	
 	private ArrayList<LinearPath> lado1(){
 		
@@ -29,6 +143,8 @@ public class MovimentacaoRanhuraSimples {
 		double apUtilizado;
 		boolean terminouZ = false;
 		boolean vaiVolta = true;
+		
+		
 	
 		ArrayList<LinearPath> lado1 = new ArrayList<LinearPath>();
 		Point3d pontoInicial;
@@ -487,7 +603,7 @@ public class MovimentacaoRanhuraSimples {
 	
 	public ArrayList<LinearPath> getMovimentacaoDesbasteRanhura(){
 		ArrayList<LinearPath> saida = new ArrayList<LinearPath>();
-		ArrayList<LinearPath> desbaste = this.desbaste();
+		ArrayList<LinearPath> desbaste = this.desbaste2();
 		
 		for(LinearPath pathTemp: desbaste){		
 			saida.add(pathTemp);

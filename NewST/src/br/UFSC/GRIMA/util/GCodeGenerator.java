@@ -12,6 +12,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
+import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
@@ -506,6 +507,7 @@ public class GCodeGenerator {
 //		    			else{
 //		    				if(((CircularPath) desbaste.get(0)).getSense()==CircularPath.CCW){
 //		    					GCode = GCode + "N" + lineNumber + " G2" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    															//xFinal   yFinal , I=AC(centroX)    J=AC(centroY)  getCenter
 //		    					lineNumber = lineNumber + 10;
 //		    				}
 //		    				else if(((CircularPath) desbaste.get(0)).getSense()==CircularPath.CW){
@@ -782,7 +784,7 @@ public class GCodeGenerator {
 			    		}
 			    	}
 /********************************************************ACABAMENTO***************************************************/	
-			    	if(wsTmp.getOperation().getClass() == BottomAndSideFinishMilling.class){
+			    	if(wsTmp.getOperation().getClass() == FreeformOperation.class){
 				    	ArrayList<LinearPath> acabamento = ranhuraBezier.getMovimentacaoAcabamentoRanhuraPerfilGenerico();
 			    		
 				    	int GAux = 0;

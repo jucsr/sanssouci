@@ -42,7 +42,7 @@ public class PointsGenerattorTest {
 	{
 		this.cavidade=new Cavidade();
 		this.cavidade.setNome("Lucas");
-		this.cavidade.setPosicao(10, 10, 0);
+		this.cavidade.setPosicao(15, 10, 0);
 		this.cavidade.setProfundidade(40);
 		this.cavidade.setPassante(true);
 		this.cavidade.setRaio(20);

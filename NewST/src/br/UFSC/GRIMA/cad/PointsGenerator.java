@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
@@ -26,14 +25,9 @@ public class PointsGenerator {
 	private double diameter;
 	int tolerance=1;
 
-	//Array das partes proibidas:
-	private ArrayList<Point3d> xForbidden = new ArrayList<Point3d> ();
-	
-	private ArrayList<Point3d> yForbidden = new ArrayList<Point3d> ();
-	///
-	
-	private ArrayList<Corners> matrix = null;
-	
+	//ArrayList das partes proibidas:
+	private ArrayList<Corners> forbiddenSpots = null;
+	Corners pocketCorners = new Corners();
 	//Variáveis de posição:
 	Point3d corner1 = null;
 	Point3d corner2 = null;
@@ -45,9 +39,8 @@ public class PointsGenerator {
 		this.diameter = diameter+tolerance;
 		this.pointgen();
 	}
-	private void pointgen() {
+	private void pointgen() {/*
 		//Gera os cantos:
-		matrix = new ArrayList<Corners>();
 		
 		corner1 = new Point3d (0, 0, 0);
 		corner2 = new Point3d (0, this.projeto.getBloco().getY()-(diameter), 0);
@@ -58,7 +51,8 @@ public class PointsGenerator {
 		System.out.println (corner2);
 		System.out.println (corner3);
 		System.out.println (corner4);
-		
+		*/
+		forbiddenSpots = new ArrayList<Corners>();
 		//****Procura por FEATURES nas faces*****//
 		for (int i=0; i<projeto.getBloco().faces.size(); i++)						//Procura por FEATURES em cada face
 		{
@@ -70,26 +64,18 @@ public class PointsGenerator {
 					if (featureTmp.getClass() == Cavidade.class){					//caso CAVIDADE
 						Cavidade cavidade = (Cavidade)featureTmp;
 						if(cavidade.isPassante()){									//caso a peça tenha os 4 cantos livres
-							
-							xForbidden.add(j, new Point3d (cavidade.X, cavidade.X+cavidade.getComprimento(), cavidade.Y));
-							System.out.println("Faixa proibida em X:");
-							System.out.println(xForbidden.get(j));
-							
-							yForbidden.add(j, new Point3d (cavidade.Y, cavidade.Y+cavidade.getLargura(), cavidade.X));
-							System.out.println("Faixa proibida em Y:");
-							System.out.println(yForbidden.get(j));
-							
-							/*
 							//Gerar os cantos da cavidade:
-							Point3d cornerPocket1 = new Point3d (cavidade.X, cavidade.Y, 0);
-							Point3d cornerPocket2 = new Point3d (cavidade.X, cavidade.Y+cavidade.getLargura(), 0);
-							Point3d cornerPocket3 = new Point3d (cavidade.X+cavidade.getComprimento(), cavidade.Y, 0);
-							Point3d cornerPocket4 = new Point3d (cavidade.X+cavidade.getComprimento(), cavidade.Y+cavidade.getLargura(), 0);
-							System.out.println(cornerPocket1);
-							System.out.println(cornerPocket2);
-							System.out.println(cornerPocket3);
-							System.out.println(cornerPocket4);
-							
+							pocketCorners.c1 = cavidade.X;
+							pocketCorners.c2 = cavidade.X+cavidade.getComprimento();
+							pocketCorners.c3 = cavidade.Y;
+							pocketCorners.c4 = cavidade.Y+cavidade.getLargura();
+							forbiddenSpots.add(j, pocketCorners);
+							System.out.println(forbiddenSpots.get(j).c1);
+							System.out.println(forbiddenSpots.get(j).c2);
+							System.out.println(forbiddenSpots.get(j).c3);
+							System.out.println(forbiddenSpots.get(j).c4);
+							/*
+
 							//testando os cantos:
 							if (corner1.x < cornerPocket1.x || corner1.y < cornerPocket1.y){
 								System.out.println("permitido no canto X0Y0");

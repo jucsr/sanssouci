@@ -38,11 +38,11 @@ public class DesenhadorDeFeatures
 					{
 						CircularBoss cb = (CircularBoss)bossTmp;
 						this.desenharCircularBoss(cb, origem, modo, g2d);
+						
 					} else if(bossTmp.getClass() == RectangularBoss.class)
 					{
-						/**
-						 *  IMPLEMENTAR PARA RECTANGULAR BOSS!!!
-						 */
+						RectangularBoss rb = (RectangularBoss)bossTmp;
+						this.desenharRectangularBoss(rb, origem, modo, g2d);
 					}
 				}
 				break;
@@ -290,6 +290,10 @@ public class DesenhadorDeFeatures
 	
 	}
 	
+	public void desenharRectangularBoss(RectangularBoss cb, Point origem, boolean modo, Graphics2D g2d)
+	{
+		
+	}
 	
 	/**
 	 * 

@@ -28,30 +28,22 @@ public class PointsGenerator {
 	//ArrayList das partes proibidas:
 	private ArrayList<Corners> forbiddenSpots = null;
 	Corners corners = new Corners();
-	//Variáveis de posição:
-	Point3d corner1 = null;
-	Point3d corner2 = null;
-	Point3d corner3 = null;
-	Point3d corner4 = null;
+	//Variáveis de pontos de apoio:
+	Point3d support1 = null;
+	Point3d support2 = null;
+	Point3d support3 = null;
+	Point3d support4 = null;
+	Point3d support5 = null;
+	Point3d support6 = null;
+	Point3d support7 = null;
+	Point3d support8 = null;
 	//
 	public PointsGenerator(Projeto projeto, double diameter){
 		this.projeto = projeto;
 		this.diameter = diameter+tolerance;
 		this.pointgen();
 	}
-	private void pointgen() {/*
-		//Gera os cantos:
-		
-		corner1 = new Point3d (0, 0, 0);
-		corner2 = new Point3d (0, this.projeto.getBloco().getY()-(diameter), 0);
-		corner3 = new Point3d (this.projeto.getBloco().getX()- (diameter), 0, 0);
-		corner4 = new Point3d (this.projeto.getBloco().getX()- (diameter), this.projeto.getBloco().getY()-(diameter), 0);
-
-		System.out.println (corner1);
-		System.out.println (corner2);
-		System.out.println (corner3);
-		System.out.println (corner4);
-		*/
+	private void pointgen() {
 		forbiddenSpots = new ArrayList<Corners>();
 		//****Procura por FEATURES nas faces*****//
 		for (int i=0; i<projeto.getBloco().faces.size(); i++)						//Procura por FEATURES em cada face
@@ -70,6 +62,7 @@ public class PointsGenerator {
 							corners.c3 = cavidade.Y;
 							corners.c4 = cavidade.Y+cavidade.getLargura();
 							forbiddenSpots.add(corners);
+							//para verificação:
 							System.out.println(forbiddenSpots.get(j).c1);
 							System.out.println(forbiddenSpots.get(j).c2);
 							System.out.println(forbiddenSpots.get(j).c3);
@@ -80,11 +73,15 @@ public class PointsGenerator {
 					if (featureTmp.getClass() == FuroBasePlana.class){				//caso FURO
 						FuroBasePlana furo = (FuroBasePlana)featureTmp;
 						if(furo.isPassante()){
-							corners.c1 = furo.X;
+							corners.c1 = furo.getPosicaoX();
 							corners.c2 = furo.X+furo.getDiametro();
 							corners.c3 = furo.Y;
 							corners.c4 = furo.Y+furo.getDiametro();
 							forbiddenSpots.add(corners);
+							System.out.println(corners.c1);
+							System.out.println(corners.c2);
+							System.out.println(corners.c3);
+							System.out.println(corners.c4);
 						}
 					}
 				}

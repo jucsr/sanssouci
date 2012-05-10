@@ -317,6 +317,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 			}
 		}
 		
+		/**Validacao do raio **/
+		
 		if (ok) {
 			
 			raio = ((Double) this.spinner5.getValue()).doubleValue();
@@ -332,6 +334,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 								"Erro no raio",
 								JOptionPane.OK_CANCEL_OPTION);
 			}
+			
 		} else if (raio > largura && raio > comprimento){
 			ok = false;
 			JOptionPane
@@ -371,50 +374,31 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 		
 		if (ok) {
 			double X = 0, Y = 0, Z = 0;
-			double tmp;
 			switch (face.verticeAtivado) {
 			case 0:
-//				X = posicaoX + cavidade.getPosicaoX();
-//				Y = posicaoY + cavidade.getPosicaoY();
-//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
-//				break;
 				
 				X= posicaoX + cavidade.getPosicaoX();
 				Y= posicaoY + cavidade.getPosicaoY();
 				Z= cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				break;
 			case 1:
-//				X = posicaoX;
-//				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
-//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				
-				X = posicaoY;
-				Y = cavidade.getLargura() - posicaoY - largura;
-				Z = posicaoZ;
-//				tmp = comprimento;
-//				comprimento = largura;
-//				largura = tmp;
+				X = posicaoY + cavidade.getLargura();
+				Y = posicaoX;
+				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				break;
 			case 2:
-//				X = (face.getComprimento() - cavidade.getPosicaoX() - posicaoX);
-//				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
-//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				
 				X = cavidade.getComprimento() - comprimento - posicaoX;
 				Y = cavidade.getLargura() - largura - posicaoY;
-				Z = posicaoZ;
+				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				break;
 			case 3:
-//				X = (-face.getComprimento() + cavidade.getPosicaoX() + posicaoX);
-//				Y = posicaoY;
-//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
 				
 				X = posicaoY;
 				Y = cavidade.getComprimento() - posicaoX - comprimento;
-				Z = posicaoZ;
-//				tmp = comprimento;
-//				comprimento = largura;
-//				largura = tmp;
+				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+
 				break;
 			default:
 				break;

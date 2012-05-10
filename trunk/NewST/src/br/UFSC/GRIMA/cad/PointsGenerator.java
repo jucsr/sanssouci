@@ -27,7 +27,7 @@ public class PointsGenerator {
 
 	//ArrayList das partes proibidas:
 	private ArrayList<Corners> forbiddenSpots = null;
-	Corners pocketCorners = new Corners();
+	Corners corners = new Corners();
 	//Variáveis de posição:
 	Point3d corner1 = null;
 	Point3d corner2 = null;
@@ -63,40 +63,28 @@ public class PointsGenerator {
 					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
 					if (featureTmp.getClass() == Cavidade.class){					//caso CAVIDADE
 						Cavidade cavidade = (Cavidade)featureTmp;
-						if(cavidade.isPassante()){									//caso a peça tenha os 4 cantos livres
+						if(cavidade.isPassante()){
 							//Gerar os cantos da cavidade:
-							pocketCorners.c1 = cavidade.X;
-							pocketCorners.c2 = cavidade.X+cavidade.getComprimento();
-							pocketCorners.c3 = cavidade.Y;
-							pocketCorners.c4 = cavidade.Y+cavidade.getLargura();
-							forbiddenSpots.add(j, pocketCorners);
+							corners.c1 = cavidade.X;
+							corners.c2 = cavidade.X+cavidade.getComprimento();
+							corners.c3 = cavidade.Y;
+							corners.c4 = cavidade.Y+cavidade.getLargura();
+							forbiddenSpots.add(corners);
 							System.out.println(forbiddenSpots.get(j).c1);
 							System.out.println(forbiddenSpots.get(j).c2);
 							System.out.println(forbiddenSpots.get(j).c3);
 							System.out.println(forbiddenSpots.get(j).c4);
-							/*
 
-							//testando os cantos:
-							if (corner1.x < cornerPocket1.x || corner1.y < cornerPocket1.y){
-								System.out.println("permitido no canto X0Y0");
-							}
-							if (corner2.x < xForbiddenInitial || corner2.y > yForbiddenFinal){
-								System.out.println("permitido no canto X0Y1");
-							}
-							if (corner3.x > xForbiddenFinal || corner3.y < yForbiddenFinal){
-								System.out.println("permitido no canto X1Y0");
-							}
-							if (corner4.x > xForbiddenFinal || corner4.y > yForbiddenFinal){
-								System.out.println("permitido no canto X1Y1");
-							}
-							//fim teste dos cantos
-							*/
 						}
 					}
 					if (featureTmp.getClass() == FuroBasePlana.class){				//caso FURO
 						FuroBasePlana furo = (FuroBasePlana)featureTmp;
 						if(furo.isPassante()){
-							//code
+							corners.c1 = furo.X;
+							corners.c2 = furo.X+furo.getDiametro();
+							corners.c3 = furo.Y;
+							corners.c4 = furo.Y+furo.getDiametro();
+							forbiddenSpots.add(corners);
 						}
 					}
 				}

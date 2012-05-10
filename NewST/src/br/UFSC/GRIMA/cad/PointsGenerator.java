@@ -40,7 +40,7 @@ public class PointsGenerator {
 	//
 	public PointsGenerator(Projeto projeto, double diameter){
 		this.projeto = projeto;
-		this.diameter = diameter+tolerance;
+		this.diameter = diameter + tolerance;
 		this.pointgen();
 	}
 	private void pointgen() {
@@ -73,10 +73,10 @@ public class PointsGenerator {
 					if (featureTmp.getClass() == FuroBasePlana.class){				//caso FURO
 						FuroBasePlana furo = (FuroBasePlana)featureTmp;
 						if(furo.isPassante()){
-							corners.c1 = furo.getPosicaoX();
-							corners.c2 = furo.X+furo.getDiametro();
-							corners.c3 = furo.Y;
-							corners.c4 = furo.Y+furo.getDiametro();
+							corners.c1 = furo.X-(furo.getDiametro()/2);
+							corners.c2 = furo.X+(furo.getDiametro()/2);
+							corners.c3 = furo.Y-(furo.getDiametro()/2);
+							corners.c4 = furo.Y+(furo.getDiametro()/2);
 							forbiddenSpots.add(corners);
 							System.out.println(corners.c1);
 							System.out.println(corners.c2);
@@ -94,6 +94,31 @@ public class PointsGenerator {
 	}
 	public ArrayList<Point3d> gerarPontos()
 	{
+		boolean spotFlag;
+		for (int i=0; i<forbiddenSpots.size(); i++){
+			//para o canto X0Y0 (support1):
+			if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
+				spotFlag = false;
+			}
+			
+			//para o canto X0Y1 (support2):
+			if (forbiddenSpots.get(i).c1 < diameter &&
+					projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter){
+				//Função para caso não seja permitido://
+			}
+			
+			//para o canto X1Y0:
+			if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter &&
+					forbiddenSpots.get(i).c3 < diameter){
+				//
+			}
+			
+			//para o canto X1Y1:
+			if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter &&
+					projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter){
+				//
+			}
+		}
 		return null;
 	}
 }

@@ -94,31 +94,42 @@ public class PointsGenerator {
 	}
 	public ArrayList<Point3d> gerarPontos()
 	{
-		boolean spotFlag;
+		boolean spot1Flag = true;
+		boolean spot2Flag = true;
+		boolean spot3Flag = true;
+		boolean spot4Flag = true;
 		for (int i=0; i<forbiddenSpots.size(); i++){
 			//para o canto X0Y0 (support1):
 			if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
-				spotFlag = false;
+				//
 			}
 			
 			//para o canto X0Y1 (support2):
 			if (forbiddenSpots.get(i).c1 < diameter &&
 					projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter){
 				//Função para caso não seja permitido://
+				spot2Flag = false;
 			}
 			
 			//para o canto X1Y0:
 			if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter &&
 					forbiddenSpots.get(i).c3 < diameter){
 				//
+				spot3Flag = false;
 			}
 			
 			//para o canto X1Y1:
 			if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter &&
 					projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter){
 				//
+				spot4Flag = false;
 			}
 		}
+		if (spot1Flag) support1 = new Point3d (0, 0, 0);
+		if (spot1Flag) support1 = new Point3d (0, projeto.getBloco().getLargura()-diameter, 0);
+		if (spot1Flag) support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, 0, 0);
+		if (spot1Flag) support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, projeto.getBloco().getLargura()-diameter, 0);
+		
 		return null;
 	}
 }

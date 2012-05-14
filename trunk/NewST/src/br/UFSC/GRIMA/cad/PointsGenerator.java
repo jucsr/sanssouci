@@ -48,11 +48,12 @@ public class PointsGenerator {
 	private void pointgen() {
 		forbiddenSpots = new ArrayList<Corners>();
 		setupPoints = new ArrayList<ArrayList>();
+		facePoints = new ArrayList<ArrayList>();
 		//****Procura por FEATURES nas faces*****//
 		for (int i=0; i<projeto.getBloco().faces.size(); i++)						//Procura por FEATURES em cada face
 		{
-			
 			Face faceTmp = (Face)projeto.getBloco().faces.elementAt(i);	
+			
 			if (faceTmp.features.size() > 0)										//Se a face possui FEATURES
 			{
 				
@@ -89,17 +90,24 @@ public class PointsGenerator {
 							System.out.println(corners.c4);
 						}
 					}
-				}			
+				}
+				facePoints.add(gerarPontos(forbiddenSpots));
 			}
-			else 
+			else setupPoints.add(i, null); 
 		}
+		
+//		//Análise da peça:
+//		for (int i=0; i<projeto.getBloco().faces.size(); i++) 
+//			if (faceTmp. = 0) setupPoints.add(i, null);
 	}
-	public ArrayList<Point3d> gerarPontos()
+	private ArrayList<Point3d> gerarPontos(ArrayList<Corners> forbiddenSpots)
 	{
+		private ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
 		boolean spot1Flag = true;
 		boolean spot2Flag = true;
 		boolean spot3Flag = true;
 		boolean spot4Flag = true;
+		//Verificando os cantos:
 		for (int i=0; i<forbiddenSpots.size(); i++){
 			//para o canto X0Y0 (support1):
 			if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
@@ -127,11 +135,25 @@ public class PointsGenerator {
 				spot4Flag = false;
 			}
 		}
-		if (spot1Flag) support1 = new Point3d (0, 0, 0);
-		if (spot1Flag) support1 = new Point3d (0, projeto.getBloco().getLargura()-diameter, 0);
-		if (spot1Flag) support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, 0, 0);
-		if (spot1Flag) support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, projeto.getBloco().getLargura()-diameter, 0);
+		//Criando os pontos:
+		if (spot1Flag) {
+			support1 = new Point3d (0, 0, 0);
+			supportsArray.add(support1);
+		}
+		if (spot1Flag) {
+			support1 = new Point3d (0, projeto.getBloco().getLargura()-diameter, 0);
+			supportsArray.add(support2);
+		}
+		if (spot1Flag) {
+			support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, 0, 0);
+			supportsArray.add(support3);
+		}
+		if (spot1Flag) {
+			support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, projeto.getBloco().getLargura()-diameter, 0);
+			supportsArray.add(support4);
+		}
 		
-		return null;
+		
+		return supportsArray;
 	}
 }

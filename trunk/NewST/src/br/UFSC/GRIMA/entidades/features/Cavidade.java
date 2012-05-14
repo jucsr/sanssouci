@@ -1,14 +1,19 @@
 package br.UFSC.GRIMA.entidades.features;
 
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.Point2D.Double;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
+
+import com.lksoft.util.logging.SystemOutHandler;
 
 import jsdai.SCombined_schema.EClosed_pocket;
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
@@ -258,66 +263,89 @@ public class Cavidade extends Feature implements Serializable {
 	public boolean validarBoss(Boss boss)
 	{
 		boolean isValid = false;
+		Point2D [] borda = null;  //usado para discretizar a borda do boss
 		RoundRectangle2D cavidade = new RoundRectangle2D.Double(X, Y, comprimento, largura, 2 * raio, 2 * raio);
 		
 		if(boss.getClass() == CircularBoss.class)
 		{
 			double radius;
-			CircularBoss circularBoss = (CircularBoss)boss;
-			if(circularBoss.getDiametro1() >= circularBoss.getDiametro2())
-				radius = circularBoss.getDiametro1() / 2;
-			else
-				radius = circularBoss.getDiametro2() / 2;
+			CircularBoss cb = (CircularBoss)boss;
 			
-			Rectangle2D novoCircBossRect2D = new Rectangle2D.Double(circularBoss.X - radius, circularBoss.Y - radius, radius * 2,radius * 2);
-			if(!cavidade.contains(novoCircBossRect2D)) // verifica se o novo boss esta dentro da cavidade
-			{
-				isValid = false;
-				JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
-			} else
-			{
-				isValid = true;
-				/** verificacao de intersecao entre o novo circularBoss e os outros Boss*/
-				for (int i = 0; i < this.itsBoss.size(); i ++)
+			double posX = cb.getPosicaoX();
+			double posY = cb.getPosicaoY();
+			double posZ = cb.getPosicaoZ();
+			double raioMaiorBoss = cb.getDiametro2()/2;
+			double n = 2*Math.PI*raioMaiorBoss;
+			int numPontos = (int)n;
+			
+//			Point3d[] borda = null;
+			
+			if(cb.getDiametro1() >= cb.getDiametro2())
+				radius = cb.getDiametro1() / 2;
+			else
+				radius = cb.getDiametro2() / 2;
+			
+			/** Discretiza a borda do CircularBoss **/
+			
+			borda = determinarPontosEmCircunferencia (new Point3d(posX,posY,posZ), 0.0, 2*Math.PI, raioMaiorBoss, numPontos);
+			
+			for (int i=0; i < borda.length; i++){System.out.println("borda" + borda[i]);
+				if(!cavidade.contains(borda[i])) // verifica se o novo boss esta dentro da cavidade
 				{
-					Boss bossTmp = this.itsBoss.get(i);
-					if(bossTmp.getClass() == CircularBoss.class)
+					isValid = false;
+					JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
+				break;
+				} else
+				{
+					isValid = true; //tem q ser true pq se nao tiver outro boss o programa nao entra no "for" seguinte
+					/** verificacao de intersecao entre o novo circularBoss e os outros Boss*/
+					for (int j = 0; j < this.itsBoss.size(); j ++)
 					{
-						double rad = 0;
-						CircularBoss cbTmp = (CircularBoss)bossTmp;
-						if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
-							rad = cbTmp.getDiametro1() / 2;							
-						else
-							rad = cbTmp.getDiametro2() / 2;
 						
-						Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
-						Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
-						if (bossCTmp.intersects(novoCircBossRect2D) || bossCTmp.contains(novoCircBossRect2D) || novoCircBossRect2D.contains(bossAux))
+						Boss bossTmp = this.itsBoss.get(j);
+						
+						if(bossTmp.getClass() == CircularBoss.class)
 						{
-							JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
-							isValid = false;
-						} else
+							double rad = 0;
+							CircularBoss cbTmp = (CircularBoss)bossTmp;
+							if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
+								rad = cbTmp.getDiametro1() / 2;							
+							else
+								rad = cbTmp.getDiametro2() / 2;
+							
+							Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+							//Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+							if (bossCTmp.contains(borda[i]))
+							{
+								JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
+								isValid = false;
+								break;
+							} else
+							{
+								isValid = true;
+							}
+							break;
+						}else if(bossTmp.getClass() == RectangularBoss.class)
 						{
-							isValid = true;
+							RectangularBoss rectangularBoss = (RectangularBoss)boss;
+							RoundRectangle2D bossAuxTmp = new RoundRectangle2D.Double(rectangularBoss.X, rectangularBoss.Y, rectangularBoss.getL1(), rectangularBoss.getL2(),rectangularBoss.getRadius(), rectangularBoss.getRadius() );
+							if(bossAuxTmp.contains(borda[i]))
+							{
+								JOptionPane.showMessageDialog(null, "The Boss intersects a Rectangular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
+								isValid = false;
+							} else
+							{
+								isValid = true;
+							}
+							break;
 						}
-						break;
-					}else if(bossTmp.getClass() == RectangularBoss.class)
-					{
-						RectangularBoss rectangularBoss = (RectangularBoss)boss;
-						Rectangle2D bossAuxTmp = new Rectangle2D.Double(rectangularBoss.X, rectangularBoss.Y, rectangularBoss.getL1(), rectangularBoss.getL2());
-						if(bossAuxTmp.contains(novoCircBossRect2D) || bossAuxTmp.intersects(novoCircBossRect2D) || novoCircBossRect2D.contains(bossAuxTmp))
-						{
-							JOptionPane.showMessageDialog(null, "The Boss intersects a Rectangular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
-							isValid = false;
-						} else
-						{
-							isValid = true;
-						}
-						break;
 					}
 				}
+
 			}
-		} else if(boss.getClass() == RectangularBoss.class)
+			
+			//Rectangle2D novoCircBossRect2D = new Rectangle2D.Double(cb.X - radius, cb.Y - radius, radius * 2,radius * 2);
+			 		} else if(boss.getClass() == RectangularBoss.class)
 			{
 //			/**
 //			 *  implementar para rectangular boss!!!
@@ -408,9 +436,33 @@ public class Cavidade extends Feature implements Serializable {
 	 * @param numeroDePontos
 	 * @return
 	 */
-	public static Point3d[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  
+	public static Point2D[] determinarPontosEmReta(Point3d Initialposition, Point3d EndPosition, double comprimento, int numeroDePontos, double anguloInclinacao)
 	{
-		Point3d[] saida = new Point3d [numeroDePontos + 1];
+		Point2D[] saida = new Point2D [numeroDePontos + 1];
+		double x,y;
+		
+		if (Initialposition.x > EndPosition.x){
+			
+			for (int i = 0; i < numeroDePontos; i++)
+			{
+				x = Initialposition.x - ;
+			
+			}
+		} else {
+			
+			
+		}
+					
+			
+		
+		
+		
+		return saida;
+	}
+	
+	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  
+	{
+		Point2D[] saida = new Point2D [numeroDePontos + 1];
 		double x, y, dAngulo = 0;
 
 		dAngulo = deltaAngulo / numeroDePontos;
@@ -418,9 +470,27 @@ public class Cavidade extends Feature implements Serializable {
 		{
 			x = center.x + raio * Math.cos(anguloInicial + i * dAngulo);
 			y = center.y + raio * Math.sin(anguloInicial + i * dAngulo);
-			saida[i] = new Point3d(x, y, 0);
+			saida[i] = new Point2D.Double(x, y);
 		}
 
 		return saida;
 	}
+	public static Point2D[] determinarPontosEmRoundRectangular(Point3d position, double l1, double l2, double raio, int numeroDePontos) // o position é a coodenada da origem do roundRectangular
+	{
+		Point2D[] saida = new Point2D [numeroDePontos + 1];
+		double dComprimento = 0, dLargura = 0;
+		
+		dComprimento = l2/numeroDePontos;
+		dLargura = l1/numeroDePontos;
+		
+		
+			
+			
+			
+			saida[i] = new Point2D.Double(x,y);
+		
+
+		return saida;
+	}
+
 }

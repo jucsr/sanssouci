@@ -20,13 +20,14 @@ final class Corners{
 
 public class PointsGenerator {
 	private Projeto projeto;
-	private ArrayList <Face>setups;
 	private int setupNumber;
 	private double diameter;
 	int tolerance=1;
 
-	//ArrayList das partes proibidas:
-	private ArrayList<Corners> forbiddenSpots = null;
+	//Variáveis de listagem:
+	public ArrayList<ArrayList> setupPoints;
+	public ArrayList<ArrayList> facePoints;
+	private ArrayList<Corners> forbiddenSpots = null;		//ArrayList das partes proibidas
 	Corners corners = new Corners();
 	//Variáveis de pontos de apoio:
 	Point3d support1 = null;
@@ -37,7 +38,8 @@ public class PointsGenerator {
 	Point3d support6 = null;
 	Point3d support7 = null;
 	Point3d support8 = null;
-	//
+
+	
 	public PointsGenerator(Projeto projeto, double diameter){
 		this.projeto = projeto;
 		this.diameter = diameter + tolerance;
@@ -45,12 +47,15 @@ public class PointsGenerator {
 	}
 	private void pointgen() {
 		forbiddenSpots = new ArrayList<Corners>();
+		setupPoints = new ArrayList<ArrayList>();
 		//****Procura por FEATURES nas faces*****//
 		for (int i=0; i<projeto.getBloco().faces.size(); i++)						//Procura por FEATURES em cada face
 		{
+			
 			Face faceTmp = (Face)projeto.getBloco().faces.elementAt(i);	
 			if (faceTmp.features.size() > 0)										//Se a face possui FEATURES
 			{
+				
 				for (int j=0; j<faceTmp.features.size(); j++){						//Procura por FEATURES PASSANTES
 					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
 					if (featureTmp.getClass() == Cavidade.class){					//caso CAVIDADE
@@ -84,12 +89,9 @@ public class PointsGenerator {
 							System.out.println(corners.c4);
 						}
 					}
-				}
-				
-//				faceTmp.setPontosDeApoio(pontosDeApoio);
-				setupNumber++;
-				
+				}			
 			}
+			else 
 		}
 	}
 	public ArrayList<Point3d> gerarPontos()

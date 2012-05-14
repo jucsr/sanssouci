@@ -120,7 +120,7 @@ public class MovimentacaoFuroBaseArredondadaTest
 	@Test
 	public void getTrechosTest()
 	{
-		Point3d[] pontosDeControle = new Point3d[7];
+		Point3d[] pontosDeControle = new Point3d[10];
 		pontosDeControle[0] = new Point3d(0, 0, 0);
 		pontosDeControle[1] = new Point3d(20, 0, -40);
 		pontosDeControle[2] = new Point3d(40, 0, -20);
@@ -129,18 +129,40 @@ public class MovimentacaoFuroBaseArredondadaTest
 		pontosDeControle[5] = new Point3d(100, 0, -40);
 		pontosDeControle[6] = new Point3d(120, 0, 0);
 		
+//		#63=CARTESIAN_POINT($,(0.0,0.0,0.0));
+//		#64=CARTESIAN_POINT($,(20.0,0.0,-50.0));
+//		#65=CARTESIAN_POINT($,(40.0,0.0,55.0));
+//		#66=CARTESIAN_POINT($,(60.0,0.0,-55.0));
+//		#67=CARTESIAN_POINT($,(80.0,0.0,15.0));
+//		#68=CARTESIAN_POINT($,(100.0,0.0,-60.0));
+//		#69=CARTESIAN_POINT($,(120.0,0.0,0.0));
+//		#70=CARTESIAN_POINT($,(140.0,0.0,39.0));
+//		#71=CARTESIAN_POINT($,(160.0,0.0,-50.0));
+//		#72=CARTESIAN_POINT($,(180.0,0.0,0.0));
+		pontosDeControle[0] = new Point3d(0, 0, 0);
+		pontosDeControle[1] = new Point3d(20, 0, -50);
+		pontosDeControle[2] = new Point3d(40, 0, 55);
+		pontosDeControle[3] = new Point3d(60, 0, -55);
+		pontosDeControle[4] = new Point3d(80, 0, 15);
+		pontosDeControle[5] = new Point3d(100, 0, -60);
+		pontosDeControle[6] = new Point3d(120, 0, 0);
+		pontosDeControle[7] = new Point3d(140, 0, 39);
+		pontosDeControle[8] = new Point3d(160, 0, -50);
+		pontosDeControle[9] = new Point3d(180, 0, 0);
 		
-		Point3d[] entrada = new Bezier_1(pontosDeControle, 11).meshArray;
+		Point3d[] entrada = new Bezier_1(pontosDeControle, 101).meshArray;
 		
-		for(Point3d ponto: entrada)
-		{
-			System.out.println("ponto = " + ponto);
-		}
+//		for(Point3d ponto: entrada)
+//		{
+//			System.out.println("ponto = " + ponto);
+//		}
 		ArrayList<ArrayList<Point3d>> trechos = MovimentacaoFuroBaseArredondada.getTrechos(entrada, -10);
 		System.out.println("size = " + trechos.size());
+		System.out.println("size = " + trechos);
 		for(int i = 0; i < trechos.size(); i++)
 		{
-			System.out.println(trechos);
+//			System.out.println(trechos.get(i));
+//			System.out.println(trechos.get(i).size());
 		}
 	}
 }

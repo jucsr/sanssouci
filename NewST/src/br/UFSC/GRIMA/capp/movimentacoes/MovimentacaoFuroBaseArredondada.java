@@ -356,7 +356,7 @@ public class MovimentacaoFuroBaseArredondada
 				{
 					trechoTmp = new ArrayList<Point3d>();
 //					System.err.println("CRIAR");
-//					trechoTmp.add(pontoTmp);
+					trechoTmp.add(pontoTmp);
 					saida.add(trechoTmp);
 
 				} 
@@ -380,6 +380,19 @@ public class MovimentacaoFuroBaseArredondada
 //				saida.get(k).add(pontoTmp);
 //			}
 //		}
+		return saida;
+	}
+	public static ArrayList<LinearPath> getTrechos(ArrayList<ArrayList<Point3d>> trechos)
+	{
+		ArrayList<LinearPath> saida = new ArrayList<LinearPath>();
+	
+		for(int i = 0; i < trechos.size(); i++)
+		{
+			Point3d pontoInicialTmp = trechos.get(i).get(0);
+			Point3d pontoFinalTmp = trechos.get(i).get(trechos.get(i).size() - 1);
+			LinearPath linear = new LinearPath(pontoInicialTmp, pontoFinalTmp);
+			saida.add(linear);
+		}
 		return saida;
 	}
 }

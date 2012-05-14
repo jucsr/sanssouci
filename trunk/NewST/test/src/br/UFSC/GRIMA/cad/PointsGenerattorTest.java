@@ -2,6 +2,8 @@ package br.UFSC.GRIMA.cad;
 
 import java.util.ArrayList;
 
+import javax.vecmath.Point3d;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,24 +44,22 @@ public class PointsGenerattorTest {
 	{
 		this.cavidade=new Cavidade();
 		this.cavidade.setNome("Lucas");
-		this.cavidade.setPosicao(15, 10, 0);
+		this.cavidade.setPosicao(9, 9, 0);
 		this.cavidade.setProfundidade(40);
 		this.cavidade.setPassante(true);
 		this.cavidade.setRaio(20);
-		this.cavidade.setComprimento(50);
-		this.cavidade.setLargura(50);
+		this.cavidade.setComprimento(185);
+		this.cavidade.setLargura(135);
 		this.cavidade.createGeometricalElements();
 
 		faceXY.addFeature(this.cavidade);
 		
-		this.boss=new CircularBoss();
-		this.boss.setDiametro1(10);
-		this.boss.setDiametro2(10);
-		this.boss.setAltura(10);
-		this.boss.setPosicao(35, 35, 0);
-		this.boss.setNome("lucas");
-		this.boss.createGeometricalElements();
+		
 		PointsGenerator generator = new PointsGenerator(this.projeto, 10);
-		generator.gerarPontos();
+//		ArrayList<Point3d> a = generator.gerarPontos();
+		for (int i=0; i<generator.setupsArray.get(Face.XY).get(Face.XY).size(); i++){
+			
+			System.out.println(generator.setupsArray.get(Face.XY).get(Face.XY).get(i));
+		}
 	}
 }

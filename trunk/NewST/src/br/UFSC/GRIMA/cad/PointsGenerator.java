@@ -22,12 +22,12 @@ public class PointsGenerator {
 	private Projeto projeto;
 	private int setupNumber;
 	private double diameter;
-	int tolerance=1;
+	int tolerance=0;
 
 	//Variáveis de listagem:
-	public ArrayList<ArrayList> setupPoints;
-	public ArrayList<ArrayList> facePoints;
-	private ArrayList<Corners> forbiddenSpots = null;		//ArrayList das partes proibidas
+	public ArrayList<ArrayList<ArrayList<Point3d>>> setupsArray;
+	public ArrayList<ArrayList<Point3d>> facePointsArray;
+	public ArrayList<Corners> forbiddenSpots = null;		//ArrayList das partes proibidas
 	Corners corners = new Corners();
 	//Variáveis de pontos de apoio:
 	Point3d support1 = null;
@@ -40,15 +40,17 @@ public class PointsGenerator {
 	Point3d support8 = null;
 
 	
+	
 	public PointsGenerator(Projeto projeto, double diameter){
 		this.projeto = projeto;
 		this.diameter = diameter + tolerance;
 		this.pointgen();
 	}
 	private void pointgen() {
+		
+		setupsArray = new ArrayList<ArrayList<ArrayList<Point3d>>>();
+		facePointsArray = new ArrayList<ArrayList<Point3d>>();
 		forbiddenSpots = new ArrayList<Corners>();
-		setupPoints = new ArrayList<ArrayList>();
-		facePoints = new ArrayList<ArrayList>();
 		//****Procura por FEATURES nas faces*****//
 		for (int i=0; i<projeto.getBloco().faces.size(); i++)						//Procura por FEATURES em cada face
 		{
@@ -91,18 +93,20 @@ public class PointsGenerator {
 						}
 					}
 				}
-				facePoints.add(gerarPontos(forbiddenSpots));
+				facePointsArray.add(gerarPontos(forbiddenSpots));
+				setupsArray.add(i, facePointsArray);
 			}
-			else setupPoints.add(i, null); 
+			else setupsArray.add(i, null); 
 		}
 		
 //		//Análise da peça:
 //		for (int i=0; i<projeto.getBloco().faces.size(); i++) 
-//			if (faceTmp. = 0) setupPoints.add(i, null);
+//			if (faceTmp. = 0) setupsArray.add(i, null);
 	}
+	
 	private ArrayList<Point3d> gerarPontos(ArrayList<Corners> forbiddenSpots)
 	{
-		private ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
+		ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
 		boolean spot1Flag = true;
 		boolean spot2Flag = true;
 		boolean spot3Flag = true;
@@ -111,7 +115,7 @@ public class PointsGenerator {
 		for (int i=0; i<forbiddenSpots.size(); i++){
 			//para o canto X0Y0 (support1):
 			if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
-				//
+				spot1Flag = false;
 			}
 			
 			//para o canto X0Y1 (support2):
@@ -137,19 +141,19 @@ public class PointsGenerator {
 		}
 		//Criando os pontos:
 		if (spot1Flag) {
-			support1 = new Point3d (0, 0, 0);
+			support1 = new Point3d (diameter/2, diameter/2, 0);
 			supportsArray.add(support1);
 		}
-		if (spot1Flag) {
-			support1 = new Point3d (0, projeto.getBloco().getLargura()-diameter, 0);
+		if (spot2Flag) {
+			support2 = new Point3d (0, projeto.getBloco().getLargura()-diameter/2, 0);
 			supportsArray.add(support2);
 		}
-		if (spot1Flag) {
-			support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, 0, 0);
+		if (spot3Flag) {
+			support3 = new Point3d (projeto.getBloco().getComprimento()-diameter/2, 0, 0);
 			supportsArray.add(support3);
 		}
-		if (spot1Flag) {
-			support1 = new Point3d (projeto.getBloco().getComprimento()-diameter, projeto.getBloco().getLargura()-diameter, 0);
+		if (spot4Flag) {
+			support4 = new Point3d (projeto.getBloco().getComprimento()-diameter/2, projeto.getBloco().getLargura()-diameter/2, 0);
 			supportsArray.add(support4);
 		}
 		

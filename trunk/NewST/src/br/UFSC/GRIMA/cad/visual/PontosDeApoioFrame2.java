@@ -61,6 +61,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 		panel1 = new JPanel();
 		scrollPane1 = new JScrollPane();
 		pointsTable = new JTable();
+		drawingScrollPane = new JScrollPane();
 
 		//======== this ========
 		setTitle("Define Climp Points");
@@ -149,11 +150,6 @@ public class PontosDeApoioFrame2 extends JDialog {
 				new Insets(0, 0, 5, 0), 0, 0));
 
 			//---- setupComboBox ----
-			setupComboBox.setModel(new DefaultComboBoxModel(new String[] {
-				"Setup1",
-				"Setup2",
-				"\t"
-			}));
 			setupComboBox.setEnabled(false);
 			panel3.add(setupComboBox, new GridBagConstraints(0, 1, 3, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -200,6 +196,9 @@ public class PontosDeApoioFrame2 extends JDialog {
 		contentPane.add(scrollPane1, new GridBagConstraints(2, 5, 3, 1, 0.0, 0.0,
 			GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
 			new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(drawingScrollPane, new GridBagConstraints(6, 3, 1, 3, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 		pack();
 		setLocationRelativeTo(getOwner());
 
@@ -224,5 +223,6 @@ public class PontosDeApoioFrame2 extends JDialog {
 	private JPanel panel1;
 	private JScrollPane scrollPane1;
 	private JTable pointsTable;
+	protected JScrollPane drawingScrollPane;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

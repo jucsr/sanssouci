@@ -831,13 +831,16 @@ public class VisualTool {
 				.getFerramenta().getProfundidadeMaxima();
 		
 		g.setColor(Color.BLACK);
+		if(!projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFerramenta().getClass().equals(BallEndMill.class))
 		drawTool(g, diameter, depth);
 		
-		if (projetoDeSimulacao.getWorkingsteps().get(workingstepIndex)
-				.getFerramenta().getClass()
-				.equals(TwistDrill.class))
+		if (projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFerramenta().getClass().equals(TwistDrill.class))
 			drawToolTriangle(g, diameter, depth);
-		
+		else if(projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFerramenta().getClass().equals(BallEndMill.class))
+		{
+			drawBallEndMill(g, (BallEndMill)projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFerramenta());
+//			System.out.println("BALL_END_MILL");
+		}	
 		drawToolSupport(g, diameter, depth);
 
 		paintLateralToolRanhuras(g,j);
@@ -854,10 +857,8 @@ public class VisualTool {
 		if (workingstepIndex == projetoDeSimulacao.getWorkingsteps().size())
 			return;
 		
-		double diameter = projetoDeSimulacao.getWorkingsteps().get(workingstepIndex)
-				.getFerramenta().getDiametroFerramenta();
-		double depth = projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFerramenta()
-				.getProfundidadeMaxima();
+		double diameter = projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFerramenta().getDiametroFerramenta();
+		double depth = projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFerramenta().getProfundidadeMaxima();
 		
 		int l = (int) depth/8;
 		if(j<=10){
@@ -898,19 +899,23 @@ public class VisualTool {
 		g.fillPolygon(x, y, 4);
 	}
 	
-	private void drawTool(Graphics g, double diameter, double depth) {
-		g.fillRect((int) z-1, (int) (x - diameter / 2), (int) depth,
-				(int) diameter);
+	private void drawTool(Graphics g, double diameter, double depth)
+	{
+		g.fillRect((int) z-1, (int) (x - diameter / 2), (int) depth, (int) diameter);
 	}
-	
+	private void drawBallEndMill(Graphics g, BallEndMill tool)
+	{
+		g.fillRect((int)z - 1 + (int)(tool.getDiametroFerramenta() / 2), (int)(x - tool.getDiametroFerramenta() / 2), (int) (tool.getProfundidadeMaxima() - tool.getDiametroFerramenta() / 2), (int)tool.getDiametroFerramenta());
+		g.fillOval((int)z - 1, (int)(x - tool.getDiametroFerramenta() / 2), (int)tool.getDiametroFerramenta(), (int)tool.getDiametroFerramenta());
+	}
 	private void drawToolTriangle(Graphics g, double diameter, double depth) {
 		int[] x = { (int) z, (int) z, (int) (z - diameter / 5.5) };
 		int[] y = { (int) (this.x - diameter / 2),
 				(int) (this.x + diameter / 2), (int) (this.x) };
 		Polygon triangle = new Polygon(x, y, 3);
 		g.fillPolygon(triangle);
-
 	}
+	
 	
 	public void drawToolSupport(Graphics g, double diameter, double depth) {
 		int supportDiameter = 2;

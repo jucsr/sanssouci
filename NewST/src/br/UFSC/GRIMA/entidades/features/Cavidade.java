@@ -427,6 +427,41 @@ public class Cavidade extends Feature implements Serializable {
 //		}
 		return isValid;
 	}
+	
+	public static Point2D[] determinarPontosEmReta(Point3d InitialPos, Point3d EndPos, int numeroDePontos)
+	{
+		Point2D[] saida = new Point2D [numeroDePontos + 1];
+		double inclinacao = Math.tan((EndPos.y - InitialPos.y)/(EndPos.x - InitialPos.x));
+		double angInclinacao = Math.atan(inclinacao);
+		double comprimento = Math.sqrt(Math.pow((EndPos.y - InitialPos.y), 2) + Math.pow(EndPos.x - InitialPos.x, 2));
+		double passo = comprimento/numeroDePontos;
+		double x,y;
+			
+		if (((InitialPos.x <= EndPos.x) && (InitialPos.y <= EndPos.y)) || ((InitialPos.x >= EndPos.x) && (InitialPos.y <= EndPos.y))){ 
+			
+			for (int i = 0; i < numeroDePontos; i++)
+			{
+				x = InitialPos.x + passo*Math.cos(angInclinacao);
+				y = InitialPos.y + passo*Math.sin(angInclinacao);
+				
+				saida[i] = new Point2D.Double(x, y);
+			} 
+			
+		}else {
+			
+			for (int i = 0; i < numeroDePontos; i++)
+			{
+				x = InitialPos.x - passo*Math.cos(angInclinacao);
+				y = InitialPos.y - passo*Math.sin(angInclinacao);
+				
+				
+				saida[i] = new Point2D.Double(x, y);
+			} 
+		}
+		
+		return saida;
+	}
+	
 	/**
 	 * 
 	 * @param center
@@ -436,29 +471,6 @@ public class Cavidade extends Feature implements Serializable {
 	 * @param numeroDePontos
 	 * @return
 	 */
-	public static Point2D[] determinarPontosEmReta(Point3d Initialposition, Point3d EndPosition, double comprimento, int numeroDePontos, double anguloInclinacao)
-	{
-		Point2D[] saida = new Point2D [numeroDePontos + 1];
-		double x,y;
-		
-		if (Initialposition.x > EndPosition.x){
-			
-			for (int i = 0; i < numeroDePontos; i++)
-			{
-				x = Initialposition.x - ;
-			
-			}
-		} else {
-			
-			
-		}
-					
-			
-		
-		
-		
-		return saida;
-	}
 	
 	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  
 	{

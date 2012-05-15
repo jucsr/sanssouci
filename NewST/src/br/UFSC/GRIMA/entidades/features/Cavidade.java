@@ -432,12 +432,12 @@ public class Cavidade extends Feature implements Serializable {
 	{
 		Point2D[] saida = new Point2D [numeroDePontos + 1];
 		double inclinacao = Math.tan((EndPos.y - InitialPos.y)/(EndPos.x - InitialPos.x));
-		double angInclinacao = Math.atan(inclinacao);
+		double angInclinacao = Math.atan2(EndPos.y - InitialPos.y, EndPos.x - InitialPos.x);
 		double comprimento = Math.sqrt(Math.pow((EndPos.y - InitialPos.y), 2) + Math.pow(EndPos.x - InitialPos.x, 2));
 		double passo = comprimento/numeroDePontos;
 		double x,y;
 			
-		if (((InitialPos.x <= EndPos.x) && (InitialPos.y <= EndPos.y)) || ((InitialPos.x >= EndPos.x) && (InitialPos.y <= EndPos.y))){ 
+//		if (((InitialPos.x <= EndPos.x) && (InitialPos.y <= EndPos.y)) || ((InitialPos.x >= EndPos.x) && (InitialPos.y <= EndPos.y))){ 
 			
 			for (int i = 0; i < numeroDePontos; i++)
 			{
@@ -447,17 +447,17 @@ public class Cavidade extends Feature implements Serializable {
 				saida[i] = new Point2D.Double(x, y);
 			} 
 			
-		}else {
-			
-			for (int i = 0; i < numeroDePontos; i++)
-			{
-				x = InitialPos.x - passo*Math.cos(angInclinacao);
-				y = InitialPos.y - passo*Math.sin(angInclinacao);
-				
-				
-				saida[i] = new Point2D.Double(x, y);
-			} 
-		}
+//		}else {
+//			
+//			for (int i = 0; i < numeroDePontos; i++)
+//			{
+//				x = InitialPos.x - passo*Math.cos(angInclinacao);
+//				y = InitialPos.y - passo*Math.sin(angInclinacao);
+//				
+//				
+//				saida[i] = new Point2D.Double(x, y);
+//			} 
+//		}
 		
 		return saida;
 	}
@@ -487,21 +487,52 @@ public class Cavidade extends Feature implements Serializable {
 
 		return saida;
 	}
-	public static Point2D[] determinarPontosEmRoundRectangular(Point3d position, double l1, double l2, double raio, int numeroDePontos) // o position é a coodenada da origem do roundRectangular
+	public static Point2D[] determinarPontosEmRoundRectangular(Point3d position, double comprimento, double largura, double raio, int numeroDePontos) // o position é a coodenada da origem do roundRectangular
 	{
-		Point2D[] saida = new Point2D [numeroDePontos + 1];
-		double dComprimento = 0, dLargura = 0;
 		
-		dComprimento = l2/numeroDePontos;
-		dLargura = l1/numeroDePontos;
+		double n = (2*(Math.PI)*raio)/4;
+		int numeroDePontosBorda = (int)n;
+		
+		int numeroDePontosLinhaHor = (numeroDePontos - 4*numeroDePontosBorda)/2;
+		int numeroDePontosLinhaVer = (numeroDePontos - numeroDePontosLinhaHor - 4*numeroDePontosBorda)/2;
+		
+		Point2D[] saida = new Point2D [numeroDePontos];
+		
+		Point2D[] borda1 = new Point2D [numeroDePontosBorda];
+		Point2D[] borda2 = new Point2D [numeroDePontosBorda];
+		Point2D[] borda3 = new Point2D [numeroDePontosBorda];
+		Point2D[] borda4 = new Point2D [numeroDePontosBorda];
+		
+		Point2D[] linhaHor1 = new Point2D [numeroDePontosLinhaHor];  	//linha horizontal superior
+		Point2D[] linhaHor2 = new Point2D [numeroDePontosLinhaHor];		//linha horizontal inferior
+		Point2D[] linhaVer1 = new Point2D [numeroDePontosLinhaVer];		//vertical esquerda
+		Point2D[] linhaVer2 = new Point2D [numeroDePontosLinhaVer];		//vertical direita
+		
+		Point3d iniPos1 = new Point3d(comprimento - raio, largura, 0.0);
+		Point3d endPos1 = new Point3d(raio, largura, 0.0);
+		Point3d iniPos2 = new Point3d(0.0, largura - raio, 0.0);
+		Point3d endPos2 = new Point3d(0.0, raio, 0.0);
+		Point3d iniPos3 = new Point3d(raio, 0.0, 0.0);
+		Point3d endPos3 = new Point3d(comprimento - raio, 0.0, 0.0);
+		Point3d iniPos4 = new Point3d(comprimento, raio, 0.0);
+		Point3d endPos4 = new Point3d(comprimento, largura - raio, 0.0);
+		
+		Point3d center1 = new Point3d(comprimento - raio, largura - raio, 0.0);
+		Point3d center2 = new Point3d(raio, largura - raio, 0.0);
+		Point3d center3 = new Point3d(raio, raio, 0.0);
+		Point3d center4 = new Point3d(comprimento - raio, raio, 0.0);
 		
 		
+		borda1 = determinarPontosEmCircunferencia(center1, 0.0, Math.PI/2, raio, numeroDePontos);
+		borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI/2, raio, numeroDePontos);
+		borda3 = determinarPontosEmCircunferencia(center3, Math.PI, Math.PI/2, raio, numeroDePontos);
+		borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, Math.PI/2, raio, numeroDePontos);
 			
-			
-			
-			saida[i] = new Point2D.Double(x,y);
+		linhaHor1 = determinarPontosEmReta(iniPos1, endPos1, numeroDePontos);	
+		linhaVer1 = determinarPontosEmReta(iniPos2, endPos2, numeroDePontos);	
+		linhaHor2 = determinarPontosEmReta(iniPos3, endPos3, numeroDePontos);
+		linhaVer1 = determinarPontosEmReta(iniPos4, endPos4, numeroDePontos);	
 		
-
 		return saida;
 	}
 

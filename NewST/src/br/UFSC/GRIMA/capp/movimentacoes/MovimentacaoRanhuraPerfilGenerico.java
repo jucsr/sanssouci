@@ -29,7 +29,7 @@ public class MovimentacaoRanhuraPerfilGenerico {
 
 		double x=this.ranhuraBezier.getPosicaoX();
 		double diametroFerramenta=this.ferramenta.getDiametroFerramenta();
-		double y=this.ranhuraBezier.getPosicaoY()-diametroFerramenta;
+		double y=this.ranhuraBezier.getPosicaoY();
 		double z=this.ranhuraBezier.getPosicaoZ();
 		double largura[] = new double [101];
 		double zMax[] = new double [101];
@@ -39,9 +39,9 @@ public class MovimentacaoRanhuraPerfilGenerico {
 		double profundidadeMaxima=0;
 		double allowanceBottom= ((BottomAndSideRoughMilling) this.ws.getOperation()).getAllowanceBottom();
 		int numeroDePontos=this.ranhuraBezier.getPontosDaCurva().length;
-		int a=0,k,i,n,j,b,h,c,m,u=1,numeroDeConcavidades,p=0,r,s,numero,q,l;
+		int a=0,k,i,n,j,b,h,c,m,u=1,numeroDeConcavidades,p=0,r,s=0,numero,q,l;
 		int t[] = new int[101];
-		boolean fundo=false, vaiVolta=true,inicio;
+		boolean fundo=false, vaiVolta=true;
 		Point3d[] pontosDeInterferencia = new Point3d[101];
 		Point3d[] ponto= this.ranhuraBezier.getPontosDaCurva();
 		Point3d pontoInicial=null;
@@ -63,7 +63,8 @@ public class MovimentacaoRanhuraPerfilGenerico {
 			}
 		}
 		m=a;
-
+		r=a;
+		
 		ultimoAp= -profundidadeMaxima%ap;
 		numeroDeAps=(-profundidadeMaxima-ultimoAp)/ap;
 
@@ -76,9 +77,11 @@ public class MovimentacaoRanhuraPerfilGenerico {
 			else
 				break;
 
-			a=0;k=0;n=0;b=0;c=0;r=0;s=0;numero=m-1;
+			holdZ = z;
+			a=0;k=0;n=0;b=0;c=0;numero=r-1;
 
 			pontosDeInterferencia = new Point3d[101];
+			
 			/***********************ACHA OS PONTOS DE INTERFERENCIA NA ALTURA******************************/
 			for(i=0;i<numeroDePontos;i++){
 				if(n%2==0){//se n é par													
@@ -132,30 +135,29 @@ public class MovimentacaoRanhuraPerfilGenerico {
 				if(q==l){
 					break;
 				}else{
-					/*********************************************************************************************/
 					b=0;	numeroDeConcavidades=k;	c=0;
 
 					if(!fundo){
+		/*****************************PULA PARA A PROXIMA CONCAVIDADE COM SEGURANÇA CASO O NUMERO DE CONCAVIDADES DIMINUA***********************************/
+						
 						if(j!=numeroDeAps && j!=numeroDeAps-1){
-							if(t[j+2]<t[j+1] && x+ponto[1].getX()-ponto[0].getX()+0.5<pontosDeInterferencia[0].getX()){
-								holdZ=z;
+							if(x+ponto[1].getX()-ponto[0].getX()+0.5<pontosDeInterferencia[0].getX()+this.ranhuraBezier.getPosicaoX()){
 								z=zMax[s];
-								r++;s++;c++;
+								s++;c++;
 
 								pontoFinal = new Point3d(x, y, z);
 								LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
 								desbaste.add(verticalTemp);
 								pontoInicial = new Point3d(x, y, z);
-
+								
 								x=this.ranhuraBezier.getPosicaoX()+pontosDeInterferencia[0].getX()+diametroFerramenta/2+allowanceBottom;
-
+								
 								pontoFinal = new Point3d(x, y, z);
 								LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
 								desbaste.add(verticalTempp);
 								pontoInicial = new Point3d(x, y, z);
 
 								if(largura[0]-2*allowanceBottom>=diametroFerramenta){
-									r=0;
 									z=holdZ;
 
 									pontoFinal = new Point3d(x, y, z);
@@ -164,6 +166,7 @@ public class MovimentacaoRanhuraPerfilGenerico {
 									pontoInicial = new Point3d(x, y, z);
 								}
 							}
+							/**************************DEFINE O PONTO DE INICIALIZAÇAO DO MOVIMENTO CASO SEJA POSSIVEL************************************/
 							else if(largura[0]-2*allowanceBottom>=diametroFerramenta){
 								x=this.ranhuraBezier.getPosicaoX()+pontosDeInterferencia[0].getX()+allowanceBottom+diametroFerramenta/2;
 
@@ -182,8 +185,10 @@ public class MovimentacaoRanhuraPerfilGenerico {
 							pontoInicial = new Point3d(x, y, z);
 						}
 
+						/***********************************COMEÇA A MOVIMENTAÇÃO NAS CAVIDADES**********************************************/
 						for(a=0;a<numeroDeConcavidades;a++){
-							if(a%2==0){//parte CONCAVA
+							if(a%2==0){
+								/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO CAIBA)*****************************/
 								if(largura[a]-2*allowanceBottom>=diametroFerramenta){
 									b+=2;
 									ultimoAe=(largura[a]-2*allowanceBottom-diametroFerramenta)%ae;//calcula o ultimo ae
@@ -214,12 +219,9 @@ public class MovimentacaoRanhuraPerfilGenerico {
 										pontoInicial = new Point3d(x, y, z);
 									}
 								}
+								/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO NÃO CAIBA)*****************************/
 								else{
 									if(pontosDeInterferencia[b+3]!=null){//lembrar de zerar toda vez...
-										if(r==0){
-											holdZ=z;
-											r++;
-										}
 										z=zMax[c];
 										c++;
 
@@ -237,7 +239,6 @@ public class MovimentacaoRanhuraPerfilGenerico {
 										pontoInicial = new Point3d(x, y, z);
 
 										if(largura[a+2]-2*allowanceBottom>=diametroFerramenta){
-											r=0;
 											z=holdZ;
 
 											pontoFinal = new Point3d(x, y, z);		
@@ -247,10 +248,13 @@ public class MovimentacaoRanhuraPerfilGenerico {
 										}
 										a++;
 									}
+									else{
+										break;
+									}
 								}
 							}	
-							else{//parte CONVEXA
-								holdZ=z;
+							/*************************************MOVIMENTAÇÃO PARTE CONVEXA*************************************/
+							else{
 								z=zMax[c];
 								c++;
 
@@ -258,22 +262,23 @@ public class MovimentacaoRanhuraPerfilGenerico {
 								LinearPath ver = new LinearPath(pontoInicial,pontoFinal);
 								desbaste.add(ver);
 								pontoInicial = new Point3d(x, y, z);
+								
+								if(a+1!=numeroDeConcavidades)
+									if(a+2 == numeroDeConcavidades){
+										if(largura[numeroDeConcavidades-1]-2*allowanceBottom>=diametroFerramenta)
+											x+=largura[a]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+									}
+									else
+										x+=largura[a]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
 
-								if(a+1==numeroDeConcavidades){//se a convexa é a ultima parte
-									x=this.ranhuraBezier.getPosicaoX()+this.ranhuraBezier.getLargura()-allowanceBottom-diametroFerramenta/2;
-								}
-								else
-									x+=largura[a]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
 
 								pontoFinal = new Point3d(x, y, z);		
 								LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
 								desbaste.add(vert);
 								pontoInicial = new Point3d(x, y, z);
 
-								r++;
 								if(a+1!=numeroDeConcavidades){
 									if(largura[a+1]-2*allowanceBottom>=diametroFerramenta){
-										r=0;
 										z=holdZ;
 										pontoFinal = new Point3d(x, y, z);		
 										LinearPath verti = new LinearPath(pontoInicial,pontoFinal);
@@ -285,13 +290,14 @@ public class MovimentacaoRanhuraPerfilGenerico {
 						}
 						fundo=true;
 					}
-					else{//MOVIMENTACAO DA DIREITA PRA ESQUERDA
+/********************************************************MOVIMENTACAO DA DIREITA PRA ESQUERDA (VOLTA)*************************************************************/
+					else{
 						b=t[j]-1;
+			/*****************************PULA PARA A PROXIMA CONCAVIDADE COM SEGURANÇA CASO O NUMERO DE CONCAVIDADES DIMINUA***********************************/
 						if(j!=numeroDeAps && j!=numeroDeAps-1){
-							if(t[j+2]<t[j+1] && x-ponto[1].getX()+ponto[0].getX()-0.5>pontosDeInterferencia[b].getX()){
-								holdZ=z;
+							if(x-ponto[1].getX()+ponto[0].getX()-0.5>pontosDeInterferencia[b].getX()+this.ranhuraBezier.getPosicaoX()){
 								z=zMax[m-1];
-								r++;m--;
+								m--;
 
 								pontoFinal = new Point3d(x, y, z);
 								LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
@@ -306,7 +312,6 @@ public class MovimentacaoRanhuraPerfilGenerico {
 								pontoInicial = new Point3d(x, y, z);
 
 								if(largura[h-1]-2*allowanceBottom>=diametroFerramenta){
-									r=0;
 									z=holdZ;
 
 									pontoFinal = new Point3d(x, y, z);
@@ -315,6 +320,7 @@ public class MovimentacaoRanhuraPerfilGenerico {
 									pontoInicial = new Point3d(x, y, z);
 								}
 							}
+					/**************************DEFINE O PONTO DE INICIALIZAÇAO DO MOVIMENTO CASO SEJA POSSIVEL************************************/
 							else if(largura[h-1]-2*allowanceBottom>=diametroFerramenta){
 
 								x=this.ranhuraBezier.getPosicaoX()+pontosDeInterferencia[b].getX()-allowanceBottom-diametroFerramenta/2;
@@ -335,8 +341,10 @@ public class MovimentacaoRanhuraPerfilGenerico {
 							pontoInicial = new Point3d(x, y, z);
 						}
 
+					/***********************************COMEÇA A MOVIMENTAÇÃO NAS CAVIDADES**********************************************/
 						for(a=0;a<numeroDeConcavidades;a++){
 							if(a%2==0 && numeroDeConcavidades%2!=0){
+								/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO CAIBA)*****************************/
 								if(largura[numeroDeConcavidades-1-a]-2*allowanceBottom>=diametroFerramenta){
 									b-=2;
 									ultimoAe=(largura[numeroDeConcavidades-1-a]-2*allowanceBottom-diametroFerramenta)%ae;//calcula o ultimo ae
@@ -367,13 +375,10 @@ public class MovimentacaoRanhuraPerfilGenerico {
 										pontoInicial = new Point3d(x, y, z);
 									}
 								}
+							/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO NÃO CAIBA)*****************************/
 								else{
 									if(b-3>=0){
 										if(pontosDeInterferencia[b-3]!=null){//lembrar de zerar toda vez...
-											if(r==0){
-												holdZ=z;
-												r++;
-											}
 											z=zMax[numero];
 											numero--;
 
@@ -391,7 +396,6 @@ public class MovimentacaoRanhuraPerfilGenerico {
 											pontoInicial = new Point3d(x, y, z);
 
 											if(largura[numeroDeConcavidades-a-2]-2*allowanceBottom>=diametroFerramenta){
-												r=0;
 												z=holdZ;
 
 												pontoFinal = new Point3d(x, y, z);		
@@ -402,10 +406,13 @@ public class MovimentacaoRanhuraPerfilGenerico {
 											a++;
 										}
 									}
+									else{
+										break;
+									}
 								}
-							}	
+							}
+							/*************************************MOVIMENTAÇÃO PARTE CONVEXA*************************************/
 							else{
-								holdZ=z;
 								z=zMax[numero];
 								numero--;
 
@@ -414,20 +421,22 @@ public class MovimentacaoRanhuraPerfilGenerico {
 								desbaste.add(ver);
 								pontoInicial = new Point3d(x, y, z);
 
-								if(a+1==numeroDeConcavidades)//se a convexa é a ultima parte
-									x=pontosDeInterferencia[0].getX()+allowanceBottom+diametroFerramenta/2;
-								else
-									x-=largura[numeroDeConcavidades-a-1]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+								if(a+1!=numeroDeConcavidades)
+									if(a+2 == numeroDeConcavidades){
+										if(largura[0]-2*allowanceBottom>=diametroFerramenta)
+											x-=largura[numeroDeConcavidades-a-1]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+									}
+									else
+										x-=largura[numeroDeConcavidades-a-1]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+
 
 								pontoFinal = new Point3d(x, y, z);		
 								LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
 								desbaste.add(vert);
 								pontoInicial = new Point3d(x, y, z);
 
-								r++;
 								if(a+1!=numeroDeConcavidades){
 									if(largura[numeroDeConcavidades-a-2]-2*allowanceBottom>=diametroFerramenta){
-										r=0;
 										z=holdZ;
 										pontoFinal = new Point3d(x, y, z);		
 										LinearPath verti = new LinearPath(pontoInicial,pontoFinal);
@@ -441,6 +450,351 @@ public class MovimentacaoRanhuraPerfilGenerico {
 					}
 				}
 			}
+			else if(this.ranhuraBezier.getEixo()==RanhuraPerfilBezier.HORIZONTAL){
+
+				/***************************DEFINE AS LARGURAS DAS "PARABOLAS"*****************************/
+				largura = new double [101];
+				for(b=1;b<n;b++){//n é o numero de pontos que achou!!!
+					largura[k]=pontosDeInterferencia[b].getX()-pontosDeInterferencia[b-1].getX();
+					k++;
+				}
+				if(p==0){
+					pontoInicial = new Point3d(x,this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[0].getX()+diametroFerramenta/2+allowanceBottom,this.ranhuraBezier.getPosicaoZ());
+					p++;
+				}
+
+
+				if(k!=0)
+					h=k;
+				else
+					break;
+				
+				q=0;l=0;
+				for(b=0;b<h;b++){
+					if(largura[b]-2*allowanceBottom<diametroFerramenta)
+						q++;
+					b++;
+					l++;
+				}
+				if(q==l){
+					break;
+				}else{
+					b=0;	numeroDeConcavidades=k;	c=0;
+
+					if(!fundo){
+		/*****************************PULA PARA A PROXIMA CONCAVIDADE COM SEGURANÇA CASO O NUMERO DE CONCAVIDADES DIMINUA***********************************/
+						
+						if(j!=numeroDeAps && j!=numeroDeAps-1){
+							if(y+ponto[1].getX()-ponto[0].getX()+0.5<pontosDeInterferencia[0].getX()+this.ranhuraBezier.getPosicaoY()){
+								z=zMax[s];
+								s++;c++;
+
+								pontoFinal = new Point3d(x, y, z);
+								LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(verticalTemp);
+								pontoInicial = new Point3d(x, y, z);
+								
+								y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[0].getX()+diametroFerramenta/2+allowanceBottom;
+								
+								pontoFinal = new Point3d(x, y, z);
+								LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(verticalTempp);
+								pontoInicial = new Point3d(x, y, z);
+
+								if(largura[0]-2*allowanceBottom>=diametroFerramenta){
+									z=holdZ;
+
+									pontoFinal = new Point3d(x, y, z);
+									LinearPath verticalTemppp = new LinearPath(pontoInicial,pontoFinal);
+									desbaste.add(verticalTemppp);
+									pontoInicial = new Point3d(x, y, z);
+								}
+							}
+							/**************************DEFINE O PONTO DE INICIALIZAÇAO DO MOVIMENTO CASO SEJA POSSIVEL************************************/
+							else if(largura[0]-2*allowanceBottom>=diametroFerramenta){
+								y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[0].getX()+allowanceBottom+diametroFerramenta/2;
+
+								pontoFinal = new Point3d(x, y, z);
+								LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(verticalTemp);
+								pontoInicial = new Point3d(x, y, z);
+							}
+						}
+						else if(largura[0]-2*allowanceBottom>=diametroFerramenta){
+							y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[0].getX()+allowanceBottom+diametroFerramenta/2;
+
+							pontoFinal = new Point3d(x, y, z);
+							LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+							desbaste.add(verticalTemp);
+							pontoInicial = new Point3d(x, y, z);
+						}
+
+						/***********************************COMEÇA A MOVIMENTAÇÃO NAS CAVIDADES**********************************************/
+						for(a=0;a<numeroDeConcavidades;a++){
+							if(a%2==0){
+								/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO CAIBA)*****************************/
+								if(largura[a]-2*allowanceBottom>=diametroFerramenta){
+									b+=2;
+									ultimoAe=(largura[a]-2*allowanceBottom-diametroFerramenta)%ae;//calcula o ultimo ae
+									numeroDeAes=(largura[a]-2*allowanceBottom-diametroFerramenta-ultimoAe)/ae;//calcula quantas vezes posso dar ae
+									for(k=0;k<=numeroDeAes;k++){//anda todos os aes possiveis inclusive o ultimoAe....
+										if(vaiVolta){
+											x=this.ranhuraBezier.getComprimento();//vai para o final
+											vaiVolta=false;
+										}
+										else{
+											x=this.ranhuraBezier.getPosicaoX();//volta pro começo
+											vaiVolta=true;
+										}
+
+										pontoFinal = new Point3d(x, y, z);
+										LinearPath ver = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(ver);
+										pontoInicial = new Point3d(x, y, z);
+
+										if(k!=numeroDeAes)//se nao é a ultima passada ele adiciona ae em X
+											y+=ae;
+										else
+											y+=ultimoAe;//adiciona em x o ultimoAe já que está na ultima passada
+
+										pontoFinal = new Point3d(x, y, z);
+										LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(vert);
+										pontoInicial = new Point3d(x, y, z);
+									}
+								}
+								/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO NÃO CAIBA)*****************************/
+								else{
+									if(pontosDeInterferencia[b+3]!=null){//lembrar de zerar toda vez...
+										z=zMax[c];
+										c++;
+
+										pontoFinal = new Point3d(x, y, z);		
+										LinearPath ver = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(ver);
+										pontoInicial = new Point3d(x, y, z);
+
+										b+=2;
+										y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[b].getX()+diametroFerramenta/2+allowanceBottom;
+
+										pontoFinal = new Point3d(x, y, z);		
+										LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(vert);
+										pontoInicial = new Point3d(x, y, z);
+
+										if(largura[a+2]-2*allowanceBottom>=diametroFerramenta){
+											z=holdZ;
+
+											pontoFinal = new Point3d(x, y, z);		
+											LinearPath verti = new LinearPath(pontoInicial,pontoFinal);
+											desbaste.add(verti);
+											pontoInicial = new Point3d(x, y, z);
+										}
+										a++;
+									}
+									else{
+										break;
+									}
+								}
+							}	
+							/*************************************MOVIMENTAÇÃO PARTE CONVEXA*************************************/
+							else{
+								z=zMax[c];
+								c++;
+
+								pontoFinal = new Point3d(x, y, z);		
+								LinearPath ver = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(ver);
+								pontoInicial = new Point3d(x, y, z);
+								
+								if(a+1!=numeroDeConcavidades)
+									if(a+2 == numeroDeConcavidades){
+										if(largura[numeroDeConcavidades-1]-2*allowanceBottom>=diametroFerramenta)
+											y+=largura[a]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+									}
+									else
+										y+=largura[a]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+
+
+								pontoFinal = new Point3d(x, y, z);		
+								LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(vert);
+								pontoInicial = new Point3d(x, y, z);
+
+								if(a+1!=numeroDeConcavidades){
+									if(largura[a+1]-2*allowanceBottom>=diametroFerramenta){
+										z=holdZ;
+										pontoFinal = new Point3d(x, y, z);		
+										LinearPath verti = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(verti);
+										pontoInicial = new Point3d(x, y, z);
+									}
+								}
+							}
+						}
+						fundo=true;
+					}
+/********************************************************MOVIMENTACAO DA DIREITA PRA ESQUERDA (VOLTA)*************************************************************/
+					else{
+						b=t[j]-1;
+			/*****************************PULA PARA A PROXIMA CONCAVIDADE COM SEGURANÇA CASO O NUMERO DE CONCAVIDADES DIMINUA***********************************/
+						if(j!=numeroDeAps && j!=numeroDeAps-1){
+							if(y-ponto[1].getX()+ponto[0].getX()-0.5>pontosDeInterferencia[b].getX()+this.ranhuraBezier.getPosicaoY()){
+								z=zMax[m-1];
+								m--;
+
+								pontoFinal = new Point3d(x, y, z);
+								LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(verticalTemp);
+								pontoInicial = new Point3d(x, y, z);
+
+								y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[b].getX()-diametroFerramenta/2-allowanceBottom;
+
+								pontoFinal = new Point3d(x, y, z);
+								LinearPath verticalTempp = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(verticalTempp);
+								pontoInicial = new Point3d(x, y, z);
+
+								if(largura[h-1]-2*allowanceBottom>=diametroFerramenta){
+									z=holdZ;
+
+									pontoFinal = new Point3d(x, y, z);
+									LinearPath verticalTemppp = new LinearPath(pontoInicial,pontoFinal);
+									desbaste.add(verticalTemppp);
+									pontoInicial = new Point3d(x, y, z);
+								}
+							}
+					/**************************DEFINE O PONTO DE INICIALIZAÇAO DO MOVIMENTO CASO SEJA POSSIVEL************************************/
+							else if(largura[h-1]-2*allowanceBottom>=diametroFerramenta){
+
+								y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[b].getX()-allowanceBottom-diametroFerramenta/2;
+
+								pontoFinal = new Point3d(x, y, z);
+								LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(verticalTemp);
+								pontoInicial = new Point3d(x, y, z);
+							}
+						}
+						else if(largura[h-1]-2*allowanceBottom>=diametroFerramenta){
+
+							y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[b].getX()-allowanceBottom-diametroFerramenta/2;
+
+							pontoFinal = new Point3d(x, y, z);
+							LinearPath verticalTemp = new LinearPath(pontoInicial,pontoFinal);
+							desbaste.add(verticalTemp);
+							pontoInicial = new Point3d(x, y, z);
+						}
+
+					/***********************************COMEÇA A MOVIMENTAÇÃO NAS CAVIDADES**********************************************/
+						for(a=0;a<numeroDeConcavidades;a++){
+							if(a%2==0 && numeroDeConcavidades%2!=0){
+								/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO CAIBA)*****************************/
+								if(largura[numeroDeConcavidades-1-a]-2*allowanceBottom>=diametroFerramenta){
+									b-=2;
+									ultimoAe=(largura[numeroDeConcavidades-1-a]-2*allowanceBottom-diametroFerramenta)%ae;//calcula o ultimo ae
+									numeroDeAes=(largura[numeroDeConcavidades-1-a]-2*allowanceBottom-diametroFerramenta-ultimoAe)/ae;//calcula quantas vezes posso dar ae
+									for(k=0;k<=numeroDeAes;k++){//anda todos os aes possiveis inclusive o ultimoAe....
+										if(vaiVolta){
+											x=this.ranhuraBezier.getComprimento();//vai para o final
+											vaiVolta=false;
+										}
+										else{
+											x=this.ranhuraBezier.getPosicaoX();//volta pro começo
+											vaiVolta=true;
+										}
+
+										pontoFinal = new Point3d(x, y, z);
+										LinearPath ver = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(ver);
+										pontoInicial = new Point3d(x, y, z);
+
+										if(k!=numeroDeAes)//se nao é a ultima passada ele subtrai ae em X
+											y-=ae;
+										else
+											y-=ultimoAe;//subtrai em x o ultimoAe já que está na ultima passada
+
+										pontoFinal = new Point3d(x, y, z);
+										LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(vert);
+										pontoInicial = new Point3d(x, y, z);
+									}
+								}
+							/*************************MOVIMENTAÇÃO PARTE CONCAVA(CASO NÃO CAIBA)*****************************/
+								else{
+									if(b-3>=0){
+										if(pontosDeInterferencia[b-3]!=null){//lembrar de zerar toda vez...
+											z=zMax[numero];
+											numero--;
+
+											pontoFinal = new Point3d(x, y, z);		
+											LinearPath ver = new LinearPath(pontoInicial,pontoFinal);
+											desbaste.add(ver);
+											pontoInicial = new Point3d(x, y, z);
+
+											b-=2;
+											y=this.ranhuraBezier.getPosicaoY()+pontosDeInterferencia[b].getX()-diametroFerramenta/2-allowanceBottom;
+
+											pontoFinal = new Point3d(x, y, z);		
+											LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
+											desbaste.add(vert);
+											pontoInicial = new Point3d(x, y, z);
+
+											if(largura[numeroDeConcavidades-a-2]-2*allowanceBottom>=diametroFerramenta){
+												z=holdZ;
+
+												pontoFinal = new Point3d(x, y, z);		
+												LinearPath verti = new LinearPath(pontoInicial,pontoFinal);
+												desbaste.add(verti);
+												pontoInicial = new Point3d(x, y, z);
+											}
+											a++;
+										}
+									}
+									else{
+										break;
+									}
+								}
+							}
+							/*************************************MOVIMENTAÇÃO PARTE CONVEXA*************************************/
+							else{
+								z=zMax[numero];
+								numero--;
+
+								pontoFinal = new Point3d(x, y, z);		
+								LinearPath ver = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(ver);
+								pontoInicial = new Point3d(x, y, z);
+
+								if(a+1!=numeroDeConcavidades)
+									if(a+2 == numeroDeConcavidades){
+										if(largura[0]-2*allowanceBottom>=diametroFerramenta)
+											y-=largura[numeroDeConcavidades-a-1]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+									}
+									else
+										y-=largura[numeroDeConcavidades-a-1]+2*allowanceBottom+diametroFerramenta;//ponto inicializador da parte concava
+
+
+								pontoFinal = new Point3d(x, y, z);		
+								LinearPath vert = new LinearPath(pontoInicial,pontoFinal);
+								desbaste.add(vert);
+								pontoInicial = new Point3d(x, y, z);
+
+								if(a+1!=numeroDeConcavidades){
+									if(largura[numeroDeConcavidades-a-2]-2*allowanceBottom>=diametroFerramenta){
+										z=holdZ;
+										pontoFinal = new Point3d(x, y, z);		
+										LinearPath verti = new LinearPath(pontoInicial,pontoFinal);
+										desbaste.add(verti);
+										pontoInicial = new Point3d(x, y, z);
+									}
+								}
+							}
+						}
+						fundo=false;
+					}
+				}
+			}
+			z=holdZ;
 		}
 
 		return desbaste;
@@ -463,15 +817,7 @@ public class MovimentacaoRanhuraPerfilGenerico {
 		Point3d pontoInicial=null;
 		Point3d pontoFinal;
 
-
-		if(this.ranhuraBezier.getEixo()==RanhuraPerfilBezier.VERTICAL){
 			distanciaEntrePontos= ponto[1].getX()-ponto[0].getX();
-		}
-		else if(this.ranhuraBezier.getEixo()==RanhuraPerfilBezier.HORIZONTAL){
-			distanciaEntrePontos= ponto[1].getY()-ponto[0].getY();
-		}
-
-
 
 		for(i=0;i<numeroDePontos;i++){
 			if(i==0)
@@ -538,9 +884,9 @@ public class MovimentacaoRanhuraPerfilGenerico {
 				pontoInicial = new Point3d(x, y, z);
 				if(i!=0){
 					if(ponto[i].getZ()<ponto[i-1].getZ())
-						y=this.ranhuraBezier.getPosicaoY()+ponto[i].getY()+Math.abs(Math.sin(alfa)*r)+distanciaEntrePontos;
+						y=this.ranhuraBezier.getPosicaoY()+ponto[i].getX()+Math.abs(Math.sin(alfa)*r)+distanciaEntrePontos;
 					else if(ponto[i].getZ()>ponto[i-1].getZ())
-						y=this.ranhuraBezier.getPosicaoY()+ponto[i].getY()-Math.abs(Math.sin(alfa)*r)+distanciaEntrePontos;
+						y=this.ranhuraBezier.getPosicaoY()+ponto[i].getX()-Math.abs(Math.sin(alfa)*r)+distanciaEntrePontos;
 				}
 			}
 		}

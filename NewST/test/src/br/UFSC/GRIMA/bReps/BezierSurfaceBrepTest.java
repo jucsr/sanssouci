@@ -37,7 +37,7 @@ public class BezierSurfaceBrepTest
 		Point3d p30 = new Point3d(-30, 30, -50);
 		Point3d p31 = new Point3d(-10, 30, -20);
 		Point3d p32 = new Point3d(10, 30, -50);
-		Point3d p33 = new Point3d(30, 30, -30);
+		Point3d p33 = new Point3d(30, 30, -20);
 		
 		controlVertex[0][0] = p00;
 		controlVertex[0][1] = p01;
@@ -70,7 +70,7 @@ public class BezierSurfaceBrepTest
 	@Test
 	public void generateIndexTest()
 	{
-		brep = new BezierSurfaceBrep("BEZIER_SURFACE", controlVertex, 3, 2);
+		brep = new BezierSurfaceBrep("BEZIER_SURFACE", controlVertex, 4, 3);
 
 		for(int i = 0; i < brep.indexArray.length; i++)
 		{

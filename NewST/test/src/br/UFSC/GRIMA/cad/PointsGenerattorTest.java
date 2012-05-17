@@ -57,9 +57,5 @@ public class PointsGenerattorTest {
 		
 		PointsGenerator generator = new PointsGenerator(this.projeto, 10);
 //		ArrayList<Point3d> a = generator.gerarPontos();
-		for (int i=0; i<generator.setupsArray.get(Face.XY).get(Face.XY).size(); i++){
-			
-			System.out.println(generator.setupsArray.get(Face.XY).get(Face.XY).get(i));
-		}
 	}
 }

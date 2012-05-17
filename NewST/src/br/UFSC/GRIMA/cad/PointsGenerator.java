@@ -46,7 +46,7 @@ public class PointsGenerator {
 		this.setupsArray = new ArrayList<ArrayList<ArrayList<Point3d>>>();
 		this.facePointsArray = new ArrayList<ArrayList<Point3d>>();
 		this.forbiddenSpots = new ArrayList<Corners>();
-		this.corners = new Corners();
+		//this.corners = new Corners();
 		this.pointgen();
 	}
 	private void pointgen() {
@@ -69,6 +69,7 @@ public class PointsGenerator {
 					if (featureTmp.getClass() == Cavidade.class){					//caso CAVIDADE
 						Cavidade cavidade = (Cavidade)featureTmp;
 						if(cavidade.isPassante()){
+							this.corners = new Corners();
 							//Gerar os cantos da cavidade:
 							corners.c1 = cavidade.X;
 							corners.c2 = cavidade.X+cavidade.getComprimento();
@@ -86,6 +87,7 @@ public class PointsGenerator {
 					if (featureTmp.getClass() == FuroBasePlana.class){				//caso FURO
 						FuroBasePlana furo = (FuroBasePlana)featureTmp;
 						if(furo.isPassante()){
+							this.corners = new Corners();
 							corners.c1 = furo.X-(furo.getDiametro()/2);
 							corners.c2 = furo.X+(furo.getDiametro()/2);
 							corners.c3 = furo.Y-(furo.getDiametro()/2);

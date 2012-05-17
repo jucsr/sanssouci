@@ -54,13 +54,11 @@ public class BezierSurfaceBrep
 	{
 		int n = bezierSurface.getMeshArray().length;
 		int m = bezierSurface.getMeshArray()[0].length;
-		System.err.println("n -->" + n);
-		System.err.println("m -->" + m);
 		indexArray = new int[3 * ((n - 1) * 2 * (m - 1) * 2 + (n - 1) * 2 * 2 + (m - 1) * 2 * 2)];
 		int a = 0, b =  (n - 1) * (m - 1) * 3, c = (n - 1) * (m -1) * 3 * 2, d = (n - 1) * (m -1) * 3 * 3;
-		for(int i = 0; i < m - 1; i++)
+		for(int i = 0; i < n - 1; i++)
 		{
-			for(int j = 0; j < n - 1; j++)
+			for(int j = 0; j < m - 1; j++)
 			{
 				// ===== index of surface ===
 
@@ -95,40 +93,43 @@ public class BezierSurfaceBrep
 		}
 		int e = (n - 1) * (m -1) * 3 * 4, f = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3,
 		g = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3 * 2, h = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3 * 3;
-		for (int i = 0; i < n - 1; i++) {
+		for (int i = 0; i < n - 1; i++) 
+		{
 			// lados
-			indexArray[e] = i * n;
+
+			indexArray[e] = i * m;
 			e++;
-			indexArray[e] = (i + 1) * n;
+			indexArray[e] = i * m + m;
 			e++;
-			indexArray[e] = i * n + n * m;
+			indexArray[e] = i * m + n * m;
 			e++;
 
-			indexArray[f] = (i + 1) * n;
+			indexArray[f] = (i + 1) * m;
 			f++;
-			indexArray[f] = (i + 1) * n + m * n;
+			indexArray[f] = (i + 1) * m + m * n;
 			f++;
-			indexArray[f] = i * n + n * m;
+			indexArray[f] = i * m + n * m;
 			f++;
-
-			indexArray[g] = i * n + m - 1;
+			
+			indexArray[g] = (i + 2) * m - 1;
 			g++;
-			indexArray[g] = (i + 1) * n + m - 1;
+			indexArray[g] = (i + 1) * m - 1;
 			g++;
-			indexArray[g] = i * n + n * m + m - 1;
+			indexArray[g] =(i + 1) * m - 1 + m * n;
 			g++;
-
-			indexArray[h] = (i + 1) * n + m - 1;
+			
+			indexArray[h] = (i + 2) * m - 1;
 			h++;
-			indexArray[h] = (i + 1) * n + m * n + m - 1;
+			indexArray[h] = (i + 1) * m - 1 + m * n;
 			h++;
-			indexArray[h] = i * n + n * m + m - 1;
+			indexArray[h] = (i + 2) * m - 1 + m * n;
 			h++;
 		}
 			
 			int o = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3 * 4, p = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3 * 4 + (m - 1) * 3,
 			q = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3 * 4 + (m - 1) * 3 * 2, r = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3 * 4 + (m - 1) * 3 * 3;
-		for (int i = 0; i < m - 1; i++) {
+		for (int i = 0; i < m - 1; i++) 
+		{
 			// lados
 			indexArray[o] = i;
 			o++;

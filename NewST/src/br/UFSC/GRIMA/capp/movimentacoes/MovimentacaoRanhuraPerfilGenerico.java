@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.bReps.Bezier_1;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;

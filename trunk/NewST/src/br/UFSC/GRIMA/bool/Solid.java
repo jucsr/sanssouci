@@ -309,9 +309,9 @@ public class Solid extends Shape3D
 		GeometryInfo gi = new GeometryInfo(GeometryInfo.TRIANGLE_ARRAY);
 		gi.setCoordinateIndices(indices);
 		gi.setCoordinates(vertices);
+	
 		NormalGenerator ng = new NormalGenerator();
 		ng.generateNormals(gi);
-		
 		gi.setColors(colors);
 		gi.setColorIndices(indices);
 		gi.recomputeIndices();

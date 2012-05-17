@@ -413,7 +413,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		
 		if(this.ranhuraQuadU.getEixo() == Ranhura.VERTICAL && ws.getOperation().getClass() == BottomAndSideFinishMilling.class){
 
-			/****************** DESCIDA LINEAR ATÉ COMEÇAR A CURVATURA ***********************/
+			/****************** DESCIDA LINEAR ATï¿½ COMEï¿½AR A CURVATURA ***********************/
 			pontoInicial = new Point3d(xAtual,this.ranhuraQuadU.getPosicaoY(),this.ws.getOperation().getRetractPlane());
 			xAtual = diametroFerramenta/2 + this.ranhuraQuadU.getPosicaoX()-r*Math.cos((Math.PI/2)-alfa);
 			
@@ -710,7 +710,7 @@ public class MovimentacaoRanhuraPerfilQuadradoU {
 		}
 		else if(this.ranhuraQuadU.getEixo() == Ranhura.HORIZONTAL && ws.getOperation().getClass() == BottomAndSideFinishMilling.class){
 
-			/****************** DESCIDA LINEAR ATÉ COMEÇAR A CURVATURA ***********************/
+			/****************** DESCIDA LINEAR ATï¿½ COMEï¿½AR A CURVATURA ***********************/
 			pontoInicial = new Point3d(this.ranhuraQuadU.getPosicaoX(),yAtual,this.ws.getOperation().getRetractPlane());
 			yAtual = diametroFerramenta/2 + this.ranhuraQuadU.getPosicaoY()-r*Math.cos((Math.PI/2)-alfa);
 			

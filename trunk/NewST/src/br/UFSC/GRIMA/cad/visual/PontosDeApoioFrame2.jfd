@@ -289,35 +289,6 @@
           </void>
          </object>
         </void>
-        <void method="add">
-         <object class="com.jformdesigner.model.FormComponent">
-          <string>javax.swing.JComboBox</string>
-          <void method="setProperty">
-           <string>enabled</string>
-           <boolean>false</boolean>
-          </void>
-          <void property="name">
-           <string>setupComboBox</string>
-          </void>
-          <void method="auxiliary">
-           <void method="setProperty">
-            <string>JavaCodeGenerator.variableModifiers</string>
-            <int>4</int>
-           </void>
-          </void>
-         </object>
-         <object class="com.jformdesigner.model.FormLayoutConstraints">
-          <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
-          <void method="setProperty">
-           <string>gridy</string>
-           <int>1</int>
-          </void>
-          <void method="setProperty">
-           <string>gridwidth</string>
-           <int>3</int>
-          </void>
-         </object>
-        </void>
        </object>
        <object class="com.jformdesigner.model.FormLayoutConstraints">
         <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
@@ -342,11 +313,11 @@
          <class>java.awt.GridBagLayout</class>
          <void method="setProperty">
           <string>$columnSpecs</string>
-          <string>0, 0, 0</string>
+          <string>172</string>
          </void>
          <void method="setProperty">
           <string>$rowSpecs</string>
-          <string>0, 0, 0</string>
+          <string>28, 32</string>
          </void>
          <void method="setProperty">
           <string>$hGap</string>
@@ -367,6 +338,48 @@
         </object>
         <void property="name">
          <string>panel1</string>
+        </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormComponent">
+          <string>javax.swing.JComboBox</string>
+          <void method="setProperty">
+           <string>enabled</string>
+           <boolean>false</boolean>
+          </void>
+          <void property="name">
+           <string>setupComboBox</string>
+          </void>
+          <void method="auxiliary">
+           <void method="setProperty">
+            <string>JavaCodeGenerator.variableModifiers</string>
+            <int>4</int>
+           </void>
+          </void>
+         </object>
+         <object class="com.jformdesigner.model.FormLayoutConstraints">
+          <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
+         </object>
+        </void>
+        <void method="add">
+         <object class="com.jformdesigner.model.FormComponent">
+          <string>javax.swing.JComboBox</string>
+          <void property="name">
+           <string>faceComboBox</string>
+          </void>
+          <void method="auxiliary">
+           <void method="setProperty">
+            <string>JavaCodeGenerator.variableModifiers</string>
+            <int>4</int>
+           </void>
+          </void>
+         </object>
+         <object class="com.jformdesigner.model.FormLayoutConstraints">
+          <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
+          <void method="setProperty">
+           <string>gridy</string>
+           <int>1</int>
+          </void>
+         </object>
         </void>
        </object>
        <object class="com.jformdesigner.model.FormLayoutConstraints">

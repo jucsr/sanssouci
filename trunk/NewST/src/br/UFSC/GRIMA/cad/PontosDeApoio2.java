@@ -32,11 +32,25 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 	private void gneratePoints() {
 	
 		System.out.println("gerar pontos");
-		PointsGenerator generator = new PointsGenerator(this.projeto, ((Double)this.diameterSpinner.getValue()).doubleValue());			//teste
+		diametro = (int) (((Double)this.diameterSpinner.getValue()).doubleValue());
+		gerador = new PointsGenerator(this.projeto, diametro);
+		
+		
+		/**Desenhando os pontos:**/
 		desenhador.alterarProjeto(this.projeto);
 		drawingScrollPane.setViewportView(desenhador);
-		desenhador.addClampPoints(generator.setupsArray.get(0).get(0),(int) (((Double)this.diameterSpinner.getValue()).doubleValue()));
-		//this.setupComboBox.add("Setup 1", s)
+		desenhador.addClampPoints(gerador.setupsArray.get(0).get(0), diametro/2);
+		this.desenhador.revalidate();
+		
+		/**Gerando seletor de setups:**/
+		for (int i=0; i<6; i++){
+			if (gerador.setupsArray.get(i) != null){
+				int j=1;
+				setupComboBox.addItem("Setup " + j);
+				j++;
+			}	
+		}
+		//
 		
 	}
 	

@@ -57,8 +57,9 @@ public class PontosDeApoioFrame2 extends JDialog {
 		diameterLabel = new JLabel();
 		diameterSpinner = new JSpinner();
 		diameterMMLabel = new JLabel();
-		setupComboBox = new JComboBox();
 		panel1 = new JPanel();
+		setupComboBox = new JComboBox();
+		faceComboBox = new JComboBox();
 		scrollPane1 = new JScrollPane();
 		pointsTable = new JTable();
 		drawingScrollPane = new JScrollPane();
@@ -148,12 +149,6 @@ public class PontosDeApoioFrame2 extends JDialog {
 			panel3.add(diameterMMLabel, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 0), 0, 0));
-
-			//---- setupComboBox ----
-			setupComboBox.setEnabled(false);
-			panel3.add(setupComboBox, new GridBagConstraints(0, 1, 3, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
 		}
 		contentPane.add(panel3, new GridBagConstraints(2, 3, 2, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
@@ -162,10 +157,19 @@ public class PontosDeApoioFrame2 extends JDialog {
 		//======== panel1 ========
 		{
 			panel1.setLayout(new GridBagLayout());
-			((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-			((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-			((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-			((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+			((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {172, 0};
+			((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {33, 32, 0};
+			((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+			((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+
+			//---- setupComboBox ----
+			setupComboBox.setEnabled(false);
+			panel1.add(setupComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 5, 0), 0, 0));
+			panel1.add(faceComboBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0));
 		}
 		contentPane.add(panel1, new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
@@ -219,8 +223,9 @@ public class PontosDeApoioFrame2 extends JDialog {
 	private JLabel diameterLabel;
 	protected JSpinner diameterSpinner;
 	private JLabel diameterMMLabel;
-	protected JComboBox setupComboBox;
 	private JPanel panel1;
+	protected JComboBox setupComboBox;
+	protected JComboBox faceComboBox;
 	private JScrollPane scrollPane1;
 	private JTable pointsTable;
 	protected JScrollPane drawingScrollPane;

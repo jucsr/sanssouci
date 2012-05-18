@@ -22,7 +22,7 @@ public class PointsGenerator {
 	private Projeto projeto;
 	private int setupsNumber;
 	private double diameter;
-	int tolerance=0;
+	int tolerance=2;
 	//Variáveis de listagem:
 	public ArrayList<ArrayList<ArrayList<Point3d>>> setupsArray;
 	public ArrayList<ArrayList<Point3d>> facePointsArray;
@@ -157,47 +157,142 @@ public class PointsGenerator {
 				spot4Flag = false;
 			}
 		}
-		//Criando os pontos:
+/**Criando os pontos:**/
+//Canto UM 1:
 		if (spot1Flag) {
 			support1 = new Point3d (diameter/2, diameter/2, 0);
 			supportsArray.add(support1);
-		}/*
+		}
 		//Caso não seja possível colocar um suporte no canto da peça, tenta distribuir pra os dois pontos laterais mais próximos
 		else{
-			
 			for (int i=0; i<forbiddenSpots.size(); i++){
-				spot1Flag = true;
 				if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
+					//Varre e  faz bubblesort:
 					for (int j=0; j<forbiddenSpots.size(); j++){
-						if (forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && (forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2) < diameter){
-							spot1Flag = false;
-//							i=j;
-//							j=0;
+						if (forbiddenSpots.get(j).c3 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && (forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2) < diameter){
+							System.out.println("Novamente o ponto não pode ser colocado no canto 1");
+							i=j;
+							j=0;
 						}
-//						if (forbiddenSpots.get(i).c3 < forbiddenSpots.get(j).c4 && (forbiddenSpots.get(i).c4 - forbiddenSpots.get(j).c3) < diameter){
-//							spot5Flag = false;
-//						}
 					}
-					if (spot1Flag){
-						support1 = new Point3d (forbiddenSpots.get(i).c2 + diameter/2, diameter/2, 0);
-						supportsArray.add(support1);
-					}
+					support1 = new Point3d (forbiddenSpots.get(i).c2 + diameter/2, diameter/2, 0);
+					supportsArray.add(support1);
 				}
 			}
-		}*/
+			for (int i=0; i<forbiddenSpots.size(); i++){
+				if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
+					for (int j=0; j<forbiddenSpots.size(); j++){
+						if (forbiddenSpots.get(j).c1 < diameter && forbiddenSpots.get(i).c3 < forbiddenSpots.get(j).c4 && (forbiddenSpots.get(i).c4 - forbiddenSpots.get(j).c3) < diameter){
+							i=j;
+							j=0;
+						}	
+					}
+					support5 = new Point3d (diameter/2, diameter/2 + forbiddenSpots.get(i).c4, 0);
+					supportsArray.add(support5);
+				}
+			}
+			
+		}
+//Canto DOIS 2:
 		if (spot2Flag) {
-			support2 = new Point3d (0, projeto.getBloco().getLargura()-diameter/2, 0);
+			support2 = new Point3d (diameter/2, projeto.getBloco().getLargura()-diameter/2, 0);
 			supportsArray.add(support2);
 		}
+		else{
+			for (int i=0; i<forbiddenSpots.size(); i++){
+				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
+					for (int j=0; j<forbiddenSpots.size(); j++){
+						if (projeto.getBloco().getLargura() - forbiddenSpots.get(j).c4 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && (forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2) < diameter){
+							i=j;
+							j=0;
+						}
+					}
+					support2 = new Point3d (forbiddenSpots.get(i).c2 + diameter/2, projeto.getBloco().getLargura() - diameter/2, 0);
+					supportsArray.add(support2);
+				}
+			}
+			for (int i=0; i<forbiddenSpots.size(); i++){
+				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
+					for (int j=0; j<forbiddenSpots.size(); j++){
+						if (forbiddenSpots.get(j).c1 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(i).c3 - forbiddenSpots.get(j).c4 < diameter){
+							i=j;
+							j=0;
+						}	
+					}
+					support6 = new Point3d (diameter/2,forbiddenSpots.get(i).c3 - diameter/2, 0);
+					supportsArray.add(support6);
+				}
+			}
+			
+		}
+//Canto TRÊS 3:		
 		if (spot3Flag) {
-			support3 = new Point3d (projeto.getBloco().getComprimento()-diameter/2, 0, 0);
+			support3 = new Point3d (projeto.getBloco().getComprimento()-diameter/2, diameter/2, 0);
 			supportsArray.add(support3);
 		}
+		else{
+//Reloca o Canto 3:
+			for (int i=0; i<forbiddenSpots.size(); i++){
+				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
+					for (int j=0; j<forbiddenSpots.size(); j++){
+						if (forbiddenSpots.get(j).c3 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2 < diameter){
+							i=j;
+							j=0;
+						}
+					}
+					support3 = new Point3d (forbiddenSpots.get(i).c1 - diameter/2, diameter/2, 0);
+					supportsArray.add(support3);
+				}
+			}
+//Reloca o canto 7:
+			for (int i=0; i<forbiddenSpots.size(); i++){
+				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
+					for (int j=0; j<forbiddenSpots.size(); j++){
+						if (projeto.getBloco().getComprimento() - forbiddenSpots.get(j).c2 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(i).c3 - forbiddenSpots.get(j).c4 < diameter){
+							i=j;
+							j=0;
+						}	
+					}
+					support7 = new Point3d (projeto.getBloco().getComprimento() - diameter/2, forbiddenSpots.get(i).c4 + diameter/2, 0);
+					supportsArray.add(support7);
+				}
+			}
+			
+		}
+//Canto QUATRO 4:
 		if (spot4Flag) {
 			support4 = new Point3d (projeto.getBloco().getComprimento()-diameter/2, projeto.getBloco().getLargura()-diameter/2, 0);
 			supportsArray.add(support4);
 		}
-		//exceções:
+		else{
+//Reloca o Canto 4:
+			for (int i=0; i<forbiddenSpots.size(); i++){
+				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter){
+					for (int j=0; j<forbiddenSpots.size(); j++){
+						if (projeto.getBloco().getLargura() - forbiddenSpots.get(j).c4 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2 < diameter){
+							i=j;
+							j=0;
+						}
+					}
+					support4 = new Point3d (forbiddenSpots.get(i).c1 - diameter/2, projeto.getBloco().getLargura() - diameter/2, 0);
+					supportsArray.add(support4);
+				}
+			}
+//Reloca o canto 8:
+			for (int i=0; i<forbiddenSpots.size(); i++){
+				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter){
+					for (int j=0; j<forbiddenSpots.size(); j++){
+						if (projeto.getBloco().getComprimento() - forbiddenSpots.get(j).c2 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(i).c3 - forbiddenSpots.get(j).c4 < diameter){
+							i=j;
+							j=0;
+						}	
+					}
+					support8 = new Point3d (projeto.getBloco().getComprimento() - diameter/2, forbiddenSpots.get(i).c3 - diameter/2, 0);
+					supportsArray.add(support8);
+				}
+			}
+			
+		}
 		
 		
 		return supportsArray;

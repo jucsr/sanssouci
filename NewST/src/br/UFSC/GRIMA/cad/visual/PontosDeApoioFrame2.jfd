@@ -248,8 +248,8 @@
            <object class="javax.swing.SpinnerNumberModel">
             <double>3.0</double>
             <double>3.0</double>
-            <double>50.0</double>
-            <double>1.0</double>
+            <double>30.0</double>
+            <double>0.5</double>
            </object>
           </void>
           <void property="name">
@@ -567,6 +567,12 @@
           </void>
           <void property="name">
            <string>pointsTable</string>
+          </void>
+          <void method="auxiliary">
+           <void method="setProperty">
+            <string>JavaCodeGenerator.variableModifiers</string>
+            <int>1</int>
+           </void>
           </void>
          </object>
         </void>

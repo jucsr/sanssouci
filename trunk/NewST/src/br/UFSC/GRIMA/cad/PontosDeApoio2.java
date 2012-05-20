@@ -34,7 +34,9 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 		System.out.println("gerar pontos");
 		diametro = (int) (((Double)this.diameterSpinner.getValue()).doubleValue());
 		gerador = new PointsGenerator(this.projeto, diametro);
-		
+		//Passando os dados para a tabela:
+		for (int i=0; i<gerador.f)
+		this.pointsTable.setValueAt(gerador.facePointsArray.get(0).get(0).x, 0, 0);
 		
 		/**Desenhando os pontos:**/
 		desenhador.alterarProjeto(this.projeto);

@@ -20,12 +20,11 @@ final class Corners{
 
 public class PointsGenerator {
 	private Projeto projeto;
-	private int setupsNumber;
 	private double diameter;
 	int tolerance=2;
 	//Variáveis de listagem:
 	public ArrayList<ArrayList<ArrayList<Point3d>>> setupsArray;
-	public ArrayList<ArrayList<Point3d>> facePointsArray;
+	public ArrayList<ArrayList<Point3d>> facesArray;
 	public ArrayList<Corners> forbiddenSpots = null;		//ArrayList das partes proibidas
 	Corners corners = null;
 	//Variáveis de pontos de apoio:
@@ -44,7 +43,7 @@ public class PointsGenerator {
 		this.projeto = projeto;
 		this.diameter = diameter + tolerance;
 		this.setupsArray = new ArrayList<ArrayList<ArrayList<Point3d>>>();
-		this.facePointsArray = new ArrayList<ArrayList<Point3d>>();
+		this.facesArray = new ArrayList<ArrayList<Point3d>>();
 		this.forbiddenSpots = new ArrayList<Corners>();
 		//this.corners = new Corners();
 		this.pointgen();
@@ -52,10 +51,10 @@ public class PointsGenerator {
 	private void pointgen() {
 		
 //		setupsArray = new ArrayList<ArrayList<ArrayList<Point3d>>>();
-//		facePointsArray = new ArrayList<ArrayList<Point3d>>();
+//		facesArray = new ArrayList<ArrayList<Point3d>>();
 //		forbiddenSpots = new ArrayList<Corners>();
 //		corners = new Corners();
-		setupsNumber = 0;
+//		setupsNumber = 0;
 		//****Procura por FEATURES nas faces*****//
 		for (int i=0; i<projeto.getBloco().faces.size(); i++)						//Procura por FEATURES em cada face
 		{
@@ -100,8 +99,13 @@ public class PointsGenerator {
 						}
 					}
 				}
-				facePointsArray.add(gerarPontos(forbiddenSpots));
-				setupsArray.add(i, facePointsArray);
+				System.out.println("Lista dos pontos proibidos:");
+				for (int k=0; k<forbiddenSpots.size(); k++){
+					System.out.printf("%.1f\t%.1f\t%.1f\t%.1f\n", forbiddenSpots.get(k).c1, forbiddenSpots.get(k).c2, forbiddenSpots.get(k).c3, forbiddenSpots.get(k).c4);
+				}
+				gerarPontosBase(forbiddenSpots);
+				
+				setupsArray.add(i, facesArray);
 			}
 			else setupsArray.add(i, null); 
 		}
@@ -111,21 +115,14 @@ public class PointsGenerator {
 //			if (faceTmp. = 0) setupsArray.add(i, null);
 	}
 	
-	private ArrayList<Point3d> gerarPontos(ArrayList<Corners> forbiddenSpots)
+	private void gerarPontosBase(ArrayList<Corners> forbiddenSpots)
 	{
 		ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
 		boolean spot1Flag = true;
 		boolean spot2Flag = true;
 		boolean spot3Flag = true;
 		boolean spot4Flag = true;
-		boolean spot5Flag = true;
-		boolean spot6Flag = true;
-		boolean spot7Flag = true;
-		boolean spot8Flag = true;
-		System.out.println("Lista dos pontos proibidos:");
-		for (int k=0; k<forbiddenSpots.size(); k++){
-			System.out.printf("%.1f\t%.1f\t%.1f\t%.1f\n", forbiddenSpots.get(k).c1, forbiddenSpots.get(k).c2, forbiddenSpots.get(k).c3, forbiddenSpots.get(k).c4);
-		}
+
 		System.out.println("Gerando os suportes:");
 		//Verificando os cantos:
 		for (int i=0; i<forbiddenSpots.size(); i++){
@@ -164,7 +161,7 @@ public class PointsGenerator {
 			supportsArray.add(support1);
 		}
 		//Caso não seja possível colocar um suporte no canto da peça, tenta distribuir pra os dois pontos laterais mais próximos
-		else{
+		if (!spot1Flag){
 			for (int i=0; i<forbiddenSpots.size(); i++){
 				if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
 					//Varre e  faz bubblesort:
@@ -177,18 +174,21 @@ public class PointsGenerator {
 					}
 					support1 = new Point3d (forbiddenSpots.get(i).c2 + diameter/2, diameter/2, 0);
 					supportsArray.add(support1);
+					System.out.println("Suporte 1 criado");
 				}
 			}
 			for (int i=0; i<forbiddenSpots.size(); i++){
 				if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
 					for (int j=0; j<forbiddenSpots.size(); j++){
-						if (forbiddenSpots.get(j).c1 < diameter && forbiddenSpots.get(i).c3 < forbiddenSpots.get(j).c4 && (forbiddenSpots.get(i).c4 - forbiddenSpots.get(j).c3) < diameter){
+						if (forbiddenSpots.get(j).c1 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(j).c3 - forbiddenSpots.get(i).c4 < diameter){
 							i=j;
 							j=0;
+							System.out.println("espaço proibido Suporte 5");
 						}	
 					}
 					support5 = new Point3d (diameter/2, diameter/2 + forbiddenSpots.get(i).c4, 0);
 					supportsArray.add(support5);
+					System.out.println("Suporte 5 criado");
 				}
 			}
 			
@@ -198,29 +198,33 @@ public class PointsGenerator {
 			support2 = new Point3d (diameter/2, projeto.getBloco().getLargura()-diameter/2, 0);
 			supportsArray.add(support2);
 		}
-		else{
+		if (!spot2Flag){
 			for (int i=0; i<forbiddenSpots.size(); i++){
-				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
+				if (projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter && forbiddenSpots.get(i).c1 < diameter){
 					for (int j=0; j<forbiddenSpots.size(); j++){
 						if (projeto.getBloco().getLargura() - forbiddenSpots.get(j).c4 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && (forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2) < diameter){
 							i=j;
 							j=0;
+							System.out.println("espaço proibido Suporte 2");
 						}
 					}
 					support2 = new Point3d (forbiddenSpots.get(i).c2 + diameter/2, projeto.getBloco().getLargura() - diameter/2, 0);
 					supportsArray.add(support2);
+					System.out.println("Suporte 2 criado");
 				}
 			}
 			for (int i=0; i<forbiddenSpots.size(); i++){
-				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
+				if (projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter && forbiddenSpots.get(i).c1 < diameter){
 					for (int j=0; j<forbiddenSpots.size(); j++){
-						if (forbiddenSpots.get(j).c1 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(i).c3 - forbiddenSpots.get(j).c4 < diameter){
+						if (forbiddenSpots.get(j).c1 < diameter && forbiddenSpots.get(j).c4 < forbiddenSpots.get(i).c3 && forbiddenSpots.get(i).c3 - forbiddenSpots.get(j).c4 < diameter){
 							i=j;
 							j=0;
+							System.out.println("espaço proibido Suporte 6");
 						}	
 					}
 					support6 = new Point3d (diameter/2,forbiddenSpots.get(i).c3 - diameter/2, 0);
 					supportsArray.add(support6);
+					System.out.println("Suporte 6 criado");
 				}
 			}
 			
@@ -230,7 +234,7 @@ public class PointsGenerator {
 			support3 = new Point3d (projeto.getBloco().getComprimento()-diameter/2, diameter/2, 0);
 			supportsArray.add(support3);
 		}
-		else{
+		if (!spot3Flag){
 //Reloca o Canto 3:
 			for (int i=0; i<forbiddenSpots.size(); i++){
 				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
@@ -238,23 +242,27 @@ public class PointsGenerator {
 						if (forbiddenSpots.get(j).c3 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2 < diameter){
 							i=j;
 							j=0;
+							System.out.println("espaço proibido Suporte 3");
 						}
 					}
 					support3 = new Point3d (forbiddenSpots.get(i).c1 - diameter/2, diameter/2, 0);
 					supportsArray.add(support3);
+					System.out.println("Suporte 3 criado");
 				}
 			}
 //Reloca o canto 7:
 			for (int i=0; i<forbiddenSpots.size(); i++){
 				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && forbiddenSpots.get(i).c3 < diameter){
 					for (int j=0; j<forbiddenSpots.size(); j++){
-						if (projeto.getBloco().getComprimento() - forbiddenSpots.get(j).c2 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(i).c3 - forbiddenSpots.get(j).c4 < diameter){
+						if (projeto.getBloco().getComprimento() - forbiddenSpots.get(j).c2 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(j).c3 - forbiddenSpots.get(i).c4 < diameter){
 							i=j;
 							j=0;
+							System.out.println("espaço proibido Suporte 7");
 						}	
 					}
 					support7 = new Point3d (projeto.getBloco().getComprimento() - diameter/2, forbiddenSpots.get(i).c4 + diameter/2, 0);
 					supportsArray.add(support7);
+					System.out.println("Suporte 7 criado");
 				}
 			}
 			
@@ -264,7 +272,7 @@ public class PointsGenerator {
 			support4 = new Point3d (projeto.getBloco().getComprimento()-diameter/2, projeto.getBloco().getLargura()-diameter/2, 0);
 			supportsArray.add(support4);
 		}
-		else{
+		if (!spot4Flag){
 //Reloca o Canto 4:
 			for (int i=0; i<forbiddenSpots.size(); i++){
 				if (projeto.getBloco().getComprimento() - forbiddenSpots.get(i).c2 < diameter && projeto.getBloco().getLargura() - forbiddenSpots.get(i).c4 < diameter){
@@ -272,10 +280,12 @@ public class PointsGenerator {
 						if (projeto.getBloco().getLargura() - forbiddenSpots.get(j).c4 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2 < diameter){
 							i=j;
 							j=0;
+							System.out.println("espaço proibido Suporte 4");
 						}
 					}
 					support4 = new Point3d (forbiddenSpots.get(i).c1 - diameter/2, projeto.getBloco().getLargura() - diameter/2, 0);
 					supportsArray.add(support4);
+					System.out.println("Suporte 4 criado");
 				}
 			}
 //Reloca o canto 8:
@@ -285,16 +295,18 @@ public class PointsGenerator {
 						if (projeto.getBloco().getComprimento() - forbiddenSpots.get(j).c2 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(i).c3 - forbiddenSpots.get(j).c4 < diameter){
 							i=j;
 							j=0;
+							System.out.println("espaço proibido Suporte 8");
 						}	
 					}
 					support8 = new Point3d (projeto.getBloco().getComprimento() - diameter/2, forbiddenSpots.get(i).c3 - diameter/2, 0);
 					supportsArray.add(support8);
+					System.out.println("Suporte 8 criado");
 				}
 			}
 			
 		}
+		facesArray.add(supportsArray);
 		
-		
-		return supportsArray;
+		return;
 	}
 }

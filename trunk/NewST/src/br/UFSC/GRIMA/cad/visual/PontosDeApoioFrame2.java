@@ -139,7 +139,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 				new Insets(0, 0, 5, 5), 0, 0));
 
 			//---- diameterSpinner ----
-			diameterSpinner.setModel(new SpinnerNumberModel(3.0, 3.0, 50.0, 1.0));
+			diameterSpinner.setModel(new SpinnerNumberModel(3.0, 3.0, 30.0, 0.5));
 			panel3.add(diameterSpinner, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 5), 0, 0));
@@ -227,7 +227,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 	protected JComboBox setupComboBox;
 	protected JComboBox faceComboBox;
 	private JScrollPane scrollPane1;
-	private JTable pointsTable;
+	public JTable pointsTable;
 	protected JScrollPane drawingScrollPane;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -43,8 +43,8 @@ public class PointsGenerator {
 		this.projeto = projeto;
 		this.diameter = diameter + tolerance;
 		this.setupsArray = new ArrayList<ArrayList<ArrayList<Point3d>>>();
-		this.facesArray = new ArrayList<ArrayList<Point3d>>();
-		this.forbiddenSpots = new ArrayList<Corners>();
+//		this.facesArray = new ArrayList<ArrayList<Point3d>>();
+//		this.forbiddenSpots = new ArrayList<Corners>();
 		//this.corners = new Corners();
 		this.pointgen();
 	}
@@ -62,9 +62,10 @@ public class PointsGenerator {
 			
 			if (faceTmp.features.size() > 0)										//Se a face possui FEATURES
 			{
-				System.out.println(faceTmp.getTipo());
+				facesArray = new ArrayList<ArrayList<Point3d>>();
 				for (int j=0; j<faceTmp.features.size(); j++){						//Procura por FEATURES PASSANTES
 					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
+					forbiddenSpots = new ArrayList<Corners>();
 					if (featureTmp.getClass() == Cavidade.class){					//caso CAVIDADE
 						Cavidade cavidade = (Cavidade)featureTmp;
 						if(cavidade.isPassante()){
@@ -103,11 +104,11 @@ public class PointsGenerator {
 				for (int k=0; k<forbiddenSpots.size(); k++){
 					System.out.printf("%.1f\t%.1f\t%.1f\t%.1f\n", forbiddenSpots.get(k).c1, forbiddenSpots.get(k).c2, forbiddenSpots.get(k).c3, forbiddenSpots.get(k).c4);
 				}
-				gerarPontosBase(forbiddenSpots);
-				
+				facesArray.add(gerarPontosBase(forbiddenSpots, faceTmp.getTipo()));
+				gerarPontosLaterais(faceTmp.getTipo());
 				setupsArray.add(i, facesArray);
 			}
-			else setupsArray.add(i, null); 
+			
 		}
 		
 //		//Análise da peça:
@@ -115,7 +116,7 @@ public class PointsGenerator {
 //			if (faceTmp. = 0) setupsArray.add(i, null);
 	}
 	
-	private void gerarPontosBase(ArrayList<Corners> forbiddenSpots)
+	private ArrayList<Point3d> gerarPontosBase(ArrayList<Corners> forbiddenSpots, int facenumber)
 	{
 		ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
 		boolean spot1Flag = true;
@@ -305,8 +306,12 @@ public class PointsGenerator {
 			}
 			
 		}
-		facesArray.add(supportsArray);
 		
-		return;
+		return supportsArray;
+	}
+
+	private void gerarPontosLaterais(int facenumber){
+		
 	}
 }
+

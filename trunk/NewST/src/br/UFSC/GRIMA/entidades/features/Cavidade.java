@@ -430,7 +430,7 @@ public class Cavidade extends Feature implements Serializable {
 	
 	public static Point2D[] determinarPontosEmReta(Point3d InitialPos, Point3d EndPos, int numeroDePontos)
 	{
-		Point2D[] saida = new Point2D [numeroDePontos + 1];
+		Point2D[] saida = new Point2D [numeroDePontos];
 		double inclinacao = Math.tan((EndPos.y - InitialPos.y)/(EndPos.x - InitialPos.x));
 		double angInclinacao = Math.atan2(EndPos.y - InitialPos.y, EndPos.x - InitialPos.x);
 		double comprimento = Math.sqrt(Math.pow((EndPos.y - InitialPos.y), 2) + Math.pow(EndPos.x - InitialPos.x, 2));
@@ -474,7 +474,7 @@ public class Cavidade extends Feature implements Serializable {
 	
 	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  
 	{
-		Point2D[] saida = new Point2D [numeroDePontos + 1];
+		Point2D[] saida = new Point2D [numeroDePontos];
 		double x, y, dAngulo = 0;
 
 		dAngulo = deltaAngulo / numeroDePontos;
@@ -522,16 +522,37 @@ public class Cavidade extends Feature implements Serializable {
 		Point3d center3 = new Point3d(raio, raio, 0.0);
 		Point3d center4 = new Point3d(comprimento - raio, raio, 0.0);
 		
-		
-		borda1 = determinarPontosEmCircunferencia(center1, 0.0, Math.PI/2, raio, numeroDePontos);
-		borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI/2, raio, numeroDePontos);
-		borda3 = determinarPontosEmCircunferencia(center3, Math.PI, Math.PI/2, raio, numeroDePontos);
-		borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, Math.PI/2, raio, numeroDePontos);
+			for (int j=0; j < 4*numeroDePontosBorda; j++){
 			
-		linhaHor1 = determinarPontosEmReta(iniPos1, endPos1, numeroDePontos);	
-		linhaVer1 = determinarPontosEmReta(iniPos2, endPos2, numeroDePontos);	
-		linhaHor2 = determinarPontosEmReta(iniPos3, endPos3, numeroDePontos);
-		linhaVer1 = determinarPontosEmReta(iniPos4, endPos4, numeroDePontos);	
+				borda1 = determinarPontosEmCircunferencia(center1, 0.0, Math.PI/2, raio, numeroDePontos);
+				borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI/2, raio, numeroDePontos);
+				borda3 = determinarPontosEmCircunferencia(center3, Math.PI, Math.PI/2, raio, numeroDePontos);
+				borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, Math.PI/2, raio, numeroDePontos);
+				
+				saida[j] = borda1[j];
+				saida[numeroDePontosBorda + j] = borda2[j];
+				saida[2*numeroDePontosBorda + j] = borda3[j];
+				saida[3*numeroDePontosBorda + j] = borda4[j];
+			}
+		
+			for(int j=0; j < numeroDePontosLinhaHor; j++){
+				
+				linhaHor1 = determinarPontosEmReta(iniPos1, endPos1, numeroDePontos);
+				linhaHor2 = determinarPontosEmReta(iniPos3, endPos3, numeroDePontos);
+				
+				saida[4*numeroDePontosBorda + j] = linhaHor1[j];
+				saida[4*numeroDePontosBorda + numeroDePontosLinhaHor + j] = linhaHor2[j];
+			}
+		
+			for(int j=0; j < numeroDePontosLinhaVer; j++){
+				
+				linhaVer1 = determinarPontosEmReta(iniPos2, endPos2, numeroDePontos);	
+				linhaVer1 = determinarPontosEmReta(iniPos4, endPos4, numeroDePontos);
+				
+				saida[4*numeroDePontosBorda + 2*numeroDePontosLinhaHor + j] = linhaVer1[j];
+				saida[4*numeroDePontosBorda + 2*numeroDePontosLinhaHor + numeroDePontosLinhaVer + j] = linhaHor2[j];
+			}
+			
 		
 		return saida;
 	}

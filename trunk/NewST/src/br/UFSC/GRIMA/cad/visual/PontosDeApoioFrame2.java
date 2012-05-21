@@ -46,6 +46,10 @@ public class PontosDeApoioFrame2 extends JDialog {
 		this.pointsTable.setVisible(true);
 	}
 
+	private void setupComboBoxItemStateChanged(ItemEvent e) {
+		// TODO add your code here
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		supportTypeLabel = new JLabel();
@@ -167,6 +171,18 @@ public class PontosDeApoioFrame2 extends JDialog {
 			panel1.add(setupComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 0), 0, 0));
+
+			//---- faceComboBox ----
+			faceComboBox.setModel(new DefaultComboBoxModel(new String[] {
+				"XY",
+				"YZ",
+				"XZ",
+				"YX",
+				"ZY",
+				"ZX",
+				"All Faces"
+			}));
+			faceComboBox.setMaximumRowCount(7);
 			panel1.add(faceComboBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));

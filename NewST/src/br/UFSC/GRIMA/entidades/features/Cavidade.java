@@ -268,7 +268,7 @@ public class Cavidade extends Feature implements Serializable {
 		
 		if(boss.getClass() == CircularBoss.class)
 		{
-			double radius;
+//			double radius;
 			CircularBoss cb = (CircularBoss)boss;
 			
 			double posX = cb.getPosicaoX();
@@ -280,10 +280,10 @@ public class Cavidade extends Feature implements Serializable {
 			
 //			Point3d[] borda = null;
 			
-			if(cb.getDiametro1() >= cb.getDiametro2())
-				radius = cb.getDiametro1() / 2;
-			else
-				radius = cb.getDiametro2() / 2;
+//			if(cb.getDiametro1() >= cb.getDiametro2())
+//				radius = cb.getDiametro1() / 2;
+//			else
+//				radius = cb.getDiametro2() / 2;
 			
 			/** Discretiza a borda do CircularBoss **/
 			
@@ -362,9 +362,11 @@ public class Cavidade extends Feature implements Serializable {
 					
 					double n = 2*Math.PI*raio;
 					int numPontosRaio = (int)n;
+					System.out.println("numPontosRaio" +numPontosRaio);
 					int numPontosComprimento = 2*(int)comprimento; //numero de pontos das 2 retas
 					int numPontosLargura = 2*(int)largura;
-					int numPontos = numPontosRaio + numPontosComprimento + numPontosLargura;
+					int numPontos = numPontosRaio + numPontosComprimento + numPontosLargura ;
+					System.out.println("numPontos" + numPontos);
 					
 //			 		RoundRectangle2D novoRecBossRect2D = new RoundRectangle2D.Double(posX, posY, comprimento,largura, raio, raio);
 //					Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
@@ -430,32 +432,32 @@ public class Cavidade extends Feature implements Serializable {
 			 		
 			}
 		
-		for(int i = 0; i < this.itsBoss.size(); i++)
-		{
-			Boss bossTmp = this.itsBoss.get(i);
-			if(boss.getClass() == CircularBoss.class)
-			{
-				double radius;
-				CircularBoss cbTmp = (CircularBoss)boss;
-				if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
-					radius = cbTmp.getDiametro1() / 2;
-				else
-					radius = cbTmp.getDiametro2() / 2;
-				
-				Rectangle2D rectangle = new Rectangle2D.Double(cbTmp.X - radius, cbTmp.Y - radius, radius * 2, radius * 2);
-				if(!cavidade.contains(rectangle))
-				{
-					JOptionPane.showConfirmDialog(null, "ERRO BOSS");
-				}
-			}
-		}
+//		for(int i = 0; i < this.itsBoss.size(); i++)
+//		{
+//			Boss bossTmp = this.itsBoss.get(i);
+//			if(boss.getClass() == CircularBoss.class)
+//			{
+//				double radius;
+//				CircularBoss cbTmp = (CircularBoss)boss;
+//				if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
+//					radius = cbTmp.getDiametro1() / 2;
+//				else
+//					radius = cbTmp.getDiametro2() / 2;
+//				
+//				Rectangle2D rectangle = new Rectangle2D.Double(cbTmp.X - radius, cbTmp.Y - radius, radius * 2, radius * 2);
+//				if(!cavidade.contains(rectangle))
+//				{
+//					JOptionPane.showConfirmDialog(null, "ERRO BOSS");
+//				}
+//			}
+//		}
 		return isValid;
 	}
 	
 	public static Point2D[] determinarPontosEmReta(Point3d InitialPos, Point3d EndPos, int numeroDePontos)
 	{
 		Point2D[] saida = new Point2D [numeroDePontos];
-		double inclinacao = Math.tan((EndPos.y - InitialPos.y)/(EndPos.x - InitialPos.x));
+//		double inclinacao = Math.tan((EndPos.y - InitialPos.y)/(EndPos.x - InitialPos.x));
 		double angInclinacao = Math.atan2(EndPos.y - InitialPos.y, EndPos.x - InitialPos.x);
 		double comprimento = Math.sqrt(Math.pow((EndPos.y - InitialPos.y), 2) + Math.pow(EndPos.x - InitialPos.x, 2));
 		double passo = comprimento/numeroDePontos;
@@ -502,7 +504,7 @@ public class Cavidade extends Feature implements Serializable {
 		double x, y, dAngulo = 0;
 
 		dAngulo = deltaAngulo / numeroDePontos;
-		for(int i = 0; i < numeroDePontos + 1; i++)
+		for(int i = 0; i < numeroDePontos; i++)
 		{
 			x = center.x + raio * Math.cos(anguloInicial + i * dAngulo);
 			y = center.y + raio * Math.sin(anguloInicial + i * dAngulo);
@@ -516,9 +518,14 @@ public class Cavidade extends Feature implements Serializable {
 		
 		double n = (2*(Math.PI)*raio)/4;
 		int numeroDePontosBorda = (int)n;
+		int numPontosComprimento = 2*(int)comprimento; //numero de pontos das 2 retas
+		int numPontosLargura = 2*(int)largura;
 		
-		int numeroDePontosLinhaHor = (numeroDePontos - 4*numeroDePontosBorda)/2;
-		int numeroDePontosLinhaVer = (numeroDePontos - numeroDePontosLinhaHor - 4*numeroDePontosBorda)/2;
+//		int numeroDePontosLinhaHor = (numeroDePontos - 4*numeroDePontosBorda)/2;
+//		int numeroDePontosLinhaVer = (numeroDePontos - numeroDePontosLinhaHor - 4*numeroDePontosBorda)/2;
+		int numeroDePontosLinhaHor = numPontosComprimento;
+		int numeroDePontosLinhaVer = numPontosLargura;
+		
 		
 		Point2D[] saida = new Point2D [numeroDePontos];
 		
@@ -546,38 +553,53 @@ public class Cavidade extends Feature implements Serializable {
 		Point3d center3 = new Point3d(raio, raio, 0.0);
 		Point3d center4 = new Point3d(comprimento - raio, raio, 0.0);
 		
-			for (int j=0; j < 4*numeroDePontosBorda; j++){
+		borda1 = determinarPontosEmCircunferencia(center1, 0.0, Math.PI/2, raio, numeroDePontosBorda);
+		borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI, raio, numeroDePontosBorda);
+		borda3 = determinarPontosEmCircunferencia(center3, Math.PI, 3*(Math.PI)/2, raio, numeroDePontosBorda);
+		borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, 2*Math.PI, raio, numeroDePontosBorda);
+		
+		System.out.println("pontos borda 1 " + borda1.length );
+		System.out.println("pontos borda 2 " + borda2.length );
+		System.out.println("pontos borda 3 " + borda3.length );
+		System.out.println("pontos borda 4 " + borda4.length );
+
+		
+			for (int j=0; j < borda1.length; j++){
 			
-				borda1 = determinarPontosEmCircunferencia(center1, 0.0, Math.PI/2, raio, numeroDePontos);
-				borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI/2, raio, numeroDePontos);
-				borda3 = determinarPontosEmCircunferencia(center3, Math.PI, Math.PI/2, raio, numeroDePontos);
-				borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, Math.PI/2, raio, numeroDePontos);
-				
-				saida[j] = borda1[j];
-				saida[numeroDePontosBorda + j] = borda2[j];
-				saida[2*numeroDePontosBorda + j] = borda3[j];
-				saida[3*numeroDePontosBorda + j] = borda4[j];
+				saida[j] = new Point2D.Double(borda1[j].getX(), borda1[j].getY());
+				saida[borda1.length + j] = borda2[j];
+				saida[2*borda1.length + j] = borda3[j];
+				saida[3*borda1.length + j] = borda4[j];
 			}
 		
-			for(int j=0; j < numeroDePontosLinhaHor; j++){
-				
-				linhaHor1 = determinarPontosEmReta(iniPos1, endPos1, numeroDePontos);
-				linhaHor2 = determinarPontosEmReta(iniPos3, endPos3, numeroDePontos);
-				
-				saida[4*numeroDePontosBorda + j] = linhaHor1[j];
-				saida[4*numeroDePontosBorda + numeroDePontosLinhaHor + j] = linhaHor2[j];
+			linhaHor1 = determinarPontosEmReta(iniPos1, endPos1, numeroDePontos);
+			linhaHor2 = determinarPontosEmReta(iniPos3, endPos3, numeroDePontos);
+			
+			for(int j=0; j < linhaHor1.length; j++){
+			
+				saida[4*borda1.length + j] = linhaHor1[j];
+				saida[4*borda1.length + linhaHor1.length + j] = linhaHor2[j];
 			}
 		
-			for(int j=0; j < numeroDePontosLinhaVer; j++){
+			linhaVer1 = determinarPontosEmReta(iniPos2, endPos2, numeroDePontos);	
+			linhaVer2 = determinarPontosEmReta(iniPos4, endPos4, numeroDePontos);
+			
+			System.out.println("pontos linhaHor1 " + linhaHor1.length );
+			System.out.println("pontos linhaHor2 " + linhaHor2.length );
+			System.out.println("pontos linhaVer1 " + linhaVer1.length );
+			System.out.println("pontos linhaVer2 " + linhaVer2.length );
+			
+			for(int j=0; j < linhaVer1.length; j++){
 				
-				linhaVer1 = determinarPontosEmReta(iniPos2, endPos2, numeroDePontos);	
-				linhaVer1 = determinarPontosEmReta(iniPos4, endPos4, numeroDePontos);
 				
-				saida[4*numeroDePontosBorda + 2*numeroDePontosLinhaHor + j] = linhaVer1[j];
-				saida[4*numeroDePontosBorda + 2*numeroDePontosLinhaHor + numeroDePontosLinhaVer + j] = linhaHor2[j];
+				saida[4*borda1.length + 2*linhaHor1.length + j] = linhaVer1[j];
+				System.out.println("posicao " + 4*numeroDePontosBorda + 2*numeroDePontosLinhaHor + numeroDePontosLinhaVer + j );
+				saida[4*borda1.length + 2*linhaHor1.length + linhaVer1.length + j] = linhaHor2[j];
+				
 			}
 			
-		
+			
+
 		return saida;
 	}
 

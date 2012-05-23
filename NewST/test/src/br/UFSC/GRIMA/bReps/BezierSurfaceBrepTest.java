@@ -1,7 +1,6 @@
 package br.UFSC.GRIMA.bReps;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.j3d.J3D;
+import br.UFSC.GRIMA.operationSolids.CSGSolid;
 import br.UFSC.GRIMA.operationSolids.OperationBezierSurface;
 
 public class BezierSurfaceBrepTest 
@@ -22,22 +22,39 @@ public class BezierSurfaceBrepTest
 	public void init()
 	{
 		
-		Point3d p00 = new Point3d(-30, -30, -30);
-		Point3d p01 = new Point3d(-10, -30, -50);
-		Point3d p02 = new Point3d(10, -30, -50);
-		Point3d p03 = new Point3d(30, -30, -50);
-		Point3d p10 = new Point3d(-30, -10, -50);
-		Point3d p11 = new Point3d(-10, -10, -10);
-		Point3d p12 = new Point3d(10, -10, -10);
-		Point3d p13 = new Point3d(30, -10, -50);
-		Point3d p20 = new Point3d(-30, 10, -50);
-		Point3d p21 = new Point3d(-10, 10, -10);
-		Point3d p22 = new Point3d(10, 10, -10);
-		Point3d p23 = new Point3d(30, 10, -0);
-		Point3d p30 = new Point3d(-30, 30, -50);
-		Point3d p31 = new Point3d(-10, 30, -20);
-		Point3d p32 = new Point3d(10, 30, -50);
-		Point3d p33 = new Point3d(30, 30, -20);
+//		Point3d p00 = new Point3d(-30, -30, -30);
+//		Point3d p01 = new Point3d(-10, -30, -50);
+//		Point3d p02 = new Point3d(10, -30, -50);
+//		Point3d p03 = new Point3d(30, -30, -50);
+//		Point3d p10 = new Point3d(-30, -10, -50);
+//		Point3d p11 = new Point3d(-10, -10, -10);
+//		Point3d p12 = new Point3d(10, -10, -10);
+//		Point3d p13 = new Point3d(30, -10, -50);
+//		Point3d p20 = new Point3d(-30, 10, -50);
+//		Point3d p21 = new Point3d(-10, 10, -10);
+//		Point3d p22 = new Point3d(10, 10, -10);
+//		Point3d p23 = new Point3d(30, 10, -0);
+//		Point3d p30 = new Point3d(-30, 30, -50);
+//		Point3d p31 = new Point3d(-10, 30, -20);
+//		Point3d p32 = new Point3d(10, 30, -50);
+//		Point3d p33 = new Point3d(30, 30, -20);
+		
+		Point3d p00 = new Point3d(0, 0, -30);
+		Point3d p01 = new Point3d(30, 0, -20);
+		Point3d p02 = new Point3d(60, 0, -50);
+		Point3d p03 = new Point3d(90, 0, -20);
+		Point3d p10 = new Point3d(0, 3, -20);
+		Point3d p11 = new Point3d(30, 30, -10);
+		Point3d p12 = new Point3d(60, 30, -10);
+		Point3d p13 = new Point3d(90, 30, -50);
+		Point3d p20 = new Point3d(0, 60, -50);
+		Point3d p21 = new Point3d(30, 60, -10);
+		Point3d p22 = new Point3d(60, 60, -10);
+		Point3d p23 = new Point3d(90, 60, -20);
+		Point3d p30 = new Point3d(0, 90, -50);
+		Point3d p31 = new Point3d(30, 90, -20);
+		Point3d p32 = new Point3d(60, 90, -50);
+		Point3d p33 = new Point3d(90, 90, -20);
 		
 		controlVertex[0][0] = p00;
 		controlVertex[0][1] = p01;
@@ -70,7 +87,7 @@ public class BezierSurfaceBrepTest
 	@Test
 	public void generateIndexTest()
 	{
-		brep = new BezierSurfaceBrep("BEZIER_SURFACE", controlVertex, 4, 3);
+		brep = new BezierSurfaceBrep("BEZIER_SURFACE", controlVertex, 3, 2);
 
 		for(int i = 0; i < brep.indexArray.length; i++)
 		{
@@ -81,13 +98,14 @@ public class BezierSurfaceBrepTest
 	public void generateBezierSurfaceSolidTest()
 	{
 		JFrame frame = new JFrame("BEZIER SURFACE");
-		frame.setBounds(100, 100, 800, 500);
+		frame.setBounds(100, 100, 500, 500);
 		JPanel painel = new JPanel();
 		painel.repaint();
 		painel.setLayout(new BorderLayout());
 		frame.getContentPane().add(painel);
 		J3D j3d = new J3D(painel);
-		OperationBezierSurface operation = new OperationBezierSurface("BEZIER_SURFACE", controlVertex, 11, 11);
+		CSGSolid.appearance = true;
+		OperationBezierSurface operation = new OperationBezierSurface("BEZIER_SURFACE", controlVertex, 3, 2);
 		
 		j3d.addSolid(operation);
 		

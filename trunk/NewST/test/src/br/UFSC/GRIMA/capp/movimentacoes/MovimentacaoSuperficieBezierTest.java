@@ -1,9 +1,12 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -28,22 +31,39 @@ public class MovimentacaoSuperficieBezierTest {
 			};
 	Point3d [][] controlVertex = new Point3d[4][4];
 	
-	Point3d p00 = new Point3d(0, 0, 30);
-	Point3d p01 = new Point3d(30, 0, 0);
-	Point3d p02 = new Point3d(60, 0, 0);
-	Point3d p03 = new Point3d(90, 0, 30);
-	Point3d p10 = new Point3d(0, 30, 0);
+//	Point3d p00 = new Point3d(0, 0, 30);
+//	Point3d p01 = new Point3d(30, 0, 0);
+//	Point3d p02 = new Point3d(60, 0, 0);
+//	Point3d p03 = new Point3d(90, 0, 30);
+//	Point3d p10 = new Point3d(0, 30, 0);
+//	Point3d p11 = new Point3d(30, 30, 0);
+//	Point3d p12 = new Point3d(60, 30, 0);
+//	Point3d p13 = new Point3d(90, 30, 0);
+//	Point3d p20 = new Point3d(0, 60, 0);
+//	Point3d p21 = new Point3d(30, 60, 0);
+//	Point3d p22 = new Point3d(60, 60, 0);
+//	Point3d p23 = new Point3d(90, 60, 0);
+//	Point3d p30 = new Point3d(0, 90, 30);
+//	Point3d p31 = new Point3d(30, 90, 0);
+//	Point3d p32 = new Point3d(60, 90, 0);
+//	Point3d p33 = new Point3d(90, 90, 30);
+	
+	Point3d p00 = new Point3d(0, 0, 40);
+	Point3d p01 = new Point3d(30, 0, 40);
+	Point3d p02 = new Point3d(60, 0, 40);
+	Point3d p03 = new Point3d(90, 0, 40);
+	Point3d p10 = new Point3d(0, 30, 40);
 	Point3d p11 = new Point3d(30, 30, 0);
 	Point3d p12 = new Point3d(60, 30, 0);
-	Point3d p13 = new Point3d(90, 30, 0);
-	Point3d p20 = new Point3d(0, 60, 0);
-	Point3d p21 = new Point3d(30, 60, 0);
-	Point3d p22 = new Point3d(60, 60, 0);
-	Point3d p23 = new Point3d(90, 60, 0);
-	Point3d p30 = new Point3d(0, 90, 30);
-	Point3d p31 = new Point3d(30, 90, 0);
-	Point3d p32 = new Point3d(60, 90, 0);
-	Point3d p33 = new Point3d(90, 90, 30);
+	Point3d p13 = new Point3d(90, 30, 00);
+	Point3d p20 = new Point3d(0, 60, 40);
+	Point3d p21 = new Point3d(30, 60, -10);
+	Point3d p22 = new Point3d(60, 60, -10);
+	Point3d p23 = new Point3d(90, 60, 00);
+	Point3d p30 = new Point3d(0, 90, 40);
+	Point3d p31 = new Point3d(30, 90, 40);
+	Point3d p32 = new Point3d(60, 90, 40);
+	Point3d p33 = new Point3d(90, 90, 40);
 	
 	@Test
 	public void bezierTest()
@@ -81,11 +101,11 @@ public class MovimentacaoSuperficieBezierTest {
 //		}
 		
 		/*
-		 * PONTOS DA PERIFERIA EM UM NÍVEL Z
+		 * PONTOS DA PERIFERIA EM UM Nï¿½VEL Z
 		 */
 		Point3d malha[][] = b.getMeshArray();
 		ArrayList<Point3d> subArray = new ArrayList<Point3d>();
-		double plano=15;
+		double plano=20;
 
 		
 		for(int i=0;i<malha.length;i++){
@@ -167,15 +187,22 @@ public class MovimentacaoSuperficieBezierTest {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponents(g);
-
+				
 				Graphics2D g2d = (Graphics2D)g;
+				g2d.translate(25, 475);
+				g2d.scale(1, -1);
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.setColor(Color.black);
+				g2d.draw(new Rectangle2D.Double(0, 0, 90 * 5, 90 * 5));
+				g2d.setColor(new Color(100, 125, 251));
 				g2d.draw(p);
 				
 			}
 		}
 		JFrame frame = new JFrame("Poligono");
 		painelTest painel = new painelTest();
-		frame.setSize(400, 400);
+		frame.setSize(510, 535);
 		frame.getContentPane().add(painel);
 		frame.setVisible(true);
 		painel.repaint();

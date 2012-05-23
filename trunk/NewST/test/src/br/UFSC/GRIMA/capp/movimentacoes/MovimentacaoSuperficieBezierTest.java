@@ -122,7 +122,7 @@ public class MovimentacaoSuperficieBezierTest {
 		/*
 		 * JUNTAR OS PONTOS MAIS PROXIMOS DA PERIFERIA
 		 */
-		
+	
 		double distanciaTemp=OperationsVector.distanceVector(subArray.get(0),subArray.get(1)),
 				menorDistancia;
 		int u=0,k=0;

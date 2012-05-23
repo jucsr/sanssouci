@@ -29,7 +29,7 @@ public class Face implements Serializable{
 	public Vector features = new Vector();
 	private ArrayList<Point3d> pontosDeApoio = new ArrayList<Point3d>();
 
-	public int[] indices = {0, 0, 0, 0, 0,0,0};
+	public int[] indices = {0, 0, 0, 0, 0, 0, 0, 0};
 	
 	public Face(int tipo, double comprimento, double largura)
 	{

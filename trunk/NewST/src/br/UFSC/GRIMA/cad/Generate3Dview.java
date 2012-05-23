@@ -30,6 +30,7 @@ import br.UFSC.GRIMA.j3d.J3D;
 import br.UFSC.GRIMA.operationSolids.CSGSolid;
 import br.UFSC.GRIMA.operationSolids.CompoundSolid;
 import br.UFSC.GRIMA.operationSolids.OperationBezierProfile;
+import br.UFSC.GRIMA.operationSolids.OperationBezierSurface;
 import br.UFSC.GRIMA.operationSolids.OperationBlock;
 import br.UFSC.GRIMA.operationSolids.OperationConicalHoleBottom;
 import br.UFSC.GRIMA.operationSolids.OperationCylinder_1;
@@ -43,6 +44,7 @@ import br.UFSC.GRIMA.operationSolids.OperationSlotVeeProfile;
 import br.UFSC.GRIMA.operationSolids.OperationSphericalHoleBottom;
 import br.UFSC.GRIMA.operationSolids.OperationTaperHole;
 import br.UFSC.GRIMA.util.projeto.Projeto;
+import br.UFSC.GRIMA.entidades.features.Region;
 
 public class Generate3Dview extends Frame3D 
 {
@@ -443,6 +445,20 @@ public class Generate3Dview extends Frame3D
 
 						default:
 							break;
+					}
+					if(feature.getClass() == Region.class)
+					{
+						Region region = (Region)faceTmp.features.elementAt(j);
+						OperationBezierSurface obs = new OperationBezierSurface("", region.getControlVertex(), region.getSplitU(), region.getSplitV());
+						obs.rotate(-Math.PI / 2, 0);
+						obs.translate(-faceTmp.getComprimento() / 2, faceTmp.getProfundidadeMaxima() / 2 - 0, faceTmp.getLargura() / 2);
+						try
+						{
+							this.rawBlock = new CompoundSolid("", CompoundSolid.DIFFERENCE, this.rawBlock, obs);
+						} catch (InvalidBooleanOperationException e)
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 				break;

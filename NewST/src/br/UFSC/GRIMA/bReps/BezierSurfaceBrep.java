@@ -76,19 +76,35 @@ public class BezierSurfaceBrep
 				indexArray[b] = (i + 1) *  m + j;
 				b++;
 				
+//				indexArray[c] = m * i + j + m * n;
+//				c++;
+//				indexArray[c] = m * i + j + 1 + m * n;
+//				c++;
+//				indexArray[c] = (i + 1) *  m + j + m * n;
+//				c++;
+//				
+//				indexArray[d] = m * i + j + 1 + m * n;
+//				d++;
+//				indexArray[d] = (i + 1) *  m + j + 1 + m * n;
+//				d++;
+//				indexArray[d] = (i + 1) *  m + j + m * n;
+//				d++;
+				
+				
 				indexArray[c] = m * i + j + m * n;
 				c++;
-				indexArray[c] = m * i + j + 1 + m * n;
-				c++;
 				indexArray[c] = (i + 1) *  m + j + m * n;
+				c++;
+				indexArray[c] = m * i + j + 1 + m * n;
 				c++;
 				
 				indexArray[d] = m * i + j + 1 + m * n;
 				d++;
-				indexArray[d] = (i + 1) *  m + j + 1 + m * n;
-				d++;
 				indexArray[d] = (i + 1) *  m + j + m * n;
 				d++;
+				indexArray[d] = (i + 1) *  m + j + 1 + m * n;
+				d++;
+				
 			}
 		}
 		int e = (n - 1) * (m -1) * 3 * 4, f = (n - 1) * (m -1) * 3 * 4 + (n - 1) * 3,
@@ -131,20 +147,36 @@ public class BezierSurfaceBrep
 		for (int i = 0; i < m - 1; i++) 
 		{
 			// lados
+//			indexArray[o] = i;
+//			o++;
+//			indexArray[o] = i + 1;
+//			o++;
+//			indexArray[o] = n * m + i;
+//			o++;
+//
+//			indexArray[p] = i + 1;
+//			p++;
+//			indexArray[p] = n * m + i + 1;
+//			p++;
+//			indexArray[p] = n * m + i;
+//			p++;
+
 			indexArray[o] = i;
 			o++;
-			indexArray[o] = i + 1;
-			o++;
 			indexArray[o] = n * m + i;
+			o++;
+			indexArray[o] = i + 1;
 			o++;
 
 			indexArray[p] = i + 1;
 			p++;
-			indexArray[p] = n * m + i + 1;
-			p++;
 			indexArray[p] = n * m + i;
 			p++;
-
+			indexArray[p] = n * m + i + 1;
+			p++;
+			
+			
+			
 			indexArray[q] = m * (n - 1) + i;
 			q++;
 			indexArray[q] = m * (n - 1) + i + 1;
@@ -160,7 +192,6 @@ public class BezierSurfaceBrep
 			r++;
 		}
 	}
-
 	private void generateVertex() 
 	{
 		vertexArray = new Point3d[bezierSurface.getMeshArray().length * bezierSurface.getMeshArray()[0].length * 2];
@@ -176,7 +207,7 @@ public class BezierSurfaceBrep
 				/**
 				 * 	Generating Floor
 				 */
-				vertexArray[bezierSurface.getMeshArray().length * bezierSurface.getMeshArray()[0].length + a] = new Point3d(bezierSurface.getMeshArray()[i][j].x, bezierSurface.getMeshArray()[i][j].y, 0);
+				vertexArray[bezierSurface.getMeshArray().length * bezierSurface.getMeshArray()[0].length + a] = new Point3d(bezierSurface.getMeshArray()[i][j].x, bezierSurface.getMeshArray()[i][j].y, -bezierSurface.getMeshArray()[i][j].z);
 				a++;
 			}
 		}

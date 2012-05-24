@@ -35,39 +35,39 @@ public class MovimentacaoSuperficieBezierTest {
 			};
 	public Point3d [][] controlVertex = new Point3d[4][4];
 	
-	Point3d p00 = new Point3d(0, 0, 30);
-	Point3d p01 = new Point3d(30, 0, 0);
-	Point3d p02 = new Point3d(60, 0, 0);
-	Point3d p03 = new Point3d(90, 0, 30);
-	Point3d p10 = new Point3d(0, 30, 0);
-	Point3d p11 = new Point3d(30, 30, 0);
-	Point3d p12 = new Point3d(60, 30, 0);
-	Point3d p13 = new Point3d(90, 30, 0);
-	Point3d p20 = new Point3d(0, 60, 0);
-	Point3d p21 = new Point3d(30, 60, 0);
-	Point3d p22 = new Point3d(60, 60, 0);
-	Point3d p23 = new Point3d(90, 60, 0);
-	Point3d p30 = new Point3d(0, 90, 30);
-	Point3d p31 = new Point3d(30, 90, 0);
-	Point3d p32 = new Point3d(60, 90, 0);
-	Point3d p33 = new Point3d(90, 90, 30);
-	
-//	Point3d p00 = new Point3d(0, 0, 40);
+//	Point3d p00 = new Point3d(0, 0, 30);
 //	Point3d p01 = new Point3d(30, 0, 0);
 //	Point3d p02 = new Point3d(60, 0, 0);
-//	Point3d p03 = new Point3d(90, 0, 0);
+//	Point3d p03 = new Point3d(90, 0, 30);
 //	Point3d p10 = new Point3d(0, 30, 0);
-//	Point3d p11 = new Point3d(30, 30, 20);
-//	Point3d p12 = new Point3d(60, 30, 40);
-//	Point3d p13 = new Point3d(90, 30, 00);
+//	Point3d p11 = new Point3d(30, 30, 0);
+//	Point3d p12 = new Point3d(60, 30, 0);
+//	Point3d p13 = new Point3d(90, 30, 0);
 //	Point3d p20 = new Point3d(0, 60, 0);
-//	Point3d p21 = new Point3d(30, 60, 40);
-//	Point3d p22 = new Point3d(60, 60, 20);
+//	Point3d p21 = new Point3d(30, 60, 0);
+//	Point3d p22 = new Point3d(60, 60, 0);
 //	Point3d p23 = new Point3d(90, 60, 0);
-//	Point3d p30 = new Point3d(0, 90, 0);
+//	Point3d p30 = new Point3d(0, 90, 30);
 //	Point3d p31 = new Point3d(30, 90, 0);
 //	Point3d p32 = new Point3d(60, 90, 0);
-//	Point3d p33 = new Point3d(90, 90, 40);
+//	Point3d p33 = new Point3d(90, 90, 30);
+	
+	Point3d p00 = new Point3d(0, 0, 40);
+	Point3d p01 = new Point3d(30, 0, 0);
+	Point3d p02 = new Point3d(60, 0, 0);
+	Point3d p03 = new Point3d(90, 0, 0);
+	Point3d p10 = new Point3d(0, 30, 0);
+	Point3d p11 = new Point3d(30, 30, 20);
+	Point3d p12 = new Point3d(60, 30, 40);
+	Point3d p13 = new Point3d(90, 30, 00);
+	Point3d p20 = new Point3d(0, 60, 0);
+	Point3d p21 = new Point3d(30, 60, 40);
+	Point3d p22 = new Point3d(60, 60, 20);
+	Point3d p23 = new Point3d(90, 60, 0);
+	Point3d p30 = new Point3d(0, 90, 0);
+	Point3d p31 = new Point3d(30, 90, 0);
+	Point3d p32 = new Point3d(60, 90, 0);
+	Point3d p33 = new Point3d(90, 90, 40);
 	
 	@Test
 	public void bezierTest()
@@ -112,20 +112,20 @@ public class MovimentacaoSuperficieBezierTest {
 		plano=10;
 
 		
-		for(int i=0;i<malha.length;i++){
-			for(int j=0;j<malha[i].length;j++){
+		for(int j=0;j<malha.length;j++){
+			for(int i=0;i<malha[j].length;i++){
 				if(malha[i][j].getZ()<=plano+0.5){
 					if(malha[i][j].getZ()>=plano){
-						subArray.add(malha[i][j]);
+						subArray.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
 						continue;
 					}
 				}
 			}
 		}
-		for(int i=0;i<malha.length;i++){
-			for(int j=0;j<malha[i].length;j++){
-				if(malha[i][j].getZ()>plano){
-					subArrayPossivel.add(malha[i][j]);
+		for(int j=0;j<malha.length;j++){
+			for(int i=0;i<malha[j].length;i++){
+				if(malha[i][j].getZ()<plano){
+					subArrayPossivel.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
 					continue;
 				}
 			}
@@ -242,12 +242,12 @@ public class MovimentacaoSuperficieBezierTest {
 					}
 					menorDistancia.add(distanciaTmp);
 					System.out.println(menorDistancia.get(i));
-					System.out.println(subArrayPossivel.get(i));
+					//System.out.println(subArrayPossivel.get(i));
 				}
 				//ERRADO
 				ArrayList<Point3d> maximos = new ArrayList<Point3d>();
 				
-				for(int i=1;i<menorDistancia.size();i++){
+				for(int i=1;i<menorDistancia.size();i++){		
 					if(i!=menorDistancia.size()-1){
 						if(menorDistancia.get(i-1)<menorDistancia.get(i) &&
 								menorDistancia.get(i+1)<menorDistancia.get(i)){
@@ -256,7 +256,8 @@ public class MovimentacaoSuperficieBezierTest {
 						}
 					}
 				}
-				//
+				
+				
 				p.moveTo(5*maximos.get(0).getX(),5*maximos.get(0).getY());
 				for(int i=1;i<maximos.size()-1;i++){
 //					if(OperationsVector.distanceVector(maximos.get(i-1), maximos.get(i))>1){

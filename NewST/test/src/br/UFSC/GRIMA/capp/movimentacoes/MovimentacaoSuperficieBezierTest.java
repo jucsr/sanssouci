@@ -125,10 +125,8 @@ public class MovimentacaoSuperficieBezierTest {
 		for(int i=0;i<malha.length;i++){
 			for(int j=0;j<malha[i].length;j++){
 				if(malha[i][j].getZ()>plano){
-					if(malha[i][j].getZ()>=plano){
-						subArrayPossivel.add(malha[i][j]);
-						continue;
-					}
+					subArrayPossivel.add(malha[i][j]);
+					continue;
 				}
 			}
 		}
@@ -193,14 +191,12 @@ public class MovimentacaoSuperficieBezierTest {
 			Point3d[][] matriz = new Point3d[98][98];
 			
 			painelTest(){
-				System.out.println(poligono.get(0));
 				p.moveTo(5*poligono.get(0).getX(),5*poligono.get(0).getY());
 				for(int i=1;i<poligono.size()-1;i++){
 					if(OperationsVector.distanceVector(poligono.get(i-1), poligono.get(i))>1){
 						p.moveTo(5*poligono.get(i).getX(),5*poligono.get(i).getY());
 					}
 					else{
-						System.out.println(poligono.get(i));
 						p.lineTo(5*poligono.get(i).getX(),5*poligono.get(i).getY());
 					}
 				}
@@ -245,10 +241,36 @@ public class MovimentacaoSuperficieBezierTest {
 						}
 					}
 					menorDistancia.add(distanciaTmp);
+					System.out.println(menorDistancia.get(i));
+					System.out.println(subArrayPossivel.get(i));
+				}
+				//ERRADO
+				ArrayList<Point3d> maximos = new ArrayList<Point3d>();
+				
+				for(int i=1;i<menorDistancia.size();i++){
+					if(i!=menorDistancia.size()-1){
+						if(menorDistancia.get(i-1)<menorDistancia.get(i) &&
+								menorDistancia.get(i+1)<menorDistancia.get(i)){
+								maximos.add(subArrayPossivel.get(i));
+								//System.out.println(menorDistancia.get(i));
+						}
+					}
+				}
+				//
+				p.moveTo(5*maximos.get(0).getX(),5*maximos.get(0).getY());
+				for(int i=1;i<maximos.size()-1;i++){
+//					if(OperationsVector.distanceVector(maximos.get(i-1), maximos.get(i))>1){
+//						p.moveTo(5*maximos.get(i).getX(),5*maximos.get(i).getY());
+//					}
+//					else{
+						p.lineTo(5*maximos.get(i).getX(),5*maximos.get(i).getY());
+//					}
 				}
 				
 			}
-
+			
+			
+			
 			
 			@Override
 			public void paintComponent(Graphics g) {

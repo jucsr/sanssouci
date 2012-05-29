@@ -173,16 +173,15 @@ public class PontosDeApoioFrame2 extends JDialog {
 				new Insets(0, 0, 5, 0), 0, 0));
 
 			//---- faceComboBox ----
+			faceComboBox.setMaximumRowCount(7);
 			faceComboBox.setModel(new DefaultComboBoxModel(new String[] {
 				"XY",
-				"YZ",
-				"XZ",
-				"YX",
 				"ZY",
 				"ZX",
-				"All Faces"
+				"YX",
+				"YZ",
+				"XZ"
 			}));
-			faceComboBox.setMaximumRowCount(7);
 			panel1.add(faceComboBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));

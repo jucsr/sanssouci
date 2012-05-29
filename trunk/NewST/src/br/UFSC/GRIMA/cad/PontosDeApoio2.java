@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.JOptionPane;
+
 import br.UFSC.GRIMA.cad.visual.PontosDeApoioFrame2;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -38,24 +40,39 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 	public void itemStateChanged(ItemEvent e){
 		if (e.getSource() == this.setupComboBox){
 			int index = setupComboBox.getSelectedIndex();
+//			fillFacesComboBox(index);
 		}
 		if (e.getSource() == this.faceComboBox){
 			int index = faceComboBox.getSelectedIndex();
 			desenhador.setFacePrincipal(index, 0);
-			desenhador.addClampPoints(gerador.setupsArray.get(0).get(index), diametro/2);
+			try{
+					desenhador.addClampPoints(gerador.setupsArray.get(setupComboBox.getSelectedIndex()).get(index), diametro/2);
+					fillTable(setupComboBox.getSelectedIndex(), index);
+			}
+			catch(Exception ex){
+				JOptionPane.showMessageDialog(this, "A peça pode ser apoiada na mesa", "!", JOptionPane.INFORMATION_MESSAGE);
+			}
 		}
 	}
-	public void fillTable(){
-		for (int i=0; i<this.gerador.facesArray.get(0).size(); i++){
-			this.pointsTable.setValueAt(this.gerador.facesArray.get(0).get(i).x, i, 0);
-			this.pointsTable.setValueAt(this.gerador.facesArray.get(0).get(i).y, i, 1);
-			this.pointsTable.setValueAt(this.gerador.facesArray.get(0).get(i).z, i, 2);
+	public void fillTable(int indexSetup, int indexFace){
+		for (int i=0; i<this.gerador.setupsArray.get(indexSetup).get(indexFace).size(); i++){
+			this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).x, i, 0);
+			this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).y, i, 1);
+			this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).z, i, 2);
 		}
 	}
 	public void fillSetupComboBox(){
-		this.setupComboBox.removeAllItems();
-		for (int i=0; i<this.gerador.setupsArray.size(); i++){
-			setupComboBox.addItem("Setup " + (i+1));	
+		setupComboBox.removeAllItems();
+		if (!gerador.setupsArray.isEmpty()){
+			for (int i=0; i<this.gerador.setupsArray.size(); i++){
+				setupComboBox.addItem("Setup " + (i+1));	
+			}
+		}
+	}
+	public void fillFacesComboBox(int setupIndex){
+		faceComboBox.removeAll();
+		for (int i=0; i<gerador.setupsArray.get(setupIndex).size(); i++){
+			faceComboBox.addItem(i);
 		}
 	}
 	private void gneratePoints() {
@@ -63,13 +80,18 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 		System.out.println("gerar pontos");
 		diametro = (int) (((Double)this.diameterSpinner.getValue()).doubleValue());
 		gerador = new PointsGenerator(this.projeto, diametro);
-		
+//		System.out.println("Tamanho do vetor setup 0:");
+//		System.out.println(gerador.setupsArray.get(0).size());
+//		for (int i=0; i<gerador.setupsArray.get(0).size(); i++){
+//			System.out.println(gerador.setupsArray.get(0).get(i));
+//		}	
 
 	/**Gerando seletor de setups:**/
 		fillSetupComboBox();
+		fillFacesComboBox(0);
 		
 	/**Passando os dados para a tabela:**/
-		fillTable();
+		fillTable(0,0);
 		
 	/**Desenhando os pontos:**/
 		desenhador.alterarProjeto(this.projeto);

@@ -104,8 +104,13 @@ public class PointsGenerator {
 				for (int k=0; k<forbiddenSpots.size(); k++){
 					System.out.printf("%.1f\t%.1f\t%.1f\t%.1f\n", forbiddenSpots.get(k).c1, forbiddenSpots.get(k).c2, forbiddenSpots.get(k).c3, forbiddenSpots.get(k).c4);
 				}
-				facesArray.add(gerarPontosBase(forbiddenSpots, faceTmp.getTipo()));
-				gerarPontosLaterais(faceTmp.getTipo());
+				if (forbiddenSpots.isEmpty()){
+					facesArray.add(null);
+				}
+				else{
+					facesArray.add(gerarPontosBase(forbiddenSpots, faceTmp));
+					gerarPontosLaterais(faceTmp);
+				}
 				setupsArray.add(i, facesArray);
 			}
 			
@@ -116,7 +121,7 @@ public class PointsGenerator {
 //			if (faceTmp. = 0) setupsArray.add(i, null);
 	}
 	
-	private ArrayList<Point3d> gerarPontosBase(ArrayList<Corners> forbiddenSpots, int facenumber)
+	private ArrayList<Point3d> gerarPontosBase(ArrayList<Corners> forbiddenSpots, Face faceTemp)
 	{
 		ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
 		boolean spot1Flag = true;
@@ -168,7 +173,6 @@ public class PointsGenerator {
 					//Varre e  faz bubblesort:
 					for (int j=0; j<forbiddenSpots.size(); j++){
 						if (forbiddenSpots.get(j).c3 < diameter && forbiddenSpots.get(j).c1 > forbiddenSpots.get(i).c2 && (forbiddenSpots.get(j).c1 - forbiddenSpots.get(i).c2) < diameter){
-							System.out.println("Novamente o ponto não pode ser colocado no canto 1");
 							i=j;
 							j=0;
 						}
@@ -184,7 +188,6 @@ public class PointsGenerator {
 						if (forbiddenSpots.get(j).c1 < diameter && forbiddenSpots.get(i).c4 < forbiddenSpots.get(j).c3 && forbiddenSpots.get(j).c3 - forbiddenSpots.get(i).c4 < diameter){
 							i=j;
 							j=0;
-							System.out.println("espaço proibido Suporte 5");
 						}	
 					}
 					support5 = new Point3d (diameter/2, diameter/2 + forbiddenSpots.get(i).c4, 0);
@@ -310,7 +313,7 @@ public class PointsGenerator {
 		return supportsArray;
 	}
 
-	private void gerarPontosLaterais(int facenumber){
+	private void gerarPontosLaterais(Face faceTemp){
 		
 	}
 }

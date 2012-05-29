@@ -79,7 +79,7 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 	
 		System.out.println("gerar pontos");
 		diametro = (int) (((Double)this.diameterSpinner.getValue()).doubleValue());
-		gerador = new PointsGenerator(this.projeto, diametro);
+		gerador = new PointsGenerator(this.projeto, this.diametro);
 //		System.out.println("Tamanho do vetor setup 0:");
 //		System.out.println(gerador.setupsArray.get(0).size());
 //		for (int i=0; i<gerador.setupsArray.get(0).size(); i++){

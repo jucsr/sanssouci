@@ -98,8 +98,8 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 		double largura = 0.0;
 		double comprimento = 0.0;
 		double refLargura = 0.0;
-		double refComprimento = 0.0;
-		double raioMin = 0.0;
+//		double refComprimento = 0.0;
+//		double raioMin = 0.0;
 		
 		double tolerancia = 0.0;
 		double rugosidade = 0.0;
@@ -119,7 +119,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 					JOptionPane
 							.showMessageDialog(
 									null,
-									"Digite um numero positivo para a posicaoo X da cavidade",
+									"Digite um numero positivo para a posicao X da cavidade",
 									"Erro na posicao X",
 									JOptionPane.OK_CANCEL_OPTION);
 				}
@@ -516,9 +516,9 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 
 			} else {
 				JOptionPane.showMessageDialog(null, "Error trying to create the Boss", "invalid Boss", JOptionPane.OK_CANCEL_OPTION);
-				String erro = "";
-				StyleContext sc = StyleContext.getDefaultStyleContext();
-				AttributeSet aSet = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
+//				String erro = "";
+//				StyleContext sc = StyleContext.getDefaultStyleContext();
+//				AttributeSet aSet = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
 
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n Error trying to create the Boss!");
 			}

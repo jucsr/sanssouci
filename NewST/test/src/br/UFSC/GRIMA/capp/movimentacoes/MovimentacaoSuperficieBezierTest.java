@@ -39,39 +39,39 @@ public class MovimentacaoSuperficieBezierTest {
 			};
 	public Point3d [][] controlVertex = new Point3d[4][4];
 	
-	Point3d p00 = new Point3d(0, 0, 30);
-	Point3d p01 = new Point3d(30, 0, 0);
-	Point3d p02 = new Point3d(60, 0, 0);
-	Point3d p03 = new Point3d(90, 0, 30);
-	Point3d p10 = new Point3d(0, 30, 0);
-	Point3d p11 = new Point3d(30, 30, 0);
-	Point3d p12 = new Point3d(60, 30, 0);
-	Point3d p13 = new Point3d(90, 30, 0);
-	Point3d p20 = new Point3d(0, 60, 0);
-	Point3d p21 = new Point3d(30, 60, 0);
-	Point3d p22 = new Point3d(60, 60, 0);
-	Point3d p23 = new Point3d(90, 60, 0);
-	Point3d p30 = new Point3d(0, 90, 30);
-	Point3d p31 = new Point3d(30, 90, 0);
-	Point3d p32 = new Point3d(60, 90, 0);
-	Point3d p33 = new Point3d(90, 90, 30);
-	
-//	Point3d p00 = new Point3d(0, 0, 40);
+//	Point3d p00 = new Point3d(0, 0, 30);
 //	Point3d p01 = new Point3d(30, 0, 0);
 //	Point3d p02 = new Point3d(60, 0, 0);
-//	Point3d p03 = new Point3d(90, 0, 0);
+//	Point3d p03 = new Point3d(90, 0, 30);
 //	Point3d p10 = new Point3d(0, 30, 0);
-//	Point3d p11 = new Point3d(30, 30, 20);
-//	Point3d p12 = new Point3d(60, 30, 40);
-//	Point3d p13 = new Point3d(90, 30, 00);
+//	Point3d p11 = new Point3d(30, 30, 0);
+//	Point3d p12 = new Point3d(60, 30, 0);
+//	Point3d p13 = new Point3d(90, 30, 0);
 //	Point3d p20 = new Point3d(0, 60, 0);
-//	Point3d p21 = new Point3d(30, 60, 40);
-//	Point3d p22 = new Point3d(60, 60, 20);
+//	Point3d p21 = new Point3d(30, 60, 0);
+//	Point3d p22 = new Point3d(60, 60, 0);
 //	Point3d p23 = new Point3d(90, 60, 0);
-//	Point3d p30 = new Point3d(0, 90, 0);
+//	Point3d p30 = new Point3d(0, 90, 30);
 //	Point3d p31 = new Point3d(30, 90, 0);
 //	Point3d p32 = new Point3d(60, 90, 0);
-//	Point3d p33 = new Point3d(90, 90, 40);
+//	Point3d p33 = new Point3d(90, 90, 30);
+	
+	Point3d p00 = new Point3d(0, 0, 40);
+	Point3d p01 = new Point3d(30, 0, 0);
+	Point3d p02 = new Point3d(60, 0, 0);
+	Point3d p03 = new Point3d(90, 0, 0);
+	Point3d p10 = new Point3d(0, 30, 0);
+	Point3d p11 = new Point3d(30, 30, 20);
+	Point3d p12 = new Point3d(60, 30, 40);
+	Point3d p13 = new Point3d(90, 30, 00);
+	Point3d p20 = new Point3d(0, 60, 0);
+	Point3d p21 = new Point3d(30, 60, 40);
+	Point3d p22 = new Point3d(60, 60, 20);
+	Point3d p23 = new Point3d(90, 60, 0);
+	Point3d p30 = new Point3d(0, 90, 0);
+	Point3d p31 = new Point3d(30, 90, 0);
+	Point3d p32 = new Point3d(60, 90, 0);
+	Point3d p33 = new Point3d(90, 90, 40);
 	
 	@Test
 	public void bezierTest()
@@ -113,7 +113,7 @@ public class MovimentacaoSuperficieBezierTest {
 		 */
 		Point3d malha[][] = b.getMeshArray();
 		ArrayList<Point3d> subArray = new ArrayList<Point3d>();
-		plano=20;
+		plano=17;
 
 		
 		for(int j=0;j<malha.length;j++){
@@ -222,6 +222,7 @@ public class MovimentacaoSuperficieBezierTest {
 				for(int i=0;i<98;i++){
 					for(int k=0;k<98;k++){
 						matriz[i][k]=new Point3d(deltaX*(k+1),deltaY*(i+1),plano);
+//						System.out.println(matriz[i][k].y);
 					}
 				}
 				p.moveTo(0,0);
@@ -274,11 +275,13 @@ public class MovimentacaoSuperficieBezierTest {
 						}
 					}
 					menorDistanciaX.add(distanciaTmp);
-				//	System.out.println(menorDistanciaX.get(i));
+//					System.out.println(subArrayPossivelX.get(i).x + "\t\t" + subArrayPossivelX.get(i).y);
+//					System.out.println(subArrayPossivelX.get(i).x);
+//					System.out.println(menorDistanciaX.get(i));
 				}
 				
-				System.out.println(menorDistanciaX.size());
-				System.out.println(menorDistanciaY.size());
+//				System.out.println(menorDistanciaX.size());
+//				System.out.println(menorDistanciaY.size());
 				
 				
 				//ERRADO
@@ -333,9 +336,8 @@ public class MovimentacaoSuperficieBezierTest {
 						e.add(new Ellipse2D.Double(5*maximos.get(i).getX(),5*maximos.get(i).getY(),5,5));
 //					}
 				}
-				
+							
 			}
-			
 			
 			
 			
@@ -352,6 +354,8 @@ public class MovimentacaoSuperficieBezierTest {
 				//g2d.draw(new Ellipse2D.Double());
 				g2d.setColor(new Color(100, 125, 251));
 				g2d.draw(p);
+				
+				g2d.setColor(new Color(251, 100, 100));
 				for(int i=0;i<e.size();i++){
 					g2d.draw(e.get(i));
 				}

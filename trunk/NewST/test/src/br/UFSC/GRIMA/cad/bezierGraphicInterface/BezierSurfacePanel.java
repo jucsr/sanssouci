@@ -43,7 +43,8 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 			{ { -3, -3, 0 }, { -1, -3, 0 }, { 1, -3, 0 }, { 3, -3, 0 } },
 			{ { -3, -1, 0 }, { -1, -1, 0 }, { 1, -1, 0 }, { 3, -1, 0 } },
 			{ { -3, 1, 0 }, { -1, 1, 0 }, { 1, 1, 0 }, { 3, 1, 0 } },
-			{ { -3, 3, 0 }, { -1, 3, 0 }, { 1, 3, 0 }, { 3, 3, 0 } } 
+			{ { -3, 3, 0 }, { -1, 3, 0 }, { 1, 3, 0 }, { 3, 3, 0 } },
+			{{-3, 6, 0}, {-1, 6, 0}, {1, 6, 0}, {3, 6, 0}}
 			};
 	double[][][] control_points_2;
 	double[][][] control_points_3;
@@ -161,6 +162,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		out[0] /= l;
 		out[1] /= l;
 		out[2] /= l;
+		
 		return out;
 	}
 
@@ -863,8 +865,15 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 				z -= Z*(x*xaxis[1]+y*yaxis[1]) + scale*(h/2 - P.y)*(x*xaxis[2]+y*yaxis[2]);
 				z /= Z*zaxis[1] + scale*(h/2-P.y)*zaxis[2];
 				control_points[OVER[0]][OVER[1]][2] = z;
+				
+				//imprime a coordenada z
+				System.out.println("ponto Z: " + z);
 			}
 			POINT = me.getPoint();
+			
+			//imprime o ponto x e y mas sem distincao de qual bolinha esta utilizando
+			System.out.println("Point: " + POINT);
+			
 			newCoef = true;
 			repaint();
 		} else {

@@ -57,9 +57,9 @@ public class PointsGenerator {
 			if (faceTmp.features.size() > 0)										//Se a face possui FEATURES
 			{
 				facesArray = new ArrayList<ArrayList<Point3d>>();
+				forbiddenSpots = new ArrayList<Corners>();
 				for (int j=0; j<faceTmp.features.size(); j++){						//Procura por FEATURES PASSANTES
 					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
-					forbiddenSpots = new ArrayList<Corners>();
 					if (featureTmp.getClass() == Cavidade.class){					//caso CAVIDADE
 						Cavidade cavidade = (Cavidade)featureTmp;
 						if(cavidade.isPassante()){
@@ -69,7 +69,7 @@ public class PointsGenerator {
 							corners.c2 = cavidade.X+cavidade.getComprimento();
 							corners.c3 = cavidade.Y;
 							corners.c4 = cavidade.Y+cavidade.getLargura();
-							forbiddenSpots.add(corners);
+							forbiddenSpots.add(corners);	
 						}
 					}
 					if (featureTmp.getClass() == FuroBasePlana.class){				//caso FURO
@@ -81,29 +81,29 @@ public class PointsGenerator {
 							corners.c3 = furo.Y-(furo.getDiametro()/2);
 							corners.c4 = furo.Y+(furo.getDiametro()/2);
 							forbiddenSpots.add(corners);
+							System.out.println("furo passante");
 						}
 					}
-				}
-				System.out.println("Lista dos pontos proibidos:");
-				for (int k=0; k<forbiddenSpots.size(); k++){
-					System.out.printf("%.1f\t%.1f\t%.1f\t%.1f\n", forbiddenSpots.get(k).c1, forbiddenSpots.get(k).c2, forbiddenSpots.get(k).c3, forbiddenSpots.get(k).c4);
 				}
 				if (forbiddenSpots.isEmpty()){
 					facesArray.add(null);
 				}
 				else{
 					facesArray.add(gerarPontosBase(forbiddenSpots, faceTmp));
-					
 				}
-//				facesArray.add(gerarPontosLaterais(faceTmp));
-				setupsArray.add(i, facesArray);
+				for(int k=1; k<6; k++){
+					facesArray.add(gerarPontosLaterais(k));
+				}
+				setupsArray.add(facesArray);
 			}
 			
 		}
-		
-//		//Análise da peça:
-//		for (int i=0; i<projeto.getBloco().faces.size(); i++) 
-//			if (faceTmp. = 0) setupsArray.add(i, null);
+		System.out.println("Imprindo Vetor do SETUPS:");
+		for (int i=0; i<setupsArray.size(); i++){
+			System.out.printf("Setup %d:\t", i);
+			System.out.println(setupsArray.get(i));
+		}
+		System.out.println("PONTOS GERADOS COM SUCESSO");
 	}
 	
 	private ArrayList<Point3d> gerarPontosBase(ArrayList<Corners> forbiddenSpots, Face faceTemp)
@@ -113,7 +113,17 @@ public class PointsGenerator {
 		boolean spot2Flag = true;
 		boolean spot3Flag = true;
 		boolean spot4Flag = true;
+		System.out.println(forbiddenSpots.size());
+		for (int i=0; i<forbiddenSpots.size(); i++){
+			System.out.println("pontos proibidos"+i);
+			System.out.println(this.forbiddenSpots.get(i).c1);
+			System.out.println(this.forbiddenSpots.get(i).c2);
+			System.out.println(this.forbiddenSpots.get(i).c3);
+			System.out.println(this.forbiddenSpots.get(i).c4);
+		}
+		
 /**Verificando os cantos:**/
+
 		for (int i=0; i<forbiddenSpots.size(); i++){
 			//para o canto X0Y0 (support1):
 			if (forbiddenSpots.get(i).c1 < diameter && forbiddenSpots.get(i).c3 < diameter){
@@ -296,13 +306,22 @@ public class PointsGenerator {
 		return supportsArray;
 	}
 
-	private void gerarPontosLaterais(Face face){
+	private ArrayList<Point3d> gerarPontosLaterais(int faceType){
+	//Variáveis:
+		Point3d support1 = null;
+		Point3d support2 = null;
 		ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
-		switch (face.getTipo()){
-			case 0:
-				//lateral 1:
-				
+		Face faceTemp = (Face) projeto.getBloco().faces.elementAt(faceType);
+		support1 = new Point3d(diameter, diameter, 0);
+		if (faceTemp.getComprimento()>faceTemp.getLargura()){
+			support2 = new Point3d(faceTemp.getComprimento()-diameter, diameter, 0);
 		}
+		else{
+			support2 = new Point3d(diameter, faceTemp.getLargura()-diameter, 0);
+		}
+		supportsArray.add(support1);
+		supportsArray.add(support2);
+		return supportsArray;
 	}
 }
 

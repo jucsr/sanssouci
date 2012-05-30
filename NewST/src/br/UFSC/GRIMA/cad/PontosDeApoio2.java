@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 import br.UFSC.GRIMA.cad.visual.PontosDeApoioFrame2;
@@ -40,27 +41,32 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 	public void itemStateChanged(ItemEvent e){
 		if (e.getSource() == this.setupComboBox){
 			int index = setupComboBox.getSelectedIndex();
-//			fillFacesComboBox(index);
+			desenhador.setFacePrincipal(index, 0);
+			faceComboBox.setSelectedIndex(0);
+			drawPoints(index, 0);
 		}
 		if (e.getSource() == this.faceComboBox){
-			int index = faceComboBox.getSelectedIndex();
+			int index = faceComboBox.getSelectedIndex()+setupComboBox.getSelectedIndex();
+			if (index > 5) index -= 5;
 			desenhador.setFacePrincipal(index, 0);
-			try{
-					desenhador.addClampPoints(gerador.setupsArray.get(setupComboBox.getSelectedIndex()).get(index), diametro/2);
-					fillTable(setupComboBox.getSelectedIndex(), index);
-			}
-			catch(Exception ex){
-				JOptionPane.showMessageDialog(this, "A peça pode ser apoiada na mesa", "!", JOptionPane.INFORMATION_MESSAGE);
-			}
+			drawPoints(setupComboBox.getSelectedIndex(), index);
 		}
 	}
+/**Passando os dados para a tabela:**/
 	public void fillTable(int indexSetup, int indexFace){
-		for (int i=0; i<this.gerador.setupsArray.get(indexSetup).get(indexFace).size(); i++){
-			this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).x, i, 0);
-			this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).y, i, 1);
-			this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).z, i, 2);
+		pointsTable.removeAll();
+		try{
+			for (int i=0; i<this.gerador.setupsArray.get(indexSetup).get(indexFace).size(); i++){
+				this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).x, i, 0);
+				this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).y, i, 1);
+				this.pointsTable.setValueAt(this.gerador.setupsArray.get(indexSetup).get(indexFace).get(i).z, i, 2);
+			}
+		}
+		catch(Exception ex){
+			//não escreve nada na tabela
 		}
 	}
+/**Gerando seletor de SETUPS:**/
 	public void fillSetupComboBox(){
 		setupComboBox.removeAllItems();
 		if (!gerador.setupsArray.isEmpty()){
@@ -69,45 +75,34 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 			}
 		}
 	}
+/**Gerando seletor de FACES:**/
 	public void fillFacesComboBox(int setupIndex){
 		faceComboBox.removeAll();
 		for (int i=0; i<gerador.setupsArray.get(setupIndex).size(); i++){
 			faceComboBox.addItem(i);
 		}
 	}
+/**Desenhando os pontos:**/
+	public void drawPoints(int indexSetup, int indexFace){
+		if (gerador.setupsArray.get(indexSetup).contains(null) && indexFace == 0){
+			JOptionPane.showMessageDialog(this, "A peça pode ser apoiada na mesa", "!", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else{
+			desenhador.addClampPoints(gerador.setupsArray.get(indexSetup).get(indexFace), diametro/2);
+			fillTable(indexSetup, indexFace);
+		}
+		this.desenhador.revalidate();
+	}
 	private void gneratePoints() {
-	
-		System.out.println("gerar pontos");
 		diametro = (int) (((Double)this.diameterSpinner.getValue()).doubleValue());
-		gerador = new PointsGenerator(this.projeto, this.diametro);
-//		System.out.println("Tamanho do vetor setup 0:");
-//		System.out.println(gerador.setupsArray.get(0).size());
-//		for (int i=0; i<gerador.setupsArray.get(0).size(); i++){
-//			System.out.println(gerador.setupsArray.get(0).get(i));
-//		}	
-
-	/**Gerando seletor de setups:**/
-		fillSetupComboBox();
-		fillFacesComboBox(0);
-		
-	/**Passando os dados para a tabela:**/
-		fillTable(0,0);
-		
-	/**Desenhando os pontos:**/
+		gerador = new PointsGenerator(this.projeto, this.diametro);	
 		desenhador.alterarProjeto(this.projeto);
 		drawingScrollPane.setViewportView(desenhador);
-		desenhador.addClampPoints(gerador.setupsArray.get(0).get(0), diametro/2);
-		this.desenhador.revalidate();
-		System.out.println("Imprindo Vetor do SETUPS:");
-		for (int i=0; i<gerador.setupsArray.size(); i++){
-			System.out.printf("Setup %d:\t", i);
-			System.out.println(gerador.setupsArray.get(i));
-		}
-		System.out.println("Imprindo Vetor do FACES:");
-		for (int i=0; i<gerador.facesArray.size(); i++){
-			System.out.printf("Face %d:\t", i);
-			System.out.println(gerador.facesArray.get(i));
-		}
+		if (gerador.setupsArray.get(0).contains(null)) System.out.println("A base do primeiro setup está vazio");
+		fillSetupComboBox();
+//		fillFacesComboBox(0);
+		fillTable(0,0);
+		drawPoints(0,0);
 	}
 	
 }

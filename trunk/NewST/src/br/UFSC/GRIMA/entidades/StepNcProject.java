@@ -1421,11 +1421,21 @@ public class StepNcProject extends STEPProject
 	private ERegion createRegion(Workingstep wsTmp, EWorkpiece workpiece, AMachining_operation operations) throws SdaiException 
 	{
 		Region reg = (Region)wsTmp.getFeature();
-		ERegion region = (ERegion)this.model.createEntityInstance(ERegion.class);
-		region.setIts_id(null, reg.getNome());
-		region.setIts_workpiece(null, workpiece);
-//		region.setFeature_placement(null, arg1);
-		return region;
+		Axis2Placement3D position = reg.getPosition();
+		ERegion eRegion = (ERegion)this.model.createEntityInstance(ERegion.class);
+		eRegion.setIts_id(null, reg.getNome());
+		eRegion.setIts_workpiece(null, workpiece);
+		EAxis2_placement_3d placement = this.createAxis2Placement3D(reg.getNome() + " placement", position.getCoordinates(), position.getAxis(), position.getRefDirection());
+		eRegion.setFeature_placement(null, placement);
+		
+		AMachining_operation aMachining_operation = eRegion.createIts_operations(null);
+		SdaiIterator iterator = operations.createIterator();
+		while(iterator.next())
+		{
+			EMachining_operation eMachining_operation = operations.getCurrentMember(iterator);
+			aMachining_operation.addUnordered(eMachining_operation);
+		}
+		return eRegion;
 	}
 	private EClosed_pocket createClosedPocket(Workingstep ws, EWorkpiece eWorkpiece, AMachining_operation operations) throws SdaiException
 	{

@@ -12,7 +12,6 @@ public class CircularBoss extends Boss
 {
 	private double diametro1;
 	private double diametro2;
-	private double altura;
 	private Point3d centre;
 	
 	public CircularBoss()
@@ -22,9 +21,9 @@ public class CircularBoss extends Boss
 	
 	public CircularBoss(String nome, double x, double y, double z, double diametro1, double diametro2, double altura)
 	{
+		super(altura);
 		this.diametro1 = diametro1;
 		this.diametro2 = diametro2;
-		this.altura = altura;
 		this.setPosicao(x, y, z);
 		this.setCentre(new Point3d(x, y, z));
 		this.createGeometricalElements();
@@ -44,12 +43,6 @@ public class CircularBoss extends Boss
 
 	public void setDiametro2(double diametro2) {
 		this.diametro2 = diametro2;
-	}
-	public double getAltura() {
-		return altura;
-	}
-	public void setAltura(double altura) {
-		this.altura = altura;
 	}
 	public void createGeometricalElements() 
 	{

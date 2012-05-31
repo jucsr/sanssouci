@@ -3,6 +3,8 @@ package br.UFSC.GRIMA.entidades.features;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Point3d;
 
+import jsdai.SCombined_schema.ERegion;
+
 import br.UFSC.GRIMA.bReps.BezierSurface;
 
 /**
@@ -17,6 +19,7 @@ public class Region extends Feature
 	private Point3d [][] controlVertex;
 	private int splitU = 11;
 	private int splitV = 11;
+	private transient ERegion eRegion;
 	
 	public Region(int tipo) 
 	{
@@ -61,6 +64,14 @@ public class Region extends Feature
 	public void setSplitV(int splitV) 
 	{
 		this.splitV = splitV;
+	}
+	public ERegion geteRegion() 
+	{
+		return eRegion;
+	}
+	public void seteRegion(ERegion eRegion)
+	{
+		this.eRegion = eRegion;
 	}
 	public DefaultMutableTreeNode getNodo()
 	{

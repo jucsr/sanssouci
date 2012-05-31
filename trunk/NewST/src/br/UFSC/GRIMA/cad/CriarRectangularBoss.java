@@ -406,7 +406,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 			
 			RectangularBoss novoRectangularBoss = new RectangularBoss(comprimento, largura, alturaBoss, raio);
 			novoRectangularBoss.setPosicao(X, Y, Z);
-			novoRectangularBoss.setH(alturaBoss);
+			novoRectangularBoss.setAltura(alturaBoss);
 			novoRectangularBoss.setNome(this.textField9.getText());
 			novoRectangularBoss.setTolerancia(tolerancia*0.001);
 			novoRectangularBoss.setRugosidade(rugosidade*0.001);

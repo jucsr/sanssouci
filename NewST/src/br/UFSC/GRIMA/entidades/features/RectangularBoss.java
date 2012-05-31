@@ -14,14 +14,14 @@ import br.UFSC.GRIMA.util.findPoints.LimitedLine;
  */
 public class RectangularBoss extends Boss
 {
-	private double l1, l2, h, radius;
+	private double l1, l2, radius;
 	private ArrayList<LimitedElement> geometricalElements;
 	
-	public RectangularBoss(double l1, double l2, double h, double radius)
+	public RectangularBoss(double l1, double l2, double altura, double radius)
 	{
+		super(altura);
 		this.l1 = l1;
 		this.l2 = l2;
-		this.h = h;
 		this.radius = radius;
 	}
 	
@@ -44,17 +44,6 @@ public class RectangularBoss extends Boss
 	{
 		this.l2 = l2;
 	}
-
-	public double getH()
-	{
-		return h;
-	}
-
-	public void setH(double h) 
-	{
-		this.h = h;
-	}
-
 	public double getRadius()
 	{
 		return radius;
@@ -89,7 +78,7 @@ public class RectangularBoss extends Boss
 		nodo.add(new DefaultMutableTreeNode("Comprimento: " + this.getL2()));
 		nodo.add(new DefaultMutableTreeNode("Raio: " + this.getRadius()));
 		nodo.add(new DefaultMutableTreeNode("Posicao X, Y, Z  : " + this.getPosition().getCoordinates()));
-		nodo.add(new DefaultMutableTreeNode("Altura : " + this.getH()));
+		nodo.add(new DefaultMutableTreeNode("Altura : " + this.getAltura()));
 		nodo.add(new DefaultMutableTreeNode("Rugosidade : " + this.getRugosidade()));
 		nodo.add(new DefaultMutableTreeNode("Tolerancia : " + this.getTolerancia()));
 

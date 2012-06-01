@@ -22,6 +22,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 
+import br.UFSC.GRIMA.cad.bezierGraphicInterface.BezierSurfaceApplet;
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.BezierSurfacePanel;
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.ColorComboBox;
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.SplashPanel;
@@ -30,7 +31,8 @@ import br.UFSC.GRIMA.cad.visual.CreateRegionFrame;
 public class CriarRegionFrame extends CreateRegionFrame implements ActionListener{
 
 	  BezierSurfacePanel beziersurfacepanel;
-	    
+	  BezierSurfaceApplet beziersurfaceapplet;
+  
 		Container contentpane;
 		
 //		static JComboBox choice;
@@ -48,7 +50,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ActionListene
 	    public void init(){
 			setBackground(Color.white);
 			
-			frame = new JFrame();
+				frame = new JFrame();
 				frame.setVisible(false);
 				frame.setSize(600, 600);
 				frame.setLocation(0,0);
@@ -100,9 +102,9 @@ public class CriarRegionFrame extends CreateRegionFrame implements ActionListene
 //			n.addChangeListener( this );
 //			choice.addItemListener( this );
 //			color.addItemListener( this );
-			frame.addWindowListener( this );
+//			frame.addWindowListener( this );
 
-			splash = new SplashPanel( this );
+			splash = new SplashPanel( beziersurfaceapplet );
 			getContentPane().add( splash );
 	    }
 		

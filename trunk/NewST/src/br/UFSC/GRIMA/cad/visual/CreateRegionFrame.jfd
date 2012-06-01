@@ -10,31 +10,7 @@
      <object class="com.jformdesigner.model.FormWindow">
       <string>javax.swing.JFrame</string>
       <object class="com.jformdesigner.model.FormLayoutManager">
-       <class>java.awt.GridBagLayout</class>
-       <void method="setProperty">
-        <string>$columnSpecs</string>
-        <string>0, 0</string>
-       </void>
-       <void method="setProperty">
-        <string>$rowSpecs</string>
-        <string>0, 0, 0</string>
-       </void>
-       <void method="setProperty">
-        <string>$hGap</string>
-        <int>5</int>
-       </void>
-       <void method="setProperty">
-        <string>$vGap</string>
-        <int>5</int>
-       </void>
-       <void method="setProperty">
-        <string>$alignLeft</string>
-        <boolean>true</boolean>
-       </void>
-       <void method="setProperty">
-        <string>$alignTop</string>
-        <boolean>true</boolean>
-       </void>
+       <class>java.awt.BorderLayout</class>
       </object>
       <void property="name">
        <string>this</string>

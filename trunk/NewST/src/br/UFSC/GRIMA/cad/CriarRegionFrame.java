@@ -8,7 +8,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -21,6 +23,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.BezierSurfaceApplet;
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.BezierSurfacePanel;
@@ -28,17 +31,18 @@ import br.UFSC.GRIMA.cad.bezierGraphicInterface.ColorComboBox;
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.SplashPanel;
 import br.UFSC.GRIMA.cad.visual.CreateRegionFrame;
 
-public class CriarRegionFrame extends CreateRegionFrame implements ActionListener{
+public class CriarRegionFrame extends CreateRegionFrame implements ChangeListener, ItemListener, ActionListener, WindowListener{
 
-	  BezierSurfacePanel beziersurfacepanel;
-	  BezierSurfaceApplet beziersurfaceapplet;
-  
+		BezierSurfacePanel beziersurfacepanel;
+		BezierSurfaceApplet bezierSurfaceApplet;
 		Container contentpane;
 		
-//		static JComboBox choice;
-//		static ColorComboBox color;
-//		static JCheckBox checkbox;
-//		static JSpinner n;
+		static JComboBox choice;
+		static ColorComboBox color;
+		static JCheckBox checkbox;
+		static JSpinner n;
+		
+		int[] OVER = { -1, -1 };
 		
 		JButton reset;
 		JButton zoomin;
@@ -47,20 +51,33 @@ public class CriarRegionFrame extends CreateRegionFrame implements ActionListene
 		JFrame frame;
 		SplashPanel splash;
 
-	    public void init(){
-			setBackground(Color.white);
-			
-				frame = new JFrame();
-				frame.setVisible(false);
-				frame.setSize(600, 600);
-				frame.setLocation(0,0);
-				frame.setTitle( "Bezier Surfaces" );
-
-			Container contentpane = frame.getContentPane();
-			contentpane.setLayout( new BorderLayout() );
-			
-			JPanel north = new JPanel( new BorderLayout() );
-				JPanel northwest = new JPanel();
+		
+		public CriarRegionFrame ()
+		{
+			beziersurfacepanel = new BezierSurfacePanel();
+			beziersurfacepanel.setSize(400, 400);
+			this.getContentPane().add(beziersurfacepanel);
+			this.setVisible(true); 
+		}
+		
+		public void init(){
+			OVER[0] = -1;
+			OVER[0] = BezierSurfaceApplet.choice.getSelectedItem().equals( "u,v-parametrization" );
+		}
+//	    public void init(){
+//			setBackground(Color.white);
+//			
+//			frame = new JFrame();
+//				frame.setVisible(false);
+//				frame.setSize(600, 600);
+//				frame.setLocation(0,0);
+//				frame.setTitle( "Bezier Surfaces" );
+//
+//			Container contentpane = frame.getContentPane();
+//			contentpane.setLayout( new BorderLayout() );
+//			
+//			JPanel north = new JPanel( new BorderLayout() );
+//				JPanel northwest = new JPanel();
 //					northwest.add( choice = new JComboBox() );
 //						choice.addItem("Wire Frame - Transparent");
 //						choice.addItem("Wire Frame - Opaque");
@@ -69,120 +86,180 @@ public class CriarRegionFrame extends CreateRegionFrame implements ActionListene
 //						choice.addItem("u,v-parametrization");
 //					northwest.add( color = new ColorComboBox() );
 //					northwest.add( checkbox = new JCheckBox( "Control Points", true ) );
-					
-			north.add( "West", northwest );
-				
+//					
+//			north.add( "West", northwest );
+//				
 //				JPanel northeast = new JPanel();
 //					northeast.add( new JLabel( " n=" ) );
 //					northeast.add( n = new JSpinner( new SpinnerNumberModel(30,1,100,1) ) );
 //			north.add( "East", northeast );
 //			north.setBorder( BorderFactory.createTitledBorder( north.getBorder(), "Controls", TitledBorder.LEFT, TitledBorder.TOP, new Font( "Helvetica", Font.BOLD, 15) ) );
 //			
-			JPanel south = new JPanel( new BorderLayout() );
-				JPanel southwest = new JPanel();
-					southwest.add( reset = new JButton( "Reset" ) );
-				south.add( "West", southwest );
-				JPanel southeast = new JPanel();
-					southeast.add( zoomin = new JButton("Zoom In") );
-					southeast.add( zoomout = new JButton("Zoom Out") );
-				south.add( "East", southeast );
-				JLabel statusbar = new JLabel("");
-					statusbar.setPreferredSize( new Dimension(15,15) );
-				south.add( "South", statusbar );
-			south.setBorder( BorderFactory.createTitledBorder( south.getBorder(), "", TitledBorder.LEFT, TitledBorder.TOP, new Font( "Helvetica", Font.BOLD, 15) ) );
-
-			contentpane.add( "North", north );
-			contentpane.add( "South", south );
-			contentpane.add( "Center", beziersurfacepanel = new BezierSurfacePanel() );
-			
-			reset.addActionListener( this );
-			zoomin.addActionListener( this );
-			zoomout.addActionListener( this );
+//			JPanel south = new JPanel( new BorderLayout() );
+//				JPanel southwest = new JPanel();
+//					southwest.add( reset = new JButton( "Reset" ) );
+//				south.add( "West", southwest );
+//				JPanel southeast = new JPanel();
+//					southeast.add( zoomin = new JButton("Zoom In") );
+//					southeast.add( zoomout = new JButton("Zoom Out") );
+//				south.add( "East", southeast );
+//				JLabel statusbar = new JLabel("");
+//					statusbar.setPreferredSize( new Dimension(15,15) );
+//				south.add( "South", statusbar );
+//			south.setBorder( BorderFactory.createTitledBorder( south.getBorder(), "", TitledBorder.LEFT, TitledBorder.TOP, new Font( "Helvetica", Font.BOLD, 15) ) );
+//
+//			contentpane.add( "North", north );
+//			contentpane.add( "South", south );
+//			contentpane.add( "Center", beziersurfacepanel = new BezierSurfacePanel() );
+//			
+//			reset.addActionListener( this );
+//			zoomin.addActionListener( this );
+//			zoomout.addActionListener( this );
 //			checkbox.addActionListener( this );
 //			n.addChangeListener( this );
 //			choice.addItemListener( this );
 //			color.addItemListener( this );
 //			frame.addWindowListener( this );
+//
+//			splash = new SplashPanel( bezierSurfaceApplet );
+//			getContentPane().add( splash );
+//	    }
+//		
+//		public void showFrame(){
+//			frame.setVisible( true );
+//		}
+//
+//
+//		public void start(){
+//			//splash.active = true;
+//			if ( !frame.isVisible() ) splash.start();
+//		}
+//
+//		public void stop(){
+//			splash.active = false;
+//			//frame.setVisible( false );
+//		}
+//
+//	    
+//	    public void actionPerformed( ActionEvent ae ){
+//			Object obj = ae.getSource();
+//			
+//			if ( obj == zoomin ){
+//				beziersurfacepanel.zoomIn();
+//				if ( beziersurfacepanel.zoom == 0) zoomin.setEnabled( false );
+//				zoomout.setEnabled( true );
+//			} else if ( obj == zoomout ){
+//				beziersurfacepanel.zoomOut();
+//				if ( beziersurfacepanel.zoom == beziersurfacepanel.units.length-1 ) zoomout.setEnabled( false );
+//				zoomin.setEnabled( true );
+//			} else if ( obj.equals(reset) ){
+//				beziersurfacepanel.reset();
+//	        } else if ( obj.equals( checkbox ) ){
+//				beziersurfacepanel.repaint();
+//			}
+//	    }      
+//
+//		public void itemStateChanged( ItemEvent ie ){
+//			Object obj = ie.getSource();
+//			if ( obj == choice ){
+//				beziersurfacepanel.newCoef = true;
+//				beziersurfacepanel.repaint();
+//			} else if ( obj == color ){
+//				beziersurfacepanel.repaint();
+//			}
+//		}
+//
+//		public void stateChanged( ChangeEvent ce ){
+//			Object obj = ce.getSource();
+//			if ( obj == n ){
+//				beziersurfacepanel.N = ((Integer)n.getValue()).intValue();
+//				beziersurfacepanel.newCoef = true;
+//				beziersurfacepanel.repaint();
+//			}
+//		}
+//
+//		public void windowActivated( WindowEvent we ){
+//		}
+//
+//		public void windowClosed( WindowEvent we ){
+//			//splash.start();
+//		}
+//
+//		public void windowClosing( WindowEvent we ){
+//			splash.start();
+//		}
+//
+//		public void windowDeactivated( WindowEvent we ){
+//			//splash.start();
+//		}
+//
+//		public void windowDeiconified( WindowEvent we ){
+//		}
+//
+//		public void windowIconified( WindowEvent we ){
+//		}
+//
+//		public void windowOpened( WindowEvent we ){
+//		}
+//	
 
-			splash = new SplashPanel( beziersurfaceapplet );
-			getContentPane().add( splash );
-	    }
-		
-		public void showFrame(){
-			frame.setVisible( true );
-		}
-
-
-		public void start(){
-			//splash.active = true;
-			if ( !frame.isVisible() ) splash.start();
-		}
-
-		public void stop(){
-			splash.active = false;
-			//frame.setVisible( false );
-		}
-
-	    
-	    public void actionPerformed( ActionEvent ae ){
-			Object obj = ae.getSource();
+		@Override
+		public void windowOpened(WindowEvent e) {
+			// TODO Auto-generated method stub
 			
-			if ( obj == zoomin ){
-				beziersurfacepanel.zoomIn();
-				if ( beziersurfacepanel.zoom == 0) zoomin.setEnabled( false );
-				zoomout.setEnabled( true );
-			} else if ( obj == zoomout ){
-				beziersurfacepanel.zoomOut();
-				if ( beziersurfacepanel.zoom == beziersurfacepanel.units.length-1 ) zoomout.setEnabled( false );
-				zoomin.setEnabled( true );
-			} else if ( obj.equals(reset) ){
-				beziersurfacepanel.reset();
-	        } else if ( obj.equals( checkbox ) ){
-				beziersurfacepanel.repaint();
-			}
-	    }      
-
-		public void itemStateChanged( ItemEvent ie ){
-			Object obj = ie.getSource();
-			if ( obj == choice ){
-				beziersurfacepanel.newCoef = true;
-				beziersurfacepanel.repaint();
-			} else if ( obj == color ){
-				beziersurfacepanel.repaint();
-			}
 		}
 
-		public void stateChanged( ChangeEvent ce ){
-			Object obj = ce.getSource();
-			if ( obj == n ){
-				beziersurfacepanel.N = ((Integer)n.getValue()).intValue();
-				beziersurfacepanel.newCoef = true;
-				beziersurfacepanel.repaint();
-			}
+		@Override
+		public void windowClosing(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public void windowActivated( WindowEvent we ){
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public void windowClosed( WindowEvent we ){
-			//splash.start();
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public void windowClosing( WindowEvent we ){
-			splash.start();
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public void windowDeactivated( WindowEvent we ){
-			//splash.start();
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public void windowDeiconified( WindowEvent we ){
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public void windowIconified( WindowEvent we ){
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 
-		public void windowOpened( WindowEvent we ){
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
-	
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 }

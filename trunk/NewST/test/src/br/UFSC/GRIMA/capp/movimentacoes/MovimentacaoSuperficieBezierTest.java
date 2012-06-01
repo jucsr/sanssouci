@@ -124,6 +124,10 @@ public class MovimentacaoSuperficieBezierTest {
 						continue;
 					}
 				}
+				else if((i==0 || i==malha[j].length-1 || j==0 || j==malha.length-1) && malha[i][j].getZ()<plano){
+					subArray.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
+					continue;
+				}
 			}
 		}
 		for(int i=0;i<malha.length;i++){
@@ -255,16 +259,17 @@ public class MovimentacaoSuperficieBezierTest {
 					menorDistanciaY.add(distanciaTmp);
 
 					/*CALCULO DA MENOR DISTANCIA VARRENDO NO SENTIDO X*/
-					distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l1, subArrayPossivelX.get(i));
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i));
-					}
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i));
-					}
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i));
-					}
+					distanciaTmp=100;
+//					distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l1, subArrayPossivelX.get(i));
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i));
+//					}
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i));
+//					}
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i));
+//					}
 					for(int k=0;k<poligono.size();k++){
 						if(OperationsVector.distanceVector(poligono.get(k), subArrayPossivelX.get(i))<distanciaTmp){
 							distanciaTmp=OperationsVector.distanceVector(poligono.get(k), subArrayPossivelX.get(i));

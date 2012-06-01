@@ -57,7 +57,7 @@ public class JanelaPrincipalFrame extends JFrame {
 		menu13 = new JMenu();
 		menuItemCriarCavidade = new JMenuItem();
 		menuItemCriarCavidadeFun = new JMenuItem();
-		criarRegion = new JMenu();
+		criarRegion = new JMenuItem();
 		menuItemRemover = new JMenuItem();
 		menuItemEditar = new JMenuItem();
 		menuGirar = new JMenuItem();
@@ -373,10 +373,8 @@ public class JanelaPrincipalFrame extends JFrame {
 					}
 					menuCriarFeatures.add(menu13);
 
-					//======== criarRegion ========
-					{
-						criarRegion.setText("Criar Region");
-					}
+					//---- criarRegion ----
+					criarRegion.setText("Criar Region");
 					menuCriarFeatures.add(criarRegion);
 				}
 				menuFerramentas.add(menuCriarFeatures);
@@ -1026,7 +1024,7 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JMenu menu13;
 	public JMenuItem menuItemCriarCavidade;
 	public JMenuItem menuItemCriarCavidadeFun;
-	public JMenu criarRegion;
+	public JMenuItem criarRegion;
 	public JMenuItem menuItemRemover;
 	public JMenuItem menuItemEditar;
 	public JMenuItem menuGirar;

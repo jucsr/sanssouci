@@ -111,29 +111,29 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		g.setColor( Color.white );
 		g.fill( new Rectangle2D.Double( 0, 0, w, h ) );
 
-		String str = BezierSurfaceApplet.choice.getSelectedItem().toString();
-
-		if ( newCoef ){
-			if ( str.equals( "u,v-parametrization" ) ){
-				newParameters();
-			} else {
-				newPoints();
-			}
-			newCoef = false;
-		}
-		
-
-		if ( str.equals( "Opaque" ) ){
-			drawSurface( g, 255 );
-		} else if ( str.equals( "Transparent" ) ){
-			drawSurface( g, 150 );
-		} else if ( str.equals( "Wire Frame - Opaque" ) ){
-			drawOpaqueWireFrame( g );
-		} else if ( str.equals( "Wire Frame - Transparent" ) ){
-			drawTransparentWireFrame( g );
-		} else if ( str.equals( "u,v-parametrization" ) ){
-			drawParametrization( g );
-		}
+//		String str = BezierSurfaceApplet.choice.getSelectedItem().toString();
+//
+//		if ( newCoef ){
+//			if ( str.equals( "u,v-parametrization" ) ){
+//				newParameters();
+//			} else {
+//				newPoints();
+//			}
+//			newCoef = false;
+//		}
+//		
+//
+//		if ( str.equals( "Opaque" ) ){
+//			drawSurface( g, 255 );
+//		} else if ( str.equals( "Transparent" ) ){
+//			drawSurface( g, 150 );
+//		} else if ( str.equals( "Wire Frame - Opaque" ) ){
+//			drawOpaqueWireFrame( g );
+//		} else if ( str.equals( "Wire Frame - Transparent" ) ){
+//			drawTransparentWireFrame( g );
+//		} else if ( str.equals( "u,v-parametrization" ) ){
+//			drawParametrization( g );
+//		}
 
 		// draw a circle around selected point
 		g.setColor( Color.black );
@@ -806,6 +806,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 				if ( (p.x-tmp[0])*(p.x-tmp[0]) + (p.y-tmp[1])*(p.y-tmp[1]) < r*r ){
 					OVER[0] = i;
 					OVER[1] = j;
+					
 				}
 				repaint();
 			} catch ( Exception e ){

@@ -515,6 +515,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		});
 		this.menuGirar.addActionListener(ouvidorMenus);
 		this.menuItemGerFerr.addActionListener(ouvidorMenus);
+		this.criarRegion.addActionListener(ouvidorMenus);
 
 		JanelaPrincipal_combobox_actionAdapter ouvidorCombobox = new JanelaPrincipal_combobox_actionAdapter(
 				this);
@@ -1431,6 +1432,12 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	{
 		CriarRanhuraPerfilBezier crpb = new CriarRanhuraPerfilBezier(this, faceTrabalho);
 		crpb.setVisible(true);
+	}
+	public void criarRegion()
+	{
+		System.out.println("REG");
+		CriarRegionFrame cr = new CriarRegionFrame();
+		cr.setVisible(true);
 	}
 	public void mostrarReferencia() {
 		PlanosRef PR = new PlanosRef(this);
@@ -2566,6 +2573,9 @@ class JanelaPrincipal_menus_actionAdapter implements ActionListener {
 		} else if(origem == this.parent.menuItemAbrirXML)
 		{
 			this.parent.abrirXML();
+		} else if(origem == this.parent.criarRegion)
+		{
+			this.parent.criarRegion();
 		}
 		
 	}

@@ -15,7 +15,8 @@ import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
-import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
+import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.CircularPath;
@@ -26,7 +27,7 @@ public class MovimentacaoRegionSuperficieBezierTest {
 		Bloco bloco;
 		Face face;
 		double retractPlane = 21;
-		BezierSurface feature;
+		private Region feature;
 		
 		double[][][] control_points = {
 				{ { -3, -3, 0 }, { -1, -3, 0 }, { 1, -3, 0 }, { 3, -3, 0 } },
@@ -75,7 +76,8 @@ public class MovimentacaoRegionSuperficieBezierTest {
 		{
 			bloco = new Bloco(200, 150, 80);
 			face = (Face) bloco.faces.get(Face.XY);
-			feature = new BezierSurface(controlVertex, 200,200);
+			feature = new Region(Feature.REGION);
+			feature.setControlVertex(controlVertex);
 		}
 		@Test
 		public void destasteTest()

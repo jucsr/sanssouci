@@ -40,13 +40,13 @@ public class MovimentacaoRegionSuperficieBezier {
 		int numeroDeCortes;
 		int t=0,m;
 		ArrayList<LinearPath> desbaste = new ArrayList<LinearPath>();
-		ArrayList<Point3d> pontosProibidos = new ArrayList<Point3d>();
-		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
-		ArrayList<ArrayList<Point3d>> pontos = new ArrayList<ArrayList<Point3d>>();
+		ArrayList<Point3d> pontosProibidos;
+		ArrayList<Point3d> pontosPossiveis;
+		ArrayList<ArrayList<Point3d>> pontos;
 		ArrayList<Point3d> pontos2 = null;
 		ArrayList<ArrayList<Point3d>> pontosOrdenados = new ArrayList<ArrayList<Point3d>>();
-		ArrayList<Point3d> temp = null;
-		ArrayList<Double> menorDistancia = new ArrayList<Double>();
+		ArrayList<Point3d> temp;
+		ArrayList<Double> menorDistancia;
 		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 200, 200).getMeshArray();
 		Point3d pontoInicial;
 		Point3d pontoFinal;
@@ -64,8 +64,10 @@ public class MovimentacaoRegionSuperficieBezier {
 		
 		for(int h=0;h<numeroDeAps;h++){
 
-			z=-ap;
-
+			z-=ap;
+			
+			pontosProibidos = new ArrayList<Point3d>();
+			pontosPossiveis = new ArrayList<Point3d>();
 			for(int j=0;j<malha.length;j++){//PERCORRE A SUPERFICIE INTEIRA
 				for(int i=0;i<malha[j].length;i++){
 					if(malha[i][j].getZ()<=z){
@@ -87,6 +89,7 @@ public class MovimentacaoRegionSuperficieBezier {
 				break;
 			}
 			
+			menorDistancia = new ArrayList<Double>();
 			for(int i=0;i<pontosPossiveis.size();i++){
 				distanciaTmp=100;
 				for(int k=0;k<pontosProibidos.size();k++){
@@ -105,6 +108,8 @@ public class MovimentacaoRegionSuperficieBezier {
 
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
 
+			
+			pontos = new ArrayList<ArrayList<Point3d>>();
 			for(int i=0;i<numeroDeCortes;i++){
 				pontos2 = new ArrayList<Point3d>();
 				for(int k=0;k<menorDistancia.size();k++){
@@ -115,7 +120,10 @@ public class MovimentacaoRegionSuperficieBezier {
 				pontos.add(pontos2);
 			}
 
+			
 			for(int i=0;i<pontos.size();i++){
+				if(pontos.get(i).size()==0)
+					break;
 				distanciaTemp=OperationsVector.distanceVector(pontos.get(i).get(0),pontos.get(i).get(1));
 				pontoInicial = new Point3d(pontos.get(i).get(0).getX(),pontos.get(i).get(0).getY(),z);
 				temp = new ArrayList<Point3d>();
@@ -152,20 +160,19 @@ public class MovimentacaoRegionSuperficieBezier {
 					temp.add(pontos.get(i).get(t));
 					pontos.get(i).remove(t);
 				}
-				if(i!=pontos.size()-1){
-					ligarPontos = new LinearPath(pontoInicial, new Point3d(pontos.get(i).get(t).getX(),pontos.get(i).get(t).getY(),this.ws.getOperation().getRetractPlane()));
+				if(i+1!=pontos.size()){
+					ligarPontos = new LinearPath(pontoInicial, new Point3d(temp.get(temp.size()-2).getX(),temp.get(temp.size()-2).getY(),this.ws.getOperation().getRetractPlane()));
 					ligarPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
 					desbaste.add(ligarPontos);
-					ligarPontos = new LinearPath(new Point3d(pontos.get(i).get(t).getX(),pontos.get(i).get(t).getY(),this.ws.getOperation().getRetractPlane()), new Point3d(pontos.get(i+1).get(t).getX(),pontos.get(i+1).get(t).getY(),this.ws.getOperation().getRetractPlane()));
+					ligarPontos = new LinearPath(new Point3d(temp.get(temp.size()-2).getX(),temp.get(temp.size()-2).getY(),this.ws.getOperation().getRetractPlane()), new Point3d(temp.get(temp.size()-1).getX(),temp.get(temp.size()-1).getY(),this.ws.getOperation().getRetractPlane()));
 					desbaste.add(ligarPontos);
-					ligarPontos = new LinearPath(new Point3d(pontos.get(i+1).get(t).getX(),pontos.get(i+1).get(t).getY(),this.ws.getOperation().getRetractPlane()), new Point3d(pontos.get(i+1).get(t).getX(),pontos.get(i+1).get(t).getY(),z));
+					ligarPontos = new LinearPath(new Point3d(temp.get(temp.size()-1).getX(),temp.get(temp.size()-1).getY(),this.ws.getOperation().getRetractPlane()), new Point3d(temp.get(temp.size()-1).getX(),temp.get(temp.size()-1).getY(),z));
 					ligarPontos.setTipoDeMovimento(LinearPath.SLOW_MOV);
 					desbaste.add(ligarPontos);
 				}
 //				pontosOrdenados.add(temp);
 			}
 		}
-		
 		return desbaste;
 	}
 	

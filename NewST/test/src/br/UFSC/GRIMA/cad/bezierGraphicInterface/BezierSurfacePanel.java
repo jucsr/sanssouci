@@ -818,7 +818,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 			}
 		}
 		newUV = false;
-		if ( OVER[0] == -1 && BezierSurfaceApplet.choice.getSelectedItem().equals( "u,v-parametrization" ) ){
+		if ( OVER[0] == -1 && BezierSurfaceApplet.choice./*getSelectedItem()*/equals( "u,v-parametrization" ) ){
 			double x = me.getPoint().x - (w - 110 + 100*u);
 			double y = me.getPoint().y - (h - 110 + 100*v);
 			if ( x*x + y*y < 40 ){

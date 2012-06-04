@@ -37,7 +37,8 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		BezierSurfaceApplet bezierSurfaceApplet;
 		Container contentpane;
 		
-		static JComboBox choice;
+//		static JComboBox choice;
+		String choice ;
 		static ColorComboBox color;
 		static JCheckBox checkbox;
 		static JSpinner n;
@@ -61,8 +62,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		}
 		
 		public void init(){
-			OVER[0] = -1;
-			OVER[0] = BezierSurfaceApplet.choice.getSelectedItem().equals( "u,v-parametrization" );
+			choice = "u,v-parametrization";
 		}
 //	    public void init(){
 //			setBackground(Color.white);

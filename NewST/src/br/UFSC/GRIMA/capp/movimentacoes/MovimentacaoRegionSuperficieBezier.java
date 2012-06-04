@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.bReps.BezierSurface;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
@@ -23,7 +24,7 @@ public class MovimentacaoRegionSuperficieBezier {
 		this.regionBezier = (Region) this.ws.getFeature();
 	}
 	
-	private ArrayList<LinearPath> desbaste(){
+	public ArrayList<LinearPath> desbaste(){
 		
 		double z=this.regionBezier.getPosicaoZ();
 		double y=this.regionBezier.getPosicaoY();
@@ -46,7 +47,7 @@ public class MovimentacaoRegionSuperficieBezier {
 		ArrayList<ArrayList<Point3d>> pontosOrdenados = new ArrayList<ArrayList<Point3d>>();
 		ArrayList<Point3d> temp = null;
 		ArrayList<Double> menorDistancia = new ArrayList<Double>();
-		Point3d malha[][] = this.regionBezier.getSurface().getMeshArray();
+		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 200, 200).getMeshArray();
 		Point3d pontoInicial;
 		Point3d pontoFinal;
 		LinearPath ligarPontos;

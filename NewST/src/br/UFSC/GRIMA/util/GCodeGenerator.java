@@ -15,18 +15,17 @@ import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
-import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilGenerico;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilParcialCircular;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilVee;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRegionSuperficieBezier;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.Furo;
-import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
@@ -35,6 +34,8 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
+import br.UFSC.GRIMA.entidades.features.Region;
+import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class GCodeGenerator {
@@ -721,7 +722,68 @@ public class GCodeGenerator {
 			    }
 
 /*************************************************************************************************************************************/
-			    
+			    if(wsTmp.getFeature().getClass().equals(Region.class) && wsTmp.getFerramenta().getClass().equals(FaceMill.class)){
+
+			    	MovimentacaoRegionSuperficieBezier regionBezier= new MovimentacaoRegionSuperficieBezier(wsTmp);
+
+
+			    	this.feedRate = wsTmp.getCondicoesUsinagem().getVf();
+			    	this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
+			    	this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
+
+/********************************************************DESBASTE***************************************************/	
+			    	if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
+				    	ArrayList<LinearPath> desbaste = regionBezier.desbaste();
+			    		int GAux = 0;
+			    		if (rotationDirection == 1){GAux = 3;}
+			    		else if (rotationDirection == 2){GAux = 4;}
+			    		else if (rotationDirection == 3){GAux = 5;}
+
+			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		if (wsTmp.getOperation().isCoolant()){
+			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+			    			lineNumber = lineNumber + 10;
+			    		}
+			    		
+			    		double xAux = desbaste.get(0).getInitialPoint().getX();
+		    			double yAux = desbaste.get(0).getInitialPoint().getY();
+		    			double zAux = desbaste.get(0).getInitialPoint().getZ();
+		    			
+		    			
+		    			if(desbaste.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+		    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+		    			else{
+		    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+
+			    		for(int j = 0; j < desbaste.size(); j++)
+			    		{
+			    			xAux = desbaste.get(j).getFinalPoint().getX();
+			    			yAux = desbaste.get(j).getFinalPoint().getY();
+			    			zAux = desbaste.get(j).getFinalPoint().getZ();
+
+			    			if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    			else{
+			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    		}
+			    	}	
+			    }
 			    if(wsTmp.getFeature().getClass().equals(RanhuraPerfilBezier.class)){
 
 			    	MovimentacaoRanhuraPerfilGenerico ranhuraBezier= new MovimentacaoRanhuraPerfilGenerico(wsTmp);

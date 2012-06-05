@@ -1,4 +1,4 @@
-package br.UFSC.GRIMA.cad.bezierGraphicInterface;
+package br.UFSC.GRIMA.cad;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -182,7 +182,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		for ( int i=0; i<order.length; i++ ){
 			try {
 				if ( order[i][0]<0 ){
-					if ( BezierSurfaceApplet.checkbox.isSelected() ){
+					if ( CriarRegionFrame.checkbox.isSelected() ){
 						drawPoint( g, -(order[i][0]+1), order[i][1], Color.black );
 					}
 				} else {
@@ -247,7 +247,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		g.setStroke( new BasicStroke( 0.25f) );
 		for ( int i=0; i<order.length; i++ ){
 			if ( order[i][0]<0 ){
-				if ( BezierSurfaceApplet.checkbox.isSelected() ){
+				if ( CriarRegionFrame.checkbox.isSelected() ){
 					drawPoint( g, -(order[i][0]+1), order[i][1], Color.black );
 				}
 			} else {
@@ -271,16 +271,16 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 			path.lineTo( S[0], S[1] );
 			path.lineTo( P[0], P[1] );
 
-			Color color = (Color)BezierSurfaceApplet.color.getSelectedItem();
+			Color color = (Color)CriarRegionFrame.color.getSelectedItem();
 			
-			if ( color == ColorComboBox.rainbow ){
-				float u = (float)i/N;
-				float v = (float)j/N;
-				float[] rgb = { 0*(1-u)*(1-v) + 0*u*(1-v) +255*u*v + 255*(1-u)*v,
-								255*(1-u)*(1-v) + 255*u*(1-v) + 0*u*v + 255*(1-u)*v,
-								0*(1-u)*(1-v) + 255*u*(1-v) + 255*u*v + 0*(1-u)*v};
-				color = new Color( (int)rgb[0], (int)rgb[1], (int)rgb[2] );
-			}
+//			if ( color == ColorComboBox.rainbow ){
+//				float u = (float)i/N;
+//				float v = (float)j/N;
+//				float[] rgb = { 0*(1-u)*(1-v) + 0*u*(1-v) +255*u*v + 255*(1-u)*v,
+//								255*(1-u)*(1-v) + 255*u*(1-v) + 0*u*v + 255*(1-u)*v,
+//								0*(1-u)*(1-v) + 255*u*(1-v) + 255*u*v + 0*(1-u)*v};
+//				color = new Color( (int)rgb[0], (int)rgb[1], (int)rgb[2] );
+//			}
 
 			g.setColor( getColor( rotatePoint(points[i][j]), rotatePoint(points[i+1][j]), rotatePoint(points[i+1][j+1]), color, trans ) );
 			//g.setColor( color );
@@ -342,7 +342,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		}
 		g.draw( path );
 	
-		if ( BezierSurfaceApplet.checkbox.isSelected() ){
+		if ( CriarRegionFrame.checkbox.isSelected() ){
 			for ( int i=0; i<order.length; i++ ){
 				if ( order[i][0]<0 ){
 					drawPoint( g, -(order[i][0]+1), order[i][1], Color.black );
@@ -362,7 +362,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		for ( int i=0; i<order.length; i++ ){
 			try {
 				if ( order[i][0]<0 ){
-					boolean draw = BezierSurfaceApplet.checkbox.isSelected();
+					boolean draw = CriarRegionFrame.checkbox.isSelected();
 					
 					switch ( order[i][2] ){
 						case 1: if ( draw ) drawPoint( g, control_points[-(order[i][0]+1)][order[i][1]], Color.black ); break;
@@ -820,7 +820,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 			}
 		}
 		newUV = false;
-		if ( OVER[0] == -1 && BezierSurfaceApplet.choice.getSelectedItem().equals( "u,v-parametrization" ) ){
+		if ( OVER[0] == -1 && CriarRegionFrame.choice.getSelectedItem().equals( "u,v-parametrization" ) ){
 			double x = me.getPoint().x - (w - 110 + 100*u);
 			double y = me.getPoint().y - (h - 110 + 100*v);
 			if ( x*x + y*y < 40 ){

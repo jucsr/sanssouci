@@ -55,6 +55,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		
 		public CriarRegionFrame ()
 		{
+			this.setSize(600, 400);
 			beziersurfacepanel = new BezierSurfacePanel();
 			beziersurfacepanel.setSize(400, 400);
 			this.getContentPane().add(beziersurfacepanel);

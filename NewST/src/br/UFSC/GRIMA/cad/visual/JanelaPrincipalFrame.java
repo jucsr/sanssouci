@@ -375,6 +375,7 @@ public class JanelaPrincipalFrame extends JFrame {
 
 					//---- criarRegion ----
 					criarRegion.setText("Criar Region");
+					criarRegion.setFont(criarRegion.getFont().deriveFont(criarRegion.getFont().getStyle() & ~Font.BOLD));
 					menuCriarFeatures.add(criarRegion);
 				}
 				menuFerramentas.add(menuCriarFeatures);

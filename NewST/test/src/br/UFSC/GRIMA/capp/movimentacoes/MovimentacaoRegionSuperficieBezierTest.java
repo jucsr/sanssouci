@@ -135,10 +135,10 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			GCodeGenerator codigoG = new GCodeGenerator(wsFace, projeto);
 			System.out.println(codigoG.GenerateGCodeString());
 			
-//			face.addFeature(feature);
-//			Generate3Dview g = new Generate3Dview(projeto);
-//			g.setVisible(true);
-//			for(;;);
+			face.addFeature(feature);
+			Generate3Dview g = new Generate3Dview(projeto);
+			g.setVisible(true);
+			for(;;);
 		}
 //		@Test
 //		public void movimentacaoDrillingTest()

@@ -35,6 +35,7 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.features.Region;
+import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
@@ -783,6 +784,71 @@ public class GCodeGenerator {
 			    			}
 			    		}
 			    	}	
+			    }
+			    if(wsTmp.getFeature().getClass().equals(Region.class) && wsTmp.getFerramenta().getClass().equals(BallEndMill.class)){
+
+
+
+			    	MovimentacaoRegionSuperficieBezier regionBezier= new MovimentacaoRegionSuperficieBezier(wsTmp);
+
+
+			    	this.feedRate = wsTmp.getCondicoesUsinagem().getVf();
+			    	this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
+			    	this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
+
+/********************************************************DESBASTE***************************************************/	
+			    	if(wsTmp.getOperation().getClass() == FreeformOperation.class){
+				    	ArrayList<LinearPath> acabamento = regionBezier.acabamento();
+			    		int GAux = 0;
+			    		if (rotationDirection == 1){GAux = 3;}
+			    		else if (rotationDirection == 2){GAux = 4;}
+			    		else if (rotationDirection == 3){GAux = 5;}
+
+			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+			    		lineNumber = lineNumber + 10;
+
+			    		if (wsTmp.getOperation().isCoolant()){
+			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
+			    			lineNumber = lineNumber + 10;
+			    		}
+			    		
+			    		double xAux = acabamento.get(0).getInitialPoint().getX();
+		    			double yAux = acabamento.get(0).getInitialPoint().getY();
+		    			double zAux = acabamento.get(0).getInitialPoint().getZ();
+		    			
+		    			
+		    			if(acabamento.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+		    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+		    			else{
+		    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+		    				lineNumber = lineNumber + 10;
+		    			}
+
+			    		for(int j = 0; j < acabamento.size(); j++)
+			    		{
+			    			xAux = acabamento.get(j).getFinalPoint().getX();
+			    			yAux = acabamento.get(j).getFinalPoint().getY();
+			    			zAux = acabamento.get(j).getFinalPoint().getZ();
+
+			    			if(acabamento.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    			else{
+			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    				lineNumber = lineNumber + 10;
+			    			}
+			    		}
+			    	}	
+			    
 			    }
 			    if(wsTmp.getFeature().getClass().equals(RanhuraPerfilBezier.class)){
 

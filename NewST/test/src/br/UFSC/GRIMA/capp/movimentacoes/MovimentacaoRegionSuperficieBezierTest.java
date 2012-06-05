@@ -12,10 +12,12 @@ import br.UFSC.GRIMA.cad.Generate3Dview;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.Region;
+import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.GCodeGenerator;
 import br.UFSC.GRIMA.util.LinearPath;
@@ -107,6 +109,7 @@ public class MovimentacaoRegionSuperficieBezierTest {
 		
 			// ---- MILLING
 			BottomAndSideRoughMilling milling = new BottomAndSideRoughMilling("Fresamento", retractPlane);
+			FreeformOperation freeForm = new FreeformOperation("Acabamento", retractPlane);
 			//BottomAndSideRoughMilling milling = new BottomAndSideRoughMilling("Fresamento", retractPlane);
 			milling.setCoolant(true);
 			milling.setStartPoint(new Point3d(0, 0, 0));
@@ -115,21 +118,30 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			
 			CondicoesDeUsinagem cu = new CondicoesDeUsinagem(100, 0.04, 0, 2000, 2, 5);
 			FaceMill faceMill = new FaceMill(10,50);
+			BallEndMill ballEndMill = new BallEndMill(10, 50);
 			
 			Workingstep ws = new Workingstep(feature, face);
 			ws.setCondicoesUsinagem(cu);
 			ws.setOperation(milling);
 			ws.setFerramenta(faceMill);
 			
-			MovimentacaoRegionSuperficieBezier m = new MovimentacaoRegionSuperficieBezier(ws);
-			ArrayList<LinearPath> path = m.desbaste();
+			Workingstep wsa = new Workingstep(feature, face);
+			wsa.setCondicoesUsinagem(cu);
+			wsa.setOperation(freeForm);
+			wsa.setFerramenta(ballEndMill);
+			
+			
+			
+//			MovimentacaoRegionSuperficieBezier m = new MovimentacaoRegionSuperficieBezier(ws);
+//			ArrayList<LinearPath> path = m.desbaste();
 			
 //			for(Path patTmp:path)
 //			{
 //				System.out.println(patTmp);
 //			}
 			Vector wsts = new Vector();
-			wsts.add(ws);
+			//wsts.add(ws);
+			wsts.add(wsa);
 			Vector wsFace = new Vector();
 			wsFace.add(wsts);
 			GCodeGenerator codigoG = new GCodeGenerator(wsFace, projeto);

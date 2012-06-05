@@ -1,6 +1,5 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.vecmath.Point3d;
@@ -20,8 +19,6 @@ import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.GCodeGenerator;
-import br.UFSC.GRIMA.util.LinearPath;
-import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 

@@ -16,7 +16,6 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Furo;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.Region;
-import br.UFSC.GRIMA.operationSolids.CSGSolid;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 

@@ -8,6 +8,7 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.cad.Generate3Dview;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
@@ -76,7 +77,7 @@ public class MovimentacaoRegionSuperficieBezierTest {
 		@Before
 		public void init()
 		{
-			bloco = new Bloco(200, 150, 80);
+			bloco = new Bloco(90, 90, 50);
 			dados = new DadosDeProjeto(0, "a","",0);
 			projeto = new Projeto(null,bloco,dados);
 			face = (Face) bloco.faces.get(Face.XY);
@@ -123,10 +124,10 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			MovimentacaoRegionSuperficieBezier m = new MovimentacaoRegionSuperficieBezier(ws);
 			ArrayList<LinearPath> path = m.desbaste();
 			
-			for(Path patTmp:path)
-			{
-				System.out.println(patTmp);
-			}
+//			for(Path patTmp:path)
+//			{
+//				System.out.println(patTmp);
+//			}
 			Vector wsts = new Vector();
 			wsts.add(ws);
 			Vector wsFace = new Vector();
@@ -134,8 +135,10 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			GCodeGenerator codigoG = new GCodeGenerator(wsFace, projeto);
 			System.out.println(codigoG.GenerateGCodeString());
 			
-			
-			
+//			face.addFeature(feature);
+//			Generate3Dview g = new Generate3Dview(projeto);
+//			g.setVisible(true);
+//			for(;;);
 		}
 //		@Test
 //		public void movimentacaoDrillingTest()

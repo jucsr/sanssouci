@@ -58,7 +58,8 @@ public class BezierSurfaceApplet extends JApplet implements ChangeListener, Item
 		
 		JPanel north = new JPanel( new BorderLayout() );
 			JPanel northwest = new JPanel();
-				northwest.add( choice = new JComboBox() );
+			choice = new JComboBox();
+				northwest.add( choice );
 					choice.addItem("Wire Frame - Transparent");
 					choice.addItem("Wire Frame - Opaque");
 					choice.addItem("Transparent");
@@ -66,7 +67,8 @@ public class BezierSurfaceApplet extends JApplet implements ChangeListener, Item
 					choice.addItem("u,v-parametrization");
 				northwest.add( color = new ColorComboBox() );
 				northwest.add( checkbox = new JCheckBox( "Control Points", true ) );
-				
+				choice.setVisible(false);
+			
 		north.add( "West", northwest );
 			
 			JPanel northeast = new JPanel();

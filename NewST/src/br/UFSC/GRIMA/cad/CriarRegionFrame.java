@@ -32,7 +32,6 @@ import br.UFSC.GRIMA.cad.visual.CreateRegionFrame;
 public class CriarRegionFrame extends CreateRegionFrame implements ChangeListener, ItemListener, ActionListener, WindowListener{
 
 		BezierSurfacePanel beziersurfacepanel;
-		Container contentpane;
 		
 		public static JComboBox choice;
 		static ColorComboBox color;
@@ -52,9 +51,9 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		public CriarRegionFrame ()
 		{
 			this.setSize(600, 400);
-			beziersurfacepanel = new BezierSurfacePanel();
-			this.getContentPane().add(beziersurfacepanel, BorderLayout.NORTH);
-			this.setVisible(true);
+//			beziersurfacepanel = new BezierSurfacePanel();
+//			this.getContentPane().add(beziersurfacepanel, BorderLayout.CENTER);
+//			this.setVisible(true);
 			this.okButton.addActionListener(this);
 			this.cancelButton.addActionListener(this);
 			this.init();
@@ -62,7 +61,6 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		
 		public void init(){
 			setBackground(Color.white);
-			System.out.println("GGGGGGg");
 			Container contentpane = this.getContentPane();
 			contentpane.setLayout( new BorderLayout() );
 			
@@ -136,25 +134,38 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 //			//frame.setVisible( false );
 //		}
 
-		 public void actionPerformed( ActionEvent ae ){
-				Object obj = ae.getSource();
-				
-				if ( obj == zoomin ){
-					beziersurfacepanel.zoomIn();
-					if ( beziersurfacepanel.zoom == 0) zoomin.setEnabled( false );
-					zoomout.setEnabled( true );
-				} else if ( obj == zoomout ){
-					beziersurfacepanel.zoomOut();
-					if ( beziersurfacepanel.zoom == beziersurfacepanel.units.length-1 ) zoomout.setEnabled( false );
-					zoomin.setEnabled( true );
-				} else if ( obj.equals(reset) ){
-					beziersurfacepanel.reset();
-		        } else if ( obj.equals( checkbox ) ){
-					beziersurfacepanel.repaint();
-				}
-		    }      
-		 
-		 public void itemStateChanged( ItemEvent ie ){
+	public void actionPerformed(ActionEvent ae) {
+		Object obj = ae.getSource();
+
+		if (obj == zoomin) {
+			beziersurfacepanel.zoomIn();
+			if (beziersurfacepanel.zoom == 0)
+				zoomin.setEnabled(false);
+			zoomout.setEnabled(true);
+		} else if (obj == zoomout) {
+			beziersurfacepanel.zoomOut();
+			if (beziersurfacepanel.zoom == beziersurfacepanel.units.length - 1)
+				zoomout.setEnabled(false);
+			zoomin.setEnabled(true);
+		} else if (obj.equals(reset)) {
+			beziersurfacepanel.reset();
+		} else if (obj.equals(checkbox)) {
+			beziersurfacepanel.repaint();
+		} else if (obj.equals(cancelButton)) {
+			dispose();
+		} else if (obj.equals(okButton)) {
+			this.ok();
+		}
+	}
+	/**
+	 *  	Acoes que acontecerao quando o usuario clicar no botao OK
+	 */
+	private void ok() 
+	{
+		System.out.println("OK");
+	}
+
+		public void itemStateChanged( ItemEvent ie ){
 				Object obj = ie.getSource();
 				if ( obj == choice ){
 					beziersurfacepanel.newCoef = true;

@@ -19,6 +19,7 @@ public class Region extends Feature
 	private Point3d [][] controlVertex;
 	private int splitU = 11;
 	private int splitV = 11;
+	private double maxDepth;
 	private transient ERegion eRegion;
 	
 	public Region(int tipo) 
@@ -72,6 +73,14 @@ public class Region extends Feature
 	public void seteRegion(ERegion eRegion)
 	{
 		this.eRegion = eRegion;
+	}
+	public double getMaxDepth() 
+	{
+		return maxDepth;
+	}
+	public void setMaxDepth(double maxDepth)
+	{
+		this.maxDepth = maxDepth;
 	}
 	public DefaultMutableTreeNode getNodo()
 	{

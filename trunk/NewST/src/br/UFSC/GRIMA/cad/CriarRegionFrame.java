@@ -76,7 +76,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 				northwest.add( color = new ColorComboBox() );
 				northwest.add( checkbox = new JCheckBox( "Control Points", true ) );
 				
-				choice.setVisible(false); //deixa invisivel no frame a opcao de escolher o choice
+//				choice.setVisible(false); //deixa invisivel no frame a opcao de escolher o choice
 				
 			north.add( "West", northwest );
 				

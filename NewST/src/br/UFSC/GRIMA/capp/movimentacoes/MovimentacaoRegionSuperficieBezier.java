@@ -122,8 +122,9 @@ public class MovimentacaoRegionSuperficieBezier {
 
 			
 			for(int i=0;i<pontos.size();i++){
-				if(pontos.get(i).size()==0)
+				if(pontos.get(i).size()==0 || pontos.get(i).size()==1){
 					break;
+				}
 
 				if(i==0 && h==0){
 					pontoInicial = new Point3d(pontos.get(i).get(0).getX(),pontos.get(i).get(0).getY(),z);					
@@ -169,6 +170,9 @@ public class MovimentacaoRegionSuperficieBezier {
 					}
 					temp.add(pontos.get(i).get(t));
 					pontos.get(i).remove(t);
+					if(pontos.get(i).size()==0 || pontos.get(i).size()==1){
+						break;
+					}
 				}
 				if(i+1!=pontos.size() &&
 						pontos.get(i+1).size()!=0){
@@ -190,7 +194,7 @@ public class MovimentacaoRegionSuperficieBezier {
 	public ArrayList<LinearPath> acabamento(){
 		ArrayList<LinearPath> acabamento = new ArrayList<LinearPath>();
 
-		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 200, 200).getMeshArray();
+		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 50, 50).getMeshArray();
 		Point3d pontoInicial = null;
 		Point3d pontoFinal;
 		LinearPath ligaPontos;
@@ -233,10 +237,11 @@ public class MovimentacaoRegionSuperficieBezier {
 					pontoInicial= new Point3d(this.regionBezier.getPosicaoX(),y,this.ws.getOperation().getRetractPlane());
 				}
 
-
 				//ADICIONA Z
 				h=r-Math.cos(alfa)*r;
 				z=malha[k][i].getZ()-h;
+				if(-z<0.001)
+					z=0;
 
 				pontoFinal = new Point3d(x, y, z);
 				ligaPontos = new LinearPath(pontoInicial,pontoFinal);
@@ -259,6 +264,7 @@ public class MovimentacaoRegionSuperficieBezier {
 				if(i==malha[k].length-1){
 					ligaPontos = new LinearPath(new Point3d(x,y,z), new Point3d(x,y,this.ws.getOperation().getRetractPlane()));
 					acabamento.add(ligaPontos);
+					pontoInicial = new Point3d(x,y,this.ws.getOperation().getRetractPlane());
 				}
 				
 

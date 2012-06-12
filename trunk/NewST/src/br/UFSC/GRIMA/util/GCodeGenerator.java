@@ -775,8 +775,20 @@ public class GCodeGenerator {
 			    			zAux = desbaste.get(j).getFinalPoint().getZ();
 
 			    			if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
-			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
-			    				lineNumber = lineNumber + 10;
+			    				if(j==0){
+			    					GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    					lineNumber = lineNumber + 10;
+			    				}
+			    				else{
+			    					if(desbaste.get(j-1).getFinalPoint().getZ()==zAux){
+				    					GCode = GCode + "N" + lineNumber + " X" + xAux + " Y" + yAux + "\n";
+				    					lineNumber = lineNumber + 10;
+			    					}
+			    					else{
+				    					GCode = GCode + "N" + lineNumber + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+				    					lineNumber = lineNumber + 10;			    						
+			    					}
+			    				}
 			    			}
 			    			else{
 			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
@@ -796,10 +808,11 @@ public class GCodeGenerator {
 			    	this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
 			    	this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
 
-/********************************************************DESBASTE***************************************************/	
+/********************************************************ACABAMENTO***************************************************/	
 			    	if(wsTmp.getOperation().getClass() == FreeformOperation.class){
 				    	ArrayList<LinearPath> acabamento = regionBezier.acabamento();
-			    		int GAux = 0;
+			    		
+				    	int GAux = 0;
 			    		if (rotationDirection == 1){GAux = 3;}
 			    		else if (rotationDirection == 2){GAux = 4;}
 			    		else if (rotationDirection == 3){GAux = 5;}
@@ -817,7 +830,7 @@ public class GCodeGenerator {
 			    			GCode = GCode +"N" + lineNumber + " M8" + "\n";
 			    			lineNumber = lineNumber + 10;
 			    		}
-			    		
+
 			    		double xAux = acabamento.get(0).getInitialPoint().getX();
 		    			double yAux = acabamento.get(0).getInitialPoint().getY();
 		    			double zAux = acabamento.get(0).getInitialPoint().getZ();
@@ -834,18 +847,33 @@ public class GCodeGenerator {
 
 			    		for(int j = 0; j < acabamento.size(); j++)
 			    		{
+
 			    			xAux = acabamento.get(j).getFinalPoint().getX();
 			    			yAux = acabamento.get(j).getFinalPoint().getY();
 			    			zAux = acabamento.get(j).getFinalPoint().getZ();
 
+
+			    			//********** Testar se é fast(G0) ou slow(G1)
 			    			if(acabamento.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
-			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
-			    				lineNumber = lineNumber + 10;
+			    				if(j==0){
+			    					GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+			    					lineNumber = lineNumber + 10;
+			    				}
+			    				else{
+			    					if(acabamento.get(j-1).getFinalPoint().getX()==acabamento.get(j).getFinalPoint().getX()){
+				    					GCode = GCode + "N" + lineNumber + " Y" + yAux + " Z" + zAux + "\n";
+				    					lineNumber = lineNumber + 10;			    						
+			    					}
+			    					else{
+				    					GCode = GCode + "N" + lineNumber + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+				    					lineNumber = lineNumber + 10;			    						
+			    					}
+			    				}
 			    			}
 			    			else{
 			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
 			    				lineNumber = lineNumber + 10;
-			    			}
+			    			}					
 			    		}
 			    	}	
 			    

@@ -224,6 +224,28 @@ public class MapeadoraRegion
 						diametroMinimo = diametroTmp;
 					}
 				}
+				/****************************************************/
+				
+				l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 1][j].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i + 1][j].z - pontosDaSuperficie[i][j].z), 2), 0.5);
+				l2Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 2][j].x - pontosDaSuperficie[i + 1][j].x), 2) +  Math.pow((pontosDaSuperficie[i + 2][j].z - pontosDaSuperficie[i + 1][j].z), 2), 0.5);
+				l3Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 2][j].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i + 1][j].z - pontosDaSuperficie[i][j].z), 2), 0.5);
+				anguloTmp = Math.acos((Math.pow(l2Tmp, 2) + Math.pow(l3Tmp, 2) - Math.pow(l1Tmp, 2)) / (2 * l2Tmp * l3Tmp));
+				diametroTmp = l1Tmp / Math.sin(anguloTmp);
+				
+				z0 = pontosDaSuperficie[i][j].z;
+				z1 = pontosDaSuperficie[i + 1][j].z;
+				z2 = pontosDaSuperficie[i + 2][j].z;
+				
+				deltaZ1 = z1 - z0;
+				deltaZ2 = z2 - z1;
+				
+				if (deltaZ2 >= deltaZ1) 
+				{
+					if (diametroTmp < diametroMinimo) 
+					{
+						diametroMinimo = diametroTmp;
+					}
+				}
 			}
 		}
 		return diametroMinimo;

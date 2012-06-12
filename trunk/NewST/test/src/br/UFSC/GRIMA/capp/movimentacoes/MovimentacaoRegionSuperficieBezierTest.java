@@ -68,7 +68,7 @@ public class MovimentacaoRegionSuperficieBezierTest {
 		Point3d p21 = new Point3d(30, 60, -40);
 		Point3d p22 = new Point3d(60, 60, -20);
 		Point3d p23 = new Point3d(90, 60, 0);
-		Point3d p30 = new Point3d(0, 90, -0);
+		Point3d p30 = new Point3d(0, 90, 0);
 		Point3d p31 = new Point3d(30, 90, 0);
 		Point3d p32 = new Point3d(60, 90, 0);
 		Point3d p33 = new Point3d(90, 90, -40);
@@ -137,13 +137,12 @@ public class MovimentacaoRegionSuperficieBezierTest {
 //				System.out.println(patTmp);
 //			}
 			Vector wsts = new Vector();
-			wsts.add(ws);
-//			wsts.add(wsa);
+//			wsts.add(ws);
+			wsts.add(wsa);
 			Vector wsFace = new Vector();
 			wsFace.add(wsts);
 			GCodeGenerator codigoG = new GCodeGenerator(wsFace, projeto);
 			System.out.println(codigoG.GenerateGCodeString());
-			
 			face.addFeature(feature);
 			Generate3Dview g = new Generate3Dview(projeto);
 			g.setVisible(true);

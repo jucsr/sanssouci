@@ -116,6 +116,9 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			
 			CondicoesDeUsinagem cu = new CondicoesDeUsinagem(100, 0.04, 0.2, 2000, 2, 5);
 			FaceMill faceMill = new FaceMill(10,50);
+			faceMill.setName("SF10");
+			faceMill.setHandOfCut(Ferramenta.LEFT_HAND_OF_CUT);
+			
 			BallEndMill ballEndMill = new BallEndMill(10, 50);
 			ballEndMill.setName("SF10");
 			ballEndMill.setHandOfCut(Ferramenta.LEFT_HAND_OF_CUT);
@@ -140,8 +143,8 @@ public class MovimentacaoRegionSuperficieBezierTest {
 //				System.out.println(patTmp);
 //			}
 			Vector wsts = new Vector();
-//			wsts.add(ws);
-			wsts.add(wsa);
+			wsts.add(ws);
+//			wsts.add(wsa);
 			Vector wsFace = new Vector();
 			wsFace.add(wsts);
 			GCodeGenerator codigoG = new GCodeGenerator(wsFace, projeto);

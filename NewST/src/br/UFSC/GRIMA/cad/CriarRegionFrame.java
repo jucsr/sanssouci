@@ -83,7 +83,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 				JPanel northeast = new JPanel();
 					northeast.add( new JLabel( " n=" ) );
 					northeast.add( n = new JSpinner( new SpinnerNumberModel(30,1,100,1) ) );
-			north.add( "East", northeast );
+//			north.add( "East", northeast );
 			north.setBorder( BorderFactory.createTitledBorder( north.getBorder(), "Controls", TitledBorder.LEFT, TitledBorder.TOP, new Font( "Helvetica", Font.BOLD, 15) ) );
 			
 				
@@ -100,7 +100,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 				south.add( "South", statusbar );
 			south.setBorder( BorderFactory.createTitledBorder( south.getBorder(), "", TitledBorder.LEFT, TitledBorder.TOP, new Font( "Helvetica", Font.BOLD, 15) ) );
 
-			contentpane.add( "North", north );
+//			contentpane.add( "North", north );
 			contentpane.add( "South", south );
 			contentpane.add( "Center", beziersurfacepanel = new BezierSurfacePanel() );
 			

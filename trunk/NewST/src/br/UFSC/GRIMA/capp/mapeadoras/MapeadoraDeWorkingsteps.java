@@ -31,6 +31,7 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
+import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
@@ -290,7 +291,18 @@ public class MapeadoraDeWorkingsteps {
 					}
 					
 
-				} else {
+				} else if(featureTmp.getClass() == Region.class)
+				{
+					MapeadoraRegion mapeadoraRegion = new MapeadoraRegion(projeto, faceTmp, (Region)featureTmp);
+					
+					Vector<Workingstep> wssRegion = featureTmp.getWorkingsteps();
+					
+					for(int k = 0; k < wssRegion.size(); k++)
+					{
+						wssCurrentFace.add(wssRegion.get(k));
+					}
+				}
+				else {
 					System.out.println("CLASSE FEATURE DESCONHECIDA, CLASSE: "
 							+ featureTmp.getClass());
 				}

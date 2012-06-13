@@ -311,13 +311,15 @@ public class PointsGenerator {
 		Point3d support1 = null;
 		Point3d support2 = null;
 		ArrayList<Point3d> supportsArray = new ArrayList<Point3d>();
-		Face faceTemp = (Face) projeto.getBloco().faces.elementAt(faceType);
-		support1 = new Point3d(diameter, diameter, 0);
-		if (faceTemp.getComprimento()>faceTemp.getLargura()){
-			support2 = new Point3d(faceTemp.getComprimento()-diameter, diameter, 0);
-		}
-		else{
-			support2 = new Point3d(diameter, faceTemp.getLargura()-diameter, 0);
+		Face faceTmp = (Face) projeto.getBloco().faces.elementAt(faceType);
+		if (faceTmp.features.size() == 0){
+			support1 = new Point3d(diameter, diameter, 0);
+			if (faceTmp.getComprimento()>faceTmp.getLargura()){
+				support2 = new Point3d(faceTmp.getComprimento()-diameter, diameter, 0);
+			}
+			else{
+				support2 = new Point3d(diameter, faceTmp.getLargura()-diameter, 0);
+			}
 		}
 		supportsArray.add(support1);
 		supportsArray.add(support2);

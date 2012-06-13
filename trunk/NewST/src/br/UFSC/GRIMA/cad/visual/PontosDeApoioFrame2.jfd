@@ -430,6 +430,12 @@
         <object class="com.jformdesigner.model.FormLayoutManager">
          <class>javax.swing.JScrollPane</class>
         </object>
+        <void method="auxiliary">
+         <void method="setProperty">
+          <string>JavaCodeGenerator.variableModifiers</string>
+          <int>4</int>
+         </void>
+        </void>
         <void property="name">
          <string>scrollPane1</string>
         </void>
@@ -601,7 +607,7 @@
           <void method="auxiliary">
            <void method="setProperty">
             <string>JavaCodeGenerator.variableModifiers</string>
-            <int>1</int>
+            <int>4</int>
            </void>
           </void>
          </object>

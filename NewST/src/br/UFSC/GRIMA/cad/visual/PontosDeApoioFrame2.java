@@ -6,6 +6,7 @@ package br.UFSC.GRIMA.cad.visual;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -47,6 +48,14 @@ public class PontosDeApoioFrame2 extends JDialog {
 	}
 
 	private void setupComboBoxItemStateChanged(ItemEvent e) {
+		// TODO add your code here
+	}
+
+	private void scrollPane1PropertyChange(PropertyChangeEvent e) {
+		// TODO add your code here
+	}
+
+	private void pointsTablePropertyChange(PropertyChangeEvent e) {
 		// TODO add your code here
 	}
 
@@ -241,8 +250,8 @@ public class PontosDeApoioFrame2 extends JDialog {
 	private JPanel panel1;
 	protected JComboBox setupComboBox;
 	protected JComboBox faceComboBox;
-	private JScrollPane scrollPane1;
-	public JTable pointsTable;
+	protected JScrollPane scrollPane1;
+	protected JTable pointsTable;
 	protected JScrollPane drawingScrollPane;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

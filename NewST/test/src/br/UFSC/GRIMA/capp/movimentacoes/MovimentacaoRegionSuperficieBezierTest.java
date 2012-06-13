@@ -18,6 +18,7 @@ import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
+import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.GCodeGenerator;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -113,9 +114,11 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			milling.setAllowanceSide(0.5);
 			milling.setAllowanceBottom(0.5);
 			
-			CondicoesDeUsinagem cu = new CondicoesDeUsinagem(100, 0.04, 0, 2000, 2, 5);
+			CondicoesDeUsinagem cu = new CondicoesDeUsinagem(100, 0.04, 0.2, 2000, 2, 5);
 			FaceMill faceMill = new FaceMill(10,50);
 			BallEndMill ballEndMill = new BallEndMill(10, 50);
+			ballEndMill.setName("SF10");
+			ballEndMill.setHandOfCut(Ferramenta.LEFT_HAND_OF_CUT);
 			
 			Workingstep ws = new Workingstep(feature, face);
 			ws.setCondicoesUsinagem(cu);
@@ -143,6 +146,7 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			wsFace.add(wsts);
 			GCodeGenerator codigoG = new GCodeGenerator(wsFace, projeto);
 			System.out.println(codigoG.GenerateGCodeString());
+//			codigoG.GenerateGCodeString();
 			face.addFeature(feature);
 			Generate3Dview g = new Generate3Dview(projeto);
 			g.setVisible(true);

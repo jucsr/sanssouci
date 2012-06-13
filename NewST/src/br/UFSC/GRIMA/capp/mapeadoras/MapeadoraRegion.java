@@ -18,7 +18,6 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
-import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class MapeadoraRegion 
@@ -68,7 +67,7 @@ public class MapeadoraRegion
 			// ----- Criando ferramenta -----
 		
 		double L = determinarDiametroMinimo();
-		EndMill endMill = choolseEndMill(bloco.getMaterial(), endMills, regionTmp, L);
+		EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills, regionTmp, L);
 			
 			// ------ Criando condicoes de usinagem ---------
 		condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, endMill, this.bloco.getMaterial());
@@ -90,6 +89,16 @@ public class MapeadoraRegion
 		
 			// -------- Criando Ferramenta --------
 		BallEndMill ballEndMill = chooseBallEndMill(bloco.getMaterial(), ballEndMills, regionTmp, L);
+			
+			// --------- Criando Condicoes de Usinagem --------
+		condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(projeto, ballEndMill, bloco.getMaterial());
+		
+			// -------- Criando o Machining Workingstep -------
+		
+		wsTmp = new Workingstep(regionTmp, faceTmp, ballEndMill, condicoesDeUsinagem, freeForm);
+		wsTmp.setId("WS Free Form");
+		wsTmp.setTipo(Workingstep.ACABAMENTO);
+		wsTmp.setWorkingstepPrecedente(wsTmp);
 	}
 
 	private BallEndMill chooseBallEndMill(Material material, ArrayList<BallEndMill> ballEndMills, Region regionTmp, double L) {
@@ -146,7 +155,7 @@ public class MapeadoraRegion
 		return ballEndMill;
 	}
 
-	private EndMill choolseEndMill(Material material, ArrayList<EndMill> endMills, Region region, double L) 
+	private EndMill chooseEndMill(Material material, ArrayList<EndMill> endMills, Region region, double L) 
 	{
 		ArrayList<EndMill>endMillsCandidatas = new ArrayList<EndMill>();
 		EndMill endMill = null;

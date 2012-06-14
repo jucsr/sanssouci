@@ -36,6 +36,7 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
@@ -723,7 +724,7 @@ public class GCodeGenerator {
 			    }
 
 /*************************************************************************************************************************************/
-			    if(wsTmp.getFeature().getClass().equals(Region.class) && wsTmp.getFerramenta().getClass().equals(FaceMill.class)){
+			    if(wsTmp.getFeature().getClass().equals(Region.class) && (wsTmp.getFerramenta().getClass().equals(FaceMill.class) || wsTmp.getFerramenta().getClass().equals(EndMill.class))){
 
 			    	MovimentacaoRegionSuperficieBezier regionBezier= new MovimentacaoRegionSuperficieBezier(wsTmp);
 
@@ -734,7 +735,16 @@ public class GCodeGenerator {
 
 /********************************************************DESBASTE***************************************************/	
 			    	if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
-				    	ArrayList<LinearPath> desbaste = regionBezier.desbaste();
+			    		
+			    		ArrayList<LinearPath> desbaste = null;
+			    		
+			    		if(wsTmp.getFerramenta().getClass() == EndMill.class){
+			    			desbaste = regionBezier.desbaste();
+			    		}
+			    		else if(wsTmp.getFerramenta().getClass() == FaceMill.class){
+			    			desbaste = regionBezier.desbaste1();	
+			    		}
+			    		
 			    		int GAux = 0;
 			    		if (rotationDirection == 1){GAux = 3;}
 			    		else if (rotationDirection == 2){GAux = 4;}

@@ -7,6 +7,7 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.bReps.BezierSurface;
 import br.UFSC.GRIMA.cad.Generate3Dview;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
@@ -17,6 +18,7 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.GCodeGenerator;
@@ -40,10 +42,10 @@ public class MovimentacaoRegionSuperficieBezierTest {
 				};
 		public Point3d [][] controlVertex = new Point3d[4][4];
 		
-//		Point3d p00 = new Point3d(0, 0, 30);
+//		Point3d p00 = new Point3d(0, 0, -30);
 //		Point3d p01 = new Point3d(30, 0, 0);
 //		Point3d p02 = new Point3d(60, 0, 0);
-//		Point3d p03 = new Point3d(90, 0, 30);
+//		Point3d p03 = new Point3d(90, 0, -30);
 //		Point3d p10 = new Point3d(0, 30, 0);
 //		Point3d p11 = new Point3d(30, 30, 0);
 //		Point3d p12 = new Point3d(60, 30, 0);
@@ -52,10 +54,10 @@ public class MovimentacaoRegionSuperficieBezierTest {
 //		Point3d p21 = new Point3d(30, 60, 0);
 //		Point3d p22 = new Point3d(60, 60, 0);
 //		Point3d p23 = new Point3d(90, 60, 0);
-//		Point3d p30 = new Point3d(0, 90, 30);
+//		Point3d p30 = new Point3d(0, 90, -30);
 //		Point3d p31 = new Point3d(30, 90, 0);
 //		Point3d p32 = new Point3d(60, 90, 0);
-//		Point3d p33 = new Point3d(90, 90, 30);
+//		Point3d p33 = new Point3d(90, 90, -30);
 		
 		Point3d p00 = new Point3d(0, 0, -40);
 		Point3d p01 = new Point3d(30, 0, 0);
@@ -69,10 +71,10 @@ public class MovimentacaoRegionSuperficieBezierTest {
 		Point3d p21 = new Point3d(30, 60, -40);
 		Point3d p22 = new Point3d(60, 60, -20);
 		Point3d p23 = new Point3d(90, 60, 0);
-		Point3d p30 = new Point3d(0, 90, 0);
+		Point3d p30 = new Point3d(0, 90, -40);
 		Point3d p31 = new Point3d(30, 90, 0);
 		Point3d p32 = new Point3d(60, 90, 0);
-		Point3d p33 = new Point3d(90, 90, -40);
+		Point3d p33 = new Point3d(90, 100, -40);
 		
 		@Before
 		public void init()
@@ -104,9 +106,22 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			controlVertex[3][1] = p31;
 			controlVertex[3][2] = p32;
 			controlVertex[3][3] = p33;
-		
+
+			Point3d malha[][] = new BezierSurface(controlVertex, 200, 200).getMeshArray();
+			double zMaximo=malha[0][0].getZ();
+			
+			for(int i=0;i<malha.length;i++){//PERCORRE A MALHA TODA PARA ACHAR O MENOR Z
+				for(int j=0;j<malha[i].length;j++){				
+					if(zMaximo<malha[i][j].getZ()){
+						zMaximo=malha[i][j].getZ();
+					}
+				}
+			}
+			
+			
 			// ---- MILLING
 			BottomAndSideRoughMilling milling = new BottomAndSideRoughMilling("Fresamento", retractPlane);
+			BottomAndSideRoughMilling milling1 = new BottomAndSideRoughMilling("Fresamento", retractPlane);
 			FreeformOperation freeForm = new FreeformOperation("Acabamento", retractPlane);
 			//BottomAndSideRoughMilling milling = new BottomAndSideRoughMilling("Fresamento", retractPlane);
 			milling.setCoolant(true);
@@ -114,19 +129,33 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			milling.setAllowanceSide(0.5);
 			milling.setAllowanceBottom(0.5);
 			
+			milling1.setCoolant(true);
+			milling1.setStartPoint(new Point3d(0, 0, zMaximo));
+			milling1.setAllowanceSide(0.5);
+			milling1.setAllowanceBottom(0.5);
+			
 			CondicoesDeUsinagem cu = new CondicoesDeUsinagem(100, 0.04, 0.2, 2000, 2, 5);
-			FaceMill faceMill = new FaceMill(10,50);
-			faceMill.setName("SF10");
+			FaceMill faceMill = new FaceMill(20,50);
+			faceMill.setName("SF20");
 			faceMill.setHandOfCut(Ferramenta.LEFT_HAND_OF_CUT);
 			
 			BallEndMill ballEndMill = new BallEndMill(10, 50);
 			ballEndMill.setName("SF10");
 			ballEndMill.setHandOfCut(Ferramenta.LEFT_HAND_OF_CUT);
 			
+			EndMill endMill = new EndMill(10, 50);
+			endMill.setName("SF10");
+			endMill.setHandOfCut(Ferramenta.LEFT_HAND_OF_CUT);
+
 			Workingstep ws = new Workingstep(feature, face);
 			ws.setCondicoesUsinagem(cu);
 			ws.setOperation(milling);
 			ws.setFerramenta(faceMill);
+			
+			Workingstep wsd = new Workingstep(feature, face);
+			wsd.setCondicoesUsinagem(cu);
+			wsd.setOperation(milling1);
+			wsd.setFerramenta(endMill);
 			
 			Workingstep wsa = new Workingstep(feature, face);
 			wsa.setCondicoesUsinagem(cu);
@@ -143,8 +172,9 @@ public class MovimentacaoRegionSuperficieBezierTest {
 //				System.out.println(patTmp);
 //			}
 			Vector wsts = new Vector();
-			wsts.add(ws);
-//			wsts.add(wsa);
+//			wsts.add(ws);
+//			wsts.add(wsd);
+			wsts.add(wsa);
 			Vector wsFace = new Vector();
 			wsFace.add(wsts);
 			GCodeGenerator codigoG = new GCodeGenerator(wsFace, projeto);

@@ -18,6 +18,7 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class MapeadoraRegion 
@@ -29,7 +30,9 @@ public class MapeadoraRegion
 	private Vector<Workingstep> wssFeature;
 	private CondicoesDeUsinagem condicoesDeUsinagem;
 	private ArrayList<EndMill> endMills;
+	private ArrayList<FaceMill> faceMills;
 	private ArrayList<BallEndMill> ballEndMills;
+	private double zMaximo;
 	
 	public MapeadoraRegion(Projeto projeto, Face face, Region region)
 	{
@@ -39,6 +42,7 @@ public class MapeadoraRegion
 		this.bloco = projeto.getBloco();
 		
 		this.endMills = ToolManager.getEndMills();
+		this.faceMills = ToolManager.getFaceMills();
 		this.ballEndMills = ToolManager.getBallEndMills();
 		
 		this.mapearRegion();
@@ -48,6 +52,9 @@ public class MapeadoraRegion
 	{
 		Workingstep wsTmp, wsPrecedente;
 		double retractPlane = 5;
+		Point3d malha[][] = new BezierSurface(regionTmp.getControlVertex(), 200, 200).getMeshArray();
+		zMaximo=malha[0][0].getZ();
+		
 		
 		wssFeature = new Vector<Workingstep>();
 		if(regionTmp.getFeaturePrecedente() != null)
@@ -58,11 +65,49 @@ public class MapeadoraRegion
 			wsPrecedente = null;
 		}
 		
+		for(int i=0;i<malha.length;i++){//PERCORRE A MALHA TODA PARA ACHAR O MENOR Z
+			for(int j=0;j<malha[i].length;j++){				
+				if(zMaximo<malha[i][j].getZ()){
+					zMaximo=malha[i][j].getZ();
+				}
+			}
+		}
+		
+		// ---------------- CRIANDO WORKINGSTEP DE DESBASTE (zigue-zague)------------------
+		
+					// -----Criando operação ----
+		if(zMaximo<regionTmp.getPosicaoZ()){
+			BottomAndSideRoughMilling desbaste1 = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
+			desbaste1.setStartPoint(new Point3d(0, 0, 0));
+
+			// ----- Criando ferramenta -----
+
+			double L = determinarDiametroMinimo();
+			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills, regionTmp, L);
+
+			// ------ Criando condicoes de usinagem ---------
+			condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMill, this.bloco.getMaterial());
+
+			// ------ Criando o Machining Workingstep ------
+			wsTmp = new Workingstep(regionTmp, faceTmp, faceMill, condicoesDeUsinagem, desbaste1);
+			wsTmp.setId("WS Desbaste");
+			wsTmp.setTipo(Workingstep.DESBASTE);
+			wsTmp.setWorkingstepPrecedente(wsPrecedente);
+			wsPrecedente = wsTmp;
+
+			wssFeature.add(wsTmp);
+		}	
 		// ---------------- CRIANDO WORKINGSTEP DE DESBASTE ------------------
 		
 			// -----Criando operação ----
 		BottomAndSideRoughMilling desbaste1 = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
-		desbaste1.setStartPoint(new Point3d(0, 0, 0));
+
+		if(zMaximo>=regionTmp.getPosicaoZ()){
+			desbaste1.setStartPoint(new Point3d(0, 0, 0));
+		}
+		else if(zMaximo<regionTmp.getPosicaoZ()){
+			desbaste1.setStartPoint(new Point3d(0, 0, zMaximo));			
+		}
 		
 			// ----- Criando ferramenta -----
 		
@@ -201,6 +246,53 @@ public class MapeadoraRegion
 			}
 		}
 		return endMill;
+	}
+	private FaceMill chooseFaceMill(Material material, ArrayList<FaceMill> faceMills, Region region, double L) 
+	{
+		ArrayList<FaceMill>faceMillsCandidatas = new ArrayList<FaceMill>();
+		FaceMill faceMill = null;
+		String ISO = "";
+		ISO = MapeadoraDeWorkingsteps.selectMaterialFerramenta(this.projeto, material, "Condicoes_De_Usinagem_FaceMill");
+		for(int i = 0; i < faceMills.size(); i++) // seleciona todas as faceMills candidatas para usinar a regiao
+		{
+			faceMill = faceMills.get(i);
+			if(faceMill.getMaterial().equals(ISO) && faceMill.getProfundidadeMaxima() >= -zMaximo && faceMill.getDiametroFerramenta() <= L)
+			{
+				faceMillsCandidatas.add(faceMill);
+			}
+		}
+		if(faceMillsCandidatas.size() == 0)
+		{
+			JOptionPane
+			.showMessageDialog(
+					null,
+					"Não é possível usinar esta Feature com as atuais Face Mills disponíveis! \n" +
+					"__________________________________________________________"+"\n"+
+					"\tFeature: Region \n" +
+					"\tName: " + region.getNome() + "\n" +
+					"\tMaximum Depth: " + region.getMaxDepth() +" mm"+"\n" +
+					"\tRaw Block Material: " + material.getName()+"\n" +
+					"__________________________________________________________"+"\n"+
+					"\tMotivo: Do grupo das Face Mills do projeto, nenhuma satisfaz os" +"\n"+
+					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
+					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
+					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (region.getMaxDepth())+" mm"+"\n\n" +
+					"\tAdd Face Mills adequadas ao projeto."
+					,
+					"Erro", JOptionPane.ERROR_MESSAGE);
+			
+			throw new NullPointerException("Nenhuma End Mill selecionada");
+		}
+		faceMill = faceMillsCandidatas.get(0);
+		for(int i = 1; i < faceMillsCandidatas.size(); i++)
+		{
+			// ---- seleciona o endMill de maior diametro ----
+			if(faceMillsCandidatas.get(i).getDiametroFerramenta() > faceMill.getDiametroFerramenta())
+			{
+				faceMill = faceMillsCandidatas.get(i);
+			}
+		}
+		return faceMill;
 	}
 	private double determinarDiametroMinimo()
 	{

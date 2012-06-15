@@ -61,6 +61,12 @@ public class PontosDeApoioFrame2 extends JDialog {
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+		menuBar1 = new JMenuBar();
+		menu1 = new JMenu();
+		menu2 = new JMenu();
+		radioButton1 = new JRadioButton();
+		radioButton2 = new JRadioButton();
+		menuItem3 = new JMenuItem();
 		supportTypeLabel = new JLabel();
 		panel2 = new JPanel();
 		pinRadioButton = new JRadioButton();
@@ -85,6 +91,35 @@ public class PontosDeApoioFrame2 extends JDialog {
 		((GridBagLayout)contentPane.getLayout()).rowHeights = new int[] {0, 0, 5, 30, 5, 227, 0};
 		((GridBagLayout)contentPane.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 		((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+
+		//======== menuBar1 ========
+		{
+
+			//======== menu1 ========
+			{
+				menu1.setText("text");
+
+				//======== menu2 ========
+				{
+					menu2.setText("text");
+
+					//---- radioButton1 ----
+					radioButton1.setText("text");
+					menu2.add(radioButton1);
+
+					//---- radioButton2 ----
+					radioButton2.setText("text");
+					menu2.add(radioButton2);
+				}
+				menu1.add(menu2);
+
+				//---- menuItem3 ----
+				menuItem3.setText("text");
+				menu1.add(menuItem3);
+			}
+			menuBar1.add(menu1);
+		}
+		setJMenuBar(menuBar1);
 
 		//---- supportTypeLabel ----
 		supportTypeLabel.setText("Support Type:");
@@ -238,6 +273,12 @@ public class PontosDeApoioFrame2 extends JDialog {
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+	private JMenuBar menuBar1;
+	private JMenu menu1;
+	private JMenu menu2;
+	private JRadioButton radioButton1;
+	private JRadioButton radioButton2;
+	private JMenuItem menuItem3;
 	private JLabel supportTypeLabel;
 	private JPanel panel2;
 	private JRadioButton pinRadioButton;

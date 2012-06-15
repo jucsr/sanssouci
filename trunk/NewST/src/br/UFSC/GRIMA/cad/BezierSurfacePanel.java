@@ -72,10 +72,10 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		newPoints();
 		newParameters();
 
-		Point axis = new Point( 1,0 );
-			rotate( xaxis, 1.7, axis );
-			rotate( yaxis, 1.7, axis );
-			rotate( zaxis, 1.7, axis );
+//		Point axis = new Point( 1,0 );
+//			rotate( xaxis, 1.7, axis );
+//			rotate( yaxis, 1.7, axis );
+//			rotate( zaxis, 1.7, axis );
 
 		addMouseListener( this );
 		addMouseMotionListener( this );
@@ -110,12 +110,13 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		scale = units[zoom]/pixels;
 
 		//g.setColor( getBackground() );
-		g.setColor( Color.white );
+		g.setColor( Color.white );	//paint the background
 		g.fill( new Rectangle2D.Double( 0, 0, w, h ) );
 
 		String str = CriarRegionFrame.choice.getSelectedItem().toString();
 		
 		drawBlock(g);
+		
 		if ( newCoef ){
 			if ( str.equals( "u,v-parametrization" ) ){
 				newParameters();
@@ -157,10 +158,29 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 
 	private void drawBlock(Graphics2D g2d) 
 	{
-		double [] X = new double[8];
-	
-		g2d.setColor(Color.red);
-		g2d.draw(new Line2D.Double(0, 0, 50, 50));
+//		double [][] X = new double[1][8];
+//		double [][][] X = {{{-3,3,0},{3,3,0}},
+//						  {{3,-3,0},{-3,-3,0}},
+//						  {{-3,3,-6},{3,3,-6}},
+//						  {{3,-3,-6},{-3,-3,-6}}};
+		
+//		g2d.draw(new Line2D.Double(0, 0, 50, 50));
+		
+		g2d.setStroke( new BasicStroke( 1.0f) );
+		
+		g2d.setPaint(Color.blue);
+		
+		double x1 = control_points[0][0][0];
+		double y1 = control_points[0][0][1];
+		double x2 = control_points[0][3][0];
+		double y2 = control_points[0][3][1];
+		Line2D line = new Line2D.Double(x1,y1,x2,y2);
+		g2d.draw(line);
+		
+
+//		for (int i=0; i < X.length; i++){
+//			
+//		}
 	}
 
 

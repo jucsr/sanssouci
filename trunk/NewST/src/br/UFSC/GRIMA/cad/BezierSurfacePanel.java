@@ -114,7 +114,8 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		g.fill( new Rectangle2D.Double( 0, 0, w, h ) );
 
 		String str = CriarRegionFrame.choice.getSelectedItem().toString();
-
+		
+		drawBlock(g);
 		if ( newCoef ){
 			if ( str.equals( "u,v-parametrization" ) ){
 				newParameters();
@@ -152,6 +153,15 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		}
 	}
 
+
+
+	private void drawBlock(Graphics2D g2d) 
+	{
+		double [] X = new double[8];
+	
+		g2d.setColor(Color.red);
+		g2d.draw(new Line2D.Double(0, 0, 50, 50));
+	}
 
 
 	// returns a unit vector perpendicular to u and v

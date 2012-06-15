@@ -74,7 +74,7 @@ public class MovimentacaoRegionSuperficieBezierTest {
 		Point3d p30 = new Point3d(0, 90, -40);
 		Point3d p31 = new Point3d(30, 90, 0);
 		Point3d p32 = new Point3d(60, 90, 0);
-		Point3d p33 = new Point3d(90, 100, -40);
+		Point3d p33 = new Point3d(90, 90, -40);
 		
 		@Before
 		public void init()

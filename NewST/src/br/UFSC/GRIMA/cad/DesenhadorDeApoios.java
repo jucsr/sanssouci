@@ -53,4 +53,31 @@ public class DesenhadorDeApoios {
 		
 	}
 
+	public void DesenharApoios(Face face, int verticeAtivado, Point origem, boolean modo, Graphics2D g2d, ArrayList<Point3d> arrayA, int largura, int comprimento)
+	{
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+		
+		float dash1[] = {2.0f, 1.0f};
+		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+		
+		
+		if(arrayA.size()!= 0)
+		{
+			for(int i = 0; i<arrayA.size();i++)
+			{
+				Point3d pAux = arrayA.get(i);
+				int posX = (int)Math.round((pAux.getX() - comprimento/2) * zoom + origem.x);
+				int posY = (int)Math.round((pAux.getY() - largura/2) * zoom + origem.y);
+				g2d.setColor(new Color(176, 226, 255));
+				g2d.fillRect(posX, posY, comprimento, largura);
+				g2d.setColor(new Color(0, 0, 139 ));
+				g2d.drawRect(posX, posY, comprimento, largura);
+			}
+			
+			
+		}
+		
+		
+	}
 }

@@ -737,6 +737,7 @@ public class GCodeGenerator {
 			    	if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
 			    		
 			    		ArrayList<LinearPath> desbaste = null;
+			    		int l=0;
 			    		
 			    		if(wsTmp.getFerramenta().getClass() == EndMill.class){
 			    			desbaste = regionBezier.desbaste();
@@ -785,7 +786,7 @@ public class GCodeGenerator {
 			    			zAux = desbaste.get(j).getFinalPoint().getZ();
 
 			    			if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
-			    				if(j==0){
+			    				if(l==0){
 			    					GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
 			    					lineNumber = lineNumber + 10;
 			    				}
@@ -799,10 +800,12 @@ public class GCodeGenerator {
 				    					lineNumber = lineNumber + 10;			    						
 			    					}
 			    				}
+			    				l=1;
 			    			}
 			    			else{
 			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
 			    				lineNumber = lineNumber + 10;
+			    				l=0;
 			    			}
 			    		}
 			    	}	
@@ -826,6 +829,7 @@ public class GCodeGenerator {
 			    		if (rotationDirection == 1){GAux = 3;}
 			    		else if (rotationDirection == 2){GAux = 4;}
 			    		else if (rotationDirection == 3){GAux = 5;}
+			    		int l=0;
 
 			    		GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
 			    		lineNumber = lineNumber + 10;
@@ -865,7 +869,7 @@ public class GCodeGenerator {
 
 			    			//********** Testar se é fast(G0) ou slow(G1)
 			    			if(acabamento.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
-			    				if(j==0){
+			    				if(l==0){
 			    					GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
 			    					lineNumber = lineNumber + 10;
 			    				}
@@ -879,10 +883,12 @@ public class GCodeGenerator {
 				    					lineNumber = lineNumber + 10;			    						
 			    					}
 			    				}
+		    					l=1;
 			    			}
 			    			else{
 			    				GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
 			    				lineNumber = lineNumber + 10;
+			    				l=0;
 			    			}					
 			    		}
 			    	}	

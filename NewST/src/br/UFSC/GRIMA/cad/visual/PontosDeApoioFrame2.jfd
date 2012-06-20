@@ -393,6 +393,10 @@
             </void>
            </object>
           </void>
+          <void method="setProperty">
+           <string>enabled</string>
+           <boolean>false</boolean>
+          </void>
           <void property="name">
            <string>faceComboBox</string>
           </void>

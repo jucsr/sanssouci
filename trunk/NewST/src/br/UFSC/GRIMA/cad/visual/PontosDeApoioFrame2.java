@@ -45,6 +45,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 	private void autoGenButtonActionPerformed(ActionEvent e) {
 		this.setupComboBox.setEnabled(true);
 		this.pointsTable.setVisible(true);
+		this.faceComboBox.setEnabled(true);
 	}
 
 	private void setupComboBoxItemStateChanged(ItemEvent e) {
@@ -226,6 +227,7 @@ public class PontosDeApoioFrame2 extends JDialog {
 				"YZ",
 				"XZ"
 			}));
+			faceComboBox.setEnabled(false);
 			panel1.add(faceComboBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));

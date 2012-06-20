@@ -37,7 +37,7 @@ public class PontosDeApoio2 extends PontosDeApoioFrame2 implements ActionListene
 			this.gneratePoints();
 		}
 	}
-//	@Override
+	@Override
 	public void itemStateChanged(ItemEvent e){
 		if (e.getSource() == this.setupComboBox){
 			int index = setupComboBox.getSelectedIndex();

@@ -299,7 +299,7 @@ public class MovimentacaoRegionSuperficieBezier {
 	public ArrayList<LinearPath> acabamento(){
 		ArrayList<LinearPath> acabamento = new ArrayList<LinearPath>();
 
-		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 50, 50).getMeshArray();
+		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 90, 90).getMeshArray();
 		Point3d pontoInicial = null;
 		Point3d pontoFinal;
 		LinearPath ligaPontos;	

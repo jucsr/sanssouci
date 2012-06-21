@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.Furo;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
+import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 final class Corners{
@@ -16,6 +19,14 @@ final class Corners{
 	double c2;
 	double c3;
 	double c4;
+}
+
+final class FeaturesTypes{									//Tipos de features existentes
+	boolean haPassante, haCavidade, haFuro, haDegrau, haRanhura;
+}
+
+final class PossibleHandlingDevices{						//Definir os tipos de suportes possíveis nesta classe
+	boolean vise, anglePlates, clamps, parallels;
 }
 
 public class PointsGenerator {
@@ -47,6 +58,50 @@ public class PointsGenerator {
 //		this.forbiddenSpots = new ArrayList<Corners>();
 		//this.corners = new Corners();
 		this.pointgen();
+	}
+	private void supportTypeChecker(){													//Verifica quais são as features nas faces. Cria booleanos para dizer quais suportes são necessários
+		//Variáveis usadas:
+		FeaturesTypes[] featTypeArray = new FeaturesTypes[6];
+		PossibleHandlingDevices[] posHandDev = new PossibleHandlingDevices[6];
+		
+		//Procura pela features no bloco:
+		for (int i=0; i<projeto.getBloco().faces.size(); i++){
+			Face faceTmp = (Face)projeto.getBloco().faces.elementAt(i);	
+			if (faceTmp.features.size() > 0){
+				for (int j=0; j<faceTmp.features.size(); j++){
+					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
+					if (featureTmp.getClass() == Cavidade.class){						//caso CAVIDADE
+						featTypeArray[i].haCavidade = true;
+						Cavidade cavidade = (Cavidade)featureTmp;
+						if(cavidade.isPassante()){
+							featTypeArray[i].haPassante = true;
+						}
+					}
+					if (featureTmp.getClass() == Furo.class){
+						featTypeArray[i].haFuro = true;
+						if (featureTmp.getClass() == FuroBasePlana.class){				//caso FURO
+							FuroBasePlana furo = (FuroBasePlana)featureTmp;
+							if(furo.isPassante()){
+								featTypeArray[i].haPassante = true;
+							}
+						}
+					}
+					if (featureTmp.getClass() == Degrau.class){
+						featTypeArray[i].haDegrau = true;
+					}
+					if (featureTmp.getClass() == Ranhura.class){
+						featTypeArray[i].haRanhura = true;
+					}
+				}
+			}	
+		}
+		
+		//Analisa os possíveis suportes utilizados
+		for (int i=0; i<6; i++){
+			if (featTypeArray[i].haPassante) posHandDev[i].parallels = true;
+			if (featTypeArray[i].haFuro || featTypeArray[i].haCavidade) posHandDev[i].vise = true;
+			if (featTypeArray[i].haDegrau || featTypeArray[i].haRanhura) posHandDev[i].vise = false;
+		}
 	}
 	private void pointgen() {
 		//****Procura por FEATURES nas faces*****//
@@ -326,4 +381,3 @@ public class PointsGenerator {
 		return supportsArray;
 	}
 }
-

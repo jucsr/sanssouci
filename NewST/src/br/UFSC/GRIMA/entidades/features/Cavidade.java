@@ -557,9 +557,9 @@ public class Cavidade extends Feature implements Serializable {
 		System.out.println("center4" + center4);
 		
 		borda1 = determinarPontosEmCircunferencia(center1, 0.0, Math.PI/2, raio, numeroDePontosBorda);
-		borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI, raio, numeroDePontosBorda);
-		borda3 = determinarPontosEmCircunferencia(center3, Math.PI, 3*(Math.PI)/2, raio, numeroDePontosBorda);
-		borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, 2*Math.PI, raio, numeroDePontosBorda);
+		borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI/2, raio, numeroDePontosBorda);
+		borda3 = determinarPontosEmCircunferencia(center3, Math.PI, Math.PI/2, raio, numeroDePontosBorda);
+		borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, Math.PI/2, raio, numeroDePontosBorda);
 		
 		System.out.println("pontos borda 1 " + borda1.length );
 		System.out.println("pontos borda 2 " + borda2.length );

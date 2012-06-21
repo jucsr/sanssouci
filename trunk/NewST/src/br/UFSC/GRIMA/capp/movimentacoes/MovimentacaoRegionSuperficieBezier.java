@@ -6,11 +6,9 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.bReps.BezierSurface;
 import br.UFSC.GRIMA.capp.Workingstep;
-import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.LinearPath;
-import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 
 public class MovimentacaoRegionSuperficieBezier {
@@ -28,10 +26,7 @@ public class MovimentacaoRegionSuperficieBezier {
 	public ArrayList<LinearPath> desbaste(){
 		
 		double z=this.ws.getOperation().getStartPoint().z;
-		double y=this.regionBezier.getPosicaoY();
-		double x=this.regionBezier.getPosicaoZ();
 		double zMinimo=100;
-		double zMaximo=-10000;
 		double distanciaTmp;
 		double diametroFerramenta = this.ferramenta.getDiametroFerramenta();
 		double maiorMenorDistancia=0;
@@ -46,7 +41,6 @@ public class MovimentacaoRegionSuperficieBezier {
 		ArrayList<Point3d> pontosPossiveis;
 		ArrayList<ArrayList<Point3d>> pontos;
 		ArrayList<Point3d> pontos2 = null;
-		ArrayList<ArrayList<Point3d>> pontosOrdenados = new ArrayList<ArrayList<Point3d>>();
 		ArrayList<Point3d> temp;
 		ArrayList<Double> menorDistancia;
 		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 200, 200).getMeshArray();
@@ -208,7 +202,6 @@ public class MovimentacaoRegionSuperficieBezier {
 				numeroDeAps,
 				tmp,
 				ae=this.ws.getCondicoesUsinagem().getAe(),
-				raioFerramenta=this.ferramenta.getDiametroFerramenta()/2,
 				zMaximo=malha[0][0].getZ(),
 				x=this.regionBezier.getPosicaoX(),
 				y=this.regionBezier.getPosicaoY(),
@@ -310,20 +303,12 @@ public class MovimentacaoRegionSuperficieBezier {
 		double alfa, alfaX=0;
 		double h;
 		double distanciaEntrePontos=0, distanciaEntrePontosX=0;
-		//int numeroDePontos=this.ranhuraBezier.getPontosDaCurva().length;
 		int i;
-
-
+		
 		for(int k=0;k<malha.length;k++){
 
 			for(i=0;i<malha[k].length;i++){
-
 				
-				
-				
-					
-				
-								
 				if(k%2==0){
 
 					if(k!=0)
@@ -347,118 +332,123 @@ public class MovimentacaoRegionSuperficieBezier {
 					else
 						alfaX=(Math.atan2((malha[k][i].getZ()-malha[k-1][i].getZ()),distanciaEntrePontosX));
 					
-//					System.out.println(alfaX*180/Math.PI);
 					
 					if(i==0 && k==0){
 						y=this.regionBezier.getPosicaoY()-(Math.sin(alfa)*r);
 						x=this.regionBezier.getPosicaoX()-(Math.sin(alfaX)*r);
-						if(y<0.001)
-							y=0;
+
+						x=x*1000;
+						x=Math.round(x);
+						x=x/1000;
+						y=y*1000;
+						y=Math.round(y);
+						y=y/1000;
+						
 						pontoInicial= new Point3d(x,y,this.ws.getOperation().getRetractPlane());
 					}
 					else if(i==0){
 						y=this.regionBezier.getPosicaoY()+malha[k][i].getY()-(Math.sin(alfa)*r);
 						x=this.regionBezier.getPosicaoX()+malha[k][i].getX()-(Math.sin(alfaX)*r);
-						if(y<0.001)
-							y=0;
+
+						x=x*1000;
+						x=Math.round(x);
+						x=x/1000;
+						y=y*1000;
+						y=Math.round(y);
+						y=y/1000;
+						
 						pontoInicial= new Point3d(x,y,z);						
 					}
 
 					//ADICIONA Z
 					h=r-Math.cos(alfa)*r;
 					z=malha[k][i].getZ()-h;
-					if(-z<0.001)
-						z=0;
-					if(y<0.001)
-						y=0;
 
+					if(i!=0){
+						y=this.regionBezier.getPosicaoY()+malha[k][i].getY()-(Math.sin(alfa)*r);
+						x=this.regionBezier.getPosicaoX()+malha[k][i].getX()-(Math.sin(alfaX)*r);
+					}
+
+					x=x*1000;
+					x=Math.round(x);
+					x=x/1000;
+					y=y*1000;
+					y=Math.round(y);
+					y=y/1000;
+					z=z*1000;
+					z=Math.round(z);
+					z=z/1000;
+					
 					pontoFinal = new Point3d(x, y, z);
 					ligaPontos = new LinearPath(pontoInicial,pontoFinal);
-//					if(i==0 && k==0)
+					if(i==0 && k==0)
 						ligaPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
 					acabamento.add(ligaPontos);
 					pontoInicial = new Point3d(x, y, z);
-
-//					x = malha[k][0].getX();
-//					
-//					pontoFinal = new Point3d(x, y, z);
-//					ligaPontos = new LinearPath(pontoInicial,pontoFinal);
-//					acabamento.add(ligaPontos);
-//					pontoInicial = new Point3d(x, y, z);
-
-					if(i!=0){
-//						if(malha[k][i].getZ()<malha[k][i-1].getZ())
-						y=this.regionBezier.getPosicaoY()+malha[k][i].getY()-(Math.sin(alfa)*r);//+distanciaEntrePontos;
-						x=this.regionBezier.getPosicaoX()+malha[k][i].getX()-(Math.sin(alfaX)*r);//+distanciaEntrePontosX;
-//						else if(malha[k][i].getZ()>malha[k][i-1].getZ())
-//							y=this.regionBezier.getPosicaoY()+malha[k][i].getY()-(Math.sin(alfa)*r)+distanciaEntrePontos;
-					}
 				}
 				//VOLTA 
 				else{
 					
-					if(i==0)
+					if(i==0){
 						distanciaEntrePontosX= malha[k][malha[k].length-1].getX()-malha[k-1][malha[k].length-1].getX();
-					else
-						distanciaEntrePontosX= malha[k][malha[k].length-i].getX()-malha[k-1][malha[k].length-i].getX();
-					
-					if(i==0)
 						distanciaEntrePontos= malha[k][malha[k].length-1].getY()-malha[k][malha[k].length-2].getY();
-					else
-						distanciaEntrePontos= malha[k][malha[k].length-i].getY()-malha[k][malha[k].length-i-1].getY();
-					
-					
-					if(i==0)
 						alfa=(Math.atan2((malha[k][malha[k].length-i-2].getZ()-malha[k][malha[k].length-i-1].getZ()),distanciaEntrePontos));
-					else
-						alfa=(Math.atan2((malha[k][malha[k].length-i-1].getZ()-malha[k][malha[k].length-i].getZ()),distanciaEntrePontos));
-					
-					if(i==0)
 						alfaX=(Math.atan2((malha[k][malha[k].length-1].getZ()-malha[k-1][malha[k].length-1].getZ()),distanciaEntrePontosX));
-					else
+					}
+					else{
+						distanciaEntrePontosX= malha[k][malha[k].length-i].getX()-malha[k-1][malha[k].length-i].getX();
+						distanciaEntrePontos= malha[k][malha[k].length-i].getY()-malha[k][malha[k].length-i-1].getY();
+						alfa=(Math.atan2((malha[k][malha[k].length-i-1].getZ()-malha[k][malha[k].length-i].getZ()),distanciaEntrePontos));
 						alfaX=(Math.atan2((malha[k][malha[k].length-i].getZ()-malha[k-1][malha[k].length-i].getZ()),distanciaEntrePontosX));
-					
-//					System.out.println(alfa*180/Math.PI);
-						
+					}
+											
 					if(i==0){
 						y=this.regionBezier.getPosicaoY()+malha[k][malha[k].length-1].getY()+(Math.sin(alfa)*r);
 						x=this.regionBezier.getPosicaoX()+malha[k][malha[k].length-1].getX()-(Math.sin(alfaX)*r);
+
+						x=x*1000;
+						x=Math.round(x);
+						x=x/1000;
+						y=y*1000;
+						y=Math.round(y);
+						y=y/1000;
+						
 						pontoInicial= new Point3d(x,y,z);
 					}
 					
 					//ADICIONA Z
 					h=r-Math.cos(alfa)*r;
 					z=malha[k][malha[k].length-1-i].getZ()-h;
-					if(-z<0.001)
-						z=0;
-					if(y<0.001)
-						y=0;
 
+					if(i!=0){
+						if(malha[k].length-i!=0){
+							y=this.regionBezier.getPosicaoY()+malha[k][malha[k].length-1-i].getY()+(Math.sin(alfa)*r);
+							x=this.regionBezier.getPosicaoX()+malha[k][malha[k].length-1-i].getX()-(Math.sin(alfaX)*r);
+						}
+					}
+
+					x=x*1000;
+					x=Math.round(x);
+					x=x/1000;
+					y=y*1000;
+					y=Math.round(y);
+					y=y/1000;
+					z=z*1000;
+					z=Math.round(z);
+					z=z/1000;
+					
 					pontoFinal = new Point3d(x, y, z);
 					ligaPontos = new LinearPath(pontoInicial,pontoFinal);
-					ligaPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
 					acabamento.add(ligaPontos);
 					pontoInicial = new Point3d(x, y, z);
 
-//					x = malha[k][malha[k].length-1].getX();
-//					
-//					pontoFinal = new Point3d(x, y, z);
-//					ligaPontos = new LinearPath(pontoInicial,pontoFinal);
-//					acabamento.add(ligaPontos);
-//					pontoInicial = new Point3d(x, y, z);
-
-					if(malha[k].length-i!=0){
-//						if(malha[k][malha[k].length-1-i].getZ()<malha[k][malha[k].length-2-i].getZ())
-						y=this.regionBezier.getPosicaoY()+malha[k][malha[k].length-1-i].getY()+(Math.sin(alfa)*r);//-distanciaEntrePontos;
-						x=this.regionBezier.getPosicaoX()+malha[k][malha[k].length-1-i].getX()-(Math.sin(alfaX)*r);//-distanciaEntrePontosX;
-//						else if(malha[k][malha[k].length-1-i].getZ()>malha[k][malha[k].length-2-i].getZ())
-//							y=this.regionBezier.getPosicaoY()+malha[k][malha[k].length-1-i].getY()+Math.abs(Math.sin(alfa)*r)-distanciaEntrePontos;
-					}					
 				}
-
-			}	
+			}
 		}
 
+		ligaPontos = new LinearPath(pontoInicial,new Point3d(x,y,this.ws.getOperation().getRetractPlane()));
+		ligaPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
+		acabamento.add(ligaPontos);
 		return acabamento;
 	}
 	

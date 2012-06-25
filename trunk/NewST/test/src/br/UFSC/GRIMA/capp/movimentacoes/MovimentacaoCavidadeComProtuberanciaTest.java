@@ -46,6 +46,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 	public Projeto projeto;
 	Bloco bloco;
 	CircularBoss boss;
+	RectangularBoss boss1;
+	RectangularBoss boss2;
 	Face faceXY;
 	ArrayList<ArrayList<Point3d>> pontos;
 	ArrayList<Point3d> pontosPeriferia;
@@ -72,9 +74,9 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.cavidade.setNome("Lucas");
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(10);
-		this.cavidade.setRaio(20);
-		this.cavidade.setComprimento(50);
-		this.cavidade.setLargura(50);
+		this.cavidade.setRaio(10);
+		this.cavidade.setComprimento(80);
+		this.cavidade.setLargura(60);
 		this.cavidade.createGeometricalElements();
 
 		faceXY.addFeature(this.cavidade);
@@ -84,18 +86,26 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.boss.setDiametro1(10);
 		this.boss.setDiametro2(10);
 		this.boss.setAltura(10);
-		this.boss.setPosicao(35, 35, 0);
+		this.boss.setPosicao(20, 35, 0);
 		this.boss.setNome("lucas");
 		this.boss.createGeometricalElements();
 		
-
+		this.boss1 = new RectangularBoss(20, 10, 10, 5);
+		this.boss1.setPosicao(40, 30, 0);
+		
+		this.boss2 = new RectangularBoss(20, 20, 10, 7);
+		this.boss2.setPosicao(50, 45, 0);
+		
 		this.itsBoss = cavidade.getItsBoss();
+		
 		this.ws = ws;
 //		this.ferramenta = this.ws.getFerramenta();
 //		this.cavidade = (Cavidade) this.ws.getFeature();
 		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		this.itsBoss.add(this.boss);
+		this.itsBoss.add(this.boss1);
+		this.itsBoss.add(this.boss2);
 		cavidade.setItsBoss(this.itsBoss);
 		this.faceXY.addFeature(this.boss);
 		Generate3Dview Janela3D = new Generate3Dview(this.projeto);
@@ -108,7 +118,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					raio=this.cavidade.getRaio(),
 					raioAtual,
 					z=-10,
-					diametroFerramenta = 5;//this.ferramenta.getDiametroFerramenta();
+					diametroFerramenta = 4;//this.ferramenta.getDiametroFerramenta();
 			ArrayList<Point3d> pontosPossiveis;
 			RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(this.cavidade.getPosicaoX(), this.cavidade.getPosicaoY(), comprimento, largura, 2*raio, 2*raio);
 
@@ -119,7 +129,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 			Point2D borda[];
 
 
-			//CRIAR MALHA DE PONTOS PARA COMPARAÇÃO
+			//CRIAR MALHA DE PONTOS PARA COMPARAï¿½ï¿½O
 			for(int i=0;i<malha.length;i++){
 				for(int k=0;k<malha[i].length;k++){
 					malha[i][k][0] = this.cavidade.getPosicaoX()+comprimento*(i+1)/100;//x
@@ -138,7 +148,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				if(bossTmp.getClass()==CircularBoss.class){
 					CircularBoss boss = (CircularBoss) bossTmp;
 					raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-this.cavidade.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2));
-					bossArray.add(new Ellipse2D.Double(bossTmp.getPosicaoX()+raioAtual, bossTmp.getPosicaoY()+raioAtual, raioAtual, raioAtual));
+					bossArray.add(new Ellipse2D.Double(boss.getPosicaoX()+raioAtual, boss.getPosicaoY()+raioAtual, raioAtual, raioAtual));
 					borda = Cavidade.determinarPontosEmCircunferencia(new Point3d(boss.getPosicaoX(),boss.getPosicaoY(),z), 0, 2*Math.PI, raioAtual, (int) Math.round(Math.PI*2*raioAtual));
 					for(int k=0;k<borda.length;k++){
 						pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
@@ -164,7 +174,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 			}
 
 			int b=0;
-			//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS NÃO USINADOS
+			//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
 			pontosPossiveis = new ArrayList<Point3d>();
 			for(int i=0;i<malha.length;i++){
 				for(int k=0;k<malha[i].length;k++){
@@ -228,7 +238,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //			
 //			
 //			frame1.setVisible(true);
-			//ELIMINAR OS PONTOS QUE NÃO PODEM SER USINADOS DA MALHA
+			//ELIMINAR OS PONTOS QUE Nï¿½O PODEM SER USINADOS DA MALHA
 
 			//CRIAR O ARRAY DAS MENORES DISTANCIAS
 

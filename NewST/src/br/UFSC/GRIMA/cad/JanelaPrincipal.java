@@ -516,6 +516,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.menuGirar.addActionListener(ouvidorMenus);
 		this.menuItemGerFerr.addActionListener(ouvidorMenus);
 		this.criarRegion.addActionListener(ouvidorMenus);
+		this.menuItemCriarCavidadeGeneral.addActionListener(ouvidorMenus);
 
 		JanelaPrincipal_combobox_actionAdapter ouvidorCombobox = new JanelaPrincipal_combobox_actionAdapter(
 				this);
@@ -2253,6 +2254,11 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	public void setBancoDeDados(AcessaBD bancoDeDados) {
 		this.bancoDeDados = bancoDeDados;
 	}
+	public void criarCavidadePerfilGeral() 
+	{
+		CreateGeneralPocket cgp = new CreateGeneralPocket(this, this.projeto);
+		cgp.setVisible(true);
+	}
 }
 
 class JanelaPrincipal_button_actionAdapter implements ActionListener {
@@ -2576,6 +2582,9 @@ class JanelaPrincipal_menus_actionAdapter implements ActionListener {
 		} else if(origem == this.parent.criarRegion)
 		{
 			this.parent.criarRegion();
+		} else if(origem == this.parent.menuItemCriarCavidadeGeneral)
+		{
+			this.parent.criarCavidadePerfilGeral();
 		}
 		
 	}

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraCavidade;
+import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
 import br.UFSC.GRIMA.entidades.features.Bloco;
@@ -43,7 +44,8 @@ public class MapeadoraCavidadeTest {
 		
 		projeto = new Projeto(bloco, dados);
 		
-		new ToolManager(projeto);
+		new MapeadoraDeWorkingsteps(projeto);
+//		new ToolManager(projeto);
 		
 		//adicionando feature na face
 		faceXY = (Face)(bloco.faces.elementAt(Face.XY));
@@ -77,6 +79,7 @@ public class MapeadoraCavidadeTest {
 	@Test
 	public void mapearCavidadeTest(){
 		
+		ToolManager toolManager = new ToolManager(projeto);
 		MapeadoraCavidade mapeadoraCavidade = new MapeadoraCavidade(projeto, faceXY ,cavidade);
 		
 		Vector<Workingstep> wssCavidade = cavidade.getWorkingsteps();

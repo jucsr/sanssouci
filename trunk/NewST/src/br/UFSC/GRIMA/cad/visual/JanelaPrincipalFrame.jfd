@@ -2631,6 +2631,28 @@
                 </void> 
                </object> 
               </void> 
+              <void method="add"> 
+               <object class="com.jformdesigner.model.FormComponent"> 
+                <string>javax.swing.JMenuItem</string> 
+                <void method="setProperty"> 
+                 <string>text</string> 
+                 <string>General Closed Profile</string> 
+                </void> 
+                <void method="setProperty"> 
+                 <string>font</string> 
+                 <object idref="SwingDerivedFont8"/> 
+                </void> 
+                <void property="name"> 
+                 <string>menuItemCriarCavidadeGeneral</string> 
+                </void> 
+                <void method="auxiliary"> 
+                 <void method="setProperty"> 
+                  <string>JavaCodeGenerator.variableModifiers</string> 
+                  <int>1</int> 
+                 </void> 
+                </void> 
+               </object> 
+              </void> 
              </object> 
             </void> 
             <void method="add"> 

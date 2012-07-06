@@ -57,6 +57,7 @@ public class JanelaPrincipalFrame extends JFrame {
 		menu13 = new JMenu();
 		menuItemCriarCavidade = new JMenuItem();
 		menuItemCriarCavidadeFun = new JMenuItem();
+		menuItemCriarCavidadeGeneral = new JMenuItem();
 		criarRegion = new JMenuItem();
 		menuItemRemover = new JMenuItem();
 		menuItemEditar = new JMenuItem();
@@ -370,6 +371,11 @@ public class JanelaPrincipalFrame extends JFrame {
 						menuItemCriarCavidadeFun.setText("Retangular com fundo arredondado");
 						menuItemCriarCavidadeFun.setFont(menuItemCriarCavidadeFun.getFont().deriveFont(menuItemCriarCavidadeFun.getFont().getStyle() & ~Font.BOLD));
 						menu13.add(menuItemCriarCavidadeFun);
+
+						//---- menuItemCriarCavidadeGeneral ----
+						menuItemCriarCavidadeGeneral.setText("General Closed Profile");
+						menuItemCriarCavidadeGeneral.setFont(menuItemCriarCavidadeGeneral.getFont().deriveFont(menuItemCriarCavidadeGeneral.getFont().getStyle() & ~Font.BOLD));
+						menu13.add(menuItemCriarCavidadeGeneral);
 					}
 					menuCriarFeatures.add(menu13);
 
@@ -1025,6 +1031,7 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JMenu menu13;
 	public JMenuItem menuItemCriarCavidade;
 	public JMenuItem menuItemCriarCavidadeFun;
+	public JMenuItem menuItemCriarCavidadeGeneral;
 	public JMenuItem criarRegion;
 	public JMenuItem menuItemRemover;
 	public JMenuItem menuItemEditar;

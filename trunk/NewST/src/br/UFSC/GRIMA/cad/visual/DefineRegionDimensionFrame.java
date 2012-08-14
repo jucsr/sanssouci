@@ -37,8 +37,8 @@ public class DefineRegionDimensionFrame extends JDialog {
 		altura = new JSpinner();
 		panel5 = new JPanel();
 		panel7 = new JPanel();
-		ok = new JButton();
-		cancel = new JButton();
+		okButton = new JButton();
+		cancelButton = new JButton();
 
 		//======== this ========
 		setTitle("Define Region Dimension");
@@ -60,7 +60,7 @@ public class DefineRegionDimensionFrame extends JDialog {
 				{
 					panel6.setBorder(new TitledBorder("Dimension in milimeters"));
 					panel6.setLayout(new GridBagLayout());
-					((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {62, 52, 0, 0};
+					((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {62, 67, 0, 0};
 					((GridBagLayout)panel6.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
 					((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 					((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
@@ -118,15 +118,15 @@ public class DefineRegionDimensionFrame extends JDialog {
 					panel7.setLayout(new GridBagLayout());
 					((GridBagLayout)panel7.getLayout()).rowHeights = new int[] {12};
 
-					//---- ok ----
-					ok.setText("Ok");
-					panel7.add(ok, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+					//---- okButton ----
+					okButton.setText("Ok");
+					panel7.add(okButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 5), 0, 0));
 
-					//---- cancel ----
-					cancel.setText("Cancel");
-					panel7.add(cancel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+					//---- cancelButton ----
+					cancelButton.setText("Cancel");
+					panel7.add(cancelButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 0), 0, 0));
 				}
@@ -156,7 +156,7 @@ public class DefineRegionDimensionFrame extends JDialog {
 	protected JSpinner altura;
 	public JPanel panel5;
 	private JPanel panel7;
-	protected JButton ok;
-	protected JButton cancel;
+	protected JButton okButton;
+	protected JButton cancelButton;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

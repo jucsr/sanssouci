@@ -65,7 +65,7 @@
              <class>java.awt.GridBagLayout</class>
              <void method="setProperty">
               <string>$columnSpecs</string>
-              <string>57, 47, 0</string>
+              <string>57, 62, 0</string>
              </void>
              <void method="setProperty">
               <string>$rowSpecs</string>
@@ -327,7 +327,7 @@
                <string>Ok</string>
               </void>
               <void property="name">
-               <string>ok</string>
+               <string>okButton</string>
               </void>
               <void method="auxiliary">
                <void method="setProperty">
@@ -348,7 +348,7 @@
                <string>Cancel</string>
               </void>
               <void property="name">
-               <string>cancel</string>
+               <string>cancelButton</string>
               </void>
               <void method="auxiliary">
                <void method="setProperty">

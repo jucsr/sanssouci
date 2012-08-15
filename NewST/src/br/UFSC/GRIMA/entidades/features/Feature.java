@@ -31,6 +31,7 @@ public class Feature implements Serializable {
 	public final static int FURO_BASE_CONICA = 5;
 	public final static int BOSS = 6;
 	public final static int REGION = 7;
+	public final static int CAVIDADE_PERFIL_GERAL = 8;
 
 	public final static double LIMITE_TOLERANCIA =  0.01;
 	public final static double LIMITE_RUGOSIDADE = 0.01;
@@ -177,7 +178,7 @@ public class Feature implements Serializable {
 	
 	
 	public boolean setTipo(int tipo) {
-		if (tipo >= 0 && tipo <= 7) {
+		if (tipo >= 0 && tipo <= 8) {
 			this.tipo = tipo;
 			return true;
 		} else

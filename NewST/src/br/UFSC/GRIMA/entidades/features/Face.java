@@ -29,7 +29,7 @@ public class Face implements Serializable{
 	public Vector features = new Vector();
 	private ArrayList<Point3d> pontosDeApoio = new ArrayList<Point3d>();
 
-	public int[] indices = {0, 0, 0, 0, 0, 0, 0, 0};
+	public int[] indices = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 	
 	public Face(int tipo, double comprimento, double largura)
 	{
@@ -1523,12 +1523,13 @@ public class Face implements Serializable{
 		root.add(new DefaultMutableTreeNode("Length = " + this.getComprimento()));
 		root.add(new DefaultMutableTreeNode("Width = " + this.getLargura()));
 		
+
 		//DefaultMutableTreeNode features = new DefaultMutableTreeNode("Features");
-		
 		for (int i = 0; i < this.features.size(); i++)
 		{
 			DefaultMutableTreeNode tmp = null;
 			Feature ftmp = (Feature)this.features.elementAt(i);   /******************??????????*************/
+			
 			switch (ftmp.getTipo())
 			{
 				case Feature.FURO:
@@ -1548,12 +1549,22 @@ public class Face implements Serializable{
 					break;
 				case Feature.CAVIDADE_FUNDO_ARREDONDADO:
 					tmp = ((CavidadeFundoArredondado)ftmp).getNodo();
+					break;
 				case Feature.BOSS:
 					if(ftmp.getClass() == CircularBoss.class)
+					{
 						tmp = ((CircularBoss)ftmp).getNode();
-					else if(ftmp.getClass() == RectangularBoss.class) {
-						tmp = ((RectangularBoss)ftmp).getNode();
 					}
+					else if(ftmp.getClass() == RectangularBoss.class)
+					{
+						tmp = ((RectangularBoss)ftmp).getNode();
+					} else if(ftmp.getClass() == GeneralProfileBoss.class)
+					{
+						tmp = ((GeneralProfileBoss)ftmp).getNodo();
+					}
+					break;
+				case Feature.CAVIDADE_PERFIL_GERAL:
+					tmp = ((GeneralClosedPocket)ftmp).getNodo();
 					break;
 				default:
 					break;
@@ -1821,7 +1832,7 @@ public class Face implements Serializable{
 					else
 					{
 						JOptionPane.showMessageDialog(null, "coloque a br.UFSC.GRIMA.feature na altura da br.UFSC.GRIMA.feature " +
-								"j� existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+								"já existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
 						return false;
 					}
 				}
@@ -1830,8 +1841,8 @@ public class Face implements Serializable{
 			else // br.UFSC.GRIMA.feature inv�lida
 			{
 				// avisar ao usuario
-				JOptionPane.showMessageDialog(null, "A br.UFSC.GRIMA.feature que est� tentando criar nao � consistente", 
-						"erro na criac�o de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+				JOptionPane.showMessageDialog(null, "A br.UFSC.GRIMA.feature que está tentando criar nao é consistente", 
+						"erro na criacao de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
 				return false;
 			}
 		}
@@ -1856,6 +1867,9 @@ public class Face implements Serializable{
 			case Feature.CAVIDADE_FUNDO_ARREDONDADO:
 				CavidadeFundoArredondado cav = (CavidadeFundoArredondado)f;
 				return cav.getProfundidade();
+			case Feature.CAVIDADE_PERFIL_GERAL:
+				GeneralClosedPocket gen = (GeneralClosedPocket)f;
+				return gen.getProfundidade();
 			default:
 				return -1;
 		}
@@ -1945,6 +1959,10 @@ public class Face implements Serializable{
 					Rectangle2D rectangle = new Rectangle2D.Double(x, y, comprimento, largura);
 					return rectangle;
 				}
+			case Feature.CAVIDADE_PERFIL_GERAL:
+				GeneralClosedPocket gen = (GeneralClosedPocket)feature;
+				Rectangle2D rectangle = gen.getForma().getBounds2D();
+				return rectangle;
 			default:
 				break;
 		}

@@ -117,6 +117,7 @@ import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBaseEsferica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.FuroConico;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
@@ -1085,6 +1086,14 @@ public class StepNcProject extends STEPProject
 						}
 						eMachining_workingstep = this.createElements(wsTmp.getId(), this.securityPlane, eRegion, operation);
 					}
+					else if(wsTmp.getFeature().getClass() == GeneralClosedPocket.class)
+					{
+						EClosed_pocket eClosed_pocket;
+						GeneralClosedPocket general = (GeneralClosedPocket)wsTmp.getFeature();
+						AMachining_operation operations = null;
+					}
+					
+					
 					aExecutable.addByIndex(i + 1, eMachining_workingstep);
 			}
 			if (workinstepsFaceTmp.size() != 0)

@@ -1,4 +1,5 @@
 package br.UFSC.GRIMA.cad;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,23 +11,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JPanel;
 
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class LinePanel extends DesenhadorDeFaces implements MouseListener, MouseMotionListener
 {
-    public List<Point> pointList = new ArrayList<Point>();
-    public List<Double> angulosList = new ArrayList<Double>();
+    public ArrayList<Point2D> pointList = new ArrayList<Point2D>();
+    public ArrayList<Point2D> pointListCC = new ArrayList<Point2D>();
+    public ArrayList<Double> angulosList = new ArrayList<Double>();
 	public GeneralPath poligono = new GeneralPath();
 
     
-    private int separacaoGrade = 30;
+    public double separacaoGrade = 20;
     private String x = "";
     private String y = "";
+    public boolean grade = true;
+    
     public LinePanel(Projeto projeto)
     {
     	super(projeto);
@@ -34,25 +36,9 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
     	this.addMouseMotionListener(this);
     	this.setBackground(new Color(20, 20, 20));
     }
-//    {
-//        addMouseListener(new MouseAdapter()
-//        {
-//            @Override
-//            public void mouseClicked(MouseEvent e)
-//            {
-//                //Ap�s cada clique, guardamos a posi��o do ponto onde foi clicado.
-//                if (e.getClickCount() == 1)
-//                {
-//                    pointList.add(new Point(e.getX(), e.getY()));
-//                    repaint(); //E pedimos para o painel se repintar.
-//                }
-//            }
-//        });
-//    };
-
     /**
-     * Esse m�todo ser� chamado toda vez que o componente precisar ser repintado.
-     * Isso �, quando a janela for parcial ou totalmente escondida e reexibida ou 
+     * Esse metodo serah chamado toda vez que o componente precisar ser repintado.
+     * Isso eh, quando a janela for parcial ou totalmente escondida e reexibida ou 
      * quando o paint for chamado.
      */
     @Override
@@ -60,107 +46,102 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
     {
         super.paintComponent(g);
         
-        //N�o podemos alterar o estado do objeto g, portanto fazemos uma c�pia dele.
+        //Nao podemos alterar o estado do objeto g, portanto fazemos uma copia dele.
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
-//        this.drawGrade(g2d);
+		
+		g2d.setStroke(new BasicStroke());
+		if(grade)
+			this.drawGrade(g2d);
+		
         this.drawCoordinates(g2d);
         
-        
         g2d.setColor(new Color(58, 100, 0));
-        g2d.setColor(new Color(254, 254, 0));
+        g2d.setColor(new Color(178, 34, 34));
+        g2d.setColor(Color.BLACK);
         if (pointList.size() < 2)
             return;
 
-        // Percorre a nossa lista, pintando de dois em dois pontos.
-//        Point lastPoint = pointList.get(0);
-//        for (int i = 1; i < pointList.size(); i++)
-//        {
-//            g2d.drawLine(lastPoint.x, lastPoint.y, pointList.get(i).x, pointList.get(i).y);
-//            lastPoint = pointList.get(i);
-//        }
         g2d.draw(poligono);
-        //E aqui destruimos a c�pia do objeto g. 
-        //N�o se preocupe. O desenho feito por ele n�o ser� destru�do.
         g2d.dispose();
     }
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-//		System.out.println("mouse dragged");
-//		 pointList.add(new Point(e.getX(), e.getY()));
-//       repaint(); //E pedimos para o painel se repintar.
+	public void mouseDragged(MouseEvent e) 
+	{
+
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-//		System.out.println("mouse moved");
-		x = "" + e.getX();
-		y = "" + e.getY();
+	public void mouseMoved(MouseEvent e)
+	{
+		x = "" + (e.getX() - 20) / getZoom();
+		y = "" + ((projeto.getBloco().getComprimento() * getZoom() - e.getY() + 20) / getZoom());
 		repaint();
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-//		System.out.println("mouse clicked");
-		Point pTmp = new Point(e.getX(), e.getY());
+	public void mouseClicked(MouseEvent e)
+	{
+//		Point2D pTmp = new Point2D.Double(e.getX(), projeto.getBloco().getComprimento() + 40 - e.getY());
+		Point2D pTmp = new Point2D.Double(Double.parseDouble(x), Double.parseDouble(y));
+
 		pointList.add(pTmp);
 		 
 		 
 		if (pointList.size() == 1)
-			poligono.moveTo(pointList.get(0).x, pointList.get(0).y);
+			poligono.moveTo(pointList.get(0).getX() * getZoom() + 20, pointList.get(0).getY() * getZoom() + 20);
 		else
-			poligono.lineTo(pTmp.x, pTmp.y);
+			poligono.lineTo(pTmp.getX() * getZoom() + 20, pTmp.getY() * getZoom() + 20);
 		 
        repaint(); //E pedimos para o painel se repintar.
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-//		System.out.println("mouse entered");
+	public void mouseEntered(MouseEvent e) 
+	{
 
 	}
-
 	@Override
-	public void mouseExited(MouseEvent e) {
-//		System.out.println("mouse exited");
+	public void mouseExited(MouseEvent e) 
+	{
 
 	}
-
 	@Override
-	public void mousePressed(MouseEvent e) {
-//		System.out.println("mouse pressed");
+	public void mousePressed(MouseEvent e) 
+	{
 
 	}
-
 	@Override
-	public void mouseReleased(MouseEvent e) {
-//		System.out.println("mouse released");
+	public void mouseReleased(MouseEvent e)
+	{
 
 	}
 	private void drawGrade(Graphics2D g)
 	{
-		g.setColor(new Color(205, 205, 205));
-		g.setColor(new Color(60, 60, 60));
+		g.setColor(new Color(156, 156, 156));
 		Dimension dimension = this.getSize();
 		
-		int nHorizontal = dimension.width / separacaoGrade;
-		int nVertical = dimension.height / separacaoGrade;
+		double nHorizontal = dimension.width / separacaoGrade;
+		double nVertical = dimension.height / separacaoGrade;
 		
 		for (int i = 0; i <= nVertical; i++)
 		{
-			g.drawLine(0, i * separacaoGrade, dimension.width, i * separacaoGrade);
+			g.drawLine(0, (int)(20 + i * separacaoGrade * getZoom()), dimension.width, (int)(20 + i * separacaoGrade * getZoom()));
 		}
 		for(int i = 0; i <= nHorizontal; i++)
 		{
-			g.drawLine(i * separacaoGrade, 0, i * separacaoGrade, dimension.height);
+			g.drawLine((int)(20 + i * separacaoGrade * getZoom()), 0, (int)(20 + i * separacaoGrade * getZoom()), dimension.height);
 		}
 	}
 	private void drawCoordinates(Graphics2D g)
 	{
-		g.setColor(new Color(58, 200, 0));
-		g.drawString(x, 10, 20);
-		g.drawString(y, 50, 20);
+		g.scale(1, -1);
+		g.setColor(new Color(139, 90, 0));
+		g.setFont(new Font("Arial", Font.BOLD, 12));
+		g.drawString("x:\t" + x, 10, 20);
+		g.drawString("y:\t" + y, 80, 20);
+		g.scale(1, -1);
 	}
 }

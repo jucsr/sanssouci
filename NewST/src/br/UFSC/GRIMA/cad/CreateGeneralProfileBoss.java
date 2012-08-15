@@ -1,9 +1,6 @@
 package br.UFSC.GRIMA.cad;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,34 +13,60 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import br.UFSC.GRIMA.cad.visual.CreateGeneralPocketFrame;
+import br.UFSC.GRIMA.cad.visual.GeneralProfileBossFrame;
+import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
-public class CreateGeneralPocket extends CreateGeneralPocketFrame implements ActionListener
+public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements ActionListener
 {
 	static LinePanel linePanel; 
 	private double radius = 0;
-	private double profundidade = 0;
+	private double altura = 0;
 	private double posicaoZ = 0;
 	private Face face;
+	private Feature feature;
 	private JanelaPrincipal parent;
 	static ArrayList<Point2D> poligonoAuxiliar = new ArrayList<Point2D>();// --> poligono com os vertices arredondados para triangulacao
+	private double profundidadeFeature;
 	
 	private ArrayList<ArrayList<Point2D>> triangles = new ArrayList<ArrayList<Point2D>>();
 	double zoom = 1;
 	
-	public CreateGeneralPocket(JanelaPrincipal parent, Projeto projeto, Face face)
+	public CreateGeneralProfileBoss(JanelaPrincipal parent, Projeto projeto, Face face, Feature feature)
 	{
 		super(parent);
 		this.face = face;
 		this.parent = parent;
+		this.feature = feature;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.button1.addActionListener(this);
 		this.button2.addActionListener(this);
 		
+		if(feature.getClass() == Cavidade.class)
+		{
+			Cavidade feat = (Cavidade)feature;
+			profundidadeFeature = feat.getProfundidade();
+			this.spinnerPosZ.setValue(profundidadeFeature);
+			this.spinnerPosZ.setEnabled(false);
+		} else if(feature.getClass() == Degrau.class)
+		{
+			Degrau feat = (Degrau)feature;
+			profundidadeFeature = feat.getProfundidade();
+			this.spinnerPosZ.setValue(profundidadeFeature);
+			this.spinnerPosZ.setEnabled(false);
+		} else if(feature.getClass() == GeneralClosedPocket.class)
+		{
+			GeneralClosedPocket feat = (GeneralClosedPocket)feature;
+			profundidadeFeature = feat.getProfundidade();
+			this.spinnerPosZ.setValue(profundidadeFeature);
+			this.spinnerPosZ.setEnabled(false);
+		}
 		linePanel = new LinePanel(projeto);
 		linePanel.setFacePrincipal(face.getTipo(), 0);
 		this.contentPanel.add(linePanel);
@@ -236,21 +259,9 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 	{
 		boolean ok = false;
 		
-		
-//		if(this.validateAngles())
-//		{
-//			ok = true;
-//		}
-//		else
-//		{
-//			ok = false;
-//		}
 		this.posicaoZ = (Double)spinnerPosZ.getValue();
-		this.profundidade = (Double)spinnerDepth.getValue();
-		if(this.profundidade + posicaoZ < face.getProfundidadeMaxima() && !checkBox1.isSelected())
-		{
-			ok = true;
-		}else if(this.profundidade + posicaoZ == face.getProfundidadeMaxima() && checkBox1.isSelected())
+		this.altura = (Double)spinnerDepth.getValue();
+		if(this.altura <= profundidadeFeature)
 		{
 			ok = true;
 		}
@@ -259,15 +270,15 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			JOptionPane.showMessageDialog(null, "Profundidade maior do que a profundidade do bloco");
 			ok = false;
 		}
-		if(radius > 0)
-		{
-			ok = true;
-		}
-		else
-		{
-			ok = false;
-			JOptionPane.showMessageDialog(null, "O raio deve ser maior que zero");
-		}
+//		if(radius > 0)
+//		{
+//			ok = true;
+//		}
+//		else
+//		{
+//			ok = false;
+//			JOptionPane.showMessageDialog(null, "O raio deve ser maior que zero");
+//		}
 		if(ok)
 		{
 			GeneralPath forma = new GeneralPath();
@@ -279,19 +290,30 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			}
 			forma.closePath();
 			
-			GeneralClosedPocket generalPocket = new GeneralClosedPocket();
-			generalPocket.setPoints(linePanel.pointListCC);
-			generalPocket.setRadius(radius);
-			generalPocket.setProfundidade(profundidade);
-			generalPocket.setPosicao(linePanel.pointListCC.get(0).getX(), linePanel.pointListCC.get(0).getY(), posicaoZ);
-			generalPocket.setNome(this.textField1.getText());
-			generalPocket.setForma(forma);
-			generalPocket.setPassante(checkBox1.isSelected());
-			generalPocket.setRugosidade((Double)spinnerRugosidade.getValue());
-			this.face.addFeature(generalPocket);
+			GeneralProfileBoss generalBoss = new GeneralProfileBoss();
+			generalBoss.setVertexPoints(linePanel.pointListCC);
+			generalBoss.setRadius(radius);
+			generalBoss.setAltura(altura);
+			generalBoss.setPosicao(linePanel.pointListCC.get(0).getX(), linePanel.pointListCC.get(0).getY(), posicaoZ);
+			generalBoss.setNome(this.textField1.getText());
+			generalBoss.setForma(forma);
+			generalBoss.setRugosidade((Double)spinnerRugosidade.getValue());
+			if(this.feature.getClass() == Cavidade.class)
+			{
+				Cavidade cavidade = (Cavidade)this.feature;
+				cavidade.addBoss(generalBoss);
+			} else if(this.feature.getClass() == Degrau.class)
+			{
+				Degrau degrau = (Degrau)this.feature;
+				// ---- IMPLEMENTAR
+			} else if(this.feature.getClass() == GeneralClosedPocket.class)
+			{
+				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
+				general.addBoss(generalBoss);
+			}
 			this.parent.desenhador.repaint();
 			this.parent.atualizarArvore();
-			this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Closed Pocked: " +generalPocket.getNome() + " added with success!");
+			this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Profile Boss: " +generalBoss.getNome().toUpperCase() + " added with success!");
 			
 			dispose();
 		}
@@ -342,7 +364,8 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		int nPointsIn = 0;
 		for (int iPoint = 1; iPoint < nPoints - 1; iPoint++) 
 		{
-			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint), 	(int) (p1.getY() + hy * iPoint));
+			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint),
+					(int) (p1.getY() + hy * iPoint));
 
 			if (forma.contains(testPoint)|| pointList.size()==3) 
 			{
@@ -375,6 +398,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		if (alfa > Math.PI)		
 		{
 			arcPoints.add(p0);
+			
 		}
 		else
 		{
@@ -398,9 +422,9 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			System.out.println("b:"+b.getX()+","+b.getY());
 			System.out.println("CC:"+cc.getX()+","+cc.getY());
 			*/
-			Point2D bb = new Point2D.Double(b.getX() - cc.getX(), b.getY() - cc.getY());
-			Point2D aa = new Point2D.Double(a.getX() - cc.getX(), a.getY() - cc.getY());
-
+			Point2D bb = new Point2D.Double(b.getX()-cc.getX(),b.getY()-cc.getY());
+			Point2D aa = new Point2D.Double(a.getX()-cc.getX(),a.getY()-cc.getY());
+	
 			//System.out.println("bb:"+bb);
 			//System.out.println("aa:"+aa);
 			
@@ -408,17 +432,17 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			poligonoAuxiliar.add(a);
 			
 			
-			double anguloInicial = Math.atan2(bb.getY(), bb.getX());
+			double anguloInicial=Math.atan2(bb.getY(),bb.getX()); 					
 			//double anguloFinal=Math.atan2(aa.getY(),aa.getX());
 			
 			if (anguloInicial<0.0)
 			{
-				anguloInicial = anguloInicial + 2 * Math.PI;
+				anguloInicial=anguloInicial+2*Math.PI;
 			}
 			
 			double anguloFinal = anguloInicial + Math.PI - alfa;
 			
-			double deltaAngulo = Math.PI - alfa;
+			double deltaAngulo=Math.PI-alfa;
 			/*
 			if (anguloFinal<0.0)
 			{
@@ -433,7 +457,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			
 			//System.out.println("AInicial: "+anguloInicial*180/Math.PI+" AFinal: "+anguloFinal*180/Math.PI);
 			double comprimentoLinha = 1;
-			comprimentoLinha = radius / 3;
+			comprimentoLinha=radius/3;
 			arcPoints=interpolarArco(cc,radius,anguloInicial, deltaAngulo, comprimentoLinha, true);		
 			//p0 medio
 			//p1 derecha
@@ -446,8 +470,8 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 	{
 		Point2D p = new Point2D.Double();
 		double d = radius / Math.tan(alfa / 2);
-		double x = p0.getX() + (p1.getX() - p0.getX()) / p0.distance(p1) * d;
-		double y = p0.getY() + (p1.getY() - p0.getY()) / p0.distance(p1) * d;
+		double x = p0.getX()+(p1.getX() - p0.getX())/ p0.distance(p1) * d;
+		double y = p0.getY()+(p1.getY() - p0.getY())/ p0.distance(p1) * d;
 		p.setLocation(x, y);
 		return p;
 	}
@@ -521,23 +545,20 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		return saida;
 	}
 	
-	public static ArrayList<Point2D> transformPolygonInRoundPolygon(ArrayList<Point2D> polygon, double radius) 
-	{
-		ArrayList<Point2D> saida = new ArrayList<Point2D>();
-
-		if (radius > 0) 
-		{
+	public static ArrayList<Point2D> transformPolygonInRoundPolygon(ArrayList<Point2D> polygon, double radius)
+	 {
+			ArrayList<Point2D> saida = new ArrayList<Point2D>();
 			double anguloTmp = 0;
 			GeneralPath forma = new GeneralPath();
 			forma.moveTo(polygon.get(0).getX(), polygon.get(0).getY());
-			for (int i = 1; i < polygon.size(); i++) 
+			for(int i = 1; i < polygon.size(); i++)
 			{
 				forma.lineTo(polygon.get(i).getX(), polygon.get(i).getY());
 			}
 			forma.closePath();
-
+			
 			Point2D p0 = null, p1 = null, p2 = null;
-			for (int i = 0; i < polygon.size(); i++) 
+			for (int i = 0; i < polygon.size(); i++)
 			{
 				p0 = polygon.get(i);
 				try 
@@ -547,7 +568,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				{
 					p1 = polygon.get(polygon.size() - 1);
 				}
-				try 
+				try
 				{
 					p2 = polygon.get(i + 1);
 				} catch (Exception e) 
@@ -555,37 +576,34 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 					p2 = polygon.get(0);
 				}
 				anguloTmp = solveAngle(p0, p1, p2, forma, polygon);
-
-				if (anguloTmp < 2* Math.PI) 
+				
+				//System.out.println("angulo = " + anguloTmp);
+				if (anguloTmp < Math.PI) 
 				{
-					System.out.println("angulo = " + (anguloTmp * 180 / Math.PI));
 					ArrayList<Point2D> arcoTmp = solveArc(forma, p0, p1, p2, radius, polygon);
 					for (int j = 0; j < arcoTmp.size(); j++) 
 					{
 						ArrayList<Integer> tempIndex = new ArrayList<Integer>();
 						ArrayList<Point2D> tempTriangle = new ArrayList<Point2D>();
-						if (j + 1 < arcoTmp.size()) 
+						if (j+1<arcoTmp.size())
 						{
 							tempTriangle.add(arcoTmp.get(0));
 							tempTriangle.add(arcoTmp.get(j));
-							tempTriangle.add(arcoTmp.get(j + 1));
-							// triangles.add(tempTriangle); ---->>> dar uma
-							// olhada
+							tempTriangle.add(arcoTmp.get(j+1));
+//							triangles.add(tempTriangle); ---->>> dar uma olhada
 						}
+						
 						saida.add(arcoTmp.get(j));
+						
 					}
-				}
-				else 
+				} else 
 				{
 					saida.add(polygon.get(i));
-					poligonoAuxiliar.add(p0); // ----->>> dar uma olhada
+//					poligonoAuxiliar.add(p0); ----->>> dar uma olhada
 				}
 			}
-		} else 
-		{
-			saida = polygon;
+			
+			//System.out.println("SAIDA: " + saida);
+			return saida;
 		}
-		// System.out.println("SAIDA: " + saida);
-		return saida;
-	}
 }

@@ -48,11 +48,14 @@ public class DesenhadorDeFaces extends JPanel{
 		this.setLayout(new FlowLayout());
 		this.setSize(100, 100);
 	}
-	public void paintComponent(Graphics g){/*****/
+	public void paintComponent(Graphics g)
+	{/*****/
 		
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.WHITE);
 		g2d.fillRect(0, 0, 2000, 2000);
+		
+		
 		
 		BufferedImage buffImg = new BufferedImage(2000, 2000, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D gbi = buffImg.createGraphics();
@@ -157,8 +160,6 @@ public class DesenhadorDeFaces extends JPanel{
 			Feature featureAlterada = face.alterarOrientacao(verticeAtivado, featureOriginal);
 			desenhadorDeFeatures.desenharFeature(featureAlterada, face, verticeAtivado,origem, true, g2d);
 		}
-		
-		
 	}
 	
 	/**
@@ -225,8 +226,6 @@ public class DesenhadorDeFaces extends JPanel{
 			//DesenhadorDeFeatures.desenharFeature(featureAlterada, face, verticeAtivado, origem, false, g2d);
 			this.desenhadorDeFeatures.desenharFeature(featureAlterada, face, verticeAtivado, origem, false, g2d);
 		}
-		
-		
 	}
 	
 	public void desenharApoios(Face face, int verticeAtivado, Point origem, Graphics2D g2d)
@@ -598,5 +597,11 @@ public class DesenhadorDeFaces extends JPanel{
 		
 		drawCP = true;
 		raioAp = rAP;
+	}
+	
+	public void pintarFundo(Graphics2D g2d, Color color)
+	{
+		g2d.setColor(color);
+		g2d.fillRect(0, 0, 2000, 2000);
 	}
 }

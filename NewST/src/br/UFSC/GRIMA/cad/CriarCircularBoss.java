@@ -27,8 +27,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 	public JanelaPrincipal parent;
 	private Cavidade cavidade = null;
 	
-	public CriarCircularBoss(JanelaPrincipal parent, Face face,
-			Cavidade cavidade) {
+	public CriarCircularBoss(JanelaPrincipal parent, Face face, Cavidade cavidade) {
 		super(parent);
 		this.cavidade = cavidade;
 		this.face = face;

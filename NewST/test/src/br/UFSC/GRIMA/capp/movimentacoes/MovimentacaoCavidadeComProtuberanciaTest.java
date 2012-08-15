@@ -7,6 +7,7 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.cad.Generate3Dview;
-import br.UFSC.GRIMA.capp.DeterminateShortestDistance;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
@@ -29,9 +29,9 @@ import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
-import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -46,6 +46,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 	CircularBoss boss;
 	RectangularBoss boss1;
 	RectangularBoss boss2;
+	Boss boss3;
 	Face faceXY;
 	ArrayList<ArrayList<Point3d>> pontos;
 	ArrayList<Point3d> pontosPeriferia;
@@ -102,6 +103,16 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.boss2 = new RectangularBoss(20, 20, 10, 7);
 		this.boss2.setPosicao(50, 45, 0);
 		
+		ArrayList<Point2D> vertices = new ArrayList<Point2D>();
+		vertices.add(new Point2D.Double(20,15));
+		vertices.add(new Point2D.Double(25,30));
+		vertices.add(new Point2D.Double(40,35));
+		vertices.add(new Point2D.Double(45,25));
+		
+		this.boss3 = new GeneralProfileBoss(1,vertices);
+		this.boss3.setAltura(10);
+		
+		
 		this.itsBoss = cavidade.getItsBoss();
 		
 		this.ws = ws;
@@ -109,9 +120,10 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //		this.cavidade = (Cavidade) this.ws.getFeature();
 		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-		this.itsBoss.add(this.boss);
-		this.itsBoss.add(this.boss1);
-		this.itsBoss.add(this.boss2);
+//		this.itsBoss.add(this.boss);
+//		this.itsBoss.add(this.boss1);
+//		this.itsBoss.add(this.boss2);
+		this.itsBoss.add(this.boss3);
 		cavidade.setItsBoss(this.itsBoss);
 		this.faceXY.addFeature(this.boss);
 		Generate3Dview Janela3D = new Generate3Dview(this.projeto);
@@ -166,10 +178,111 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 						pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 					}
 				}
-				//			else if(this.itsBoss.get(i).getClass()==GeneralBoss.class){
-				//				
-				//			}
-
+				else if(this.itsBoss.get(i).getClass()==GeneralProfileBoss.class){
+					GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
+					ArrayList<Point2D> vertex = boss.getVertexPoints();
+					GeneralPath path = new GeneralPath();
+					path.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
+					for(int r=0;r<vertex.size();r++){
+						path.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
+					}
+					path.closePath();
+					bossArray.add(path);
+					double distancia, maiorX, maiorY;
+					int q;
+					for(int j=0;j<vertex.size();j++){
+						if(j==3)
+							q=0;
+						else
+							q=j+1;
+						
+						if(vertex.get(j).getX()>vertex.get(q).getX())
+							maiorX = vertex.get(j).getX();
+						else
+							maiorX = vertex.get(q).getX();
+						
+						if(vertex.get(j).getY()>vertex.get(q).getY())
+							maiorY = vertex.get(j).getY();
+						else
+							maiorY = vertex.get(q).getY();
+						
+						
+						if(vertex.get(j).getX()==vertex.get(q).getX()){
+							distancia = vertex.get(j).getY();
+							for(int h=0;h<1000;h++){
+								pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+								if(maiorY == vertex.get(j).getY())
+									distancia-=1;
+								else
+									distancia+=1;
+								if(distancia==vertex.get(q).getY()){
+									h=1000;
+									pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+								}
+							}
+						}
+						else if(vertex.get(j).getY()==vertex.get(q).getY()){
+							distancia = vertex.get(j).getX();
+							for(int h=0;h<1000;h++){
+								pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+								if(maiorX == vertex.get(j).getX())
+									distancia-=1;
+								else
+									distancia+=1;
+								if(distancia==vertex.get(q).getX()){
+									h=1000;
+									pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+								}
+							}
+						}
+						else{
+							double a,b;
+							a= (vertex.get(q).getY()-vertex.get(j).getY())/(vertex.get(q).getX()-vertex.get(j).getX());
+							b= vertex.get(j).getY()-a*vertex.get(j).getX();
+														
+							if(Math.abs(vertex.get(j).getX()-vertex.get(q).getX())>Math.abs(vertex.get(j).getY()-vertex.get(q).getY())){
+								distancia = vertex.get(j).getX();
+								for(int h=0;h<1000;h++){
+									pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
+									if(maiorX == vertex.get(j).getX()){
+										distancia-=1;
+										if(distancia<=vertex.get(q).getX()){
+											h=1000;
+											pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
+										}
+									}
+									else{
+										distancia+=1;
+										if(distancia>=vertex.get(q).getX()){
+											h=1000;
+											pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
+										}
+									}
+								}	
+							}
+							else{
+								distancia = vertex.get(j).getY();
+								for(int h=0;h<1000;h++){
+									pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
+									if(maiorY == vertex.get(j).getY()){
+										distancia-=1;
+										if(distancia<=vertex.get(q).getY()){
+											h=1000;
+											pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
+										}
+									}
+									else{
+										distancia+=1;
+										if(distancia>=vertex.get(q).getY()){
+											h=1000;
+											pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
+										}
+									}
+								}	
+							}
+						}
+					}		
+				}
 			}
 
 			borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(this.cavidade.getPosicaoX(),this.cavidade.getPosicaoY(),z), this.cavidade.getComprimento(), this.cavidade.getLargura(), this.cavidade.getRaio());
@@ -305,7 +418,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 						contador++;
 					if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k])
 						contador++;
-					if(malhaMenoresDistancias[i][k]==0)
+					if(malhaMenoresDistancias[i][k]<=2)
 						contador=0;
 					
 //					if(		malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k+1] &&

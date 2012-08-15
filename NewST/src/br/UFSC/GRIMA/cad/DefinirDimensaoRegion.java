@@ -6,12 +6,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.cad.visual.DefineRegionDimensionFrame;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
@@ -24,6 +28,8 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 	private double x, y;
 	private double width; //relativo ao eixo x
 	private double height;//relativo ao eixo y
+	
+	public Vector features = new Vector();
 	
 	public DefinirDimensaoRegion (Frame owner, Projeto projeto, Face face)
 	{
@@ -310,9 +316,18 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 		}
 		
 		}
-		
-		
-		
+//		
+//		if(ok)
+//		{
+//			for (int i = 0; i < this.features.size(); i++)
+//			{
+//				Feature ftmp = (Feature)this.features.elementAt(i);
+//				
+//			}
+//			
+//			
+//		}
+//		
 	}
 	
 

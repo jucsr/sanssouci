@@ -22,7 +22,8 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 	public Face face;
 	
 	private double x, y;
-	private double width, height;
+	private double width; //relativo ao eixo x
+	private double height;//relativo ao eixo y
 	
 	public DefinirDimensaoRegion (Frame owner, Projeto projeto, Face face)
 	{
@@ -105,10 +106,11 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 	private void ok()
 	{
 		boolean ok = true;
-		
+		double refLargura = 0.0;
+		double refAltura = 0.0; 
 		
 		if(ok)
-			if (x > 0 && y > 0 && width > 0 && height > 0)
+			if (x > 0.0 && y > 0.0 && width > 0.0 && height > 0.0)
 				
 				ok = true;
 		
@@ -120,26 +122,198 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 								"Erro",
 								JOptionPane.OK_CANCEL_OPTION);
 			}
+		
+		//Validacao da largura; posicao x
+		
+		if(ok)
+		{
+		try
+		{
+
+			switch (face.verticeAtivado) {
+
+			case 0:
+
+				refLargura = x + width;
+				if (width > 0 && refLargura < face.getLargura())
+				{
+					ok = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise a largura ou a posicao X)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+				break;
+			case 1:
+
+				refLargura = (face.getComprimento() - (y + height)) + height;
+				if ( height > 0 && refLargura < face.getComprimento())
+				{
+					ok = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise a altura ou a posicao Y)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+				break;
+			case 2:
+
+				refLargura = (face.getLargura() - (x + width)) + width;
+				if (width > 0 && refLargura < face.getLargura())
+				{
+					//System.out.println("largura: " + largura);
+					ok = true;
+					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise a largura ou a posicao X)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+				break;
+			case 3:
+
+				refLargura = y + height;
+				if (height >0 && refLargura < face.getComprimento())
+				{
+					ok = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise a altura ou a posicao Y)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+
+				break;
+			default:
+				break;
+			}
+		
+		}
+		
+		catch (Exception e) {
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"Digite um Numero positivo para a largura da Regiao"
+									+ "\n               Nao digite letras nem simbolos",
+							"Erro na largura", JOptionPane.OK_CANCEL_OPTION);
+			ok = false;
+		}
+		
+		}
+		
+		//Validacao da altura; posicao Y
+		
+		if(ok)
+		{
+		try
+		{
+
+			switch (face.verticeAtivado) {
+
+			case 0:
+
+				refAltura = y + height;
+				if (height > 0 && refAltura < face.getComprimento())
+				{
+					ok = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise o comprimento ou a posicao Y)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+				break;
+			case 1:
+
+				refAltura = x + width;
+				if ( width > 0 && refAltura < face.getLargura())
+				{
+					ok = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise a largura ou a posicao X)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+				break;
+			case 2:
+
+				refAltura = (face.getComprimento() - (y + height)) + height;
+				if (height > 0 && refAltura < face.getLargura())
+				{
+					//System.out.println("largura: " + largura);
+					ok = true;
+					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise a altura ou a posicao Y)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+				break;
+			case 3:
+
+				refAltura = (face.getLargura() - (x + width)) + width;
+				if (width > 0 && refAltura < face.getLargura())
+				{
+					ok = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,
+							"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+							+ "\n               (revise a largura ou a posicao X)",
+							"Erro ao criar a Regiao", JOptionPane.OK_CANCEL_OPTION);
+					ok = false;
+				}
+
+				break;
+			default:
+				break;
+			}
+		
+		}
+		
+		catch (Exception e) {
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"Digite um Numero positivo para a largura da Regiao"
+									+ "\n               Nao digite letras nem simbolos",
+							"Erro na Altura", JOptionPane.OK_CANCEL_OPTION);
+			ok = false;
+		}
+		
+		}
+		
+		
+		
 	}
 	
-	//Validacao da largura
-//	private void ok()
-//	{
-//		boolean ok = true;
-//		
-//		
-//		if(ok)
-//			if ( )
-//				
-//				ok = true;
-//		
-//			else {
-//				ok = false;
-//				JOptionPane.showMessageDialog(
-//								null,
-//								"Todos os valores devem ser positivos",
-//								"Erro",
-//								JOptionPane.OK_CANCEL_OPTION);
-//			}
-//	}
+
 }

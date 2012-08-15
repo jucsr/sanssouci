@@ -437,8 +437,17 @@ public class Generate3Dview extends Frame3D
 								}
 							} else if(bossG.getClass() == GeneralProfileBoss.class)
 							{
-								// ===== IMPLEMENTAR
-							}
+								GeneralProfileBoss bossTmp = (GeneralProfileBoss)cavidadeTmp.getItsBoss().get(k);
+								OperationGeneralClosedPocked opBoss = new OperationGeneralClosedPocked("", (float)bossTmp.getAltura(), (float)bossTmp.getRadius(), bossTmp.getVertexPoints());
+								opBoss.rotate(-Math.PI / 2, 0);
+								opBoss.translate(-faceTmp.getComprimento() / 2, bossTmp.getAltura() - bossTmp.Z + faceTmp.getProfundidadeMaxima() / 2, faceTmp.getLargura() / 2);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, opBoss);
+								} catch (InvalidBooleanOperationException e)
+								{
+									e.printStackTrace();
+								}							}
 						}
 						break;
 					case Feature.CAVIDADE_FUNDO_ARREDONDADO:

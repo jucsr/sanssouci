@@ -5,12 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -78,6 +78,9 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
 	{
 		x = "" + (e.getX() - 20) / getZoom();
 		y = "" + ((projeto.getBloco().getComprimento() * getZoom() - e.getY() + 20) / getZoom());
+		
+		Line2D lineTmp = new Line2D.Double();
+		
 		repaint();
 	}
 

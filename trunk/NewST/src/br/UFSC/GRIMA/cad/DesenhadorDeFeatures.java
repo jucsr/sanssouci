@@ -1,7 +1,26 @@
 package br.UFSC.GRIMA.cad;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
-import br.UFSC.GRIMA.entidades.features.*;
+import br.UFSC.GRIMA.entidades.features.Boss;
+import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
+import br.UFSC.GRIMA.entidades.features.Degrau;
+import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.Furo;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
+import br.UFSC.GRIMA.entidades.features.Ranhura;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 public class DesenhadorDeFeatures
 {
 	public double zoom = 1.0;
@@ -43,6 +62,10 @@ public class DesenhadorDeFeatures
 					{
 						RectangularBoss rb = (RectangularBoss)bossTmp;
 						this.desenharRectangularBoss(rb, origem, modo, g2d);
+					} else if(bossTmp.getClass() == GeneralProfileBoss.class)
+					{
+						GeneralProfileBoss general = (GeneralProfileBoss)bossTmp;
+						this.desenharGeneralBoss(general, origem, modo, g2d);
 					}
 				}
 				break;
@@ -56,12 +79,77 @@ public class DesenhadorDeFeatures
 				c.setRaio(cfa.getVerticeRaio());
 				this.desenharCavidade(c, origem, modo, g2d);
 				break;
-			
+			case Feature.CAVIDADE_PERFIL_GERAL:
+				this.desenharCavidadeGeral((GeneralClosedPocket)feature, origem, modo, g2d);
+				GeneralClosedPocket genP = (GeneralClosedPocket)feature;
+				for(int i = 0; i< genP.getItsBoss().size(); i++)
+				{
+					Boss bossTmp = genP.getItsBoss().get(i);
+
+					if (bossTmp.getClass() == CircularBoss.class)
+					{
+						CircularBoss cb = (CircularBoss)bossTmp;
+						this.desenharCircularBoss(cb, origem, modo, g2d);
+						
+					} else if(bossTmp.getClass() == RectangularBoss.class)
+					{
+						RectangularBoss rb = (RectangularBoss)bossTmp;
+						this.desenharRectangularBoss(rb, origem, modo, g2d);
+					} else if(bossTmp.getClass() == GeneralProfileBoss.class)
+					{
+						GeneralProfileBoss general = (GeneralProfileBoss)bossTmp;
+						this.desenharGeneralBoss(general, origem, modo, g2d);
+					}
+				}
+				break;
 			default:
 				break;
 		}
 	}
 	
+	private void desenharGeneralBoss(GeneralProfileBoss feature, Point origem, boolean modo, Graphics2D g2d) 
+	{
+		GeneralPath forma = new GeneralPath();
+		ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInRoundPolygon(feature.getVertexPoints(), feature.getRadius());
+		forma.moveTo(origem.x + vertices.get(0).getX() * zoom, origem.y + vertices.get(0).getY() * zoom);
+		for(int i = 1; i < vertices.size(); i++)
+		{
+			forma.lineTo(origem.x + vertices.get(i).getX() * zoom, origem.y + vertices.get(i).getY() * zoom);
+		}
+		forma.closePath();
+		
+		g2d.setColor(new Color(205, 205, 193));
+		g2d.fill(forma);
+
+		g2d.setColor(Color.black);
+		g2d.draw(forma);
+	}
+	private void desenharCavidadeGeral(GeneralClosedPocket feature, Point origem, boolean modo, Graphics2D g2d)
+	{		
+		GeneralPath forma = new GeneralPath();
+		ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInRoundPolygon(feature.getPoints(), feature.getRadius());
+		forma.moveTo(origem.x + vertices.get(0).getX() * zoom, origem.y + vertices.get(0).getY() * zoom);
+		for(int i = 1; i < vertices.size(); i++)
+		{
+			forma.lineTo(origem.x + vertices.get(i).getX() * zoom, origem.y + vertices.get(i).getY() * zoom);
+		}
+		forma.closePath();
+		
+		if(!feature.isPassante())
+		{
+			g2d.setColor(new Color(122, 139, 139));
+			g2d.fill(forma);
+		}
+		else
+		{
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+			g2d.fill(forma);
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+			g2d.setStroke(new BasicStroke());
+		}
+		g2d.setColor(Color.black);
+		g2d.draw(forma);
+	}
 	public void desenharFuro(Furo furo, Point origem, boolean modo, Graphics2D g2d)
 	{
 		int posX, posY, raio;
@@ -320,8 +408,8 @@ public class DesenhadorDeFeatures
 			case Feature.CAVIDADE:
 				this.desenharCavidadeOrtogonal((Cavidade)feature, face, verticeAtivado, origem, posicao, g2d);
 				Cavidade cavidade = (Cavidade)feature;
-				System.out.println("ITS_BOSS: "  + cavidade.getItsBoss().size());
-				System.out.println("posicao = " + posicao);
+//				System.out.println("ITS_BOSS: "  + cavidade.getItsBoss().size());
+//				System.out.println("posicao = " + posicao);
 				for(int i = 0; i< cavidade.getItsBoss().size(); i++)
 				{
 					Boss bossTmp = cavidade.getItsBoss().get(i);
@@ -987,14 +1075,14 @@ public class DesenhadorDeFeatures
 		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, 
 				BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
 		float dash2[] = {15.0f, 2.5f, 1f, 2.5f};
-		System.out.println("ppp = " + posicao);
+//		System.out.println("ppp = " + posicao);
 //		float dash2[] = {5.0f, 2.5f};
 		switch(posicao)
 		{
 			case 0:		//face YZ
 				if (this.dFeaturesSecundarias)
 				{
-					System.out.println("case 0");
+//					System.out.println("case 0");
 					posX  = (int)Math.round((cb.Z) * zoom + origem.x);
 					posX1  = (int)Math.round((cavidade.getPosicaoZ() + cavidade.getProfundidade()) * zoom + origem.x);
 					posY = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - (cb.getPosicaoX() - (cb.getDiametro2()/2))) * zoom + origem.y);    //coord. Y do ponto a direita embaixo
@@ -1052,7 +1140,7 @@ public class DesenhadorDeFeatures
 					
 					p1X = p2X = (int)Math.round((faceDesenhada.getComprimentoDesenhado(verticeAtivado)- cb.getPosicaoX()) * zoom + origem.x) ;
 					
-					p1Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.Z + 5) * zoom + origem.y); // y de cima  E cb.Z é a dist. do topo do boss até o z=0 da primeira cavidade feita
+					p1Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cb.Z + 5) * zoom + origem.y); // y de cima  E cb.Z ï¿½ a dist. do topo do boss atï¿½ o z=0 da primeira cavidade feita
 					p2Y = (int)Math.round((faceDesenhada.getLarguraDesenhada(verticeAtivado) - cavidade.getPosicaoZ() - cavidade.getProfundidade() - 5) * zoom + origem.y);
 					
 //					// do furo

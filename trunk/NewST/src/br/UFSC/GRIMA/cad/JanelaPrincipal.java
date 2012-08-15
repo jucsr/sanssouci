@@ -44,8 +44,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
-
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiSession;
 import br.UFSC.GRIMA.acceptance.STEP_NCReader;
@@ -72,6 +70,7 @@ import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
@@ -743,6 +742,12 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 				nTipo = 3;
 			else if (tipo.equals("Banheira "))
 				nTipo = 4;
+			else if (tipo.equals("Boss ")) // ----> dar uma olhada
+				nTipo = 6;
+			else if (tipo.equals("Region " ))
+				nTipo = 7;
+			else if(tipo.equals("General Closed Profile Pocket "))
+				nTipo = 8;
 			else
 			{
 				// dialog pane
@@ -1436,9 +1441,14 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	}
 	public void criarRegion()
 	{
-		System.out.println("REG");
 		CriarRegionFrame cr = new CriarRegionFrame();
 		cr.setVisible(true);
+	}
+	
+	public void criarCavidadePerfilGeral() 
+	{
+		CreateGeneralPocket cgp = new CreateGeneralPocket(this, this.projeto, faceTrabalho);
+		cgp.setVisible(true);
 	}
 	public void mostrarReferencia() {
 		PlanosRef PR = new PlanosRef(this);
@@ -2234,14 +2244,19 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 				if(feature.getClass() == Cavidade.class)
 				{
 //					System.out.println("CAVIDADEEEEEE");
-					CriarBoss cb = new CriarBoss(this, face, feature); //criar no .cad
+					CriarBoss cb = new CriarBoss(this, this.projeto, face, feature); //criar no .cad
 					cb.setVisible(true);
 				} else if (feature.getClass() == Degrau.class)
 				{
 					
-				} else
+				} else if (feature.getClass() == GeneralClosedPocket.class)
 				{
-					JOptionPane.showConfirmDialog(null, "testeeeeeeeee");
+					CriarBoss cb = new CriarBoss(this, this.projeto, face, feature);
+					cb.setVisible(true);			
+				}
+						else
+				{
+					JOptionPane.showConfirmDialog(null, "Nao pode criar Boss nesta feature");
 				}
 			}
 		}
@@ -2254,11 +2269,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	public void setBancoDeDados(AcessaBD bancoDeDados) {
 		this.bancoDeDados = bancoDeDados;
 	}
-	public void criarCavidadePerfilGeral() 
-	{
-		CreateGeneralPocket cgp = new CreateGeneralPocket(this, this.projeto);
-		cgp.setVisible(true);
-	}
+	
 }
 
 class JanelaPrincipal_button_actionAdapter implements ActionListener {

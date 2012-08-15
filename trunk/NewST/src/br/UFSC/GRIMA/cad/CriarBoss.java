@@ -10,16 +10,20 @@ import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class CriarBoss extends CriarBossFrame implements ActionListener{
 
 	private Feature feature;
 	private JanelaPrincipal owner;
 	private Face face;
-	public CriarBoss(JanelaPrincipal owner, Face face, Feature feature) {  //primeiro arg. eh referente a subordinacao a janela principal
+	private Projeto projeto;
+	public CriarBoss(JanelaPrincipal owner, Projeto projeto, Face face, Feature feature) {  //primeiro arg. eh referente a subordinacao a janela principal
 		super(owner);
 		this.feature = feature;
 		this.owner = owner;
+		this.projeto = projeto;
 		this.face = face;
 		this.buttonCancel.addActionListener(this);
 		this.buttonOK.addActionListener(this);
@@ -27,7 +31,6 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 		this.buttonRectangular.addActionListener(this);
 		this.radioButtonGeneral.addActionListener(this);
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();     // diz de onde veio o evento
@@ -59,9 +62,16 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 				Cavidade cavidade = (Cavidade)this.feature;
 				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidade);
 				ccb.setVisible(true);
-				dispose();
-			} else if(feature.getClass() == Degrau.class){
+				this.dispose();
+			} else if(feature.getClass() == Degrau.class)
+			{
 				
+			} else if(feature.getClass() == GeneralClosedPocket.class)
+			{
+//				GeneralClosedPocket cavidade = (GeneralClosedPocket)this.feature;
+//				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidade);
+//				ccb.setVisible(true);
+//				dispose();
 			}
 			
 		}else if(this.buttonRectangular.isSelected())
@@ -71,10 +81,19 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 				Cavidade cavidade = (Cavidade)this.feature;
 				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidade);
 				crb.setVisible(true);
-				dispose();
-			} else if(feature.getClass() == Degrau.class){
+				this.dispose();
+			} else if(feature.getClass() == Degrau.class)
+			{
+				
+			} else if (feature.getClass() == GeneralClosedPocket.class)
+			{
 				
 			}
+		}else if(this.radioButtonGeneral.isSelected())
+		{
+			CreateGeneralProfileBoss create = new CreateGeneralProfileBoss(owner, projeto, face, feature);
+			create.setVisible(true);
+			this.dispose();
 		}
 	}
 

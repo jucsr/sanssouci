@@ -1,5 +1,8 @@
 package br.UFSC.GRIMA.cad;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 
@@ -18,6 +21,8 @@ import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBaseEsferica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.FuroConico;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
@@ -25,6 +30,7 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
+import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.j3d.InvalidBooleanOperationException;
 import br.UFSC.GRIMA.j3d.J3D;
 import br.UFSC.GRIMA.operationSolids.CSGSolid;
@@ -32,8 +38,10 @@ import br.UFSC.GRIMA.operationSolids.CompoundSolid;
 import br.UFSC.GRIMA.operationSolids.OperationBezierProfile;
 import br.UFSC.GRIMA.operationSolids.OperationBezierSurface;
 import br.UFSC.GRIMA.operationSolids.OperationBlock;
+import br.UFSC.GRIMA.operationSolids.OperationBlock1;
 import br.UFSC.GRIMA.operationSolids.OperationConicalHoleBottom;
 import br.UFSC.GRIMA.operationSolids.OperationCylinder_1;
+import br.UFSC.GRIMA.operationSolids.OperationGeneralClosedPocked;
 import br.UFSC.GRIMA.operationSolids.OperationPocket_1;
 import br.UFSC.GRIMA.operationSolids.OperationRoundFloorPocket;
 import br.UFSC.GRIMA.operationSolids.OperationRoundHoleBottom;
@@ -44,7 +52,6 @@ import br.UFSC.GRIMA.operationSolids.OperationSlotVeeProfile;
 import br.UFSC.GRIMA.operationSolids.OperationSphericalHoleBottom;
 import br.UFSC.GRIMA.operationSolids.OperationTaperHole;
 import br.UFSC.GRIMA.util.projeto.Projeto;
-import br.UFSC.GRIMA.entidades.features.Region;
 
 public class Generate3Dview extends Frame3D 
 {
@@ -60,7 +67,7 @@ public class Generate3Dview extends Frame3D
 		this.createCoordinateSystem();
 		this.createBlock();
 	}
-
+	
 	private void createCoordinateSystem() 
 	{
 		Bloco bloco = (Bloco) projeto.getBloco();
@@ -91,6 +98,8 @@ public class Generate3Dview extends Frame3D
 		{	
 			CSGSolid.appearance = true;
 			rawBlock = new OperationBlock("", width, height, length);
+//			rawBlock = new OperationBlock1("", length, width, height, 3, 3, 2);
+
 			this.createFeatures();
 			this.j3d.addSolid(rawBlock);
 		}
@@ -426,6 +435,9 @@ public class Generate3Dview extends Frame3D
 								} catch (InvalidBooleanOperationException e) {
 									e.printStackTrace();
 								}
+							} else if(bossG.getClass() == GeneralProfileBoss.class)
+							{
+								// ===== IMPLEMENTAR
 							}
 						}
 						break;
@@ -458,6 +470,68 @@ public class Generate3Dview extends Frame3D
 						} catch (InvalidBooleanOperationException e)
 						{
 							e.printStackTrace();
+						}
+					}
+					if(feature.getClass() == GeneralClosedPocket.class)
+					{
+						GeneralClosedPocket general = (GeneralClosedPocket)faceTmp.features.elementAt(j);
+												
+						OperationGeneralClosedPocked op = new OperationGeneralClosedPocked("", (float)general.getProfundidade(), (float)general.getRadius(), general.getPoints());
+						op.rotate(-Math.PI / 2, 0);
+						op.translate(-faceTmp.getComprimento()/ 2, faceTmp.getProfundidadeMaxima() / 2 - general.Z, faceTmp.getLargura() / 2);
+						
+						try
+						{
+							this.rawBlock = new CompoundSolid("", CompoundSolid.DIFFERENCE, this.rawBlock, op);
+						} catch (InvalidBooleanOperationException e)
+						{
+							e.printStackTrace();
+						}
+						
+						for(int k = 0; k < general.getItsBoss().size(); k++)
+						{
+							Boss bossG = general.getItsBoss().get(k);
+							if (bossG.getClass() == CircularBoss.class)
+							{
+								CircularBoss bossTmp = (CircularBoss) general.getItsBoss().get(k);	
+								
+								OperationTaperHole boss = new OperationTaperHole("",  (float) bossTmp.getAltura(), (float) bossTmp.getDiametro1(),(float) bossTmp.getDiametro2());
+								boss.translate( - faceTmp.getComprimento()/2 + bossTmp.X, faceTmp.getProfundidadeMaxima()/2- bossTmp.Z, faceTmp.getLargura()/2 - bossTmp.Y);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, boss);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
+								
+							} else if(bossG.getClass() == RectangularBoss.class)
+							{
+								RectangularBoss bossTmp = (RectangularBoss) general.getItsBoss().get(k);	
+								
+								OperationPocket_1 pocketRectangular = new OperationPocket_1("", (float)bossTmp.getL1(), (float)bossTmp.getL2(), (float)bossTmp.getAltura(), (float)bossTmp.getRadius());
+								pocketRectangular.translate(-faceTmp.getComprimento()/2 + bossTmp.X + bossTmp.getL1()/2, faceTmp.getProfundidadeMaxima()/2 - bossTmp.Z - bossTmp.getAltura()/2, +faceTmp.getLargura()/2 - bossTmp.getL2()/2 - bossTmp.Y);
+							
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, pocketRectangular);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
+							} else if(bossG.getClass() == GeneralProfileBoss.class)
+							{
+								GeneralProfileBoss bossTmp = (GeneralProfileBoss)general.getItsBoss().get(k);
+								OperationGeneralClosedPocked opBoss = new OperationGeneralClosedPocked("", (float)bossTmp.getAltura(), (float)bossTmp.getRadius(), bossTmp.getVertexPoints());
+								opBoss.rotate(-Math.PI / 2, 0);
+//								opBoss.translate(-faceTmp.getComprimento() / 2, bossTmp.Z - bossTmp.getAltura() + faceTmp.getProfundidadeMaxima() / 2, faceTmp.getLargura() / 2);
+								opBoss.translate(-faceTmp.getComprimento() / 2, bossTmp.getAltura() - bossTmp.Z + faceTmp.getProfundidadeMaxima() / 2, faceTmp.getLargura() / 2);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, opBoss);
+								} catch (InvalidBooleanOperationException e)
+								{
+									e.printStackTrace();
+								}
+							}
 						}
 					}
 				}

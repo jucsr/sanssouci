@@ -136,6 +136,10 @@ public class Cavidade extends Feature implements Serializable {
 			{
 				RectangularBoss rectangular = (RectangularBoss)this.itsBoss.get(i);
 				bossNode.add(rectangular.getNode());
+			} else if(this.itsBoss.get(i).getClass() == GeneralProfileBoss.class)
+			{
+				GeneralProfileBoss general = (GeneralProfileBoss)this.itsBoss.get(i);
+				bossNode.add(general.getNodo());
 			}
 		}
 		this.getNodoWorkingSteps(root);
@@ -498,7 +502,7 @@ public class Cavidade extends Feature implements Serializable {
 
 		return saida;
 	}
-	public static Point2D[] determinarPontosEmRoundRectangular(Point3d position, double comprimento, double largura, double raio) // o position é a coodenada da origem do roundRectangular. Neste método é calculado o número de pontos considerando que se quer 1mm entre eles
+	public static Point2D[] determinarPontosEmRoundRectangular(Point3d position, double comprimento, double largura, double raio) // o position ï¿½ a coodenada da origem do roundRectangular. Neste mï¿½todo ï¿½ calculado o nï¿½mero de pontos considerando que se quer 1mm entre eles
 	{
 		
 		double n = (2*(Math.PI)*raio)/4;

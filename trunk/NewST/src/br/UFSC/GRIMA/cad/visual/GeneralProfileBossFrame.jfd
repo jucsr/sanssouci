@@ -14,7 +14,7 @@
       </object> 
       <void method="setProperty"> 
        <string>title</string> 
-       <string>Create General Closed Profile Pocket</string> 
+       <string>Create General Profile Boss</string> 
       </void> 
       <void method="add"> 
        <object class="com.jformdesigner.model.FormContainer"> 
@@ -317,7 +317,7 @@
                    <class>java.awt.GridBagLayout</class> 
                    <void method="setProperty"> 
                     <string>$columnSpecs</string> 
-                    <string>0, 45, 0, 45, 0, 45</string> 
+                    <string>0, 45, 0, 40, 0, 40</string> 
                    </void> 
                    <void method="setProperty"> 
                     <string>$rowSpecs</string> 
@@ -406,10 +406,10 @@
                     <string>javax.swing.JLabel</string> 
                     <void method="setProperty"> 
                      <string>text</string> 
-                     <string>pos Z</string> 
+                     <string>height</string> 
                     </void> 
                     <void property="name"> 
-                     <string>label4</string> 
+                     <string>label3</string> 
                     </void> 
                    </object> 
                    <object class="com.jformdesigner.model.FormLayoutConstraints"> 
@@ -433,12 +433,12 @@
                        <double>1.0</double> 
                       </void> 
                       <void property="value"> 
-                       <double>0.0</double> 
+                       <double>10.0</double> 
                       </void> 
                      </object> 
                     </void> 
                     <void property="name"> 
-                     <string>spinnerPosZ</string> 
+                     <string>spinnerDepth</string> 
                     </void> 
                     <void method="auxiliary"> 
                      <void method="setProperty"> 
@@ -460,10 +460,10 @@
                     <string>javax.swing.JLabel</string> 
                     <void method="setProperty"> 
                      <string>text</string> 
-                     <string>depth</string> 
+                     <string>pos Z</string> 
                     </void> 
                     <void property="name"> 
-                     <string>label3</string> 
+                     <string>label4</string> 
                     </void> 
                    </object> 
                    <object class="com.jformdesigner.model.FormLayoutConstraints"> 
@@ -487,12 +487,12 @@
                        <double>1.0</double> 
                       </void> 
                       <void property="value"> 
-                       <double>10.0</double> 
+                       <double>0.0</double> 
                       </void> 
                      </object> 
                     </void> 
                     <void property="name"> 
-                     <string>spinnerDepth</string> 
+                     <string>spinnerPosZ</string> 
                     </void> 
                     <void method="auxiliary"> 
                      <void method="setProperty"> 
@@ -571,7 +571,7 @@
                 <string>javax.swing.JTextField</string> 
                 <void method="setProperty"> 
                  <string>text</string> 
-                 <string>GENERAL CLOSED POCKET</string> 
+                 <string>GENERAL PROFILE BOSS</string> 
                 </void> 
                 <void property="name"> 
                  <string>textField1</string> 
@@ -648,31 +648,6 @@
                 <void method="setProperty"> 
                  <string>gridx</string> 
                  <int>3</int> 
-                </void> 
-               </object> 
-              </void> 
-              <void method="add"> 
-               <object class="com.jformdesigner.model.FormComponent"> 
-                <string>javax.swing.JCheckBox</string> 
-                <void method="setProperty"> 
-                 <string>text</string> 
-                 <string>throught</string> 
-                </void> 
-                <void property="name"> 
-                 <string>checkBox1</string> 
-                </void> 
-                <void method="auxiliary"> 
-                 <void method="setProperty"> 
-                  <string>JavaCodeGenerator.variableModifiers</string> 
-                  <int>4</int> 
-                 </void> 
-                </void> 
-               </object> 
-               <object class="com.jformdesigner.model.FormLayoutConstraints"> 
-                <class>com.jformdesigner.runtime.GridBagConstraintsEx</class> 
-                <void method="setProperty"> 
-                 <string>gridx</string> 
-                 <int>5</int> 
                 </void> 
                </object> 
               </void> 
@@ -822,17 +797,52 @@
      <object class="com.jformdesigner.model.FormLayoutConstraints"> 
       <null/> 
       <void method="setProperty"> 
+       <string>size</string> 
+       <object class="java.awt.Dimension"> 
+        <int>630</int> 
+        <int>310</int> 
+       </object> 
+      </void> 
+      <void method="setProperty"> 
        <string>location</string> 
        <object class="java.awt.Point"> 
         <int>0</int> 
         <int>0</int> 
        </object> 
       </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.jformdesigner.model.FormComponent"> 
+      <string>javax.swing.JCheckBox</string> 
+      <void method="setProperty"> 
+       <string>text</string> 
+       <string>throught</string> 
+      </void> 
+      <void property="name"> 
+       <string>checkBox1</string> 
+      </void> 
+      <void method="auxiliary"> 
+       <void method="setProperty"> 
+        <string>JavaCodeGenerator.variableModifiers</string> 
+        <int>4</int> 
+       </void> 
+      </void> 
+     </object> 
+     <object class="com.jformdesigner.model.FormLayoutConstraints"> 
+      <null/> 
+      <void method="setProperty"> 
+       <string>location</string> 
+       <object class="java.awt.Point"> 
+        <int>55</int> 
+        <int>320</int> 
+       </object> 
+      </void> 
       <void method="setProperty"> 
        <string>size</string> 
        <object class="java.awt.Dimension"> 
-        <int>595</int> 
-        <int>310</int> 
+        <int>67</int> 
+        <int>24</int> 
        </object> 
       </void> 
      </object> 

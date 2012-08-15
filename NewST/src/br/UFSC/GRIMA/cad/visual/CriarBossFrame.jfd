@@ -258,10 +258,6 @@
                 <string>buttonGroup1</string> 
                </object> 
               </void> 
-              <void method="setProperty"> 
-               <string>enabled</string> 
-               <boolean>false</boolean> 
-              </void> 
               <void property="name"> 
                <string>radioButtonGeneral</string> 
               </void> 

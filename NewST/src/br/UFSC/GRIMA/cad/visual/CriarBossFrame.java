@@ -95,7 +95,6 @@ public class CriarBossFrame extends JDialog {
 
 					//---- radioButtonGeneral ----
 					radioButtonGeneral.setText("General");
-					radioButtonGeneral.setEnabled(false);
 					panel3.add(radioButtonGeneral, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 5), 0, 0));

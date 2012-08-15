@@ -1,5 +1,5 @@
 /*
- * Created by JFormDesigner on Thu Jul 05 14:44:03 BRT 2012
+ * Created by JFormDesigner on Mon Aug 13 20:06:08 BRT 2012
  */
 
 package br.UFSC.GRIMA.cad.visual;
@@ -11,13 +11,13 @@ import javax.swing.border.*;
 /**
  * @author Victor
  */
-public class CreateGeneralPocketFrame extends JDialog {
-	public CreateGeneralPocketFrame(Frame owner) {
+public class GeneralProfileBossFrame extends JDialog {
+	public GeneralProfileBossFrame(Frame owner) {
 		super(owner);
 		initComponents();
 	}
 
-	public CreateGeneralPocketFrame(Dialog owner) {
+	public GeneralProfileBossFrame(Dialog owner) {
 		super(owner);
 		initComponents();
 	}
@@ -41,23 +41,23 @@ public class CreateGeneralPocketFrame extends JDialog {
 		panel2 = new JPanel();
 		label2 = new JLabel();
 		radiusSpinner = new JSpinner();
-		label4 = new JLabel();
-		spinnerPosZ = new JSpinner();
 		label3 = new JLabel();
 		spinnerDepth = new JSpinner();
+		label4 = new JLabel();
+		spinnerPosZ = new JSpinner();
 		panel4 = new JPanel();
 		label5 = new JLabel();
 		textField1 = new JTextField();
 		panel5 = new JPanel();
 		label6 = new JLabel();
 		spinnerRugosidade = new JSpinner();
-		checkBox1 = new JCheckBox();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
+		checkBox1 = new JCheckBox();
 
 		//======== this ========
-		setTitle("Create General Closed Profile Pocket");
+		setTitle("Create General Profile Boss");
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
@@ -140,7 +140,7 @@ public class CreateGeneralPocketFrame extends JDialog {
 							{
 								panel2.setBorder(new EtchedBorder());
 								panel2.setLayout(new GridBagLayout());
-								((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 50, 0, 50, 0, 45, 0};
+								((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 50, 0, 45, 0, 40, 0};
 								((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 0};
 								((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 								((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
@@ -158,27 +158,27 @@ public class CreateGeneralPocketFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
 
-								//---- label4 ----
-								label4.setText("pos Z");
-								panel2.add(label4, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 0, 5), 0, 0));
-
-								//---- spinnerPosZ ----
-								spinnerPosZ.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
-								panel2.add(spinnerPosZ, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 0, 5), 0, 0));
-
 								//---- label3 ----
-								label3.setText("depth");
-								panel2.add(label3, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
+								label3.setText("height");
+								panel2.add(label3, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
 
 								//---- spinnerDepth ----
 								spinnerDepth.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-								panel2.add(spinnerDepth, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+								panel2.add(spinnerDepth, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
+
+								//---- label4 ----
+								label4.setText("pos Z");
+								panel2.add(label4, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
+
+								//---- spinnerPosZ ----
+								spinnerPosZ.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+								panel2.add(spinnerPosZ, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
@@ -205,7 +205,7 @@ public class CreateGeneralPocketFrame extends JDialog {
 							new Insets(0, 0, 0, 5), 0, 0));
 
 						//---- textField1 ----
-						textField1.setText("GENERAL CLOSED POCKET");
+						textField1.setText("GENERAL PROFILE BOSS");
 						panel4.add(textField1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 0, 5), 0, 0));
@@ -225,12 +225,6 @@ public class CreateGeneralPocketFrame extends JDialog {
 						//---- spinnerRugosidade ----
 						spinnerRugosidade.setModel(new SpinnerNumberModel(50.0, 0.0, 50.0, 1.0));
 						panel4.add(spinnerRugosidade, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-							new Insets(0, 0, 0, 5), 0, 0));
-
-						//---- checkBox1 ----
-						checkBox1.setText("throught");
-						panel4.add(checkBox1, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 0, 5), 0, 0));
 					}
@@ -266,6 +260,9 @@ public class CreateGeneralPocketFrame extends JDialog {
 		contentPane.add(dialogPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(getOwner());
+
+		//---- checkBox1 ----
+		checkBox1.setText("throught");
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
@@ -287,19 +284,19 @@ public class CreateGeneralPocketFrame extends JDialog {
 	private JPanel panel2;
 	private JLabel label2;
 	protected JSpinner radiusSpinner;
-	private JLabel label4;
-	protected JSpinner spinnerPosZ;
 	private JLabel label3;
 	protected JSpinner spinnerDepth;
+	private JLabel label4;
+	protected JSpinner spinnerPosZ;
 	private JPanel panel4;
 	private JLabel label5;
 	protected JTextField textField1;
 	private JPanel panel5;
 	private JLabel label6;
 	protected JSpinner spinnerRugosidade;
-	protected JCheckBox checkBox1;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;
+	protected JCheckBox checkBox1;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

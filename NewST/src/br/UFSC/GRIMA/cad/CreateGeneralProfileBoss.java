@@ -52,19 +52,19 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		{
 			Cavidade feat = (Cavidade)feature;
 			profundidadeFeature = feat.getProfundidade();
-			this.spinnerPosZ.setValue(profundidadeFeature);
+			this.spinnerPosZ.setValue(profundidadeFeature + this.feature.Z);
 			this.spinnerPosZ.setEnabled(false);
 		} else if(feature.getClass() == Degrau.class)
 		{
 			Degrau feat = (Degrau)feature;
 			profundidadeFeature = feat.getProfundidade();
-			this.spinnerPosZ.setValue(profundidadeFeature);
+			this.spinnerPosZ.setValue(profundidadeFeature + this.feature.Z);
 			this.spinnerPosZ.setEnabled(false);
 		} else if(feature.getClass() == GeneralClosedPocket.class)
 		{
 			GeneralClosedPocket feat = (GeneralClosedPocket)feature;
 			profundidadeFeature = feat.getProfundidade();
-			this.spinnerPosZ.setValue(profundidadeFeature);
+			this.spinnerPosZ.setValue(profundidadeFeature + this.feature.Z);
 			this.spinnerPosZ.setEnabled(false);
 		}
 		linePanel = new LinePanel(projeto);
@@ -234,6 +234,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 				linePanel.poligono.closePath();
 				
 				this.button1.setEnabled(false);
+				linePanel.line = false;
 				linePanel.removeMouseListener(linePanel);
 			}
 			else

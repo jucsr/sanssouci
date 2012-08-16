@@ -22,12 +22,12 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
     public ArrayList<Point2D> pointListCC = new ArrayList<Point2D>();
     public ArrayList<Double> angulosList = new ArrayList<Double>();
 	public GeneralPath poligono = new GeneralPath();
-
+	private Line2D lineTmp = new Line2D.Double();
     
     public double separacaoGrade = 20;
     private String x = "";
     private String y = "";
-    public boolean grade = true;
+    public boolean grade = true, line = true;
     
     public LinePanel(Projeto projeto)
     {
@@ -60,10 +60,13 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
         g2d.setColor(new Color(58, 100, 0));
         g2d.setColor(new Color(178, 34, 34));
         g2d.setColor(Color.BLACK);
-        if (pointList.size() < 2)
-            return;
-
+//        if (pointList.size() < 2)
+//            return;
+        
         g2d.draw(poligono);
+        if(line)
+        	g2d.draw(lineTmp);
+        
         g2d.dispose();
     }
 
@@ -79,7 +82,14 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
 		x = "" + (e.getX() - 20) / getZoom();
 		y = "" + ((projeto.getBloco().getComprimento() * getZoom() - e.getY() + 20) / getZoom());
 		
-		Line2D lineTmp = new Line2D.Double();
+		double x = Double.parseDouble(this.x) * getZoom() + 20;
+		double y = Double.parseDouble(this.y) * getZoom() + 20;
+		if(pointList.size() > 0)
+		{
+			Point2D p0 = new Point2D.Double(pointList.get(pointList.size() - 1).getX() * getZoom() + 20, pointList.get(pointList.size() - 1).getY() * getZoom() + 20);
+			Point2D p1 = new Point2D.Double(x, y);
+			lineTmp = new Line2D.Double(p0, p1);
+		}
 		
 		repaint();
 	}
@@ -87,7 +97,6 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-//		Point2D pTmp = new Point2D.Double(e.getX(), projeto.getBloco().getComprimento() + 40 - e.getY());
 		Point2D pTmp = new Point2D.Double(Double.parseDouble(x), Double.parseDouble(y));
 
 		pointList.add(pTmp);

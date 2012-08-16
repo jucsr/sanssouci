@@ -209,7 +209,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			if(linePanel.pointList.get(0) != linePanel.pointList.get(linePanel.pointList.size() - 1) && linePanel.pointList.size() > 2)
 			{
 				linePanel.poligono.closePath();
-				
+				linePanel.line = false;
 				this.button1.setEnabled(false);
 				linePanel.removeMouseListener(linePanel);
 			}
@@ -556,9 +556,9 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				}
 				anguloTmp = solveAngle(p0, p1, p2, forma, polygon);
 
-				if (anguloTmp < 2* Math.PI) 
+				if (anguloTmp < 2* Math.PI)
 				{
-					System.out.println("angulo = " + (anguloTmp * 180 / Math.PI));
+//					System.out.println("angulo = " + (anguloTmp * 180 / Math.PI));
 					ArrayList<Point2D> arcoTmp = solveArc(forma, p0, p1, p2, radius, polygon);
 					for (int j = 0; j < arcoTmp.size(); j++) 
 					{

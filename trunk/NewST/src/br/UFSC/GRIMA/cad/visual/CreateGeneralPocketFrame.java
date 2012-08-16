@@ -104,7 +104,7 @@ public class CreateGeneralPocketFrame extends JDialog {
 							toolBar2.add(label1);
 
 							//---- spinnerZoom ----
-							spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 500.0, 1.0));
+							spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 500.0, 5.0));
 							toolBar2.add(spinnerZoom);
 
 							//======== panel6 ========
@@ -124,7 +124,7 @@ public class CreateGeneralPocketFrame extends JDialog {
 									new Insets(0, 0, 0, 5), 0, 0));
 
 								//---- spinnerSeparaGrade ----
-								spinnerSeparaGrade.setModel(new SpinnerNumberModel(20.0, 1.0, null, 1.0));
+								spinnerSeparaGrade.setModel(new SpinnerNumberModel(20.0, 1.0, null, 5.0));
 								panel6.add(spinnerSeparaGrade, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));

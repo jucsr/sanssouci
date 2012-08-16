@@ -5,17 +5,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.entidades.features.Boss;
+import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
+import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.Furo;
+import br.UFSC.GRIMA.entidades.features.Ranhura;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.cad.visual.DefineRegionDimensionFrame;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
@@ -30,6 +42,7 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 	private double height;//relativo ao eixo y
 	
 	public Vector features = new Vector();
+	
 	
 	public DefinirDimensaoRegion (Frame owner, Projeto projeto, Face face)
 	{
@@ -316,18 +329,86 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 		}
 		
 		}
-//		
-//		if(ok)
-//		{
-//			for (int i = 0; i < this.features.size(); i++)
-//			{
-//				Feature ftmp = (Feature)this.features.elementAt(i);
-//				
-//			}
-//			
-//			
-//		}
-//		
+		
+		if(ok)
+		{
+			Point2D [] bordaRegion = null;
+			x = (Double)posicaoX.getValue();
+			y = (Double)posicaoY.getValue();
+			width = (Double)largura.getValue();
+			height = (Double)altura.getValue();
+			
+			Rectangle2D.Double region = new Rectangle2D.Double(x, y, width, height);
+			
+			for (int i = 0; i < this.features.size(); i++)
+			{
+
+				DefaultMutableTreeNode tmp = null;
+				Feature ftmp = (Feature)this.features.elementAt(i);   /******************??????????*************/
+				switch (ftmp.getTipo())
+				{
+					case Feature.FURO:
+						
+						Ellipse2D.Double furo = new Ellipse2D.Double(((Furo)ftmp).getPosicaoX(), ((Furo)ftmp).getPosicaoY(), ((Furo)ftmp).getRaio(), ((Furo)ftmp).getRaio());
+						
+						if(furo.intersects(region) || furo.contains(region))
+						{
+							JOptionPane.showMessageDialog(null, "A regiao esta dentro do furo ou elas se intersectam \n ", "Erro ao criar a regiao", JOptionPane.OK_CANCEL_OPTION);
+							ok = false;
+						}
+							
+						else 
+							ok = true;
+						
+						break;
+						
+					case Feature.DEGRAU:
+						
+						Rectangle2D.Double degrau = new Rectangle2D.Double(((Degrau)ftmp).getPosicaoX(), ((Degrau)ftmp).getPosicaoY(), ((Degrau)ftmp).getLargura(), ((Degrau)ftmp).getComprimento());
+						
+						if(degrau.intersects(region))
+						{
+							JOptionPane.showMessageDialog(null, "A regiao intersecta o degrau \n ", "Erro ao criar a regiao", JOptionPane.OK_CANCEL_OPTION);
+							ok = false;
+						}
+						
+						//VERIFICAR SE NAO PRECISA DE OUTRA CONDICAO A MAIS!!!!!!!
+						else if(degrau.contains(region))
+						{
+							//Mudar a posicao Z para a superficie do degrau
+							ok = true;
+						}
+							
+						break;
+						
+					case Feature.RANHURA:
+						
+						
+						break;
+						
+					case Feature.CAVIDADE:
+						
+						break;
+					case Feature.CAVIDADE_FUNDO_ARREDONDADO:
+						
+					case Feature.BOSS:
+						if(ftmp.getClass() == CircularBoss.class) {
+							
+						}
+							
+						else if(ftmp.getClass() == RectangularBoss.class) {
+							
+						}
+						break;
+					default:
+						break;
+				}
+				
+			}
+			
+			
+		}
+		
 	}
 	
 

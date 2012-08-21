@@ -960,22 +960,17 @@ public class StepNcProject extends STEPProject
 					 *  =============== CAVIDADE ===============
 					 */
 					else if (wsTmp.getFeature().getClass() == Cavidade.class)
-						{
+					{
 							EClosed_pocket eClosed_pocket;
 							Cavidade cavidadeTemp = (Cavidade)wsTmp.getFeature();
 							AMachining_operation operationsCavidade = null;
-							ABoss aBoss = null;
 							if(this.alreadyUsed(cavidadeTemp) == false)
 							{
-								operationsCavidade = new AMachining_operation();
-								aBoss = new ABoss();
-								
+								operationsCavidade = new AMachining_operation();								
 								cavidadeTemp.setOperations(operationsCavidade);
-								cavidadeTemp.setaBoss(aBoss);
 							} else
 							{
 								operationsCavidade = cavidadeTemp.getOperations();
-								aBoss = cavidadeTemp.getaBoss();
 							}
 							EMachining_operation operationPocket = null;
 							if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class)
@@ -1440,7 +1435,6 @@ public class StepNcProject extends STEPProject
 		EBoss eBoss = (EBoss) this.model.createEntityInstance(EBoss.class);
 		eBoss.setIts_id(null, boss.getNome());
 		eBoss.setIts_workpiece(null, eWorkpiece);
-
 		
 		if(boss.getClass() == CircularBoss.class)
 		{
@@ -1572,10 +1566,12 @@ public class StepNcProject extends STEPProject
 			if (bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss circular = (CircularBoss)bossTmp;
+				double slope = Math.atan2(((circular.getDiametro2() - circular.getDiametro1()) / 2), circular.getAltura());
 				ECircular_closed_profile profile = (ECircular_closed_profile)this.model.createEntityInstance(ECircular_closed_profile.class);
 				profile.setPlacement(null, this.createAxis2Placement3D("profile location", new Point3d(0, 0, 0), bossTmp.getPosition().getAxis(), bossTmp.getPosition().getRefDirection()));
 				profile.setDiameter(null, this.createTolerancedLengthMeasure(circular.getDiametro1()));
 				eBoss.setIts_boundary(null, profile);
+				eBoss.setSlope(null, slope);
 			}else if (bossTmp.getClass() == RectangularBoss.class)
 			{
 				RectangularBoss rectangular = (RectangularBoss)bossTmp;
@@ -1584,10 +1580,12 @@ public class StepNcProject extends STEPProject
 				profile.setProfile_length(null, this.createTolerancedLengthMeasure(rectangular.getL1()));
 				profile.setProfile_width(null, this.createTolerancedLengthMeasure(rectangular.getL2()));
 				eBoss.setIts_boundary(null, profile);
+			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
+			{
+				
 			}
 			aBoss.addUnordered(eBoss);
 		}
-		
 		return eClosed_pocket;
 	}
 	private EClosed_pocket createRoundedBottomClosedPocket(Workingstep ws, EWorkpiece eWorkpiece, AMachining_operation operations) throws SdaiException

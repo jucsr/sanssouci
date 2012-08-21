@@ -70,7 +70,8 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				
 				double alfa;
 				Point2D p0 = null, p1 = null, p2 = null;
-				for (int i = 0; i < linePanel.pointListCC.size(); i++) {
+				for (int i = 0; i < linePanel.pointListCC.size(); i++) 
+				{
 					p0 = linePanel.pointListCC.get(i);
 					try 
 					{
@@ -94,7 +95,6 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 //					System.out.println("CC = " + linePanel.pointListCC.get(i));
 					
 				}
-				
 				linePanel.poligono.moveTo(novaLista.get(0).getX() * zoom+ 20, novaLista.get(0).getY() * zoom + 20);
 
 				for(int i = 1; i < novaLista.size(); i++)
@@ -255,6 +255,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		{
 			JOptionPane.showMessageDialog(null, "Profundidade maior do que a profundidade do bloco");
 			ok = false;
+			return;
 		}
 		if(radius > 0)
 		{
@@ -341,20 +342,52 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		{
 			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint), 	(int) (p1.getY() + hy * iPoint));
 
-			if (forma.contains(testPoint)|| pointList.size()==3) 
+			if (forma.contains(testPoint) || pointList.size() == 3) 
 			{
 				nPointsIn++;
 			}
 		}
-
 		if (nPointsIn == 0)
 		{
 			alfa = 2 * Math.PI - alfa;
 		}
-		//System.out.println("alfaAf="+alfa*180/Math.PI);
+//		System.out.println("alfaAf="+alfa*180/Math.PI);
 		return alfa;
 	}
 	
+	
+	public static ArrayList<Point2D> solveArc(Point2D p0, Point2D p1, Point2D p2, double radius)
+	{
+		ArrayList<Point2D> saida = null;
+		
+		double distance1, distance2, xa, ya, xb, yb, along;
+		Point2D a, b, center;
+		
+		distance1 = p0.distance(p1);
+		distance2 = p0.distance(p2);
+		
+		double v1v2=(p1.getX() - p0.getX()) * (p2.getX() - p0.getX()) + (p1.getY() - p0.getY()) * (p2.getY() - p0.getY());
+		double alfa = Math.acos(v1v2/(distance1 * distance2));
+		
+		along = radius / Math.tan(alfa / 2); /** <----------- CUIDADO COM O ALFA **/
+		
+		xa = p0.getX() + along * (p1.getX() - p0.getX()) / distance1;
+		ya = (p1.getY() - p0.getY() * (xa - p0.getX())) / (p1.getX() - p0.getX());
+		
+		xb = p0.getX() + along * (p2.getX() - p0.getX()) / distance2;
+		yb = (p2.getY() - p0.getY()) * (xb - p0.getX()) / (p2.getX() - p0.getX()) + p0.getY();
+		
+		a = new Point2D.Double(xa, ya);
+		b = new Point2D.Double(xb, yb);
+		
+		Point2D c = new Point2D.Double((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
+		
+		double dc = radius / Math.sin(alfa / 2);
+
+		center = pointAlong(p0, c, dc);
+				
+		return saida;
+	}
 	public static ArrayList<Point2D> solveArc(GeneralPath forma, Point2D p0, Point2D p2, Point2D p1, double radius, ArrayList<Point2D> pointList)
 	{
 		double alfa = solveAngle(p0, p1, p2, forma, pointList);
@@ -363,15 +396,16 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		ArrayList<Point2D> arcPoints = new ArrayList<Point2D>();
 		/*
 		System.out.println("***********************");
-		System.out.println("alfa:" + alfa*180/Math.PI);
-		System.out.println("P0:"+p0.getX()+","+p0.getY());
-		System.out.println("P1:"+p1.getX()+","+p1.getY());
-		System.out.println("P2:"+p2.getX()+","+p2.getY());
+		System.out.println("alfa:" + alfa * 180 / Math.PI);
+		System.out.println("P0:" + p0.getX() + "," + p0.getY());
+		System.out.println("P1:" + p1.getX() + "," + p1.getY());
+		System.out.println("P2:" + p2.getX() + "," + p2.getY());
 		*/
 
 		if (alfa > Math.PI)		
 		{
 			arcPoints.add(p0);
+//			alfa = 2 * Math.PI - alfa;
 		}
 		else
 		{
@@ -408,7 +442,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			double anguloInicial = Math.atan2(bb.getY(), bb.getX());
 			//double anguloFinal=Math.atan2(aa.getY(),aa.getX());
 			
-			if (anguloInicial<0.0)
+			if (anguloInicial < 0.0)
 			{
 				anguloInicial = anguloInicial + 2 * Math.PI;
 			}
@@ -501,9 +535,9 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		ArrayList<Point2D> saida = new ArrayList<Point2D>();
 		double incrementoAngulo, x, y;
 		int numPontos;
-		incrementoAngulo = comprimentoLinha/raio;
-		numPontos=(int)Math.ceil(deltaAngulo/incrementoAngulo);
-		incrementoAngulo = deltaAngulo/numPontos;
+		incrementoAngulo = comprimentoLinha / raio;
+		numPontos = (int) Math.ceil(deltaAngulo / incrementoAngulo);
+		incrementoAngulo = deltaAngulo / numPontos;
 		
 		if (!isCounterClock)
 			incrementoAngulo = -incrementoAngulo;

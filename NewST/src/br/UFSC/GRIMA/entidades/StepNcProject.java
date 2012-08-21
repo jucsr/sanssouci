@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import javax.vecmath.Point3d;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 import jsdai.SCombined_schema.ABoss;
 import jsdai.SCombined_schema.ACartesian_point;
 import jsdai.SCombined_schema.ACutting_component;
@@ -46,6 +48,7 @@ import jsdai.SCombined_schema.EFacemill;
 import jsdai.SCombined_schema.EFlat_hole_bottom;
 import jsdai.SCombined_schema.EFlat_with_radius_hole_bottom;
 import jsdai.SCombined_schema.EFreeform_operation;
+import jsdai.SCombined_schema.EGeneral_closed_profile;
 import jsdai.SCombined_schema.EGeneral_profile;
 import jsdai.SCombined_schema.EHand;
 import jsdai.SCombined_schema.EHole_bottom_condition;
@@ -118,6 +121,7 @@ import br.UFSC.GRIMA.entidades.features.FuroBaseEsferica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.FuroConico;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
@@ -960,13 +964,18 @@ public class StepNcProject extends STEPProject
 							EClosed_pocket eClosed_pocket;
 							Cavidade cavidadeTemp = (Cavidade)wsTmp.getFeature();
 							AMachining_operation operationsCavidade = null;
+							ABoss aBoss = null;
 							if(this.alreadyUsed(cavidadeTemp) == false)
 							{
 								operationsCavidade = new AMachining_operation();
+								aBoss = new ABoss();
+								
 								cavidadeTemp.setOperations(operationsCavidade);
+								cavidadeTemp.setaBoss(aBoss);
 							} else
 							{
 								operationsCavidade = cavidadeTemp.getOperations();
+								aBoss = cavidadeTemp.getaBoss();
 							}
 							EMachining_operation operationPocket = null;
 							if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class)
@@ -1091,6 +1100,43 @@ public class StepNcProject extends STEPProject
 						EClosed_pocket eClosed_pocket;
 						GeneralClosedPocket general = (GeneralClosedPocket)wsTmp.getFeature();
 						AMachining_operation operations = null;
+						if(this.alreadyUsed(general) == false)
+						{
+							operations = new AMachining_operation();
+							general.setOperations(operations);
+						} else
+						{
+							operations = general.getOperations();
+						}
+						EMachining_operation operation = null;
+						if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class)
+						{
+							operation = this.createBottomAndSideRoughOperation(wsTmp);
+						} else if(wsTmp.getOperation().getClass() == BottomAndSideFinishMilling.class)
+						{
+							operation = this.createBottomAndSideFinishOperation(wsTmp);
+						} else if(wsTmp.getOperation().getClass() == FreeformOperation.class)
+						{
+							operation = this.createFreeFormOperation(wsTmp);
+						}
+						operations.addUnordered(operation);
+//						if(this.alreadyUsed(general) == false)
+//						{
+//							eClosed_pocket = this.createGeneralClosedPocket(wsTmp, eWorkpiece, operations);
+//							general.seteClosed_pocket(eClosed_pocket);
+//							this.usedFeatures.add(general);
+//						} else
+//						{
+//							eClosed_pocket = general.geteClosed_pocket();
+//							AMachining_operation aMachining_operation = eClosed_pocket.createIts_operations(null);
+//							SdaiIterator iterator = operations.createIterator();
+//							while(iterator.next())
+//							{
+//								EMachining_operation eMachining_operation = operations.getCurrentMember(iterator);
+//								aMachining_operation.addUnordered(eMachining_operation);
+//							}
+//						}
+//						eMachining_workingstep = this.createElements(wsTmp.getId(), this.securityPlane, eClosed_pocket, operation);
 					}
 					
 					
@@ -1388,6 +1434,41 @@ public class StepNcProject extends STEPProject
 		ePlane.setName(null, name);
 		ePlane.setPosition(null, position);
 		return ePlane;
+	}
+	private EBoss createBoss(Boss boss, EWorkpiece eWorkpiece) throws SdaiException 
+	{
+		EBoss eBoss = (EBoss) this.model.createEntityInstance(EBoss.class);
+		eBoss.setIts_id(null, boss.getNome());
+		eBoss.setIts_workpiece(null, eWorkpiece);
+
+		
+		if(boss.getClass() == CircularBoss.class)
+		{
+			CircularBoss circular = (CircularBoss)boss;
+			double slope = Math.atan2(((circular.getDiametro2() - circular.getDiametro1()) / 2), circular.getAltura());
+			eBoss.setSlope(null, slope);
+			ECircular_closed_profile eProfile = (ECircular_closed_profile)this.model.createEntityInstance(ECircular_closed_profile.class);
+			eProfile.setDiameter(null, this.createTolerancedLengthMeasure(circular.getDiametro1()));
+			
+			eProfile.setPlacement(null, this.createAxis2Placement3D(boss.getNome() + " - placement", circular.getPosition().getCoordinates(), circular.getPosition().getAxis(), circular.getPosition().getRefDirection()));
+		}else if(boss.getClass() == RectangularBoss.class)
+		{
+			RectangularBoss rectangular = (RectangularBoss)boss;
+			
+			ERectangular_closed_profile eRectangular_closed_profile = (ERectangular_closed_profile)this.model.createEntityInstance(ERectangular_closed_profile.class);
+			eRectangular_closed_profile.setProfile_length(null, this.createTolerancedLengthMeasure(rectangular.getL1()));
+			eRectangular_closed_profile.setProfile_length(null, this.createTolerancedLengthMeasure(rectangular.getL2()));
+			eRectangular_closed_profile.setPlacement(null, this.createAxis2Placement3D(rectangular.getPosition().getName(), rectangular.getPosition().getCoordinates(), rectangular.getPosition().getAxis(), rectangular.getPosition().getRefDirection()));
+		}else if(boss.getClass() == GeneralProfileBoss.class)
+		{
+			GeneralProfileBoss general = (GeneralProfileBoss)boss;
+			
+			EGeneral_closed_profile eGeneral_closed_profile = (EGeneral_closed_profile)this.model.createEntityInstance(EGeneral_closed_profile.class);
+			eGeneral_closed_profile.setPlacement(null, this.createAxis2Placement3D(general.getPosition().getName(), general.getPosition().getCoordinates(), general.getPosition().getAxis(), general.getPosition().getRefDirection()));
+			
+		}
+		
+		return eBoss;
 	}
 	private EClosed_pocket createClosedPocket(String id, EWorkpiece workpiece, AMachining_operation operations, EAxis2_placement_3d placement, double depth, int bottomCondition, double planarRadius, double ortogonalRadius, EClosed_profile profile) throws SdaiException
 	{

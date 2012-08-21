@@ -104,7 +104,7 @@ public class GeneralProfileBossFrame extends JDialog {
 							toolBar2.add(label1);
 
 							//---- spinnerZoom ----
-							spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 500.0, 5.0));
+							spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 500.0, 10.0));
 							toolBar2.add(spinnerZoom);
 
 							//======== panel6 ========

@@ -365,20 +365,18 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		int nPointsIn = 0;
 		for (int iPoint = 1; iPoint < nPoints - 1; iPoint++) 
 		{
-			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint),
-					(int) (p1.getY() + hy * iPoint));
+			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint), (int) (p1.getY() + hy * iPoint));
 
 			if (forma.contains(testPoint)|| pointList.size()==3) 
 			{
 				nPointsIn++;
 			}
 		}
-
 		if (nPointsIn == 0)
 		{
 			alfa = 2 * Math.PI - alfa;
 		}
-		//System.out.println("alfaAf="+alfa*180/Math.PI);
+		System.out.println("alfaAf=" + alfa * 180 / Math.PI);
 		return alfa;
 	}
 	

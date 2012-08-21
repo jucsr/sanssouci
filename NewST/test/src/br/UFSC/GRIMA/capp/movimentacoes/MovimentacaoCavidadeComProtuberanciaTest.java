@@ -81,7 +81,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.cavidade.setNome("Lucas");
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(10);
-		this.cavidade.setRaio(10);
+		this.cavidade.setRaio(2);
 		this.cavidade.setComprimento(80);
 		this.cavidade.setLargura(60);
 		this.cavidade.createGeometricalElements();
@@ -106,6 +106,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		ArrayList<Point2D> vertices = new ArrayList<Point2D>();
 		vertices.add(new Point2D.Double(20,15));
 		vertices.add(new Point2D.Double(25,30));
+		vertices.add(new Point2D.Double(30,20));
 		vertices.add(new Point2D.Double(40,35));
 		vertices.add(new Point2D.Double(45,25));
 		
@@ -134,7 +135,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					raio=this.cavidade.getRaio(),
 					raioAtual,
 					z=-10,
-					diametroFerramenta = 4;//this.ferramenta.getDiametroFerramenta();
+					diametroFerramenta = 13;//this.ferramenta.getDiametroFerramenta();
 			RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(this.cavidade.getPosicaoX(), this.cavidade.getPosicaoY(), comprimento, largura, 2*raio, 2*raio);
 
 			double malhaMenoresDistancias[][] = new double[99][99];
@@ -152,7 +153,6 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					malha[i][k][1] = this.cavidade.getPosicaoY()+largura*(k+1)/100;//y
 				}
 			}
-
 
 			//REPRODUZIR BOSS
 			bossArray = new ArrayList<Shape>();
@@ -191,7 +191,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					double distancia, maiorX, maiorY;
 					int q;
 					for(int j=0;j<vertex.size();j++){
-						if(j==3)
+						if(j==vertex.size()-1)
 							q=0;
 						else
 							q=j+1;
@@ -293,8 +293,6 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 			int b=0,c=0;
 			//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
 			pontosPossiveis = new ArrayList<Point3d>();
-			pontosPossX = new ArrayList<Point3d>();
-			pontosPossY = new ArrayList<Point3d>();
 			coordenadas = new ArrayList<Point2d>();
 			for(int i=0;i<malha.length;i++){
 				for(int k=0;k<malha[i].length;k++){
@@ -303,27 +301,16 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 							if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
 								b++;
 							}
-							if(!bossArray.get(g).contains(malha[k][i][0], malha[k][i][1])){
-								c++;
-							}
 						}
 						if(b==bossArray.size()){
 							pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
-							pontosPossX.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
 							coordenadas.add(new Point2d(i,k));
 //							System.out.println(k);
 						}
 						else{
 							malhaMenoresDistancias[i][k] = 0;
 						}
-						if(c==bossArray.size()){
-							pontosPossY.add(new Point3d(malha[k][i][0],malha[k][i][1],z));							
-						}
-						else{
-							malhaMenoresDistancias[i][k] = 0;
-						}
 						b=0;
-						c=0;
 					}
 					malhaMenoresDistancias[i][k] = 0;
 				}
@@ -335,10 +322,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 			double distanciaTmp, distanciaTmpX, distanciaTmpY;
 			int numeroDeCortes,u=0;
 
-
 			menorDistancia = new ArrayList<Double>();
-			menorX = new ArrayList<Double>();
-			menorY = new ArrayList<Double>();
 			for(int i=0;i<pontosPossiveis.size();i++){
 				distanciaTmp=100;
 				distanciaTmpX=100;
@@ -347,57 +331,17 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
 						distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
 					}
-					if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossX.get(i))<distanciaTmpX){
-						distanciaTmpX=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossX.get(i));
-					}
-					if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossY.get(i))<distanciaTmpY){
-						distanciaTmpY=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossY.get(i));
-					}
 				}
-//				distanciaTmp=distanciaTmp*10;
-//				distanciaTmp=Math.round(distanciaTmp);
-//				distanciaTmp=distanciaTmp/10;
-//				System.out.println(distanciaTmp);
 				malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
 				menorDistancia.add(distanciaTmp);
-				menorX.add(distanciaTmpX);
-				menorY.add(distanciaTmpY);
 //				System.out.println(menorDistancia.get(i));
-			}
-
-			
-			double distanciaX,distanciaY;
-			double derivadaX,derivadaY;
-			distanciaX = malha[1][0][0]-malha[0][0][0];
-			distanciaY = malha[0][1][1]-malha[0][0][1];
-			
-			for(int i=0;i<menorX.size();i++){
-				derivadaY = menorX.get(i)/distanciaY;
 			}
 			
 			maximos = new ArrayList<Point3d>();
 
-//			for(int i=1;i<menorX.size();i++){
-//				if(i!=menorX.size()-1){
-//					if(menorX.get(i-1)<menorX.get(i) &&
-//						menorX.get(i+1)<menorX.get(i) &&
-//						menorY.get(i-1)<menorY.get(i) &&
-//						menorY.get(i+1)<menorY.get(i)){
-//						
-//						maximos.add(pontosPossX.get(i));
-//					}
-////					if(menorY.get(i-1)<=menorY.get(i) &&
-////							menorY.get(i+1)<=menorY.get(i) &&
-////						(menorY.get(i-1)+0.1<=menorY.get(i) ||
-////						menorY.get(i+1)+0.1<=menorY.get(i))){
-////							maximos.add(pontosPossY.get(i));
-////						}
-//				}
-//			}
-			
 			/*TESTE*/
-			double diametroTmp=1000;
-			int contador=0;
+			double diametroTmp=1000, raioMedia=0, raioMenor=10000;
+			int contador=0, numeroDeDiametrosAdicionados=0;
 			
 			for(int i=1;i<malhaMenoresDistancias.length-1;i++){
 				for(int k=1;k<malhaMenoresDistancias.length-1;k++){
@@ -421,28 +365,23 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					if(malhaMenoresDistancias[i][k]<=2)
 						contador=0;
 					
-//					if(		malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k+1] &&
-//							malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k-1] &&
-//							malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k+1] &&
-//							malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k+1] &&
-//							malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k-1] &&
-//							malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k-1] &&
-//							malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k] &&
-//							malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k] &&
-//							malhaMenoresDistancias[i][k]!=0){
-//				
 					if(contador>=6){
+						if(raioMenor>malhaMenoresDistancias[i][k])
+							raioMenor = malhaMenoresDistancias[i][k];
+						numeroDeDiametrosAdicionados++;
+						raioMedia+=malhaMenoresDistancias[i][k];
 						maximos.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
 						if(diametroTmp>malhaMenoresDistancias[i][k] && malhaMenoresDistancias[i][k]!=0){
 							diametroTmp=malhaMenoresDistancias[i][k];
 						}
 					}
-
-					
 				}
 			}
+			
+			raioMedia = raioMedia/numeroDeDiametrosAdicionados;
 
-			System.out.println(diametroTmp);
+			System.out.println("RAIO MÉDIO: "+raioMedia);
+			System.out.println("RAIO MENOR: "+raioMenor);
 			
 						
 			for(int i=0;i<menorDistancia.size();i++){
@@ -451,6 +390,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 			}
 			
+			diametroFerramenta = 2*raioMedia;
 			
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
 
@@ -556,9 +496,9 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					g2d.draw(e.get(i));
 				}
 				g2d.setColor(new Color(100, 100, 251));
-//				for(int i=0;i<f.size();i++){
-//					g2d.draw(f.get(i));
-//				}
+				for(int i=0;i<f.size();i++){
+					g2d.draw(f.get(i));
+				}
 				g2d.setColor(new Color(251, 100, 100));
 				for(int i=0;i<w.size();i++){
 					g2d.draw(w.get(i));

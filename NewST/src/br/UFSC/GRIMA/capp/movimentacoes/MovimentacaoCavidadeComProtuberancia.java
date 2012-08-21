@@ -2,16 +2,19 @@ package br.UFSC.GRIMA.capp.movimentacoes;
 
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
+import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.LinearPath;
@@ -29,6 +32,7 @@ public class MovimentacaoCavidadeComProtuberancia {
 		this.ferramenta = this.ws.getFerramenta();
 		this.cavidade = (Cavidade) this.ws.getFeature();
 	}
+	
 	
 	private ArrayList<LinearPath> desbaste(){
 		ArrayList<LinearPath> desbaste = new ArrayList<LinearPath>();

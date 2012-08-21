@@ -15,6 +15,7 @@ import javax.vecmath.Point3d;
 
 import com.lksoft.util.logging.SystemOutHandler;
 
+import jsdai.SCombined_schema.ABoss;
 import jsdai.SCombined_schema.EClosed_pocket;
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
@@ -33,7 +34,7 @@ public class Cavidade extends Feature implements Serializable {
 	private double profundidade;
 	private ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 	private ArrayList<LimitedElement> geometricalElements;
-	
+	private ABoss aBoss;
 	private transient EClosed_pocket eClosed_pocket;
 	
 	private boolean passante = false;
@@ -604,6 +605,16 @@ public class Cavidade extends Feature implements Serializable {
 			}
 			
 		return saida;
+	}
+
+	public ABoss getaBoss() 
+	{
+		return aBoss;
+	}
+
+	public void setaBoss(ABoss aBoss) 
+	{
+		this.aBoss = aBoss;
 	}
 
 }

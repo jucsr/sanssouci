@@ -406,9 +406,9 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				{
 					Point3d coordinates = null;
 					ArrayList<Double> axis = null, refDirection = null;
-					if (this.face.getTipo() == Face.XY) {
-						coordinates = new Point3d(novoCircularBoss.X, novoCircularBoss.Y,
-								this.face.getProfundidadeMaxima() - novoCircularBoss.Z);
+					if (this.face.getTipo() == Face.XY) 
+					{
+						coordinates = new Point3d(novoCircularBoss.X, novoCircularBoss.Y, this.face.getProfundidadeMaxima() - novoCircularBoss.Z);
 						axis = new ArrayList<Double>();
 						axis.add(0.0);
 						axis.add(0.0);
@@ -418,7 +418,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						refDirection.add(1.0);
 						refDirection.add(0.0);
 						refDirection.add(0.0);
-					} else if (this.face.getTipo() == Face.XZ) {
+					} else if (this.face.getTipo() == Face.XZ) 
+					{
 						coordinates = new Point3d(novoCircularBoss.X, novoCircularBoss.Z, novoCircularBoss.Y);
 						axis = new ArrayList<Double>();
 						axis.add(0.0);
@@ -430,7 +431,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						refDirection.add(0.0);
 						refDirection.add(0.0);
 
-					} else if (this.face.getTipo() == Face.YX) {
+					} else if (this.face.getTipo() == Face.YX) 
+					{
 						coordinates = new Point3d(novoCircularBoss.X, this.face.getLargura() - novoCircularBoss.Y, novoCircularBoss.Z);
 						axis = new ArrayList<Double>();
 						axis.add(0.0);
@@ -442,7 +444,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						refDirection.add(0.0);
 						refDirection.add(0.0);
 
-					} else if (this.face.getTipo() == Face.YZ) {
+					} else if (this.face.getTipo() == Face.YZ)
+					{
 						coordinates = new Point3d(
 								this.face.getProfundidadeMaxima() - novoCircularBoss.Z, novoCircularBoss.Y, this.face.getComprimento() - novoCircularBoss.X);
 						axis = new ArrayList<Double>();
@@ -455,7 +458,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						refDirection.add(0.0);
 						refDirection.add(-1.0);
 
-					} else if (this.face.getTipo() == Face.ZX) {
+					} else if (this.face.getTipo() == Face.ZX) 
+					{
 						coordinates = new Point3d(novoCircularBoss.X, this.face.getProfundidadeMaxima() - novoCircularBoss.Z, this.face.getLargura() - novoCircularBoss.Y);
 						axis = new ArrayList<Double>();
 						axis.add(0.0);
@@ -467,7 +471,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						refDirection.add(0.0);
 						refDirection.add(0.0);
 
-					} else if (this.face.getTipo() == Face.ZY) {
+					} else if (this.face.getTipo() == Face.ZY) 
+					{
 						coordinates = new Point3d(novoCircularBoss.Z, novoCircularBoss.Y, novoCircularBoss.X);
 						axis = new ArrayList<Double>();
 						axis.add(-1.0);

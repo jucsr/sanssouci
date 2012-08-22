@@ -462,8 +462,6 @@ public class Generate3Dview extends Frame3D
 							e.printStackTrace();
 						}
 						break;
-					
-
 						default:
 							break;
 					}
@@ -1249,6 +1247,82 @@ public class Generate3Dview extends Frame3D
 						default:
 							break;
 					}
+					/**
+					 ************** REVISAR QUANDO A INTERFACE GRAFICA ESTEJA PRONTA *****
+					 */
+					if(feature.getClass() == Region.class)
+					{
+						Region region = (Region)faceTmp.features.elementAt(j);
+						OperationBezierSurface obs = new OperationBezierSurface("", region.getControlVertex(), region.getSplitU(), region.getSplitV());
+						obs.rotate(Math.PI / 2 , 0);
+						obs.translate(-faceTmp.getComprimento() / 2, faceTmp.getProfundidadeMaxima() / 2 - 0, faceTmp.getLargura() / 2);
+						try
+						{
+							this.rawBlock = new CompoundSolid("", CompoundSolid.DIFFERENCE, this.rawBlock, obs);
+						} catch (InvalidBooleanOperationException e)
+						{
+							e.printStackTrace();
+						}
+					} 
+					if(feature.getClass() == GeneralClosedPocket.class)
+					{
+						GeneralClosedPocket general = (GeneralClosedPocket)faceTmp.features.elementAt(j);
+						OperationGeneralClosedPocked op = new OperationGeneralClosedPocked("", (float)general.getProfundidade(), (float)general.getRadius(), general.getPoints());
+						op.rotate(Math.PI  / 2, 0);
+						op.translate(-faceTmp.getComprimento() / 2, -faceTmp.getProfundidadeMaxima() / 2 + general.Z, -faceTmp.getLargura() / 2);
+						try
+						{
+							this.rawBlock = new CompoundSolid("", CompoundSolid.DIFFERENCE, this.rawBlock, op);
+						} catch (InvalidBooleanOperationException e)
+						{
+							e.printStackTrace();
+						}
+						
+						for(int k = 0; k < general.getItsBoss().size(); k++)
+						{
+							Boss bossG = general.getItsBoss().get(k);
+							if (bossG.getClass() == CircularBoss.class)
+							{
+								CircularBoss bossTmp = (CircularBoss) general.getItsBoss().get(k);	
+								
+								OperationTaperHole boss = new OperationTaperHole("",  (float) bossTmp.getAltura(), (float) bossTmp.getDiametro1(),(float) bossTmp.getDiametro2());
+								boss.translate( - faceTmp.getComprimento()/2 + bossTmp.X, faceTmp.getProfundidadeMaxima()/2- bossTmp.Z, faceTmp.getLargura()/2 - bossTmp.Y);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, boss);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
+								
+							} else if(bossG.getClass() == RectangularBoss.class)
+							{
+								RectangularBoss bossTmp = (RectangularBoss) general.getItsBoss().get(k);	
+								
+								OperationPocket_1 pocketRectangular = new OperationPocket_1("", (float)bossTmp.getL1(), (float)bossTmp.getL2(), (float)bossTmp.getAltura(), (float)bossTmp.getRadius());
+								pocketRectangular.translate(-faceTmp.getComprimento()/2 + bossTmp.X + bossTmp.getL1()/2, faceTmp.getProfundidadeMaxima()/2 - bossTmp.Z - bossTmp.getAltura()/2, +faceTmp.getLargura()/2 - bossTmp.getL2()/2 - bossTmp.Y);
+							
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, pocketRectangular);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
+							} else if(bossG.getClass() == GeneralProfileBoss.class)
+							{
+								GeneralProfileBoss bossTmp = (GeneralProfileBoss)general.getItsBoss().get(k);
+								OperationGeneralClosedPocked opBoss = new OperationGeneralClosedPocked("", (float)bossTmp.getAltura(), (float)bossTmp.getRadius(), bossTmp.getVertexPoints());
+								opBoss.rotate(Math.PI / 2, 0);
+								opBoss.translate(-faceTmp.getComprimento() / 2, -bossTmp.getAltura() + bossTmp.Z - faceTmp.getProfundidadeMaxima() / 2, -faceTmp.getLargura() / 2);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, opBoss);
+								} catch (InvalidBooleanOperationException e)
+								{
+									e.printStackTrace();
+								}
+							}
+						}
+					}
 				}
 				break;
 			case Face.YZ:
@@ -1601,6 +1675,82 @@ public class Generate3Dview extends Frame3D
 						break;
 						default:
 							break;
+					}
+					/**
+					 ************** REVISAR QUANDO A INTERFACE GRAFICA ESTEJA PRONTA *****
+					 */
+					if(feature.getClass() == Region.class)
+					{
+						Region region = (Region)faceTmp.features.elementAt(j);
+						OperationBezierSurface obs = new OperationBezierSurface("", region.getControlVertex(), region.getSplitU(), region.getSplitV());
+						obs.rotate(Math.PI / 2 , 0);
+						obs.translate(-faceTmp.getComprimento() / 2, faceTmp.getProfundidadeMaxima() / 2 - 0, faceTmp.getLargura() / 2);
+						try
+						{
+							this.rawBlock = new CompoundSolid("", CompoundSolid.DIFFERENCE, this.rawBlock, obs);
+						} catch (InvalidBooleanOperationException e)
+						{
+							e.printStackTrace();
+						}
+					} 
+					if(feature.getClass() == GeneralClosedPocket.class)
+					{
+						GeneralClosedPocket general = (GeneralClosedPocket)faceTmp.features.elementAt(j);
+						OperationGeneralClosedPocked op = new OperationGeneralClosedPocked("", (float)general.getProfundidade(), (float)general.getRadius(), general.getPoints());
+						op.rotate(Math.PI  / 2, 0);
+						op.translate(-faceTmp.getComprimento() / 2, -faceTmp.getProfundidadeMaxima() / 2 + general.Z, -faceTmp.getLargura() / 2);
+						try
+						{
+							this.rawBlock = new CompoundSolid("", CompoundSolid.DIFFERENCE, this.rawBlock, op);
+						} catch (InvalidBooleanOperationException e)
+						{
+							e.printStackTrace();
+						}
+						
+						for(int k = 0; k < general.getItsBoss().size(); k++)
+						{
+							Boss bossG = general.getItsBoss().get(k);
+							if (bossG.getClass() == CircularBoss.class)
+							{
+								CircularBoss bossTmp = (CircularBoss) general.getItsBoss().get(k);	
+								
+								OperationTaperHole boss = new OperationTaperHole("",  (float) bossTmp.getAltura(), (float) bossTmp.getDiametro1(),(float) bossTmp.getDiametro2());
+								boss.translate( - faceTmp.getComprimento()/2 + bossTmp.X, faceTmp.getProfundidadeMaxima()/2- bossTmp.Z, faceTmp.getLargura()/2 - bossTmp.Y);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, boss);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
+								
+							} else if(bossG.getClass() == RectangularBoss.class)
+							{
+								RectangularBoss bossTmp = (RectangularBoss) general.getItsBoss().get(k);	
+								
+								OperationPocket_1 pocketRectangular = new OperationPocket_1("", (float)bossTmp.getL1(), (float)bossTmp.getL2(), (float)bossTmp.getAltura(), (float)bossTmp.getRadius());
+								pocketRectangular.translate(-faceTmp.getComprimento()/2 + bossTmp.X + bossTmp.getL1()/2, faceTmp.getProfundidadeMaxima()/2 - bossTmp.Z - bossTmp.getAltura()/2, +faceTmp.getLargura()/2 - bossTmp.getL2()/2 - bossTmp.Y);
+							
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, pocketRectangular);
+								} catch (InvalidBooleanOperationException e) {
+									e.printStackTrace();
+								}
+							} else if(bossG.getClass() == GeneralProfileBoss.class)
+							{
+								GeneralProfileBoss bossTmp = (GeneralProfileBoss)general.getItsBoss().get(k);
+								OperationGeneralClosedPocked opBoss = new OperationGeneralClosedPocked("", (float)bossTmp.getAltura(), (float)bossTmp.getRadius(), bossTmp.getVertexPoints());
+								opBoss.rotate(Math.PI / 2, 0);
+								opBoss.translate(-faceTmp.getComprimento() / 2, -bossTmp.getAltura() + bossTmp.Z - faceTmp.getProfundidadeMaxima() / 2, -faceTmp.getLargura() / 2);
+								try 
+								{
+									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, opBoss);
+								} catch (InvalidBooleanOperationException e)
+								{
+									e.printStackTrace();
+								}
+							}
+						}
 					}
 				}
 				break;

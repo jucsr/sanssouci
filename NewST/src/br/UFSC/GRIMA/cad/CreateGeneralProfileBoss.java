@@ -344,7 +344,6 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		}
 		return isValid;
 	}
-	
 	public static double solveAngle(Point2D p0, Point2D p1, Point2D p2, GeneralPath forma, ArrayList<Point2D> pointList)
 	{
 		double distance0, distance1, distance2;
@@ -365,105 +364,266 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		int nPointsIn = 0;
 		for (int iPoint = 1; iPoint < nPoints - 1; iPoint++) 
 		{
-			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint), (int) (p1.getY() + hy * iPoint));
+			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint),
+					(int) (p1.getY() + hy * iPoint));
 
 			if (forma.contains(testPoint)|| pointList.size()==3) 
 			{
 				nPointsIn++;
 			}
 		}
+
+		
+		
+		if (alfa > Math.PI)
+		{
+			alfa = alfa - Math.PI;
+		}
+		
 		if (nPointsIn == 0)
 		{
-			alfa = 2 * Math.PI - alfa;
+			alfa = -alfa;
 		}
-		System.out.println("alfaAf=" + alfa * 180 / Math.PI);
+		
+		//System.out.println("alfaAf="+alfa*180/Math.PI);
 		return alfa;
 	}
-	
+//	public static double solveAngle(Point2D p0, Point2D p1, Point2D p2, GeneralPath forma, ArrayList<Point2D> pointList)
+//	{
+//		double distance0, distance1, distance2;
+//		double alfa;
+//
+//		distance0 = p1.distance(p2);
+//		distance1 = p0.distance(p1);
+//		distance2 = p2.distance(p0);
+//
+//		int nPoints = 20;
+//		double hx = (p2.getX() - p1.getX()) / nPoints;
+//		double hy = (p2.getY() - p1.getY()) / nPoints;
+//		boolean allOut;
+//		
+//		double v1v2=(p1.getX() - p0.getX()) * (p2.getX() - p0.getX()) + (p1.getY() - p0.getY()) * (p2.getY() - p0.getY());
+//		alfa = Math.acos(v1v2/(distance1 * distance2));
+//
+//		int nPointsIn = 0;
+//		for (int iPoint = 1; iPoint < nPoints - 1; iPoint++) 
+//		{
+//			Point2D testPoint = new Point2D.Double((p1.getX() + hx * iPoint), (int) (p1.getY() + hy * iPoint));
+//
+//			if (forma.contains(testPoint)|| pointList.size()==3) 
+//			{
+//				nPointsIn++;
+//			}
+//		}
+//		if (nPointsIn == 0)
+//		{
+//			alfa = 2 * Math.PI - alfa;
+//		}
+//		System.out.println("alfaAf=" + alfa * 180 / Math.PI);
+//		return alfa;
+//	}
 	public static ArrayList<Point2D> solveArc(GeneralPath forma, Point2D p0, Point2D p2, Point2D p1, double radius, ArrayList<Point2D> pointList)
 	{
 		double alfa = solveAngle(p0, p1, p2, forma, pointList);
-		double teta = Math.PI / 2 - alfa / 2;
+		//System.out.println("alfa:" + alfa*180/Math.PI);
+		
 		double h;
+		
+		Point2D a = new Point2D.Double();
+		Point2D b = new Point2D.Double();
+		Point2D c = new Point2D.Double();
+		Point2D cc = new Point2D.Double();
+		
 		ArrayList<Point2D> arcPoints = new ArrayList<Point2D>();
-		/*
+		
 		System.out.println("***********************");
 		System.out.println("alfa:" + alfa*180/Math.PI);
 		System.out.println("P0:"+p0.getX()+","+p0.getY());
 		System.out.println("P1:"+p1.getX()+","+p1.getY());
 		System.out.println("P2:"+p2.getX()+","+p2.getY());
-		*/
+		
 
-		if (alfa > Math.PI)		
+		double teta = Math.PI - Math.abs(alfa);
+		h = radius * Math.cos(teta);
+		System.out.println("teta:" + teta*180/Math.PI);
+		double dc = radius / Math.sin(Math.abs(alfa / 2));
+		
+		if (alfa < 0.0)		
 		{
-			arcPoints.add(p0);
+			a = pointT(p0, p2, radius, Math.abs(alfa));
+			b = pointT(p0, p1, radius, Math.abs(alfa));
+			c.setLocation((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
+			
+			System.out.println("a:"+a.getX()+","+a.getY());
+			System.out.println("b:"+b.getX()+","+b.getY());			
+			System.out.println("c:"+c.getX()+","+c.getY());
+			
+			cc = pointAlong(p0, c, dc);
+			System.out.println("CC:"+cc.getX()+","+cc.getY());
 			
 		}
 		else
 		{
-			Point2D a = new Point2D.Double();
-			Point2D b = new Point2D.Double();
-			Point2D c = new Point2D.Double();
-			Point2D cc = new Point2D.Double();
-	
-			h = radius * Math.cos(teta);
-	
 			a = pointT(p0, p1, radius, alfa);
 			b = pointT(p0, p2, radius, alfa);
 			c.setLocation((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
-	
-			double dc = radius / Math.sin(alfa / 2);
-	
-			cc = pointAlong(p0, c, dc);
-			/*
-			System.out.println("Doing Arc for alpha");
+			
 			System.out.println("a:"+a.getX()+","+a.getY());
-			System.out.println("b:"+b.getX()+","+b.getY());
+			System.out.println("b:"+b.getX()+","+b.getY());			
+			System.out.println("c:"+c.getX()+","+c.getY());
+			
+			cc = pointAlong(p0, c, dc);
 			System.out.println("CC:"+cc.getX()+","+cc.getY());
-			*/
-			Point2D bb = new Point2D.Double(b.getX()-cc.getX(),b.getY()-cc.getY());
-			Point2D aa = new Point2D.Double(a.getX()-cc.getX(),a.getY()-cc.getY());
-	
-			//System.out.println("bb:"+bb);
-			//System.out.println("aa:"+aa);
 			
-			poligonoAuxiliar.add(b);
-			poligonoAuxiliar.add(a);
-			
-			
-			double anguloInicial=Math.atan2(bb.getY(),bb.getX()); 					
-			//double anguloFinal=Math.atan2(aa.getY(),aa.getX());
-			
-			if (anguloInicial<0.0)
-			{
-				anguloInicial=anguloInicial+2*Math.PI;
-			}
-			
-			double anguloFinal = anguloInicial + Math.PI - alfa;
-			
-			double deltaAngulo=Math.PI-alfa;
-			/*
-			if (anguloFinal<0.0)
-			{
-				anguloFinal=anguloFinal+2*Math.PI;
-			}			
-			
-			if (anguloFinal<anguloInicial)
-			{
-				anguloFinal=anguloFinal+2*Math.PI;
-			}
-			*/
-			
-			//System.out.println("AInicial: "+anguloInicial*180/Math.PI+" AFinal: "+anguloFinal*180/Math.PI);
-			double comprimentoLinha = 1;
-			comprimentoLinha=radius/3;
-			arcPoints=interpolarArco(cc,radius,anguloInicial, deltaAngulo, comprimentoLinha, true);		
-			//p0 medio
-			//p1 derecha
-			//p2 izquierda
 		}
-		return arcPoints;
+		/*
+		System.out.println("Doing Arc for alpha");
+		System.out.println("a:"+a.getX()+","+a.getY());
+		System.out.println("b:"+b.getX()+","+b.getY());
+		System.out.println("CC:"+cc.getX()+","+cc.getY());
+		*/
+		Point2D bb = new Point2D.Double(b.getX()-cc.getX(),b.getY()-cc.getY());
+		Point2D aa = new Point2D.Double(a.getX()-cc.getX(),a.getY()-cc.getY());
+
+		//System.out.println("bb:"+bb);
+		//System.out.println("aa:"+aa);
+		
+		//poligonoAuxiliar.add(b);
+		//poligonoAuxiliar.add(a);
+		
+		
+		double anguloInicial=Math.atan2(bb.getY(),bb.getX()); 					
+		//double anguloFinal=Math.atan2(aa.getY(),aa.getX());
+		
+		if (anguloInicial<0.0)
+		{
+			anguloInicial=anguloInicial+2*Math.PI;
+		}
+		
+		double anguloFinal = anguloInicial + teta;
+		
+		/*
+		double deltaAngulo=Math.PI-Math.abs(alfa);
+		
+		if (anguloFinal<0.0)
+		{
+			anguloFinal=anguloFinal+2*Math.PI;
+		}			
+		
+		if (anguloFinal<anguloInicial)
+		{
+			anguloFinal=anguloFinal+2*Math.PI;
+		}
+		
+		*/
+		//System.out.println("AInicial: "+anguloInicial*180/Math.PI+" AFinal: "+anguloFinal*180/Math.PI);
+		double comprimentoLinha = 1;
+		comprimentoLinha=radius/3;
+		
+		//arcPoints=interpolarArco(cc,radius,anguloInicial, deltaAngulo, comprimentoLinha, true);		
+		arcPoints=interpolarArco(cc,radius,anguloInicial, teta, comprimentoLinha, true);
+		if (alfa<0.0)
+		{
+			ArrayList<Point2D> arcPointsOut = new ArrayList<Point2D>();
+			for (int i=arcPoints.size()-1;i>=0;i--)
+			{
+				arcPointsOut.add(arcPoints.get(i));
+			}
+			return arcPointsOut;
+		}
+		else
+		{
+			return arcPoints;	
+		}
+		//p0 medio
+		//p1 derecha
+		//p2 izquierda
+		
 	}	
+//	public static ArrayList<Point2D> solveArc(GeneralPath forma, Point2D p0, Point2D p2, Point2D p1, double radius, ArrayList<Point2D> pointList)
+//	{
+//		double alfa = solveAngle(p0, p1, p2, forma, pointList);
+//		double teta = Math.PI / 2 - alfa / 2;
+//		double h;
+//		ArrayList<Point2D> arcPoints = new ArrayList<Point2D>();
+//		/*
+//		System.out.println("***********************");
+//		System.out.println("alfa:" + alfa*180/Math.PI);
+//		System.out.println("P0:"+p0.getX()+","+p0.getY());
+//		System.out.println("P1:"+p1.getX()+","+p1.getY());
+//		System.out.println("P2:"+p2.getX()+","+p2.getY());
+//		*/
+//
+//		if (alfa > Math.PI)		
+//		{
+//			arcPoints.add(p0);
+//			
+//		}
+//		else
+//		{
+//			Point2D a = new Point2D.Double();
+//			Point2D b = new Point2D.Double();
+//			Point2D c = new Point2D.Double();
+//			Point2D cc = new Point2D.Double();
+//	
+//			h = radius * Math.cos(teta);
+//	
+//			a = pointT(p0, p1, radius, alfa);
+//			b = pointT(p0, p2, radius, alfa);
+//			c.setLocation((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
+//	
+//			double dc = radius / Math.sin(alfa / 2);
+//	
+//			cc = pointAlong(p0, c, dc);
+//			/*
+//			System.out.println("Doing Arc for alpha");
+//			System.out.println("a:"+a.getX()+","+a.getY());
+//			System.out.println("b:"+b.getX()+","+b.getY());
+//			System.out.println("CC:"+cc.getX()+","+cc.getY());
+//			*/
+//			Point2D bb = new Point2D.Double(b.getX()-cc.getX(),b.getY()-cc.getY());
+//			Point2D aa = new Point2D.Double(a.getX()-cc.getX(),a.getY()-cc.getY());
+//	
+//			//System.out.println("bb:"+bb);
+//			//System.out.println("aa:"+aa);
+//			
+//			poligonoAuxiliar.add(b);
+//			poligonoAuxiliar.add(a);
+//			
+//			
+//			double anguloInicial=Math.atan2(bb.getY(),bb.getX()); 					
+//			//double anguloFinal=Math.atan2(aa.getY(),aa.getX());
+//			
+//			if (anguloInicial<0.0)
+//			{
+//				anguloInicial=anguloInicial+2*Math.PI;
+//			}
+//			
+//			double anguloFinal = anguloInicial + Math.PI - alfa;
+//			
+//			double deltaAngulo=Math.PI-alfa;
+//			/*
+//			if (anguloFinal<0.0)
+//			{
+//				anguloFinal=anguloFinal+2*Math.PI;
+//			}			
+//			
+//			if (anguloFinal<anguloInicial)
+//			{
+//				anguloFinal=anguloFinal+2*Math.PI;
+//			}
+//			*/
+//			
+//			//System.out.println("AInicial: "+anguloInicial*180/Math.PI+" AFinal: "+anguloFinal*180/Math.PI);
+//			double comprimentoLinha = 1;
+//			comprimentoLinha=radius/3;
+//			arcPoints=interpolarArco(cc,radius,anguloInicial, deltaAngulo, comprimentoLinha, true);		
+//			//p0 medio
+//			//p1 derecha
+//			//p2 izquierda
+//		}
+//		return arcPoints;
+//	}	
 	
 	public static Point2D pointT (Point2D p0, Point2D p1, double radius, double alfa)
 	{

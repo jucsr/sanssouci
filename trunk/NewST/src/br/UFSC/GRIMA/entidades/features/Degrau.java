@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.entidades.features;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -17,6 +18,8 @@ public class Degrau extends Feature implements Serializable{
 	double i;
 	private double comprimento;
 	private transient EStep eStep;
+	
+	private ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 	
 	public Degrau(){
 		super(Feature.DEGRAU);
@@ -173,5 +176,13 @@ public class Degrau extends Feature implements Serializable{
 		}
 		else
 			return "VERTICAL";
+	}
+	
+	public ArrayList<Boss> getItsBoss() {
+		return itsBoss;
+	}
+
+	public void setItsBoss(ArrayList<Boss> itsBoss) {
+		this.itsBoss = itsBoss;
 	}
 }

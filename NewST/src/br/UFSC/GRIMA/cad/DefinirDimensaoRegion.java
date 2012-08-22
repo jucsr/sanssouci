@@ -370,11 +370,12 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 						{
 							JOptionPane.showMessageDialog(null, "A regiao intersecta o degrau \n ", "Erro ao criar a regiao", JOptionPane.OK_CANCEL_OPTION);
 							ok = false;
-						}
+						} 
 						
-						//VERIFICAR SE NAO PRECISA DE OUTRA CONDICAO A MAIS!!!!!!!
 						else if(degrau.contains(region))
+						
 						{
+							//VERIFICAR SE NAO PRECISA DE OUTRA CONDICAO A MAIS!!!!!!!
 							//Mudar a posicao Z para a superficie do degrau
 							ok = true;
 						}
@@ -383,10 +384,25 @@ public class DefinirDimensaoRegion extends DefineRegionDimensionFrame implements
 						
 					case Feature.RANHURA:
 						
+						Rectangle2D.Double ranhura = new Rectangle2D.Double(((Ranhura)ftmp).getPosicaoX(), ((Ranhura)ftmp).getPosicaoY(), ((Ranhura)ftmp).getLargura(), ((Ranhura)ftmp).getComprimento());
+						
+						if(ranhura.intersects(region) || ranhura.contains(region))
+						{
+							JOptionPane.showMessageDialog(null, "A regiao intersecta ou está contida na ranhura ou  \n ", "Erro ao criar a regiao", JOptionPane.OK_CANCEL_OPTION);
+							ok = false;
+						}
+						
+						else
+							ok = true;
 						
 						break;
 						
 					case Feature.CAVIDADE:
+						
+						RoundRectangle2D.Double cavidade = new RoundRectangle2D.Double(((Cavidade)ftmp).getPosicaoX(), ((Cavidade)ftmp).getPosicaoY(), 
+								((Cavidade)ftmp).getLargura(), ((Cavidade)ftmp).getComprimento(), ((Cavidade)ftmp).getRaio(), ((Cavidade)ftmp).getRaio());
+						
+						
 						
 						break;
 					case Feature.CAVIDADE_FUNDO_ARREDONDADO:

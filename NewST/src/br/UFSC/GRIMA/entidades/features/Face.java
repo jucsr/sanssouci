@@ -27,6 +27,7 @@ public class Face implements Serializable{
 	private double largura = 0.0;
 	private double profundidadeMaxima = 0;
 	public Vector features = new Vector();
+	
 	private ArrayList<Point3d> pontosDeApoio = new ArrayList<Point3d>();
 
 	public int[] indices = {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -1641,12 +1642,12 @@ public class Face implements Serializable{
 			//se nao -> br.UFSC.GRIMA.feature valida
 			Rectangle2D rect2d = this.criarRetanguloShape(feature);
 			boolean encontrou = false;
+			
 			for (int i = 0; i < this.features.size(); i++)
 			{
 				Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
 				if (rect2dTmp.contains(rect2d))
 				{
-					
 					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
 
 						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
@@ -1656,9 +1657,91 @@ public class Face implements Serializable{
 						}else{
 							encontrou = true;
 						}
-					}else{
-						encontrou = true;
+						
+					}else if(features.elementAt(i).getClass()==Cavidade.class){
+						
+						Cavidade cavidade = (Cavidade)features.elementAt(i);
+						
+						for (int j = 0; j < cavidade.getItsBoss().size(); j++)
+						{
+							if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
+							{
+								CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
+								
+								if(feature.Z != cb.getPosicaoZ())
+									encontrou = true;
+								else
+									encontrou = false;
+							}
+							
+							else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
+							{
+								RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
+								
+								if(feature.Z != rb.getPosicaoZ())
+									encontrou = true;
+								else
+									encontrou = false;
+							}
+						}
 					}
+					
+					else if(features.elementAt(i).getClass()==Degrau.class){
+						
+						Degrau degrau = (Degrau)features.elementAt(i);
+						
+						for (int j = 0; j < degrau.getItsBoss().size(); j++)
+						{
+							if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
+							{
+								CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
+								
+								if(feature.Z != cb.getPosicaoZ())
+									encontrou = true;
+								else
+									encontrou = false;
+							}
+							
+							else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
+							{
+								RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
+								
+								if(feature.Z != rb.getPosicaoZ())
+									encontrou = true;
+								else
+									encontrou = false;
+							}
+						}
+					}
+						
+					else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
+						
+						GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
+						
+						for (int j = 0; j < gcp.getItsBoss().size(); j++)
+						{
+							if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
+							{
+								CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
+								
+								if(feature.Z != cb.getPosicaoZ())
+									encontrou = true;
+								else
+									encontrou = false;
+							}
+							
+							else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
+							{
+								RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
+								
+								if(feature.Z != rb.getPosicaoZ())
+									encontrou = true;
+								else
+									encontrou = false;
+							}
+						}
+					}
+					
 					/*System.out.println("A Feature nova est� totalmente dentro de uma br.UFSC.GRIMA.feature anterior");
 					System.out.println("rectFeatureNova: " + rect2d);
 					System.out.println("rectPossivelMae : " + rect2dTmp);
@@ -1668,7 +1751,7 @@ public class Face implements Serializable{
 			}
 			
 			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
-				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma j� existente");
+				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
 				JOptionPane.showMessageDialog(null, "                A feature que você está tentando criar está dentro de outra" +
 						"\nverifique q o valor de Z coincida com a profundidade da feature já existente", 
 						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);

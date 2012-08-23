@@ -1,4 +1,5 @@
 package br.UFSC.GRIMA.entidades.features;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -1664,14 +1665,27 @@ public class Face implements Serializable{
 						
 						for (int j = 0; j < cavidade.getItsBoss().size(); j++)
 						{
+							
 							if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
 							{
 								CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
 								
-								if(feature.Z != cb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
+				//				rect2dTmp ellip2dTmp = new Ellipse2D.Double( cb.getPosicaoX(), cb.getPosicaoY(), cb.getDiametro1(), cb.getDiametro1()) ;
+								Rectangle2D rect2dTmp2 = new Rectangle2D.Double(cb.getPosicaoX() - (cb.getDiametro1()/2), cb.getPosicaoY() - (cb.getDiametro1()/2),
+										cb.getDiametro1(), cb.getDiametro1()); // retangulo em volta da base menor do circularBoss
+								
+								if(rect2dTmp2.contains(rect2d))
+								{
+									if(feature.Z != cb.getPosicaoZ())
+									{
+										encontrou = true;
+										break;
+									}
+										
+									else 
+										encontrou = false;
+								}
+								
 							}
 							
 							else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
@@ -1742,18 +1756,27 @@ public class Face implements Serializable{
 						}
 					}
 					
+//					else if(features.elementAt(i).getClass()==PlanarFace.class){
+//						
+//					}
+					
 					/*System.out.println("A Feature nova estï¿½ totalmente dentro de uma br.UFSC.GRIMA.feature anterior");
 					System.out.println("rectFeatureNova: " + rect2d);
 					System.out.println("rectPossivelMae : " + rect2dTmp);
 					System.out.println("contem plenamente a outra: " + rect2dTmp.contains(rect2d));*/
 					break;
 				}
+				
+				else if(rect2d.contains(rect2dTmp) || rect2dTmp.intersects(rect2d))
+					
+					encontrou = true;
+					break;
 			}
 			
 			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
 				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
-				JOptionPane.showMessageDialog(null, "                A feature que vocÃª estÃ¡ tentando criar estÃ¡ dentro de outra" +
-						"\nverifique q o valor de Z coincida com a profundidade da feature jÃ¡ existente", 
+				JOptionPane.showMessageDialog(null, "                A feature que você está tentando criar está dentro de outra" +
+						"\nverifique q o valor de Z coincida com a profundidade da feature já existente", 
 						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);
 				return false;
 			}

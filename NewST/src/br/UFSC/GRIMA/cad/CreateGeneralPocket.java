@@ -449,11 +449,11 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		
 		ArrayList<Point2D> arcPoints = new ArrayList<Point2D>();
 		
-		System.out.println("***********************");
-		System.out.println("alfa:" + alfa*180/Math.PI);
-		System.out.println("P0:"+p0.getX()+","+p0.getY());
-		System.out.println("P1:"+p1.getX()+","+p1.getY());
-		System.out.println("P2:"+p2.getX()+","+p2.getY());
+//		System.out.println("***********************");
+//		System.out.println("alfa:" + alfa*180/Math.PI);
+//		System.out.println("P0:"+p0.getX()+","+p0.getY());
+//		System.out.println("P1:"+p1.getX()+","+p1.getY());
+//		System.out.println("P2:"+p2.getX()+","+p2.getY());
 		
 
 		double teta = Math.PI - Math.abs(alfa);
@@ -467,12 +467,12 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			b = pointT(p0, p1, radius, Math.abs(alfa));
 			c.setLocation((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
 			
-			System.out.println("a:"+a.getX()+","+a.getY());
-			System.out.println("b:"+b.getX()+","+b.getY());			
-			System.out.println("c:"+c.getX()+","+c.getY());
+//			System.out.println("a:"+a.getX()+","+a.getY());
+//			System.out.println("b:"+b.getX()+","+b.getY());			
+//			System.out.println("c:"+c.getX()+","+c.getY());
 			
 			cc = pointAlong(p0, c, dc);
-			System.out.println("CC:"+cc.getX()+","+cc.getY());
+//			System.out.println("CC:"+cc.getX()+","+cc.getY());
 			
 		}
 		else
@@ -481,20 +481,20 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			b = pointT(p0, p2, radius, alfa);
 			c.setLocation((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
 			
-			System.out.println("a:"+a.getX()+","+a.getY());
-			System.out.println("b:"+b.getX()+","+b.getY());			
-			System.out.println("c:"+c.getX()+","+c.getY());
+//			System.out.println("a:"+a.getX()+","+a.getY());
+//			System.out.println("b:"+b.getX()+","+b.getY());			
+//			System.out.println("c:"+c.getX()+","+c.getY());
 			
 			cc = pointAlong(p0, c, dc);
-			System.out.println("CC:"+cc.getX()+","+cc.getY());
+//			System.out.println("CC:"+cc.getX()+","+cc.getY());
 			
 		}
-		/*
-		System.out.println("Doing Arc for alpha");
-		System.out.println("a:"+a.getX()+","+a.getY());
-		System.out.println("b:"+b.getX()+","+b.getY());
-		System.out.println("CC:"+cc.getX()+","+cc.getY());
-		*/
+		
+//		System.out.println("Doing Arc for alpha");
+//		System.out.println("a:"+a.getX()+","+a.getY());
+//		System.out.println("b:"+b.getX()+","+b.getY());
+//		System.out.println("CC:"+cc.getX()+","+cc.getY());
+		
 		Point2D bb = new Point2D.Double(b.getX()-cc.getX(),b.getY()-cc.getY());
 		Point2D aa = new Point2D.Double(a.getX()-cc.getX(),a.getY()-cc.getY());
 

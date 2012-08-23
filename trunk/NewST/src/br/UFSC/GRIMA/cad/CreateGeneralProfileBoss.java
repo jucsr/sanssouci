@@ -20,6 +20,7 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements ActionListener
@@ -33,7 +34,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 	private JanelaPrincipal parent;
 	static ArrayList<Point2D> poligonoAuxiliar = new ArrayList<Point2D>();// --> poligono com os vertices arredondados para triangulacao
 	private double profundidadeFeature;
-	
+	private ArrayList<Path> shape = new ArrayList<Path>();
 	private ArrayList<ArrayList<Point2D>> triangles = new ArrayList<ArrayList<Point2D>>();
 	double zoom = 1;
 	
@@ -283,7 +284,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		if(ok)
 		{
 			GeneralPath forma = new GeneralPath();
-			ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInRoundPolygon(linePanel.pointListCC, radius);
+			ArrayList<Point2D> vertices = transformPolygonInRoundPolygon(linePanel.pointListCC, radius);
 			forma.moveTo(vertices.get(0).getX(), vertices.get(0).getY());
 			for(int i = 1; i < vertices.size(); i++)
 			{
@@ -436,16 +437,16 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		
 		ArrayList<Point2D> arcPoints = new ArrayList<Point2D>();
 		
-		System.out.println("***********************");
-		System.out.println("alfa:" + alfa*180/Math.PI);
-		System.out.println("P0:"+p0.getX()+","+p0.getY());
-		System.out.println("P1:"+p1.getX()+","+p1.getY());
-		System.out.println("P2:"+p2.getX()+","+p2.getY());
+//		System.out.println("***********************");
+//		System.out.println("alfa:" + alfa*180/Math.PI);
+//		System.out.println("P0:"+p0.getX()+","+p0.getY());
+//		System.out.println("P1:"+p1.getX()+","+p1.getY());
+//		System.out.println("P2:"+p2.getX()+","+p2.getY());
 		
 
 		double teta = Math.PI - Math.abs(alfa);
 		h = radius * Math.cos(teta);
-		System.out.println("teta:" + teta*180/Math.PI);
+//		System.out.println("teta:" + teta*180/Math.PI);
 		double dc = radius / Math.sin(Math.abs(alfa / 2));
 		
 		if (alfa < 0.0)		
@@ -454,12 +455,12 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			b = pointT(p0, p1, radius, Math.abs(alfa));
 			c.setLocation((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
 			
-			System.out.println("a:"+a.getX()+","+a.getY());
-			System.out.println("b:"+b.getX()+","+b.getY());			
-			System.out.println("c:"+c.getX()+","+c.getY());
+//			System.out.println("a:"+a.getX()+","+a.getY());
+//			System.out.println("b:"+b.getX()+","+b.getY());			
+//			System.out.println("c:"+c.getX()+","+c.getY());
 			
 			cc = pointAlong(p0, c, dc);
-			System.out.println("CC:"+cc.getX()+","+cc.getY());
+//			System.out.println("CC:"+cc.getX()+","+cc.getY());
 			
 		}
 		else
@@ -468,20 +469,20 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			b = pointT(p0, p2, radius, alfa);
 			c.setLocation((a.getX() + b.getX()) / 2, (a.getY() + b.getY()) / 2);
 			
-			System.out.println("a:"+a.getX()+","+a.getY());
-			System.out.println("b:"+b.getX()+","+b.getY());			
-			System.out.println("c:"+c.getX()+","+c.getY());
+//			System.out.println("a:"+ a);
+//			System.out.println("b:"+ b);			
+//			System.out.println("c:"+ c);
 			
 			cc = pointAlong(p0, c, dc);
-			System.out.println("CC:"+cc.getX()+","+cc.getY());
+//			System.out.println("cc:" + cc);
 			
 		}
-		/*
+	
 		System.out.println("Doing Arc for alpha");
 		System.out.println("a:"+a.getX()+","+a.getY());
 		System.out.println("b:"+b.getX()+","+b.getY());
 		System.out.println("CC:"+cc.getX()+","+cc.getY());
-		*/
+	
 		Point2D bb = new Point2D.Double(b.getX()-cc.getX(),b.getY()-cc.getY());
 		Point2D aa = new Point2D.Double(a.getX()-cc.getX(),a.getY()-cc.getY());
 

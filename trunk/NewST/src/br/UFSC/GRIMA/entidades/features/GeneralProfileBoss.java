@@ -67,6 +67,16 @@ public class GeneralProfileBoss extends Boss
 		root.add(new DefaultMutableTreeNode("Radius = " + this.getRadius()));
 		root.add(new DefaultMutableTreeNode("position Z =  " + this.Z));
 		
+		if(this.vertexPoints.size() > 0)
+		{
+			DefaultMutableTreeNode vertexNode = new DefaultMutableTreeNode("Vertex Points");
+			for(int i = 0; i < this.vertexPoints.size(); i++)
+			{
+				DefaultMutableTreeNode pointNode = new DefaultMutableTreeNode("P - " + i + " : " + vertexPoints.get(i));
+				vertexNode.add(pointNode);
+			}
+			root.add(vertexNode);
+		}
 		return root;
 	}
 }

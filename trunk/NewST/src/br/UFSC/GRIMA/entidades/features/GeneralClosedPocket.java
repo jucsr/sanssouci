@@ -80,26 +80,38 @@ public class GeneralClosedPocket extends Feature
 		root.add(new DefaultMutableTreeNode("Rugosidade = " + this.getRugosidade()));
 		root.add(new DefaultMutableTreeNode("Radius = " + this.getRadius()));
 		
-		DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
-		root.add(bossNode);
-		
-		for(int i = 0; i < this.itsBoss.size(); i++)
+		if(this.itsBoss.size() > 0)
 		{
-			if(this.itsBoss.get(i).getClass() == CircularBoss.class)
+			DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
+			root.add(bossNode);
+			for(int i = 0; i < this.itsBoss.size(); i++)
 			{
-				CircularBoss circular = (CircularBoss)this.itsBoss.get(i);
-				bossNode.add(circular.getNode());
-			} else if(this.itsBoss.get(i).getClass() == RectangularBoss.class)
-			{
-				RectangularBoss rectangular = (RectangularBoss)this.itsBoss.get(i);
-				bossNode.add(rectangular.getNode());
-			} else if(this.itsBoss.get(i).getClass() == GeneralProfileBoss.class)
-			{
-				GeneralProfileBoss general = (GeneralProfileBoss)this.itsBoss.get(i);
-				bossNode.add(general.getNodo());
+				if(this.itsBoss.get(i).getClass() == CircularBoss.class)
+				{
+					CircularBoss circular = (CircularBoss)this.itsBoss.get(i);
+					bossNode.add(circular.getNode());
+				} else if(this.itsBoss.get(i).getClass() == RectangularBoss.class)
+				{
+					RectangularBoss rectangular = (RectangularBoss)this.itsBoss.get(i);
+					bossNode.add(rectangular.getNode());
+				} else if(this.itsBoss.get(i).getClass() == GeneralProfileBoss.class)
+				{
+					GeneralProfileBoss general = (GeneralProfileBoss)this.itsBoss.get(i);
+					bossNode.add(general.getNodo());
+				}
 			}
 		}
 		
+		if(this.vertexPoints.size() > 0)
+		{
+			DefaultMutableTreeNode vertexNode = new DefaultMutableTreeNode("Vertex Points");
+			for(int i = 0; i < this.vertexPoints.size(); i++)
+			{
+				DefaultMutableTreeNode pointNode = new DefaultMutableTreeNode("P - " + i + " : " + vertexPoints.get(i));
+				vertexNode.add(pointNode);
+			}
+			root.add(vertexNode);
+		}
 		this.getNodoWorkingSteps(root);
 		return root;
 	}

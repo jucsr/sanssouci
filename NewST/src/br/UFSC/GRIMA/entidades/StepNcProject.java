@@ -260,12 +260,24 @@ public class StepNcProject extends STEPProject
 //		this.clampingPoints.add(point3);
 //		this.clampingPoints.add(point4);
 		
-		Face face = (Face)this.projeto.getBloco().faces.elementAt(0);
-		ArrayList<Point3d> pontosDeApoio = face.getPontosDeApoio();
-		for(Point3d pontoTmp: pontosDeApoio)
+//		Face face = (Face)this.projeto.getBloco().faces.elementAt(0);
+//		ArrayList<Point3d> pontosDeApoio = face.getPontosDeApoio();
+//		for(Point3d pontoTmp: pontosDeApoio)
+//		{
+//			System.out.println("PONTO APOIO = " + pontoTmp);
+//			this.clampingPoints.add(pontoTmp);
+//		}
+		
+		for(int i = 0; i < this.projeto.getSetupsArray().size(); i++)
 		{
-			System.out.println("PONTO APOIO = " + pontoTmp);
-			this.clampingPoints.add(pontoTmp);
+			for(int j = 0; j < this.projeto.getSetupsArray().get(i).size(); j++)
+			{
+				for(int k = 0; k < this.projeto.getSetupsArray().get(i).get(j).size(); k++)
+				{
+					Point3d pontoTmp = this.projeto.getSetupsArray().get(i).get(j).get(k);
+					this.clampingPoints.add(pontoTmp);
+				}
+			}
 		}
 		
 

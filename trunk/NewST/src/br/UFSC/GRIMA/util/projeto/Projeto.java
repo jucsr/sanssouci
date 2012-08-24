@@ -10,6 +10,7 @@ import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
@@ -34,10 +35,10 @@ import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 
 
 /**
- * Classe que possui todas as informa��es relativas ao projeto do
- * usu�rio.
+ * Classe que possui todas as informacoes relativas ao projeto do
+ * usuario.
  * 
- * Esta classe � armazenada no banco de dados.
+ * Esta classe eh armazenada no banco de dados.
  * 
  * @author roman
  *
@@ -64,7 +65,8 @@ public class Projeto implements Serializable{
 	private ArrayList<Reamer> reamers = new ArrayList<Reamer>();
 	
 	private ArrayList<ArrayList> allTools;
-	
+	public ArrayList<ArrayList<ArrayList<Point3d>>> setupsArray;
+
 	public Projeto(){
 		
 	}
@@ -526,6 +528,14 @@ public class Projeto implements Serializable{
 
 	public void setToolsDone(boolean toolsDone) {
 		this.toolsDone = toolsDone;
+	}
+
+	public ArrayList<ArrayList<ArrayList<Point3d>>> getSetupsArray() {
+		return setupsArray;
+	}
+
+	public void setSetupsArray(ArrayList<ArrayList<ArrayList<Point3d>>> setupsArray) {
+		this.setupsArray = setupsArray;
 	}
 
 

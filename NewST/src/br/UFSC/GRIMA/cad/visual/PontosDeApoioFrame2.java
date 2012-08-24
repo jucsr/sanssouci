@@ -89,9 +89,9 @@ public class PontosDeApoioFrame2 extends JDialog {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new GridBagLayout());
 		((GridBagLayout)contentPane.getLayout()).columnWidths = new int[] {0, 5, 159, 5, 173, 5, 263, 0};
-		((GridBagLayout)contentPane.getLayout()).rowHeights = new int[] {0, 0, 5, 30, 5, 227, 0};
+		((GridBagLayout)contentPane.getLayout()).rowHeights = new int[] {0, 0, 5, 30, 5, 150, 0};
 		((GridBagLayout)contentPane.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
-		((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+		((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
 
 		//======== menuBar1 ========
 		{

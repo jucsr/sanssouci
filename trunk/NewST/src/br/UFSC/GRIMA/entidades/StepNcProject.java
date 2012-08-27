@@ -268,17 +268,17 @@ public class StepNcProject extends STEPProject
 //			this.clampingPoints.add(pontoTmp);
 //		}
 		
-		for(int i = 0; i < this.projeto.getSetupsArray().size(); i++)
-		{
-			for(int j = 0; j < this.projeto.getSetupsArray().get(i).size(); j++)
-			{
-				for(int k = 0; k < this.projeto.getSetupsArray().get(i).get(j).size(); k++)
-				{
-					Point3d pontoTmp = this.projeto.getSetupsArray().get(i).get(j).get(k);
-					this.clampingPoints.add(pontoTmp);
-				}
-			}
-		}
+//		for(int i = 0; i < this.projeto.getSetupsArray().size(); i++)
+//		{
+//			for(int j = 0; j < this.projeto.getSetupsArray().get(i).size(); j++)
+//			{
+//				for(int k = 0; k < this.projeto.getSetupsArray().get(i).get(j).size(); k++)
+//				{
+//					Point3d pontoTmp = this.projeto.getSetupsArray().get(i).get(j).get(k);
+//					this.clampingPoints.add(pontoTmp);
+//				}
+//			}
+//		}
 		
 
 		// == set a project == 

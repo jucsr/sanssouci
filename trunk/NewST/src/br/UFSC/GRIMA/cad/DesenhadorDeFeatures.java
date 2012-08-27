@@ -265,7 +265,14 @@ public class DesenhadorDeFeatures
 			g2d.setColor(new Color(122, 139, 139));
 			g2d.fillRect(posX , posY , comprimento, largura);
 		}
-		
+		else
+		{
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+			
+			float dash1[] = {5.0f, 2.5f};
+			g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+		}
 		g2d.setColor(new Color(165, 42, 42));
 		g2d.setColor(Color.black);
 		g2d.drawRect(posX, posY, comprimento, largura);

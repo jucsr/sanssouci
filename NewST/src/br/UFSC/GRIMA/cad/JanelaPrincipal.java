@@ -730,9 +730,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 				nTipo = 0;
 			else if (tipo.equals("Furo com base arredondada "))
 				nTipo = 0;
-			else if (tipo.equals("Furo com base esfÃ©rica "))
+			else if (tipo.equals("Furo com base esférica "))
 				nTipo = 0;
-			else if (tipo.equals("Furo cÃ´nico "))
+			else if (tipo.equals("Furo cônico "))
 				nTipo = 0;
 			else if (tipo.equals("Degrau "))
 				nTipo = 1;

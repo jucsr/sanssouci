@@ -1680,9 +1680,13 @@ public class Face implements Serializable{
 									if(cb.getPosicaoZ() == 0)
 										encontrou = false;
 									
-									else if(!rect2dTmp2.contains(rect2d))
+									else
 										encontrou = true;
+										break;									
 								}
+								else if(!rect2dTmp2.contains(rect2d))
+									encontrou = true;
+									break;
 								
 							}
 							
@@ -1690,14 +1694,19 @@ public class Face implements Serializable{
 							{
 								RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
 								
-								if(feature.Z != rb.getPosicaoZ())
+								if(rect2dTmp.contains(rect2d))
 								{
+									if(rb.getPosicaoZ() == 0)
+										encontrou = false;
+									
+									else
+										encontrou = true;
+										break;									
+								}
+								else if(!rect2dTmp.contains(rect2d))
 									encontrou = true;
 									break;
-								}
-									
-								else
-									encontrou = false;
+								
 							}
 						}
 					}
@@ -1973,7 +1982,7 @@ public class Face implements Serializable{
 			
 			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
 				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
-				JOptionPane.showMessageDialog(null, "                A feature que você está tentando criar está dentro de outra" +
+				JOptionPane.showMessageDialog(null, "                A feature que você está tentando criar está dentro de outra ou em uma posição inapropriada" +
 						"\nverifique q o valor de Z coincida com a profundidade da feature já existente", 
 						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);
 				return false;

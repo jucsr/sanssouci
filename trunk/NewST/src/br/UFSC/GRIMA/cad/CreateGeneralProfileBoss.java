@@ -39,7 +39,8 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 	private ArrayList<Path> shape = new ArrayList<Path>();
 	private ArrayList<ArrayList<Point2D>> triangles = new ArrayList<ArrayList<Point2D>>();
 	double zoom = 1;
-	
+	boolean isClosedCurve = false;
+
 	public CreateGeneralProfileBoss(JanelaPrincipal parent, Projeto projeto, Face face, final Feature feature)
 	{
 		super(parent);
@@ -159,7 +160,8 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 					{
 						linePanel.poligono.lineTo(linePanel.pointList.get(i).getX() * zoom + 20, linePanel.pointList.get(i).getY() * zoom + 20);
 					}
-//					linePanel.poligono.closePath();
+					if(isClosedCurve)
+						linePanel.poligono.closePath();
 				}
 				
 				if(feature.getClass() == Cavidade.class)
@@ -182,9 +184,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 						((GeneralPath)linePanel.shape).lineTo(points.get(i).getX() * zoom + 20, points.get(i).getY() * zoom + 20);
 					}
 					((GeneralPath)linePanel.shape).closePath();
-					
 				}
-				
 				linePanel.repaint();
 			}
 		});
@@ -283,6 +283,8 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			//System.out.println("CC = " + linePanel.pointList2dCC);
 			
 			this.radiusSpinner.setEnabled(true);
+			
+			this.isClosedCurve = true;
 			linePanel.repaint();
 			} catch (Exception e)
 			{

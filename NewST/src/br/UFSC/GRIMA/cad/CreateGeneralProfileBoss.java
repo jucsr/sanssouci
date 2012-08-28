@@ -1,11 +1,13 @@
 package br.UFSC.GRIMA.cad;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -38,7 +40,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 	private ArrayList<ArrayList<Point2D>> triangles = new ArrayList<ArrayList<Point2D>>();
 	double zoom = 1;
 	
-	public CreateGeneralProfileBoss(JanelaPrincipal parent, Projeto projeto, Face face, Feature feature)
+	public CreateGeneralProfileBoss(JanelaPrincipal parent, Projeto projeto, Face face, final Feature feature)
 	{
 		super(parent);
 		this.face = face;
@@ -49,12 +51,15 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		this.button1.addActionListener(this);
 		this.button2.addActionListener(this);
 		
+		linePanel = new LinePanel(projeto);
+		
 		if(feature.getClass() == Cavidade.class)
 		{
 			Cavidade feat = (Cavidade)feature;
 			profundidadeFeature = feat.getProfundidade();
 			this.spinnerPosZ.setValue(profundidadeFeature + this.feature.Z);
 			this.spinnerPosZ.setEnabled(false);
+			linePanel.shape = new RoundRectangle2D.Double(20 + feat.X, 20 + feat.Y, feat.getComprimento(), feat.getLargura(), 2 * feat.getRaio(), 2 * feat.getRaio());
 		} else if(feature.getClass() == Degrau.class)
 		{
 			Degrau feat = (Degrau)feature;
@@ -67,8 +72,18 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			profundidadeFeature = feat.getProfundidade();
 			this.spinnerPosZ.setValue(profundidadeFeature + this.feature.Z);
 			this.spinnerPosZ.setEnabled(false);
+			
+			linePanel.shape = new GeneralPath();
+			ArrayList<Point2D> points = transformPolygonInRoundPolygon(feat.getPoints(), feat.getRadius());
+			((GeneralPath)linePanel.shape).moveTo(points.get(0).getX() * zoom + 20, points.get(0).getY() * zoom + 20);
+
+			for(int i = 1; i < points.size(); i++)
+			{
+				((GeneralPath)linePanel.shape).lineTo(points.get(i).getX() * zoom + 20, points.get(i).getY() * zoom + 20);
+			}
+			((GeneralPath)linePanel.shape).closePath();
 		}
-		linePanel = new LinePanel(projeto);
+		
 		linePanel.setFacePrincipal(face.getTipo(), 0);
 		this.contentPanel.add(linePanel);
 		
@@ -116,13 +131,8 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 //					System.err.println("alfa = " + alfa * 180 / Math.PI);
 					linePanel.angulosList.add(alfa);
 				}
-				for(int i = 0; i < linePanel.pointListCC.size(); i++)
-				{
-//					System.out.println("CC = " + linePanel.pointListCC.get(i));
-					
-				}
 				
-				linePanel.poligono.moveTo(novaLista.get(0).getX() * zoom+ 20, novaLista.get(0).getY() * zoom + 20);
+				linePanel.poligono.moveTo(novaLista.get(0).getX() * zoom + 20, novaLista.get(0).getY() * zoom + 20);
 
 				for(int i = 1; i < novaLista.size(); i++)
 				{
@@ -140,15 +150,41 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 				zoom = (Double)spinnerZoom.getValue() / 100;
 				linePanel.setZoom(zoom);
 				
-//				linePanel.poligono = new GeneralPath();
-//				linePanel.poligono.moveTo(linePanel.pointList.get(0).getX() * zoom + 20, linePanel.pointList.get(0).getY() * zoom	+ 20);
-//
-//				for (int i = 1; i < linePanel.pointList.size(); i++)
-//				{
-//					linePanel.poligono.lineTo(linePanel.pointList.get(i).getX() * zoom + 20, linePanel.pointList.get(i).getY() * zoom + 20);
-//				}
-//				linePanel.poligono.closePath();
-//				
+				linePanel.poligono = new GeneralPath();
+				if(linePanel.pointList.size() > 0)
+				{
+					linePanel.poligono.moveTo(linePanel.pointList.get(0).getX() * zoom + 20, linePanel.pointList.get(0).getY() * zoom	+ 20);
+
+					for (int i = 1; i < linePanel.pointList.size(); i++)
+					{
+						linePanel.poligono.lineTo(linePanel.pointList.get(i).getX() * zoom + 20, linePanel.pointList.get(i).getY() * zoom + 20);
+					}
+//					linePanel.poligono.closePath();
+				}
+				
+				if(feature.getClass() == Cavidade.class)
+				{
+					Cavidade feat = (Cavidade)feature;			
+					linePanel.shape = new RoundRectangle2D.Double(20 + feat.X * zoom, 20 + feat.Y * zoom, feat.getComprimento() * zoom, feat.getLargura() * zoom, 2 * feat.getRaio() * zoom, 2 * feat.getRaio() * zoom);
+				} else if(feature.getClass() == Degrau.class)
+				{
+					Degrau feat = (Degrau)feature;
+		
+				} else if(feature.getClass() == GeneralClosedPocket.class)
+				{
+					GeneralClosedPocket feat = (GeneralClosedPocket)feature;
+					linePanel.shape = new GeneralPath();
+					ArrayList<Point2D> points = transformPolygonInRoundPolygon(feat.getPoints(), feat.getRadius());
+					((GeneralPath)linePanel.shape).moveTo(points.get(0).getX() * zoom + 20, points.get(0).getY() * zoom + 20);
+
+					for(int i = 1; i < points.size(); i++)
+					{
+						((GeneralPath)linePanel.shape).lineTo(points.get(i).getX() * zoom + 20, points.get(i).getY() * zoom + 20);
+					}
+					((GeneralPath)linePanel.shape).closePath();
+					
+				}
+				
 				linePanel.repaint();
 			}
 		});

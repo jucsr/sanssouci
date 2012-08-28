@@ -27,7 +27,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 	private Face face;
 	private JanelaPrincipal parent;
 	static ArrayList<Point2D> poligonoAuxiliar = new ArrayList<Point2D>();// --> poligono com os vertices arredondados para triangulacao
-	
+	boolean isClosedCurve = false;
 	private ArrayList<ArrayList<Point2D>> triangles = new ArrayList<ArrayList<Point2D>>();
 	double zoom = 1;
 	
@@ -90,11 +90,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 //					System.err.println("alfa = " + alfa * 180 / Math.PI);
 					linePanel.angulosList.add(alfa);
 				}
-				for(int i = 0; i < linePanel.pointListCC.size(); i++)
-				{
-//					System.out.println("CC = " + linePanel.pointListCC.get(i));
-					
-				}
+
 				linePanel.poligono.moveTo(novaLista.get(0).getX() * zoom+ 20, novaLista.get(0).getY() * zoom + 20);
 
 				for(int i = 1; i < novaLista.size(); i++)
@@ -113,15 +109,18 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				zoom = (Double)spinnerZoom.getValue() / 100;
 				linePanel.setZoom(zoom);
 				
-//				linePanel.poligono = new GeneralPath();
-//				linePanel.poligono.moveTo(linePanel.pointList.get(0).getX() * zoom + 20, linePanel.pointList.get(0).getY() * zoom	+ 20);
-//
-//				for (int i = 1; i < linePanel.pointList.size(); i++)
-//				{
-//					linePanel.poligono.lineTo(linePanel.pointList.get(i).getX() * zoom + 20, linePanel.pointList.get(i).getY() * zoom + 20);
-//				}
-//				linePanel.poligono.closePath();
-//				
+				linePanel.poligono = new GeneralPath();
+				if(linePanel.pointList.size() > 0)
+				{
+					linePanel.poligono.moveTo(linePanel.pointList.get(0).getX() * zoom + 20, linePanel.pointList.get(0).getY() * zoom	+ 20);
+
+					for (int i = 1; i < linePanel.pointList.size(); i++)
+					{
+						linePanel.poligono.lineTo(linePanel.pointList.get(i).getX() * zoom + 20, linePanel.pointList.get(i).getY() * zoom + 20);
+					}
+					if(isClosedCurve)
+						linePanel.poligono.closePath();
+				}
 				linePanel.repaint();
 			}
 		});
@@ -219,6 +218,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			//System.out.println("CC = " + linePanel.pointList2dCC);
 			
 			this.radiusSpinner.setEnabled(true);
+			isClosedCurve = true;
 			linePanel.repaint();
 			} catch (Exception e)
 			{
@@ -347,8 +347,6 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				nPointsIn++;
 			}
 		}
-
-		
 		
 		if (alfa > Math.PI)
 		{

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -23,11 +24,13 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
     public ArrayList<Double> angulosList = new ArrayList<Double>();
 	public GeneralPath poligono = new GeneralPath();
 	private Line2D lineTmp = new Line2D.Double();
-    
+    	
     public double separacaoGrade = 20;
     private String x = "";
     private String y = "";
     public boolean grade = true, line = true;
+    public Shape shape;
+    
     
     public LinePanel(Projeto projeto)
     {
@@ -56,7 +59,12 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
 			this.drawGrade(g2d);
 		
         this.drawCoordinates(g2d);
-        
+       
+        if(shape != null)
+        {
+        	g2d.setColor(new Color(255, 69, 0));
+        	g2d.draw(shape);
+        }
         g2d.setColor(new Color(58, 100, 0));
         g2d.setColor(new Color(178, 34, 34));
         g2d.setColor(Color.BLACK);

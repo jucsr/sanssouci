@@ -18,6 +18,7 @@ import br.UFSC.GRIMA.cad.visual.CreateCircularBossFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
 
@@ -26,6 +27,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 	public Face face = null;
 	public JanelaPrincipal parent;
 	private Cavidade cavidade = null;
+	private GeneralClosedPocket generalClosedPocket = null;
 	
 	public CriarCircularBoss(JanelaPrincipal parent, Face face, Cavidade cavidade) {
 		super(parent);
@@ -37,6 +39,16 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 		this.init();
 	}
 
+	public CriarCircularBoss(JanelaPrincipal parent, Face face, GeneralClosedPocket  generalClosedPocket) {
+		super(parent);
+		this.generalClosedPocket = generalClosedPocket;
+		this.face = face;
+		this.parent = parent;
+		// this.parent.setEnabled(false);
+
+		this.init();
+	}
+	
 	public void init() {
 		this.adjustSize();
 		this.adjustPosition();
@@ -223,7 +235,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						JOptionPane
 								.showMessageDialog(
 										null,
-										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da cavidade"
 												+ "\n               (revise a L2 ou a posicao Y ou o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
@@ -245,7 +257,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						JOptionPane
 								.showMessageDialog(
 										null,
-										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da cavidade"
 												+ "\n               (revise a L2 ou a posicaoo Y ou o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
@@ -268,7 +280,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						JOptionPane
 								.showMessageDialog(
 										null,
-										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da cavidade"
 												+ "\n               (revise a L2 ou a posicaoo Y ou o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
@@ -288,7 +300,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 						JOptionPane
 								.showMessageDialog(
 										null,
-										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
+										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da cavidade"
 												+ "\n               (revise a L2 ou a posicaoo You o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
@@ -305,7 +317,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"Digite um Numero positivo para a largura da cavidade"
+								"Digite um Numero positivo para os diâmetros e altura do Boss"
 										+ "\n               Nao digite letras nem simbolos",
 								"Erro na largura", JOptionPane.OK_CANCEL_OPTION);
 				ok = false;

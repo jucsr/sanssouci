@@ -17,6 +17,7 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.cad.visual.CreateRectangularBossFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
@@ -32,7 +33,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 	public Face face = null;
 	public JanelaPrincipal parent;
 	private Cavidade cavidade = null;
-	
+	private GeneralClosedPocket generalClosedPocket = null;
 	
 	public CriarRectangularBoss(JanelaPrincipal parent, Face face, Cavidade cavidade) {
 		super(parent);
@@ -42,6 +43,17 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 		
 		this.init();
 	}
+	
+	public CriarRectangularBoss(JanelaPrincipal parent, Face face, GeneralClosedPocket  generalClosedPocket) {
+		super(parent);
+		this.generalClosedPocket = generalClosedPocket;
+		this.face = face;
+		this.parent = parent;
+		// this.parent.setEnabled(false);
+
+		this.init();
+	}
+	
 	
 	public void init() {
 		this.adjustSize();

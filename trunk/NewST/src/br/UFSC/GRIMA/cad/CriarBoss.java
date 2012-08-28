@@ -68,10 +68,10 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 				
 			} else if(feature.getClass() == GeneralClosedPocket.class)
 			{
-//				GeneralClosedPocket cavidade = (GeneralClosedPocket)this.feature;
-//				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidade);
-//				ccb.setVisible(true);
-//				dispose();
+				GeneralClosedPocket cavidadeGeral = (GeneralClosedPocket)this.feature;
+				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidadeGeral);
+				ccb.setVisible(true);
+				dispose();
 			}
 			
 		}else if(this.buttonRectangular.isSelected())
@@ -87,7 +87,10 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 				
 			} else if (feature.getClass() == GeneralClosedPocket.class)
 			{
-				
+				GeneralClosedPocket cavidadeGeral = (GeneralClosedPocket)this.feature;
+				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidadeGeral);
+				crb.setVisible(true);
+				this.dispose();
 			}
 		}else if(this.radioButtonGeneral.isSelected())
 		{

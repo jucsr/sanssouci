@@ -2116,7 +2116,9 @@ public class Face implements Serializable{
 			}	
 		}
 		
-		else// procura br.UFSC.GRIMA.feature mae
+		// procura br.UFSC.GRIMA.feature mae -------------------------------------------------------------------
+		
+		else
 		{
 			Vector maes = new Vector();
 			Vector anteriores = new Vector();
@@ -2132,9 +2134,9 @@ public class Face implements Serializable{
 				if (r2dTmp.contains(r2d))//verifica se uma br.UFSC.GRIMA.feature contem plenamente a uma outra
 				{
 					maes.add(featureTmp);
-					//System.out.println("contï¿½m completamente a outra: " + featureTmp);
+					//System.out.println("contém completamente a outra: " + featureTmp);
 				}
-				else if (r2dTmp.intersects(r2d))// verifica si hï¿½ intersecao
+				else if (r2dTmp.intersects(r2d))// verifica se há intersecção
 				{
 					anteriores.add(featureTmp);
 					feature.featuresAnteriores = anteriores;
@@ -2142,101 +2144,51 @@ public class Face implements Serializable{
 				}
 			}
 			
-			//JOptionPane.showMessageDialog(null, maes.size() + " " + anteriores.size());
 			
 			if (maes.size() != 0) 	// determinar a unica br.UFSC.GRIMA.feature mae
 									// a br.UFSC.GRIMA.feature mae serï¿½ a que tiver Z maior
 			{
-				/*for (int pointIndex = 0; pointIndex < maes.size(); pointIndex++)
-				{
-					Feature featureTmp = (Feature)maes.elementAt(pointIndex);
-					featureMae = featureTmp;
 				
-					if (featureMae != null)
-					{
-						if (featureTmp.getPosicaoZ() > featureMae.getPosicaoZ() && featureTmp.getPosicaoZ() < br.UFSC.GRIMA.feature.getPosicaoZ())
-						{
-							featureMae = featureTmp;
-						}
-					}
-					else if (featureTmp.getPosicaoZ() < br.UFSC.GRIMA.feature.getPosicaoZ())
-					{
-						featureMae = featureTmp;
-						
-					}
-					//System.out.println("br.UFSC.GRIMA.feature mae_01 : " + featureMae);
-				}// acabou o for
-				*/
 				double maiorZ = 0;
 				for (int i = 0; i < maes.size(); i++)
 				{
-					
 					Feature featureTmp = (Feature)maes.elementAt(i);
-					if (i == 0)
-					{
-						featureMae = featureTmp;
-						maiorZ = featureMae.getPosicaoZ();
-					}
-					else if (featureTmp.getPosicaoZ() > maiorZ)
-					{
-						maiorZ = featureTmp.getPosicaoZ();
-					}
-				}
-				for (int i = 0; i < maes.size(); i++)
-				{
-					Feature fTmp = (Feature)maes.elementAt(i);
-					if (maiorZ == fTmp.getPosicaoZ())
-					{
-						featureMae = fTmp;
-					}
-				}				
-				
-				if (feature.getPosicaoZ() == featureMae.getPosicaoZ() + this.getProfundidade(featureMae))
-				{
 					
-					System.out.println("FEATURE ANTERIOR : " + featureMae.getNome());
-					System.out.println("FEATURE ATUAL : " + feature.getNome());
-					
-					feature.featureMae = featureMae;
-
-					feature.setFeaturePrecedente(featureMae);
-					
-					return true;
-				}
-				else
-				{
-					/*JOptionPane.showMessageDialog(null, "Verifique que a posiï¿½ï¿½o Z seja consistente com a " +
-							"\n                    profundidade da br.UFSC.GRIMA.feature anterior",
-							"erro na criaï¿½ï¿½o da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
-					return false;//ainda tem q verificar as intersecï¿½ï¿½es*/
-				}
-				/*if (featureMae != null)
-				{
-					for(int pointIndex = 0; pointIndex < maes.size(); pointIndex++){
-						Feature featureTmp = (Feature)maes.elementAt(pointIndex);
+					if((featureTmp.getClass() != CircularBoss.class) && (featureTmp.getClass() != RectangularBoss.class))
+					{
 						
-						if(featureTmp.getPosicaoZ() > featureMae.getPosicaoZ()){
-							//avisa o usuario do erro
-							JOptionPane.showMessageDialog(null, "Mensagem", "mesage", JOptionPane.OK_CANCEL_OPTION);
-							return false;
+						if (i == 0)
+						{
+							featureMae = featureTmp;
+							maiorZ = featureMae.getPosicaoZ();
 						}
+						else if (featureTmp.getPosicaoZ() > maiorZ)
+						{
+							maiorZ = featureTmp.getPosicaoZ();
+							featureMae = featureTmp;
+						}
+						else if (feature.getPosicaoZ() == featureMae.getPosicaoZ() + this.getProfundidade(featureMae))
+						{
+							
+							System.out.println("FEATURE ANTERIOR : " + featureMae.getNome());
+							System.out.println("FEATURE ATUAL : " + feature.getNome());
+							
+							feature.featureMae = featureMae;
+
+							feature.setFeaturePrecedente(featureMae);
+							
+						}
+						
 					}
 					
-					if(br.UFSC.GRIMA.feature.getPosicaoZ() == featureMae.getPosicaoZ() + this.getProfundidade(featureMae)){
-						//	verificar se o Z da featureNova ï¿½ igual fe
-						//br.UFSC.GRIMA.feature.featuresAnteriores = new Vector();			/***	????	**/
-						//br.UFSC.GRIMA.feature.featuresAnteriores.add(featureMae);
-						/*br.UFSC.GRIMA.feature.featureMae = featureMae;
+					else if((featureTmp.getClass() == CircularBoss.class) || (featureTmp.getClass() == RectangularBoss.class)){
 						
-						//System.out.println("br.UFSC.GRIMA.feature mae_02 : " + featureMae);
-						return true;
+						featureMae = featureTmp;
 					}
-					else{
-						//System.out.println("Feature invï¿½lida");
-						//JOptionPane.showMessageDialog(null, "a Feature invï¿½lida", "erro na criaï¿½ï¿½o da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
-						//return false;
-					}						
-				}*/
+				}
+				
+				return true;
+				
 			}//---------------------------- Acabou o tratador de maes --------------------------------------------------------
 			
 			if(feature.featureMae == null && anteriores.size() != 0)
@@ -2269,12 +2221,13 @@ public class Face implements Serializable{
 					else
 					{
 						JOptionPane.showMessageDialog(null, "coloque a br.UFSC.GRIMA.feature na altura da br.UFSC.GRIMA.feature " +
-								"jÃ¡ existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+								"já existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
 						return false;
 					}
 				}
 				return true;
 			}
+			
 			else // br.UFSC.GRIMA.feature invï¿½lida
 			{
 				// avisar ao usuario
@@ -2284,6 +2237,7 @@ public class Face implements Serializable{
 			}
 		}
 	}
+		
 	public double getProfundidade(Feature f)
 	{
 		System.out.println("PROFUNDIDADE");

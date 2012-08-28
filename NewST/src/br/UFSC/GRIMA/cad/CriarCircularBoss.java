@@ -210,7 +210,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 
 				case 0:
 
-					if (raio1 > 0 && raio2 > 0
+					if (raio1 > 0 && raio2 > 0 
+							&& raio1 <= raio2
 							&& refLargura11 < this.cavidade.getLargura()
 							&& (refLargura21 > 0)
 							&& //
@@ -223,7 +224,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 								.showMessageDialog(
 										null,
 										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
-												+ "\n               (revise a L2 ou a posicao Y)",
+												+ "\n               (revise a L2 ou a posicao Y ou o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
@@ -232,6 +233,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				case 1:
 
 					if (raio1 > 0 && raio2 > 0
+							&& raio1 <= raio2
 							&& refComprimento11 < cavidade.getComprimento()
 							&& (refComprimento21 > 0)
 							&& //
@@ -244,7 +246,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 								.showMessageDialog(
 										null,
 										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
-												+ "\n               (revise a L2 ou a posicaoo Y)",
+												+ "\n               (revise a L2 ou a posicaoo Y ou o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
@@ -253,6 +255,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				case 2:
 
 					if (raio1 > 0 && raio2 > 0
+							&& raio1 <= raio2
 							&& refLargura11 < cavidade.getLargura()
 							&& (refLargura21 > 0)
 							&& //
@@ -266,7 +269,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 								.showMessageDialog(
 										null,
 										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
-												+ "\n               (revise a L2 ou a posicaoo Y)",
+												+ "\n               (revise a L2 ou a posicaoo Y ou o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
 						ok = false;
@@ -275,6 +278,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				case 3:
 
 					if (raio1 > 0 && raio2 > 0
+							&& raio1 <= raio2
 							&& refComprimento11 < cavidade.getComprimento()
 							&& (refComprimento21 > 0)
 							&& refComprimento12 < cavidade.getComprimento()
@@ -285,7 +289,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 								.showMessageDialog(
 										null,
 										"A br.UFSC.GRIMA.feature nao esta dentro dos limites da face"
-												+ "\n               (revise a L2 ou a posicaoo Y)",
+												+ "\n               (revise a L2 ou a posicaoo You o diâmetro)",
 										"Erro ao criar Cavidade",
 										JOptionPane.OK_CANCEL_OPTION);
 						ok = false;

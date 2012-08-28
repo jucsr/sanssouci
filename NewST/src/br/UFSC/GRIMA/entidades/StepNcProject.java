@@ -1659,6 +1659,7 @@ public class StepNcProject extends STEPProject
 			EBoss eBoss = (EBoss)this.model.createEntityInstance(EBoss.class);
 			eBoss.setIts_id(null, bossTmp.getNome());
 			eBoss.setIts_workpiece(null, eWorkpiece);
+			System.out.println("POSICAO AXIS 2 PLACEMENT 3D" + bossTmp.getPosition());
 			eBoss.setFeature_placement(null, createAxis2Placement3D(bossTmp.getNome() + " placement", bossTmp.getPosition().getCoordinates(), bossTmp.getPosition().getAxis(), bossTmp.getPosition().getRefDirection()));
 			Point3d bossDepthLocation = new Point3d(0, 0, bossTmp.getAltura());
 			eBoss.setDepth(null, this.createPlane(bossTmp.getNome() + " heigh location", this.createAxis2Placement3D(bossTmp.getNome() + "heigh", bossDepthLocation, bossTmp.getPosition().getAxis(), bossTmp.getPosition().getRefDirection())));

@@ -12,10 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.CreateGeneralPocketFrame;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class CreateGeneralPocket extends CreateGeneralPocketFrame implements ActionListener
@@ -286,6 +288,92 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			generalPocket.setForma(forma);
 			generalPocket.setPassante(checkBox1.isSelected());
 			generalPocket.setRugosidade((Double)spinnerRugosidade.getValue());
+			
+			Point3d coordinates = null;
+			ArrayList<Double> axis = null, refDirection = null;
+			if (this.face.getTipo() == Face.XY)
+			{
+				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), generalPocket.getPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ);
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(0.0);
+				axis.add(1.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+			} else if (this.face.getTipo() == Face.XZ)
+			{
+				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), posicaoZ, generalPocket.getPoints().get(0).getY());
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(-1.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				
+				
+			} else if (this.face.getTipo() == Face.YX)
+			{
+				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), this.face.getLargura() - generalPocket.getPoints().get(0).getY(), face.getProfundidadeMaxima() - posicaoZ);
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(0.0);
+				axis.add(-1.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				
+			} else if (this.face.getTipo() == Face.YZ)
+			{
+				coordinates = new Point3d(this.face.getProfundidadeMaxima() - posicaoZ, generalPocket.getPoints().get(0).getY(), this.face.getComprimento() - generalPocket.getPoints().get(0).getX());
+				axis = new ArrayList<Double>();
+				axis.add(1.0);
+				axis.add(0.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				refDirection.add(-1.0);
+				
+			} else if (this.face.getTipo() == Face.ZX)
+			{
+				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), this.face.getProfundidadeMaxima() - posicaoZ, this.face.getLargura() - generalPocket.getPoints().get(0).getY());
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(1.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				
+			} else if (this.face.getTipo() == Face.ZY)
+			{
+				coordinates = new Point3d(posicaoZ, generalPocket.getPoints().get(0).getY(), face.getComprimento() - generalPocket.getPoints().get(0).getX());
+				axis = new ArrayList<Double>();
+				axis.add(-1.0);
+				axis.add(0.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				refDirection.add(1.0);
+				
+			}
+			Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
+			position.setName(generalPocket.getNome() + " placement");
+			generalPocket.setPosition(position);	
+			
 			this.face.addFeature(generalPocket);
 			this.parent.desenhador.repaint();
 			this.parent.atualizarArvore();

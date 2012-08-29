@@ -273,7 +273,7 @@ public class Cavidade extends Feature implements Serializable {
 		
 		if(boss.getClass() == CircularBoss.class)
 		{
-//			double radius;
+
 			CircularBoss cb = (CircularBoss)boss;
 			
 			double posX = cb.getPosicaoX();
@@ -282,13 +282,6 @@ public class Cavidade extends Feature implements Serializable {
 			double raioMaiorBoss = cb.getDiametro2()/2;
 			double n = 2*Math.PI*raioMaiorBoss;
 			int numPontos = (int)n;
-			
-//			Point3d[] borda = null;
-			
-//			if(cb.getDiametro1() >= cb.getDiametro2())
-//				radius = cb.getDiametro1() / 2;
-//			else
-//				radius = cb.getDiametro2() / 2;
 			
 			/** Discretiza a borda do CircularBoss **/
 			
@@ -320,7 +313,6 @@ public class Cavidade extends Feature implements Serializable {
 								rad = cbTmp.getDiametro2() / 2;
 							
 							Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
-							//Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
 							if (bossCTmp.contains(borda[i]))
 							{
 								JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
@@ -353,7 +345,6 @@ public class Cavidade extends Feature implements Serializable {
 
 			}
 			
-			//Rectangle2D novoCircBossRect2D = new Rectangle2D.Double(cb.X - radius, cb.Y - radius, radius * 2,radius * 2);
 			 		} else if(boss.getClass() == RectangularBoss.class){
 			 			
 					/**
@@ -368,20 +359,7 @@ public class Cavidade extends Feature implements Serializable {
 					double comprimento = recBoss.getL1();
 					double largura = recBoss.getL2();
 					double raio = recBoss.getRadius();
-					
-//					double n = 2*Math.PI*raio;
-//					int numPontosRaio = (int)n;
-//					System.out.println("numPontosRaio" +numPontosRaio);
-//					int numPontosComprimento = 2*(int)comprimento; //numero de pontos das 2 retas
-//					int numPontosLargura = 2*(int)largura;
-//					int numPontos = numPontosRaio + numPontosComprimento + numPontosLargura ;
-//					System.out.println("numPontos" + numPontos);
-					
-//			 		RoundRectangle2D novoRecBossRect2D = new RoundRectangle2D.Double(posX, posY, comprimento,largura, raio, raio);
-//					Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
-			
-			 		
-			 		
+	
 			 		bordaRect = determinarPontosEmRoundRectangular(new Point3d(posX,posY,posZ), comprimento, largura, raio);
 			
 			 		for (int j=0; j < bordaRect.length; j++){
@@ -406,11 +384,9 @@ public class Cavidade extends Feature implements Serializable {
 				 						rad = cbTmp.getDiametro1() / 2;							
 				 					else
 				 						rad = cbTmp.getDiametro2() / 2;
-							
-//									RectangularBoss rbTmp = (RectangularBoss)bossTmp;
-							
+						
 				 					Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
-//				 					Rectangle2D bossAux = new Rectangle2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+
 				 					if (bossCTmp.contains(bordaRect[j]))
 				 					{
 				 						JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
@@ -426,7 +402,6 @@ public class Cavidade extends Feature implements Serializable {
 				 				{
 				 					RectangularBoss rectangularBoss = (RectangularBoss)boss;
 		 					
-//				 					Rectangle2D bossAuxTmp = new Rectangle2D.Double(rectangularBoss.X, rectangularBoss.Y, rectangularBoss.getL1(), rectangularBoss.getL2());
 				 					RoundRectangle2D bossAuxTmp = new RoundRectangle2D.Double(rectangularBoss.getPosicaoX(), rectangularBoss.getPosicaoY(), rectangularBoss.getL1(), rectangularBoss.getL2(), rectangularBoss.getRadius(), rectangularBoss.getRadius());
 				 					if(bossAuxTmp.contains(bordaRect[j]))
 				 					{
@@ -445,24 +420,19 @@ public class Cavidade extends Feature implements Serializable {
 			 		
 			}
 		
-
 		return isValid;
 	}
 	
 	public static Point2D[] determinarPontosEmReta(Point3d InitialPos, Point3d EndPos)
 	{
 		
-
 		double angInclinacao = Math.atan2(EndPos.y - InitialPos.y, EndPos.x - InitialPos.x);
 		double comprimento = Math.sqrt(Math.pow((EndPos.y - InitialPos.y), 2) + Math.pow(EndPos.x - InitialPos.x, 2));
 		int numPontos = (int)comprimento; //numPontos = comprimento/1mm
 		double passo = (int) (comprimento/numPontos);
 		double x = InitialPos.x ,y = InitialPos.y;
 		
-		
-		
 		Point2D[] saida = new Point2D [numPontos];
-			
 			
 			for (int i = 0; i < numPontos; i++)
 			{
@@ -473,7 +443,6 @@ public class Cavidade extends Feature implements Serializable {
 				System.out.println("saida reta= " + saida[i] + i);
 			} 
 			
-		
 		return saida;
 	}
 	

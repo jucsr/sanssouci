@@ -218,6 +218,8 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				refComprimento12 = posicaoX + raio2;
 				refComprimento22 = posicaoX - raio2;
 
+				/**  **/ 
+				
 				switch (face.verticeAtivado) {
 
 				case 0:

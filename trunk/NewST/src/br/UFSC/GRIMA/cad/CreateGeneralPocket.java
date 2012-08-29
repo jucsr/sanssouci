@@ -40,8 +40,8 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		this.parent = parent;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
-		this.button1.addActionListener(this);
-		this.button2.addActionListener(this);
+		this.button1.addActionListener(this); //Close button
+		this.button2.addActionListener(this); //help button
 		
 		linePanel = new LinePanel(projeto);
 		linePanel.setFacePrincipal(face.getTipo(), 0);

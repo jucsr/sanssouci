@@ -1632,8 +1632,34 @@ public class Face implements Serializable{
 	}
 	public boolean validarFeature(Feature feature)
 	{			
+		int contadorRanhura = 0;
+		int contadorCavidade = 0;
+		int contadorDegrau = 0;
+		int contadorGeneralPocket = 0;
+		
+		int ultimoNoArrayRanhura = 0;
+		int ultimoNoArrayCavidade = 0;
+		int ultimoNoArrayDegrau = 0;
+		int ultimoNoarrayGeneralPocket = 0;
+		
 		boolean encontrou = false;
 		Rectangle2D rect2d = this.criarRetanguloShape(feature);
+		
+		for(int k = 0; k < this.features.size(); k++)
+		{
+			if(features.elementAt(k).getClass()==RanhuraPerfilBezier.class)
+				ultimoNoArrayRanhura = k;
+				
+			else if(features.elementAt(k).getClass()==Cavidade.class)
+				ultimoNoArrayCavidade = k;
+			
+			else if(features.elementAt(k).getClass()==Degrau.class)
+				ultimoNoArrayDegrau = k;
+			
+			else if(features.elementAt(k).getClass()==GeneralClosedPocket.class)
+				ultimoNoarrayGeneralPocket = k;
+		}
+		
 		
 		if (feature.getPosicaoZ() == 0)  //---------------------   Z == 0 -------------------
 		{
@@ -1662,53 +1688,62 @@ public class Face implements Serializable{
 						}
 						
 					}else if(features.elementAt(i).getClass()==Cavidade.class){
-						
+						 
 						Cavidade cavidade = (Cavidade)features.elementAt(i);
 						
-						for (int j = 0; j < cavidade.getItsBoss().size(); j++)
+						if(i != ultimoNoArrayCavidade) //verifica se o boos foi construído na última cavidade feita
 						{
-							
-							if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
+							encontrou = true;
+						}
+						else
+						{
+							for (int j = 0; j < cavidade.getItsBoss().size(); j++)
 							{
-								CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
 								
-								Rectangle2D rect2dTmp2 = new Rectangle2D.Double(cb.getPosicaoX() - (cb.getDiametro1()/2), cb.getPosicaoY() - (cb.getDiametro1()/2),
-										cb.getDiametro1(), cb.getDiametro1()); // retangulo em volta da base menor do circularBoss
-								
-								if(rect2dTmp2.contains(rect2d))
+								if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
 								{
-									if(cb.getPosicaoZ() == 0)
-										encontrou = false;
+									CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
 									
-									else
+									Rectangle2D rect2dTmp2 = new Rectangle2D.Double(cb.getPosicaoX() - (cb.getDiametro1()/2), cb.getPosicaoY() - (cb.getDiametro1()/2),
+											cb.getDiametro1(), cb.getDiametro1()); // retangulo em volta da base menor do circularBoss
+									
+									if(rect2dTmp2.contains(rect2d))
+									{
+										if((cb.getPosicaoZ() + cb.getAltura()) == (cavidade.getPosicaoZ() + cavidade.getProfundidade()))
+											encontrou = false;
+										
+										else
+											encontrou = true;
+											break;									
+									}
+									else if(!rect2dTmp2.contains(rect2d))
 										encontrou = true;
-										break;									
+										break;
+									
 								}
-								else if(!rect2dTmp2.contains(rect2d))
-									encontrou = true;
-									break;
 								
-							}
-							
-							else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
-								
-								if(rect2dTmp.contains(rect2d))
+								else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
 								{
-									if(rb.getPosicaoZ() == 0)
-										encontrou = false;
+									RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
 									
-									else
+									if(rect2dTmp.contains(rect2d))
+									{
+										if(rb.getPosicaoZ() == 0)
+											encontrou = false;
+										
+										else
+											encontrou = true;
+											break;									
+									}
+									else if(!rect2dTmp.contains(rect2d))
 										encontrou = true;
-										break;									
+										break;
+									
 								}
-								else if(!rect2dTmp.contains(rect2d))
-									encontrou = true;
-									break;
-								
 							}
 						}
+					
+						
 					}
 					
 					else if(features.elementAt(i).getClass()==Degrau.class){
@@ -1766,15 +1801,6 @@ public class Face implements Serializable{
 							}
 						}
 					}
-					
-//					else if(features.elementAt(i).getClass()==PlanarFace.class){
-//						
-//					}
-					
-					/*System.out.println("A Feature nova está totalmente dentro de uma br.UFSC.GRIMA.feature anterior");
-					System.out.println("rectFeatureNova: " + rect2d);
-					System.out.println("rectPossivelMae : " + rect2dTmp);
-					System.out.println("contem plenamente a outra: " + rect2dTmp.contains(rect2d));*/
 					
 				}
 				

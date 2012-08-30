@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -116,6 +117,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 		double tolerancia = 0.0;
 		double rugosidade = 0.0;
 
+		
 		/** Validacao da posicao X **/
 
 		if (ok) {
@@ -217,8 +219,13 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				refComprimento21 = posicaoX - raio1;
 				refComprimento12 = posicaoX + raio2;
 				refComprimento22 = posicaoX - raio2;
+				
+				Point2D [] bordaCircular = null;
+				double n = 2*Math.PI*raio2;
+				int numPontos = (int)n;
+				
+				bordaCircular = cavidade.determinarPontosEmCircunferencia (new Point3d(posicaoX,posicaoY,posicaoZ), 0.0, 2*Math.PI, raio2, numPontos);
 
-				/**  **/ 
 				
 				switch (face.verticeAtivado) {
 
@@ -228,9 +235,9 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 							&& raio1 <= raio2
 							&& refLargura11 < this.cavidade.getLargura()
 							&& (refLargura21 > 0)
-							&& //
-							refLargura12 < cavidade.getLargura()
-							&& (refLargura22 > 0)) //
+							&& refLargura12 < cavidade.getLargura()
+							&& (refLargura22 > 0) 
+							)
 					{
 						ok = true;
 					} else {
@@ -250,8 +257,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 							&& raio1 <= raio2
 							&& refComprimento11 < cavidade.getComprimento()
 							&& (refComprimento21 > 0)
-							&& //
-							refComprimento12 < cavidade.getComprimento()
+							&& refComprimento12 < cavidade.getComprimento()
 							&& (refComprimento22 > 0)) {
 
 						ok = true;

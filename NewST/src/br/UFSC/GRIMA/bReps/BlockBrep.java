@@ -32,16 +32,16 @@ public class BlockBrep
 		this.nY = nY;
 		this.nZ = nZ;
 		this.generateVertex();
-//		for(int i = 0; i < vertexArray.length; i++)
-//		{
-//			System.err.println("i = " + i + "\t" + vertexArray[i]);
-//		}
+		for(int i = 0; i < vertexArray.length; i++)
+		{
+			System.err.println("i = " + i + "\t" + vertexArray[i]);
+		}
 		
 		this.generateIndex();
 		
 		for(int i = 0; i < indexArray.length; i++)
 		{
-			System.out.println(i + " index = " + "\t" + indexArray[i]);			
+//			System.out.println(i + " index = " + "\t" + indexArray[i]);			
 		}
 		this.generateColorArray();
 	}

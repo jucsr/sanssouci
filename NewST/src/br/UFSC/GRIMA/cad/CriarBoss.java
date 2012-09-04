@@ -69,7 +69,8 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 			} else if(feature.getClass() == GeneralClosedPocket.class)
 			{
 				GeneralClosedPocket cavidadeGeral = (GeneralClosedPocket)this.feature;
-				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidadeGeral);
+//				CriarCircularBoss ccb = new CriarCircularBoss(owner, face, cavidadeGeral);
+				CreateCircularBoss ccb = new CreateCircularBoss(owner, projeto, face, cavidadeGeral);
 				ccb.setVisible(true);
 				dispose();
 			}

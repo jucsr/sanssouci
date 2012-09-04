@@ -16,7 +16,11 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.util.projeto.Projeto;
-
+/**
+ * 
+ * @author Jc
+ *
+ */
 public class LinePanel extends DesenhadorDeFaces implements MouseListener, MouseMotionListener
 {
     public ArrayList<Point2D> pointList = new ArrayList<Point2D>();
@@ -48,7 +52,7 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        
+//        this.setPreferredSize(new Dimension(tamanho.width, tamanho.height + 30));
         //Nao podemos alterar o estado do objeto g, portanto fazemos uma copia dele.
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -160,8 +164,19 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
 		g.scale(1, -1);
 		g.setColor(new Color(139, 90, 0));
 		g.setFont(new Font("Arial", Font.BOLD, 12));
-		g.drawString("x:\t" + x, 10, 20);
-		g.drawString("y:\t" + y, 80, 20);
+//		g.drawString("x:\t" + x, 10, 20);
+//		g.drawString("y:\t" + y, 80, 20);
+		int x, y;
+		try
+		{
+			x = (int)Double.parseDouble(this.x);
+			y = (int)Double.parseDouble(this.y);
+			g.drawString("x:\t" + this.x, (int)(x * getZoom() + 20), -(int)(y * getZoom() + 20 + 13));
+			g.drawString("y:\t" + this.y, (int)(x * getZoom() + 20), -(int)(y * getZoom() + 20 + 2));
+		} catch(Exception e)
+		{
+			
+		}
 		g.scale(1, -1);
 	}
 }

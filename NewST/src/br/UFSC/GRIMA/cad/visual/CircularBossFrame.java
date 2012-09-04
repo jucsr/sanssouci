@@ -131,7 +131,7 @@ public class CircularBossFrame extends JDialog {
 							{
 								panel2.setBorder(new EtchedBorder());
 								panel2.setLayout(new GridBagLayout());
-								((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 50, 0, 0, 45, 45, 0, 40, 0};
+								((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 50, 0, 45, 45, 45, 0, 40, 0};
 								((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 0};
 								((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 								((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};

@@ -61,7 +61,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 		this.layeredPane1.add(circlePanel);
 		this.circlePanel.setFacePrincipal(face.getTipo(), 0);
 		this.radius2 = ((Double)this.radius2Spinner.getValue()).doubleValue();
-		
+		this.radius = ((Double)this.radiusSpinner.getValue()).doubleValue();
 		if(feature.getClass() == Cavidade.class)
 		{
 			Cavidade feat = (Cavidade)feature;
@@ -189,42 +189,43 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 	private void ok() 
 	{
 		radius2 = ((Double)this.radius2Spinner.getValue()).doubleValue();
+		radius = ((Double)this.radiusSpinner.getValue()).doubleValue();
 		altura = ((Double)this.spinnerDepth.getValue()).doubleValue();
-		double posX = Double.parseDouble(circlePanel.x);
-		double posY = Double.parseDouble(circlePanel.y);
+		double posX = circlePanel.circleCenter.getX();
+		double posY = circlePanel.circleCenter.getY();
 		double posZ = profundidadeFeature + feature.Z - altura; 
 		boolean ok = false;
 		boolean valido = false;
 		CircularBoss boss = null;
-		if(radius2 > radius)
+		if(radius2 < radius)
 		{
 			ok = false;
 			JOptionPane.showMessageDialog(parent, "O raio 2 deve ser maior que o raio 1", "Erro ", JOptionPane.OK_CANCEL_OPTION);
 		} else
 		{
 			ok = true;
+			if(profundidadeFeature >= altura)
+			{
+				ok = true;
+			}
+			else
+			{
+				ok = false;
+				JOptionPane.showMessageDialog(parent, "a altura da protuberancia nao pode ultrapassar a profundidade da cavidade", "Erro ", JOptionPane.OK_CANCEL_OPTION);
+			}
 		}
-		if(profundidadeFeature >= altura)
-		{
-			ok = true;
-		}
-		else
-		{
-			ok = false;
-			JOptionPane.showMessageDialog(parent, "a altura da protuberancia nao pode ultrapassar a profundidade da cavidade", "Erro ", JOptionPane.OK_CANCEL_OPTION);
-		}
-		System.out.println("OK = " + ok);
+		
 		if(ok)
 		{
 			boss = new CircularBoss();
 			boss.setDiametro1(radius * 2);
 			boss.setDiametro2(radius2 * 2);
 			boss.setPosicao(posX, posY, posZ);
+			boss.setAltura(altura);
+			boss.setNome(this.textField1.getText());
 			
-			System.out.println("feature --> " + feature.getClass());
 			if(this.feature.getClass() == Cavidade.class)
 			{
-				System.err.println("============");
 				Cavidade cavidade = (Cavidade)this.feature;
 				if(cavidade.validarBoss(boss))
 				{

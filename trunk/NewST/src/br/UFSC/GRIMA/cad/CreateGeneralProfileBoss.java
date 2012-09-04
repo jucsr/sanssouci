@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.cad;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -14,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.GeneralProfileBossFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
@@ -23,6 +25,7 @@ import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.util.Path;
+import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements ActionListener
@@ -86,8 +89,8 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		}
 		
 		linePanel.setFacePrincipal(face.getTipo(), 0);
-		this.contentPanel.add(linePanel);
-		
+		this.layeredPane1.setLayout(new BorderLayout());
+		this.layeredPane1.add(linePanel);
 		Toolkit toolKit = Toolkit.getDefaultToolkit();
     	Dimension d = toolKit.getScreenSize();
         setSize((int)(d.width/1.8), (int)(d.height/1.8));
@@ -338,6 +341,92 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			generalBoss.setNome(this.textField1.getText());
 			generalBoss.setForma(forma);
 			generalBoss.setRugosidade((Double)spinnerRugosidade.getValue());
+			
+			Point3d coordinates = null;
+			ArrayList<Double> axis = null, refDirection = null;
+			if (this.face.getTipo() == Face.XY)
+			{
+				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), generalBoss.getVertexPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ);
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(0.0);
+				axis.add(1.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+			} else if (this.face.getTipo() == Face.XZ)
+			{
+				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), posicaoZ, generalBoss.getVertexPoints().get(0).getY());
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(-1.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				
+				
+			} else if (this.face.getTipo() == Face.YX)
+			{
+				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), this.face.getLargura() - generalBoss.getVertexPoints().get(0).getY(), face.getProfundidadeMaxima() - posicaoZ);
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(0.0);
+				axis.add(-1.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				
+			} else if (this.face.getTipo() == Face.YZ)
+			{
+				coordinates = new Point3d(this.face.getProfundidadeMaxima() - posicaoZ, generalBoss.getVertexPoints().get(0).getY(), this.face.getComprimento() - generalBoss.getVertexPoints().get(0).getX());
+				axis = new ArrayList<Double>();
+				axis.add(1.0);
+				axis.add(0.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				refDirection.add(-1.0);
+				
+			} else if (this.face.getTipo() == Face.ZX)
+			{
+				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), this.face.getProfundidadeMaxima() - posicaoZ, this.face.getLargura() - generalBoss.getVertexPoints().get(0).getY());
+				axis = new ArrayList<Double>();
+				axis.add(0.0);
+				axis.add(1.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(1.0);
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				
+			} else if (this.face.getTipo() == Face.ZY)
+			{
+				coordinates = new Point3d(posicaoZ, generalBoss.getVertexPoints().get(0).getY(), face.getComprimento() - generalBoss.getVertexPoints().get(0).getX());
+				axis = new ArrayList<Double>();
+				axis.add(-1.0);
+				axis.add(0.0);
+				axis.add(0.0);
+				
+				refDirection = new ArrayList<Double>();
+				refDirection.add(0.0);
+				refDirection.add(0.0);
+				refDirection.add(1.0);
+				
+			}
+			Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
+			position.setName(generalBoss.getNome() + " placement");
+			generalBoss.setPosition(position);	
+			
 			if(this.feature.getClass() == Cavidade.class)
 			{
 				Cavidade cavidade = (Cavidade)this.feature;
@@ -557,7 +646,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		*/
 		//System.out.println("AInicial: "+anguloInicial*180/Math.PI+" AFinal: "+anguloFinal*180/Math.PI);
 		double comprimentoLinha = 1;
-		comprimentoLinha=radius/3;
+		comprimentoLinha=radius/2;
 		
 		//arcPoints=interpolarArco(cc,radius,anguloInicial, deltaAngulo, comprimentoLinha, true);		
 		arcPoints=interpolarArco(cc,radius,anguloInicial, teta, comprimentoLinha, true);

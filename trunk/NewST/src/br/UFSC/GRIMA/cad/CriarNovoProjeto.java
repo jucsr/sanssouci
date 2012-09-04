@@ -21,6 +21,7 @@ import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.j3d.J3D;
 import br.UFSC.GRIMA.operationSolids.CSGSolid;
 import br.UFSC.GRIMA.operationSolids.OperationBlock;
+import br.UFSC.GRIMA.operationSolids.OperationBlock1;
 import br.UFSC.GRIMA.util.ImageSource;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -71,7 +72,9 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		this.adjustJFrame();
 		//this.bloco = new Bloco(200, 100, 30);
 		this.j3d = new J3D(this.panel8);
-		this.csgBloco = new OperationBlock("", (Double)this.spinner2.getValue(), (Double)this.spinner3.getValue(), (Double)this.spinner1.getValue());
+//		this.csgBloco = new OperationBlock("", (Double)this.spinner2.getValue(), (Double)this.spinner3.getValue(), (Double)this.spinner1.getValue());
+		this.csgBloco = new OperationBlock1("", ((Double)this.spinner2.getValue()).floatValue(), ((Double)this.spinner3.getValue()).floatValue(), ((Double)this.spinner1.getValue()).floatValue(), 3, 2, 3);
+
 		this.j3d.addSolid(csgBloco);
 	}
 
@@ -288,7 +291,8 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		
 		this.j3d = new J3D(this.panel8);
 //		CSGSolid block = new OperationBlock("block",(float)x, (float)y, (float)z);
-		csgBloco = new OperationBlock("block", this.bloco.getLargura(), this.bloco.getProfundidade(), this.bloco.getComprimento());
+//		csgBloco = new OperationBlock("block", this.bloco.getLargura(), this.bloco.getProfundidade(), this.bloco.getComprimento());
+		csgBloco = new OperationBlock1("block", (float)this.bloco.getLargura(), (float)this.bloco.getProfundidade(), (float)this.bloco.getComprimento(), 3, 3, 3);
 		
 		this.j3d.addSolid(csgBloco);
 		

@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.cad;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -45,7 +46,8 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		
 		linePanel = new LinePanel(projeto);
 		linePanel.setFacePrincipal(face.getTipo(), 0);
-		this.contentPanel.add(linePanel);
+		this.layeredPane1.setLayout(new BorderLayout());
+		this.layeredPane1.add(linePanel);
 		
 		Toolkit toolKit = Toolkit.getDefaultToolkit();
     	Dimension d = toolKit.getScreenSize();
@@ -500,7 +502,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		
 		along = radius / Math.tan(alfa / 2); /** <----------- CUIDADO COM O ALFA **/
 		
-		System.out.println("********** " + (alfa * 180 / Math.PI));
+//		System.out.println("********** " + (alfa * 180 / Math.PI));
 		
 		xa = p0.getX() + along * (p1.getX() - p0.getX()) / distance1;
 		ya = (p1.getY() - p0.getY() * (xa - p0.getX())) / (p1.getX() - p0.getX());
@@ -544,7 +546,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 
 		double teta = Math.PI - Math.abs(alfa);
 		h = radius * Math.cos(teta);
-		System.out.println("teta:" + teta*180/Math.PI);
+//		System.out.println("teta:" + teta*180/Math.PI);
 		double dc = radius / Math.sin(Math.abs(alfa / 2));
 		
 		if (alfa < 0.0)		

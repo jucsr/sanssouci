@@ -282,7 +282,7 @@ public class Cavidade extends Feature implements Serializable {
 			double raioMaiorBoss = cb.getDiametro2()/2;
 			double n = 2*Math.PI*raioMaiorBoss;
 			int numPontos = (int)n;
-			
+						
 			/** Discretiza a borda do CircularBoss **/
 			
 			borda = determinarPontosEmCircunferencia (new Point3d(posX,posY,posZ), 0.0, 2*Math.PI, raioMaiorBoss, numPontos);

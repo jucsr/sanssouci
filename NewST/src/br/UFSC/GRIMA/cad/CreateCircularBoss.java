@@ -192,7 +192,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 		altura = ((Double)this.spinnerDepth.getValue()).doubleValue();
 		double posX = Double.parseDouble(circlePanel.x);
 		double posY = Double.parseDouble(circlePanel.y);
-		double posZ = 0; 
+		double posZ = profundidadeFeature + feature.Z - altura; 
 		boolean ok = false;
 		boolean valido = false;
 		CircularBoss boss = null;
@@ -213,16 +213,21 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			ok = false;
 			JOptionPane.showMessageDialog(parent, "a altura da protuberancia nao pode ultrapassar a profundidade da cavidade", "Erro ", JOptionPane.OK_CANCEL_OPTION);
 		}
+		System.out.println("OK = " + ok);
 		if(ok)
 		{
 			boss = new CircularBoss();
+			boss.setDiametro1(radius * 2);
+			boss.setDiametro2(radius2 * 2);
+			boss.setPosicao(posX, posY, posZ);
 			
+			System.out.println("feature --> " + feature.getClass());
 			if(this.feature.getClass() == Cavidade.class)
 			{
+				System.err.println("============");
 				Cavidade cavidade = (Cavidade)this.feature;
 				if(cavidade.validarBoss(boss))
 				{
-					
 					posZ = cavidade.getProfundidade() - altura + cavidade.Z;
 					valido = true;
 					cavidade.addBoss(boss);
@@ -235,10 +240,8 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			} else if(this.feature.getClass() == GeneralClosedPocket.class)
 			{
 				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
-				System.out.println("SSSSSSSSSSSSSSSSSS");
 				if(general.validarBoss(boss))
 				{
-					System.out.println("SSSSSSSSSSSSSSSSSS");
 					posZ = general.getProfundidade() - altura + general.Z;
 					valido = true;
 					general.addBoss(boss);

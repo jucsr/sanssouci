@@ -52,6 +52,8 @@ public class CreateGeneralPocketFrame extends JDialog {
 		label6 = new JLabel();
 		spinnerRugosidade = new JSpinner();
 		checkBox1 = new JCheckBox();
+		scrollPane1 = new JScrollPane();
+		layeredPane1 = new JLayeredPane();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -239,6 +241,12 @@ public class CreateGeneralPocketFrame extends JDialog {
 						new Insets(0, 0, 5, 5), 0, 0));
 				}
 				contentPanel.add(panel3, BorderLayout.NORTH);
+
+				//======== scrollPane1 ========
+				{
+					scrollPane1.setViewportView(layeredPane1);
+				}
+				contentPanel.add(scrollPane1, BorderLayout.CENTER);
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -298,6 +306,8 @@ public class CreateGeneralPocketFrame extends JDialog {
 	private JLabel label6;
 	protected JSpinner spinnerRugosidade;
 	protected JCheckBox checkBox1;
+	private JScrollPane scrollPane1;
+	protected JLayeredPane layeredPane1;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

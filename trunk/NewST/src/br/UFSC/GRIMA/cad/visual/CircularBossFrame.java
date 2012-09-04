@@ -1,5 +1,5 @@
 /*
- * Created by JFormDesigner on Mon Aug 13 20:06:08 BRT 2012
+ * Created by JFormDesigner on Thu Aug 30 16:02:17 BRT 2012
  */
 
 package br.UFSC.GRIMA.cad.visual;
@@ -11,13 +11,13 @@ import javax.swing.border.*;
 /**
  * @author Victor
  */
-public class GeneralProfileBossFrame extends JDialog {
-	public GeneralProfileBossFrame(Frame owner) {
+public class CircularBossFrame extends JDialog {
+	public CircularBossFrame(Frame owner) {
 		super(owner);
 		initComponents();
 	}
 
-	public GeneralProfileBossFrame(Dialog owner) {
+	public CircularBossFrame(Dialog owner) {
 		super(owner);
 		initComponents();
 	}
@@ -28,9 +28,6 @@ public class GeneralProfileBossFrame extends JDialog {
 		contentPanel = new JPanel();
 		panel3 = new JPanel();
 		panel1 = new JPanel();
-		toolBar1 = new JToolBar();
-		button2 = new JButton();
-		button1 = new JButton();
 		toolBar2 = new JToolBar();
 		label1 = new JLabel();
 		spinnerZoom = new JSpinner();
@@ -41,6 +38,8 @@ public class GeneralProfileBossFrame extends JDialog {
 		panel2 = new JPanel();
 		label2 = new JLabel();
 		radiusSpinner = new JSpinner();
+		label7 = new JLabel();
+		radius2Spinner = new JSpinner();
 		label3 = new JLabel();
 		spinnerDepth = new JSpinner();
 		label4 = new JLabel();
@@ -51,15 +50,18 @@ public class GeneralProfileBossFrame extends JDialog {
 		panel5 = new JPanel();
 		label6 = new JLabel();
 		spinnerRugosidade = new JSpinner();
+		panel7 = new JPanel();
 		scrollPane1 = new JScrollPane();
 		layeredPane1 = new JLayeredPane();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
-		checkBox1 = new JCheckBox();
+		toolBar1 = new JToolBar();
+		button2 = new JButton();
+		button1 = new JButton();
 
 		//======== this ========
-		setTitle("Create General Profile Boss");
+		setTitle("Create Circular Boss");
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
@@ -84,19 +86,6 @@ public class GeneralProfileBossFrame extends JDialog {
 					//======== panel1 ========
 					{
 						panel1.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-						//======== toolBar1 ========
-						{
-
-							//---- button2 ----
-							button2.setText("Help");
-							toolBar1.add(button2);
-
-							//---- button1 ----
-							button1.setText("close curve");
-							toolBar1.add(button1);
-						}
-						panel1.add(toolBar1);
 
 						//======== toolBar2 ========
 						{
@@ -142,9 +131,9 @@ public class GeneralProfileBossFrame extends JDialog {
 							{
 								panel2.setBorder(new EtchedBorder());
 								panel2.setLayout(new GridBagLayout());
-								((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 50, 0, 45, 0, 40, 0};
+								((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 50, 0, 0, 45, 45, 0, 40, 0};
 								((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 0};
-								((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 								((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 								//---- label2 ----
@@ -160,27 +149,40 @@ public class GeneralProfileBossFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
 
+								//---- label7 ----
+								label7.setText("radius2");
+								panel2.add(label7, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
+
+								//---- radius2Spinner ----
+								radius2Spinner.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+								radius2Spinner.setEnabled(false);
+								panel2.add(radius2Spinner, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
+
 								//---- label3 ----
 								label3.setText("height");
-								panel2.add(label3, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+								panel2.add(label3, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
 
 								//---- spinnerDepth ----
 								spinnerDepth.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-								panel2.add(spinnerDepth, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+								panel2.add(spinnerDepth, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
 
 								//---- label4 ----
 								label4.setText("pos Z");
-								panel2.add(label4, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
+								panel2.add(label4, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
 
 								//---- spinnerPosZ ----
 								spinnerPosZ.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
-								panel2.add(spinnerPosZ, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+								panel2.add(spinnerPosZ, new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
@@ -207,7 +209,7 @@ public class GeneralProfileBossFrame extends JDialog {
 							new Insets(0, 0, 0, 5), 0, 0));
 
 						//---- textField1 ----
-						textField1.setText("GENERAL PROFILE BOSS");
+						textField1.setText("CIRCULAR BOSS");
 						panel4.add(textField1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 0, 5), 0, 0));
@@ -236,11 +238,23 @@ public class GeneralProfileBossFrame extends JDialog {
 				}
 				contentPanel.add(panel3, BorderLayout.NORTH);
 
-				//======== scrollPane1 ========
+				//======== panel7 ========
 				{
-					scrollPane1.setViewportView(layeredPane1);
+					panel7.setLayout(new GridBagLayout());
+					((GridBagLayout)panel7.getLayout()).columnWidths = new int[] {0, 505, 0, 0};
+					((GridBagLayout)panel7.getLayout()).rowHeights = new int[] {0, 305, 0, 0};
+					((GridBagLayout)panel7.getLayout()).columnWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+					((GridBagLayout)panel7.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+					//======== scrollPane1 ========
+					{
+						scrollPane1.setViewportView(layeredPane1);
+					}
+					panel7.add(scrollPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 5, 5), 0, 0));
 				}
-				contentPanel.add(scrollPane1, BorderLayout.CENTER);
+				contentPanel.add(panel7, BorderLayout.CENTER);
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -269,8 +283,17 @@ public class GeneralProfileBossFrame extends JDialog {
 		pack();
 		setLocationRelativeTo(getOwner());
 
-		//---- checkBox1 ----
-		checkBox1.setText("throught");
+		//======== toolBar1 ========
+		{
+
+			//---- button2 ----
+			button2.setText("Help");
+			toolBar1.add(button2);
+
+			//---- button1 ----
+			button1.setText("close curve");
+			toolBar1.add(button1);
+		}
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
@@ -279,9 +302,6 @@ public class GeneralProfileBossFrame extends JDialog {
 	protected JPanel contentPanel;
 	private JPanel panel3;
 	private JPanel panel1;
-	private JToolBar toolBar1;
-	protected JButton button2;
-	protected JButton button1;
 	private JToolBar toolBar2;
 	private JLabel label1;
 	protected JSpinner spinnerZoom;
@@ -291,7 +311,9 @@ public class GeneralProfileBossFrame extends JDialog {
 	private JToolBar toolBar3;
 	private JPanel panel2;
 	private JLabel label2;
-	protected JSpinner radiusSpinner;
+	public JSpinner radiusSpinner;
+	private JLabel label7;
+	public JSpinner radius2Spinner;
 	private JLabel label3;
 	protected JSpinner spinnerDepth;
 	private JLabel label4;
@@ -302,11 +324,14 @@ public class GeneralProfileBossFrame extends JDialog {
 	private JPanel panel5;
 	private JLabel label6;
 	protected JSpinner spinnerRugosidade;
+	private JPanel panel7;
 	private JScrollPane scrollPane1;
 	protected JLayeredPane layeredPane1;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;
-	protected JCheckBox checkBox1;
+	private JToolBar toolBar1;
+	protected JButton button2;
+	protected JButton button1;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -5,10 +5,9 @@ import java.util.Vector;
 
 import javax.vecmath.Point3d;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 import jsdai.SCombined_schema.ABoss;
 import jsdai.SCombined_schema.ACartesian_point;
+import jsdai.SCombined_schema.AComposite_curve_segment;
 import jsdai.SCombined_schema.ACutting_component;
 import jsdai.SCombined_schema.AExecutable;
 import jsdai.SCombined_schema.AMachining_operation;
@@ -22,6 +21,7 @@ import jsdai.SCombined_schema.EB_spline_curve_form;
 import jsdai.SCombined_schema.EBall_endmill;
 import jsdai.SCombined_schema.EBezier_curve;
 import jsdai.SCombined_schema.EBlock;
+import jsdai.SCombined_schema.EBoolean_expression;
 import jsdai.SCombined_schema.EBoring;
 import jsdai.SCombined_schema.EBoring_tool;
 import jsdai.SCombined_schema.EBoss;
@@ -31,9 +31,12 @@ import jsdai.SCombined_schema.EBullnose_endmill;
 import jsdai.SCombined_schema.ECartesian_point;
 import jsdai.SCombined_schema.ECenter_drill;
 import jsdai.SCombined_schema.ECenter_drilling;
+import jsdai.SCombined_schema.ECircle;
 import jsdai.SCombined_schema.ECircular_closed_profile;
 import jsdai.SCombined_schema.EClosed_pocket;
 import jsdai.SCombined_schema.EClosed_profile;
+import jsdai.SCombined_schema.EComposite_curve;
+import jsdai.SCombined_schema.EComposite_curve_segment;
 import jsdai.SCombined_schema.EConical_hole_bottom;
 import jsdai.SCombined_schema.EContour_parallel;
 import jsdai.SCombined_schema.ECutmode_type;
@@ -90,11 +93,14 @@ import jsdai.SCombined_schema.EThrough_bottom_condition;
 import jsdai.SCombined_schema.EThrough_pocket_bottom_condition;
 import jsdai.SCombined_schema.EToleranced_length_measure;
 import jsdai.SCombined_schema.ETool_reference_point;
+import jsdai.SCombined_schema.ETransition_code;
 import jsdai.SCombined_schema.ETwist_drill;
 import jsdai.SCombined_schema.EVee_profile;
 import jsdai.SCombined_schema.EWorkpiece;
 import jsdai.SCombined_schema.EWorkpiece_setup;
 import jsdai.SCombined_schema.EWorkplan;
+import jsdai.dictionary.CBoolean_type;
+import jsdai.dictionary.EBoolean_type;
 import jsdai.lang.A_double;
 import jsdai.lang.A_string;
 import jsdai.lang.ELogical;
@@ -140,6 +146,9 @@ import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.LinearPath;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 /**
@@ -1612,7 +1621,8 @@ public class StepNcProject extends STEPProject
 						eBoss.setIts_boundary(null, profileBoss);
 					}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 					{
-						
+						GeneralProfileBoss boss = (GeneralProfileBoss)bossTmp;
+						EComposite_curve curve = this.createProfile(boss);
 					}
 					aBoss.addUnordered(eBoss);
 				}
@@ -1620,6 +1630,42 @@ public class StepNcProject extends STEPProject
 		return eClosed_pocket;
 	}
 	
+	private EComposite_curve createProfile(GeneralProfileBoss boss) throws SdaiException 
+	{
+		ArrayList<Path> paths = boss.getPaths();
+		EComposite_curve eComposite_curve = (EComposite_curve)this.model.createEntityInstance(EComposite_curve.class);
+		AComposite_curve_segment aComposite_curve_segment = eComposite_curve.createSegments(null);
+		
+		for(int i = 0; i< paths.size(); i++)
+		{
+			Path pathTmp = paths.get(i);
+			EComposite_curve_segment eComposite_curve_segment = (EComposite_curve_segment)this.model.createEntityInstance(EComposite_curve_segment.class);
+			if(pathTmp.getClass() == CircularPath.class)
+			{
+				eComposite_curve_segment.setTransition(null, ETransition_code.CONT_SAME_GRADIENT);
+				ECircle eCircle = (ECircle)this.model.createEntityInstance(ECircle.class);
+				EAxis2_placement_3d placement = this.createAxis2Placement3D("", pathTmp.getInitialPoint(), boss.getPosition().getAxis(), boss.getPosition().getRefDirection());
+				eCircle.setPosition(null, placement);
+				eComposite_curve_segment.setParent_curve(null, eCircle);
+			}else if(pathTmp.getClass() == LinearPath.class)
+			{
+				eComposite_curve_segment.setTransition(null, ETransition_code.CONTINUOUS);
+				eComposite_curve_segment.setSame_sense(null, Boolean.TRUE);
+				EPolyline ePolyline = (EPolyline)this.model.createEntityInstance(EPolyline.class);
+				ACartesian_point points = ePolyline.createPoints(null);
+				ECartesian_point initialPoint = this.createCartesianPoint("", pathTmp.getInitialPoint());
+				ECartesian_point finalPoint = this.createCartesianPoint("", pathTmp.getFinalPoint());
+				points.addByIndex(1, initialPoint);
+				points.addByIndex(2, finalPoint);
+				
+				eComposite_curve_segment.setParent_curve(null, ePolyline);
+			}
+			aComposite_curve_segment.addByIndex(i + 1, eComposite_curve);
+		}
+		return eComposite_curve;
+	}
+
+
 	private EClosed_pocket createClosedPocket(Workingstep ws, EWorkpiece eWorkpiece, AMachining_operation operations) throws SdaiException
 	{
 		Cavidade cavidade = (Cavidade)ws.getFeature();

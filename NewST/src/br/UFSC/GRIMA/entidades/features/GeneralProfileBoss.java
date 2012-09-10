@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import br.UFSC.GRIMA.util.Path;
+
 /**
  * 
  * @author Jc
@@ -16,6 +18,7 @@ public class GeneralProfileBoss extends Boss
 	private GeneralPath forma;
 	private double radius = 0;
 	private ArrayList<Point2D> vertexPoints;
+	private ArrayList<Path> paths;
 	
 	public GeneralProfileBoss(double radius, ArrayList<Point2D> vertexPoints)
 	{
@@ -78,5 +81,13 @@ public class GeneralProfileBoss extends Boss
 			root.add(vertexNode);
 		}
 		return root;
+	}
+
+	public ArrayList<Path> getPaths() {
+		return paths;
+	}
+
+	public void setPaths(ArrayList<Path> paths) {
+		this.paths = paths;
 	}
 }

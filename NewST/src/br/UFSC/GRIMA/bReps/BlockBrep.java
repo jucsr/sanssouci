@@ -2,7 +2,11 @@ package br.UFSC.GRIMA.bReps;
 
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
-
+/**
+ * 
+ * @author Jc
+ *
+ */
 public class BlockBrep 
 {
 	public Point3d [] vertexArray;
@@ -34,14 +38,14 @@ public class BlockBrep
 		this.generateVertex();
 		for(int i = 0; i < vertexArray.length; i++)
 		{
-			System.err.println("i = " + i + "\t" + vertexArray[i]);
+//			System.err.println("i = " + i + "\t" + vertexArray[i]);
 		}
 		
 		this.generateIndex();
 		
 		for(int i = 0; i < indexArray.length; i++)
 		{
-//			System.out.println(i + " index = " + "\t" + indexArray[i]);			
+			System.out.println(i + " index = " + "\t" + indexArray[i]);			
 		}
 		this.generateColorArray();
 	}
@@ -56,7 +60,7 @@ public class BlockBrep
 		// generating vertex in top face (XY)
 //		vertexArray = new Point3d[nX * nY * 2 + (nX * (nZ - 2)) * 2 + ((nY - 2) * (nZ - 2)) * 2];
 		vertexArray = new Point3d[nX * nY * 2];
-
+		
 		int a = 0;
 		for(int i = 0; i < nX; i++)
 		{
@@ -125,22 +129,109 @@ public class BlockBrep
 	}
 	private void generateIndex()
 	{
-		indexArray = new int[(nX * nY * 2) * 3 + (nX + nY) * 2 * 3];
+		indexArray = new int[((nX - 1)* (nY  - 1) * 2) * 3 * 2 + ((nX - 1) + (nY - 1)) * 2 * 2 * 3];
 		int a = 0;
-		//TOP
+	
 		for(int i = 0; i < nX - 1; i++)
 		{
 			for(int j = 0; j < nY - 1; j++)
 			{
-				indexArray[a] = (i + 1) + nY * j;
+				// =======  TOP =========
+				indexArray[a] = (j + 1) + nY * i;
 				a++;
-				indexArray[a] = i + nY * j;
+				indexArray[a] = j + nY * i;
 				a++;
-				indexArray[a] = nY * (j + 1) + i;
+				indexArray[a] = j + nY * (i + 1);
+				a++;
+				
+				indexArray[a] = (j + 1) + nY * i;
+				a++;
+				indexArray[a] = j + nY * (i + 1);
+				a++;
+				indexArray[a] = (j + 1) + nY * (i + 1);
+				a++;
+				
+				// ======= BOTTOM ========
+				indexArray[a] = nX * nY + (j + 1) + nY * i;
+				a++;
+				indexArray[a] = nX * nY + j + nY * (i + 1);
+				a++;
+				indexArray[a] = nX * nY + j + nY * i;
+				a++;
+				
+				indexArray[a] = nX * nY + (j + 1) + nY * i;
+				a++;
+				indexArray[a] = nX * nY + (j + 1) + nY * (i + 1);
+				a++;
+				indexArray[a] = nX * nY + j + nY * (i + 1);
 				a++;
 			}
 		}
-		
+		// ========== Laterais ==========
+		for(int i = 0; i < nX - 1; i++)
+		{
+			// ========= Frontal =========
+			indexArray[a] = nY * (i + 1);
+			a++;
+			indexArray[a] = nY * i;
+			a++;
+			indexArray[a] = nX * nY + nY * i;
+			a++;
+			
+			indexArray[a] = nY * (i + 1);
+			a++;
+			indexArray[a] = nX * nY + nY * i;
+			a++;
+			indexArray[a] = nX * nY + nY * (i + 1);
+			a++;
+			
+			// ========= Posterior =========
+			indexArray[a] = nY * (i + 1) - 1;
+			a++;
+			indexArray[a] = nY * (i + 2) - 1;
+			a++;
+			indexArray[a] = nX * nY + nY * (i + 1) - 1;
+			a++;
+			
+			indexArray[a] = nY * (i + 2) - 1;
+			a++;
+			indexArray[a] = nX * nY + nY * (i + 1) - 1;
+			a++;
+			indexArray[a] = nX * nY + nY * (i + 2) - 1;
+			a++;
+		}
+		for(int i = 0; i < nY - 1; i++)
+		{
+			// =========== Esquerda ===========
+			indexArray[a] = i;
+			a++;
+			indexArray[a] = i + 1;
+			a++;
+			indexArray[a] = nX * nY + i;
+			a++;
+			
+			indexArray[a] = i + 1;
+			a++;
+			indexArray[a] = nX * nY + i;
+			a++;
+			indexArray[a] = nX * nY + i + 1;
+			a++;
+			
+			// =========== Direita ===========
+			indexArray[a] = nX * nY - nY + i;
+			a++;
+			indexArray[a] = nX * nY + nX * nY - nY + i;
+			a++;
+			indexArray[a] = nX * nY + nX * nY - nY + i + 1;
+			a++;
+			
+			indexArray[a] = nX * nY - nY + i + 1;
+			a++;
+			indexArray[a] = nX * nY - nY + i;
+			a++;
+			indexArray[a] = nX * nY + nX * nY - nY + i + 1;
+			a++;
+		}
 //		for (int i = 0; i < nX - 1; i++) 
 //		{
 //			indexArray[a] = (i + 1) + nY * i;

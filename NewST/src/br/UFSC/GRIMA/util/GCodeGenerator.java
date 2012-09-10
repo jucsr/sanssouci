@@ -214,8 +214,10 @@ public class GCodeGenerator {
 								
 				}
 				
-			    if (wsTmp.getFeature().getClass().equals(Cavidade.class))
+			    if (wsTmp.getFeature().getClass().equals(Cavidade.class) && ((Cavidade) wsTmp.getFeature()).getItsBoss().size()==0)
 				{
+
+			    	System.out.println("TAMANHO DO BOSS    "+((Cavidade) wsTmp.getFeature()).getItsBoss().size());
 			    	//System.out.println("Verificou que eh cavidade?");
 			    	Cavidade cavidadeTmp = (Cavidade)wsTmp.getFeature();
 					int GAux = 0;
@@ -1147,7 +1149,9 @@ public class GCodeGenerator {
 			    }
 
 /*************************************************************************************************************************************/
-			    if(wsTmp.getFeature().getClass().equals(Cavidade.class)){
+			    if(wsTmp.getFeature().getClass().equals(Cavidade.class) && ((Cavidade) wsTmp.getFeature()).getItsBoss().size()!=0){
+			    	
+			    	
 			    	
 			    	if(wsTmp.getFeature().getClass().equals(Cavidade.class) && (wsTmp.getFerramenta().getClass().equals(FaceMill.class) || wsTmp.getFerramenta().getClass().equals(EndMill.class))){
 

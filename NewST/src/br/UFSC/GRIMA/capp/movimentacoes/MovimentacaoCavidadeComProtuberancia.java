@@ -28,9 +28,9 @@ public class MovimentacaoCavidadeComProtuberancia {
 	private ArrayList<Boss> itsBoss;
 
 	public MovimentacaoCavidadeComProtuberancia(Workingstep ws){
+		this.ws = ws;
 		this.cavidade = (Cavidade) this.ws.getFeature();
 		this.itsBoss = cavidade.getItsBoss();
-		this.ws = ws;
 		this.ferramenta = this.ws.getFerramenta();
 	}
 

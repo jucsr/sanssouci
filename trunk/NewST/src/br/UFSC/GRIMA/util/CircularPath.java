@@ -23,6 +23,11 @@ public class CircularPath extends Path
 		this.center = center;
 		this.calculateAngle(initialPoint, finalPoint);
 	}
+	public CircularPath(Point3d initialPoint, Point3d finalPoint, double radius) 
+	{
+		super(initialPoint, finalPoint);
+		this.radius = radius;
+	}
 	private void calculateAngle(Point3d initialPoint, Point3d finaPoint)
 	{
 		initialAngle = Math.atan2(initialPoint.y - center.y, initialPoint.x - center.x);

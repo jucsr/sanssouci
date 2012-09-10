@@ -1,21 +1,18 @@
 package br.UFSC.GRIMA.entidades.features;
 
-import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.cad.JanelaPrincipal;
-
 import jsdai.SCombined_schema.EClosed_pocket;
+import br.UFSC.GRIMA.cad.JanelaPrincipal;
+import br.UFSC.GRIMA.util.Path;
 /**
  * 
  * @author Jc
@@ -28,12 +25,12 @@ public class GeneralClosedPocket extends Feature
 	
 	public Cavidade cavidade = null;
 	private ArrayList<Point2D> vertexPoints;
-	private GeneralPath forma; 	// É o desenho da borda do GeneralClosedPocket
+	private GeneralPath forma; 	// ï¿½ o desenho da borda do GeneralClosedPocket
 	private boolean isPassante = false;
 	private ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 	private EClosed_pocket eClosed_pocket;
 	private int [] indices = {0, 0, 0, 0, 0, 0, 0};
-	
+		
 	public GeneralClosedPocket()
 	{
 		super(Cavidade.CAVIDADE_PERFIL_GERAL);
@@ -304,5 +301,6 @@ public class GeneralClosedPocket extends Feature
 	public void seteClosed_pocket(EClosed_pocket eClosed_pocket) {
 		this.eClosed_pocket = eClosed_pocket;
 	}
+	
 	
 }

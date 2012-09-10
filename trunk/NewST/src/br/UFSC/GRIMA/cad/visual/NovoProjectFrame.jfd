@@ -36,12 +36,10 @@
         <void method="setProperty"> 
          <string>border</string> 
          <object class="javax.swing.border.EmptyBorder"> 
-          <object class="java.awt.Insets"> 
-           <int>12</int> 
-           <int>12</int> 
-           <int>12</int> 
-           <int>12</int> 
-          </object> 
+          <int>12</int> 
+          <int>12</int> 
+          <int>12</int> 
+          <int>12</int> 
          </object> 
         </void> 
         <void property="name"> 
@@ -698,7 +696,7 @@
                      </object> 
                     </void> 
                     <void property="name"> 
-                     <string>spinner1</string> 
+                     <string>spinnerX</string> 
                     </void> 
                     <void method="auxiliary"> 
                      <void method="setProperty"> 
@@ -797,7 +795,7 @@
                      </object> 
                     </void> 
                     <void property="name"> 
-                     <string>spinner2</string> 
+                     <string>spinnerY</string> 
                     </void> 
                     <void method="auxiliary"> 
                      <void method="setProperty"> 
@@ -896,7 +894,7 @@
                      </object> 
                     </void> 
                     <void property="name"> 
-                     <string>spinner3</string> 
+                     <string>spinnerZ</string> 
                     </void> 
                     <void method="auxiliary"> 
                      <void method="setProperty"> 
@@ -1318,12 +1316,10 @@
           <void method="setProperty"> 
            <string>border</string> 
            <object class="javax.swing.border.EmptyBorder"> 
-            <object class="java.awt.Insets"> 
-             <int>12</int> 
-             <int>0</int> 
-             <int>0</int> 
-             <int>0</int> 
-            </object> 
+            <int>12</int> 
+            <int>0</int> 
+            <int>0</int> 
+            <int>0</int> 
            </object> 
           </void> 
           <void property="name"> 

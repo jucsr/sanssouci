@@ -43,13 +43,13 @@ public class NovoProjectFrame extends JFrame {
 		label8 = new JLabel();
 		panel7 = new JPanel();
 		label4 = new JLabel();
-		spinner1 = new JSpinner();
+		spinnerX = new JSpinner();
 		label9 = new JLabel();
 		label5 = new JLabel();
-		spinner2 = new JSpinner();
+		spinnerY = new JSpinner();
 		label10 = new JLabel();
 		label6 = new JLabel();
-		spinner3 = new JSpinner();
+		spinnerZ = new JSpinner();
 		label11 = new JLabel();
 		label12 = new JLabel();
 		spinner4 = new JSpinner();
@@ -225,9 +225,9 @@ public class NovoProjectFrame extends JFrame {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
-								//---- spinner1 ----
-								spinner1.setModel(new SpinnerNumberModel(200.0, 0.0, null, 1.0));
-								panel7.add(spinner1, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+								//---- spinnerX ----
+								spinnerX.setModel(new SpinnerNumberModel(200.0, 0.0, null, 1.0));
+								panel7.add(spinnerX, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
@@ -245,9 +245,9 @@ public class NovoProjectFrame extends JFrame {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
-								//---- spinner2 ----
-								spinner2.setModel(new SpinnerNumberModel(150.0, 0.0, null, 1.0));
-								panel7.add(spinner2, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+								//---- spinnerY ----
+								spinnerY.setModel(new SpinnerNumberModel(150.0, 0.0, null, 1.0));
+								panel7.add(spinnerY, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
@@ -265,9 +265,9 @@ public class NovoProjectFrame extends JFrame {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
-								//---- spinner3 ----
-								spinner3.setModel(new SpinnerNumberModel(30.0, 0.0, null, 1.0));
-								panel7.add(spinner3, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
+								//---- spinnerZ ----
+								spinnerZ.setModel(new SpinnerNumberModel(30.0, 0.0, null, 1.0));
+								panel7.add(spinnerZ, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
@@ -426,13 +426,13 @@ public class NovoProjectFrame extends JFrame {
 	private JLabel label8;
 	private JPanel panel7;
 	protected JLabel label4;
-	protected JSpinner spinner1;
+	protected JSpinner spinnerX;
 	private JLabel label9;
 	protected JLabel label5;
-	protected JSpinner spinner2;
+	protected JSpinner spinnerY;
 	private JLabel label10;
 	protected JLabel label6;
-	protected JSpinner spinner3;
+	protected JSpinner spinnerZ;
 	private JLabel label11;
 	private JLabel label12;
 	protected JSpinner spinner4;

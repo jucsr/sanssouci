@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -18,10 +20,11 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.cad.visual.CreateGeneralPocketFrame;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
-public class CreateGeneralPocket extends CreateGeneralPocketFrame implements ActionListener
+public class CreateGeneralPocket extends CreateGeneralPocketFrame implements ActionListener, KeyListener
 {
 	static LinePanel linePanel; 
 	private double radius = 0;
@@ -32,7 +35,8 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 	static ArrayList<Point2D> poligonoAuxiliar = new ArrayList<Point2D>();// --> poligono com os vertices arredondados para triangulacao
 	boolean isClosedCurve = false;
 	private ArrayList<ArrayList<Point2D>> triangles = new ArrayList<ArrayList<Point2D>>();
-	double zoom = 1;
+	private double zoom = 1;
+	private static ArrayList<CircularPath> arcos;
 	
 	public CreateGeneralPocket(JanelaPrincipal parent, Projeto projeto, Face face)
 	{
@@ -43,6 +47,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		this.cancelButton.addActionListener(this);
 		this.button1.addActionListener(this); //Close button
 		this.button2.addActionListener(this); //help button
+		addKeyListener(this);
 		
 		linePanel = new LinePanel(projeto);
 		linePanel.setFacePrincipal(face.getTipo(), 0);
@@ -623,6 +628,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		
 		//arcPoints=interpolarArco(cc,radius,anguloInicial, deltaAngulo, comprimentoLinha, true);		
 		arcPoints=interpolarArco(cc,radius,anguloInicial, teta, comprimentoLinha, true);
+//		System.err.println(arcPoints);
 		if (alfa<0.0)
 		{
 			ArrayList<Point2D> arcPointsOut = new ArrayList<Point2D>();
@@ -791,7 +797,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		int numPontos;
 		incrementoAngulo = comprimentoLinha / raio;
 		numPontos = (int) Math.ceil(deltaAngulo / incrementoAngulo);
-		incrementoAngulo = deltaAngulo / numPontos;
+		incrementoAngulo = deltaAngulo / (numPontos - 1);
 		
 		if (!isCounterClock)
 			incrementoAngulo = -incrementoAngulo;
@@ -809,7 +815,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 	public static ArrayList<Point2D> transformPolygonInRoundPolygon(ArrayList<Point2D> polygon, double radius) 
 	{
 		ArrayList<Point2D> saida = new ArrayList<Point2D>();
-
+		arcos = new ArrayList<CircularPath>();
 		if (radius > 0) 
 		{
 			double anguloTmp = 0;
@@ -845,7 +851,9 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				{
 //					System.out.println("angulo = " + (anguloTmp * 180 / Math.PI));
 					ArrayList<Point2D> arcoTmp = solveArc(forma, p0, p1, p2, radius, polygon);
-					solveArc(p0, p1, p2, radius);
+					CircularPath arco = new CircularPath(new Point3d(arcoTmp.get(arcoTmp.size() - 1).getX(), arcoTmp.get(arcoTmp.size() - 1).getY(), 0), new Point3d(arcoTmp.get(0).getX(), arcoTmp.get(0).getY(), 0), radius);
+					arcos.add(arco);
+//					solveArc(p0, p1, p2, radius);
 					for (int j = 0; j < arcoTmp.size(); j++) 
 					{
 						ArrayList<Integer> tempIndex = new ArrayList<Integer>();
@@ -873,5 +881,27 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 		}
 		// System.out.println("SAIDA: " + saida);
 		return saida;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		System.out.println("SSSSSSSSSSSSSS");
+
+		if(e.getKeyCode() == KeyEvent.VK_F9)
+		{
+			
+			System.out.println("SSSSSSSSSSSSSS");
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
 	}
 }

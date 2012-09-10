@@ -73,8 +73,9 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		//this.bloco = new Bloco(200, 100, 30);
 		this.j3d = new J3D(this.panel8);
 //		this.csgBloco = new OperationBlock("", (Double)this.spinner2.getValue(), (Double)this.spinner3.getValue(), (Double)this.spinner1.getValue());
-		this.csgBloco = new OperationBlock1("", ((Double)this.spinner2.getValue()).floatValue(), ((Double)this.spinner3.getValue()).floatValue(), ((Double)this.spinner1.getValue()).floatValue(), 3, 2, 3);
-
+		this.csgBloco = new OperationBlock1("", ((Double)this.spinnerX.getValue()).floatValue(), ((Double)this.spinnerY.getValue()).floatValue(), ((Double)this.spinnerZ.getValue()).floatValue(), 2, 2, 3);
+		this.csgBloco.rotate(Math.PI / 2, 0);
+		this.csgBloco.translate(-(Double)this.spinnerX.getValue() / 2, -(Double)this.spinnerZ.getValue() / 2, -(Double)this.spinnerY.getValue() / 2);
 		this.j3d.addSolid(csgBloco);
 	}
 
@@ -285,7 +286,7 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 
 	private void visualizar() 
 	{
-		this.bloco = new Bloco(((Double)this.spinner1.getValue()).doubleValue(), ((Double)this.spinner2.getValue()).doubleValue(), ((Double)this.spinner3.getValue()).doubleValue(), this.material);
+		this.bloco = new Bloco(((Double)this.spinnerX.getValue()).doubleValue(), ((Double)this.spinnerY.getValue()).doubleValue(), ((Double)this.spinnerZ.getValue()).doubleValue(), this.material);
 		
 //		this.j3d.removeSolid();
 		
@@ -333,7 +334,7 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		// System.out.println("Dimens�es do bloco: ");
 		if (ok) {
 			try {
-				this.x = ((Double)this.spinner1.getValue()).doubleValue();
+				this.x = ((Double)this.spinnerX.getValue()).doubleValue();
 				if (this.x > 0) {
 					// System.out.println("X: " + x);
 					ok = true;
@@ -356,7 +357,7 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		}
 		if (ok) {
 			try {
-				this.y = ((Double)this.spinner2.getValue()).doubleValue();
+				this.y = ((Double)this.spinnerY.getValue()).doubleValue();
 				if (this.y > 0) {
 					// System.out.println("Y: " + y);
 					ok = true;
@@ -379,7 +380,7 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		}
 		if (ok) {
 			try {
-				this.z = ((Double)this.spinner3.getValue()).doubleValue();
+				this.z = ((Double)this.spinnerZ.getValue()).doubleValue();
 				if (this.z > 0) {
 					// System.out.println("Z: " + z);
 					ok = true;

@@ -114,18 +114,21 @@ public class CavidadeReader {
 		Cavidade cavidade = new Cavidade(id, x, y, z, locX, locY, locZ, raioCavidade, largura, comprimento, profundidadeCavidade);
 
 		ABoss bosses = pocket.getIts_boss(null);
-
+		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		
 		SdaiIterator iterator = bosses.createIterator();
 		
+
 		while(iterator.next()){
 			EBoss eBoss = bosses.getCurrentMember(iterator);
-			if(eBoss.getIts_boundary(null).getClass()== ECircular_closed_profile.class){
+
+			System.out.println("BOSSES    "+ eBoss.getIts_boundary(null));
+			if(eBoss.getIts_boundary(null).isKindOf(ECircular_closed_profile.class)){
 				double diametro1 = ((ECircular_closed_profile) eBoss.getIts_boundary(null)).getDiameter(null).getTheoretical_size(null);
 				double angulo = eBoss.getSlope(null);
-				double altura = pocket.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3)-eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
-				double diametro2 = altura*Math.tan(angulo);
+				double altura = eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
+				double diametro2 = 2*altura*Math.tan(angulo)+diametro1;
 				Point3d centre = new Point3d(eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(1),
 											 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
 											 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3)); 
@@ -138,9 +141,13 @@ public class CavidadeReader {
 				circularBoss.setCentre(centre);
 				circularBoss.setPosicao(centre.getX(), centre.getY(), centre.getY());
 				circularBoss.setFace(faceAtual);
+				itsBoss.add(circularBoss);
+				System.out.println("PASSOU PELO READER       " + itsBoss.size());
 			}
+
 		}
 		
+		cavidade.setItsBoss(itsBoss);
 		
 		double tolerancia = ((EPlus_minus_value)pocket.getOrthogonal_radius(null).getImplicit_tolerance(null)).getUpper_limit(null);
 		cavidade.setTolerancia(tolerancia);

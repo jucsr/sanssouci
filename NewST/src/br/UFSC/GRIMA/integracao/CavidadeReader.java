@@ -4,13 +4,19 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
+import jsdai.SCombined_schema.ABoss;
 import jsdai.SCombined_schema.EBlock;
+import jsdai.SCombined_schema.EBoss;
+import jsdai.SCombined_schema.ECircular_closed_profile;
 import jsdai.SCombined_schema.EClosed_pocket;
 import jsdai.SCombined_schema.EPlus_minus_value;
 import jsdai.SCombined_schema.ERectangular_closed_profile;
 import jsdai.SCombined_schema.EThrough_pocket_bottom_condition;
 import jsdai.lang.SdaiException;
+import jsdai.lang.SdaiIterator;
+import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
@@ -44,7 +50,9 @@ public class CavidadeReader {
 				*(-1);
 		
 		double alturaBloco = ((EBlock)pocket.getIts_workpiece(null).getIts_bounding_geometry(null)).getZ(null);
-
+		
+		
+		
 //		double x = locX - comprimentoCavidade/2;
 //		double y = locY - larguraCavidade/2;
 //		double z = alturaBloco - locZ;
@@ -102,9 +110,38 @@ public class CavidadeReader {
 			z = faceAtual.getProfundidadeMaxima() - locY;
 
 		}
-
+		
 		Cavidade cavidade = new Cavidade(id, x, y, z, locX, locY, locZ, raioCavidade, largura, comprimento, profundidadeCavidade);
 
+		ABoss bosses = pocket.getIts_boss(null);
+
+		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+		
+		SdaiIterator iterator = bosses.createIterator();
+		
+		while(iterator.next()){
+			EBoss eBoss = bosses.getCurrentMember(iterator);
+			if(eBoss.getIts_boundary(null).getClass()== ECircular_closed_profile.class){
+				double diametro1 = ((ECircular_closed_profile) eBoss.getIts_boundary(null)).getDiameter(null).getTheoretical_size(null);
+				double angulo = eBoss.getSlope(null);
+				double altura = pocket.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3)-eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
+				double diametro2 = altura*Math.tan(angulo);
+				Point3d centre = new Point3d(eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(1),
+											 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
+											 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3)); 
+				
+				
+				CircularBoss circularBoss = new CircularBoss();
+				circularBoss.setAltura(altura);
+				circularBoss.setDiametro1(diametro1);
+				circularBoss.setDiametro2(diametro2);
+				circularBoss.setCentre(centre);
+				circularBoss.setPosicao(centre.getX(), centre.getY(), centre.getY());
+				circularBoss.setFace(faceAtual);
+			}
+		}
+		
+		
 		double tolerancia = ((EPlus_minus_value)pocket.getOrthogonal_radius(null).getImplicit_tolerance(null)).getUpper_limit(null);
 		cavidade.setTolerancia(tolerancia);
 		

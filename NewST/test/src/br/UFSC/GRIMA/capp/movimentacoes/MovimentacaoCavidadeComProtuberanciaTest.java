@@ -54,6 +54,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 	ArrayList<Point3d> pontosPossiveis, pontosPossX, pontosPossY;
 	ArrayList<Point2d> coordenadas;
 	ArrayList<Point2d> coor;
+	ArrayList<Point3d> pontosMenores;
 	double maiorMenorDistancia;
 	ArrayList<Double> menorDistancia, menorX, menorY;
 	ArrayList<Point3d> maximos;
@@ -106,7 +107,6 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		ArrayList<Point2D> vertices = new ArrayList<Point2D>();
 		vertices.add(new Point2D.Double(20,15));
 		vertices.add(new Point2D.Double(25,30));
-		vertices.add(new Point2D.Double(30,20));
 		vertices.add(new Point2D.Double(40,35));
 		vertices.add(new Point2D.Double(45,25));
 		
@@ -121,15 +121,17 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //		this.cavidade = (Cavidade) this.ws.getFeature();
 		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-//		this.itsBoss.add(this.boss);
+		this.itsBoss.add(this.boss);
 //		this.itsBoss.add(this.boss1);
 //		this.itsBoss.add(this.boss2);
-		this.itsBoss.add(this.boss3);
+//		this.itsBoss.add(this.boss3);
 		cavidade.setItsBoss(this.itsBoss);
 		this.faceXY.addFeature(this.boss);
-		Generate3Dview Janela3D = new Generate3Dview(this.projeto);
-		Janela3D.setVisible(true);
+//		Generate3Dview Janela3D = new Generate3Dview(this.projeto);
+//		Janela3D.setVisible(true);
 
+		
+		
 			double largura=this.cavidade.getLargura(),
 					comprimento=this.cavidade.getComprimento(),
 					raio=this.cavidade.getRaio(),
@@ -308,11 +310,11 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //							System.out.println(k);
 						}
 						else{
-							malhaMenoresDistancias[i][k] = 0;
+						//	malhaMenoresDistancias[i][k] = 0;
 						}
 						b=0;
 					}
-					malhaMenoresDistancias[i][k] = 0;
+				//	malhaMenoresDistancias[i][k] = 0;
 				}
 			}
 
@@ -325,8 +327,6 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 			menorDistancia = new ArrayList<Double>();
 			for(int i=0;i<pontosPossiveis.size();i++){
 				distanciaTmp=100;
-				distanciaTmpX=100;
-				distanciaTmpY=100;
 				for(int k=0;k<pontosPeriferia.size();k++){
 					if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
 						distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
@@ -400,10 +400,72 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				for(int k=0;k<menorDistancia.size();k++){
 					if(menorDistancia.get(k)<=(i+1)*(0.75*diametroFerramenta) && menorDistancia.get(k)>=(i+1)*(0.75*diametroFerramenta)-0.65){
 						pontos2.add(pontosPossiveis.get(k));
+						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
 					}
 				}
 				pontos.add(pontos2);
 			}
+			
+			pontosMenores = new ArrayList<Point3d>();
+			ArrayList<Point3d> test = new ArrayList<Point3d>();
+			
+			pontosPossiveis = new ArrayList<Point3d>();
+			coordenadas = new ArrayList<Point2d>();
+			for(int i=0;i<malha.length;i++){
+				for(int k=0;k<malha[i].length;k++){
+					if(retanguloCavidade.contains(malha[i][k][0], malha[i][k][1])){
+						for(int g=0;g<bossArray.size();g++){
+							if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
+								b++;
+							}
+						}
+						if(b==bossArray.size()){
+							pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
+							coordenadas.add(new Point2d(i,k));
+//							System.out.println(k);
+						}
+						else{
+						//	malhaMenoresDistancias[i][k] = 0;
+						}
+						b=0;
+					}
+				//	malhaMenoresDistancias[i][k] = 0;
+				}
+			}
+			
+			
+			menorDistancia = new ArrayList<Double>();
+			for(int i=0;i<pontosPossiveis.size();i++){
+				distanciaTmp=100;
+				for(int k=0;k<pontosPeriferia.size();k++){
+					if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+						distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+					}
+				}
+				malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
+				menorDistancia.add(distanciaTmp);
+//				System.out.println(menorDistancia.get(i));
+			}
+			
+			
+			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*2*raioMenor));
+			for(int i=0;i<numeroDeCortes;i++){
+				for(int k=0;k<pontosPossiveis.size();k++){
+					if(menorDistancia.get(k)<=(i+1)*(0.75*2*raioMenor) && menorDistancia.get(k)>=(i+1)*(0.75*2*raioMenor)-0.5){
+						pontosMenores.add(pontosPossiveis.get(k));}
+				}
+			}
+			
+//			numeroDeCortes = (int) (maiorMenorDistancia/ (0.75*raioMenor*2));
+//			for(int i=0;i<1;i++){
+//				for(int k=0;k<menorDistancia.size();k++){
+//					if(menorDistancia.get(k)<=(i+1)*(0.75*raioMenor*2) && menorDistancia.get(k)>(i+1)*(0.75*raioMenor*2)-0.65){
+//						pontosMenores.add(pontosPossiveis.get(k));
+//					}
+//				}
+//			}
+			
+			
 //			JFrame frame1 = new JFrame("BEZIER SURFACE");
 //			frame1.setBounds(100, 100, 800, 500);
 //			JPanel painel1 = new JPanel();
@@ -458,11 +520,17 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //					}
 //					e.add(new Ellipse2D.Double(5*pontosPossiveis.get(i).getX(),5*pontosPossiveis.get(i).getY(),5,5));					
 //				}
-				for(int i=0;i<maximos.size();i++){
-					if(maximos.size()<1){
+//				for(int i=0;i<maximos.size();i++){
+//					if(maximos.size()<1){
+//						break;
+//					}
+//					e.add(new Ellipse2D.Double(5*maximos.get(i).getX(),5*maximos.get(i).getY(),5,5));					
+//				}
+				for(int i=0;i<pontosMenores.size();i++){
+					if(pontosMenores.size()<1){
 						break;
 					}
-					e.add(new Ellipse2D.Double(5*maximos.get(i).getX(),5*maximos.get(i).getY(),5,5));					
+					e.add(new Ellipse2D.Double(5*pontosMenores.get(i).getX(),5*pontosMenores.get(i).getY(),5,5));					
 				}
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){

@@ -24,6 +24,7 @@ import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
@@ -31,33 +32,33 @@ import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
-public class MapeadoraCavidade {
-
+public class MapeadoraGeneralClosedPocket {
+	
 	private Projeto projeto;
 	private Bloco bloco;
 	private Face faceTmp;
-	private Cavidade cavidadeTmp;
+	private GeneralClosedPocket genClosed;
 	private Vector<Workingstep> wssFeature;
 	private CondicoesDeUsinagem condicoesDeUsinagem;
 
 	private ArrayList<FaceMill> faceMills;
 	private ArrayList<EndMill> endMills;
 
-	public MapeadoraCavidade(Projeto projeto, Face face, Cavidade cavidade) {
+	public MapeadoraGeneralClosedPocket(Projeto projeto, Face face, GeneralClosedPocket genClosed) {
 
 		this.projeto = projeto;
 		this.faceTmp = face;
-		this.cavidadeTmp = cavidade;
+		this.genClosed = genClosed;
 		this.bloco = projeto.getBloco();
 
 		this.faceMills = ToolManager.getFaceMills();
 		this.endMills = ToolManager.getEndMills();
 		
-		this.mapearCavidade();
+		this.mapearGeneralClosedPocket();
 
 	}
 
-	private void mapearCavidade() {
+	private void mapearGeneralClosedPocket() {
 		
 		Workingstep wsTmp;
 		Workingstep wsPrecedenteTmp;
@@ -66,14 +67,14 @@ public class MapeadoraCavidade {
 
 		wssFeature = new Vector<Workingstep>();
 
-		if (cavidadeTmp.getTolerancia() <= Feature.LIMITE_RUGOSIDADE
-				&& cavidadeTmp.getRugosidade() <= Feature.LIMITE_TOLERANCIA) {
-			cavidadeTmp.setAcabamento(true);
+		if (genClosed.getTolerancia() <= Feature.LIMITE_RUGOSIDADE
+				&& genClosed.getRugosidade() <= Feature.LIMITE_TOLERANCIA) {
+			genClosed.setAcabamento(true);
 		}
 
-		if(cavidadeTmp.getFeaturePrecedente()!= null){
+		if(genClosed.getFeaturePrecedente()!= null){
 			
-			wsPrecedenteTmp = cavidadeTmp.getFeaturePrecedente().getWorkingsteps().lastElement();
+			wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
 			
 		}else{
 			//Nao tem ws precedente
@@ -81,7 +82,7 @@ public class MapeadoraCavidade {
 			
 		}
 		
-		if (cavidadeTmp.isAcabamento()) {
+		if (genClosed.isAcabamento()) {
 
 			// WORKINGSTEPS DE DESBASTE
 
@@ -90,28 +91,28 @@ public class MapeadoraCavidade {
 					"Bottom And Side Rough Milling", retractPlane);
 			operation1.setAllowanceSide(Feature.LIMITE_DESBASTE);
 
-			if (!cavidadeTmp.isPassante())
+			if (!genClosed.isPassante())
 				operation1.setAllowanceBottom(Feature.LIMITE_DESBASTE);
 
 			operation1.setStartPoint(new Point3d(0, 0, 0));
 
-			double comprimento = cavidadeTmp.getComprimento();
-			double largura = cavidadeTmp.getLargura();
-			double L = comprimento;
+//			double comprimento = genClosed.getComprimento();
+//			double largura = genClosed.getLargura();
+			double L = getMenorDiametro(genClosed);
 
-			if (largura < comprimento)
-				L = largura;
+//			if (largura < comprimento)
+//				L = largura;
 
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
-					cavidadeTmp, Feature.LIMITE_DESBASTE, L);
+					genClosed, Feature.LIMITE_DESBASTE, L);
 
 			// CONDIÇÕES DE USINAGEM
 			condicoesDeUsinagem = MapeadoraDeWorkingsteps
 					.getCondicoesDeUsinagem(this.projeto, faceMill, bloco
 							.getMaterial());
 			// WORKINGSTEP
-			wsTmp = new Workingstep(cavidadeTmp, faceTmp, faceMill,
+			wsTmp = new Workingstep(genClosed, faceTmp, faceMill,
 					condicoesDeUsinagem, operation1);
 			wsTmp.setTipo(Workingstep.DESBASTE);
 			wsTmp.setId("Pocket_RGH");
@@ -124,16 +125,16 @@ public class MapeadoraCavidade {
 			//FRESA PRA ACABAMENTO ANTECIPADA
 			// FERRAMENTA
 			EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills,
-					cavidadeTmp);
+					genClosed);
 			
 			double dEndMill = endMill.getDiametroFerramenta();
 			
 			boolean precisaSegDesb = false;
 			
 			double rFresa = faceMill.getDiametroFerramenta()/2;
-			double rCavidade = cavidadeTmp.getRaio();
+			double rGenClosed = genClosed.getRadius();
 			
-			double sobra = rFresa*(Math.sqrt(2)-1) - rCavidade*(Math.sqrt(2)-1) + Feature.LIMITE_DESBASTE;
+			double sobra = rFresa*(Math.sqrt(2)-1) - rGenClosed*(Math.sqrt(2)-1) + Feature.LIMITE_DESBASTE;
 			
 			if(dEndMill*0.75 >= sobra)
 				precisaSegDesb = false;
@@ -141,36 +142,36 @@ public class MapeadoraCavidade {
 				precisaSegDesb = true;
 
 			// se o raio da facemill for maior q o da cavidade
-			if (faceMill.getDiametroFerramenta() / 2 > cavidadeTmp.getRaio()
+			if (faceMill.getDiametroFerramenta() / 2 > genClosed.getRadius()
 					&& precisaSegDesb) {
 
-				double D = cavidadeTmp.getRaio() * 2;
+				double D = genClosed.getRadius() * 2;
 
 				// FERRAMENTA
 				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(),
-						faceMills, cavidadeTmp, Feature.LIMITE_DESBASTE, D);
+						faceMills, genClosed, Feature.LIMITE_DESBASTE, D);
 
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
 						"Bottom And Side Rough Milling", retractPlane);
 				operation2.setAllowanceSide(Feature.LIMITE_DESBASTE);
-				if (!cavidadeTmp.isPassante())
+				if (!genClosed.isPassante())
 					operation2.setAllowanceBottom(Feature.LIMITE_DESBASTE);
 
-				double x = comprimento / 2 - Feature.LIMITE_DESBASTE
-						- faceMill2.getDiametroFerramenta() / 2;
-				double y = largura / 2 - Feature.LIMITE_DESBASTE
-						- faceMill.getDiametroFerramenta() / 2;
-				double z = 0;
+//				double x = comprimento / 2 - Feature.LIMITE_DESBASTE
+//						- faceMill2.getDiametroFerramenta() / 2;
+//				double y = largura / 2 - Feature.LIMITE_DESBASTE
+//						- faceMill.getDiametroFerramenta() / 2;
+//				double z = 0;
 
-				operation2.setStartPoint(new Point3d(x, y, z));
+				operation2.setStartPoint(new Point3d(0, 0, 0));
 
 				// CONDIÇÕES DE USINAGEM
 				condicoesDeUsinagem = MapeadoraDeWorkingsteps
 						.getCondicoesDeUsinagem(this.projeto, faceMill2, bloco
 								.getMaterial());
 				// WORKINGSTEP
-				wsTmp = new Workingstep(cavidadeTmp, faceTmp, faceMill2,
+				wsTmp = new Workingstep(genClosed, faceTmp, faceMill2,
 						condicoesDeUsinagem, operation2);
 				wsTmp.setTipo(Workingstep.DESBASTE);
 				wsTmp.setId("Pocket_RGH");
@@ -189,17 +190,17 @@ public class MapeadoraCavidade {
 			operation3.setAllowanceSide(0);
 			operation3.setAllowanceBottom(0);
 
-			double x = cavidadeTmp.getComprimento() / 2
-					- endMill.getDiametroFerramenta() / 2;
+//			double x = genClosed.getComprimento() / 2
+//					- endMill.getDiametroFerramenta() / 2;
 
-			operation3.setStartPoint(new Point3d(x, 0, 0));
+			operation3.setStartPoint(new Point3d(0, 0, 0));
 
 			// CONDIÇÕES DE USINAGEM
 			condicoesDeUsinagem = MapeadoraDeWorkingsteps
 					.getCondicoesDeUsinagem(this.projeto, endMill, bloco
 							.getMaterial());
 			// WORKINGSTEP
-			wsTmp = new Workingstep(cavidadeTmp, faceTmp, endMill,
+			wsTmp = new Workingstep(genClosed, faceTmp, endMill,
 					condicoesDeUsinagem, operation3);
 			wsTmp.setTipo(Workingstep.ACABAMENTO);
 			wsTmp.setId("Pocket_FNS");
@@ -208,7 +209,7 @@ public class MapeadoraCavidade {
 
 			wssFeature.add(wsTmp);
 
-			cavidadeTmp.setWorkingsteps(wssFeature);
+			genClosed.setWorkingsteps(wssFeature);
 
 		} else {
 
@@ -221,20 +222,20 @@ public class MapeadoraCavidade {
 			operation1.setAllowanceBottom(0);
 			operation1.setStartPoint(new Point3d(0, 0, 0));
 
-			double comprimento = cavidadeTmp.getComprimento();
-			double largura = cavidadeTmp.getLargura();
-			double L = getMaiorDiametro(cavidadeTmp);
+//			double comprimento = genClosed.getComprimento();
+//			double largura = genClosed.getLargura();
+			double L = getMaiorDiametro(genClosed);
 
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
-					cavidadeTmp, 0, L);
+					genClosed, 0, L);
 
 			// CONDIÇÕES DE USINAGEM
 			condicoesDeUsinagem = MapeadoraDeWorkingsteps
 					.getCondicoesDeUsinagem(this.projeto, faceMill, bloco
 							.getMaterial());
 			// WORKINGSTEP
-			wsTmp = new Workingstep(cavidadeTmp, faceTmp, faceMill,
+			wsTmp = new Workingstep(genClosed, faceTmp, faceMill,
 					condicoesDeUsinagem, operation1);
 			wsTmp.setTipo(Workingstep.DESBASTE);
 			wsTmp.setId("Pocket_RGH");
@@ -247,11 +248,11 @@ public class MapeadoraCavidade {
 //			if (faceMill.getDiametroFerramenta() > getMenorDiametro()) {
 
 			
-				double D = getMenorDiametro(cavidadeTmp);
+				double D = getMenorDiametro(genClosed);
 
 				// FERRAMENTA
 				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(),
-						faceMills, cavidadeTmp, 0, D);
+						faceMills, genClosed, 0, D);
 
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
@@ -259,19 +260,19 @@ public class MapeadoraCavidade {
 				operation2.setAllowanceSide(0);
 				operation2.setAllowanceBottom(0);
 
-				double x = comprimento / 2 - faceMill2.getDiametroFerramenta()
-						/ 2;
-				double y = largura / 2 - faceMill.getDiametroFerramenta() / 2;
-				double z = 0;
-
-				operation2.setStartPoint(new Point3d(x, y, z));//MUDAR DEPOIS QUANDO TIVER O GENERALPATH
+//				double x = comprimento / 2 - faceMill2.getDiametroFerramenta()
+//						/ 2;
+//				double y = largura / 2 - faceMill.getDiametroFerramenta() / 2;
+//				double z = 0;
+//
+				operation2.setStartPoint(new Point3d(0, 0, 0));//MUDAR DEPOIS QUANDO TIVER O GENERALPATH
 
 				// CONDIÇÕES DE USINAGEM
 				condicoesDeUsinagem = MapeadoraDeWorkingsteps
 						.getCondicoesDeUsinagem(this.projeto, faceMill2, bloco
 								.getMaterial());
 				// WORKINGSTEP
-				wsTmp = new Workingstep(cavidadeTmp, faceTmp, faceMill2,
+				wsTmp = new Workingstep(genClosed, faceTmp, faceMill2,
 						condicoesDeUsinagem, operation2);
 				wsTmp.setTipo(Workingstep.DESBASTE);
 				wsTmp.setId("Pocket_RGH");
@@ -282,12 +283,12 @@ public class MapeadoraCavidade {
 
 			
 
-			cavidadeTmp.setWorkingsteps(wssFeature);
+				genClosed.setWorkingsteps(wssFeature);
 		}
 	}
 
 	private FaceMill chooseFaceMill(Material material,
-			ArrayList<FaceMill> faceMills, Cavidade cavidadeTmp,
+			ArrayList<FaceMill> faceMills, GeneralClosedPocket genClosed,
 			double limite_desbaste, double L) {
 
 		ArrayList<FaceMill> faceMillsCandidatas = new ArrayList<FaceMill>();
@@ -303,7 +304,7 @@ public class MapeadoraCavidade {
 
 		double limite_desbaste_fundo = limite_desbaste;
 		
-		if (cavidadeTmp.isPassante())
+		if (genClosed.isPassante())
 			limite_desbaste_fundo = 0;
 		
 		for (int i = 0; i < faceMills.size(); i++) { // Seleciona todas as
@@ -314,7 +315,7 @@ public class MapeadoraCavidade {
 
 			if (faceMill.getMaterial().equals(ISO)
 					&& faceMill.getDiametroFerramenta() <= (L - 2 * limite_desbaste)
-					&& faceMill.getProfundidadeMaxima() >= (cavidadeTmp
+					&& faceMill.getProfundidadeMaxima() >= (genClosed
 							.getProfundidade() - limite_desbaste_fundo )) {
 
 				faceMillsCandidatas.add(faceMill);
@@ -329,19 +330,19 @@ public class MapeadoraCavidade {
 					null,
 					"Não é possível usinar esta Feature com as atuais Face Mills disponíveis! \n" +
 					"__________________________________________________________"+"\n"+
-					"\tFeature: Cavidade \n" +
-					"\tNome: " + cavidadeTmp.getNome() +"\n" +
-					"\tComprimento: " + cavidadeTmp.getComprimento()+" mm"+"\n" +
-					"\tLargura: " + cavidadeTmp.getLargura()+" mm"+"\n" +
-					"\tProfundidade: " + cavidadeTmp.getProfundidade()+" mm"+"\n" +
-					"\tRaio: " + cavidadeTmp.getRaio()+" mm"+"\n" +
+					"\tFeature: Cavidade Perfil Geral \n" +
+					"\tNome: " + genClosed.getNome() +"\n" +
+//					"\tComprimento: " + genClosed.getComprimento()+" mm"+"\n" +
+//					"\tLargura: " + genClosed.getLargura()+" mm"+"\n" +
+					"\tProfundidade: " + genClosed.getProfundidade()+" mm"+"\n" +
+					"\tRaio: " + genClosed.getRadius()+" mm"+"\n" +
 					"\tMaterial Bloco: " + material.getName()+"\n" +
 					"__________________________________________________________"+"\n"+
 					"\tMotivo: Do grupo das Face Mills do projeto, nenhuma satisfaz os" +"\n"+
 					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
 					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
 					"\tDiametro da Ferramenta deve ser menor igual a: " + (L - 2 * limite_desbaste)+" mm" +"\n" +
-					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (cavidadeTmp.getProfundidade() - limite_desbaste_fundo )+" mm"+"\n\n" +
+					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (genClosed.getProfundidade() - limite_desbaste_fundo )+" mm"+"\n\n" +
 					"\tAdicione Face Mills adequadas ao projeto."
 					,
 					"Erro", JOptionPane.ERROR_MESSAGE);
@@ -369,7 +370,7 @@ public class MapeadoraCavidade {
 	}
 
 	private EndMill chooseEndMill(Material material,
-			ArrayList<EndMill> endMills, Cavidade cavidadeTmp) {
+			ArrayList<EndMill> endMills, GeneralClosedPocket genClosed) {
 
 		ArrayList<EndMill> endMillsCandidatas = new ArrayList<EndMill>();
 
@@ -387,9 +388,9 @@ public class MapeadoraCavidade {
 			endMill = endMills.get(i);
 
 			if (endMill.getMaterial().equals(ISO)
-					&& endMill.getDiametroFerramenta() <= 2 * cavidadeTmp
-							.getRaio()
-					&& endMill.getProfundidadeMaxima() >= cavidadeTmp
+					&& endMill.getDiametroFerramenta() <= 2 * genClosed
+							.getRadius()
+					&& endMill.getProfundidadeMaxima() >= genClosed
 							.getProfundidade()) {
 
 				endMillsCandidatas.add(endMill);
@@ -406,18 +407,18 @@ public class MapeadoraCavidade {
 					"Não é possível usinar esta Feature com as atuais End Mills disponíveis! \n" +
 					"__________________________________________________________"+"\n"+
 					"\tFeature: Cavidade \n" +
-					"\tNome: " + cavidadeTmp.getNome() +"\n" +
-					"\tComprimento: " + cavidadeTmp.getComprimento()+" mm"+"\n" +
-					"\tLargura: " + cavidadeTmp.getLargura()+" mm"+"\n" +
-					"\tProfundidade: " + cavidadeTmp.getProfundidade()+" mm"+"\n" +
-					"\tRaio: " + cavidadeTmp.getRaio()+" mm"+"\n" +
+					"\tNome: " + genClosed.getNome() +"\n" +
+//					"\tComprimento: " + genClosed.getComprimento()+" mm"+"\n" +
+//					"\tLargura: " + genClosed.getLargura()+" mm"+"\n" +
+					"\tProfundidade: " + genClosed.getProfundidade()+" mm"+"\n" +
+					"\tRaio: " + genClosed.getRadius()+" mm"+"\n" +
 					"\tMaterial Bloco: " + material.getName()+"\n" +
 					"__________________________________________________________"+"\n"+
 					"\tMotivo: Do grupo das End Mills do projeto, nenhuma satisfaz os" +"\n"+
 					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
 					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
-					"\tDiametro da Ferramenta deve ser menor igual a: " + (cavidadeTmp.getRaio() * 2)+" mm" +"\n" +
-					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (cavidadeTmp.getProfundidade())+" mm"+"\n\n" +
+					"\tDiametro da Ferramenta deve ser menor igual a: " + (genClosed.getRadius() * 2)+" mm" +"\n" +
+					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (genClosed.getProfundidade())+" mm"+"\n\n" +
 					"\tAdicione End Mills adequadas ao projeto."
 					,
 					"Erro", JOptionPane.ERROR_MESSAGE);
@@ -459,31 +460,56 @@ public class MapeadoraCavidade {
 		this.bloco = bloco;
 	}
 
-	private static double[][][] getMalha(Cavidade cavidadeTmp){
+	public static double[][][] getMalha(GeneralClosedPocket genClosed){
 		double malha[][][] = new double [99][99][2];
-		double largura=cavidadeTmp.getLargura(), comprimento=cavidadeTmp.getComprimento();
+		double largura, comprimento;
+		double xMenor=1000,xMaior=0,yMenor=1000,yMaior=0;
+		ArrayList<Point2D> vertexPoint;
+		
+		vertexPoint = genClosed.getPoints();
+		for(int i=0;i<vertexPoint.size();i++){
+			if(xMenor>vertexPoint.get(i).getX())
+				xMenor=vertexPoint.get(i).getX();
+			if(xMaior<vertexPoint.get(i).getX())
+				xMaior=vertexPoint.get(i).getX();
+			if(yMenor>vertexPoint.get(i).getY())
+				yMenor=vertexPoint.get(i).getY();
+			if(yMaior<vertexPoint.get(i).getY())
+				yMaior=vertexPoint.get(i).getY();			
+		}
+		largura = yMaior-yMenor;
+		comprimento = xMaior-xMenor;
 		
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				malha[i][k][0] = cavidadeTmp.getPosicaoX()+comprimento*(i+1)/100;//x
-				malha[i][k][1] = cavidadeTmp.getPosicaoY()+largura*(k+1)/100;//y
+				malha[i][k][0] = genClosed.getPosicaoX()+comprimento*(i+1)/100;//x
+				malha[i][k][1] = genClosed.getPosicaoY()+largura*(k+1)/100;//y
 			}
 		}
 		
 		return malha;
 	}
 	
-	private static ArrayList<Point3d> getPontosPossiveis(double z,Cavidade cavidadeTmp){
+	public static ArrayList<Point3d> getPontosPossiveis(double z,GeneralClosedPocket genClosed){
 		
-		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(cavidadeTmp.getPosicaoX(), cavidadeTmp.getPosicaoY(), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
+//		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(genClosed.getPosicaoX(), genClosed.getPosicaoY(), genClosed.getComprimento(), genClosed.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
+
+		GeneralPath general = new GeneralPath();
+		ArrayList<Point2D> vertex = genClosed.getPoints();
+		general.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
+		for(int r=0;r<vertex.size();r++){
+			general.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
+		}
+		general.closePath();
+		
 		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
-		double[][][] malha = getMalha(cavidadeTmp);
+		double[][][] malha = getMalha(genClosed);
 		int b=0;
-		ArrayList<Shape> bossArray = getBossArray(z, cavidadeTmp); 
+		ArrayList<Shape> bossArray = getBossArray(z, genClosed); 
 		
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				if(retanguloCavidade.contains(malha[i][k][0], malha[i][k][1])){
+				if(general.contains(malha[i][k][0], malha[i][k][1])){
 					for(int g=0;g<bossArray.size();g++){
 						if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
 							b++;
@@ -501,19 +527,28 @@ public class MapeadoraCavidade {
 		return pontosPossiveis;
 	}
 	
-	private static ArrayList<Point2d> getCoordenadas(double z, Cavidade cavidadeTmp){
+	public static ArrayList<Point2d> getCoordenadas(double z, GeneralClosedPocket genClosed){
 		
 
 		ArrayList<Point2d> coordenadas = new ArrayList<Point2d>();
-		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(cavidadeTmp.getPosicaoX(), cavidadeTmp.getPosicaoY(), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
+//		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(cavidadeTmp.getPosicaoX(), cavidadeTmp.getPosicaoY(), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
+		
+		GeneralPath general = new GeneralPath();
+		ArrayList<Point2D> vertex = genClosed.getPoints();
+		general.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
+		for(int r=0;r<vertex.size();r++){
+			general.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
+		}
+		general.closePath();
+		
 		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
-		double[][][] malha = getMalha(cavidadeTmp);
+		double[][][] malha = getMalha(genClosed);
 		int b=0;
-		ArrayList<Shape> bossArray = getBossArray(z, cavidadeTmp); 
+		ArrayList<Shape> bossArray = getBossArray(z, genClosed); 
 		
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				if(retanguloCavidade.contains(malha[i][k][0], malha[i][k][1])){
+				if(general.contains(malha[i][k][0], malha[i][k][1])){
 					for(int g=0;g<bossArray.size();g++){
 						if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
 							b++;
@@ -532,10 +567,10 @@ public class MapeadoraCavidade {
 		return coordenadas;
 	}
 
-	private static ArrayList<Shape> getBossArray(double z, Cavidade cavidadeTmp){
+	public static ArrayList<Shape> getBossArray(double z, GeneralClosedPocket genClosed){
 
 		ArrayList<Boss> itsBoss;
-		itsBoss = cavidadeTmp.getItsBoss();
+		itsBoss = genClosed.getItsBoss();
 		double raioAtual;
 		ArrayList<Shape> bossArray;
 		
@@ -548,7 +583,7 @@ public class MapeadoraCavidade {
 			bossTmp=itsBoss.get(i);
 			if(bossTmp.getClass()==CircularBoss.class){
 				CircularBoss boss = (CircularBoss) bossTmp;
-				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-cavidadeTmp.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2));
+				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-genClosed.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2));
 				bossArray.add(new Ellipse2D.Double(boss.getPosicaoX()-raioAtual, boss.getPosicaoY()-raioAtual, raioAtual*2, 2*raioAtual));
 			}
 			else if(bossTmp.getClass()==RectangularBoss.class){
@@ -571,10 +606,10 @@ public class MapeadoraCavidade {
 		return bossArray;
 	}
 	
-	private static ArrayList<Point3d> getPontosPeriferia(double z,Cavidade cavidadeTmp){
+	public static ArrayList<Point3d> getPontosPeriferia(double z,GeneralClosedPocket genClosed){
 		
 		ArrayList<Point3d> pontosPeriferia;ArrayList<Boss> itsBoss;
-		itsBoss = cavidadeTmp.getItsBoss();
+		itsBoss = genClosed.getItsBoss();
 		double raioAtual;
 		Point2D borda[];
 		
@@ -584,7 +619,7 @@ public class MapeadoraCavidade {
 			bossTmp=itsBoss.get(i);
 			if(bossTmp.getClass()==CircularBoss.class){
 				CircularBoss boss = (CircularBoss) bossTmp;
-				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-cavidadeTmp.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2));
+				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-genClosed.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2));
 				borda = Cavidade.determinarPontosEmCircunferencia(new Point3d(boss.getPosicaoX(),boss.getPosicaoY(),z), 0, 2*Math.PI, raioAtual, (int) Math.round(Math.PI*2*raioAtual));
 				for(int k=0;k<borda.length;k++){
 					pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
@@ -597,7 +632,7 @@ public class MapeadoraCavidade {
 					pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 				}
 			}
-			else if(itsBoss.get(i).getClass()==GeneralProfileBoss.class){
+			else{// if(itsBoss.get(i).getClass()==GeneralProfileBoss.class){
 				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
 				ArrayList<Point2D> vertex = boss.getVertexPoints();
 				double distancia, maiorX, maiorY;
@@ -697,20 +732,20 @@ public class MapeadoraCavidade {
 			}
 		}
 
-		borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(cavidadeTmp.getPosicaoX(),cavidadeTmp.getPosicaoY(),z), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), cavidadeTmp.getRaio());
-		for(int k=0;k<borda.length;k++){
-			pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
-		}
+//		borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(cavidadeTmp.getPosicaoX(),cavidadeTmp.getPosicaoY(),z), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), cavidadeTmp.getRaio());
+//		for(int k=0;k<borda.length;k++){
+//			pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
+//		}
 		
 		return pontosPeriferia;
 	}
 	
-	private static double[][] getMalhaMenoresDistancias(double z, Cavidade cavidadeTmp){
+	public static double[][] getMalhaMenoresDistancias(double z, GeneralClosedPocket genClosed){
 		
-		ArrayList<Point3d> pontosPeriferia = getPontosPeriferia(z, cavidadeTmp);
+		ArrayList<Point3d> pontosPeriferia = getPontosPeriferia(z, genClosed);
 		double malhaMenoresDistancias[][] = new double[99][99];
-		ArrayList<Point3d> pontosPossiveis = getPontosPossiveis(z, cavidadeTmp);
-		ArrayList<Point2d> coordenadas = getCoordenadas(z, cavidadeTmp);
+		ArrayList<Point3d> pontosPossiveis = getPontosPossiveis(z, genClosed);
+		ArrayList<Point2d> coordenadas = getCoordenadas(z, genClosed);
 		ArrayList<Double> menorDistancia;		
 		double distanciaTmp;
 
@@ -728,9 +763,9 @@ public class MapeadoraCavidade {
 		return malhaMenoresDistancias;
 	}
 	
-	private static double getMenorDiametro(Cavidade cavidadeTmp){
+	public static double getMenorDiametro(GeneralClosedPocket genClosed){
 		double menorDiametro, raioMenor=10000;
-		double[][] malhaMenoresDistancias = getMalhaMenoresDistancias(-cavidadeTmp.getProfundidade(), cavidadeTmp);
+		double[][] malhaMenoresDistancias = getMalhaMenoresDistancias(-genClosed.getProfundidade(), genClosed);
 		int contador;
 		
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
@@ -766,12 +801,12 @@ public class MapeadoraCavidade {
 		return menorDiametro;
 	}
 	
-	private static double getMaiorDiametro(Cavidade cavidadeTmp){
+	public static double getMaiorDiametro(GeneralClosedPocket genClosed){
 		double[][] malhaMenoresDistancias;
 		int contador,numeroDeDiametrosAdicionados=0;
 		double raioMedia, maiorDiametro=0;
 
-		malhaMenoresDistancias = getMalhaMenoresDistancias(-cavidadeTmp.getProfundidade(), cavidadeTmp);
+		malhaMenoresDistancias = getMalhaMenoresDistancias(-genClosed.getProfundidade(), genClosed);
 		raioMedia=0;
 		numeroDeDiametrosAdicionados=0;
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
@@ -808,5 +843,8 @@ public class MapeadoraCavidade {
 		System.out.println("MAIOR DIAMETRO:     "+maiorDiametro);
 		return maiorDiametro;
 	}
+	
+
+	
 	
 }

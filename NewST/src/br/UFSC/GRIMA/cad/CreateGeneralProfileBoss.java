@@ -24,6 +24,8 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -43,7 +45,9 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 	private ArrayList<ArrayList<Point2D>> triangles = new ArrayList<ArrayList<Point2D>>();
 	double zoom = 1;
 	boolean isClosedCurve = false;
-
+	private static ArrayList<CircularPath> arcos;
+	private ArrayList<Path> paths;
+	
 	public CreateGeneralProfileBoss(JanelaPrincipal parent, Projeto projeto, Face face, final Feature feature)
 	{
 		super(parent);
@@ -427,6 +431,22 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			position.setName(generalBoss.getNome() + " placement");
 			generalBoss.setPosition(position);	
 			
+			paths = new ArrayList<Path>();
+			
+			for(int i = 0; i < arcos.size(); i++)
+			{
+				if (i < arcos.size() - 1)
+				{
+					paths.add(arcos.get(i));
+					paths.add(new LinearPath(arcos.get(i).getFinalPoint(), arcos.get(i + 1).getInitialPoint()));
+				} else
+				{
+					paths.add(arcos.get(i));
+					paths.add(new LinearPath(arcos.get(i).getFinalPoint(), arcos.get(0).getInitialPoint()));
+				}
+				
+			}
+			
 			if(this.feature.getClass() == Cavidade.class)
 			{
 				Cavidade cavidade = (Cavidade)this.feature;
@@ -439,7 +459,24 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			{
 				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
 				general.addBoss(generalBoss);
+				generalBoss.setPaths(paths);
 			}
+			
+//			for (int i = 0; i < paths.size(); i++)
+//			{
+//				if (paths.get(i).getClass() == CircularPath.class)
+//				{
+//					CircularPath pathTmp = (CircularPath)paths.get(i);
+//					System.err.println("ARCO init --> " + paths.get(i).getInitialPoint());
+//					System.err.println("ARCO final --> " + paths.get(i).getFinalPoint());
+//					System.err.println("ARCO  --> " + pathTmp.getCenter());
+//				} else if(paths.get(i).getClass() == LinearPath.class)
+//				{
+//					System.err.println("LINHA init --> " + paths.get(i).getInitialPoint());
+//					System.err.println("LINHA final --> " + paths.get(i).getFinalPoint());
+//				}
+//			}
+			
 			this.parent.desenhador.repaint();
 			this.parent.atualizarArvore();
 			this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Profile Boss: " +generalBoss.getNome().toUpperCase() + " added with success!");
@@ -605,10 +642,10 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			
 		}
 	
-		System.out.println("Doing Arc for alpha");
-		System.out.println("a:"+a.getX()+","+a.getY());
-		System.out.println("b:"+b.getX()+","+b.getY());
-		System.out.println("CC:"+cc.getX()+","+cc.getY());
+//		System.out.println("Doing Arc for alpha");
+//		System.out.println("a:"+a.getX()+","+a.getY());
+//		System.out.println("b:"+b.getX()+","+b.getY());
+//		System.out.println("CC:"+cc.getX()+","+cc.getY());
 	
 		Point2D bb = new Point2D.Double(b.getX()-cc.getX(),b.getY()-cc.getY());
 		Point2D aa = new Point2D.Double(a.getX()-cc.getX(),a.getY()-cc.getY());
@@ -650,6 +687,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		
 		//arcPoints=interpolarArco(cc,radius,anguloInicial, deltaAngulo, comprimentoLinha, true);		
 		arcPoints=interpolarArco(cc,radius,anguloInicial, teta, comprimentoLinha, true);
+//		System.err.println("arco = " + arcPoints);
 		if (alfa<0.0)
 		{
 			ArrayList<Point2D> arcPointsOut = new ArrayList<Point2D>();
@@ -815,9 +853,9 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		ArrayList<Point2D> saida = new ArrayList<Point2D>();
 		double incrementoAngulo, x, y;
 		int numPontos;
-		incrementoAngulo = comprimentoLinha/raio;
+		incrementoAngulo = comprimentoLinha/raio;		
 		numPontos=(int)Math.ceil(deltaAngulo/incrementoAngulo);
-		incrementoAngulo = deltaAngulo/numPontos;
+		incrementoAngulo = deltaAngulo/(numPontos - 1);
 		
 		if (!isCounterClock)
 			incrementoAngulo = -incrementoAngulo;
@@ -832,20 +870,23 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		return saida;
 	}
 	
-	public static ArrayList<Point2D> transformPolygonInRoundPolygon(ArrayList<Point2D> polygon, double radius)
-	 {
-			ArrayList<Point2D> saida = new ArrayList<Point2D>();
+	public static ArrayList<Point2D> transformPolygonInRoundPolygon(ArrayList<Point2D> polygon, double radius) 
+	{
+		ArrayList<Point2D> saida = new ArrayList<Point2D>();
+		arcos = new ArrayList<CircularPath>();
+		if (radius > 0) 
+		{
 			double anguloTmp = 0;
 			GeneralPath forma = new GeneralPath();
 			forma.moveTo(polygon.get(0).getX(), polygon.get(0).getY());
-			for(int i = 1; i < polygon.size(); i++)
+			for (int i = 1; i < polygon.size(); i++)
 			{
 				forma.lineTo(polygon.get(i).getX(), polygon.get(i).getY());
 			}
 			forma.closePath();
-			
+
 			Point2D p0 = null, p1 = null, p2 = null;
-			for (int i = 0; i < polygon.size(); i++)
+			for (int i = 0; i < polygon.size(); i++) 
 			{
 				p0 = polygon.get(i);
 				try 
@@ -855,42 +896,48 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 				{
 					p1 = polygon.get(polygon.size() - 1);
 				}
-				try
+				try 
 				{
 					p2 = polygon.get(i + 1);
-				} catch (Exception e) 
-				{
+				} catch (Exception e) {
 					p2 = polygon.get(0);
 				}
 				anguloTmp = solveAngle(p0, p1, p2, forma, polygon);
-				
-				//System.out.println("angulo = " + anguloTmp);
-				if (anguloTmp < Math.PI) 
+
+				if (anguloTmp < 2 * Math.PI) 
 				{
+					// System.out.println("angulo = " + (anguloTmp * 180 /
+					// Math.PI));
 					ArrayList<Point2D> arcoTmp = solveArc(forma, p0, p1, p2, radius, polygon);
+//					CircularPath arco = new CircularPath(new Point3d(arcoTmp.get(arcoTmp.size() - 1).getX(), arcoTmp.get(arcoTmp.size() - 1).getY(), 0), new Point3d(arcoTmp.get(0).getX(), arcoTmp.get(0).getY(), 0), radius);
+					CircularPath arco = new CircularPath(new Point3d(arcoTmp.get(0).getX(), arcoTmp.get(0).getY(), 0), new Point3d(arcoTmp.get(arcoTmp.size() - 1).getX(), arcoTmp.get(arcoTmp.size() - 1).getY(), 0), radius);
+					arcos.add(arco);
+					// solveArc(p0, p1, p2, radius);
 					for (int j = 0; j < arcoTmp.size(); j++) 
 					{
 						ArrayList<Integer> tempIndex = new ArrayList<Integer>();
 						ArrayList<Point2D> tempTriangle = new ArrayList<Point2D>();
-						if (j+1<arcoTmp.size())
+						if (j + 1 < arcoTmp.size()) 
 						{
 							tempTriangle.add(arcoTmp.get(0));
 							tempTriangle.add(arcoTmp.get(j));
-							tempTriangle.add(arcoTmp.get(j+1));
-//							triangles.add(tempTriangle); ---->>> dar uma olhada
+							tempTriangle.add(arcoTmp.get(j + 1));
+							// triangles.add(tempTriangle); ---->>> dar uma
+							// olhada
 						}
-						
 						saida.add(arcoTmp.get(j));
-						
 					}
 				} else 
 				{
 					saida.add(polygon.get(i));
-//					poligonoAuxiliar.add(p0); ----->>> dar uma olhada
+//					poligonoAuxiliar.add(p0); // ----->>> dar uma olhada
 				}
 			}
-			
-			//System.out.println("SAIDA: " + saida);
-			return saida;
+		} else 
+		{
+			saida = polygon;
 		}
+		// System.out.println("SAIDA: " + saida);
+		return saida;
+	}
 }

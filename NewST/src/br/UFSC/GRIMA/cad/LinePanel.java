@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -42,6 +44,7 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
     	this.addMouseListener(this);
     	this.addMouseMotionListener(this);
     	this.setBackground(new Color(20, 20, 20));
+//    	addKeyListener(this);
     }
     /**
      * Esse metodo serah chamado toda vez que o componente precisar ser repintado.
@@ -179,4 +182,23 @@ public class LinePanel extends DesenhadorDeFaces implements MouseListener, Mouse
 		}
 		g.scale(1, -1);
 	}
+//	@Override
+//	public void keyPressed(KeyEvent e) 
+//	{
+//
+//		if(e.getKeyCode() == KeyEvent.VK_F9)
+//		{
+//			System.out.println("========= KEYYYYYYYYYy");
+//		}
+//	}
+//	@Override
+//	public void keyReleased(KeyEvent e) 
+//	{
+//		
+//	}
+//	@Override
+//	public void keyTyped(KeyEvent e) 
+//	{
+//		
+//	}
 }

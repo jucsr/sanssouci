@@ -294,7 +294,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 					refDirection.add(0.0);
 					refDirection.add(0.0);
 
-				} else if (this.face.getTipo() == Face.YZ) 
+				} else if (this.face.getTipo() == Face.YZ)
 				{
 					coordinates = new Point3d(this.face.getProfundidadeMaxima()
 							- posZ, posY, this.face.getComprimento() - posX);
@@ -337,8 +337,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 					refDirection.add(1.0);
 
 				}
-				Axis2Placement3D position = new Axis2Placement3D(coordinates,
-						axis, refDirection);
+				Axis2Placement3D position = new Axis2Placement3D(coordinates,	axis, refDirection);
 				position.setName(boss.getNome() + " placement");
 				boss.setPosition(position);
 

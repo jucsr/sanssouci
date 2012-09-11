@@ -26,6 +26,7 @@ import br.UFSC.GRIMA.util.projeto.Projeto;
 public class CirclePanel extends DesenhadorDeFaces implements MouseListener, MouseMotionListener
 {
 	public Ellipse2D circle = new Ellipse2D.Double();
+	public Ellipse2D circle2 = new Ellipse2D.Double();
 	public double separacaoGrade = 20;
 	public String x = "";
 	public String y = "";
@@ -62,10 +63,13 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
         	g2d.draw(shape);
         }
         
-        g2d.setColor(Color.black);
+		g2d.setColor(new Color(205, 205, 193));
+        g2d.fill(circle);
         
+        g2d.setColor(Color.black);
         g2d.draw(circle);
         
+        g2d.draw(circle2);
         g2d.dispose();
 	}
 	@Override

@@ -60,8 +60,8 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 		this.layeredPane1.setLayout(new BorderLayout());
 		this.layeredPane1.add(circlePanel);
 		this.circlePanel.setFacePrincipal(face.getTipo(), 0);
-		this.radius2 = ((Double)this.radius2Spinner.getValue()).doubleValue();
 		this.radius = ((Double)this.radiusSpinner.getValue()).doubleValue();
+		this.radius2 = ((Double)this.radius2Spinner.getValue()).doubleValue();
 		if(feature.getClass() == Cavidade.class)
 		{
 			Cavidade feat = (Cavidade)feature;
@@ -99,11 +99,13 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			{
 				zoom = (Double)spinnerZoom.getValue() / 100;
 				circlePanel.setZoom(zoom);
-				radius = (Double)radiusSpinner.getValue();
+				radius = ((Double)radiusSpinner.getValue()).doubleValue();
+				radius2 = ((Double)radius2Spinner.getValue()).doubleValue();
 
 //				System.err.println("X C = " + circlePanel.circleCenter.getX());
 //				System.err.println("Y C = " + circlePanel.circleCenter.getY());
 				circlePanel.circle = new Ellipse2D.Double((circlePanel.circleCenter.getX() * zoom - radius * zoom + 20), (circlePanel.circleCenter.getY() * zoom - radius * zoom + 20), radius * 2 * zoom, radius * 2 * zoom);
+				circlePanel.circle2 = new Ellipse2D.Double((circlePanel.circleCenter.getX() * zoom - radius2 * zoom + 20), (circlePanel.circleCenter.getY() * zoom - radius2 * zoom + 20), radius2 * 2 * zoom, radius2 * 2 * zoom);
 				if(feature.getClass() == Cavidade.class)
 				{
 					Cavidade feat = (Cavidade)feature;			
@@ -163,7 +165,10 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			@Override
 			public void stateChanged(ChangeEvent arg0) 
 			{
-//				radius2Spinner.setModel(new SpinnerNumberModel((Double)radius2Spinner.getValue(), (Double)radiusSpinner.getValue(), null, 1.0));
+				radius2 = (Double)radius2Spinner.getValue() * zoom;
+
+				circlePanel.circle2 = new Ellipse2D.Double(circlePanel.circle.getCenterX() - radius2, circlePanel.circle.getCenterY() - radius2, radius2 * 2, radius2 * 2);
+				circlePanel.repaint();
 			}
 		});
 	}

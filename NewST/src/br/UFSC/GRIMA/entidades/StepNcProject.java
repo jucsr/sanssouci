@@ -1622,7 +1622,7 @@ public class StepNcProject extends STEPProject
 					}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 					{
 						GeneralProfileBoss boss = (GeneralProfileBoss)bossTmp;
-						EComposite_curve curve = this.createProfile(boss);
+						eBoss.setIts_boundary(null, this.createProfile(boss));
 					}
 					aBoss.addUnordered(eBoss);
 				}
@@ -1630,9 +1630,11 @@ public class StepNcProject extends STEPProject
 		return eClosed_pocket;
 	}
 	
-	private EComposite_curve createProfile(GeneralProfileBoss boss) throws SdaiException 
+	private EGeneral_closed_profile createProfile(GeneralProfileBoss boss) throws SdaiException 
 	{
 		ArrayList<Path> paths = boss.getPaths();
+		EGeneral_closed_profile eGeneral_closed_profile = (EGeneral_closed_profile)this.model.createEntityInstance(EGeneral_closed_profile.class);
+		
 		EComposite_curve eComposite_curve = (EComposite_curve)this.model.createEntityInstance(EComposite_curve.class);
 		AComposite_curve_segment aComposite_curve_segment = eComposite_curve.createSegments(null);
 		
@@ -1662,7 +1664,9 @@ public class StepNcProject extends STEPProject
 			}
 			aComposite_curve_segment.addByIndex(i + 1, eComposite_curve);
 		}
-		return eComposite_curve;
+		eGeneral_closed_profile.setPlacement(null, this.createAxis2Placement3D("profile placement ", boss.getPosition().getCoordinates(), boss.getPosition().getAxis(), boss.getPosition().getRefDirection()));
+		eGeneral_closed_profile.setClosed_profile_shape(null, eComposite_curve);
+		return eGeneral_closed_profile;
 	}
 
 

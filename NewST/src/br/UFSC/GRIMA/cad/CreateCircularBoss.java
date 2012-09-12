@@ -116,11 +116,11 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 				
 				xSpinner.setBounds((int)((x * zoom) / 2), (int)(face.getComprimento() * zoom - y * zoom + 10), 40, 20);
 				circlePanel.xLine = new Line2D.Double(20, y * zoom + 20, x * zoom + 20, y * zoom + 20);
-				xSpinner.setVisible(true);
+//				xSpinner.setVisible(true);
 				
 				ySpinner.setBounds((int)(x * zoom), (int)((face.getComprimento() * zoom - y * zoom / 2+ 10)), 40, 20);
 				circlePanel.yLine = new Line2D.Double(x * zoom + 20, 20, x * zoom + 20, y * zoom + 20);
-				ySpinner.setVisible(true);
+//				ySpinner.setVisible(true);
 
 				if(feature.getClass() == Cavidade.class)
 				{

@@ -46,7 +46,8 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 	private double rugosidade, tolerancia;
 	private double profundidadeFeature;
 	private JanelaPrincipal parent;
-	public CreateCircularBoss(JanelaPrincipal parent, Projeto projeto, Face face, final Feature feature) 
+	private double x = 0, y = 0;
+	public CreateCircularBoss(JanelaPrincipal parent, Projeto projeto, final Face face, final Feature feature) 
 	{
 		super(parent);
 		this.projeto = projeto;
@@ -63,6 +64,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 		this.circlePanel.setFacePrincipal(face.getTipo(), 0);
 		this.radius = ((Double)this.radiusSpinner.getValue()).doubleValue();
 		this.radius2 = ((Double)this.radius2Spinner.getValue()).doubleValue();
+		
 		if(feature.getClass() == Cavidade.class)
 		{
 			Cavidade feat = (Cavidade)feature;
@@ -100,13 +102,26 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			{
 				zoom = (Double)spinnerZoom.getValue() / 100;
 				circlePanel.setZoom(zoom);
-				radius = ((Double)radiusSpinner.getValue()).doubleValue();
-				radius2 = ((Double)radius2Spinner.getValue()).doubleValue();
-
+				radius = ((Double)radiusSpinner.getValue()).doubleValue() * zoom;
+				radius2 = ((Double)radius2Spinner.getValue()).doubleValue() * zoom;
+				double x = (Double)xSpinner.getValue();
+				double y = (Double)ySpinner.getValue();
 //				System.err.println("X C = " + circlePanel.circleCenter.getX());
 //				System.err.println("Y C = " + circlePanel.circleCenter.getY());
-				circlePanel.circle = new Ellipse2D.Double((circlePanel.circleCenter.getX() * zoom - radius * zoom + 20), (circlePanel.circleCenter.getY() * zoom - radius * zoom + 20), radius * 2 * zoom, radius * 2 * zoom);
-				circlePanel.circle2 = new Ellipse2D.Double((circlePanel.circleCenter.getX() * zoom - radius2 * zoom + 20), (circlePanel.circleCenter.getY() * zoom - radius2 * zoom + 20), radius2 * 2 * zoom, radius2 * 2 * zoom);
+//				circlePanel.circle = new Ellipse2D.Double((circlePanel.circleCenter.getX() * zoom - radius * zoom + 20), (circlePanel.circleCenter.getY() * zoom - radius * zoom + 20), radius * 2 * zoom, radius * 2 * zoom);
+//				circlePanel.circle2 = new Ellipse2D.Double((circlePanel.circleCenter.getX() * zoom - radius2 * zoom + 20), (circlePanel.circleCenter.getY() * zoom - radius2 * zoom + 20), radius2 * 2 * zoom, radius2 * 2 * zoom);
+				
+				circlePanel.circle = new Ellipse2D.Double(x * zoom + 20 - radius, y * zoom + 20 - radius, radius * 2, radius * 2);
+				circlePanel.circle2 = new Ellipse2D.Double(x * zoom + 20 - radius2, y * zoom + 20 - radius2, radius2 * 2, radius2 * 2);
+				
+				xSpinner.setBounds((int)((x * zoom) / 2), (int)(face.getComprimento() * zoom - y * zoom + 10), 40, 20);
+				circlePanel.xLine = new Line2D.Double(20, y * zoom + 20, x * zoom + 20, y * zoom + 20);
+				xSpinner.setVisible(true);
+				
+				ySpinner.setBounds((int)(x * zoom), (int)((face.getComprimento() * zoom - y * zoom / 2+ 10)), 40, 20);
+				circlePanel.yLine = new Line2D.Double(x * zoom + 20, 20, x * zoom + 20, y * zoom + 20);
+				ySpinner.setVisible(true);
+
 				if(feature.getClass() == Cavidade.class)
 				{
 					Cavidade feat = (Cavidade)feature;			
@@ -177,11 +192,24 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			@Override
 			public void stateChanged(ChangeEvent arg0) 
 			{
+				radius = (Double)radiusSpinner.getValue() * zoom;
+				radius2 = (Double)radius2Spinner.getValue() * zoom;
 				double x = (Double)xSpinner.getValue();
 				double y = (Double)ySpinner.getValue();
-				circlePanel.xLine = new Line2D.Double(20, y * zoom + 20, x * zoom + 20, y * zoom + 20);
-				xSpinner.setBounds((int)((x * zoom) / 2), (int)y, 40, 20);
-				xSpinner.setVisible(true);
+				
+				if(circlePanel.clicked >= 2)
+				{
+					circlePanel.xLine = new Line2D.Double(20, y * zoom + 20, x * zoom + 20, y * zoom + 20);
+					xSpinner.setBounds((int)((x * zoom) / 2), (int)(face.getComprimento() * zoom - y * zoom + 10), 40, 20);
+					xSpinner.setVisible(true);
+					
+					circlePanel.yLine = new Line2D.Double(x * zoom + 20, 20, x * zoom + 20, y * zoom + 20);
+					ySpinner.setBounds((int)(x * zoom), (int)((face.getComprimento() * zoom - y * zoom / 2+ 10)), 40, 20);
+					ySpinner.setVisible(true);
+					
+					circlePanel.circle = new Ellipse2D.Double(x * zoom + 20 - radius, y * zoom + 20 - radius, radius * 2, radius * 2);
+					circlePanel.circle2 = new Ellipse2D.Double(x * zoom + 20 - radius2, y * zoom + 20 - radius2, radius2 * 2, radius2 * 2);
+				}
 				circlePanel.repaint();
 			}
 		});
@@ -190,8 +218,25 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			@Override
 			public void stateChanged(ChangeEvent arg0) 
 			{
-//				circlePanel.yLine = new Line2D.Double();
-//				xSpinner.setBounds(x, y, width, height);
+				radius = (Double)radiusSpinner.getValue() * zoom;
+				radius2 = (Double)radius2Spinner.getValue() * zoom;
+				double x = (Double)xSpinner.getValue();
+				double y = (Double)ySpinner.getValue();
+				
+				if(circlePanel.clicked >= 2)
+				{
+					circlePanel.xLine = new Line2D.Double(20, y * zoom + 20, x * zoom + 20, y * zoom + 20);
+					xSpinner.setBounds((int)((x * zoom) / 2), (int)(face.getComprimento() * zoom - y * zoom + 10), 40, 20);
+					xSpinner.setVisible(true);
+					
+					circlePanel.yLine = new Line2D.Double(x * zoom + 20, 20, x * zoom + 20, y * zoom + 20);
+					ySpinner.setBounds((int)(x * zoom), (int)((face.getComprimento() * zoom - y * zoom / 2+ 10)), 40, 20);
+					ySpinner.setVisible(true);
+					
+					circlePanel.circle = new Ellipse2D.Double(x * zoom + 20 - radius, y * zoom+ 20 - radius, radius * 2, radius * 2);
+					circlePanel.circle2 = new Ellipse2D.Double(x * zoom + 20 - radius2, y * zoom + 20 - radius2, radius2 * 2, radius2 * 2);
+				}
+				circlePanel.repaint();
 			}
 		});
 	}
@@ -219,8 +264,10 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 		radius2 = ((Double)this.radius2Spinner.getValue()).doubleValue();
 		radius = ((Double)this.radiusSpinner.getValue()).doubleValue();
 		altura = ((Double)this.spinnerDepth.getValue()).doubleValue();
-		double posX = circlePanel.circleCenter.getX();
-		double posY = circlePanel.circleCenter.getY();
+//		double posX = circlePanel.circleCenter.getX();
+//		double posY = circlePanel.circleCenter.getY();
+		double posX = ((Double)xSpinner.getValue()).doubleValue();
+		double posY = ((Double)ySpinner.getValue()).doubleValue();
 		double posZ = profundidadeFeature + feature.Z - altura; 
 		boolean ok = false;
 		boolean valido = false;

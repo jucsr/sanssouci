@@ -366,7 +366,7 @@ public class Face implements Serializable{
 							*    VERTICE 0
 							*/
 				
-				System.out.println("posx case 0" );
+//				System.out.println("posx case 0" );
 				return feature;
 				
 			case 1:			/**
@@ -1694,7 +1694,7 @@ public class Face implements Serializable{
 						 
 						Cavidade cavidade = (Cavidade)features.elementAt(i);
 						
-						if(i != ultimoNoArrayCavidade) //verifica se o boss foi construído na última cavidade feita
+						if(i != ultimoNoArrayCavidade) //verifica se o boss foi construï¿½do na ï¿½ltima cavidade feita
 						{
 							encontrou = true;
 						}
@@ -2013,8 +2013,8 @@ public class Face implements Serializable{
 			
 			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
 				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
-				JOptionPane.showMessageDialog(null, "                A feature que você está tentando criar está dentro de outra ou em uma posição inapropriada" +
-						"\nverifique q o valor de Z coincida com a profundidade da feature já existente", 
+				JOptionPane.showMessageDialog(null, "                A feature que vocï¿½ estï¿½ tentando criar estï¿½ dentro de outra ou em uma posiï¿½ï¿½o inapropriada" +
+						"\nverifique q o valor de Z coincida com a profundidade da feature jï¿½ existente", 
 						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);
 				return false;
 			}
@@ -2137,8 +2137,8 @@ public class Face implements Serializable{
 //			
 //			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
 //				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
-//				JOptionPane.showMessageDialog(null, "                A feature que você está tentando criar está dentro de outra" +
-//						"\nverifique q o valor de Z coincida com a profundidade da feature já existente", 
+//				JOptionPane.showMessageDialog(null, "                A feature que vocï¿½ estï¿½ tentando criar estï¿½ dentro de outra" +
+//						"\nverifique q o valor de Z coincida com a profundidade da feature jï¿½ existente", 
 //						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);
 //				return false;
 //			}
@@ -2165,9 +2165,9 @@ public class Face implements Serializable{
 				if (r2dTmp.contains(r2d))//verifica se uma br.UFSC.GRIMA.feature contem plenamente a uma outra
 				{
 					maes.add(featureTmp);
-					//System.out.println("contém completamente a outra: " + featureTmp);
+					//System.out.println("contï¿½m completamente a outra: " + featureTmp);
 				}
-				else if (r2dTmp.intersects(r2d))// verifica se há intersecção
+				else if (r2dTmp.intersects(r2d))// verifica se hï¿½ intersecï¿½ï¿½o
 				{
 					anteriores.add(featureTmp);
 					feature.featuresAnteriores = anteriores;
@@ -2263,7 +2263,7 @@ public class Face implements Serializable{
 					else
 					{
 						JOptionPane.showMessageDialog(null, "coloque a br.UFSC.GRIMA.feature na altura da br.UFSC.GRIMA.feature " +
-								"já existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+								"jï¿½ existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
 						return false;
 					}
 				}
@@ -2273,8 +2273,8 @@ public class Face implements Serializable{
 			else // br.UFSC.GRIMA.feature invï¿½lida
 			{
 				// avisar ao usuario
-				JOptionPane.showMessageDialog(null, "A br.UFSC.GRIMA.feature que está tentando criar nao é consistente", 
-						"erro na criação de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+				JOptionPane.showMessageDialog(null, "A br.UFSC.GRIMA.feature que estï¿½ tentando criar nao ï¿½ consistente", 
+						"erro na criaï¿½ï¿½o de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
 				return false;
 			}
 		}

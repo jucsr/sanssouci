@@ -103,9 +103,9 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
 			xLine = new Line2D.Double(new Point2D.Double(20, y), new Point2D.Double(x, y));
 			yLine = new Line2D.Double(new Point2D.Double(x, 20), new Point2D.Double(x, y));
 			
-//			this.janelaCircle.xSpinner.setBounds((int)(x / 2 - 10), (int)((e.getY() -10)), 40, 20);
-//			this.janelaCircle.xSpinner.setValue(Double.parseDouble(this.x));
-//			this.janelaCircle.xSpinner.setVisible(true);
+			this.janelaCircle.xSpinner.setBounds((int)(x / 2 - 10), (int)((e.getY() -10)), 40, 20);
+			this.janelaCircle.xSpinner.setValue(Double.parseDouble(this.x));
+			this.janelaCircle.xSpinner.setVisible(true);
 			
 			this.janelaCircle.ySpinner.setBounds((int)(x - 20), (int)((projeto.getBloco().getComprimento() * getZoom() - y  + y / 2+ 20)), 40, 20);
 			this.janelaCircle.ySpinner.setValue(Double.parseDouble(this.y));

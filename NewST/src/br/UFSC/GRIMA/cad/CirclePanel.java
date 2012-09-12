@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
 {
 	public Ellipse2D circle = new Ellipse2D.Double();
 	public Ellipse2D circle2 = new Ellipse2D.Double();
+	public Line2D xLine = new Line2D.Double();
+	public Line2D yLine = new Line2D.Double();
 	public double separacaoGrade = 20;
 	public String x = "";
 	public String y = "";
@@ -70,7 +73,17 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
         g2d.draw(circle);
         
         g2d.draw(circle2);
+        
+		g2d.setColor(new Color(255, 64, 64));
+        float dash1[] = {5.0f, 2.5f};
+		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+        g2d.draw(xLine);
+        g2d.draw(yLine);
+        
         g2d.dispose();
+//        this.janelaCircle.xSpinner.setBounds((int)(circleCenter.getX() / 2), (int)(circleCenter.getY() - 20), 40, 30);
+//		this.janelaCircle.xSpinner.setValue(circleCenter.getX());
+//		this.janelaCircle.xSpinner.setVisible(true);
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) 
@@ -85,17 +98,29 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
 		y = "" + ((projeto.getBloco().getComprimento() * getZoom() - e.getY() + 20) / getZoom());
 		double x = Double.parseDouble(this.x) * getZoom() + 20;
 		double y = Double.parseDouble(this.y) * getZoom() + 20;
-		
+		if(clicked == 0)
+		{
+			xLine = new Line2D.Double(new Point2D.Double(20, y), new Point2D.Double(x, y));
+			yLine = new Line2D.Double(new Point2D.Double(x, 20), new Point2D.Double(x, y));
+			
+//			this.janelaCircle.xSpinner.setBounds((int)(x / 2 - 10), (int)((e.getY() -10)), 40, 20);
+//			this.janelaCircle.xSpinner.setValue(Double.parseDouble(this.x));
+//			this.janelaCircle.xSpinner.setVisible(true);
+			
+			this.janelaCircle.ySpinner.setBounds((int)(x - 20), (int)((projeto.getBloco().getComprimento() * getZoom() - y  + y / 2+ 20)), 40, 20);
+			this.janelaCircle.ySpinner.setValue(Double.parseDouble(this.y));
+			this.janelaCircle.ySpinner.setVisible(true);
+		}
 		if(clicked == 1)
 		{
 			this.circleCenter = new Point2D.Double(pontoClicado.getX(), pontoClicado.getY());
 			Point2D ponto1 = new Point2D.Double(pontoClicado.getX() * getZoom() + 20, pontoClicado.getY() * getZoom() + 20);
 			Point2D ponto2 = new Point2D.Double(Double.parseDouble(this.x) * getZoom() + 20, Double.parseDouble(this.y) * getZoom() + 20);
 			
-			System.out.println("PONTO 1-------------->" + ponto1);
-			System.out.println("PONTO 2-------------->" + ponto2);
+//			System.out.println("PONTO 1-------------->" + ponto1);
+//			System.out.println("PONTO 2-------------->" + ponto2);
 			double radius = ponto1.distance(ponto2);
-			System.out.println("radius = ========> " + radius);
+//			System.out.println("radius = ========> " + radius);
 			circle = new Ellipse2D.Double(ponto1.getX() - radius, ponto1.getY() - radius, radius * 2, radius * 2);
 			this.janelaCircle.radiusSpinner.setValue(radius / getZoom());
 			this.janelaCircle.radius2Spinner.setValue(radius / getZoom());
@@ -104,9 +129,11 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
 			this.janelaCircle.radiusSpinner.setEnabled(true);
 			this.janelaCircle.radius2Spinner.setEnabled(true);
 //			this.janelaCircle.radius2Spinner.setModel(new SpinnerNumberModel((Double)this.janelaCircle.radius2Spinner.getValue(), (Double)this.janelaCircle.radiusSpinner.getValue(), null, 1.0));
-
 		}
-		repaint();
+//		this.janelaCircle.xSpinner.setBounds((int)(circleCenter.getX() / 2), (int)(-(projeto.getBloco().getComprimento() * getZoom() - e.getY() + 20) / getZoom()), 40, 20);
+		
+
+		repaint();		
 	}
 
 	@Override

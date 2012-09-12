@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
@@ -169,6 +170,28 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 
 				circlePanel.circle2 = new Ellipse2D.Double(circlePanel.circle.getCenterX() - radius2, circlePanel.circle.getCenterY() - radius2, radius2 * 2, radius2 * 2);
 				circlePanel.repaint();
+			}
+		});
+		super.xSpinner.addChangeListener(new ChangeListener() 
+		{
+			@Override
+			public void stateChanged(ChangeEvent arg0) 
+			{
+				double x = (Double)xSpinner.getValue();
+				double y = (Double)ySpinner.getValue();
+				circlePanel.xLine = new Line2D.Double(20, y * zoom + 20, x * zoom + 20, y * zoom + 20);
+				xSpinner.setBounds((int)((x * zoom) / 2), (int)y, 40, 20);
+				xSpinner.setVisible(true);
+				circlePanel.repaint();
+			}
+		});
+		super.ySpinner.addChangeListener(new ChangeListener() 
+		{
+			@Override
+			public void stateChanged(ChangeEvent arg0) 
+			{
+//				circlePanel.yLine = new Line2D.Double();
+//				xSpinner.setBounds(x, y, width, height);
 			}
 		});
 	}

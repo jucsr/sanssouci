@@ -72,10 +72,10 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		this.adjustJFrame();
 		//this.bloco = new Bloco(200, 100, 30);
 		this.j3d = new J3D(this.panel8);
-//		this.csgBloco = new OperationBlock("", (Double)this.spinner2.getValue(), (Double)this.spinner3.getValue(), (Double)this.spinner1.getValue());
-		this.csgBloco = new OperationBlock1("", ((Double)this.spinnerX.getValue()).floatValue(), ((Double)this.spinnerY.getValue()).floatValue(), ((Double)this.spinnerZ.getValue()).floatValue(), 2, 2, 3);
-		this.csgBloco.rotate(Math.PI / 2, 0);
-		this.csgBloco.translate(-(Double)this.spinnerX.getValue() / 2, -(Double)this.spinnerZ.getValue() / 2, -(Double)this.spinnerY.getValue() / 2);
+		this.csgBloco = new OperationBlock("", (Double)this.spinnerY.getValue(), (Double)this.spinnerZ.getValue(), (Double)this.spinnerX.getValue());
+//		this.csgBloco = new OperationBlock1("", ((Double)this.spinnerX.getValue()).floatValue(), ((Double)this.spinnerY.getValue()).floatValue(), ((Double)this.spinnerZ.getValue()).floatValue(), 2, 2, 3);
+//		this.csgBloco.rotate(Math.PI / 2, 0);
+//		this.csgBloco.translate(-(Double)this.spinnerX.getValue() / 2, -(Double)this.spinnerZ.getValue() / 2, -(Double)this.spinnerY.getValue() / 2);
 		this.j3d.addSolid(csgBloco);
 	}
 

@@ -53,6 +53,8 @@ public class CircularBossFrame extends JDialog {
 		panel7 = new JPanel();
 		scrollPane1 = new JScrollPane();
 		layeredPane1 = new JLayeredPane();
+		xSpinner = new JSpinner();
+		ySpinner = new JSpinner();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -248,6 +250,22 @@ public class CircularBossFrame extends JDialog {
 
 					//======== scrollPane1 ========
 					{
+
+						//======== layeredPane1 ========
+						{
+
+							//---- xSpinner ----
+							xSpinner.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+							xSpinner.setVisible(false);
+							layeredPane1.add(xSpinner, JLayeredPane.DEFAULT_LAYER);
+							xSpinner.setBounds(35, 125, 41, xSpinner.getPreferredSize().height);
+
+							//---- ySpinner ----
+							ySpinner.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+							ySpinner.setVisible(false);
+							layeredPane1.add(ySpinner, JLayeredPane.DEFAULT_LAYER);
+							ySpinner.setBounds(new Rectangle(new Point(150, 140), ySpinner.getPreferredSize()));
+						}
 						scrollPane1.setViewportView(layeredPane1);
 					}
 					panel7.add(scrollPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
@@ -327,6 +345,8 @@ public class CircularBossFrame extends JDialog {
 	private JPanel panel7;
 	private JScrollPane scrollPane1;
 	protected JLayeredPane layeredPane1;
+	public JSpinner xSpinner;
+	public JSpinner ySpinner;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

@@ -143,7 +143,6 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 					}
 					((GeneralPath)circlePanel.shape).closePath();
 				}
-				circlePanel.repaint();
 			}
 		});
 		super.spinnerSeparaGrade.addChangeListener(new ChangeListener() 

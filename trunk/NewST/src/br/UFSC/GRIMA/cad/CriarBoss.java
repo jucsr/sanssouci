@@ -82,7 +82,8 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 			if(feature.getClass() == Cavidade.class)
 			{
 				Cavidade cavidade = (Cavidade)this.feature;
-				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidade);
+//				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidade);
+				CreateRectangularBoss crb = new CreateRectangularBoss(owner, projeto, face, cavidade);
 				crb.setVisible(true);
 				this.dispose();
 			} else if(feature.getClass() == Degrau.class)
@@ -91,7 +92,8 @@ public class CriarBoss extends CriarBossFrame implements ActionListener{
 			} else if (feature.getClass() == GeneralClosedPocket.class)
 			{
 				GeneralClosedPocket cavidadeGeral = (GeneralClosedPocket)this.feature;
-				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidadeGeral);
+//				CriarRectangularBoss crb = new CriarRectangularBoss(owner, face, cavidadeGeral);
+				CreateRectangularBoss crb = new CreateRectangularBoss(owner, projeto, face, cavidadeGeral);
 				crb.setVisible(true);
 				this.dispose();
 			}

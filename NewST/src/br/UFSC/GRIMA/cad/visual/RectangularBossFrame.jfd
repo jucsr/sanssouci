@@ -1,0 +1,318 @@
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.6.0_21" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"title": "Create Rectangular Boss"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "dialogPane"
+				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+					name: "contentPanel"
+					"border": new javax.swing.border.EtchedBorder( 1, null, null )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 4
+					}
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+						"$columnSpecs": "0, 0"
+						"$rowSpecs": "0, 0, 0"
+						"$hGap": 5
+						"$vGap": 5
+						"$alignLeft": true
+						"$alignTop": true
+					} ) {
+						name: "panel3"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel1"
+							add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+								name: "toolBar2"
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label1"
+									"text": "zoom"
+								} )
+								add( new FormComponent( "javax.swing.JSpinner" ) {
+									name: "spinnerZoom"
+									"model": new javax.swing.SpinnerNumberModel( 100.0, 0.0, 500.0, 10.0 )
+									auxiliary() {
+										"JavaCodeGenerator.variableModifiers": 4
+									}
+								} )
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+									"$columnSpecs": "0, 40"
+									"$rowSpecs": "0"
+									"$hGap": 5
+									"$vGap": 5
+									"$alignLeft": true
+									"$alignTop": true
+								} ) {
+									name: "panel6"
+									"border": &EtchedBorder0 new javax.swing.border.EtchedBorder( 1, null, null )
+									add( new FormComponent( "javax.swing.JCheckBox" ) {
+										name: "checkBox2"
+										"text": "grid"
+										"selected": true
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+									add( new FormComponent( "javax.swing.JSpinner" ) {
+										name: "spinnerSeparaGrade"
+										"model": new javax.swing.SpinnerNumberModel {
+											minimum: 1.0
+											stepSize: 5.0
+											value: 20.0
+										}
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 1
+									} )
+								} )
+							} )
+							add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+								name: "toolBar3"
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+									"$columnSpecs": "0, 40, 0, 0, 40, 40, 0, 40"
+									"$rowSpecs": "0"
+									"$hGap": 5
+									"$vGap": 5
+									"$alignTop": true
+									"$alignLeft": true
+								} ) {
+									name: "panel2"
+									"border": #EtchedBorder0
+									add( new FormComponent( "javax.swing.JLabel" ) {
+										name: "label2"
+										"text": "radius"
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+									add( new FormComponent( "javax.swing.JSpinner" ) {
+										name: "radiusSpinner"
+										"model": new javax.swing.SpinnerNumberModel {
+											minimum: 0.0
+											stepSize: 1.0
+											value: 0.0
+										}
+										"enabled": false
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 1
+									} )
+									add( new FormComponent( "javax.swing.JLabel" ) {
+										name: "label3"
+										"text": "height"
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 4
+									} )
+									add( new FormComponent( "javax.swing.JSpinner" ) {
+										name: "spinnerDepth"
+										"model": new javax.swing.SpinnerNumberModel {
+											minimum: 0.0
+											stepSize: 1.0
+											value: 10.0
+										}
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 5
+									} )
+									add( new FormComponent( "javax.swing.JLabel" ) {
+										name: "label4"
+										"text": "pos Z"
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 6
+									} )
+									add( new FormComponent( "javax.swing.JSpinner" ) {
+										name: "spinnerPosZ"
+										"model": &SpinnerNumberModel0 new javax.swing.SpinnerNumberModel {
+											minimum: 0.0
+											stepSize: 1.0
+											value: 0.0
+										}
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 7
+									} )
+								} )
+							} )
+						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+							"$columnSpecs": "0, 150, 0, 0, 0, 0, 0"
+							"$rowSpecs": "0"
+							"$hGap": 5
+							"$vGap": 5
+							"$alignLeft": true
+							"$alignTop": true
+						} ) {
+							name: "panel4"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label5"
+								"text": "name"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "textField1"
+								"text": "RECTANGULAR BOSS"
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+							} )
+							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+								name: "panel5"
+								add( new FormComponent( "javax.swing.JLabel" ) {
+									name: "label6"
+									"text": "Roughness"
+								} )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinnerRugosidade"
+								"model": new javax.swing.SpinnerNumberModel( 50.0, 0.0, 50.0, 1.0 )
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 3
+							} )
+						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+							"gridy": 1
+						} )
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "North"
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+						"$columnSpecs": "0, 500:1.0, 0"
+						"$rowSpecs": "0, 300:1.0, 0"
+						"$hGap": 5
+						"$vGap": 5
+						"$alignLeft": true
+						"$alignTop": true
+					} ) {
+						name: "panel7"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane1"
+							add( new FormContainer( "javax.swing.JLayeredPane", new FormLayoutManager( class javax.swing.JLayeredPane ) ) {
+								name: "layeredPane1"
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+								add( new FormComponent( "javax.swing.JSpinner" ) {
+									name: "xSpinner"
+									"model": &SpinnerNumberModel1 new javax.swing.SpinnerNumberModel {
+										minimum: 0.0
+										stepSize: 1.0
+										value: 0.0
+									}
+									"visible": false
+									auxiliary() {
+										"JavaCodeGenerator.variableModifiers": 1
+									}
+								}, new FormLayoutConstraints( null ) {
+									"width": 41
+									"height": 20
+									"x": 0
+									"y": 0
+								} )
+								add( new FormComponent( "javax.swing.JSpinner" ) {
+									name: "ySpinner"
+									"model": #SpinnerNumberModel1
+									"visible": false
+									auxiliary() {
+										"JavaCodeGenerator.variableModifiers": 1
+									}
+								}, new FormLayoutConstraints( null ) {
+									"width": 31
+									"height": 20
+									"x": 115
+									"y": 15
+								} )
+								add( new FormComponent( "javax.swing.JSpinner" ) {
+									name: "lengthSpinner"
+									"model": new javax.swing.SpinnerNumberModel {
+										minimum: 0.0
+										stepSize: 1.0
+										value: 0.0
+									}
+									"visible": false
+									auxiliary() {
+										"JavaCodeGenerator.variableModifiers": 1
+									}
+								}, new FormLayoutConstraints( null ) {
+									"width": 45
+									"x": 195
+									"y": 65
+								} )
+								add( new FormComponent( "javax.swing.JSpinner" ) {
+									name: "widthSpinner"
+									"model": #SpinnerNumberModel0
+									"visible": false
+									auxiliary() {
+										"JavaCodeGenerator.variableModifiers": 1
+									}
+								}, new FormLayoutConstraints( null ) {
+									"width": 40
+									"x": 285
+									"y": 70
+								} )
+							} )
+						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+							"gridx": 1
+							"gridy": 1
+						} )
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "Center"
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+					"$columnSpecs": "0:1.0, 80, 80"
+					"$rowSpecs": "0"
+					"$hGap": 5
+					"$vGap": 5
+				} ) {
+					name: "buttonBar"
+					"border": new javax.swing.border.EmptyBorder( 12, 0, 0, 0 )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "okButton"
+						"text": "OK"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 4
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 1
+						"gridy": 0
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "cancelButton"
+						"text": "Cancel"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 4
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 2
+						"gridy": 0
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "South"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 670, 455 )
+			"location": new java.awt.Point( 0, 0 )
+		} )
+	}
+}

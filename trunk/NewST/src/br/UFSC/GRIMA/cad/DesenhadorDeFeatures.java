@@ -34,7 +34,7 @@ public class DesenhadorDeFeatures
 	}
 	public void desenharFeature(Feature feature, Face face, int verticeAtivado, Point origem, boolean modo, Graphics2D g2d)
 	{
-//		System.out.println("boss!!!!!!!!!!");
+
 		switch (feature.getTipo())
 		{
 			case Feature.FURO:

@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.entidades.features;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
@@ -1885,16 +1887,16 @@ public class Face implements Serializable{
 				{
 					Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
 					
-					if (rect2d.intersects(rect2dTmp))
-					{
-						JOptionPane.showMessageDialog(null, "Há colisão de features", 
-								"erro na criação de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
-						isValid = false;
-						break;
-					}
+					
+					
+//					if (rect2d.intersects(rect2dTmp))
+//					{
+//						JOptionPane.showMessageDialog(null, "Há colisão de features", 
+//								"erro na criação de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+//						isValid = false;
+//						break;
+//					}
 						
-					else
-					{
 						if(mae == null)
 						{
 							isValid = true;
@@ -1902,9 +1904,23 @@ public class Face implements Serializable{
 						}
 						else if(mae.getClass() == Cavidade.class)
 						{
+							Point2D[] pontosCavidade;
 							Cavidade cavidade = (Cavidade)mae;
 							if(cavidade.Z + cavidade.getProfundidade() == feature.Z)
 							{
+								pontosCavidade = cavidade.determinarPontosEmRoundRectangular(cavidade.getPosition3D(), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio());
+								
+								for(int j=0; j < pontosCavidade.length; j++){
+									
+									if(rect2d.contains(pontosCavidade[j]))
+									{
+										JOptionPane.showMessageDialog(null, "Há colisão de features", 
+												"erro na criação de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+										isValid = false;
+										break;
+									}
+									
+								}
 								isValid = true;
 								break;
 							}
@@ -1929,7 +1945,7 @@ public class Face implements Serializable{
 								isValid = false;
 								break;
 						}
-					}
+					
 				}
 		}
 		

@@ -61,6 +61,12 @@ public class Cavidade extends Feature implements Serializable {
 		this.geometricalElements = geometricalElements;
 	}
 
+	public Point3d getPosition3D(){
+		
+		Point3d point = new Point3d(locX, locY, locZ);
+		
+		return point;
+	}
 	public Cavidade(String nome, double x, double y, double z, double locX, double locY, double locZ, double verticeRaio,
 			double largura, double comprimento, double profundidade) {
 		super(Feature.CAVIDADE);

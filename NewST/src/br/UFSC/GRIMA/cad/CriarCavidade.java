@@ -147,14 +147,14 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				} else {
 					ok = false;
 					JOptionPane.showMessageDialog(null,
-							"Digite um NÃºmero positivo para a posiÃ§Ã£o X da cavidade",
-							"Erro na posiÃ§Ã£o X", JOptionPane.OK_CANCEL_OPTION);
+							"Digite um Número positivo para a posição X da cavidade",
+							"Erro na posição X", JOptionPane.OK_CANCEL_OPTION);
 				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null,
-						"Digite um NÃºmero positivo para a posiÃ§Ã£o X da cavidade"
-						+ "\n               NÃ£o digite letras nem simbolos",
-						"Erro na posiÃ§Ã£o X", JOptionPane.OK_CANCEL_OPTION);
+						"Digite um Número positivo para a posição X da cavidade"
+						+ "\n               Não digite letras nem simbolos",
+						"Erro na posição X", JOptionPane.OK_CANCEL_OPTION);
 				ok = false;
 			}
 		}
@@ -623,7 +623,7 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Erro na criacao da Cavidade", "Feature invalida", JOptionPane.OK_CANCEL_OPTION);
+				JOptionPane.showMessageDialog(null, "Erro na criação da Cavidade", "Feature invalida", JOptionPane.OK_CANCEL_OPTION);
 			}
 		}
 	}

@@ -61,6 +61,7 @@ public class Generate3Dview extends Frame3D
 	
 	public Generate3Dview(Projeto projeto) 
 	{
+		
 		this.projeto = projeto;
 		this.setSize(600, 400);
 		this.j3d = new J3D(this.panel3D);

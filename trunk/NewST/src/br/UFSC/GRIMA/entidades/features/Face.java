@@ -1885,17 +1885,7 @@ public class Face implements Serializable{
 		{
 			for (int i = 0; i < this.features.size(); i++)
 				{
-					Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
-					
-					
-					
-//					if (rect2d.intersects(rect2dTmp))
-//					{
-//						JOptionPane.showMessageDialog(null, "Há colisão de features", 
-//								"erro na criação de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
-//						isValid = false;
-//						break;
-//					}
+					//Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
 						
 						if(mae == null)
 						{
@@ -1910,7 +1900,7 @@ public class Face implements Serializable{
 							{
 								pontosCavidade = cavidade.determinarPontosEmRoundRectangular(cavidade.getPosition3D(), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio());
 								
-								for(int j=0; j < pontosCavidade.length; j++){
+								for(int j = 0; j < pontosCavidade.length; j++){
 									
 									if(rect2d.contains(pontosCavidade[j]))
 									{
@@ -1919,7 +1909,6 @@ public class Face implements Serializable{
 										isValid = false;
 										break;
 									}
-									
 								}
 								isValid = true;
 								break;

@@ -1869,7 +1869,6 @@ public class Face implements Serializable{
 //			}
 //		return encontrou;
 //		}
-	
 	public boolean validarFeature(Feature feature)
 	{
 		boolean isValid = false;
@@ -1883,10 +1882,17 @@ public class Face implements Serializable{
 		
 		else
 		{
-			for (int i = 0; i < this.features.size(); i++)
+			if(verificaInterseccao(feature) == true)
+			{
+				JOptionPane.showMessageDialog(null, "Há colisão de features", 
+						"erro na criação de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+				isValid = false;
+			}
+			else
+			{
+				for (int i = 0; i < this.features.size(); i++)
 				{
 					//Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
-						
 						if(mae == null)
 						{
 							isValid = true;
@@ -1919,7 +1925,6 @@ public class Face implements Serializable{
 										"erro na criação de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
 								isValid = false;
 								break;
-								
 						}
 						else if(mae.getClass() == CircularBoss.class || mae.getClass() == RectangularBoss.class)
 						{
@@ -1934,8 +1939,8 @@ public class Face implements Serializable{
 								isValid = false;
 								break;
 						}
-					
 				}
+			}
 		}
 		
 		return isValid;
@@ -1958,12 +1963,14 @@ public class Face implements Serializable{
 				maes.add(featureTmp);
 				//System.out.println("contém completamente a outra: " + featureTmp);
 			}
-			else if (r2dTmp.intersects(r2d))// verifica se há intersecção
-			{
-				anteriores.add(featureTmp);
-				feature.featuresAnteriores = anteriores;
-				System.out.println("interseca a outra: " + featureTmp);
-			}
+//			else if (r2dTmp.intersects(r2d))// verifica se há intersecção
+//			{
+//				anteriores.add(featureTmp);
+//				feature.featuresAnteriores = anteriores;
+//				System.out.println("interseca a outra: " + featureTmp);
+//				
+//		
+//			}
 		}
 		
 		//System.out.println("tamanho da mae: " + maes.size());
@@ -1973,7 +1980,6 @@ public class Face implements Serializable{
 			 return null;
 		
 		else 
-								
 		{
 			double maiorZ = 0;
 			for (int i = 0; i < maes.size(); i++)
@@ -1994,14 +2000,12 @@ public class Face implements Serializable{
 							
 					}
 				}
-				
 				else if((featureTmp.getClass() == CircularBoss.class) || (featureTmp.getClass() == RectangularBoss.class)){
 					
 					featureMae = featureTmp;
 				}
 			}
 		}
-			
 //			if (feature.getPosicaoZ() == featureMae.getPosicaoZ() + this.getProfundidade(featureMae))
 //			{
 //				
@@ -2072,9 +2076,29 @@ public class Face implements Serializable{
 //		}
 		
 		return featureMae;
-	
 	}
-	
+	public boolean verificaInterseccao(Feature feature) //Verifica se a feature intersecta alguma outra
+	{
+		boolean intersecta = false;
+		Rectangle2D r2d = this.criarRetanguloShape(feature);
+		
+		for (int i = 0; i < this.features.size(); i++)
+		{
+			Feature featureTmp = (Feature)features.elementAt(i);
+			Rectangle2D r2dTmp = this.criarRetanguloShape(featureTmp);
+			
+			
+			if (r2dTmp.intersects(r2d))
+			{
+				intersecta = true;
+				break;
+			}
+			else
+				intersecta = false;
+		}
+		
+		return intersecta;
+	}
 	public double getProfundidade(Feature f)
 	{
 		System.out.println("PROFUNDIDADE");

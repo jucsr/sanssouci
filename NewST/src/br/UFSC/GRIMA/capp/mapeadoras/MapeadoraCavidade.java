@@ -252,6 +252,8 @@ public class MapeadoraCavidade {
 				// FERRAMENTA
 				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(),
 						faceMills, cavidadeTmp, 0, D);
+				
+				System.out.println("FERRAMENTA MENOR DIAMETRO:   " + faceMill2.getDiametroFerramenta());
 
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
@@ -761,8 +763,10 @@ public class MapeadoraCavidade {
 				}
 			}
 		}
-		menorDiametro = raioMenor*2;		
-		System.out.println("MENOR DIAMETRO:   "+menorDiametro);
+		
+		menorDiametro = raioMenor*2;
+
+		System.out.println("MENOR DIAMETRO:   " + menorDiametro);
 		return menorDiametro;
 	}
 	
@@ -805,7 +809,6 @@ public class MapeadoraCavidade {
 		raioMedia = raioMedia/numeroDeDiametrosAdicionados;
 		maiorDiametro+=2*raioMedia;
 
-		System.out.println("MAIOR DIAMETRO:     "+maiorDiametro);
 		return maiorDiametro;
 	}
 	

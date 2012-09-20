@@ -44,8 +44,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 	public Projeto projeto;
 	Bloco bloco;
 	CircularBoss boss;
-	RectangularBoss boss1;
-	RectangularBoss boss2;
+	CircularBoss boss1;
+	CircularBoss boss2;
 	Boss boss3;
 	Face faceXY;
 	ArrayList<ArrayList<Point3d>> pontos;
@@ -83,26 +83,46 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(10);
 		this.cavidade.setRaio(2);
-		this.cavidade.setComprimento(80);
-		this.cavidade.setLargura(60);
+		this.cavidade.setComprimento(180);
+		this.cavidade.setLargura(130);
 		this.cavidade.createGeometricalElements();
 
 		faceXY.addFeature(this.cavidade);
-
+	
 		this.boss=new CircularBoss();
-		this.boss.setCentre(new Point3d(30,30,0));
-		this.boss.setDiametro1(10);
-		this.boss.setDiametro2(10);
+		this.boss.setCentre(new Point3d(48,54,0));
+		this.boss.setDiametro1(44.40720662234904);
+		this.boss.setDiametro2(44.40720662234904);
 		this.boss.setAltura(10);
-		this.boss.setPosicao(20, 35, 0);
+		this.boss.setPosicao(48, 54, 0);
 		this.boss.setNome("lucas");
 		this.boss.createGeometricalElements();
 		
-		this.boss1 = new RectangularBoss(20, 10, 10, 5);
-		this.boss1.setPosicao(40, 30, 0);
+
+		this.boss1=new CircularBoss();
+		this.boss1.setCentre(new Point3d(106,93,0));
+		this.boss1.setDiametro1(48.16637831516918);
+		this.boss1.setDiametro2(48.16637831516918);
+		this.boss1.setAltura(10);
+		this.boss1.setPosicao(106, 93, 0);
+		this.boss1.setNome("lucas");
+		this.boss1.createGeometricalElements();
 		
-		this.boss2 = new RectangularBoss(20, 20, 10, 7);
-		this.boss2.setPosicao(50, 45, 0);
+		this.boss2=new CircularBoss();
+		this.boss2.setCentre(new Point3d(124,41,0));
+		this.boss2.setDiametro1(44.40720662234904);
+		this.boss2.setDiametro2(44.40720662234904);
+		this.boss2.setAltura(10);
+		this.boss2.setPosicao(124, 41, 0);
+		this.boss2.setNome("lucas");
+		this.boss2.createGeometricalElements();
+		
+		
+//		this.boss1 = new RectangularBoss(38, 28, 10, 0);
+//		this.boss1.setPosicao(45, 36, 0);
+//		
+//		this.boss2 = new RectangularBoss(20, 20, 10, 7);
+//		this.boss2.setPosicao(50, 45, 0);
 		
 		ArrayList<Point2D> vertices = new ArrayList<Point2D>();
 		vertices.add(new Point2D.Double(20,15));
@@ -122,8 +142,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		this.itsBoss.add(this.boss);
-//		this.itsBoss.add(this.boss1);
-//		this.itsBoss.add(this.boss2);
+		this.itsBoss.add(this.boss1);
+		this.itsBoss.add(this.boss2);
 //		this.itsBoss.add(this.boss3);
 		cavidade.setItsBoss(this.itsBoss);
 		this.faceXY.addFeature(this.boss);
@@ -136,10 +156,11 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					comprimento=this.cavidade.getComprimento(),
 					raio=this.cavidade.getRaio(),
 					raioAtual,
-					z=-10,
-					diametroFerramenta = 13;//this.ferramenta.getDiametroFerramenta();
+					z=-2,
+					diametroFerramenta;//this.ferramenta.getDiametroFerramenta();
 			RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(this.cavidade.getPosicaoX(), this.cavidade.getPosicaoY(), comprimento, largura, 2*raio, 2*raio);
 
+			
 			double malhaMenoresDistancias[][] = new double[99][99];
 			
 			ArrayList<Shape> bossArray;
@@ -156,6 +177,10 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 			}
 
+			double temp1=comprimento/100
+					,temp2=largura/100;
+			
+			
 			//REPRODUZIR BOSS
 			bossArray = new ArrayList<Shape>();
 			pontosPeriferia = new ArrayList<Point3d>();
@@ -171,6 +196,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					for(int k=0;k<borda.length;k++){
 						pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 					}
+					System.out.println("Pontos Periferia2 : " + pontosPeriferia.size());
 				}
 				else if(bossTmp.getClass()==RectangularBoss.class){
 					RectangularBoss boss = (RectangularBoss) bossTmp;
@@ -286,12 +312,15 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					}		
 				}
 			}
-
+			System.out.println("PontosPeriferia : " + pontosPeriferia.size());
+			
 			borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(this.cavidade.getPosicaoX(),this.cavidade.getPosicaoY(),z), this.cavidade.getComprimento(), this.cavidade.getLargura(), this.cavidade.getRaio());
 			for(int k=0;k<borda.length;k++){
 				pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 			}
 
+			System.out.println("Bosses : " + bossArray.size());
+			
 			int b=0,c=0;
 			//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
 			pontosPossiveis = new ArrayList<Point3d>();
@@ -318,6 +347,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 			}
 
+			System.out.println("PontosPossiveis : " + pontosPossiveis.size());
 //			if(pontosPossiveis.size()<1){
 //				break;
 //			}
@@ -378,34 +408,41 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 			}
 			
-			raioMedia = raioMedia/numeroDeDiametrosAdicionados;
-
-			System.out.println("RAIO MÉDIO: "+raioMedia);
-			System.out.println("RAIO MENOR: "+raioMenor);
-			
-						
+			raioMedia = 10;
+		
 			for(int i=0;i<menorDistancia.size();i++){
 				if(maiorMenorDistancia<menorDistancia.get(i)){
 					maiorMenorDistancia=menorDistancia.get(i);
 				}
 			}
 			
-			diametroFerramenta = 2*raioMedia;
+			diametroFerramenta = 20;
 			
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
-
+			double variacao = (temp1+temp2)/2;
+			
+			
 			pontos = new ArrayList<ArrayList<Point3d>>();
-			for(int i=0;i<numeroDeCortes;i++){
+			for(int i=0;i<numeroDeCortes+10;i++){
 				pontos2 = new ArrayList<Point3d>();
 				for(int k=0;k<menorDistancia.size();k++){
-					if(menorDistancia.get(k)<=(i+1)*(0.75*diametroFerramenta) && menorDistancia.get(k)>=(i+1)*(0.75*diametroFerramenta)-0.65){
-						pontos2.add(pontosPossiveis.get(k));
-						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
+					if(i==0){
+						if(menorDistancia.get(k)<=10+variacao && menorDistancia.get(k)>=10){
+							pontos2.add(pontosPossiveis.get(k));
+							bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
+						}
+					}
+					else{
+						if(menorDistancia.get(k)<=(i+1)*(0.5*diametroFerramenta)+variacao/2 && menorDistancia.get(k)>=(i+1)*(0.5*diametroFerramenta)-variacao/2){
+							pontos2.add(pontosPossiveis.get(k));
+							bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
+						}
 					}
 				}
 				pontos.add(pontos2);
 			}
-			
+
+			System.out.println(pontosPossiveis.size());
 			pontosMenores = new ArrayList<Point3d>();
 			ArrayList<Point3d> test = new ArrayList<Point3d>();
 			
@@ -446,15 +483,25 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				menorDistancia.add(distanciaTmp);
 //				System.out.println(menorDistancia.get(i));
 			}
-			
-			
-			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*2*raioMenor));
-			for(int i=0;i<numeroDeCortes;i++){
+			System.out.println(pontosPossiveis.size());
+			double diametro = 6;
+			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametro));
+			for(int i=0;i<numeroDeCortes+10;i++){
 				for(int k=0;k<pontosPossiveis.size();k++){
-					if(menorDistancia.get(k)<=(i+1)*(0.75*2*raioMenor) && menorDistancia.get(k)>=(i+1)*(0.75*2*raioMenor)-0.5){
-						pontosMenores.add(pontosPossiveis.get(k));}
+					if(i==0){
+						if(menorDistancia.get(k)<=diametro/2+variacao && menorDistancia.get(k)>=diametro/2){
+							pontosMenores.add(pontosPossiveis.get(k));
+						}
+					}
+					else{
+						if(menorDistancia.get(k)<=(i+1)*(0.5*diametro)+variacao/2 && menorDistancia.get(k)>=(i+1)*(0.5*diametro)-variacao/2){
+							pontosMenores.add(pontosPossiveis.get(k));
+						}
+					}
 				}
 			}
+			
+			System.out.println("Pontos menores:  "+pontosMenores.size());
 			
 //			numeroDeCortes = (int) (maiorMenorDistancia/ (0.75*raioMenor*2));
 //			for(int i=0;i<1;i++){
@@ -496,9 +543,9 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				
 				
 				r.moveTo(0,0);
-				r.lineTo(5*comprimento, 0);
-				r.lineTo(5*comprimento, 5*largura);
-				r.lineTo(0, 5*largura);
+				r.lineTo(2*comprimento, 0);
+				r.lineTo(2*comprimento, 2*largura);
+				r.lineTo(0, 2*largura);
 				r.lineTo(0, 0);
 
 				for(int i=0;i<pontos.size();i++){
@@ -506,7 +553,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 						if(pontos.get(i).size()<1){
 							break;
 						}
-						f.add(new Ellipse2D.Double(5*pontos.get(i).get(k).getX(),5*pontos.get(i).get(k).getY(),5,5));
+						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-20,2*pontos.get(i).get(k).getY()-20,40,40));
 					}
 				}
 //				for(int i=0;i<malha.length;i++){
@@ -530,13 +577,13 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					if(pontosMenores.size()<1){
 						break;
 					}
-					e.add(new Ellipse2D.Double(5*pontosMenores.get(i).getX(),5*pontosMenores.get(i).getY(),5,5));					
+					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-6,2*pontosMenores.get(i).getY()-6,12,12));					
 				}
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
 						break;
 					}
-					w.add(new Ellipse2D.Double(5*pontosPeriferia.get(i).getX(),5*pontosPeriferia.get(i).getY(),5,5));
+					w.add(new Ellipse2D.Double(2*pontosPeriferia.get(i).getX(),2*pontosPeriferia.get(i).getY(),2,2));
 				}
 				
 			}

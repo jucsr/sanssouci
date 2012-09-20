@@ -1215,6 +1215,7 @@ public class GCodeGenerator {
 			    				yAux = desbaste.get(j).getFinalPoint().getY();
 			    				zAux = desbaste.get(j).getFinalPoint().getZ();
 
+
 			    				if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
 			    					if(l==0){
 			    						GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";

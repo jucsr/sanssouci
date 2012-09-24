@@ -18,6 +18,7 @@ import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
 public class CavidadeReader {
@@ -143,6 +144,19 @@ public class CavidadeReader {
 				circularBoss.setFace(faceAtual);
 				itsBoss.add(circularBoss);
 				System.out.println("PASSOU PELO READER       " + itsBoss.size());
+			} else if(eBoss.getIts_boundary(null).isKindOf(ERectangular_closed_profile.class))
+			{
+				double length = ((ERectangular_closed_profile)eBoss.getIts_boundary(null)).getProfile_length(null).getTheoretical_size(null);
+				double width = ((ERectangular_closed_profile)eBoss.getIts_boundary(null)).getProfile_width(null).getTheoretical_size(null);
+				double altura = eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
+				
+				Point3d centre = new Point3d(eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(1),
+						 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
+						 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3));
+				
+				RectangularBoss rectangularBoss = new RectangularBoss(length, width, altura, 0);
+				rectangularBoss.setPosicao(centre.x - length / 2, centre.y - width / 2, centre.z);
+				itsBoss.add(rectangularBoss);
 			}
 
 		}

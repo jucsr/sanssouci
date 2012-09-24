@@ -268,6 +268,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 		double posX = ((Double)xSpinner.getValue()).doubleValue();
 		double posY = ((Double)ySpinner.getValue()).doubleValue();
 		double posZ = profundidadeFeature + feature.Z - altura; 
+		System.out.println("POSZ = " + posZ);
 		boolean ok = false;
 		boolean valido = false;
 		CircularBoss boss = null;
@@ -303,7 +304,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 				Cavidade cavidade = (Cavidade)this.feature;
 				if(cavidade.validarBoss(boss))
 				{
-					posZ = cavidade.getProfundidade() - altura + cavidade.Z;
+//					posZ = cavidade.getProfundidade() - altura + cavidade.Z;
 					valido = true;
 					cavidade.addBoss(boss);
 				}
@@ -317,7 +318,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
 				if(general.validarBoss(boss))
 				{
-					posZ = general.getProfundidade() - altura + general.Z;
+//					posZ = general.getProfundidade() - altura + general.Z;
 					valido = true;
 					general.addBoss(boss);
 				}

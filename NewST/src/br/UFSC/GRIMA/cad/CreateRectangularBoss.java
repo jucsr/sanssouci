@@ -392,7 +392,7 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 					ArrayList<Double> axis = null, refDirection = null;
 					if (this.face.getTipo() == Face.XY) 
 					{
-						coordinates = new Point3d(boss.X, boss.Y, this.face.getProfundidadeMaxima() - boss.Z);
+						coordinates = new Point3d(boss.X + length / 2, boss.Y + width / 2, this.face.getProfundidadeMaxima() - boss.Z);
 						axis = new ArrayList<Double>();
 						axis.add(0.0);
 						axis.add(0.0);
@@ -404,7 +404,7 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 						refDirection.add(0.0);
 					} else if (this.face.getTipo() == Face.XZ)
 					{
-						coordinates = new Point3d(boss.X, boss.Z, boss.Y);
+						coordinates = new Point3d(boss.X - length / 2, boss.Z, boss.Y + width / 2); // ---- verificar
 						axis = new ArrayList<Double>();
 						axis.add(0.0);
 						axis.add(-1.0);

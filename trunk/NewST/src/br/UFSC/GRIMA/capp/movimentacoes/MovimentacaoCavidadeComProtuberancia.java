@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.bool.Line;
 import br.UFSC.GRIMA.capp.Workingstep;
-import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraCavidade;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -51,8 +50,10 @@ public class MovimentacaoCavidadeComProtuberancia {
 		Point3d pontoInicial = new Point3d(0,0,0), pontoFinal = null;
 		
 		
-		double largura=this.cavidade.getLargura(),
-				comprimento=this.cavidade.getComprimento(),
+		double	allowanceBottom = ((BottomAndSideRoughMilling) this.ws.getOperation()).getAllowanceBottom(),
+				allowanceSide = ((BottomAndSideRoughMilling) this.ws.getOperation()).getAllowanceSide(), 
+				largura=this.cavidade.getLargura()-2*allowanceSide,
+				comprimento=this.cavidade.getComprimento()-2*allowanceSide,
 				raio=this.cavidade.getRaio(),
 				raioAtual,
 				c,
@@ -60,7 +61,7 @@ public class MovimentacaoCavidadeComProtuberancia {
 				diametroPrimeiroWs = this.cavidade.getWorkingsteps().get(0).getFerramenta().getDiametroFerramenta(),
 				diametroFerramenta = this.ferramenta.getDiametroFerramenta(),
 				ae = this.ws.getCondicoesUsinagem().getAe();
-		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(this.cavidade.getPosicaoX(), this.cavidade.getPosicaoY(), comprimento, largura, 2*raio, 2*raio);
+		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(this.cavidade.getPosicaoX()+allowanceSide, this.cavidade.getPosicaoY()+allowanceSide, comprimento, largura, 2*raio, 2*raio);
 
 		double malhaMenoresDistancias[][] = new double[99][99];
 		
@@ -87,7 +88,7 @@ public class MovimentacaoCavidadeComProtuberancia {
 			bossTmp=this.itsBoss.get(i);
 			if(bossTmp.getClass()==CircularBoss.class){
 				CircularBoss boss = (CircularBoss) bossTmp;
-				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-this.cavidade.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2));
+				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-this.cavidade.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2))+2*allowanceSide;
 				bossArray.add(new Ellipse2D.Double(boss.getPosicaoX()-raioAtual, boss.getPosicaoY()-raioAtual, raioAtual*2, 2*raioAtual));
 				borda = Cavidade.determinarPontosEmCircunferencia(new Point3d(boss.getPosicaoX(),boss.getPosicaoY(),z), 0, 2*Math.PI, raioAtual, (int) Math.round(Math.PI*2*raioAtual));
 				for(int k=0;k<borda.length;k++){
@@ -96,8 +97,8 @@ public class MovimentacaoCavidadeComProtuberancia {
 			}
 			else if(bossTmp.getClass()==RectangularBoss.class){
 				RectangularBoss boss = (RectangularBoss) bossTmp;
-				bossArray.add(new RoundRectangle2D.Double(bossTmp.getPosicaoX(), bossTmp.getPosicaoY(), boss.getL1(), boss.getL2(), boss.getRadius()*2, boss.getRadius()*2));
-				borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(boss.getPosicaoX(),boss.getPosicaoY(),z), boss.getL1(), boss.getL2(), boss.getRadius());
+				bossArray.add(new RoundRectangle2D.Double(bossTmp.getPosicaoX()+allowanceSide, bossTmp.getPosicaoY()+allowanceSide, boss.getL1()-2*allowanceSide, boss.getL2()-2*allowanceSide, boss.getRadius()*2, boss.getRadius()*2));
+				borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(boss.getPosicaoX()+allowanceSide,boss.getPosicaoY()+allowanceSide,z), boss.getL1()-2*allowanceSide, boss.getL2()-2*allowanceSide, boss.getRadius());
 				for(int k=0;k<borda.length;k++){
 					pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 				}
@@ -106,12 +107,34 @@ public class MovimentacaoCavidadeComProtuberancia {
 				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
 				ArrayList<Point2D> vertex = boss.getVertexPoints();
 				GeneralPath path = new GeneralPath();
+				GeneralPath generalPath = new GeneralPath();
 				path.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
 				for(int r=0;r<vertex.size();r++){
 					path.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
 				}
 				path.closePath();
-				bossArray.add(path);
+				int cont = vertex.size();
+				ArrayList<Point2D> vertexTmp = new ArrayList<Point2D>();
+				for(int r=0;r<cont;r++){
+					if(path.contains(vertex.get(r).getX()+allowanceSide,vertex.get(r).getY())){
+						vertexTmp.add(new Point2D.Double(vertex.get(r).getX()-allowanceSide, vertex.get(r).getY()));
+						generalPath.lineTo(vertex.get(r).getX()-allowanceSide,vertex.get(r).getY());
+					}
+					else if(path.contains(vertex.get(r).getX()-allowanceSide,vertex.get(r).getY())){
+						vertexTmp.add(new Point2D.Double(vertex.get(r).getX()+allowanceSide,vertex.get(r).getY()));
+						generalPath.lineTo(vertex.get(r).getX()+allowanceSide,vertex.get(r).getY());						
+					}
+					else if(path.contains(vertex.get(r).getX(),vertex.get(r).getY()+allowanceSide)){
+						vertexTmp.add(new Point2D.Double(vertex.get(r).getX(),vertex.get(r).getY()-allowanceSide));
+						generalPath.lineTo(vertex.get(r).getX(),vertex.get(r).getY()-allowanceSide);						
+					}
+					else{
+						vertexTmp.add(new Point2D.Double(vertex.get(r).getX(),vertex.get(r).getY()+allowanceSide));
+						generalPath.lineTo(vertex.get(r).getX(),vertex.get(r).getY()+allowanceSide);						
+					}
+				}
+				vertex = vertexTmp;
+				bossArray.add(generalPath);
 				double distancia, maiorX, maiorY;
 				int q;
 				for(int j=0;j<vertex.size();j++){
@@ -209,7 +232,7 @@ public class MovimentacaoCavidadeComProtuberancia {
 			}
 		}
 
-		borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(this.cavidade.getPosicaoX(),this.cavidade.getPosicaoY(),z), this.cavidade.getComprimento(), this.cavidade.getLargura(), this.cavidade.getRaio());
+		borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(this.cavidade.getPosicaoX()-allowanceSide,this.cavidade.getPosicaoY()+allowanceSide,z), this.cavidade.getComprimento()-2*allowanceSide, this.cavidade.getLargura()-2*allowanceSide, this.cavidade.getRaio());
 		for(int k=0;k<borda.length;k++){
 			pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 		}
@@ -538,51 +561,85 @@ public class MovimentacaoCavidadeComProtuberancia {
 			}
 		}
 		
-		if(diametroFerramenta!=diametroPrimeiroWs){
-			double xI =this.cavidade.getPosicaoX()+diametroFerramenta/2,
-					xF =this.cavidade.getPosicaoX()+comprimento-diametroFerramenta/2,
-					yI =this.cavidade.getPosicaoY()+diametroFerramenta/2,
-					yF =this.cavidade.getPosicaoY()+largura-diametroFerramenta/2;
-			
-			pontosMenores = new ArrayList<Point3d>();
-
-			pontoFinal = new Point3d(pontoInicial.getX(), pontoInicial.getY(), this.ws.getOperation().getRetractPlane());
-			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-			ligarPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
-			desbaste.add(ligarPontos);
-			pontoInicial = pontoFinal;
-			
-			pontoFinal = new Point3d(xI,yI,this.ws.getOperation().getRetractPlane());
-			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-			desbaste.add(ligarPontos);
-			pontoInicial = pontoFinal;
-			
-			pontoFinal = new Point3d(xI,yI,z);
-			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-			ligarPontos.setTipoDeMovimento(LinearPath.SLOW_MOV);
-			desbaste.add(ligarPontos);
-			pontoInicial = pontoFinal;
-			
-			pontoFinal = new Point3d(xI,yF,z);
-			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-			desbaste.add(ligarPontos);
-			pontoInicial = pontoFinal;
-			
-			pontoFinal = new Point3d(xF,yF,z);
-			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-			desbaste.add(ligarPontos);
-			pontoInicial = pontoFinal;
-			
-			pontoFinal = new Point3d(xF,yI,z);
-			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-			desbaste.add(ligarPontos);
-			pontoInicial = pontoFinal;
-			
-			pontoFinal = new Point3d(xI,yI,z);
-			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-			desbaste.add(ligarPontos);
-		}
+		pontoFinal = new Point3d(pontoInicial.getX(), pontoInicial.getY(), this.ws.getOperation().getRetractPlane());
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		ligarPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
+		desbaste.add(ligarPontos);
+		pontoInicial = pontoFinal;
+		
 		return desbaste;
+	}
+	
+	public ArrayList<LinearPath> getContorno(double z){
+		ArrayList<LinearPath> contorno = new ArrayList<LinearPath>();
+	
+		
+		double 	diametroFerramenta = this.ferramenta.getDiametroFerramenta(),
+				raio = this.cavidade.getRaio(),
+				allowanceSide = ((BottomAndSideRoughMilling) this.ws.getOperation()).getAllowanceSide(),
+				comprimento = this.cavidade.getComprimento(),
+				largura = this.cavidade.getLargura(),
+				xI =this.cavidade.getPosicaoX()+diametroFerramenta/2+allowanceSide,
+				xF =this.cavidade.getPosicaoX()+comprimento-diametroFerramenta/2-allowanceSide,
+				yI =this.cavidade.getPosicaoY()+diametroFerramenta/2+allowanceSide,
+				yF =this.cavidade.getPosicaoY()+largura-diametroFerramenta/2-allowanceSide;
+			
+		Point3d pontoInicial , pontoFinal;
+		LinearPath ligarPontos;
+		
+//		pontoFinal = new Point3d(xI,yI,this.ws.getOperation().getRetractPlane());
+//		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+//		contorno.add(ligarPontos);
+		pontoInicial =  new Point3d(xI+raio,yI,this.ws.getOperation().getRetractPlane());
+		
+		pontoFinal = new Point3d(xI+raio,yI,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		ligarPontos.setTipoDeMovimento(LinearPath.SLOW_MOV);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+		
+		pontoFinal = new Point3d(xI,yI+raio,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+		
+		pontoFinal = new Point3d(xI,yF-raio,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+		
+		pontoFinal = new Point3d(xI+raio,yF,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+		
+		pontoFinal = new Point3d(xF-raio,yF,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+		
+		pontoFinal = new Point3d(xF,yF-raio,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+
+		pontoFinal = new Point3d(xF,yI+raio,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+
+		pontoFinal = new Point3d(xF-raio,yI,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+
+		pontoFinal = new Point3d(xI+raio,yI,z);
+		ligarPontos = new LinearPath(pontoInicial, pontoFinal);
+		contorno.add(ligarPontos);
+		pontoInicial = pontoFinal;
+	
+		
+		return contorno;
 	}
 	
 	public ArrayList<LinearPath> getDesbasteTest2(){

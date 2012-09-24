@@ -77,7 +77,7 @@ public class RectangularBoss extends Boss
 		nodo.add(new DefaultMutableTreeNode("Largura: " + this.getL1()));
 		nodo.add(new DefaultMutableTreeNode("Comprimento: " + this.getL2()));
 		nodo.add(new DefaultMutableTreeNode("Raio: " + this.getRadius()));
-		nodo.add(new DefaultMutableTreeNode("Posicao X, Y, Z  : " + this.getPosition().getCoordinates()));
+		nodo.add(new DefaultMutableTreeNode("Posicao X, Y, Z  : " + this.X + ", " + this.Y + ", "+ this.Z));
 		nodo.add(new DefaultMutableTreeNode("Altura : " + this.getAltura()));
 		nodo.add(new DefaultMutableTreeNode("Rugosidade : " + this.getRugosidade()));
 		nodo.add(new DefaultMutableTreeNode("Tolerancia : " + this.getTolerancia()));

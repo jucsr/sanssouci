@@ -335,6 +335,7 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 		X = ((Double)xSpinner.getValue()).doubleValue();
 		Y = ((Double)ySpinner.getValue()).doubleValue();
 		Z = ((Double)spinnerPosZ.getValue()).doubleValue();
+		double posZ = profundidadeFeature - heigth + feature.Z;
 		double comprimento = width;
 		
 		if (length < width)
@@ -352,7 +353,7 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 		if(ok)
 		{
 			RectangularBoss boss = new RectangularBoss(length, width, heigth, radius);
-			boss.setPosicao(X, Y, Z);
+			boss.setPosicao(X, Y, posZ);
 			boss.setNome(this.textField1.getText());
 			boss.setTolerancia(tolerancia*0.001);
 			boss.setRugosidade(tolerancia*0.001);

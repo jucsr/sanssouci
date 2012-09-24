@@ -15,7 +15,6 @@ import br.UFSC.GRIMA.cad.visual.CavidadeFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
-import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
 
@@ -147,14 +146,14 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				} else {
 					ok = false;
 					JOptionPane.showMessageDialog(null,
-							"Digite um Número positivo para a posição X da cavidade",
-							"Erro na posição X", JOptionPane.OK_CANCEL_OPTION);
+							"Digite um NÃºmero positivo para a posiÃ§Ã£o X da cavidade",
+							"Erro na posiÃ§Ã£o X", JOptionPane.OK_CANCEL_OPTION);
 				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null,
-						"Digite um Número positivo para a posição X da cavidade"
-						+ "\n               Não digite letras nem simbolos",
-						"Erro na posição X", JOptionPane.OK_CANCEL_OPTION);
+						"Digite um NÃºmero positivo para a posiÃ§Ã£o X da cavidade"
+						+ "\n               NÃ£o digite letras nem simbolos",
+						"Erro na posiÃ§Ã£o X", JOptionPane.OK_CANCEL_OPTION);
 				ok = false;
 			}
 		}
@@ -525,7 +524,7 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				novaCavidade.setAcabamento(true);
 			}
 			
-			if (this.face.validarFeature(novaCavidade))
+			if (this.face.validateFeature(novaCavidade))
 			{
 				Point3d coordinates = null;
 				ArrayList<Double> axis = null, refDirection = null;
@@ -618,12 +617,13 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				//face.imprimeDados(novaCavidade);
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Cavidade: " +novaCavidade.getNome() + " adicionada com sucesso!");
-
+				
+				System.out.println("mae = " + novaCavidade.getFeaturePrecedente());
 				dispose();
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Erro na criação da Cavidade", "Feature invalida", JOptionPane.OK_CANCEL_OPTION);
+				JOptionPane.showMessageDialog(null, "Erro na criacao da Cavidade", "Feature invalida", JOptionPane.OK_CANCEL_OPTION);
 			}
 		}
 	}

@@ -123,8 +123,7 @@ public class CavidadeReader {
 
 		while(iterator.next()){
 			EBoss eBoss = bosses.getCurrentMember(iterator);
-
-			System.out.println("BOSSES    "+ eBoss.getIts_boundary(null));
+			id = eBoss.getIts_id(null);
 			if(eBoss.getIts_boundary(null).isKindOf(ECircular_closed_profile.class)){
 				double diametro1 = ((ECircular_closed_profile) eBoss.getIts_boundary(null)).getDiameter(null).getTheoretical_size(null);
 				double angulo = eBoss.getSlope(null);
@@ -136,14 +135,14 @@ public class CavidadeReader {
 				
 				
 				CircularBoss circularBoss = new CircularBoss();
+				circularBoss.setNome(id);
 				circularBoss.setAltura(altura);
 				circularBoss.setDiametro1(diametro1);
 				circularBoss.setDiametro2(diametro2);
 				circularBoss.setCentre(centre);
-				circularBoss.setPosicao(centre.getX(), centre.getY(), centre.getY());
+				circularBoss.setPosicao(centre.getX(), centre.getY(), z + profundidadeCavidade - altura);
 				circularBoss.setFace(faceAtual);
 				itsBoss.add(circularBoss);
-				System.out.println("PASSOU PELO READER       " + itsBoss.size());
 			} else if(eBoss.getIts_boundary(null).isKindOf(ERectangular_closed_profile.class))
 			{
 				double length = ((ERectangular_closed_profile)eBoss.getIts_boundary(null)).getProfile_length(null).getTheoretical_size(null);
@@ -155,7 +154,8 @@ public class CavidadeReader {
 						 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3));
 				
 				RectangularBoss rectangularBoss = new RectangularBoss(length, width, altura, 0);
-				rectangularBoss.setPosicao(centre.x - length / 2, centre.y - width / 2, centre.z);
+				rectangularBoss.setNome(id);
+				rectangularBoss.setPosicao(centre.x - length / 2, centre.y - width / 2,  z + profundidadeCavidade - altura);
 				itsBoss.add(rectangularBoss);
 			}
 

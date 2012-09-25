@@ -497,7 +497,6 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 //
 //				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n Error trying to create the Boss!");
 //			}
-			this.dispose();
 		}
 	}
 }

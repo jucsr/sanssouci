@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import jsdai.SCombined_schema.EAxis2_placement_3d;
 import jsdai.SCombined_schema.EBlock;
 import jsdai.SCombined_schema.EMachining_feature;
+import jsdai.SCombined_schema.ERegion;
 import jsdai.SCombined_schema.EWorkpiece;
 import jsdai.lang.SdaiException;
 import br.UFSC.GRIMA.entidades.features.Bloco;
@@ -129,6 +130,64 @@ public class BlocoReader {
 		return faceFeature;
 		
 	}
-	
+public int getFaceFeature(ERegion feature) throws SdaiException{
+		
+		int faceFeature = 6;
+		
+		double zLinhaX = feature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(1);
+		double zLinhaY = feature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(2);
+		double zLinhaZ = feature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(3);
+		
+		ArrayList<Double> eixoFeature = new ArrayList<Double>();
+		eixoFeature.add(zLinhaX);
+		eixoFeature.add(zLinhaY);
+		eixoFeature.add(zLinhaZ);
+		
+		ArrayList<Double> eixoXY = new ArrayList<Double>();
+		eixoXY.add(0.0);
+		eixoXY.add(0.0);
+		eixoXY.add(1.0);
+		
+		ArrayList<Double> eixoYX = new ArrayList<Double>();
+		eixoYX.add(0.0);
+		eixoYX.add(0.0);
+		eixoYX.add(-1.0);
+		
+		ArrayList<Double> eixoXZ = new ArrayList<Double>();
+		eixoXZ.add(0.0);
+		eixoXZ.add(-1.0);
+		eixoXZ.add(0.0);
+		
+		ArrayList<Double> eixoZX = new ArrayList<Double>();
+		eixoZX.add(0.0);
+		eixoZX.add(1.0);
+		eixoZX.add(0.0);
+		
+		ArrayList<Double> eixoYZ = new ArrayList<Double>();
+		eixoYZ.add(1.0);
+		eixoYZ.add(0.0);
+		eixoYZ.add(0.0);
+		
+		ArrayList<Double> eixoZY = new ArrayList<Double>();
+		eixoZY.add(-1.0);
+		eixoZY.add(0.0);
+		eixoZY.add(0.0);
+		
+		if(eixoFeature.toString().equals(eixoXY.toString()))
+			faceFeature = Face.XY;
+		else if(eixoFeature.toString().equals(eixoYX.toString()))
+			faceFeature = Face.YX;
+		else if(eixoFeature.toString().equals(eixoXZ.toString()))
+			faceFeature = Face.XZ;
+		else if(eixoFeature.toString().equals(eixoZX.toString()))
+			faceFeature = Face.ZX;
+		else if(eixoFeature.toString().equals(eixoZY.toString()))
+			faceFeature = Face.ZY;
+		else if(eixoFeature.toString().equals(eixoYZ.toString()))
+			faceFeature = Face.YZ;
+		
+		return faceFeature;
+		
+	}
 
 }

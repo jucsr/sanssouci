@@ -387,7 +387,33 @@ public class DesenhadorDeFeatures
 	
 	public void desenharRectangularBoss(RectangularBoss cb, Point origem, boolean modo, Graphics2D g2d)
 	{
-		
+		int posX, posY, largura, comprimento, diametro;
+		posX = (int)Math.round((cb.getPosicaoX() * zoom) + origem.x);
+		posY = (int)Math.round((cb.getPosicaoY() * zoom) + origem.y);
+		largura = (int)Math.round(cb.getL2() * zoom);
+		comprimento = (int)Math.round(cb.getL1() * zoom);
+		diametro = (int)Math.round(cb.getRadius() * 2 * zoom);
+		if (modo)
+		{
+			g2d.setColor(new Color(205, 205, 193));
+			g2d.fillRoundRect(posX, posY, comprimento, largura, diametro, diametro);
+			
+			g2d.setColor(new Color(165, 42, 42));
+			g2d.setColor(Color.black);
+			g2d.drawRoundRect(posX, posY, comprimento, largura, diametro, diametro);
+			
+		}else
+		{
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+			
+			float dash1[] = {5.0f, 2.5f};
+			g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+			
+			g2d.setColor(new Color(165, 42, 42));
+			g2d.setColor(Color.black);
+			g2d.drawRoundRect(posX, posY, comprimento, largura, diametro, diametro);
+		}
 	}
 	
 	/**

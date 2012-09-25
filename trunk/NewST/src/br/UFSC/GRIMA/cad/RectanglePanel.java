@@ -54,7 +54,6 @@ public class RectanglePanel extends DesenhadorDeFaces implements MouseListener, 
 		if(grade)
 			this.drawGrade(g2d);
 		
-        this.drawCoordinates(g2d);
        
         if(shape != null)
         {
@@ -77,6 +76,7 @@ public class RectanglePanel extends DesenhadorDeFaces implements MouseListener, 
         g2d.draw(lengthLine);
         g2d.draw(widthLine);
         
+        this.drawCoordinates(g2d);
         g2d.dispose();
 	}
 	@Override

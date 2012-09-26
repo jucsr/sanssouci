@@ -1634,514 +1634,390 @@ public class Face implements Serializable{
 		this.features.add(feature);
 		JanelaPrincipal.setDoneCAPP(false);
 	}
-	public boolean validarFeature(Feature feature)
-	{			
-		int contadorRanhura = 0;
-		int contadorCavidade = 0;
-		int contadorDegrau = 0;
-		int contadorGeneralPocket = 0;
-		
-		int ultimoNoArrayRanhura = 0;
-		int ultimoNoArrayCavidade = 0;
-		int ultimoNoArrayDegrau = 0;
-		int ultimoNoarrayGeneralPocket = 0;
-		
-		boolean encontrou = false;
-		Rectangle2D rect2d = this.criarRetanguloShape(feature);
-		
-		for(int k = 0; k < this.features.size(); k++)
-		{
-			if(features.elementAt(k).getClass()==RanhuraPerfilBezier.class)
-				ultimoNoArrayRanhura = k;
-				
-			else if(features.elementAt(k).getClass()==Cavidade.class)
-				ultimoNoArrayCavidade = k;
-			
-			else if(features.elementAt(k).getClass()==Degrau.class)
-				ultimoNoArrayDegrau = k;
-			
-			else if(features.elementAt(k).getClass()==GeneralClosedPocket.class)
-				ultimoNoarrayGeneralPocket = k;
-		}
-		
-		//System.out.printf("indice da ultima cavidade: %d\n", ultimoNoArrayCavidade);
-		
-		if (feature.getPosicaoZ() == 0)  //---------------------   Z == 0 -------------------
-		{
-			//Nao tem br.UFSC.GRIMA.feature mae
-			feature.featuresAnteriores = null;/***		????	***/
-						
-			//verificar se a br.UFSC.GRIMA.feature pode ser colocada completamente dentro
-			//de uma outra br.UFSC.GRIMA.feature
-			//se sim -> br.UFSC.GRIMA.feature invalida
-			//se nao -> br.UFSC.GRIMA.feature valida
-			
-			for (int i = 0; i < this.features.size(); i++)
-			{
-				Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
-				
-				if (rect2dTmp.contains(rect2d))
-				{
-					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
-
-						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
-						
-						if(ranBezier.getProfundidade()== 0){
-							encontrou = false;
-							
-						}else{
-							encontrou = true;
-							
-						}
-						
-					}else if(features.elementAt(i).getClass()==Cavidade.class){
-						 
-						Cavidade cavidade = (Cavidade)features.elementAt(i);
-						
-						if(i != ultimoNoArrayCavidade) //verifica se o boss foi constru�do na �ltima cavidade feita
-						{
-							encontrou = true;
-						}
-						else if(cavidade.getItsBoss().size() == 0)
-							
-							encontrou = true;
-							
-						else
-						{
-							for (int j = 0; j < cavidade.getItsBoss().size(); j++)
-							{
-								
-								if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
-								{
-									CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
-									
-									Rectangle2D rect2dTmp2 = new Rectangle2D.Double(cb.getPosicaoX() - (cb.getDiametro1()/2), cb.getPosicaoY() - (cb.getDiametro1()/2),
-											cb.getDiametro1(), cb.getDiametro1()); // retangulo em volta da base menor do circularBoss
-									
-									if(rect2dTmp2.contains(rect2d))
-									{
-										if((cb.getPosicaoZ() + cb.getAltura()) == (cavidade.getPosicaoZ() + cavidade.getProfundidade()))
-											encontrou = false;
-										
-										else
-											encontrou = true;
-											break;									
-									}
-									else if(!rect2dTmp2.contains(rect2d))
-										encontrou = true;
-										break;
-									
-								}
-								
-								else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
-								{
-									RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
-									
-									if(rect2dTmp.contains(rect2d))
-									{
-										if(rb.getPosicaoZ() == 0)
-											encontrou = false;
-										
-										else
-											encontrou = true;
-											break;									
-									}
-									else if(!rect2dTmp.contains(rect2d))
-										encontrou = true;
-										break;
-									
-								}
-							}
-						}
-					}
-					
-					else if(features.elementAt(i).getClass()==Degrau.class){
-						
-						Degrau degrau = (Degrau)features.elementAt(i);
-						
-						for (int j = 0; j < degrau.getItsBoss().size(); j++)
-						{
-							if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
-								
-								if(feature.Z != cb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-							
-							else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-						}
-					}
-						
-					else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
-						
-						GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
-						
-						for (int j = 0; j < gcp.getItsBoss().size(); j++)
-						{
-							if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
-								
-								if(feature.Z != cb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-							
-							else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-						}
-					}
-					
-				}
-				
-				else if(rect2d.contains(rect2dTmp) || rect2d.intersects(rect2dTmp))
-				{
-
-					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
-
-						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
-						
-						if(ranBezier.getProfundidade()== 0){
-							encontrou = false;
-						}else{
-							encontrou = true;
-						}
-						
-					}else if(features.elementAt(i).getClass()==Cavidade.class){
-						
-						Cavidade cavidade = (Cavidade)features.elementAt(i);
-						
-						for (int j = 0; j < cavidade.getItsBoss().size(); j++)
-						{
-							
-							if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								encontrou = true;
-								break;
-							}
-							
-							else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-								{
-									encontrou = true;
-									break;
-								}
-									
-								else
-									encontrou = false;
-							}
-						}
-					}
-					
-					else if(features.elementAt(i).getClass()==Degrau.class){
-						
-						Degrau degrau = (Degrau)features.elementAt(i);
-						
-						for (int j = 0; j < degrau.getItsBoss().size(); j++)
-						{
-							if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
-								
-								if(feature.Z != cb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-							
-							else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-						}
-					}
-						
-					else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
-						
-						GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
-						
-						for (int j = 0; j < gcp.getItsBoss().size(); j++)
-						{
-							if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
-								
-								if(feature.Z != cb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-							
-							else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-						}
-					}
-					
-				}
-				
-				else if (!rect2dTmp.contains(rect2d))
-					
-					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
-
-						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
-						
-						if(ranBezier.getProfundidade()== 0){
-							encontrou = false;
-							
-						}else
-							encontrou = true;
-							break;
-						
-					}else if(features.elementAt(i).getClass()==Cavidade.class){
-						
-						Cavidade cavidade = (Cavidade)features.elementAt(i);
-						
-						for (int j = 0; j < cavidade.getItsBoss().size(); j++)
-						{
-							
-							if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								encontrou = true;
-								break;
-							}
-							
-							else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-								{
-									encontrou = true;
-									break;
-								}
-									
-								else
-									encontrou = false;
-							}
-						}
-					}
-					
-					else if(features.elementAt(i).getClass()==Degrau.class){
-						
-						Degrau degrau = (Degrau)features.elementAt(i);
-						
-						for (int j = 0; j < degrau.getItsBoss().size(); j++)
-						{
-							if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
-								
-								if(feature.Z != cb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-							
-							else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-						}
-					}
-						
-					else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
-						
-						GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
-						
-						for (int j = 0; j < gcp.getItsBoss().size(); j++)
-						{
-							if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
-							{
-								CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
-								
-								if(feature.Z != cb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-							
-							else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
-							{
-								RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
-								
-								if(feature.Z != rb.getPosicaoZ())
-									encontrou = true;
-								else
-									encontrou = false;
-							}
-						}
-					}
-					
-				
-					
-			}
-			
-			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
-				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
-				JOptionPane.showMessageDialog(null, "                A feature que voc� est� tentando criar est� dentro de outra ou em uma posi��o inapropriada" +
-						"\nverifique q o valor de Z coincida com a profundidade da feature j� existente", 
-						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);
-				return false;
-			}
-			else{
-				return true;
-			}	
-		}	//	 ------------------------------  Acabou o Z==0   --------------------------------
-		
-//		else if(feature.getPosicaoZ() != 0)
+//	public boolean validarFeature(Feature feature)
+//	{			
+//		int contadorRanhura = 0;
+//		int contadorCavidade = 0;
+//		int contadorDegrau = 0;
+//		int contadorGeneralPocket = 0;
+//		
+//		int ultimoNoArrayRanhura = 0;
+//		int ultimoNoArrayCavidade = 0;
+//		int ultimoNoArrayDegrau = 0;
+//		int ultimoNoarrayGeneralPocket = 0;
+//		
+//		boolean encontrou = false;
+//		Rectangle2D rect2d = this.criarRetanguloShape(feature);
+//		
+//		for(int k = 0; k < this.features.size(); k++)
 //		{
+//			if(features.elementAt(k).getClass()==RanhuraPerfilBezier.class)
+//				ultimoNoArrayRanhura = k;
+//				
+//			else if(features.elementAt(k).getClass()==Cavidade.class)
+//				ultimoNoArrayCavidade = k;
+//			
+//			else if(features.elementAt(k).getClass()==Degrau.class)
+//				ultimoNoArrayDegrau = k;
+//			
+//			else if(features.elementAt(k).getClass()==GeneralClosedPocket.class)
+//				ultimoNoarrayGeneralPocket = k;
+//		}
+//		
+//		//System.out.printf("indice da ultima cavidade: %d\n", ultimoNoArrayCavidade);
+//		
+//		if (feature.getPosicaoZ() == 0)  //---------------------   Z == 0 -------------------
+//		{
+//			//Nao tem br.UFSC.GRIMA.feature mae
+//			feature.featuresAnteriores = null;/***		????	***/
+//						
+//			//verificar se a br.UFSC.GRIMA.feature pode ser colocada completamente dentro
+//			//de uma outra br.UFSC.GRIMA.feature
+//			//se sim -> br.UFSC.GRIMA.feature invalida
+//			//se nao -> br.UFSC.GRIMA.feature valida
+//			
 //			for (int i = 0; i < this.features.size(); i++)
 //			{
 //				Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
 //				
-//				if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
+//				if (rect2dTmp.contains(rect2d))
+//				{
+//					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
 //
-//					RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
-//					
-//					if(ranBezier.getProfundidade()== 0){
-//						encontrou = false;
-//					}else{
-//						encontrou = true;
-//					}
-//					
-//				}else if(features.elementAt(i).getClass()==Cavidade.class){
-//					
-//					Cavidade cavidade = (Cavidade)features.elementAt(i);
-//					
-//					for (int j = 0; j < cavidade.getItsBoss().size(); j++)
-//					{
+//						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
 //						
-//						if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
-//						{
-//							CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
+//						if(ranBezier.getProfundidade()== 0){
+//							encontrou = false;
 //							
-//							if(cb.getPosicaoZ() != feature.Z && (rect2dTmp.intersects(rect2d) || rect2dTmp.contains(rect2d)))
-//							{
-//								encontrou = true;
-//								break;
-//							} 
-//							else if(feature.Z == (cavidade.getPosicaoZ() + cavidade.getProfundidade()))
-//									encontrou = false;
+//						}else{
+//							encontrou = true;
 //							
 //						}
 //						
-//						else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//					}else if(features.elementAt(i).getClass()==Cavidade.class){
+//						 
+//						Cavidade cavidade = (Cavidade)features.elementAt(i);
+//						
+//						if(i != ultimoNoArrayCavidade) //verifica se o boss foi constru�do na �ltima cavidade feita
 //						{
-//							RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
+//							encontrou = true;
+//						}
+//						else if(cavidade.getItsBoss().size() == 0)
 //							
-//							if(feature.Z != rb.getPosicaoZ())
+//							encontrou = true;
+//							
+//						else
+//						{
+//							for (int j = 0; j < cavidade.getItsBoss().size(); j++)
+//							{
+//								
+//								if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
+//								{
+//									CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
+//									
+//									Rectangle2D rect2dTmp2 = new Rectangle2D.Double(cb.getPosicaoX() - (cb.getDiametro1()/2), cb.getPosicaoY() - (cb.getDiametro1()/2),
+//											cb.getDiametro1(), cb.getDiametro1()); // retangulo em volta da base menor do circularBoss
+//									
+//									if(rect2dTmp2.contains(rect2d))
+//									{
+//										if((cb.getPosicaoZ() + cb.getAltura()) == (cavidade.getPosicaoZ() + cavidade.getProfundidade()))
+//											encontrou = false;
+//										
+//										else
+//											encontrou = true;
+//											break;									
+//									}
+//									else if(!rect2dTmp2.contains(rect2d))
+//										encontrou = true;
+//										break;
+//									
+//								}
+//								
+//								else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//								{
+//									RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
+//									
+//									if(rect2dTmp.contains(rect2d))
+//									{
+//										if(rb.getPosicaoZ() == 0)
+//											encontrou = false;
+//										
+//										else
+//											encontrou = true;
+//											break;									
+//									}
+//									else if(!rect2dTmp.contains(rect2d))
+//										encontrou = true;
+//										break;
+//									
+//								}
+//							}
+//						}
+//					}
+//					
+//					else if(features.elementAt(i).getClass()==Degrau.class){
+//						
+//						Degrau degrau = (Degrau)features.elementAt(i);
+//						
+//						for (int j = 0; j < degrau.getItsBoss().size(); j++)
+//						{
+//							if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
+//							{
+//								CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
+//								
+//								if(feature.Z != cb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//							
+//							else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
+//								
+//								if(feature.Z != rb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//						}
+//					}
+//						
+//					else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
+//						
+//						GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
+//						
+//						for (int j = 0; j < gcp.getItsBoss().size(); j++)
+//						{
+//							if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
+//							{
+//								CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
+//								
+//								if(feature.Z != cb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//							
+//							else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
+//								
+//								if(feature.Z != rb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//						}
+//					}
+//					
+//				}
+//				
+//				else if(rect2d.contains(rect2dTmp) || rect2d.intersects(rect2dTmp))
+//				{
+//
+//					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
+//
+//						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
+//						
+//						if(ranBezier.getProfundidade()== 0){
+//							encontrou = false;
+//						}else{
+//							encontrou = true;
+//						}
+//						
+//					}else if(features.elementAt(i).getClass()==Cavidade.class){
+//						
+//						Cavidade cavidade = (Cavidade)features.elementAt(i);
+//						
+//						for (int j = 0; j < cavidade.getItsBoss().size(); j++)
+//						{
+//							
+//							if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
 //							{
 //								encontrou = true;
 //								break;
 //							}
+//							
+//							else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
 //								
-//							else
-//								encontrou = false;
+//								if(feature.Z != rb.getPosicaoZ())
+//								{
+//									encontrou = true;
+//									break;
+//								}
+//									
+//								else
+//									encontrou = false;
+//							}
 //						}
 //					}
+//					
+//					else if(features.elementAt(i).getClass()==Degrau.class){
+//						
+//						Degrau degrau = (Degrau)features.elementAt(i);
+//						
+//						for (int j = 0; j < degrau.getItsBoss().size(); j++)
+//						{
+//							if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
+//							{
+//								CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
+//								
+//								if(feature.Z != cb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//							
+//							else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
+//								
+//								if(feature.Z != rb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//						}
+//					}
+//						
+//					else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
+//						
+//						GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
+//						
+//						for (int j = 0; j < gcp.getItsBoss().size(); j++)
+//						{
+//							if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
+//							{
+//								CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
+//								
+//								if(feature.Z != cb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//							
+//							else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
+//								
+//								if(feature.Z != rb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//						}
+//					}
+//					
 //				}
 //				
-//				else if(features.elementAt(i).getClass()==Degrau.class){
+//				else if (!rect2dTmp.contains(rect2d))
 //					
-//					Degrau degrau = (Degrau)features.elementAt(i);
-//					
-//					for (int j = 0; j < degrau.getItsBoss().size(); j++)
-//					{
-//						if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
-//						{
-//							CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
-//							
-//							if(feature.Z != cb.getPosicaoZ())
-//								encontrou = true;
-//							else
-//								encontrou = false;
-//						}
+//					if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
+//
+//						RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
 //						
-//						else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
-//						{
-//							RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
+//						if(ranBezier.getProfundidade()== 0){
+//							encontrou = false;
 //							
-//							if(feature.Z != rb.getPosicaoZ())
+//						}else
+//							encontrou = true;
+//							break;
+//						
+//					}else if(features.elementAt(i).getClass()==Cavidade.class){
+//						
+//						Cavidade cavidade = (Cavidade)features.elementAt(i);
+//						
+//						for (int j = 0; j < cavidade.getItsBoss().size(); j++)
+//						{
+//							
+//							if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
+//							{
 //								encontrou = true;
-//							else
-//								encontrou = false;
+//								break;
+//							}
+//							
+//							else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
+//								
+//								if(feature.Z != rb.getPosicaoZ())
+//								{
+//									encontrou = true;
+//									break;
+//								}
+//									
+//								else
+//									encontrou = false;
+//							}
 //						}
 //					}
-//				}
 //					
-//				else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
-//					
-//					GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
-//					
-//					for (int j = 0; j < gcp.getItsBoss().size(); j++)
-//					{
-//						if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
-//						{
-//							CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
-//							
-//							if(feature.Z != cb.getPosicaoZ())
-//								encontrou = true;
-//							else
-//								encontrou = false;
-//						}
+//					else if(features.elementAt(i).getClass()==Degrau.class){
 //						
-//						else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//						Degrau degrau = (Degrau)features.elementAt(i);
+//						
+//						for (int j = 0; j < degrau.getItsBoss().size(); j++)
 //						{
-//							RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
+//							if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
+//							{
+//								CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
+//								
+//								if(feature.Z != cb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
 //							
-//							if(feature.Z != rb.getPosicaoZ())
-//								encontrou = true;
-//							else
-//								encontrou = false;
+//							else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
+//								
+//								if(feature.Z != rb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
 //						}
 //					}
-//				}
+//						
+//					else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
+//						
+//						GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
+//						
+//						for (int j = 0; j < gcp.getItsBoss().size(); j++)
+//						{
+//							if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
+//							{
+//								CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
+//								
+//								if(feature.Z != cb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//							
+//							else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
+//							{
+//								RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
+//								
+//								if(feature.Z != rb.getPosicaoZ())
+//									encontrou = true;
+//								else
+//									encontrou = false;
+//							}
+//						}
+//					}
+//					
+//				
+//					
 //			}
-//				
-//				
 //			
 //			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
 //				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
-//				JOptionPane.showMessageDialog(null, "                A feature que voc� est� tentando criar est� dentro de outra" +
+//				JOptionPane.showMessageDialog(null, "                A feature que voc� est� tentando criar est� dentro de outra ou em uma posi��o inapropriada" +
 //						"\nverifique q o valor de Z coincida com a profundidade da feature j� existente", 
 //						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);
 //				return false;
@@ -2149,141 +2025,265 @@ public class Face implements Serializable{
 //			else{
 //				return true;
 //			}	
-//		}
-		
-		// procura br.UFSC.GRIMA.feature mae -------------------------------------------------------------------
-		
-		else
-		{
-			Vector maes = new Vector();
-			Vector anteriores = new Vector();
-			Feature featureMae = null;	
-			Feature featureAnterior = null;
-			Rectangle2D r2d = this.criarRetanguloShape(feature);
-			
-			for (int i = 0; i < this.features.size(); i++)
-			{
-				Feature featureTmp = (Feature)features.elementAt(i);
-				Rectangle2D r2dTmp = this.criarRetanguloShape(featureTmp);
-				
-				if (r2dTmp.contains(r2d))//verifica se uma br.UFSC.GRIMA.feature contem plenamente a uma outra
-				{
-					maes.add(featureTmp);
-					//System.out.println("cont�m completamente a outra: " + featureTmp);
-				}
-				else if (r2dTmp.intersects(r2d))// verifica se h� intersec��o
-				{
-					anteriores.add(featureTmp);
-					feature.featuresAnteriores = anteriores;
-					System.out.println("interseca a outra: " + featureTmp);
-				}
-			}
-			
-			System.out.println("tamanho da mae:  " + maes.size());
-			
-			if (maes.size() != 0) 	// determinar a unica br.UFSC.GRIMA.feature mae
-									// a br.UFSC.GRIMA.feature mae ser� a que tiver Z maior
-			{
-				
-				double maiorZ = 0;
-				for (int i = 0; i < maes.size(); i++)
-				{
-					Feature featureTmp = (Feature)maes.elementAt(i);
-					
-					if((featureTmp.getClass() != CircularBoss.class) && (featureTmp.getClass() != RectangularBoss.class))
-					{
-						if (i == 0)
-						{
-							featureMae = featureTmp;
-							maiorZ = featureMae.getPosicaoZ();
-						}
-						else if (featureTmp.getPosicaoZ() > maiorZ)
-						{
-							maiorZ = featureTmp.getPosicaoZ();
-							featureMae = featureTmp;
-								
-						}
-					}
-					
-					else if((featureTmp.getClass() == CircularBoss.class) || (featureTmp.getClass() == RectangularBoss.class)){
-						
-						featureMae = featureTmp;
-					}
-					
-					
-				}
-				
+//		}	//	 ------------------------------  Acabou o Z==0   --------------------------------
+//		
+////		else if(feature.getPosicaoZ() != 0)
+////		{
+////			for (int i = 0; i < this.features.size(); i++)
+////			{
+////				Rectangle2D rect2dTmp = this.criarRetanguloShape((Feature)features.elementAt(i));
+////				
+////				if(features.elementAt(i).getClass()==RanhuraPerfilBezier.class){
+////
+////					RanhuraPerfilBezier ranBezier = (RanhuraPerfilBezier)features.elementAt(i);
+////					
+////					if(ranBezier.getProfundidade()== 0){
+////						encontrou = false;
+////					}else{
+////						encontrou = true;
+////					}
+////					
+////				}else if(features.elementAt(i).getClass()==Cavidade.class){
+////					
+////					Cavidade cavidade = (Cavidade)features.elementAt(i);
+////					
+////					for (int j = 0; j < cavidade.getItsBoss().size(); j++)
+////					{
+////						
+////						if(cavidade.getItsBoss().get(j).getClass()==CircularBoss.class)
+////						{
+////							CircularBoss cb = (CircularBoss)cavidade.getItsBoss().get(j);
+////							
+////							if(cb.getPosicaoZ() != feature.Z && (rect2dTmp.intersects(rect2d) || rect2dTmp.contains(rect2d)))
+////							{
+////								encontrou = true;
+////								break;
+////							} 
+////							else if(feature.Z == (cavidade.getPosicaoZ() + cavidade.getProfundidade()))
+////									encontrou = false;
+////							
+////						}
+////						
+////						else if(cavidade.getItsBoss().get(j).getClass()==RectangularBoss.class)
+////						{
+////							RectangularBoss rb = (RectangularBoss)cavidade.getItsBoss().get(j);
+////							
+////							if(feature.Z != rb.getPosicaoZ())
+////							{
+////								encontrou = true;
+////								break;
+////							}
+////								
+////							else
+////								encontrou = false;
+////						}
+////					}
+////				}
+////				
+////				else if(features.elementAt(i).getClass()==Degrau.class){
+////					
+////					Degrau degrau = (Degrau)features.elementAt(i);
+////					
+////					for (int j = 0; j < degrau.getItsBoss().size(); j++)
+////					{
+////						if(degrau.getItsBoss().get(j).getClass()==CircularBoss.class)
+////						{
+////							CircularBoss cb = (CircularBoss)degrau.getItsBoss().get(j);
+////							
+////							if(feature.Z != cb.getPosicaoZ())
+////								encontrou = true;
+////							else
+////								encontrou = false;
+////						}
+////						
+////						else if(degrau.getItsBoss().get(j).getClass()==RectangularBoss.class)
+////						{
+////							RectangularBoss rb = (RectangularBoss)degrau.getItsBoss().get(j);
+////							
+////							if(feature.Z != rb.getPosicaoZ())
+////								encontrou = true;
+////							else
+////								encontrou = false;
+////						}
+////					}
+////				}
+////					
+////				else if(features.elementAt(i).getClass()==GeneralClosedPocket.class){
+////					
+////					GeneralClosedPocket gcp = (GeneralClosedPocket)features.elementAt(i);
+////					
+////					for (int j = 0; j < gcp.getItsBoss().size(); j++)
+////					{
+////						if(gcp.getItsBoss().get(j).getClass()==CircularBoss.class)
+////						{
+////							CircularBoss cb = (CircularBoss)gcp.getItsBoss().get(j);
+////							
+////							if(feature.Z != cb.getPosicaoZ())
+////								encontrou = true;
+////							else
+////								encontrou = false;
+////						}
+////						
+////						else if(gcp.getItsBoss().get(j).getClass()==RectangularBoss.class)
+////						{
+////							RectangularBoss rb = (RectangularBoss)gcp.getItsBoss().get(j);
+////							
+////							if(feature.Z != rb.getPosicaoZ())
+////								encontrou = true;
+////							else
+////								encontrou = false;
+////						}
+////					}
+////				}
+////			}
+////				
+////				
+////			
+////			if(encontrou){//a br.UFSC.GRIMA.feature nova esta dentro de uma br.UFSC.GRIMA.feature do vetor
+////				//System.out.println("A br.UFSC.GRIMA.feature Nova esta totalmete dentro de uma jah existente");
+////				JOptionPane.showMessageDialog(null, "                A feature que voc� est� tentando criar est� dentro de outra" +
+////						"\nverifique q o valor de Z coincida com a profundidade da feature j� existente", 
+////						"O valor de Z deve ser diferente de zero", JOptionPane.OK_CANCEL_OPTION);
+////				return false;
+////			}
+////			else{
+////				return true;
+////			}	
+////		}
+//		
+//		// procura br.UFSC.GRIMA.feature mae -------------------------------------------------------------------
+//		
+//		else
+//		{
+//			Vector maes = new Vector();
+//			Vector anteriores = new Vector();
+//			Feature featureMae = null;	
+//			Feature featureAnterior = null;
+//			Rectangle2D r2d = this.criarRetanguloShape(feature);
+//			
+//			for (int i = 0; i < this.features.size(); i++)
+//			{
+//				Feature featureTmp = (Feature)features.elementAt(i);
+//				Rectangle2D r2dTmp = this.criarRetanguloShape(featureTmp);
+//				
+//				if (r2dTmp.contains(r2d))//verifica se uma br.UFSC.GRIMA.feature contem plenamente a uma outra
+//				{
+//					maes.add(featureTmp);
+//					//System.out.println("cont�m completamente a outra: " + featureTmp);
+//				}
+//				else if (r2dTmp.intersects(r2d))// verifica se h� intersec��o
+//				{
+//					anteriores.add(featureTmp);
+//					feature.featuresAnteriores = anteriores;
+//					System.out.println("interseca a outra: " + featureTmp);
+//				}
+//			}
+//			
+//			System.out.println("tamanho da mae:  " + maes.size());
+//			
+//			if (maes.size() != 0) 	// determinar a unica br.UFSC.GRIMA.feature mae
+//									// a br.UFSC.GRIMA.feature mae ser� a que tiver Z maior
+//			{
+//				
+//				double maiorZ = 0;
 //				for (int i = 0; i < maes.size(); i++)
 //				{
-//					Feature fTmp = (Feature)maes.elementAt(i);
-//					if (maiorZ == fTmp.getPosicaoZ())
+//					Feature featureTmp = (Feature)maes.elementAt(i);
+//					
+//					if((featureTmp.getClass() != CircularBoss.class) && (featureTmp.getClass() != RectangularBoss.class))
 //					{
-//						featureMae = fTmp;
+//						if (i == 0)
+//						{
+//							featureMae = featureTmp;
+//							maiorZ = featureMae.getPosicaoZ();
+//						}
+//						else if (featureTmp.getPosicaoZ() > maiorZ)
+//						{
+//							maiorZ = featureTmp.getPosicaoZ();
+//							featureMae = featureTmp;
+//								
+//						}
 //					}
-//				}			
-				
-				if (feature.getPosicaoZ() == featureMae.getPosicaoZ() + this.getProfundidade(featureMae))
-				{
-					
-					System.out.println("FEATURE ANTERIOR : " + featureMae.getNome());
-					System.out.println("FEATURE ATUAL : " + feature.getNome());
-					
-					feature.featureMae = featureMae;
-
-					feature.setFeaturePrecedente(featureMae);
-					
-					return true;
-				}
-				
-			}//---------------------------- Acabou o tratador de maes --------------------------------------------------------
-			
-			if(feature.featureMae == null && anteriores.size() != 0)
-			{
-				double menorPosZ = 0;
-				for (int i = 0; i < anteriores.size(); i++)
-				{
-					Feature featureTmp = (Feature)anteriores.elementAt(i);
-					if (i == 0)
-					{
-						menorPosZ = featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp);
-					}
-					else if ( featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp) < menorPosZ)
-					{
-						menorPosZ = featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp);
-					}
-					
-					if (anteriores.size() != 0)
-					{
-						if(feature.getPosicaoZ() == featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp))
-						{
-							menorPosZ = featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp);
-						}
-					}
-					feature.featuresAnteriores = anteriores;
-					if (feature.getPosicaoZ() == menorPosZ)
-					{
-						return true;
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "coloque a br.UFSC.GRIMA.feature na altura da br.UFSC.GRIMA.feature " +
-								"j� existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
-						return false;
-					}
-				}
-				return true;
-			}
-			
-			else // br.UFSC.GRIMA.feature inv�lida
-			{
-				// avisar ao usuario
-				JOptionPane.showMessageDialog(null, "A br.UFSC.GRIMA.feature que est� tentando criar nao � consistente", 
-						"erro na cria��o de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
-				return false;
-			}
-		}
-	}
-	public boolean validateFeature(Feature feature)
+//					
+//					else if((featureTmp.getClass() == CircularBoss.class) || (featureTmp.getClass() == RectangularBoss.class)){
+//						
+//						featureMae = featureTmp;
+//					}
+//					
+//					
+//				}
+//				
+////				for (int i = 0; i < maes.size(); i++)
+////				{
+////					Feature fTmp = (Feature)maes.elementAt(i);
+////					if (maiorZ == fTmp.getPosicaoZ())
+////					{
+////						featureMae = fTmp;
+////					}
+////				}			
+//				
+//				if (feature.getPosicaoZ() == featureMae.getPosicaoZ() + this.getProfundidade(featureMae))
+//				{
+//					
+//					System.out.println("FEATURE ANTERIOR : " + featureMae.getNome());
+//					System.out.println("FEATURE ATUAL : " + feature.getNome());
+//					
+//					feature.featureMae = featureMae;
+//
+//					feature.setFeaturePrecedente(featureMae);
+//					
+//					return true;
+//				}
+//				
+//			}//---------------------------- Acabou o tratador de maes --------------------------------------------------------
+//			
+//			if(feature.featureMae == null && anteriores.size() != 0)
+//			{
+//				double menorPosZ = 0;
+//				for (int i = 0; i < anteriores.size(); i++)
+//				{
+//					Feature featureTmp = (Feature)anteriores.elementAt(i);
+//					if (i == 0)
+//					{
+//						menorPosZ = featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp);
+//					}
+//					else if ( featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp) < menorPosZ)
+//					{
+//						menorPosZ = featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp);
+//					}
+//					
+//					if (anteriores.size() != 0)
+//					{
+//						if(feature.getPosicaoZ() == featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp))
+//						{
+//							menorPosZ = featureTmp.getPosicaoZ() + this.getProfundidade(featureTmp);
+//						}
+//					}
+//					feature.featuresAnteriores = anteriores;
+//					if (feature.getPosicaoZ() == menorPosZ)
+//					{
+//						return true;
+//					}
+//					else
+//					{
+//						JOptionPane.showMessageDialog(null, "coloque a br.UFSC.GRIMA.feature na altura da br.UFSC.GRIMA.feature " +
+//								"j� existente", "erro na criacao da br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+//						return false;
+//					}
+//				}
+//				return true;
+//			}
+//			
+//			else // br.UFSC.GRIMA.feature inv�lida
+//			{
+//				// avisar ao usuario
+//				JOptionPane.showMessageDialog(null, "A br.UFSC.GRIMA.feature que est� tentando criar nao � consistente", 
+//						"erro na cria��o de br.UFSC.GRIMA.feature", JOptionPane.OK_CANCEL_OPTION);
+//				return false;
+//			}
+//		}
+//	}
+	public boolean validarFeature(Feature feature)
 	{
 		boolean valido = false;
 		Feature mae = getMae(feature);
@@ -2291,7 +2291,43 @@ public class Face implements Serializable{
 		{
 			if(mae.getClass() == FuroBasePlana.class)
 			{
-				
+				FuroBasePlana furoBP = (FuroBasePlana)mae;
+				if(feature.getPosicaoZ() == furoBP.getPosicaoZ() + furoBP.getProfundidade())
+				{
+					valido = true;
+					feature.setFeaturePrecedente(mae);
+				}
+				else
+				{
+					valido = false;
+					JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+				}
+			}else if(mae.getClass() == Ranhura.class)
+			{
+				Ranhura ranhura = (Ranhura)mae;
+				if(feature.getPosicaoZ() == ranhura.getPosicaoZ() + ranhura.getProfundidade())
+				{
+					valido = true;
+					feature.setFeaturePrecedente(mae);
+				}
+				else
+				{
+					valido = false;
+					JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+				}
+			}else if(mae.getClass() == Degrau.class)
+			{
+				Degrau degrau = (Degrau)mae;
+				if(feature.getPosicaoZ() == degrau.getPosicaoZ() + degrau.getProfundidade())
+				{
+					valido = true;
+					feature.setFeaturePrecedente(mae);
+				}
+				else
+				{
+					valido = false;
+					JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+				}
 			}else if(mae.getClass() == Cavidade.class)
 			{
 				Cavidade cavidade = (Cavidade)mae;
@@ -2333,15 +2369,17 @@ public class Face implements Serializable{
 		{
 			Feature featureTmp = (Feature)this.features.elementAt(i);
 			Shape shapeTmp = this.getShape(featureTmp);
+			Shape shapeNew = this.getShape(feature);
 //			Rectangle2D shapeTmp = this.criarRetanguloShape(featureTmp);
 			Point2D [] borda = this.getShapePontos(feature);
+			System.out.println("tamanho do vetor: " + borda.length);
 			for(int j = 0; j < borda.length; j++)
 			{
-				if(!shapeTmp.contains(borda[j]))
+				if(!shapeTmp.contains(borda[j]) && !shapeTmp.equals(shapeNew))
 				{
 					isContained = false;
 					break;
-				} else
+				} else 
 				{
 					isContained = true;
 				}
@@ -2429,7 +2467,7 @@ public class Face implements Serializable{
 		if(feature.getClass() == FuroBasePlana.class)
 		{
 			FuroBasePlana furo = (FuroBasePlana)feature;
-			saida = Cavidade.determinarPontosEmCircunferencia(new Point3d(furo.X, furo.Y, furo.Z), 0, 2 * Math.PI, furo.getRaio(), (int)(2 * Math.PI  * furo.getRaio() / 10));
+			saida = Cavidade.determinarPontosEmCircunferencia(new Point3d(furo.X, furo.Y, furo.Z), 0, 2 * Math.PI, furo.getRaio(), (int)(2 * Math.PI  * furo.getRaio()/4));
 		}else if(feature.getClass() == Cavidade.class)
 		{
 			Cavidade cavidade = (Cavidade)feature;

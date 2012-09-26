@@ -468,6 +468,31 @@ public class Cavidade extends Feature implements Serializable {
 		double x, y, dAngulo = 0;
 
 		dAngulo = deltaAngulo / numeroDePontos;
+		anguloInicial = anguloInicial + 0.01;
+		
+		for(int i = 0; i < numeroDePontos; i++)
+		{
+			x = center.x + raio * Math.cos(anguloInicial + i * dAngulo);
+			y = center.y + raio * Math.sin(anguloInicial + i * dAngulo);
+			
+			saida[i] = new Point2D.Double(x, y);
+			
+			//System.out.println("posicao x, y : " + x  +y);
+		}
+		System.out.println("angulo final : " + ( numeroDePontos* dAngulo)*180/Math.PI );
+		System.out.println("tamanho saida : " + saida.length);
+		System.out.println("numeroPontos : " + numeroDePontos);
+
+		return saida;
+	}
+	public static Point2D[] determinarPontosEmCircunferenciaV2(Point3d center, double anguloInicial, double deltaAngulo, double raio)  
+	{
+		int numeroDePontos = (int)(deltaAngulo); //deltaAngulo em rad
+		Point2D[] saida = new Point2D [numeroDePontos];
+		double x, y, dAngulo = 0;
+
+		dAngulo = deltaAngulo / numeroDePontos;
+		
 		for(int i = 0; i < numeroDePontos; i++)
 		{
 			x = center.x + raio * Math.cos(anguloInicial + i * dAngulo);
@@ -475,6 +500,7 @@ public class Cavidade extends Feature implements Serializable {
 			
 			saida[i] = new Point2D.Double(x, y);
 		}
+		System.out.println("angulo final : " + ( numeroDePontos* dAngulo)*180/Math.PI );
 
 		return saida;
 	}
@@ -486,9 +512,9 @@ public class Cavidade extends Feature implements Serializable {
 		int numPontosComprimento = (int)(2*comprimento - 4*raio); //numero de pontos das 2 retas
 		int numPontosLargura = (int)(2*largura - 4*raio);
 		
-		System.out.println("numPontosComprimento" + numPontosComprimento);
-		System.out.println("numPontosLargura" + numPontosLargura);
-		System.out.println("numPontosTodaBorda" + 4*numeroDePontosBorda);
+//		System.out.println("numPontosComprimento" + numPontosComprimento);
+//		System.out.println("numPontosLargura" + numPontosLargura);
+//		System.out.println("numPontosTodaBorda" + 4*numeroDePontosBorda);
 		
 		int numeroDePontosLinhaHor = numPontosComprimento;
 		int numeroDePontosLinhaVer = numPontosLargura;
@@ -496,7 +522,7 @@ public class Cavidade extends Feature implements Serializable {
 		
 		Point2D[] saida = new Point2D [numTotalPontos];
 		
-		System.out.println("tamanho array Saida= " + numTotalPontos );
+		//System.out.println("tamanho array Saida= " + numTotalPontos );
 		
 		Point2D[] borda1 = new Point2D [numeroDePontosBorda];
 		Point2D[] borda2 = new Point2D [numeroDePontosBorda];
@@ -517,34 +543,34 @@ public class Cavidade extends Feature implements Serializable {
 		Point3d iniPos4 = new Point3d(position.x + comprimento, position.y + raio, 0.0);
 		Point3d endPos4 = new Point3d(position.x + comprimento, position.y + largura - raio, 0.0);
 		
-		System.out.println("iniPos1" + iniPos1);
-		System.out.println("endPos1" + endPos1);
-		System.out.println("iniPos2" + iniPos2);
-		System.out.println("endPos2" + endPos2);
-		System.out.println("iniPos3" + iniPos3);
-		System.out.println("endPos3" + endPos3);
-		System.out.println("iniPos4" + iniPos4);
-		System.out.println("endPos4" + endPos4);
-		
+//		System.out.println("iniPos1" + iniPos1);
+//		System.out.println("endPos1" + endPos1);
+//		System.out.println("iniPos2" + iniPos2);
+//		System.out.println("endPos2" + endPos2);
+//		System.out.println("iniPos3" + iniPos3);
+//		System.out.println("endPos3" + endPos3);
+//		System.out.println("iniPos4" + iniPos4);
+//		System.out.println("endPos4" + endPos4);
+//		
 		Point3d center1 = new Point3d(position.x + comprimento - raio, position.y + largura - raio, 0.0);
 		Point3d center2 = new Point3d(position.x + raio, position.y + largura - raio, 0.0);
 		Point3d center3 = new Point3d(position.x + raio, position.y + raio, 0.0);
 		Point3d center4 = new Point3d(position.x + comprimento - raio, position.y + raio, 0.0);
 		
-		System.out.println("center1" + center1);
-		System.out.println("center2" + center2);
-		System.out.println("center3" + center3);
-		System.out.println("center4" + center4);
-		
+//		System.out.println("center1" + center1);
+//		System.out.println("center2" + center2);
+//		System.out.println("center3" + center3);
+//		System.out.println("center4" + center4);
+//		
 		borda1 = determinarPontosEmCircunferencia(center1, 0.0, Math.PI/2, raio, numeroDePontosBorda);
 		borda2 = determinarPontosEmCircunferencia(center2, Math.PI/2 , Math.PI/2, raio, numeroDePontosBorda);
 		borda3 = determinarPontosEmCircunferencia(center3, Math.PI, Math.PI/2, raio, numeroDePontosBorda);
 		borda4 = determinarPontosEmCircunferencia(center4, 3*(Math.PI)/2, Math.PI/2, raio, numeroDePontosBorda);
 		
-		System.out.println("pontos borda 1 " + borda1.length );
-		System.out.println("pontos borda 2 " + borda2.length );
-		System.out.println("pontos borda 3 " + borda3.length );
-		System.out.println("pontos borda 4 " + borda4.length );
+//		System.out.println("pontos borda 1 " + borda1.length );
+//		System.out.println("pontos borda 2 " + borda2.length );
+//		System.out.println("pontos borda 3 " + borda3.length );
+//		System.out.println("pontos borda 4 " + borda4.length );
 
 		
 			for (int j=0; j < borda1.length; j++){
@@ -567,10 +593,10 @@ public class Cavidade extends Feature implements Serializable {
 			linhaVer1 = determinarPontosEmReta(iniPos2, endPos2);	
 			linhaVer2 = determinarPontosEmReta(iniPos4, endPos4);
 			
-			System.out.println("pontos linhaHor1 " + linhaHor1.length );
-			System.out.println("pontos linhaHor2 " + linhaHor2.length );
-			System.out.println("pontos linhaVer1 " + linhaVer1.length );
-			System.out.println("pontos linhaVer2 " + linhaVer2.length );
+//			System.out.println("pontos linhaHor1 " + linhaHor1.length );
+//			System.out.println("pontos linhaHor2 " + linhaHor2.length );
+//			System.out.println("pontos linhaVer1 " + linhaVer1.length );
+//			System.out.println("pontos linhaVer2 " + linhaVer2.length );
 			
 			for(int j=0; j < linhaVer1.length; j++){
 				

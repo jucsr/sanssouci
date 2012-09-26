@@ -524,7 +524,7 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				novaCavidade.setAcabamento(true);
 			}
 			
-			if (this.face.validateFeature(novaCavidade))
+			if (this.face.validarFeature(novaCavidade))
 			{
 				Point3d coordinates = null;
 				ArrayList<Double> axis = null, refDirection = null;

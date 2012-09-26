@@ -2372,10 +2372,10 @@ public class Face implements Serializable{
 			Shape shapeNew = this.getShape(feature);
 //			Rectangle2D shapeTmp = this.criarRetanguloShape(featureTmp);
 			Point2D [] borda = this.getShapePontos(feature);
-			System.out.println("tamanho do vetor: " + borda.length);
+			System.out.println("shapeTmp: " + shapeTmp);
 			for(int j = 0; j < borda.length; j++)
 			{
-				if(!shapeTmp.contains(borda[j]) && !shapeTmp.equals(shapeNew))
+				if(!shapeTmp.contains(borda[j])) //&& !shapeTmp.equals(shapeNew))
 				{
 					isContained = false;
 					break;
@@ -2433,7 +2433,7 @@ public class Face implements Serializable{
 	public Shape getShape(Feature feature)
 	{
 		Shape shape = null;
-		if(feature.getClass() == FuroBaseArredondada.class || feature.getClass() == FuroBaseConica.class || feature.getClass() == FuroBaseEsferica.class || feature.getClass() == FuroConico.class)
+		if(feature.getClass() == FuroBasePlana.class || feature.getClass() == FuroBaseArredondada.class || feature.getClass() == FuroBaseConica.class || feature.getClass() == FuroBaseEsferica.class || feature.getClass() == FuroConico.class)
 		{
 			Furo furo = (Furo)feature;
 			shape = new Ellipse2D.Double(furo.X - furo.getRaio(), furo.Y - furo.getRaio(), furo.getRaio() * 2, furo.getRaio() * 2);

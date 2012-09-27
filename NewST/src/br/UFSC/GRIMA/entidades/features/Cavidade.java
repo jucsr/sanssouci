@@ -446,22 +446,45 @@ public class Cavidade extends Feature implements Serializable {
 				y =  y + passo*Math.sin(angInclinacao);
 				
 				saida[i] = new Point2D.Double(x, y);
-				System.out.println("saida reta= " + saida[i] + i);
+				
+				//System.out.println("saida reta= " + saida[i] + i);
 			} 
 			
 		return saida;
 	}
-	
-	/**
-	 * 
-	 * @param center
-	 * @param anguloInicial --> em radianos
-	 * @param deltaAngulo --> eh ang de varredura total em radianos
-	 * @param raio 
-	 * @param numeroDePontos
-	 * @return
-	 */
-	
+	public static Point2D[] determinarPontosEmRetangulo(Point3d origem, double comprimento, double largura)
+	{
+		Point2D [] linha1 = null;
+		Point2D [] linha2 = null;
+		Point2D [] linha3 = null;
+		Point2D [] linha4 = null;
+		
+		int numPontos = (int)(2*largura + 2*comprimento);
+		Point2D [] saida = new Point2D[numPontos];
+		
+		linha1 = determinarPontosEmReta(new Point3d(origem.x, origem.y, 0), new Point3d(origem.x + comprimento, origem.y, 0) );
+		linha2 = determinarPontosEmReta(new Point3d(origem.x + comprimento, origem.y, 0), new Point3d(origem.x + comprimento, origem.y + largura, 0) );
+		linha3 = determinarPontosEmReta(new Point3d(origem.x + comprimento, origem.y + largura, 0), new Point3d(origem.x, origem.y + largura, 0) );
+		linha4 = determinarPontosEmReta(new Point3d(origem.x, origem.y + largura, 0), new Point3d(origem.x, origem.y, 0) );
+		
+		for(int i = 0; i < linha1.length; i++)
+		{
+			saida[i] = linha1[i];
+		}
+		for(int i = 0; i < linha2.length; i++)
+		{
+			saida[i + linha1.length] = linha2[i];
+		}
+		for(int i = 0; i < linha3.length; i++)
+		{
+			saida[i + linha1.length + linha2.length] = linha3[i];
+		}
+		for(int i = 0; i < linha4.length; i++)
+		{
+			saida[i + linha1.length + linha2.length + linha3.length] = linha4[i];
+		}
+		return saida;
+	}
 	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  
 	{
 		Point2D[] saida = new Point2D [numeroDePontos];

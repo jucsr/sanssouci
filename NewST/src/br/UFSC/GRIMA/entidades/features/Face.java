@@ -2375,7 +2375,7 @@ public class Face implements Serializable{
 			System.out.println("shapeTmp: " + shapeTmp);
 			for(int j = 0; j < borda.length; j++)
 			{
-				if(!shapeTmp.contains(borda[j])) //&& !shapeTmp.equals(shapeNew))
+				if(!shapeTmp.contains(borda[j]) && !shapeTmp.equals(shapeNew))
 				{
 					isContained = false;
 					break;
@@ -2457,13 +2457,13 @@ public class Face implements Serializable{
 		} else if(feature.getClass() == Degrau.class)
 		{
 			Degrau degrau = (Degrau)feature;
-			shape = new Rectangle2D.Double(degrau.X, degrau.Y, degrau.getComprimento(), degrau.getLargura());
+			shape = new Rectangle2D.Double(degrau.getPosicaoX(), degrau.getPosicaoY(), degrau.getComprimento(), degrau.getLargura());
 		}
 		return shape;
 	}
 	public Point2D[] getShapePontos(Feature feature)
 	{
-		Point2D [] saida = null;
+		Point2D saida[] = null;
 		if(feature.getClass() == FuroBasePlana.class)
 		{
 			FuroBasePlana furo = (FuroBasePlana)feature;
@@ -2472,6 +2472,10 @@ public class Face implements Serializable{
 		{
 			Cavidade cavidade = (Cavidade)feature;
 			saida = Cavidade.determinarPontosEmRoundRectangular(new Point3d(cavidade.X, cavidade.Y, cavidade.Z), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio());
+		}else if(feature.getClass() == Degrau.class)
+		{
+			Degrau degrau = (Degrau)feature;
+			saida = Cavidade.determinarPontosEmRetangulo(new Point3d(degrau.X, degrau.Y, 0), degrau.getComprimento(), degrau.getLargura());
 		}
 		return saida;
 	}

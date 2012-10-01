@@ -58,8 +58,7 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
 		if(grade)
 			this.drawGrade(g2d);
 		
-        this.drawCoordinates(g2d);
-       
+      
         if(shape != null)
         {
         	g2d.setColor(new Color(255, 69, 0));
@@ -80,6 +79,7 @@ public class CirclePanel extends DesenhadorDeFaces implements MouseListener, Mou
         g2d.draw(xLine);
         g2d.draw(yLine);
         
+        this.drawCoordinates(g2d);
         g2d.dispose();
 //        this.janelaCircle.xSpinner.setBounds((int)(circleCenter.getX() / 2), (int)(circleCenter.getY() - 20), 40, 30);
 //		this.janelaCircle.xSpinner.setValue(circleCenter.getX());

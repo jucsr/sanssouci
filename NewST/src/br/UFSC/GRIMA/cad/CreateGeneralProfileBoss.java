@@ -444,13 +444,13 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 					paths.add(arcos.get(i));
 					paths.add(new LinearPath(arcos.get(i).getFinalPoint(), arcos.get(0).getInitialPoint()));
 				}
-				
 			}
 			
 			if(this.feature.getClass() == Cavidade.class)
 			{
 				Cavidade cavidade = (Cavidade)this.feature;
 				cavidade.addBoss(generalBoss);
+				generalBoss.setPaths(paths);
 			} else if(this.feature.getClass() == Degrau.class)
 			{
 				Degrau degrau = (Degrau)this.feature;

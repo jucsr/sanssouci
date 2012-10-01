@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.integracao;
 
 import jsdai.SCombined_schema.EMachining_feature;
+import jsdai.SCombined_schema.ERegion;
 import jsdai.lang.SdaiException;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
@@ -15,6 +16,18 @@ public class FaceReader {
 		Bloco bloco = blocoReader.getBloco();
 
 		int tipoFace = blocoReader.getFaceFeature(feature);
+
+		Face face = (Face) bloco.getFaces().get(tipoFace);		
+		
+		return face;
+	}
+	public static Face getFace(ERegion eRegion) throws SdaiException
+	{
+		BlocoReader blocoReader = new BlocoReader(eRegion.getIts_workpiece(null));
+
+		Bloco bloco = blocoReader.getBloco();
+
+		int tipoFace = blocoReader.getFaceFeature(eRegion);
 
 		Face face = (Face) bloco.getFaces().get(tipoFace);		
 		

@@ -1,9 +1,6 @@
 package br.UFSC.GRIMA.cad;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
@@ -14,7 +11,6 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.vecmath.Point3d;

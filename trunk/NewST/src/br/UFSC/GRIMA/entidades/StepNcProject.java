@@ -5,104 +5,13 @@ import java.util.Vector;
 
 import javax.vecmath.Point3d;
 
-import jsdai.SCombined_schema.ABoss;
-import jsdai.SCombined_schema.ACartesian_point;
-import jsdai.SCombined_schema.AComposite_curve_segment;
-import jsdai.SCombined_schema.ACutting_component;
-import jsdai.SCombined_schema.AExecutable;
-import jsdai.SCombined_schema.AMachining_operation;
-import jsdai.SCombined_schema.AProperty_parameter;
-import jsdai.SCombined_schema.ASlot_end_type;
-import jsdai.SCombined_schema.AWorkpiece;
-import jsdai.SCombined_schema.AWorkpiece_setup;
-import jsdai.SCombined_schema.AWorkplan;
-import jsdai.SCombined_schema.EAxis2_placement_3d;
-import jsdai.SCombined_schema.EB_spline_curve_form;
-import jsdai.SCombined_schema.EBall_endmill;
-import jsdai.SCombined_schema.EBezier_curve;
-import jsdai.SCombined_schema.EBlock;
-import jsdai.SCombined_schema.EBoolean_expression;
-import jsdai.SCombined_schema.EBoring;
-import jsdai.SCombined_schema.EBoring_tool;
-import jsdai.SCombined_schema.EBoss;
-import jsdai.SCombined_schema.EBottom_and_side_finish_milling;
-import jsdai.SCombined_schema.EBottom_and_side_rough_milling;
-import jsdai.SCombined_schema.EBullnose_endmill;
-import jsdai.SCombined_schema.ECartesian_point;
-import jsdai.SCombined_schema.ECenter_drill;
-import jsdai.SCombined_schema.ECenter_drilling;
-import jsdai.SCombined_schema.ECircle;
-import jsdai.SCombined_schema.ECircular_closed_profile;
-import jsdai.SCombined_schema.EClosed_pocket;
-import jsdai.SCombined_schema.EClosed_profile;
-import jsdai.SCombined_schema.EComposite_curve;
-import jsdai.SCombined_schema.EComposite_curve_segment;
-import jsdai.SCombined_schema.EConical_hole_bottom;
-import jsdai.SCombined_schema.EContour_parallel;
-import jsdai.SCombined_schema.ECutmode_type;
-import jsdai.SCombined_schema.ECutting_component;
-import jsdai.SCombined_schema.EDiameter_taper;
-import jsdai.SCombined_schema.EDirection;
-import jsdai.SCombined_schema.EDrilling;
-import jsdai.SCombined_schema.EDrilling_type_strategy;
-import jsdai.SCombined_schema.EEndmill;
-import jsdai.SCombined_schema.EExecutable;
-import jsdai.SCombined_schema.EFacemill;
-import jsdai.SCombined_schema.EFlat_hole_bottom;
-import jsdai.SCombined_schema.EFlat_with_radius_hole_bottom;
-import jsdai.SCombined_schema.EFreeform_operation;
-import jsdai.SCombined_schema.EGeneral_closed_profile;
-import jsdai.SCombined_schema.EGeneral_profile;
-import jsdai.SCombined_schema.EHand;
-import jsdai.SCombined_schema.EHole_bottom_condition;
-import jsdai.SCombined_schema.ELinear_path;
-import jsdai.SCombined_schema.EMachine_functions;
-import jsdai.SCombined_schema.EMachining_operation;
-import jsdai.SCombined_schema.EMachining_tool;
-import jsdai.SCombined_schema.EMachining_workingstep;
-import jsdai.SCombined_schema.EManufacturing_feature;
-import jsdai.SCombined_schema.EMaterial;
-import jsdai.SCombined_schema.EMilling_cutting_tool;
-import jsdai.SCombined_schema.EMilling_machine_functions;
-import jsdai.SCombined_schema.EMilling_technology;
-import jsdai.SCombined_schema.EMilling_tool_dimension;
-import jsdai.SCombined_schema.ENumeric_parameter;
-import jsdai.SCombined_schema.EOpen_slot_end_type;
-import jsdai.SCombined_schema.EPartial_circular_profile;
-import jsdai.SCombined_schema.EPlanar_pocket_bottom_condition;
-import jsdai.SCombined_schema.EPlane;
-import jsdai.SCombined_schema.EPlunge_toolaxis;
-import jsdai.SCombined_schema.EPlus_minus_value;
-import jsdai.SCombined_schema.EPocket_bottom_condition;
-import jsdai.SCombined_schema.EPolyline;
-import jsdai.SCombined_schema.EProject;
-import jsdai.SCombined_schema.EReamer;
-import jsdai.SCombined_schema.EReaming;
-import jsdai.SCombined_schema.ERectangular_closed_profile;
-import jsdai.SCombined_schema.ERegion;
-import jsdai.SCombined_schema.ERot_direction;
-import jsdai.SCombined_schema.ERound_hole;
-import jsdai.SCombined_schema.ERounded_u_profile;
-import jsdai.SCombined_schema.ESetup;
-import jsdai.SCombined_schema.ESlot;
-import jsdai.SCombined_schema.ESpherical_hole_bottom;
-import jsdai.SCombined_schema.ESquare_u_profile;
-import jsdai.SCombined_schema.EStep;
-import jsdai.SCombined_schema.ETechnology;
-import jsdai.SCombined_schema.EThrough_bottom_condition;
-import jsdai.SCombined_schema.EThrough_pocket_bottom_condition;
-import jsdai.SCombined_schema.EToleranced_length_measure;
-import jsdai.SCombined_schema.ETool_reference_point;
-import jsdai.SCombined_schema.ETransition_code;
-import jsdai.SCombined_schema.ETwist_drill;
-import jsdai.SCombined_schema.EVee_profile;
-import jsdai.SCombined_schema.EWorkpiece;
-import jsdai.SCombined_schema.EWorkpiece_setup;
-import jsdai.SCombined_schema.EWorkplan;
+import jsdai.SCombined_schema.*;
 import jsdai.dictionary.CBoolean_type;
 import jsdai.dictionary.EBoolean_type;
+import jsdai.dictionary.EDefined_type;
 import jsdai.lang.A_double;
 import jsdai.lang.A_string;
+import jsdai.lang.EEntity;
 import jsdai.lang.ELogical;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
@@ -1071,6 +980,9 @@ public class StepNcProject extends STEPProject
 						}	
 						eMachining_workingstep = this.createElements(wsTmp.getId(), this.securityPlane, eClosed_pocket, operationPocket);
 					}
+					/**
+					 *  ================ REGION ===============
+					 */
 					else if(wsTmp.getFeature().getClass() == Region.class)
 					{
 						ERegion eRegion;
@@ -1112,6 +1024,9 @@ public class StepNcProject extends STEPProject
 						}
 						eMachining_workingstep = this.createElements(wsTmp.getId(), this.securityPlane, eRegion, operation);
 					}
+					/**
+					 *  ==================== GENERAL CLOSED POCKET ===================
+					 */
 					else if(wsTmp.getFeature().getClass() == GeneralClosedPocket.class)
 					{
 						EClosed_pocket eClosed_pocket;
@@ -1527,11 +1442,11 @@ public class StepNcProject extends STEPProject
 		eClosed_pocket.setFeature_boundary(null, profile);
 		return eClosed_pocket;
 	}
-	private ERegion createRegion(Workingstep wsTmp, EWorkpiece workpiece, AMachining_operation operations) throws SdaiException 
+	private ERegion_surface_list createRegion(Workingstep wsTmp, EWorkpiece workpiece, AMachining_operation operations) throws SdaiException 
 	{
 		Region reg = (Region)wsTmp.getFeature();
 		Axis2Placement3D position = reg.getPosition();
-		ERegion eRegion = (ERegion)this.model.createEntityInstance(ERegion.class);
+		ERegion_surface_list eRegion = (ERegion_surface_list)this.model.createEntityInstance(ERegion_surface_list.class);
 		eRegion.setIts_id(null, reg.getNome());
 		eRegion.setIts_workpiece(null, workpiece);
 		EAxis2_placement_3d placement = this.createAxis2Placement3D(reg.getNome() + " placement", position.getCoordinates(), position.getAxis(), position.getRefDirection());
@@ -1544,13 +1459,44 @@ public class StepNcProject extends STEPProject
 			EMachining_operation eMachining_operation = operations.getCurrentMember(iterator);
 			aMachining_operation.addUnordered(eMachining_operation);
 		}
+		ABounded_surface lista = eRegion.createSurface_list(null);
+		
+		EBezier_surface bezier = this.createBezierSurface(wsTmp);
+		lista.addByIndex(1, bezier);
+		
 		return eRegion;
 	}
-	
+	private EBezier_surface createBezierSurface(Workingstep ws) throws SdaiException
+	{
+		Region region = (Region)ws.getFeature();
+		EBezier_surface eBezier_surface = (EBezier_surface)this.model.createEntityInstance(EBezier_surface.class);
+		
+		eBezier_surface.setName(null, "surface - " + ws.getFeature().getNome());
+		eBezier_surface.setU_degree(null, region.getControlVertex().length);
+		eBezier_surface.setV_degree(null, region.getControlVertex()[0].length);
+		AaCartesian_point controlVertex = eBezier_surface.createControl_points_list(null);
+		
+		for(int i = 0; i < region.getControlVertex().length; i++)
+		{
+			ACartesian_point aTmp = new ACartesian_point();
+			
+			for(int j = 0; j < region.getControlVertex()[i].length; j++)
+			{
+				ECartesian_point point = this.createCartesianPoint("control vertex ", region.getControlVertex()[i][j]);
+				aTmp.addByIndex(j + 1, point);
+			}
+			controlVertex.addByIndex(i + 1, (EEntity)aTmp);
+		}
+		eBezier_surface.setSurface_form(null, EB_spline_surface_form.UNSPECIFIED);
+		eBezier_surface.setU_closed(null, ELogical.FALSE);
+		eBezier_surface.setV_closed(null, ELogical.FALSE);
+		
+		return eBezier_surface;
+	}
 	private EClosed_pocket createGeneralClosedPocket(Workingstep wsTmp, EWorkpiece eWorkpiece, AMachining_operation operations) throws SdaiException 
 	{
 		GeneralClosedPocket general = (GeneralClosedPocket)wsTmp.getFeature();
-		Axis2Placement3D position = general.getPosition();
+		Axis2Placement3D position = general.getPosition(); /** =========== cuidado =========*/
 		EClosed_pocket eClosed_pocket = (EClosed_pocket)this.model.createEntityInstance(EClosed_pocket.class);
 		eClosed_pocket.setIts_id(null, general.getNome());
 		eClosed_pocket.setIts_workpiece(null, eWorkpiece);
@@ -1636,8 +1582,8 @@ public class StepNcProject extends STEPProject
 		EGeneral_closed_profile eGeneral_closed_profile = (EGeneral_closed_profile)this.model.createEntityInstance(EGeneral_closed_profile.class);
 		
 		EComposite_curve eComposite_curve = (EComposite_curve)this.model.createEntityInstance(EComposite_curve.class);
+		eComposite_curve.setName(null, boss.getNome() + " - profile contourn");
 		AComposite_curve_segment aComposite_curve_segment = eComposite_curve.createSegments(null);
-		
 		for(int i = 0; i< paths.size(); i++)
 		{
 			Path pathTmp = paths.get(i);
@@ -1648,6 +1594,7 @@ public class StepNcProject extends STEPProject
 				ECircle eCircle = (ECircle)this.model.createEntityInstance(ECircle.class);
 				EAxis2_placement_3d placement = this.createAxis2Placement3D("", pathTmp.getInitialPoint(), boss.getPosition().getAxis(), boss.getPosition().getRefDirection());
 				eCircle.setPosition(null, placement);
+				eCircle.setRadius(null, ((CircularPath)pathTmp).getRadius());
 				eComposite_curve_segment.setParent_curve(null, eCircle);
 			}else if(pathTmp.getClass() == LinearPath.class)
 			{
@@ -1662,7 +1609,7 @@ public class StepNcProject extends STEPProject
 				
 				eComposite_curve_segment.setParent_curve(null, ePolyline);
 			}
-			aComposite_curve_segment.addByIndex(i + 1, eComposite_curve);
+			aComposite_curve_segment.addByIndex(i + 1, eComposite_curve_segment);
 		}
 		eGeneral_closed_profile.setPlacement(null, this.createAxis2Placement3D("profile placement ", boss.getPosition().getCoordinates(), boss.getPosition().getAxis(), boss.getPosition().getRefDirection()));
 		eGeneral_closed_profile.setClosed_profile_shape(null, eComposite_curve);
@@ -1732,10 +1679,13 @@ public class StepNcProject extends STEPProject
 				eBoss.setIts_boundary(null, profile);
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
-				
+				GeneralProfileBoss boss = (GeneralProfileBoss)bossTmp;
+				eBoss.setIts_boundary(null, this.createProfile(boss));
 			}
 			aBoss.addUnordered(eBoss);
 		}
+		
+		
 		return eClosed_pocket;
 	}
 	private EClosed_pocket createRoundedBottomClosedPocket(Workingstep ws, EWorkpiece eWorkpiece, AMachining_operation operations) throws SdaiException

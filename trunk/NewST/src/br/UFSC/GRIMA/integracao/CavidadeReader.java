@@ -9,6 +9,7 @@ import jsdai.SCombined_schema.EBlock;
 import jsdai.SCombined_schema.EBoss;
 import jsdai.SCombined_schema.ECircular_closed_profile;
 import jsdai.SCombined_schema.EClosed_pocket;
+import jsdai.SCombined_schema.EGeneral_closed_profile;
 import jsdai.SCombined_schema.EPlus_minus_value;
 import jsdai.SCombined_schema.ERectangular_closed_profile;
 import jsdai.SCombined_schema.EThrough_pocket_bottom_condition;
@@ -157,6 +158,9 @@ public class CavidadeReader {
 				rectangularBoss.setNome(id);
 				rectangularBoss.setPosicao(centre.x - length / 2, centre.y - width / 2,  z + profundidadeCavidade - altura);
 				itsBoss.add(rectangularBoss);
+			} else if(eBoss.getIts_boundary(null).isKindOf(EGeneral_closed_profile.class))
+			{
+				// ========= IMPLEMENTAR =============
 			}
 
 		}

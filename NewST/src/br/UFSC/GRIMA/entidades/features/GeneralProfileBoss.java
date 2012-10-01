@@ -83,11 +83,13 @@ public class GeneralProfileBoss extends Boss
 		return root;
 	}
 
-	public ArrayList<Path> getPaths() {
+	public ArrayList<Path> getPaths() 
+	{
 		return paths;
 	}
 
-	public void setPaths(ArrayList<Path> paths) {
+	public void setPaths(ArrayList<Path> paths)
+	{
 		this.paths = paths;
 	}
 }

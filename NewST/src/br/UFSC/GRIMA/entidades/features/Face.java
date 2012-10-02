@@ -2283,78 +2283,115 @@ public class Face implements Serializable{
 //			}
 //		}
 //	}
+	public boolean verificaInterseccaoFeatures(Feature feature)
+	{
+		boolean intersectou = false;
+		int intersecta = 0;
+		int Nintersecta = 0;
+		
+		for(int i = 0; i < features.size(); i++)
+		{
+			Feature featureTmp = (Feature)this.features.elementAt(i);
+			Shape shapeTmp = this.getShape(featureTmp);
+			Point2D [] borda = this.getShapePontos(feature);
+			
+			for(int j = 0; j < borda.length; j++)
+			{
+				if(shapeTmp.contains(borda[i]))
+					++intersecta;
+				else
+					++Nintersecta;
+			}
+			if(intersecta != 0 && Nintersecta != 0)
+				intersectou = true;
+				break;
+		}
+		System.out.println("intersecta: " + intersecta);
+		
+		return intersectou;
+	}
 	public boolean validarFeature(Feature feature)
 	{
 		boolean valido = false;
 		Feature mae = getMae(feature);
-		if(mae != null)
+		
+		if(verificaInterseccaoFeatures(feature))
 		{
-			if(mae.getClass() == FuroBasePlana.class)
-			{
-				FuroBasePlana furoBP = (FuroBasePlana)mae;
-				if(feature.getPosicaoZ() == furoBP.getPosicaoZ() + furoBP.getProfundidade())
-				{
-					valido = true;
-					feature.setFeaturePrecedente(mae);
-				}
-				else
-				{
-					valido = false;
-					JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-				}
-			}else if(mae.getClass() == Ranhura.class)
-			{
-				Ranhura ranhura = (Ranhura)mae;
-				if(feature.getPosicaoZ() == ranhura.getPosicaoZ() + ranhura.getProfundidade())
-				{
-					valido = true;
-					feature.setFeaturePrecedente(mae);
-				}
-				else
-				{
-					valido = false;
-					JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-				}
-			}else if(mae.getClass() == Degrau.class)
-			{
-				Degrau degrau = (Degrau)mae;
-				if(feature.getPosicaoZ() == degrau.getPosicaoZ() + degrau.getProfundidade())
-				{
-					valido = true;
-					feature.setFeaturePrecedente(mae);
-				}
-				else
-				{
-					valido = false;
-					JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-				}
-			}else if(mae.getClass() == Cavidade.class)
-			{
-				Cavidade cavidade = (Cavidade)mae;
-				if(feature.getPosicaoZ() == cavidade.getPosicaoZ() + cavidade.getProfundidade())
-				{
-					valido = true;
-					feature.setFeaturePrecedente(mae);
-				}
-				else
-				{
-					valido = false;
-					JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-				}
-			}
+			valido = false;
+			JOptionPane.showMessageDialog(null, "Há colisão de features");
 		}
 		else
 		{
-			if(feature.Z == 0)
+			if(mae != null)
 			{
-				valido = true;
+				if(mae.getClass() == FuroBasePlana.class)
+				{
+					FuroBasePlana furoBP = (FuroBasePlana)mae;
+					if(feature.getPosicaoZ() == furoBP.getPosicaoZ() + furoBP.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == Ranhura.class)
+				{
+					Ranhura ranhura = (Ranhura)mae;
+					if(feature.getPosicaoZ() == ranhura.getPosicaoZ() + ranhura.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == Degrau.class)
+				{
+					Degrau degrau = (Degrau)mae;
+					if(feature.getPosicaoZ() == degrau.getPosicaoZ() + degrau.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == Cavidade.class)
+				{
+					Cavidade cavidade = (Cavidade)mae;
+					if(feature.getPosicaoZ() == cavidade.getPosicaoZ() + cavidade.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Position Z should be 0");
-				valido = false;
+				if(feature.Z == 0)
+				{
+					valido = true;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Position Z should be 0");
+					valido = false;
+				}
 			}
 		}
+		
 		return valido;
 	}
 	public Feature getMae(Feature feature)

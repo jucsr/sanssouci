@@ -483,6 +483,10 @@ public class Cavidade extends Feature implements Serializable {
 		{
 			saida[i + linha1.length + linha2.length + linha3.length] = linha4[i];
 		}
+//		for(int k=0; k < saida.length; k++)
+//		{
+//			System.out.printf("saida %d: %f, %f \n", k, saida[k].getX(), saida[k].getY());
+//		}
 		return saida;
 	}
 	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  

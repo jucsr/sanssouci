@@ -428,8 +428,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 			}
 			
-			diametroFerramenta = 20;
-			
+			diametroFerramenta = 30;
+			raioMedia = diametroFerramenta/2;
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
 			double variacao = (temp1+temp2)/2;
 			
@@ -439,7 +439,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				pontos2 = new ArrayList<Point3d>();
 				for(int k=0;k<menorDistancia.size();k++){
 					if(i==0){
-						if(menorDistancia.get(k)<=10+variacao && menorDistancia.get(k)>=10){
+						if(menorDistancia.get(k)<=diametroFerramenta/2+variacao && menorDistancia.get(k)>=diametroFerramenta/2){
 							pontos2.add(pontosPossiveis.get(k));
 							bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
 						}
@@ -496,7 +496,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //				System.out.println(menorDistancia.get(i));
 			}
 			System.out.println(pontosPossiveis.size());
-			double diametro = 6;
+			final double diametro = 12;
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametro));
 			for(int i=0;i<numeroDeCortes+10;i++){
 				for(int k=0;k<pontosPossiveis.size();k++){
@@ -589,7 +589,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					if(pontosMenores.size()<1){
 						break;
 					}
-					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-6,2*pontosMenores.get(i).getY()-6,12,12));					
+					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
 				}
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){

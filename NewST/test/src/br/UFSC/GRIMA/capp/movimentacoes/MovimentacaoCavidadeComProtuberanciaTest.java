@@ -20,6 +20,8 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.cad.CreateGeneralPocket;
+import br.UFSC.GRIMA.cad.CreateGeneralProfileBoss;
 import br.UFSC.GRIMA.cad.Generate3Dview;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Material;
@@ -82,7 +84,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.cavidade.setNome("Lucas");
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(10);
-		this.cavidade.setRaio(2);
+		this.cavidade.setRaio(10);
 		this.cavidade.setComprimento(180);
 		this.cavidade.setLargura(130);
 		this.cavidade.createGeometricalElements();
@@ -125,12 +127,20 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //		this.boss2.setPosicao(50, 45, 0);
 		
 		ArrayList<Point2D> vertices = new ArrayList<Point2D>();
-		vertices.add(new Point2D.Double(20,15));
-		vertices.add(new Point2D.Double(25,30));
-		vertices.add(new Point2D.Double(40,35));
-		vertices.add(new Point2D.Double(45,25));
+//		vertices.add(new Point2D.Double(20,15));
+//		vertices.add(new Point2D.Double(25,30));
+//		vertices.add(new Point2D.Double(40,35));
+//		vertices.add(new Point2D.Double(45,25));
 		
-		this.boss3 = new GeneralProfileBoss(1,vertices);
+		vertices.add(new Point2D.Double(160,30));
+		vertices.add(new Point2D.Double(170,30));
+		vertices.add(new Point2D.Double(180,100));
+		vertices.add(new Point2D.Double(140,100));
+		vertices.add(new Point2D.Double(170,80));
+//		vertices.add(new Point2D.Double(150,20));
+		
+//		ArrayList<Point2D> points = CreateGeneralPocket.transformPolygonInRoundPolygon(vertices, 3);
+		this.boss3 = new GeneralProfileBoss(4,vertices);
 		this.boss3.setAltura(10);
 		
 		
@@ -144,7 +154,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.itsBoss.add(this.boss);
 		this.itsBoss.add(this.boss1);
 		this.itsBoss.add(this.boss2);
-//		this.itsBoss.add(this.boss3);
+		this.itsBoss.add(this.boss3);
 		cavidade.setItsBoss(this.itsBoss);
 		this.faceXY.addFeature(this.boss);
 //		Generate3Dview Janela3D = new Generate3Dview(this.projeto);
@@ -156,8 +166,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 					comprimento=this.cavidade.getComprimento(),
 					raio=this.cavidade.getRaio(),
 					raioAtual,
-					z=-2,
-					diametroFerramenta;//this.ferramenta.getDiametroFerramenta();
+					z=-2;
+			final double	diametroFerramenta;//this.ferramenta.getDiametroFerramenta();
 			RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(this.cavidade.getPosicaoX(), this.cavidade.getPosicaoY(), comprimento, largura, 2*raio, 2*raio);
 
 			
@@ -208,7 +218,9 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 				else if(this.itsBoss.get(i).getClass()==GeneralProfileBoss.class){
 					GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
-					ArrayList<Point2D> vertex = boss.getVertexPoints();
+					ArrayList<Point2D> vertex;
+					System.out.println("vertex = " + boss.getVertexPoints());
+					vertex = CreateGeneralProfileBoss.transformPolygonInRoundPolygon(CreateGeneralProfileBoss.transformPolygonInCounterClockPolygon(boss.getVertexPoints()), boss.getRadius());
 					GeneralPath path = new GeneralPath();
 					path.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
 					for(int r=0;r<vertex.size();r++){
@@ -553,7 +565,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 						if(pontos.get(i).size()<1){
 							break;
 						}
-						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-20,2*pontos.get(i).get(k).getY()-20,40,40));
+						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,diametroFerramenta * 2,diametroFerramenta * 2));
 					}
 				}
 //				for(int i=0;i<malha.length;i++){

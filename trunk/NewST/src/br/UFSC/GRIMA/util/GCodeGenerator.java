@@ -1166,6 +1166,7 @@ public class GCodeGenerator {
 			    		if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
 
 			    			ArrayList<LinearPath> desbaste = null;
+			    			ArrayList<LinearPath> contorno = null;
 			    			int l=0;
 
 //			    			if(wsTmp.getFerramenta().getClass() == EndMill.class){
@@ -1173,7 +1174,7 @@ public class GCodeGenerator {
 //			    			}
 //			    			else 
 			    				if(wsTmp.getFerramenta().getClass() == FaceMill.class){
-			    				desbaste = cavidade.getDesbasteTest();	
+			    				desbaste = cavidade.getDesbasteTest();
 			    			}
 
 			    			int GAux = 0;
@@ -1199,7 +1200,6 @@ public class GCodeGenerator {
 			    			double yAux = desbaste.get(0).getInitialPoint().getY();
 			    			double zAux = desbaste.get(0).getInitialPoint().getZ();
 
-
 			    			if(desbaste.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
 			    				GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
 			    				lineNumber = lineNumber + 10;
@@ -1214,7 +1214,7 @@ public class GCodeGenerator {
 			    				xAux = desbaste.get(j).getFinalPoint().getX();
 			    				yAux = desbaste.get(j).getFinalPoint().getY();
 			    				zAux = desbaste.get(j).getFinalPoint().getZ();
-
+			    					
 
 			    				if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
 			    					if(l==0){

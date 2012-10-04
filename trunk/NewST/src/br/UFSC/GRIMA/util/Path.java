@@ -1,8 +1,10 @@
 package br.UFSC.GRIMA.util;
 
+import java.io.Serializable;
+
 import javax.vecmath.Point3d;
 
-public abstract class Path 
+public abstract class Path implements Serializable
 {
 	private Point3d initialPoint;
 	private Point3d finalPoint;

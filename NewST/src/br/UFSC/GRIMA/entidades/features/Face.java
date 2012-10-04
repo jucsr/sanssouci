@@ -2316,12 +2316,14 @@ public class Face implements Serializable{
 	{
 		boolean valido = false;
 		
-		if(verificaInterseccaoFeatures(feature))
-		{
-			valido = false;
-			JOptionPane.showMessageDialog(null, "Há colisão de features");
-		}
-		else
+		/** Implementar o tratamento de intersecções **/
+		
+//		if(verificaInterseccaoFeatures(feature))
+//		{
+//			valido = false;
+//			JOptionPane.showMessageDialog(null, "Há colisão de features");
+//		}
+//		else
 		{
 			Feature mae = getMae(feature);
 			
@@ -2340,10 +2342,50 @@ public class Face implements Serializable{
 						valido = false;
 						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
 					}
+				}else if(mae.getClass() == FuroBaseArredondada.class)
+				{
+					FuroBaseArredondada furoBA = (FuroBaseArredondada)mae;
+					if(feature.getPosicaoZ() == furoBA.getPosicaoZ() + furoBA.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == FuroConico.class)
+				{
+					FuroConico furoC = (FuroConico)mae;
+					if(feature.getPosicaoZ() == furoC.getPosicaoZ() + furoC.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+
 				}else if(mae.getClass() == Ranhura.class)
 				{
 					Ranhura ranhura = (Ranhura)mae;
 					if(feature.getPosicaoZ() == ranhura.getPosicaoZ() + ranhura.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == RanhuraPerfilQuadradoU.class)
+				{
+					RanhuraPerfilQuadradoU rqu = (RanhuraPerfilQuadradoU)mae;
+					if(feature.getPosicaoZ() == rqu.getPosicaoZ() + rqu.getProfundidade())
 					{
 						valido = true;
 						feature.setFeaturePrecedente(mae);
@@ -2446,6 +2488,17 @@ public class Face implements Serializable{
 						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
 					}
 				}
+				//** Mães inválidas por enquanto inválidas, mas arrumar para que elas possam valer tbm *//
+				else if(mae.getClass() == FuroBaseEsferica.class || 
+						mae.getClass() == FuroBaseConica.class ||
+						mae.getClass() == RanhuraPerfilBezier.class ||
+						mae.getClass() == RanhuraPerfilCircularParcial.class || 
+						mae.getClass() == RanhuraPerfilRoundedU.class ||
+						mae.getClass() == RanhuraPerfilVee.class)
+				{
+					valido = false;
+					JOptionPane.showMessageDialog(null, "A nova feature não pode ser construída dentro desta Feature Mãe");
+				}
 			}
 			else
 			{
@@ -2460,8 +2513,7 @@ public class Face implements Serializable{
 				}
 			}
 		}
-		
-		return valido;
+			return valido;
 	}
 	public Feature getMae(Feature feature)
 	{
@@ -2488,9 +2540,8 @@ public class Face implements Serializable{
 						isContained = false;
 						break;
 					} else 
-					{
+					
 						isContained = true;
-					}
 				}
 				if(isContained)
 				{
@@ -2508,33 +2559,61 @@ public class Face implements Serializable{
 	public Shape getShape(Feature feature)
 	{
 		Shape shape = null;
-		if(feature.getClass() == FuroBasePlana.class || feature.getClass() == FuroBaseArredondada.class || feature.getClass() == FuroBaseConica.class || feature.getClass() == FuroBaseEsferica.class || feature.getClass() == FuroConico.class)
+		if(feature.getClass() == FuroBasePlana.class ||feature.getClass() == FuroBaseConica.class || feature.getClass() == FuroBaseEsferica.class)
 		{
 			Furo furo = (Furo)feature;
 			shape = new Ellipse2D.Double(furo.X - furo.getRaio(), furo.Y - furo.getRaio(), furo.getRaio() * 2, furo.getRaio() * 2);
-//			shape = new GeneralPath();
-//			Point2D [] pontos = Cavidade.determinarPontosEmCircunferencia(new Point3d(furo.X, furo.Y, 0), 0, Math.PI * 2, furo.getRaio(), (int)(furo.getRaio() / 10));
-//			((GeneralPath)shape).moveTo(pontos[0].getX(), pontos[0].getY());
-//			for(int i = 1; i < pontos.length; i++)
-//			{
-//				((GeneralPath)shape).moveTo(pontos[i].getX(), pontos[i].getY());
-//			}
-//			((GeneralPath)shape).closePath();
-
+		
+		} else if(feature.getClass() == FuroBaseArredondada.class)
+		{
+			FuroBaseArredondada furoBA = (FuroBaseArredondada)feature;
+			shape = new Ellipse2D.Double(furoBA.X - furoBA.getRaio(), furoBA.Y - furoBA.getRaio(), furoBA.getR1() * 2, furoBA.getR1() * 2);
+		
+		} else if(feature.getClass() == FuroConico.class)
+		{
+			FuroConico furoC = (FuroConico)feature;
+			shape = new Ellipse2D.Double(furoC.X - furoC.getRaio(), furoC.Y - furoC.getRaio(), furoC.getRaio1() * 2, furoC.getRaio1() * 2);
+		
 		} else if(feature.getClass() == Cavidade.class)
 		{
 			Cavidade cavidade = (Cavidade)feature;
 			shape = new RoundRectangle2D.Double(cavidade.getPosicaoX(), cavidade.getPosicaoY(), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio() * 2, cavidade.getRaio() * 2);
+		
+		} else if(feature.getClass() == GeneralClosedPocket.class)
+		{
+			GeneralClosedPocket gcp = (GeneralClosedPocket)feature;
+		//	shape = new RoundRectangle2D.Double(gcp.getPosicaoX(), cavidade.getPosicaoY(), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio() * 2, cavidade.getRaio() * 2);
+			shape = gcp.getForma();
+					
 		} else if(feature.getClass() == Ranhura.class)
 		{
 			Ranhura ranhura = (Ranhura)feature;
 			shape = new Rectangle2D.Double(ranhura.X, ranhura.Y, ranhura.getComprimento(), ranhura.getLargura());
+		
 		} else if(feature.getClass() == Degrau.class)
 		{
 			Degrau degrau = (Degrau)feature;
 			shape = new Rectangle2D.Double(degrau.getPosicaoX(), degrau.getPosicaoY(), degrau.getComprimento(), degrau.getLargura());
 			System.out.printf("shapeTmp: X: %f\nY: %f\nCompr: %f\nLarg: %f\n", degrau.getPosicaoX(),degrau.getPosicaoY(), degrau.getComprimento(), degrau.getLargura());
+		
+		} else if(feature.getClass() == CircularBoss.class)
+		{
+			CircularBoss cb = (CircularBoss)feature;
+			shape = new Ellipse2D.Double(cb.X - cb.getDiametro1()/2, cb.Y - cb.getDiametro1()/2, cb.getDiametro1(), cb.getDiametro1());
+		
+		} else if(feature.getClass() == RectangularBoss.class)
+		{
+			RectangularBoss rb = (RectangularBoss)feature;
+			shape = new RoundRectangle2D.Double(rb.X, rb.Y, rb.getL2(), rb.getL1(), rb.getRadius()*2, rb.getRadius()*2);
+		
+		} else if(feature.getClass() == GeneralProfileBoss.class)
+		{
+			GeneralProfileBoss gpb = (GeneralProfileBoss)feature;
+		//	shape = new RoundRectangle2D.Double(rb.X, rb.Y, rb.getL2(), rb.getL1(), rb.getRadius()*2, rb.getRadius()*2);
+
 		}
+		
+		
 		return shape;
 	}
 	public Point2D[] getShapePontos(Feature feature)

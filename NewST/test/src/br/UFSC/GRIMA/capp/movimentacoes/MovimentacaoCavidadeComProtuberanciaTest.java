@@ -77,6 +77,21 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		DadosDeProjeto dados = new DadosDeProjeto(123, "fulano da silva", "novo projeto", material);
 		
 		projeto = new Projeto(bloco, dados);
+		
+//		double pi, parentese = 0;
+//		for(int i =0; i < 1000000; i++)
+//		{
+//			double p = (i + i + 1);
+//			double valor = 1 / p;
+////			System.out.println("valor = " + valor);
+////			System.out.println("p = " + p);
+//			if(i % 2 == 0)
+//				parentese = parentese + valor;
+//			else
+//				parentese = parentese - valor;
+//		}
+//		pi = 4 * parentese;
+//		System.err.println("PI = " + pi);
 	}
 	@Test
 	public void createBossTest(){
@@ -428,7 +443,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 			}
 			
-			diametroFerramenta = 30;
+			diametroFerramenta = 20;
 			raioMedia = diametroFerramenta/2;
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
 			double variacao = (temp1+temp2)/2;
@@ -496,7 +511,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 //				System.out.println(menorDistancia.get(i));
 			}
 			System.out.println(pontosPossiveis.size());
-			final double diametro = 12;
+			final double diametro = 6;
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametro));
 			for(int i=0;i<numeroDeCortes+10;i++){
 				for(int k=0;k<pontosPossiveis.size();k++){
@@ -607,7 +622,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 
 
 				Graphics2D g2d = (Graphics2D)g;
-				g2d.translate(25, 475);
+//				g2d.translate(25, 475);
+				g2d.translate(25, 325);
 				g2d.scale(1, -1);
 				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
@@ -618,12 +634,14 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				g2d.setColor(new Color(100,100,251));
 				g2d.draw(r);
 
-				g2d.setColor(new Color(100, 251, 100));
+				g2d.setColor(new Color(154,205,50));
 				for(int i=0;i<e.size();i++){
+//					g2d.fill(e.get(i));
 					g2d.draw(e.get(i));
 				}
 				g2d.setColor(new Color(100, 100, 251));
 				for(int i=0;i<f.size();i++){
+//					g2d.fill(f.get(i));
 					g2d.draw(f.get(i));
 				}
 				g2d.setColor(new Color(251, 100, 100));

@@ -2289,31 +2289,32 @@ public class Face implements Serializable{
 		int intersecta = 0;
 		int Nintersecta = 0;
 		
-		for(int i = 0; i < features.size(); i++)
-		{
-			Feature featureTmp = (Feature)this.features.elementAt(i);
-			Shape shapeTmp = this.getShape(featureTmp);
-			Point2D [] borda = this.getShapePontos(feature);
-			
-			for(int j = 0; j < borda.length; j++)
+			for(int i = 0; i < features.size(); i++)
 			{
-				if(shapeTmp.contains(borda[i]))
-					++intersecta;
-				else
-					++Nintersecta;
+				Feature featureTmp = (Feature)this.features.elementAt(i);
+				Shape shapeTmp = this.getShape(featureTmp);
+				Point2D [] borda = this.getShapePontos(feature);
+				
+				for(int j = 0; j < borda.length; j++)
+				{
+					if(shapeTmp.contains(borda[i]))
+						intersecta = 1;
+					else
+						Nintersecta = 1;
+				}
+				if(intersecta == 1 && Nintersecta == 1)
+				{
+					intersectou = true;
+					break;
+				}
 			}
-			if(intersecta != 0 && Nintersecta != 0)
-				intersectou = true;
-				break;
-		}
-		System.out.println("intersecta: " + intersecta);
-		
+			System.out.printf("intersecta: %d \nNintersecta: %d\n", intersecta, Nintersecta);
+			
 		return intersectou;
 	}
 	public boolean validarFeature(Feature feature)
 	{
 		boolean valido = false;
-		Feature mae = getMae(feature);
 		
 		if(verificaInterseccaoFeatures(feature))
 		{
@@ -2322,6 +2323,8 @@ public class Face implements Serializable{
 		}
 		else
 		{
+			Feature mae = getMae(feature);
+			
 			if(mae != null)
 			{
 				if(mae.getClass() == FuroBasePlana.class)
@@ -2376,6 +2379,72 @@ public class Face implements Serializable{
 						valido = false;
 						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
 					}
+				}else if(mae.getClass() == CavidadeFundoArredondado.class)
+				{
+					CavidadeFundoArredondado cavFundoArr = (CavidadeFundoArredondado)mae;
+					if(feature.getPosicaoZ() == cavFundoArr.getPosicaoZ() + cavFundoArr.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == GeneralClosedPocket.class)
+				{
+					GeneralClosedPocket generalPocket = (GeneralClosedPocket)mae;
+					if(feature.getPosicaoZ() == generalPocket.getPosicaoZ() + generalPocket.getProfundidade())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				
+				}else if(mae.getClass() == CircularBoss.class)
+				{
+					CircularBoss cb = (CircularBoss)mae;
+					if(feature.getPosicaoZ() == cb.getPosicaoZ())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == RectangularBoss.class)
+				{
+					RectangularBoss rb = (RectangularBoss)mae;
+					if(feature.getPosicaoZ() == rb.getPosicaoZ())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == GeneralProfileBoss.class)
+				{
+					GeneralProfileBoss gb = (GeneralProfileBoss)mae;
+					if(feature.getPosicaoZ() == gb.getPosicaoZ())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
 				}
 			}
 			else
@@ -2399,71 +2468,40 @@ public class Face implements Serializable{
 		Feature mae = null;
 		ArrayList<Feature> maes = new ArrayList<Feature>();
 		boolean isContained = false;
-//		Rectangle2D shapeFeature = this.criarRetanguloShape(feature);
-		
-		
-		for(int i = 0; i < this.features.size(); i++)
+	
+		if(features.size() == 0)
+			return mae;
+		else
 		{
-			Feature featureTmp = (Feature)this.features.elementAt(i);
-			Shape shapeTmp = this.getShape(featureTmp);
-			Shape shapeNew = this.getShape(feature);
-//			Rectangle2D shapeTmp = this.criarRetanguloShape(featureTmp);
-			Point2D [] borda = this.getShapePontos(feature);
-			System.out.println("shapeTmp: " + shapeTmp);
-			for(int j = 0; j < borda.length; j++)
+			for(int i = 0; i < this.features.size(); i++)
 			{
-				if(!shapeTmp.contains(borda[j]) && !shapeTmp.equals(shapeNew))
+				Feature featureTmp = (Feature)this.features.elementAt(i);
+				Shape shapeTmp = this.getShape(featureTmp);
+				Shape shapeNew = this.getShape(feature);
+//				Rectangle2D shapeTmp = this.criarRetanguloShape(featureTmp);
+				Point2D [] borda = this.getShapePontos(feature);
+				System.out.println("shapeTmp: " + shapeTmp);
+				for(int j = 0; j < borda.length; j++)
 				{
-					isContained = false;
-					break;
-				} else 
+					if(!shapeTmp.contains(borda[j]) && !shapeTmp.equals(shapeNew))
+					{
+						isContained = false;
+						break;
+					} else 
+					{
+						isContained = true;
+					}
+				}
+				if(isContained)
 				{
-					isContained = true;
+					maes.add(featureTmp);
 				}
 			}
-			if(isContained)
-			{
-				maes.add(featureTmp);
-			}
+			
+			if(maes.size() > 0)
+				mae = maes.get(maes.size() - 1);
 		}
-//		ArrayList<Feature> ordenado = new ArrayList<Feature>();
-//		Feature featureTmp;
-		
-//		for (int i = 0; i < maes.size(); i++) 
-//		{
-//			for (int k = 0; k < maes.size(); k++) 
-//			{
-//				featureTmp = maes.get(i);
-//				if (i == 0)
-//				{
-//					if (featureTmp.getFeaturePrecedente() == null)
-//					{
-//						ordenado.add(featureTmp);
-//					}
-//				} else 
-//				{
-//					if (featureTmp.getFeaturePrecedente() == ordenado.get(i - 1)) 
-//					{
-//						ordenado.add(featureTmp);
-//					}
-//				}
-//			}			
-//		}
-		
-//		for(int i = 0; i < maes.size(); i++)
-//		{
-//			featureTmp = maes.get(i);
-//			if(featureTmp.getFeaturePrecedente() == null)
-//			{
-//				ordenado.add(featureTmp);
-//			}
-//		}
-				
-//		if(ordenado.size() > 0)
-//			mae = ordenado.get(ordenado.size() - 1);
-		if(maes.size() > 0)
-			mae = maes.get(maes.size() - 1);
-				
+			
 //		System.out.println(maes);
 		return mae;
 	}
@@ -2495,6 +2533,7 @@ public class Face implements Serializable{
 		{
 			Degrau degrau = (Degrau)feature;
 			shape = new Rectangle2D.Double(degrau.getPosicaoX(), degrau.getPosicaoY(), degrau.getComprimento(), degrau.getLargura());
+			System.out.printf("shapeTmp: X: %f\nY: %f\nCompr: %f\nLarg: %f\n", degrau.getPosicaoX(),degrau.getPosicaoY(), degrau.getComprimento(), degrau.getLargura());
 		}
 		return shape;
 	}
@@ -2512,7 +2551,7 @@ public class Face implements Serializable{
 		}else if(feature.getClass() == Degrau.class)
 		{
 			Degrau degrau = (Degrau)feature;
-			saida = Cavidade.determinarPontosEmRetangulo(new Point3d(degrau.X, degrau.Y, 0), degrau.getComprimento(), degrau.getLargura());
+			saida = Cavidade.determinarPontosEmRetangulo(new Point3d(degrau.X, degrau.Y, 0), degrau.getLargura(), degrau.getComprimento());
 		}
 		return saida;
 	}

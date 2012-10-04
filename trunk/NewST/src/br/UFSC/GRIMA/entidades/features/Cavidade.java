@@ -462,10 +462,10 @@ public class Cavidade extends Feature implements Serializable {
 		int numPontos = (int)(2*largura + 2*comprimento);
 		Point2D [] saida = new Point2D[numPontos];
 		
-		linha1 = determinarPontosEmReta(new Point3d(origem.x, origem.y, 0), new Point3d(origem.x + comprimento, origem.y, 0) );
-		linha2 = determinarPontosEmReta(new Point3d(origem.x + comprimento, origem.y, 0), new Point3d(origem.x + comprimento, origem.y + largura, 0) );
-		linha3 = determinarPontosEmReta(new Point3d(origem.x + comprimento, origem.y + largura, 0), new Point3d(origem.x, origem.y + largura, 0) );
-		linha4 = determinarPontosEmReta(new Point3d(origem.x, origem.y + largura, 0), new Point3d(origem.x, origem.y, 0) );
+		linha1 = determinarPontosEmReta(new Point3d(origem.getX(), origem.getY(), 0), new Point3d(origem.getX() + comprimento, origem.getY(), 0) );
+		linha2 = determinarPontosEmReta(new Point3d(origem.getX() + comprimento, origem.getY(), 0), new Point3d(origem.getX() + comprimento, origem.getY() + largura, 0) );
+		linha3 = determinarPontosEmReta(new Point3d(origem.getX() + comprimento, origem.getY() + largura, 0), new Point3d(origem.getX(), origem.getY() + largura, 0) );
+		linha4 = determinarPontosEmReta(new Point3d(origem.getX(), origem.getY() + largura, 0), new Point3d(origem.getX(), origem.getY(), 0) );
 		
 		for(int i = 0; i < linha1.length; i++)
 		{
@@ -483,10 +483,10 @@ public class Cavidade extends Feature implements Serializable {
 		{
 			saida[i + linha1.length + linha2.length + linha3.length] = linha4[i];
 		}
-//		for(int k=0; k < saida.length; k++)
-//		{
-//			System.out.printf("saida %d: %f, %f \n", k, saida[k].getX(), saida[k].getY());
-//		}
+		for(int k=0; k < saida.length; k++)
+		{
+			System.out.printf("saida %d: %f, %f \n", k, saida[k].getX(), saida[k].getY());
+		}
 		return saida;
 	}
 	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  

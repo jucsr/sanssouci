@@ -98,10 +98,10 @@ public class Generate3Dview extends Frame3D
 		if (rawBlock == null)
 		{	
 			CSGSolid.appearance = true;
-			rawBlock = new OperationBlock("", width, height, length);
-//			rawBlock = new OperationBlock1("", length, width, height, 15, 9, 2);
-//			rawBlock.rotate(Math.PI / 2, 0);
-//			rawBlock.translate(-length / 2, -height / 2, -width / 2);
+//			rawBlock = new OperationBlock("", width, height, length);
+			rawBlock = new OperationBlock1("", length, width, height, 15, 9, 2);
+			rawBlock.rotate(Math.PI / 2, 0);
+			rawBlock.translate(-length / 2, -height / 2, -width / 2);
 //			rawBlock = new OperationBlock1("", length, height, width, 15, 9, 2);
 //			rawBlock.translate(-length / 2, -height / 2, width / 2);
 			this.createFeatures();

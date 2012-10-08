@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.util.operationsVector;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
@@ -522,4 +523,45 @@ public class OperationsVector
 		}
 		return closestPoint;
 	}
+	
+	public static Point2D getIntersectionPoint(Point2D r1I, Point2D r1F, Point2D r2I, Point2D r2F){
+		 Point2D r = new Point2D.Double();  
+         double a, b, a1, a2, b1, b2;
+		 
+		 
+		 if(r1I.getX()==r1F.getX() && r2I.getY()==r2F.getY()){
+			 r = new Point2D.Double(r1I.getX(),r2I.getY());
+		 }else if(r1I.getY()==r1F.getY() && r2I.getX()==r2F.getX()){
+			 r = new Point2D.Double(r2I.getX(),r1I.getY());
+		 }
+		 else if(r1I.getX()==r1F.getX()){
+			 a = (r2F.getY()-r2I.getY())/(r2F.getX()-r2I.getX());
+			 b = r2I.getY()-((r2I.getX()*(r2F.getY()-r2I.getY()))/(r2F.getX()-r2I.getX()));
+			 r = new Point2D.Double(r1I.getX(), a*r1I.getX()+b);
+		 }else if(r1I.getY()==r1F.getY()){
+			 a = (r2F.getY()-r2I.getY())/(r2F.getX()-r2I.getX());
+			 b = r2I.getY()-((r2I.getX()*(r2F.getY()-r2I.getY()))/(r2F.getX()-r2I.getX()));
+			 r = new Point2D.Double((r1I.getY()-b)/a , r1I.getY());
+		 }else if(r2I.getX()==r2F.getX()){
+			 a = (r1F.getY()-r1I.getY())/(r1F.getX()-r1I.getX());
+			 b = r1I.getY()-((r1I.getX()*(r1F.getY()-r1I.getY()))/(r1F.getX()-r1I.getX()));
+			 r = new Point2D.Double(r2I.getX(), a*r2I.getX()+b);
+		 }else if(r2I.getY()==r2F.getY()){
+			 a = (r1F.getY()-r1I.getY())/(r1F.getX()-r1I.getX());
+			 b = r1I.getY()-((r1I.getX()*(r1F.getY()-r1I.getY()))/(r1F.getX()-r1I.getX()));
+			 r = new Point2D.Double((r2I.getY()-b)/a , r2I.getY());			 
+		 }else{
+			 a1 = (r1F.getY()-r1I.getY())/(r1F.getX()-r1I.getX());
+			 b1 = r1I.getY()-((r1I.getX()*(r1F.getY()-r1I.getY()))/(r1F.getX()-r1I.getX()));
+			 a2 = (r2F.getY()-r2I.getY())/(r2F.getX()-r2I.getX());
+			 b2 = r2I.getY()-((r2I.getX()*(r2F.getY()-r2I.getY()))/(r2F.getX()-r2I.getX()));
+			 r = new Point2D.Double((b2-b1)/(a1-a2), ((a1*(b2-b1))/(a1-a2))+b1);
+		 }
+		 
+	        return r;
+	}
+	
+	
+	
+	
 }

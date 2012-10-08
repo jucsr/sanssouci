@@ -30,6 +30,7 @@ import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
+import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
 public class CavidadeReader {
@@ -178,45 +179,57 @@ public class CavidadeReader {
 				while(cont.next()){
 					numeroDePolylines++;
 				}
+				boolean mesmaCoordenadaX=false, mesmaCoordenadaY=false;
+				
 				numeroDePolylines= numeroDePolylines/2;
+				Point2D p1I = new Point2D.Double(),
+						p2I = new Point2D.Double(),
+						p1  = new Point2D.Double(),
+						p2  = new Point2D.Double(),
+						p1Comeco = new Point2D.Double(),
+						p2Comeco = new Point2D.Double();
+				
 				while(iterator2.next()){
 					EComposite_curve_segment segmentoTmp = listaDeSegmentos.getCurrentMember(iterator2);
 
-					if(segmentoTmp.getParent_curve(null).isKindOf(EPolyline.class)){;
+					if(segmentoTmp.getParent_curve(null).isKindOf(EPolyline.class)){
+						
+						
 						if(contador!=0){
-							aAnterior = aAtual;
-							bAnterior = bAtual;
+							p1I = p1;
+							p2I = p2;
 						}
+//						
+//						if(contador!=0){
+//							aAnterior = aAtual;
+//							bAnterior = bAtual;
+//						}
 						ACartesian_point pontosLinha = ((EPolyline) segmentoTmp.getParent_curve(null)).getPoints(null);
 						ECartesian_point ponto1 = pontosLinha.getByIndex(1);
 						ECartesian_point ponto2 = pontosLinha.getByIndex(2);
-						Point2D p1 = new Point2D.Double(ponto1.getCoordinates(null).getByIndex(1),ponto1.getCoordinates(null).getByIndex(2));
-						Point2D p2 = new Point2D.Double(ponto2.getCoordinates(null).getByIndex(1),ponto2.getCoordinates(null).getByIndex(2));
-						aAtual = (p2.getY()-p1.getY())/(p2.getX()-p1.getX());
-						bAtual = p1.getY()-(p1.getX()*((p2.getY()-p1.getY())/(p2.getX()-p1.getX())));
+						p1 = new Point2D.Double(ponto1.getCoordinates(null).getByIndex(1),ponto1.getCoordinates(null).getByIndex(2));
+						p2 = new Point2D.Double(ponto2.getCoordinates(null).getByIndex(1),ponto2.getCoordinates(null).getByIndex(2));
 						
 						if(contador!=0){
-							n = (bAnterior-bAtual)/(aAtual-aAnterior);//x
-							m = aAtual*(bAnterior-bAtual)/(aAtual-aAnterior) + bAtual;//y
-							vertexPoints.add(new Point2D.Double(n,m));
+							System.out.println(p1 +" "+p2+" "+p1I+" "+p2I);
+							vertexPoints.add(OperationsVector.getIntersectionPoint(p1, p2, p1I, p2I));
 						}else{
-							aPrimeiro=aAtual;
-							bPrimeiro=bAtual;
+							p1Comeco = p1;
+							p2Comeco = p2;
+						}
+						
+						if(numeroDePolylines==contador+1){
+							System.out.println(p1 +" "+p2+" "+p1Comeco+" "+p2Comeco);
+							vertexPoints.add(OperationsVector.getIntersectionPoint(p1, p2, p1Comeco, p2Comeco));	
 						}
 
 						contador++;
-//						if(numeroDePolylines == contador+1){
-//							n = (bAtual-bPrimeiro)/(aPrimeiro-aAtual);//x
-//							m = aPrimeiro*(bAtual-bPrimeiro)/(aPrimeiro-aAnterior) + bPrimeiro;//y
-//							vertexPoints.add(new Point2D.Double(n,m));
-//						}
+						
 					}
 					else if(segmentoTmp.getParent_curve(null).isKindOf(ECircle.class)){
 						general.setRadius( ( (ECircle) segmentoTmp.getParent_curve(null) ).getRadius(null));
 					}
 				}
-				System.out.println("Vertex Points");
-				System.out.println(vertexPoints);
 				general.setVertexPoints(vertexPoints);
 				general.setNome(id);
 				general.setAltura(altura);

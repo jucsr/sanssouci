@@ -143,9 +143,9 @@ public class GeneralClosedPocketReader
 		
 		SdaiIterator iteratorBoss = bosses.createIterator();
 		
-		while(iterator.next())
+		while(iteratorBoss.next())
 		{
-			EBoss eBoss = bosses.getCurrentMember(iterator);
+			EBoss eBoss = bosses.getCurrentMember(iteratorBoss);
 			id = eBoss.getIts_id(null);
 			double altura = eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
 			

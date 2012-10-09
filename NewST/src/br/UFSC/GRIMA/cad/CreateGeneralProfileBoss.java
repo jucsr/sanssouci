@@ -350,7 +350,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			ArrayList<Double> axis = null, refDirection = null;
 			if (this.face.getTipo() == Face.XY)
 			{
-				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), generalBoss.getVertexPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ);
+				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), generalBoss.getVertexPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ + altura);
 				axis = new ArrayList<Double>();
 				axis.add(0.0);
 				axis.add(0.0);

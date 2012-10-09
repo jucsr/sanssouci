@@ -143,6 +143,59 @@ public class CavidadeReader {
 					 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
 					 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3));
 			
+			
+			if(faceAtual.getTipo()==Face.XY){
+
+				x = centre.x;
+
+				y = centre.y;
+			
+				z = faceAtual.getProfundidadeMaxima() - cavidade.Z - cavidade.getProfundidade() - centre.z;
+
+			}else if(faceAtual.getTipo()==Face.YX){
+
+				x = locX - comprimento/2;
+
+				y = faceAtual.getLargura() - locY - largura/2;
+
+				z = locZ;
+
+			}else if(faceAtual.getTipo()==Face.YZ){
+
+				x = faceAtual.getComprimento() - comprimento/2 - locZ;
+
+				y = locY - largura/2;
+
+				z = faceAtual.getProfundidadeMaxima() - locX;
+
+			}else if(faceAtual.getTipo()==Face.ZY){
+
+				x = locZ - comprimento/2;
+
+				y = locY - largura/2;
+
+				z = locX;
+
+			}else if(faceAtual.getTipo()==Face.XZ){
+
+				x = locX - comprimento/2;
+
+				y = locZ - largura/2;
+
+				z = locY;
+
+			}else if(faceAtual.getTipo()==Face.ZX){
+
+				x = locX - comprimento/2;
+
+				y = faceAtual.getLargura()- locZ - largura/2;
+
+				z = faceAtual.getProfundidadeMaxima() - locY;
+
+			}
+			
+			
+			
 			if(eBoss.getIts_boundary(null).isKindOf(ECircular_closed_profile.class)){
 				double diametro1 = ((ECircular_closed_profile) eBoss.getIts_boundary(null)).getDiameter(null).getTheoretical_size(null);
 				double angulo = eBoss.getSlope(null);
@@ -237,7 +290,6 @@ public class CavidadeReader {
 				general.setFace(faceAtual);
 				itsBoss.add(general);
 				
-				// ========= IMPLEMENTAR =============
 			}
 
 		}

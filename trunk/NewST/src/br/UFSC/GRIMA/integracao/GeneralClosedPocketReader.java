@@ -7,10 +7,14 @@ import javax.vecmath.Point3d;
 
 import jsdai.SCombined_schema.ABoss;
 import jsdai.SCombined_schema.ACartesian_point;
+import jsdai.SCombined_schema.AComposite_curve_segment;
 import jsdai.SCombined_schema.EBoss;
 import jsdai.SCombined_schema.ECartesian_point;
+import jsdai.SCombined_schema.ECircle;
 import jsdai.SCombined_schema.ECircular_closed_profile;
 import jsdai.SCombined_schema.EClosed_pocket;
+import jsdai.SCombined_schema.EComposite_curve;
+import jsdai.SCombined_schema.EComposite_curve_segment;
 import jsdai.SCombined_schema.EGeneral_closed_profile;
 import jsdai.SCombined_schema.EPolyline;
 import jsdai.SCombined_schema.ERectangular_closed_profile;
@@ -20,7 +24,9 @@ import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
+import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
 /**
@@ -141,15 +147,16 @@ public class GeneralClosedPocketReader
 		{
 			EBoss eBoss = bosses.getCurrentMember(iterator);
 			id = eBoss.getIts_id(null);
+			double altura = eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
+			
+			Point3d centre = new Point3d(eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(1),
+					 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
+					 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3));
+			
 			if(eBoss.getIts_boundary(null).isKindOf(ECircular_closed_profile.class)){
 				double diametro1 = ((ECircular_closed_profile) eBoss.getIts_boundary(null)).getDiameter(null).getTheoretical_size(null);
 				double angulo = eBoss.getSlope(null);
-				double altura = eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
 				double diametro2 = 2*altura*Math.tan(angulo)+diametro1;
-				Point3d centre = new Point3d(eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(1),
-											 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
-											 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3)); 
-				
 				
 				CircularBoss circularBoss = new CircularBoss();
 				circularBoss.setNome(id);
@@ -164,11 +171,6 @@ public class GeneralClosedPocketReader
 			{
 				double length = ((ERectangular_closed_profile)eBoss.getIts_boundary(null)).getProfile_length(null).getTheoretical_size(null);
 				double width = ((ERectangular_closed_profile)eBoss.getIts_boundary(null)).getProfile_width(null).getTheoretical_size(null);
-				double altura = eBoss.getDepth(null).getPosition(null).getLocation(null).getCoordinates(null).getByIndex(3);
-				
-				Point3d centre = new Point3d(eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(1),
-						 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
-						 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3));
 				
 				RectangularBoss rectangularBoss = new RectangularBoss(length, width, altura, 0);
 				rectangularBoss.setNome(id);
@@ -176,8 +178,75 @@ public class GeneralClosedPocketReader
 				itsBoss.add(rectangularBoss);
 			} else if(eBoss.getIts_boundary(null).isKindOf(EGeneral_closed_profile.class))
 			{
-				// ========= IMPLEMENTAR =============
-			}
+				GeneralProfileBoss general = new GeneralProfileBoss();
+				double aAtual=0, bAtual=0, aAnterior=0 , bAnterior=0 ,aPrimeiro=0, bPrimeiro=0, n , m;
+				ArrayList<Point2D> vertexPoints = new ArrayList<Point2D>();
+				AComposite_curve_segment listaDeSegmentos = ((EComposite_curve) ((EGeneral_closed_profile) eBoss.getIts_boundary(null)).getClosed_profile_shape(null)).getSegments(null);
+				SdaiIterator iterator2 = listaDeSegmentos.createIterator();
+				SdaiIterator cont = listaDeSegmentos.createIterator();
+				int contador=0, numeroDePolylines=0;
+				while(cont.next()){
+					numeroDePolylines++;
+				}
+				boolean mesmaCoordenadaX=false, mesmaCoordenadaY=false;
+				
+				numeroDePolylines= numeroDePolylines/2;
+				Point2D p1I = new Point2D.Double(),
+						p2I = new Point2D.Double(),
+						p1  = new Point2D.Double(),
+						p2  = new Point2D.Double(),
+						p1Comeco = new Point2D.Double(),
+						p2Comeco = new Point2D.Double();
+				
+				while(iterator2.next()){
+					EComposite_curve_segment segmentoTmp = listaDeSegmentos.getCurrentMember(iterator2);
+
+					if(segmentoTmp.getParent_curve(null).isKindOf(EPolyline.class)){
+						
+						
+						if(contador!=0){
+							p1I = p1;
+							p2I = p2;
+						}
+//						
+//						if(contador!=0){
+//							aAnterior = aAtual;
+//							bAnterior = bAtual;
+//						}
+						ACartesian_point pontosLinha = ((EPolyline) segmentoTmp.getParent_curve(null)).getPoints(null);
+						ECartesian_point ponto1 = pontosLinha.getByIndex(1);
+						ECartesian_point ponto2 = pontosLinha.getByIndex(2);
+						p1 = new Point2D.Double(ponto1.getCoordinates(null).getByIndex(1),ponto1.getCoordinates(null).getByIndex(2));
+						p2 = new Point2D.Double(ponto2.getCoordinates(null).getByIndex(1),ponto2.getCoordinates(null).getByIndex(2));
+						
+						if(contador!=0){
+							System.out.println(p1 +" "+p2+" "+p1I+" "+p2I);
+							vertexPoints.add(OperationsVector.getIntersectionPoint(p1, p2, p1I, p2I));
+						}else{
+							p1Comeco = p1;
+							p2Comeco = p2;
+						}
+						
+						if(numeroDePolylines==contador+1){
+							System.out.println(p1 +" "+p2+" "+p1Comeco+" "+p2Comeco);
+							vertexPoints.add(OperationsVector.getIntersectionPoint(p1, p2, p1Comeco, p2Comeco));	
+						}
+
+						contador++;
+						
+					}
+					else if(segmentoTmp.getParent_curve(null).isKindOf(ECircle.class)){
+						general.setRadius( ( (ECircle) segmentoTmp.getParent_curve(null) ).getRadius(null));
+					}
+				}
+				general.setVertexPoints(vertexPoints);
+				general.setNome(id);
+				general.setAltura(altura);
+				general.setPosicao(centre.getX(),centre.getY(),centre.getZ());
+				general.setFace(faceAtual);
+				itsBoss.add(general);
+				}
+			cavidade.setItsBoss(itsBoss);
 		}
 		return cavidade;
 	}

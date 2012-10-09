@@ -10,10 +10,12 @@ import jsdai.SCombined_schema.EClosed_pocket;
 import jsdai.SCombined_schema.EConical_hole_bottom;
 import jsdai.SCombined_schema.EFlat_hole_bottom;
 import jsdai.SCombined_schema.EFlat_with_radius_hole_bottom;
+import jsdai.SCombined_schema.EGeneral_closed_profile;
 import jsdai.SCombined_schema.EGeneral_profile;
 import jsdai.SCombined_schema.EMachining_feature;
 import jsdai.SCombined_schema.EMachining_workingstep;
 import jsdai.SCombined_schema.EPartial_circular_profile;
+import jsdai.SCombined_schema.ERectangular_closed_profile;
 import jsdai.SCombined_schema.ERound_hole;
 import jsdai.SCombined_schema.ERounded_u_profile;
 import jsdai.SCombined_schema.ESlot;
@@ -174,7 +176,11 @@ public static Feature getFeature(EMachining_workingstep wkstep) throws SdaiExcep
 			
 			if(isCavidade){
 			
-				feature = CavidadeReader.getCavidade(closed_pocket);
+				if(closed_pocket.getFeature_boundary(null).isKindOf(ERectangular_closed_profile.class)){
+					feature = CavidadeReader.getCavidade(closed_pocket);
+				}else if(closed_pocket.getFeature_boundary(null).isKindOf(EGeneral_closed_profile.class)){
+					feature = GeneralClosedPocketReader.getGeneralClosedPocket(closed_pocket);
+				}
 				
 //			}else if(closed_pocket.getPlanar_radius(null).getTheoretical_size(null)!= 0){
 			}else{

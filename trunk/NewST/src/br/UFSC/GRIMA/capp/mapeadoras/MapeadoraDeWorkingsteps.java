@@ -25,6 +25,7 @@ import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBaseEsferica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.FuroConico;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
@@ -263,6 +264,18 @@ public class MapeadoraDeWorkingsteps {
 
 					for (int k = 0; k < wssCavidade.size(); k++) {
 						wssCurrentFace.add(wssCavidade.get(k));
+					}
+
+				} else if (featureTmp.getClass() == GeneralClosedPocket.class) {
+
+					MapeadoraGeneralClosedPocket mapeadoraGeneral = new MapeadoraGeneralClosedPocket(
+							this.projeto, faceTmp, (GeneralClosedPocket) featureTmp);
+
+					Vector<Workingstep> wssGeneral = featureTmp
+							.getWorkingsteps();
+
+					for (int k = 0; k < wssGeneral.size(); k++) {
+						wssCurrentFace.add(wssGeneral.get(k));
 					}
 
 				} else if (featureTmp.getClass() == CavidadeFundoArredondado.class) { //banheira

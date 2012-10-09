@@ -36,8 +36,9 @@ public class MovimentacaoCavidadeComProtuberancia {
 
 	public ArrayList<LinearPath> getDesbasteTest(){
 		
+		int numeroDePontosDaMalha = 150;
 		ArrayList<LinearPath> desbaste = new ArrayList<LinearPath>();
-		double malha[][][] = new double[99][99][2];
+		double malha[][][] = new double[numeroDePontosDaMalha-1][numeroDePontosDaMalha-1][2];
 		ArrayList<Point3d> pontosPeriferia;
 		ArrayList<Point3d> pontosPossiveis;
 		ArrayList<Point2d> coordenadas;
@@ -63,7 +64,7 @@ public class MovimentacaoCavidadeComProtuberancia {
 				ae = this.ws.getCondicoesUsinagem().getAe();
 		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(this.cavidade.getPosicaoX()+allowanceSide, this.cavidade.getPosicaoY()+allowanceSide, comprimento, largura, 2*raio, 2*raio);
 
-		double malhaMenoresDistancias[][] = new double[99][99];
+		double malhaMenoresDistancias[][] = new double[numeroDePontosDaMalha-1][numeroDePontosDaMalha-1];
 		
 		ArrayList<Shape> bossArray;
 		//		ArrayList<Ellipse2D> listaElipses;
@@ -74,8 +75,8 @@ public class MovimentacaoCavidadeComProtuberancia {
 		//CRIAR MALHA DE PONTOS PARA COMPARA��O
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				malha[i][k][0] = this.cavidade.getPosicaoX()+comprimento*(i+1)/100;//x
-				malha[i][k][1] = this.cavidade.getPosicaoY()+largura*(k+1)/100;//y
+				malha[i][k][0] = this.cavidade.getPosicaoX()+comprimento*(i+1)/numeroDePontosDaMalha;//x
+				malha[i][k][1] = this.cavidade.getPosicaoY()+largura*(k+1)/numeroDePontosDaMalha;//y
 			}
 		}
 
@@ -325,7 +326,7 @@ public class MovimentacaoCavidadeComProtuberancia {
 //		numeroDeCortes = (int) (maiorMenorDistancia/ae)+10;
 //		if(diametroFerramenta!=diametroPrimeiroWs)
 			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroPrimeiroWs))+10;
-		double variacao = (comprimento/100+largura/100)/2;
+		double variacao = (comprimento/numeroDePontosDaMalha+largura/numeroDePontosDaMalha)/2;
 		
 		
 		pontos = new ArrayList<ArrayList<Point3d>>();

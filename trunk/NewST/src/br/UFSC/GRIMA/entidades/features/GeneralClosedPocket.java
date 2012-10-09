@@ -28,7 +28,7 @@ public class GeneralClosedPocket extends Feature
 	private GeneralPath forma; 	// � o desenho da borda do GeneralClosedPocket
 	private boolean isPassante = false;
 	private ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-	private EClosed_pocket eClosed_pocket;
+	private transient EClosed_pocket eClosed_pocket;
 	private int [] indices = {0, 0, 0, 0, 0, 0, 0};
 		
 	public GeneralClosedPocket()

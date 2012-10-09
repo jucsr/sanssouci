@@ -223,7 +223,7 @@ public class MapeadoraCavidade {
 
 			double comprimento = cavidadeTmp.getComprimento();
 			double largura = cavidadeTmp.getLargura();
-			double L = getMaiorDiametro(cavidadeTmp);
+			double L = getMaiorDiametro(cavidadeTmp, 150);// 150 = Numero de pontos que a malha vai ter
 
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
@@ -247,7 +247,7 @@ public class MapeadoraCavidade {
 //			if (faceMill.getDiametroFerramenta() > getMenorDiametro()) {
 
 			
-				double D = getMenorDiametro(cavidadeTmp);
+				double D = getMenorDiametro(cavidadeTmp, 150);// 150 = Numero de pontos que a malha vai ter
 
 				// FERRAMENTA
 				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(),
@@ -461,25 +461,26 @@ public class MapeadoraCavidade {
 		this.bloco = bloco;
 	}
 
-	private static double[][][] getMalha(Cavidade cavidadeTmp){
-		double malha[][][] = new double [99][99][2];
+	private static double[][][] getMalha(Cavidade cavidadeTmp, int numeroDePontosDaMalha){
+		
+		double malha[][][] = new double [numeroDePontosDaMalha-1][numeroDePontosDaMalha-1][2];
 		double largura=cavidadeTmp.getLargura(), comprimento=cavidadeTmp.getComprimento();
 		
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				malha[i][k][0] = cavidadeTmp.getPosicaoX()+comprimento*(i+1)/100;//x
-				malha[i][k][1] = cavidadeTmp.getPosicaoY()+largura*(k+1)/100;//y
+				malha[i][k][0] = cavidadeTmp.getPosicaoX()+comprimento*(i+1)/numeroDePontosDaMalha;//x
+				malha[i][k][1] = cavidadeTmp.getPosicaoY()+largura*(k+1)/numeroDePontosDaMalha;//y
 			}
 		}
 		
 		return malha;
 	}
 	
-	private static ArrayList<Point3d> getPontosPossiveis(double z,Cavidade cavidadeTmp){
+	private static ArrayList<Point3d> getPontosPossiveis(double z,Cavidade cavidadeTmp, int numeroDePontosDaMalha){
 		
 		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(cavidadeTmp.getPosicaoX(), cavidadeTmp.getPosicaoY(), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
 		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
-		double[][][] malha = getMalha(cavidadeTmp);
+		double[][][] malha = getMalha(cavidadeTmp, numeroDePontosDaMalha);
 		int b=0;
 		ArrayList<Shape> bossArray = getBossArray(z, cavidadeTmp); 
 		
@@ -503,13 +504,13 @@ public class MapeadoraCavidade {
 		return pontosPossiveis;
 	}
 	
-	private static ArrayList<Point2d> getCoordenadas(double z, Cavidade cavidadeTmp){
+	private static ArrayList<Point2d> getCoordenadas(double z, Cavidade cavidadeTmp, int numeroDePontosDaMalha){
 		
 
 		ArrayList<Point2d> coordenadas = new ArrayList<Point2d>();
 		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(cavidadeTmp.getPosicaoX(), cavidadeTmp.getPosicaoY(), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
 		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
-		double[][][] malha = getMalha(cavidadeTmp);
+		double[][][] malha = getMalha(cavidadeTmp, numeroDePontosDaMalha);
 		int b=0;
 		ArrayList<Shape> bossArray = getBossArray(z, cavidadeTmp); 
 		
@@ -707,12 +708,12 @@ public class MapeadoraCavidade {
 		return pontosPeriferia;
 	}
 	
-	private static double[][] getMalhaMenoresDistancias(double z, Cavidade cavidadeTmp){
+	private static double[][] getMalhaMenoresDistancias(double z, Cavidade cavidadeTmp, int numeroDePontosDaMalha){
 		
 		ArrayList<Point3d> pontosPeriferia = getPontosPeriferia(z, cavidadeTmp);
-		double malhaMenoresDistancias[][] = new double[99][99];
-		ArrayList<Point3d> pontosPossiveis = getPontosPossiveis(z, cavidadeTmp);
-		ArrayList<Point2d> coordenadas = getCoordenadas(z, cavidadeTmp);
+		double malhaMenoresDistancias[][] = new double[numeroDePontosDaMalha-1][numeroDePontosDaMalha];
+		ArrayList<Point3d> pontosPossiveis = getPontosPossiveis(z, cavidadeTmp, numeroDePontosDaMalha);
+		ArrayList<Point2d> coordenadas = getCoordenadas(z, cavidadeTmp, numeroDePontosDaMalha);
 		ArrayList<Double> menorDistancia;		
 		double distanciaTmp;
 
@@ -730,9 +731,9 @@ public class MapeadoraCavidade {
 		return malhaMenoresDistancias;
 	}
 	
-	private static double getMenorDiametro(Cavidade cavidadeTmp){
+	private static double getMenorDiametro(Cavidade cavidadeTmp, int numeroDePontosDaMalha){
 		double menorDiametro, raioMenor=10000;
-		double[][] malhaMenoresDistancias = getMalhaMenoresDistancias(-cavidadeTmp.getProfundidade(), cavidadeTmp);
+		double[][] malhaMenoresDistancias = getMalhaMenoresDistancias(-cavidadeTmp.getProfundidade(), cavidadeTmp, numeroDePontosDaMalha);
 		int contador;
 		
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
@@ -770,12 +771,12 @@ public class MapeadoraCavidade {
 		return menorDiametro;
 	}
 	
-	private static double getMaiorDiametro(Cavidade cavidadeTmp){
+	private static double getMaiorDiametro(Cavidade cavidadeTmp, int numeroDePontosDaMalha){
 		double[][] malhaMenoresDistancias;
 		int contador,numeroDeDiametrosAdicionados=0;
 		double raioMedia, maiorDiametro=0;
 
-		malhaMenoresDistancias = getMalhaMenoresDistancias(-cavidadeTmp.getProfundidade(), cavidadeTmp);
+		malhaMenoresDistancias = getMalhaMenoresDistancias(-cavidadeTmp.getProfundidade(), cavidadeTmp, numeroDePontosDaMalha);
 		raioMedia=0;
 		numeroDeDiametrosAdicionados=0;
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){

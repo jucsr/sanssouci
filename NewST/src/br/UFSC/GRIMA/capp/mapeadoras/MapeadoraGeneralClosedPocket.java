@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
@@ -98,7 +99,7 @@ public class MapeadoraGeneralClosedPocket {
 
 //			double comprimento = genClosed.getComprimento();
 //			double largura = genClosed.getLargura();
-			double L = getMenorDiametro(genClosed);
+			double L = getMenorDiametro(genClosed, 150);// 150 = Numero de pontos que a malha vai ter
 
 //			if (largura < comprimento)
 //				L = largura;
@@ -224,7 +225,7 @@ public class MapeadoraGeneralClosedPocket {
 
 //			double comprimento = genClosed.getComprimento();
 //			double largura = genClosed.getLargura();
-			double L = getMaiorDiametro(genClosed);
+			double L = getMaiorDiametro(genClosed, 150);// 150 = Numero de pontos que a malha vai ter
 
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
@@ -248,7 +249,7 @@ public class MapeadoraGeneralClosedPocket {
 //			if (faceMill.getDiametroFerramenta() > getMenorDiametro()) {
 
 			
-				double D = getMenorDiametro(genClosed);
+				double D = getMenorDiametro(genClosed, 150);// 150 = Numero de pontos que a malha vai ter
 
 				// FERRAMENTA
 				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(),
@@ -460,8 +461,8 @@ public class MapeadoraGeneralClosedPocket {
 		this.bloco = bloco;
 	}
 
-	public static double[][][] getMalha(GeneralClosedPocket genClosed){
-		double malha[][][] = new double [99][99][2];
+	public static double[][][] getMalha(GeneralClosedPocket genClosed, int numeroDePontosDaMalha){
+		double malha[][][] = new double [numeroDePontosDaMalha-1][numeroDePontosDaMalha-1][2];
 		double largura, comprimento;
 		double xMenor=1000,xMaior=0,yMenor=1000,yMaior=0;
 		ArrayList<Point2D> vertexPoint;
@@ -482,20 +483,21 @@ public class MapeadoraGeneralClosedPocket {
 		
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				malha[i][k][0] = genClosed.getPosicaoX()+comprimento*(i+1)/100;//x
-				malha[i][k][1] = genClosed.getPosicaoY()+largura*(k+1)/100;//y
+				malha[i][k][0] = genClosed.getPosicaoX()+comprimento*(i+1)/numeroDePontosDaMalha;//x
+				malha[i][k][1] = genClosed.getPosicaoY()+largura*(k+1)/numeroDePontosDaMalha;//y
 			}
 		}
 		
 		return malha;
 	}
 	
-	public static ArrayList<Point3d> getPontosPossiveis(double z,GeneralClosedPocket genClosed){
+	public static ArrayList<Point3d> getPontosPossiveis(double z,GeneralClosedPocket genClosed, int numeroDePontosDaMalha){
 		
 //		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(genClosed.getPosicaoX(), genClosed.getPosicaoY(), genClosed.getComprimento(), genClosed.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
 
 		GeneralPath general = new GeneralPath();
 		ArrayList<Point2D> vertex = genClosed.getPoints();
+		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex), genClosed.getRadius());
 		general.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
 		for(int r=0;r<vertex.size();r++){
 			general.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
@@ -503,7 +505,7 @@ public class MapeadoraGeneralClosedPocket {
 		general.closePath();
 		
 		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
-		double[][][] malha = getMalha(genClosed);
+		double[][][] malha = getMalha(genClosed, numeroDePontosDaMalha);
 		int b=0;
 		ArrayList<Shape> bossArray = getBossArray(z, genClosed); 
 		
@@ -527,14 +529,13 @@ public class MapeadoraGeneralClosedPocket {
 		return pontosPossiveis;
 	}
 	
-	public static ArrayList<Point2d> getCoordenadas(double z, GeneralClosedPocket genClosed){
+	public static ArrayList<Point2d> getCoordenadas(double z, GeneralClosedPocket genClosed, int numeroDePontosDaMalha){
 		
 
 		ArrayList<Point2d> coordenadas = new ArrayList<Point2d>();
-//		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(cavidadeTmp.getPosicaoX(), cavidadeTmp.getPosicaoY(), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
-		
 		GeneralPath general = new GeneralPath();
 		ArrayList<Point2D> vertex = genClosed.getPoints();
+		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex), genClosed.getRadius());
 		general.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
 		for(int r=0;r<vertex.size();r++){
 			general.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
@@ -542,7 +543,7 @@ public class MapeadoraGeneralClosedPocket {
 		general.closePath();
 		
 		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
-		double[][][] malha = getMalha(genClosed);
+		double[][][] malha = getMalha(genClosed, numeroDePontosDaMalha);
 		int b=0;
 		ArrayList<Shape> bossArray = getBossArray(z, genClosed); 
 		
@@ -593,6 +594,7 @@ public class MapeadoraGeneralClosedPocket {
 			else if(itsBoss.get(i).getClass()==GeneralProfileBoss.class){
 				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
 				ArrayList<Point2D> vertex = boss.getVertexPoints();
+				vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex), genClosed.getRadius());
 				GeneralPath path = new GeneralPath();
 				path.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
 				for(int r=0;r<vertex.size();r++){
@@ -606,9 +608,120 @@ public class MapeadoraGeneralClosedPocket {
 		return bossArray;
 	}
 	
+	private static ArrayList<Point3d> getPontosPeriferiaGeneral(ArrayList<Point2D> vertex, double z, double raio){
+
+		GeneralPath path = new GeneralPath();
+		path.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
+		ArrayList<Shape> bossArray = new ArrayList<Shape>();
+		ArrayList<Point3d> pontosPeriferia = new ArrayList<Point3d>();
+
+		for(int r=0;r<vertex.size();r++){
+			path.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
+		}
+		path.closePath();
+		bossArray.add(path);
+		double distancia, maiorX, maiorY;
+		int q;
+		for(int j=0;j<vertex.size();j++){
+			if(j==vertex.size()-1)
+				q=0;
+			else
+				q=j+1;
+
+			if(vertex.get(j).getX()>vertex.get(q).getX())
+				maiorX = vertex.get(j).getX();
+			else
+				maiorX = vertex.get(q).getX();
+
+			if(vertex.get(j).getY()>vertex.get(q).getY())
+				maiorY = vertex.get(j).getY();
+			else
+				maiorY = vertex.get(q).getY();
+
+
+			if(vertex.get(j).getX()==vertex.get(q).getX()){
+				distancia = vertex.get(j).getY();
+				for(int h=0;h<1000;h++){
+					pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+					if(maiorY == vertex.get(j).getY())
+						distancia-=1;
+					else
+						distancia+=1;
+					if(distancia==vertex.get(q).getY()){
+						h=1000;
+						pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+					}
+				}
+			}
+			else if(vertex.get(j).getY()==vertex.get(q).getY()){
+				distancia = vertex.get(j).getX();
+				for(int h=0;h<1000;h++){
+					pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+					if(maiorX == vertex.get(j).getX())
+						distancia-=1;
+					else
+						distancia+=1;
+					if(distancia==vertex.get(q).getX()){
+						h=1000;
+						pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+					}
+				}
+			}
+			else{
+				double a,b;
+				a= (vertex.get(q).getY()-vertex.get(j).getY())/(vertex.get(q).getX()-vertex.get(j).getX());
+				b= vertex.get(j).getY()-a*vertex.get(j).getX();
+
+				if(Math.abs(vertex.get(j).getX()-vertex.get(q).getX())>Math.abs(vertex.get(j).getY()-vertex.get(q).getY())){
+					distancia = vertex.get(j).getX();
+					for(int h=0;h<1000;h++){
+						pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
+						if(maiorX == vertex.get(j).getX()){
+							distancia-=1;
+							if(distancia<=vertex.get(q).getX()){
+								h=1000;
+								pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
+							}
+						}
+						else{
+							distancia+=1;
+							if(distancia>=vertex.get(q).getX()){
+								h=1000;
+								pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
+							}
+						}
+					}	
+				}
+				else{
+					distancia = vertex.get(j).getY();
+					for(int h=0;h<1000;h++){
+						pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
+						if(maiorY == vertex.get(j).getY()){
+							distancia-=1;
+							if(distancia<=vertex.get(q).getY()){
+								h=1000;
+								pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
+							}
+						}
+						else{
+							distancia+=1;
+							if(distancia>=vertex.get(q).getY()){
+								h=1000;
+								pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
+							}
+						}
+					}	
+				}		
+			}
+		}
+		return pontosPeriferia;
+	}
+	
+	
 	public static ArrayList<Point3d> getPontosPeriferia(double z,GeneralClosedPocket genClosed){
 		
-		ArrayList<Point3d> pontosPeriferia;ArrayList<Boss> itsBoss;
+		ArrayList<Point3d> pontosPeriferia;
+		ArrayList<Boss> itsBoss;
 		itsBoss = genClosed.getItsBoss();
 		double raioAtual;
 		Point2D borda[];
@@ -632,120 +745,33 @@ public class MapeadoraGeneralClosedPocket {
 					pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 				}
 			}
-			else{// if(itsBoss.get(i).getClass()==GeneralProfileBoss.class){
+			else if(itsBoss.get(i).getClass()==GeneralProfileBoss.class){
 				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
-				ArrayList<Point2D> vertex = boss.getVertexPoints();
-				double distancia, maiorX, maiorY;
-				int q;
-				for(int j=0;j<vertex.size();j++){
-					if(j==vertex.size()-1)
-						q=0;
-					else
-						q=j+1;
-					
-					if(vertex.get(j).getX()>vertex.get(q).getX())
-						maiorX = vertex.get(j).getX();
-					else
-						maiorX = vertex.get(q).getX();
-					
-					if(vertex.get(j).getY()>vertex.get(q).getY())
-						maiorY = vertex.get(j).getY();
-					else
-						maiorY = vertex.get(q).getY();
-					
-					
-					if(vertex.get(j).getX()==vertex.get(q).getX()){
-						distancia = vertex.get(j).getY();
-						for(int h=0;h<1000;h++){
-							pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
-							if(maiorY == vertex.get(j).getY())
-								distancia-=1;
-							else
-								distancia+=1;
-							if(distancia==vertex.get(q).getY()){
-								h=1000;
-								pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
-							}
-						}
-					}
-					else if(vertex.get(j).getY()==vertex.get(q).getY()){
-						distancia = vertex.get(j).getX();
-						for(int h=0;h<1000;h++){
-							pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
-							if(maiorX == vertex.get(j).getX())
-								distancia-=1;
-							else
-								distancia+=1;
-							if(distancia==vertex.get(q).getX()){
-								h=1000;
-								pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
-							}
-						}
-					}
-					else{
-						double a,b;
-						a= (vertex.get(q).getY()-vertex.get(j).getY())/(vertex.get(q).getX()-vertex.get(j).getX());
-						b= vertex.get(j).getY()-a*vertex.get(j).getX();
-													
-						if(Math.abs(vertex.get(j).getX()-vertex.get(q).getX())>Math.abs(vertex.get(j).getY()-vertex.get(q).getY())){
-							distancia = vertex.get(j).getX();
-							for(int h=0;h<1000;h++){
-								pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
-								if(maiorX == vertex.get(j).getX()){
-									distancia-=1;
-									if(distancia<=vertex.get(q).getX()){
-										h=1000;
-										pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
-									}
-								}
-								else{
-									distancia+=1;
-									if(distancia>=vertex.get(q).getX()){
-										h=1000;
-										pontosPeriferia.add(new Point3d(distancia,a*distancia+b,z));
-									}
-								}
-							}	
-						}
-						else{
-							distancia = vertex.get(j).getY();
-							for(int h=0;h<1000;h++){
-								pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
-								if(maiorY == vertex.get(j).getY()){
-									distancia-=1;
-									if(distancia<=vertex.get(q).getY()){
-										h=1000;
-										pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
-									}
-								}
-								else{
-									distancia+=1;
-									if(distancia>=vertex.get(q).getY()){
-										h=1000;
-										pontosPeriferia.add(new Point3d((distancia-b)/a,distancia,z));
-									}
-								}
-							}	
-						}
-					}
-				}		
+				ArrayList<Point2D> vertexx = boss.getVertexPoints();
+				vertexx = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertexx), boss.getRadius());					
+				for(int q=0;q<getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).size();q++){
+					pontosPeriferia.add(getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).get(q));
+				}
 			}
 		}
 
-//		borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(cavidadeTmp.getPosicaoX(),cavidadeTmp.getPosicaoY(),z), cavidadeTmp.getComprimento(), cavidadeTmp.getLargura(), cavidadeTmp.getRaio());
-//		for(int k=0;k<borda.length;k++){
-//			pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
-//		}
+		ArrayList<Point2D> vertex = genClosed.getPoints();
+		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex), genClosed.getRadius());
+		for(int i=0;i<getPontosPeriferiaGeneral(vertex, z, genClosed.getRadius()).size();i++){
+			pontosPeriferia.add(getPontosPeriferiaGeneral(vertex, z, genClosed.getRadius()).get(i));
+		}
 		
 		return pontosPeriferia;
 	}
 	
-	public static double[][] getMalhaMenoresDistancias(double z, GeneralClosedPocket genClosed){
+	
+	
+	public static double[][] getMalhaMenoresDistancias(double z, GeneralClosedPocket genClosed, int numeroDePontosDaMalha){
 		
 		ArrayList<Point3d> pontosPeriferia = getPontosPeriferia(z, genClosed);
-		double malhaMenoresDistancias[][] = new double[99][99];
-		ArrayList<Point3d> pontosPossiveis = getPontosPossiveis(z, genClosed);
-		ArrayList<Point2d> coordenadas = getCoordenadas(z, genClosed);
+		double malhaMenoresDistancias[][] = new double[numeroDePontosDaMalha][numeroDePontosDaMalha];
+		ArrayList<Point3d> pontosPossiveis = getPontosPossiveis(z, genClosed, numeroDePontosDaMalha);
+		ArrayList<Point2d> coordenadas = getCoordenadas(z, genClosed, numeroDePontosDaMalha);
 		ArrayList<Double> menorDistancia;		
 		double distanciaTmp;
 
@@ -763,9 +789,9 @@ public class MapeadoraGeneralClosedPocket {
 		return malhaMenoresDistancias;
 	}
 	
-	public static double getMenorDiametro(GeneralClosedPocket genClosed){
+	public static double getMenorDiametro(GeneralClosedPocket genClosed, int numeroDePontosDaMalha){
 		double menorDiametro, raioMenor=10000;
-		double[][] malhaMenoresDistancias = getMalhaMenoresDistancias(-genClosed.getProfundidade(), genClosed);
+		double[][] malhaMenoresDistancias = getMalhaMenoresDistancias(-genClosed.getProfundidade(), genClosed, numeroDePontosDaMalha);
 		int contador;
 		
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
@@ -801,12 +827,12 @@ public class MapeadoraGeneralClosedPocket {
 		return menorDiametro;
 	}
 	
-	public static double getMaiorDiametro(GeneralClosedPocket genClosed){
+	public static double getMaiorDiametro(GeneralClosedPocket genClosed, int numeroDePontosDaMalha){
 		double[][] malhaMenoresDistancias;
 		int contador,numeroDeDiametrosAdicionados=0;
 		double raioMedia, maiorDiametro=0;
 
-		malhaMenoresDistancias = getMalhaMenoresDistancias(-genClosed.getProfundidade(), genClosed);
+		malhaMenoresDistancias = getMalhaMenoresDistancias(-genClosed.getProfundidade(), genClosed, numeroDePontosDaMalha);
 		raioMedia=0;
 		numeroDeDiametrosAdicionados=0;
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){

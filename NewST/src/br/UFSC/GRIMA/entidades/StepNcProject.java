@@ -1524,6 +1524,7 @@ public class StepNcProject extends STEPProject
 		eClosed_pocket.setBottom_condition(null, bottom_condition);
 		eClosed_pocket.setOrthogonal_radius(null, this.createTolerancedLengthMeasure(general.getRadius()));
 		EGeneral_closed_profile profile = (EGeneral_closed_profile)this.model.createEntityInstance(EGeneral_closed_profile.class);
+		eClosed_pocket.setFeature_boundary(null, profile);
 		EPolyline ePolyline = (EPolyline)this.model.createEntityInstance(EPolyline.class);
 		ePolyline.setName(null, "contour of pocket");
 		ACartesian_point aCartesian_point = ePolyline.createPoints(null);

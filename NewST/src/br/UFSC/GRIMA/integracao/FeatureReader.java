@@ -69,7 +69,6 @@ public static Feature getFeature(EMachining_workingstep wkstep) throws SdaiExcep
 			
 			}else if (isConico) {
 				
-				System.out.println("CONICOOOOOOO");
 				
 				feature = FuroConicoReader.getFuro(round_hole);
 				

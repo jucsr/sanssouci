@@ -233,8 +233,12 @@ public static Feature getFeature(EMachining_workingstep wkstep) throws SdaiExcep
 		
 		Point3d coordinates = new Point3d(x,y,z);
 		
-		Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
+		/**
+		 * *********** Setando para todas as features, não há necessidade de setar em cada reader !!!! *******
+		 */
 		
+		Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
+		position.setName(eFeature.getFeature_placement(null).getName(null));
 		feature.setPosition(position);
 		
 		return feature;

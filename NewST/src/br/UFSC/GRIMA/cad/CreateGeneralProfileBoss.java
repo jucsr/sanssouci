@@ -306,7 +306,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 	{
 		boolean ok = false;
 		
-		this.posicaoZ = (Double)spinnerPosZ.getValue();
+		this.posicaoZ = profundidadeFeature + feature.Z - altura;
 		this.altura = (Double)spinnerDepth.getValue();
 		if(this.altura <= profundidadeFeature)
 		{

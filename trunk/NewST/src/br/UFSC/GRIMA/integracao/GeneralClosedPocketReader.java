@@ -261,8 +261,6 @@ public class GeneralClosedPocketReader
 				}
 			cavidade.setItsBoss(itsBoss);
 		}
-		System.out.println("*******CAVIDADE POSITION NAME = " + cavidade.getPosition().getName());
-
 		return cavidade;
 	}
 }

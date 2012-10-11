@@ -1500,8 +1500,9 @@ public class StepNcProject extends STEPProject
 		EClosed_pocket eClosed_pocket = (EClosed_pocket)this.model.createEntityInstance(EClosed_pocket.class);
 		eClosed_pocket.setIts_id(null, general.getNome());
 		eClosed_pocket.setIts_workpiece(null, eWorkpiece);
-		
+		System.out.println("GENERATOR =  " + position.getName());
 		EAxis2_placement_3d placement = this.createAxis2Placement3D(position.getName(), position.getCoordinates(), position.getAxis(), position.getRefDirection());
+		placement.setName(null, position.getName());
 		eClosed_pocket.setFeature_placement(null, placement);
 		
 		AMachining_operation aMachining_operation = eClosed_pocket.createIts_operations(null);

@@ -133,16 +133,18 @@ public class GeneralClosedPocketReader
 				Point3d coordinates = new Point3d(x,y,zOriginal);
 				
 				Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
-				
+				String name = pocket.getFeature_placement(null).getName(null);
+//				System.out.println("*******PLACEMENT NAME = " + name);
+				position.setName(name);
 				cavidade.setPosition(position);
 				
-		
+
 		ABoss bosses = pocket.getIts_boss(null);
 		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		
 		SdaiIterator iteratorBoss = bosses.createIterator();
-		
+		Axis2Placement3D positionBoss = new Axis2Placement3D(coordinates,axis,refDirection);
 		while(iteratorBoss.next())
 		{
 			EBoss eBoss = bosses.getCurrentMember(iteratorBoss);
@@ -152,6 +154,8 @@ public class GeneralClosedPocketReader
 			Point3d centre = new Point3d(eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(1),
 					 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(2),
 					 eBoss.getFeature_placement(null).getLocation(null).getCoordinates(null).getByIndex(3));
+			
+			positionBoss.setName(eBoss.getFeature_placement(null).getName(null));
 			
 			if(eBoss.getIts_boundary(null).isKindOf(ECircular_closed_profile.class)){
 				double diametro1 = ((ECircular_closed_profile) eBoss.getIts_boundary(null)).getDiameter(null).getTheoretical_size(null);
@@ -166,7 +170,11 @@ public class GeneralClosedPocketReader
 				circularBoss.setCentre(centre);
 				circularBoss.setPosicao(centre.getX(), centre.getY(), z + profundidadeCavidade - altura);
 				circularBoss.setFace(faceAtual);
+				positionBoss.setCoordinates(centre);
+				circularBoss.setPosition(positionBoss);
+				
 				itsBoss.add(circularBoss);
+				
 			} else if(eBoss.getIts_boundary(null).isKindOf(ERectangular_closed_profile.class))
 			{
 				double length = ((ERectangular_closed_profile)eBoss.getIts_boundary(null)).getProfile_length(null).getTheoretical_size(null);
@@ -175,7 +183,10 @@ public class GeneralClosedPocketReader
 				RectangularBoss rectangularBoss = new RectangularBoss(length, width, altura, 0);
 				rectangularBoss.setNome(id);
 				rectangularBoss.setPosicao(centre.x - length / 2, centre.y - width / 2,  z + profundidadeCavidade - altura);
+				positionBoss.setCoordinates(centre);
+				rectangularBoss.setPosition(positionBoss);
 				itsBoss.add(rectangularBoss);
+				
 			} else if(eBoss.getIts_boundary(null).isKindOf(EGeneral_closed_profile.class))
 			{
 				GeneralProfileBoss general = new GeneralProfileBoss();
@@ -243,11 +254,15 @@ public class GeneralClosedPocketReader
 				general.setNome(id);
 				general.setAltura(altura);
 				general.setPosicao(centre.getX(),centre.getY(),centre.getZ());
+				positionBoss.setCoordinates(centre);
+				general.setPosition(positionBoss);
 				general.setFace(faceAtual);
 				itsBoss.add(general);
 				}
 			cavidade.setItsBoss(itsBoss);
 		}
+		System.out.println("*******CAVIDADE POSITION NAME = " + cavidade.getPosition().getName());
+
 		return cavidade;
 	}
 }

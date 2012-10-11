@@ -134,7 +134,6 @@ public class GeneralClosedPocketReader
 				
 				Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
 				String name = pocket.getFeature_placement(null).getName(null);
-//				System.out.println("*******PLACEMENT NAME = " + name);
 				position.setName(name);
 				cavidade.setPosition(position);
 				
@@ -253,7 +252,7 @@ public class GeneralClosedPocketReader
 				general.setVertexPoints(vertexPoints);
 				general.setNome(id);
 				general.setAltura(altura);
-				general.setPosicao(centre.getX(),centre.getY(),centre.getZ());
+				general.setPosicao(centre.getX(), centre.getY(), z + profundidadeCavidade - altura);
 				positionBoss.setCoordinates(centre);
 				general.setPosition(positionBoss);
 				general.setFace(faceAtual);

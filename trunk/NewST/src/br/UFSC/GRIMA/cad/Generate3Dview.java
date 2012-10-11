@@ -534,7 +534,7 @@ public class Generate3Dview extends Frame3D
 								OperationGeneralClosedPocked opBoss = new OperationGeneralClosedPocked("", (float)bossTmp.getAltura(), (float)bossTmp.getRadius(), bossTmp.getVertexPoints());
 								opBoss.rotate(-Math.PI / 2, 0);
 //								opBoss.translate(-faceTmp.getComprimento() / 2, bossTmp.Z - bossTmp.getAltura() + faceTmp.getProfundidadeMaxima() / 2, faceTmp.getLargura() / 2);
-								opBoss.translate(-faceTmp.getComprimento() / 2, bossTmp.getAltura() - bossTmp.Z + faceTmp.getProfundidadeMaxima() / 2, faceTmp.getLargura() / 2);
+								opBoss.translate(-faceTmp.getComprimento() / 2, - bossTmp.Z + faceTmp.getProfundidadeMaxima() / 2, faceTmp.getLargura() / 2);
 								try 
 								{
 									rawBlock = new CompoundSolid("", CompoundSolid.UNION, rawBlock, opBoss);

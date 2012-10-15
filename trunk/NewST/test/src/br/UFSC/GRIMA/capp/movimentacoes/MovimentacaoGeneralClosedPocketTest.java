@@ -86,14 +86,23 @@ public class MovimentacaoGeneralClosedPocketTest {
 
 		this.genClosed=new GeneralClosedPocket();
 		this.genClosed.setNome("Lucas");
-		this.genClosed.setPosicao(10, 10, 0);
+		this.genClosed.setPosicao(79, 22, 0);
 		this.genClosed.setProfundidade(10);
-		this.genClosed.setRadius(5);
+		this.genClosed.setRadius(10);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
-		points.add(new Point2D.Double(20,20));
-		points.add(new Point2D.Double(60,20));
-		points.add(new Point2D.Double(70,50));
-		points.add(new Point2D.Double(30,50));
+		points.add(new Point2D.Double(79,22));
+		points.add(new Point2D.Double(47,60));
+		points.add(new Point2D.Double(81,104));
+		points.add(new Point2D.Double(131,107));
+		points.add(new Point2D.Double(150,68));
+		points.add(new Point2D.Double(129,32));
+		points.add(new Point2D.Double(161,8));
+		points.add(new Point2D.Double(194,55));
+		points.add(new Point2D.Double(167,134));
+		points.add(new Point2D.Double(60,132));
+		points.add(new Point2D.Double(19,61));
+		points.add(new Point2D.Double(40,12));
+		
 		this.genClosed.setPoints(points);
 		//		this.genClosed.setComprimento(80);
 		//		this.genClosed.setLargura(60);
@@ -117,10 +126,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.boss2.setPosicao(50, 45, 0);
 
 		ArrayList<Point2D> vertices = new ArrayList<Point2D>();
-		vertices.add(new Point2D.Double(20,15));
-		vertices.add(new Point2D.Double(25,30));
-		vertices.add(new Point2D.Double(40,35));
-		vertices.add(new Point2D.Double(45,25));
+		vertices.add(new Point2D.Double(40,15));
+		vertices.add(new Point2D.Double(45,30));
+		vertices.add(new Point2D.Double(60,35));
+		vertices.add(new Point2D.Double(65,25));
 
 		this.boss3 = new GeneralProfileBoss(1,vertices);
 		this.boss3.setAltura(10);
@@ -136,7 +145,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		//		this.itsBoss.add(this.boss);
 		//		this.itsBoss.add(this.boss1);
 		//		this.itsBoss.add(this.boss2);
-		//		this.itsBoss.add(this.boss3);
+				this.itsBoss.add(this.boss3);
 		genClosed.setItsBoss(this.itsBoss);
 		this.faceXY.addFeature(this.boss);
 		//		Generate3Dview Janela3D = new Generate3Dview(this.projeto);
@@ -233,6 +242,13 @@ public class MovimentacaoGeneralClosedPocketTest {
 				for(int q=0;q<getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).size();q++){
 					pontosPeriferia.add(getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).get(q));
 				}
+				GeneralPath path = new GeneralPath();
+				path.moveTo(vertexx.get(0).getX(), vertexx.get(0).getY());
+				for(int r=0;r<vertexx.size();r++){
+					path.lineTo(vertexx.get(r).getX(), vertexx.get(r).getY());
+				}
+				path.closePath();
+				bossArray.add(path);
 				//					//GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
 				//					//ArrayList<Point2D> vertex = boss.getVertexPoints();
 				//					testeDaFuncao(vertex,z);
@@ -537,6 +553,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 
 		System.out.println("Pontos menores:  "+pontosMenores.size());
 
+		
+		//ACABAMENTO
 
 
 
@@ -566,7 +584,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 						if(pontos.get(i).size()<1){
 							break;
 						}
-						f.add(new Ellipse2D.Double(5*pontos.get(i).get(k).getX()-2.5*diametroFerramenta,5*pontos.get(i).get(k).getY()-2.5*diametroFerramenta,5*diametroFerramenta,5*diametroFerramenta));
+						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
 					}
 				}
 //								for(int i=0;i<malha.length;i++){
@@ -590,13 +608,13 @@ public class MovimentacaoGeneralClosedPocketTest {
 					if(pontosMenores.size()<1){
 						break;
 					}
-					e.add(new Ellipse2D.Double(5*pontosMenores.get(i).getX()-2.5*diametro,5*pontosMenores.get(i).getY()-2.5*diametro,diametro*5,diametro*5));					
+					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
 				}
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
 						break;
 					}
-					w.add(new Ellipse2D.Double(5*pontosPeriferia.get(i).getX(),5*pontosPeriferia.get(i).getY(),5,5));
+					w.add(new Ellipse2D.Double(2*pontosPeriferia.get(i).getX(),2*pontosPeriferia.get(i).getY(),2,2));
 				}
 
 			}

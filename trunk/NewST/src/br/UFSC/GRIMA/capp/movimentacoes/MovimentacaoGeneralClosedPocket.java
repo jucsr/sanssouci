@@ -106,8 +106,8 @@ public class MovimentacaoGeneralClosedPocket {
 
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				malha[i][k][0] = this.genClosed.getPosicaoX()+comprimento*(i+1)/numeroDePontosDaMalha;//x
-				malha[i][k][1] = this.genClosed.getPosicaoY()+largura*(k+1)/numeroDePontosDaMalha;//y
+				malha[i][k][0] = xMenor+comprimento*(i+1)/numeroDePontosDaMalha;//x
+				malha[i][k][1] = yMenor+largura*(k+1)/numeroDePontosDaMalha;//y
 			}
 		}
 
@@ -141,6 +141,13 @@ public class MovimentacaoGeneralClosedPocket {
 				for(int q=0;q<getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).size();q++){
 					pontosPeriferia.add(getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).get(q));
 				}
+				GeneralPath path = new GeneralPath();
+				path.moveTo(vertexx.get(0).getX(), vertexx.get(0).getY());
+				for(int r=0;r<vertexx.size();r++){
+					path.lineTo(vertexx.get(r).getX(), vertexx.get(r).getY());
+				}
+				path.closePath();
+				bossArray.add(path);
 			}
 		}
 
@@ -232,7 +239,7 @@ public class MovimentacaoGeneralClosedPocket {
 
 		//		numeroDeCortes = (int) (maiorMenorDistancia/ae)+10;
 		//		if(diametroFerramenta!=diametroPrimeiroWs)
-		numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroPrimeiroWs))+10;
+		numeroDeCortes = (int) (maiorMenorDistancia/(0.5*diametroPrimeiroWs));
 		double variacao = (comprimento/numeroDePontosDaMalha+largura/numeroDePontosDaMalha)/2;
 
 
@@ -255,64 +262,83 @@ public class MovimentacaoGeneralClosedPocket {
 			}
 			pontos.add(pontos2);
 		}
-		if(diametroFerramenta!=diametroPrimeiroWs)
-			pontos = new ArrayList<ArrayList<Point3d>>();
-		pontosMenores = new ArrayList<Point3d>();		
-		pontosPossiveis = new ArrayList<Point3d>();
-		coordenadas = new ArrayList<Point2d>();
-		for(int i=0;i<malha.length;i++){
-			for(int k=0;k<malha[i].length;k++){
-				if(general.contains(malha[i][k][0], malha[i][k][1])){
-					for(int g=0;g<bossArray.size();g++){
-						if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
-							b++;
-						}
-					}
-					if(b==bossArray.size()){
-						pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
-						coordenadas.add(new Point2d(i,k));
-					}
-					b=0;
-				}
-			}
-		}
-
-		menorDistancia = new ArrayList<Double>();
-		for(int i=0;i<pontosPossiveis.size();i++){
-			distanciaTmp=100;
-			for(int k=0;k<pontosPeriferia.size();k++){
-				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
-					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
-				}
-			}
-			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
-			menorDistancia.add(distanciaTmp);
-		}
-
-		numeroDeCortes = (int) (maiorMenorDistancia/(ae/1.3))+10;
-		for(int i=0;i<numeroDeCortes;i++){
-			for(int k=0;k<pontosPossiveis.size();k++){
-				if(i==0){
-					if(menorDistancia.get(k)<=diametroFerramenta/2+variacao && menorDistancia.get(k)>=diametroFerramenta/2){
-						pontosMenores.add(pontosPossiveis.get(k));
-					}
-				}
-				else{
-					if(menorDistancia.get(k)<=(i+1)*0.5*diametroFerramenta+variacao/2 && menorDistancia.get(k)>=(i+1)*0.5*diametroFerramenta-variacao/2){
-						pontosMenores.add(pontosPossiveis.get(k));
-					}
-				}
-			}
-			if(diametroFerramenta!=diametroPrimeiroWs)
-				pontos.add(pontosMenores);
-		}
 
 		for(int i=0;i<pontos.size();i++){
-			System.out.println("Pontos menores:  "+pontos.get(i).size());
+			System.out.println("Pontos :  "+pontos.get(i).size());
 		}
 
+		if(diametroFerramenta!=diametroPrimeiroWs){
+			ArrayList<Point3d> copiaPontos = null;
+			pontos = new ArrayList<ArrayList<Point3d>>();
+			copiaPontos = pontosPossiveis;
+			pontosMenores = new ArrayList<Point3d>();		
+			pontosPossiveis = new ArrayList<Point3d>();
+			coordenadas = new ArrayList<Point2d>();
+			for(int i=0;i<malha.length;i++){
+				for(int k=0;k<malha[i].length;k++){
+					if(general.contains(malha[i][k][0], malha[i][k][1])){
+						for(int g=0;g<bossArray.size();g++){
+							if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
+								b++;
+							}
+						}
+						if(b==bossArray.size()){
+							pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
+							coordenadas.add(new Point2d(i,k));
+						}
+						b=0;
+					}
+				}
+			}
+			
+			ArrayList<Double> copiaMenorDistancia = menorDistancia;
+			menorDistancia = new ArrayList<Double>();
+			for(int i=0;i<pontosPossiveis.size();i++){
+				distanciaTmp=100;
+				for(int k=0;k<pontosPeriferia.size();k++){
+					if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+						distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+					}
+				}
+				malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
+				menorDistancia.add(distanciaTmp);
+			}
+
+			numeroDeCortes = (int) (maiorMenorDistancia/(ae/1.3));
+			for(int i=0;i<numeroDeCortes;i++){
+				for(int k=0;k<pontosPossiveis.size();k++){
+					if(i==0){
+						if(menorDistancia.get(k)<=diametroFerramenta/2+variacao && menorDistancia.get(k)>=diametroFerramenta/2){
+							pontosMenores.add(pontosPossiveis.get(k));
+						}
+					}
+					else{
+						if(menorDistancia.get(k)<=(i+1)*0.5*diametroFerramenta+variacao/2 && menorDistancia.get(k)>=(i+1)*0.5*diametroFerramenta-variacao/2){
+							pontosMenores.add(pontosPossiveis.get(k));
+						}
+					}
+				}
+				pontos.add(pontosMenores);
+			}
+
+
+
+			for(int k=0;k<copiaPontos.size();k++){
+				if(copiaMenorDistancia.get(k)<=diametroFerramenta/2+variacao && copiaMenorDistancia.get(k)>=diametroFerramenta/2){
+					pontosMenores.add(copiaPontos.get(k));
+				}
+			}
+			pontos.add(pontosMenores);
+
+			for(int i=0;i<pontos.size();i++){
+				System.out.println("Pontos menores:  "+pontos.get(i).size());
+			}
+
+		}
 		pontoInicial = new Point3d(pontos.get(0).get(0).getX(),pontos.get(0).get(0).getY(), this.ws.getOperation().getRetractPlane());
 
+		
+		
 		double tmp, distancia;
 		int t=0;
 

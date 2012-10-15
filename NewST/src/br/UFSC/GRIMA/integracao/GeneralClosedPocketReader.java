@@ -26,6 +26,9 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.LinearPath;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
@@ -207,7 +210,7 @@ public class GeneralClosedPocketReader
 						p2  = new Point2D.Double(),
 						p1Comeco = new Point2D.Double(),
 						p2Comeco = new Point2D.Double();
-				
+				ArrayList<Path> paths = new ArrayList<Path>();
 				while(iterator2.next()){
 					EComposite_curve_segment segmentoTmp = listaDeSegmentos.getCurrentMember(iterator2);
 
@@ -228,7 +231,8 @@ public class GeneralClosedPocketReader
 						ECartesian_point ponto2 = pontosLinha.getByIndex(2);
 						p1 = new Point2D.Double(ponto1.getCoordinates(null).getByIndex(1),ponto1.getCoordinates(null).getByIndex(2));
 						p2 = new Point2D.Double(ponto2.getCoordinates(null).getByIndex(1),ponto2.getCoordinates(null).getByIndex(2));
-						
+						LinearPath path = new LinearPath(new Point3d(p1.getX(), p1.getY(), 0), new Point3d(p2.getX(), p2.getY(), 0));
+						paths.add(path);
 						if(contador!=0){
 							System.out.println(p1 +" "+p2+" "+p1I+" "+p2I);
 							vertexPoints.add(OperationsVector.getIntersectionPoint(p1, p2, p1I, p2I));
@@ -246,7 +250,10 @@ public class GeneralClosedPocketReader
 						
 					}
 					else if(segmentoTmp.getParent_curve(null).isKindOf(ECircle.class)){
-						general.setRadius( ( (ECircle) segmentoTmp.getParent_curve(null) ).getRadius(null));
+						double radius =  ( (ECircle) segmentoTmp.getParent_curve(null) ).getRadius(null);
+						general.setRadius( radius);
+						CircularPath path = new CircularPath(new Point3d(), new Point3d(), radius); /** <----------------- arrumar os pontos de inicio e fim do arco circular */
+						paths.add(path);
 					}
 				}
 				general.setVertexPoints(vertexPoints);
@@ -256,6 +263,7 @@ public class GeneralClosedPocketReader
 				positionBoss.setCoordinates(centre);
 				general.setPosition(positionBoss);
 				general.setFace(faceAtual);
+				general.setPaths(paths);
 				itsBoss.add(general);
 				}
 			cavidade.setItsBoss(itsBoss);

@@ -21,6 +21,7 @@ import org.junit.Test;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.cad.CreateGeneralProfileBoss;
+import br.UFSC.GRIMA.cad.Generate3Dview;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
@@ -88,20 +89,42 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.genClosed.setNome("Lucas");
 		this.genClosed.setPosicao(79, 22, 0);
 		this.genClosed.setProfundidade(10);
-		this.genClosed.setRadius(10);
+		this.genClosed.setRadius(6);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
-		points.add(new Point2D.Double(79,22));
-		points.add(new Point2D.Double(47,60));
-		points.add(new Point2D.Double(81,104));
-		points.add(new Point2D.Double(131,107));
-		points.add(new Point2D.Double(150,68));
-		points.add(new Point2D.Double(129,32));
-		points.add(new Point2D.Double(161,8));
-		points.add(new Point2D.Double(194,55));
-		points.add(new Point2D.Double(167,134));
-		points.add(new Point2D.Double(60,132));
-		points.add(new Point2D.Double(19,61));
-		points.add(new Point2D.Double(40,12));
+//		points.add(new Point2D.Double(79,22));
+//		points.add(new Point2D.Double(47,60));
+//		points.add(new Point2D.Double(81,104));
+//		points.add(new Point2D.Double(131,107));
+//		points.add(new Point2D.Double(150,68));
+//		points.add(new Point2D.Double(129,32));
+//		points.add(new Point2D.Double(161,8));
+//		points.add(new Point2D.Double(194,55));
+//		points.add(new Point2D.Double(167,134));
+//		points.add(new Point2D.Double(60,132));
+//		points.add(new Point2D.Double(19,61));
+//		points.add(new Point2D.Double(40,12));
+		
+		points.add(new Point2D.Double(5.0, 35.0));
+		points.add(new Point2D.Double(20.0, 35.0));
+		points.add(new Point2D.Double(20.0, 5.0));
+		points.add(new Point2D.Double(60.0, 5.0));
+		points.add(new Point2D.Double(60.0, 35.0));
+		points.add(new Point2D.Double(95.0, 35.0));
+		points.add(new Point2D.Double(95.0, 65.0));
+		points.add(new Point2D.Double(125.0, 65.0));
+		points.add(new Point2D.Double(125.0, 35.0));
+		points.add(new Point2D.Double(180.0, 35.0));
+		points.add(new Point2D.Double(180.0, 75.0));
+		points.add(new Point2D.Double(155.0, 75.0));
+		points.add(new Point2D.Double(155.0, 100.0));
+		points.add(new Point2D.Double(195.0, 100.0));
+		points.add(new Point2D.Double(195.0, 145.0));
+		points.add(new Point2D.Double(75.0, 145.0));
+		points.add(new Point2D.Double(75.0, 120.0));
+		points.add(new Point2D.Double(40.0, 120.0));
+		points.add(new Point2D.Double(40.0, 95.0));
+		points.add(new Point2D.Double(5.0, 95.0));
+		
 		
 		this.genClosed.setPoints(points);
 		//		this.genClosed.setComprimento(80);
@@ -142,14 +165,14 @@ public class MovimentacaoGeneralClosedPocketTest {
 		//		this.cavidade = (Cavidade) this.ws.getFeature();
 
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-		//		this.itsBoss.add(this.boss);
-		//		this.itsBoss.add(this.boss1);
-		//		this.itsBoss.add(this.boss2);
-				this.itsBoss.add(this.boss3);
+//				this.itsBoss.add(this.boss);
+//				this.itsBoss.add(this.boss1);
+//				this.itsBoss.add(this.boss2);
+//				this.itsBoss.add(this.boss3);
 		genClosed.setItsBoss(this.itsBoss);
-		this.faceXY.addFeature(this.boss);
-		//		Generate3Dview Janela3D = new Generate3Dview(this.projeto);
-		//		Janela3D.setVisible(true);
+//		this.faceXY.addFeature(this.boss);
+//				Generate3Dview Janela3D = new Generate3Dview(this.projeto);
+//				Janela3D.setVisible(true);
 
 
 
@@ -239,8 +262,11 @@ public class MovimentacaoGeneralClosedPocketTest {
 				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
 				ArrayList<Point2D> vertexx = boss.getVertexPoints();
 				vertexx = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertexx), boss.getRadius());					
+			
+				ArrayList<Point3d> periferia = getPontosPeriferiaGeneral(vertexx, z, boss.getRadius());
 				for(int q=0;q<getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).size();q++){
-					pontosPeriferia.add(getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).get(q));
+//					pontosPeriferia.add(getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).get(q)); // ==========CUIDADO, PODE FAZER DEMORAR MAIS DO NECESSARIO ==========
+					pontosPeriferia.add(periferia.get(q)); 
 				}
 				GeneralPath path = new GeneralPath();
 				path.moveTo(vertexx.get(0).getX(), vertexx.get(0).getY());
@@ -360,9 +386,11 @@ public class MovimentacaoGeneralClosedPocketTest {
 		//			for(int k=0;k<borda.length;k++){
 		//				pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 		//			}
-
-		for(int i=0;i<getPontosPeriferiaGeneral(vertex, z, raio).size();i++){
-			pontosPeriferia.add(getPontosPeriferiaGeneral(vertex, z, raio).get(i));
+		ArrayList<Point3d> periferia = getPontosPeriferiaGeneral(vertex, z, raio);
+//		for(int i=0;i<getPontosPeriferiaGeneral(vertex, z, raio).size();i++){
+			for(int i=0;i<periferia.size();i++){
+//			pontosPeriferia.add(getPontosPeriferiaGeneral(vertex, z, raio).get(i)); // ================== CUIDADO, Isto pode fazer o programa mais devagar q o necessario
+			pontosPeriferia.add(periferia.get(i));
 		}
 
 		System.out.println("Bosses : " + bossArray.size());
@@ -404,8 +432,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 		for(int i=0;i<pontosPossiveis.size();i++){
 			distanciaTmp=100;
 			for(int k=0;k<pontosPeriferia.size();k++){
-				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
-					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+//				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+					if(pontosPeriferia.get(k).distance(pontosPossiveis.get(i))<distanciaTmp){
+//					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+					distanciaTmp=pontosPeriferia.get(k).distance(pontosPossiveis.get(i));
 				}
 			}
 			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
@@ -523,8 +553,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 		for(int i=0;i<pontosPossiveis.size();i++){
 			distanciaTmp=100;
 			for(int k=0;k<pontosPeriferia.size();k++){
-				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
-					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+//				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+					if(pontosPeriferia.get(k).distance(pontosPossiveis.get(i))<distanciaTmp){
+//					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+					distanciaTmp=pontosPeriferia.get(k).distance(pontosPossiveis.get(i));
 				}
 			}
 			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;

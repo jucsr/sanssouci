@@ -22,6 +22,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilGenerico;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilParcialCircular;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
@@ -34,6 +35,7 @@ import br.UFSC.GRIMA.entidades.features.Furo;
 import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
@@ -642,6 +644,28 @@ public class VisualTool {
 					setNextX(point3d.getX());
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				}else if(featClass.equals(GeneralClosedPocket.class))
+				{
+					MovimentacaoGeneralClosedPocket detMov = new MovimentacaoGeneralClosedPocket(wsTmp);
+					ArrayList<LinearPath> path = detMov.getDesbaste();
+					Vector movimentacao = new Vector();
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				}
 				else{
 					System.out.println("Feature Class Desconhecida (goToNextWorkingstepPoint): " + projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFeature().getClass());
@@ -733,7 +757,7 @@ public class VisualTool {
 				}
 			}
 			
-		}else if (featClass.equals(RanhuraPerfilBezier.class) || featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class) || featClass.equals(FuroBaseArredondada.class)) {
+		}else if (featClass.equals(RanhuraPerfilBezier.class) || featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class) || featClass.equals(FuroBaseArredondada.class) || featClass.equals(GeneralClosedPocket.class)) {
 			
 			if (!isMoving) {
 				isMoving = true;

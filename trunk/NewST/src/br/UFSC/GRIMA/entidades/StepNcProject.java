@@ -1500,7 +1500,7 @@ public class StepNcProject extends STEPProject
 		EClosed_pocket eClosed_pocket = (EClosed_pocket)this.model.createEntityInstance(EClosed_pocket.class);
 		eClosed_pocket.setIts_id(null, general.getNome());
 		eClosed_pocket.setIts_workpiece(null, eWorkpiece);
-		System.out.println("GENERATOR =  " + position.getName());
+//		System.out.println("GENERATOR =  " + position.getName());
 		EAxis2_placement_3d placement = this.createAxis2Placement3D(position.getName(), position.getCoordinates(), position.getAxis(), position.getRefDirection());
 		placement.setName(null, position.getName());
 		eClosed_pocket.setFeature_placement(null, placement);
@@ -1536,7 +1536,7 @@ public class StepNcProject extends STEPProject
 			ECartesian_point eCartesian_point = this.createCartesianPoint("P " + i + 1, coordinates);
 			aCartesian_point.addByIndex(i + 1, eCartesian_point);
 //			System.out.println("Point2D " + "ponto" + i + "new Point2D.Double(" + general.getPoints().get(i).getX() + ", " + general.getPoints().get(i).getY() + ")");
-			System.out.println("points.add(" + "new Point2D.Double(" + general.getPoints().get(i).getX() + ", " + general.getPoints().get(i).getY() + "));");
+//			System.out.println("points.add(" + "new Point2D.Double(" + general.getPoints().get(i).getX() + ", " + general.getPoints().get(i).getY() + "));");
 		}
 		profile.setPlacement(null, this.createAxis2Placement3D("profile placement", new Point3d(), position.getAxis(), position.getRefDirection()));
 		profile.setClosed_profile_shape(null, ePolyline);
@@ -1569,6 +1569,8 @@ public class StepNcProject extends STEPProject
 						profileBoss.setProfile_length(null, this.createTolerancedLengthMeasure(rectangular.getL1()));
 						profileBoss.setProfile_width(null, this.createTolerancedLengthMeasure(rectangular.getL2()));
 						eBoss.setIts_boundary(null, profileBoss);
+						eBoss.setFeature_placement(null, createAxis2Placement3D(bossTmp.getNome() + " placement", new Point3d(bossTmp.X + ((RectangularBoss)bossTmp).getL1() / 2, bossTmp.Y + ((RectangularBoss)bossTmp).getL1() / 2, bossTmp.Z), bossTmp.getPosition().getAxis(), bossTmp.getPosition().getRefDirection()));
+
 					}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 					{
 						GeneralProfileBoss boss = (GeneralProfileBoss)bossTmp;
@@ -1660,7 +1662,7 @@ public class StepNcProject extends STEPProject
 			EBoss eBoss = (EBoss)this.model.createEntityInstance(EBoss.class);
 			eBoss.setIts_id(null, bossTmp.getNome());
 			eBoss.setIts_workpiece(null, eWorkpiece);
-			System.out.println("POSICAO AXIS 2 PLACEMENT 3D" + bossTmp.getPosition());
+//			System.out.println("POSICAO AXIS 2 PLACEMENT 3D" + bossTmp.getNome());
 			eBoss.setFeature_placement(null, createAxis2Placement3D(bossTmp.getNome() + " placement", bossTmp.getPosition().getCoordinates(), bossTmp.getPosition().getAxis(), bossTmp.getPosition().getRefDirection()));
 			Point3d bossDepthLocation = new Point3d(0, 0, bossTmp.getAltura());
 			eBoss.setDepth(null, this.createPlane(bossTmp.getNome() + " heigh location", this.createAxis2Placement3D(bossTmp.getNome() + "heigh", bossDepthLocation, bossTmp.getPosition().getAxis(), bossTmp.getPosition().getRefDirection())));

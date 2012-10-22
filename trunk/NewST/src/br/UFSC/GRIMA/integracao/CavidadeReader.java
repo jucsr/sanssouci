@@ -129,9 +129,38 @@ public class CavidadeReader {
 		ABoss bosses = pocket.getIts_boss(null);
 		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+	
 		
+		double zLinhaX = pocket.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(1);
+		double zLinhaY = pocket.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(2);
+		double zLinhaZ = pocket.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(3);
+		
+		
+		ArrayList<Double> axis = new ArrayList<Double>();
+		axis.add(zLinhaX);
+		axis.add(zLinhaY);
+		axis.add(zLinhaZ);
+		
+		zLinhaX = pocket.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(1);
+		zLinhaY = pocket.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(2);
+		zLinhaZ = pocket.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(3);
+		
+		
+		ArrayList<Double> refDirection = new ArrayList<Double>();
+		refDirection.add(zLinhaX);
+		refDirection.add(zLinhaY);
+		refDirection.add(zLinhaZ);
+		
+		double zOriginal = pocket.getFeature_placement(null).getLocation(null)
+		.getCoordinates(null).getByIndex(3);
+		
+		Point3d coordinates = new Point3d(x,y,zOriginal);
+		
+		Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
+			
 		SdaiIterator iterator = bosses.createIterator();
 		
+		Axis2Placement3D positionBoss = new Axis2Placement3D(coordinates,axis,refDirection);
 
 
 		while(iterator.next()){
@@ -209,6 +238,7 @@ public class CavidadeReader {
 				circularBoss.setCentre(centre);
 				circularBoss.setPosicao(centre.getX(), centre.getY(), z + profundidadeCavidade - altura);
 				circularBoss.setFace(faceAtual);
+				circularBoss.setPosition(positionBoss);
 				itsBoss.add(circularBoss);
 			} else if(eBoss.getIts_boundary(null).isKindOf(ERectangular_closed_profile.class))
 			{
@@ -219,6 +249,7 @@ public class CavidadeReader {
 				RectangularBoss rectangularBoss = new RectangularBoss(length, width, altura, 0);
 				rectangularBoss.setNome(id);
 				rectangularBoss.setPosicao(centre.x - length / 2, centre.y - width / 2,  z + profundidadeCavidade - altura);
+				rectangularBoss.setPosition(positionBoss);
 				itsBoss.add(rectangularBoss);
 			} else if(eBoss.getIts_boundary(null).isKindOf(EGeneral_closed_profile.class))
 			{
@@ -288,6 +319,7 @@ public class CavidadeReader {
 				general.setAltura(altura);
 				general.setPosicao(centre.getX(),centre.getY(),centre.getZ());
 				general.setFace(faceAtual);
+				general.setPosition(positionBoss);
 				itsBoss.add(general);
 				
 			}
@@ -307,33 +339,7 @@ public class CavidadeReader {
 		
 		cavidade.setPassante(b);
 		
-		double zLinhaX = pocket.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(1);
-		double zLinhaY = pocket.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(2);
-		double zLinhaZ = pocket.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(3);
-		
-		
-		ArrayList<Double> axis = new ArrayList<Double>();
-		axis.add(zLinhaX);
-		axis.add(zLinhaY);
-		axis.add(zLinhaZ);
-		
-		zLinhaX = pocket.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(1);
-		zLinhaY = pocket.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(2);
-		zLinhaZ = pocket.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(3);
-		
-		
-		ArrayList<Double> refDirection = new ArrayList<Double>();
-		refDirection.add(zLinhaX);
-		refDirection.add(zLinhaY);
-		refDirection.add(zLinhaZ);
-		
-		double zOriginal = pocket.getFeature_placement(null).getLocation(null)
-		.getCoordinates(null).getByIndex(3);
-		
-		Point3d coordinates = new Point3d(x,y,zOriginal);
-		
-		Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
-		
+
 		cavidade.setPosition(position);
 		
 		return cavidade;

@@ -64,6 +64,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 	double raioMedia=0, raioMenor=10000;
 	double x[] = new double[8404];
 	double y[] = new double[8404];
+	private GeneralPath general;
 	@Before
 	public void createProject()
 	{
@@ -185,13 +186,19 @@ public class MovimentacaoGeneralClosedPocketTest {
 				comprimento;//this.ferramenta.getDiametroFerramenta();
 		final double diametroFerramenta;
 
-		GeneralPath general = new GeneralPath();
+//		GeneralPath general = new GeneralPath();
+		general = new GeneralPath();
 		ArrayList<Point2D> vertex1 = genClosed.getPoints();
 		ArrayList<Point2D> vertex;
+//		System.err.println("vertex1 : " + vertex1);
+
 		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex1), raio);
+		
 		general.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
 		for(int r=0;r<vertex.size();r++){
 			general.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
+			
+			System.err.println("vertex : " + vertex.get(r));
 		}
 		general.closePath();
 
@@ -264,7 +271,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 				vertexx = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertexx), boss.getRadius());					
 			
 				ArrayList<Point3d> periferia = getPontosPeriferiaGeneral(vertexx, z, boss.getRadius());
-				for(int q=0;q<getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).size();q++){
+				for(int q=0;q<periferia.size();q++){
 //					pontosPeriferia.add(getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).get(q)); // ==========CUIDADO, PODE FAZER DEMORAR MAIS DO NECESSARIO ==========
 					pontosPeriferia.add(periferia.get(q)); 
 				}
@@ -391,6 +398,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			for(int i=0;i<periferia.size();i++){
 //			pontosPeriferia.add(getPontosPeriferiaGeneral(vertex, z, raio).get(i)); // ================== CUIDADO, Isto pode fazer o programa mais devagar q o necessario
 			pontosPeriferia.add(periferia.get(i));
+			System.out.println("Pontos da periferia  : " + pontosPeriferia.get(i));
 		}
 
 		System.out.println("Bosses : " + bossArray.size());
@@ -681,7 +689,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 				for(int i=0;i<w.size();i++){
 					g2d.fill(w.get(i));
 				}
-
+//				g2d.setColor(new Color(0,0,0));
+//				g2d.draw(general);
 			}
 		}
 		JFrame frame = new JFrame("Poligono");
@@ -699,17 +708,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 
 		//GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
 		//ArrayList<Point2D> vertex = boss.getVertexPoints();
-		GeneralPath path = new GeneralPath();
-		path.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
-		ArrayList<Shape> bossArray = new ArrayList<Shape>();
 		ArrayList<Point3d> pontosPeriferia = new ArrayList<Point3d>();
 
-		for(int r=0;r<vertex.size();r++){
-			path.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
-		}
-		path.closePath();
-		bossArray.add(path);
-		double distancia, maiorX, maiorY;
+	
+		double distancia, maiorX, maiorY, menorX, menorY, divisoes=1;
 		int q;
 		for(int j=0;j<vertex.size();j++){
 			if(j==vertex.size()-1)
@@ -717,28 +719,40 @@ public class MovimentacaoGeneralClosedPocketTest {
 			else
 				q=j+1;
 
-			if(vertex.get(j).getX()>vertex.get(q).getX())
+			if(vertex.get(j).getX()>vertex.get(q).getX()){
 				maiorX = vertex.get(j).getX();
-			else
+				menorX = vertex.get(q).getX();
+			}
+			else{
 				maiorX = vertex.get(q).getX();
-
-			if(vertex.get(j).getY()>vertex.get(q).getY())
+				menorX = vertex.get(j).getX();
+			}
+			if(vertex.get(j).getY()>vertex.get(q).getY()){
 				maiorY = vertex.get(j).getY();
-			else
+				menorY = vertex.get(q).getY();
+			}
+			else{
 				maiorY = vertex.get(q).getY();
-
+				menorY = vertex.get(j).getY();
+			}
 
 			if(vertex.get(j).getX()==vertex.get(q).getX()){
 				distancia = vertex.get(j).getY();
 				for(int h=0;h<1000;h++){
 					pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
-					if(maiorY == vertex.get(j).getY())
-						distancia-=1;
-					else
-						distancia+=1;
-					if(distancia==vertex.get(q).getY()){
-						h=1000;
-						pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+					if(maiorY == vertex.get(j).getY()){
+						distancia-=divisoes;
+						if(distancia<=vertex.get(q).getY()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+						}
+					}
+					else{
+						distancia+=divisoes;
+						if(distancia>=vertex.get(q).getY()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+						}
 					}
 				}
 			}
@@ -746,13 +760,19 @@ public class MovimentacaoGeneralClosedPocketTest {
 				distancia = vertex.get(j).getX();
 				for(int h=0;h<1000;h++){
 					pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
-					if(maiorX == vertex.get(j).getX())
+					if(maiorX == vertex.get(j).getX()){
 						distancia-=1;
-					else
+						if(distancia<=vertex.get(q).getX()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+						}
+					}
+					else{
 						distancia+=1;
-					if(distancia==vertex.get(q).getX()){
-						h=1000;
-						pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+						if(distancia>=vertex.get(q).getX()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+						}
 					}
 				}
 			}

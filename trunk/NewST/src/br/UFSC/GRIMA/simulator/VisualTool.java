@@ -21,6 +21,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoCavidadeComProtuberancia;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilGenerico;
@@ -141,8 +142,11 @@ public class VisualTool {
 			{
 //				wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 				Vector movimentacao = new Vector();
-				DeterminarMovimentacao detMov = new DeterminarMovimentacao();
-				ArrayList<Path> path = detMov.getTrajetoriasCantosDaCavidade(wsTmp);
+//				DeterminarMovimentacao detMov = new DeterminarMovimentacao();
+				
+				MovimentacaoCavidadeComProtuberancia detMov = new MovimentacaoCavidadeComProtuberancia(wsTmp);
+//				ArrayList<Path> path = detMov.getTrajetoriasCantosDaCavidade(wsTmp);
+				ArrayList<LinearPath> path = detMov.getDesbasteTest();
 				
 				 for(int j = 0; j < path.size(); j++)
 					{

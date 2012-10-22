@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -16,7 +17,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -24,14 +24,15 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.cad.BezierSurfacePanel;
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.ColorComboBox;
 import br.UFSC.GRIMA.cad.visual.CreateRegionFrame;
+import br.UFSC.GRIMA.entidades.features.Region;
 
 public class CriarRegionFrame extends CreateRegionFrame implements ChangeListener, ItemListener, ActionListener, WindowListener{
 
-		BezierSurfacePanel beziersurfacepanel;
+		private BezierSurfacePanel beziersurfacepanel;
 		
 		public static JComboBox choice;
 		static ColorComboBox color;
@@ -43,13 +44,14 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		JButton reset;
 		JButton zoomin;
 		JButton zoomout;
-
+		private double[][][] control_vertex = new double[4][4][3];
 		
 //		SplashPanel splash;
 
 		
-		public CriarRegionFrame ()
+		public CriarRegionFrame (JanelaPrincipal parent)
 		{
+			super(parent);
 			this.setSize(600, 400);
 //			beziersurfacepanel = new BezierSurfacePanel();
 //			this.getContentPane().add(beziersurfacepanel, BorderLayout.CENTER);
@@ -58,11 +60,31 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 			this.cancelButton.addActionListener(this);
 			this.init();
 		}
+		public CriarRegionFrame (JanelaPrincipal parent, Region region)
+		{
+			super(parent);
+			this.setSize(600, 400);
+			this.okButton.addActionListener(this);
+			this.cancelButton.addActionListener(this);
+			Point3d [][] points = region.getControlVertex();
+			double escala = (points[3][3].x - points[0][0].x) / 5;
+			for(int i = 0; i < points.length; i++)
+			{
+				for(int j = 0; j < points[i].length; j++)
+				{
+//					System.out.println("****** POINTS: " + points[i][j]);
+					control_vertex[i][j][0] = (points[i][j].x - (points[3][3].x - points[0][0].x) / 2) / escala;
+					control_vertex[i][j][1] = (points[i][j].y - (points[3][3].y - points[0][0].y) / 2) / escala;
+					control_vertex[i][j][2] = points[i][j].z;
+				}
+			}
+			this.init();
+		}
 		
 		public void init(){
 			setBackground(Color.white);
-			Container contentpane = this.getContentPane();
-			contentpane.setLayout( new BorderLayout() );
+//			Container contentpane = this.getContentPane();
+//			contentpane.setLayout( new BorderLayout() );
 			
 			JPanel north = new JPanel( new BorderLayout() );
 			JPanel northwest = new JPanel();
@@ -101,8 +123,10 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 			south.setBorder( BorderFactory.createTitledBorder( south.getBorder(), "", TitledBorder.LEFT, TitledBorder.TOP, new Font( "Helvetica", Font.BOLD, 15) ) );
 
 //			contentpane.add( "North", north );
-			contentpane.add( "South", south );
-			contentpane.add( "Center", beziersurfacepanel = new BezierSurfacePanel() );
+			panel2.add( "South", south );
+//			contentpane.add( "Center", beziersurfacepanel = new BezierSurfacePanel() );
+			
+			panel2.add( "Center", beziersurfacepanel = new BezierSurfacePanel(control_vertex) );
 			
 			reset.addActionListener( this );
 			zoomin.addActionListener( this );

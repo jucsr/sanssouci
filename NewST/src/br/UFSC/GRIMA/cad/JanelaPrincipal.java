@@ -730,9 +730,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 				nTipo = 0;
 			else if (tipo.equals("Furo com base arredondada "))
 				nTipo = 0;
-			else if (tipo.equals("Furo com base esférica "))
+			else if (tipo.equals("Furo com base esfï¿½rica "))
 				nTipo = 0;
-			else if (tipo.equals("Furo cônico "))
+			else if (tipo.equals("Furo cï¿½nico "))
 				nTipo = 0;
 			else if (tipo.equals("Degrau "))
 				nTipo = 1;
@@ -1441,7 +1441,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	}
 	public void criarRegion()
 	{
-		CriarRegionFrame cr = new CriarRegionFrame();
+		CreateRegion cr = new CreateRegion(this, this.projeto, this.faceTrabalho);
 		cr.setVisible(true);
 	}
 	

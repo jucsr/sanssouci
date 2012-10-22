@@ -54,6 +54,7 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<Shape> bossArray;
 		ArrayList<Point3d> pontos2;
 		ArrayList<Point2D> vertexPoint;
+		ArrayList<Point3d> periferia;
 		Point2D borda[];	
 		LinearPath ligarPontos;
 		Point3d pontoInicial = new Point3d(0,0,0), pontoFinal = null;
@@ -68,7 +69,7 @@ public class MovimentacaoGeneralClosedPocket {
 				raio=this.genClosed.getRadius(),
 				raioAtual,
 				c,
-				z=-2,
+				z=-ws.getCondicoesUsinagem().getAp(),
 				diametroPrimeiroWs = this.genClosed.getWorkingsteps().get(0).getFerramenta().getDiametroFerramenta(),
 				diametroFerramenta = this.ferramenta.getDiametroFerramenta(),
 				ae = this.ws.getCondicoesUsinagem().getAe(),
@@ -137,9 +138,10 @@ public class MovimentacaoGeneralClosedPocket {
 			else if(this.itsBoss.get(i).getClass()==GeneralProfileBoss.class){
 				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
 				ArrayList<Point2D> vertexx = boss.getVertexPoints();
-				vertexx = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertexx), boss.getRadius());					
-				for(int q=0;q<getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).size();q++){
-					pontosPeriferia.add(getPontosPeriferiaGeneral(vertexx, z, boss.getRadius()).get(q));
+				vertexx = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertexx), boss.getRadius());		
+				periferia = getPontosPeriferiaGeneral(vertexx, z, boss.getRadius());
+				for(int q=0;q<periferia.size();q++){
+					pontosPeriferia.add(periferia.get(q));
 				}
 				GeneralPath path = new GeneralPath();
 				path.moveTo(vertexx.get(0).getX(), vertexx.get(0).getY());
@@ -150,9 +152,10 @@ public class MovimentacaoGeneralClosedPocket {
 				bossArray.add(path);
 			}
 		}
-
-		for(int i=0;i<getPontosPeriferiaGeneral(vertex, z, raio).size();i++){
-			pontosPeriferia.add(getPontosPeriferiaGeneral(vertex, z, raio).get(i));
+		
+		periferia = getPontosPeriferiaGeneral(vertex, z, raio);
+		for(int i=0;i<periferia.size();i++){
+			pontosPeriferia.add(periferia.get(i));
 		}
 
 		int b=0;
@@ -643,13 +646,19 @@ public class MovimentacaoGeneralClosedPocket {
 				distancia = vertex.get(j).getY();
 				for(int h=0;h<1000;h++){
 					pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
-					if(maiorY == vertex.get(j).getY())
+					if(maiorY == vertex.get(j).getY()){
 						distancia-=1;
-					else
+						if(distancia<=vertex.get(q).getY()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+						}
+					}
+					else{
 						distancia+=1;
-					if(distancia==vertex.get(q).getY()){
-						h=1000;
-						pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+						if(distancia>=vertex.get(q).getY()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(vertex.get(j).getX(),distancia,z));
+						}
 					}
 				}
 			}
@@ -657,13 +666,19 @@ public class MovimentacaoGeneralClosedPocket {
 				distancia = vertex.get(j).getX();
 				for(int h=0;h<1000;h++){
 					pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
-					if(maiorX == vertex.get(j).getX())
+					if(maiorX == vertex.get(j).getX()){
 						distancia-=1;
-					else
+						if(distancia<=vertex.get(q).getX()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+						}
+					}
+					else{
 						distancia+=1;
-					if(distancia==vertex.get(q).getX()){
-						h=1000;
-						pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+						if(distancia>=vertex.get(q).getX()){
+							h=1000;
+							pontosPeriferia.add(new Point3d(distancia,vertex.get(j).getY(),z));
+						}
 					}
 				}
 			}

@@ -72,16 +72,29 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		newPoints();
 		newParameters();
 
-//		Point axis = new Point( 1,0 );
-//			rotate( xaxis, 1.7, axis );
-//			rotate( yaxis, 1.7, axis );
-//			rotate( zaxis, 1.7, axis );
+		Point axis = new Point( 1,0 );
+			rotate( xaxis, 0, axis );
+			rotate( yaxis, 1.9, axis );
+			rotate( zaxis, 1.7, axis );
 
 		addMouseListener( this );
 		addMouseMotionListener( this );
 		addKeyListener( this );
     }
+    public BezierSurfacePanel(double[][][] control_points){
+    	this.control_points = control_points;
+  		newPoints();
+  		newParameters();
 
+  		Point axis = new Point( 1,0 );
+  			rotate( xaxis, 1.7, axis );
+  			rotate( yaxis, 1.7, axis );
+  			rotate( zaxis, 1.7, axis );
+
+  		addMouseListener( this );
+  		addMouseMotionListener( this );
+  		addKeyListener( this );
+      }
 
 	public void zoomIn(){
 		zoom--;
@@ -141,6 +154,8 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 
 		// draw a circle around selected point
 		g.setColor( Color.black );
+		g.setColor( new Color(190, 10, 0));
+
 		g.setStroke( new BasicStroke(1.0f) );
 		if ( OVER[0] != -1 ){
 			try{
@@ -148,7 +163,8 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 				int j = OVER[1];
 				double rad = 5*Z/(Z-(xaxis[2]*control_points[i][j][0] + yaxis[2]*control_points[i][j][1] + zaxis[2]*control_points[i][j][2]));
 				float[] p = toScreenPoint( control_points[i][j] );
-				g.draw( new Ellipse2D.Double( p[0] - rad - 2, p[1] - rad - 2, 2*(rad+2), 2*(rad+2) ) );
+//				g.draw( new Ellipse2D.Double( p[0] - rad - 2, p[1] - rad - 2, 2*(rad+2), 2*(rad+2) ) );
+				g.draw( new Ellipse2D.Double( p[0] - (rad - 2) , p[1] - (rad - 2) , (rad+2), (rad+2) ) );
 			} catch ( Exception e ){
 			}
 		}
@@ -232,7 +248,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 					g.setColor( Color.black );
 					g.draw( path );
 				}
-			} catch ( Exception e ){
+			} catch (Exception e ){
 			}
 		}
 	}
@@ -253,7 +269,9 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 				s = k*k;
 				t = k*k*rad;
 				g.setColor( new Color(R + (int)(s*(255-R)),G + (int)(s*(255-G)),B + (int)(s*(255-B))) );
-				g.fill( new Ellipse2D.Double( p[0] - rad + t/2, p[1] - rad + t/2, 2*(rad-t), 2*(rad-t) ) );
+				g.setColor( new Color(0, 180, 100));
+//				g.fill( new Ellipse2D.Double( p[0] - rad + t/2, p[1] - rad + t/2, 2*(rad-t), 2*(rad-t) ) );
+				g.fill( new Ellipse2D.Double( p[0] - rad/2 + t/2, p[1] - rad/2 + t/2, (rad-t), (rad-t) ) );
 			}
 		} catch ( Exception e ){
 		}
@@ -900,12 +918,10 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 				control_points[OVER[0]][OVER[1]][2] = z;
 				
 				//imprime a coordenada z
-				System.out.println("ponto Z: " + z);
 			}
 			POINT = me.getPoint();
 			
 			//imprime o ponto x e y mas sem distincao de qual bolinha esta utilizando
-			System.out.println("Point: " + POINT);
 			
 			newCoef = true;
 			repaint();

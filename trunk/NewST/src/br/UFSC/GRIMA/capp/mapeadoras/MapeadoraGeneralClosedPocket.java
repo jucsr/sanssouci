@@ -864,6 +864,7 @@ public class MapeadoraGeneralClosedPocket {
 			}
 		}
 		raioMedia = raioMedia/numeroDeDiametrosAdicionados;
+		System.out.println("numero de diametros adicionados : " + numeroDeDiametrosAdicionados);
 		maiorDiametro+=2*raioMedia;
 
 		System.out.println("MAIOR DIAMETRO:     "+maiorDiametro);

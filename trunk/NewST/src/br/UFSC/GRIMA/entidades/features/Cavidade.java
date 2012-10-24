@@ -483,10 +483,10 @@ public class Cavidade extends Feature implements Serializable {
 		{
 			saida[i + linha1.length + linha2.length + linha3.length] = linha4[i];
 		}
-		for(int k=0; k < saida.length; k++)
-		{
-			System.out.printf("saida %d: %f, %f \n", k, saida[k].getX(), saida[k].getY());
-		}
+//		for(int k=0; k < saida.length; k++)
+//		{
+//			System.out.printf("saida %d: %f, %f \n", k, saida[k].getX(), saida[k].getY());
+//		}
 		return saida;
 	}
 	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, double anguloInicial, double deltaAngulo, double raio, int numeroDePontos)  
@@ -506,9 +506,9 @@ public class Cavidade extends Feature implements Serializable {
 			
 			//System.out.println("posicao x, y : " + x  +y);
 		}
-		System.out.println("angulo final : " + ( numeroDePontos* dAngulo)*180/Math.PI );
-		System.out.println("tamanho saida : " + saida.length);
-		System.out.println("numeroPontos : " + numeroDePontos);
+//		System.out.println("angulo final : " + ( numeroDePontos* dAngulo)*180/Math.PI );
+//		System.out.println("tamanho saida : " + saida.length);
+//		System.out.println("numeroPontos : " + numeroDePontos);
 
 		return saida;
 	}
@@ -527,8 +527,6 @@ public class Cavidade extends Feature implements Serializable {
 			
 			saida[i] = new Point2D.Double(x, y);
 		}
-		System.out.println("angulo final : " + ( numeroDePontos* dAngulo)*180/Math.PI );
-
 		return saida;
 	}
 	public static Point2D[] determinarPontosEmRoundRectangular(Point3d position, double comprimento, double largura, double raio) // o position � a coodenada da origem do roundRectangular. Neste m�todo � calculado o n�mero de pontos considerando que se quer 1mm entre eles

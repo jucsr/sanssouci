@@ -29,7 +29,10 @@ public class CreateGeneralPocketBrep
 		this.generateColorArray();
 		this.generateIndexArray();
 	}
-	
+//	public Point3d[] getVertexArray()
+//	{
+//		return vertexArray;
+//	}
 	private void generateVertexArray()
 	{		
 		ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInRoundPolygon(polygonVertex, radius);

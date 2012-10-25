@@ -346,142 +346,145 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			generalBoss.setForma(forma);
 			generalBoss.setRugosidade((Double)spinnerRugosidade.getValue());
 			
-			Point3d coordinates = null;
-			ArrayList<Double> axis = null, refDirection = null;
-			if (this.face.getTipo() == Face.XY)
+			if (this.face.validarFeature(generalBoss))
 			{
-				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), generalBoss.getVertexPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ + altura);
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(0.0);
-				axis.add(1.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-			} else if (this.face.getTipo() == Face.XZ)
-			{
-				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), posicaoZ, generalBoss.getVertexPoints().get(0).getY());
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(-1.0);
-				axis.add(0.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				
-				
-			} else if (this.face.getTipo() == Face.YX)
-			{
-				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), this.face.getLargura() - generalBoss.getVertexPoints().get(0).getY(), face.getProfundidadeMaxima() - posicaoZ);
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(0.0);
-				axis.add(-1.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				
-			} else if (this.face.getTipo() == Face.YZ)
-			{
-				coordinates = new Point3d(this.face.getProfundidadeMaxima() - posicaoZ, generalBoss.getVertexPoints().get(0).getY(), this.face.getComprimento() - generalBoss.getVertexPoints().get(0).getX());
-				axis = new ArrayList<Double>();
-				axis.add(1.0);
-				axis.add(0.0);
-				axis.add(0.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				refDirection.add(-1.0);
-				
-			} else if (this.face.getTipo() == Face.ZX)
-			{
-				coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), this.face.getProfundidadeMaxima() - posicaoZ, this.face.getLargura() - generalBoss.getVertexPoints().get(0).getY());
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(1.0);
-				axis.add(0.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				
-			} else if (this.face.getTipo() == Face.ZY)
-			{
-				coordinates = new Point3d(posicaoZ, generalBoss.getVertexPoints().get(0).getY(), face.getComprimento() - generalBoss.getVertexPoints().get(0).getX());
-				axis = new ArrayList<Double>();
-				axis.add(-1.0);
-				axis.add(0.0);
-				axis.add(0.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				refDirection.add(1.0);
-				
-			}
-			Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
-			position.setName(generalBoss.getNome() + " placement");
-			generalBoss.setPosition(position);	
-			
-			paths = new ArrayList<Path>();
-			
-			for(int i = 0; i < arcos.size(); i++)
-			{
-				if (i < arcos.size() - 1)
+				Point3d coordinates = null;
+				ArrayList<Double> axis = null, refDirection = null;
+				if (this.face.getTipo() == Face.XY)
 				{
-					paths.add(arcos.get(i));
-					paths.add(new LinearPath(arcos.get(i).getFinalPoint(), arcos.get(i + 1).getInitialPoint()));
-				} else
+					coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), generalBoss.getVertexPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ + altura);
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(0.0);
+					axis.add(1.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+				} else if (this.face.getTipo() == Face.XZ)
 				{
-					paths.add(arcos.get(i));
-					paths.add(new LinearPath(arcos.get(i).getFinalPoint(), arcos.get(0).getInitialPoint()));
+					coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), posicaoZ, generalBoss.getVertexPoints().get(0).getY());
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(-1.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					
+					
+				} else if (this.face.getTipo() == Face.YX)
+				{
+					coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), this.face.getLargura() - generalBoss.getVertexPoints().get(0).getY(), face.getProfundidadeMaxima() - posicaoZ);
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(0.0);
+					axis.add(-1.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					
+				} else if (this.face.getTipo() == Face.YZ)
+				{
+					coordinates = new Point3d(this.face.getProfundidadeMaxima() - posicaoZ, generalBoss.getVertexPoints().get(0).getY(), this.face.getComprimento() - generalBoss.getVertexPoints().get(0).getX());
+					axis = new ArrayList<Double>();
+					axis.add(1.0);
+					axis.add(0.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					refDirection.add(-1.0);
+					
+				} else if (this.face.getTipo() == Face.ZX)
+				{
+					coordinates = new Point3d(generalBoss.getVertexPoints().get(0).getX(), this.face.getProfundidadeMaxima() - posicaoZ, this.face.getLargura() - generalBoss.getVertexPoints().get(0).getY());
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(1.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					
+				} else if (this.face.getTipo() == Face.ZY)
+				{
+					coordinates = new Point3d(posicaoZ, generalBoss.getVertexPoints().get(0).getY(), face.getComprimento() - generalBoss.getVertexPoints().get(0).getX());
+					axis = new ArrayList<Double>();
+					axis.add(-1.0);
+					axis.add(0.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					refDirection.add(1.0);
+					
 				}
-			}
-			
-			if(this.feature.getClass() == Cavidade.class)
-			{
-				Cavidade cavidade = (Cavidade)this.feature;
-				cavidade.addBoss(generalBoss);
-				generalBoss.setPaths(paths);
-			} else if(this.feature.getClass() == Degrau.class)
-			{
-				Degrau degrau = (Degrau)this.feature;
-				// ---- IMPLEMENTAR
-			} else if(this.feature.getClass() == GeneralClosedPocket.class)
-			{
-				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
-				general.addBoss(generalBoss);
-				generalBoss.setPaths(paths);
-			}
-			
-//			for (int i = 0; i < paths.size(); i++)
-//			{
-//				if (paths.get(i).getClass() == CircularPath.class)
+				Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
+				position.setName(generalBoss.getNome() + " placement");
+				generalBoss.setPosition(position);	
+				
+				paths = new ArrayList<Path>();
+				
+				for(int i = 0; i < arcos.size(); i++)
+				{
+					if (i < arcos.size() - 1)
+					{
+						paths.add(arcos.get(i));
+						paths.add(new LinearPath(arcos.get(i).getFinalPoint(), arcos.get(i + 1).getInitialPoint()));
+					} else
+					{
+						paths.add(arcos.get(i));
+						paths.add(new LinearPath(arcos.get(i).getFinalPoint(), arcos.get(0).getInitialPoint()));
+					}
+				}
+				
+				if(this.feature.getClass() == Cavidade.class)
+				{
+					Cavidade cavidade = (Cavidade)this.feature;
+					cavidade.addBoss(generalBoss);
+					generalBoss.setPaths(paths);
+				} else if(this.feature.getClass() == Degrau.class)
+				{
+					Degrau degrau = (Degrau)this.feature;
+					// ---- IMPLEMENTAR
+				} else if(this.feature.getClass() == GeneralClosedPocket.class)
+				{
+					GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
+					general.addBoss(generalBoss);
+					generalBoss.setPaths(paths);
+				}
+				
+//				for (int i = 0; i < paths.size(); i++)
 //				{
-//					CircularPath pathTmp = (CircularPath)paths.get(i);
-//					System.err.println("ARCO init --> " + paths.get(i).getInitialPoint());
-//					System.err.println("ARCO final --> " + paths.get(i).getFinalPoint());
-//					System.err.println("ARCO  --> " + pathTmp.getCenter());
-//				} else if(paths.get(i).getClass() == LinearPath.class)
-//				{
-//					System.err.println("LINHA init --> " + paths.get(i).getInitialPoint());
-//					System.err.println("LINHA final --> " + paths.get(i).getFinalPoint());
+//					if (paths.get(i).getClass() == CircularPath.class)
+//					{
+//						CircularPath pathTmp = (CircularPath)paths.get(i);
+//						System.err.println("ARCO init --> " + paths.get(i).getInitialPoint());
+//						System.err.println("ARCO final --> " + paths.get(i).getFinalPoint());
+//						System.err.println("ARCO  --> " + pathTmp.getCenter());
+//					} else if(paths.get(i).getClass() == LinearPath.class)
+//					{
+//						System.err.println("LINHA init --> " + paths.get(i).getInitialPoint());
+//						System.err.println("LINHA final --> " + paths.get(i).getFinalPoint());
+//					}
 //				}
-//			}
-			
-			this.parent.desenhador.repaint();
-			this.parent.atualizarArvore();
-			this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Profile Boss: " +generalBoss.getNome().toUpperCase() + " added with success!");
-			
-			dispose();
+				
+				this.parent.desenhador.repaint();
+				this.parent.atualizarArvore();
+				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Profile Boss: " +generalBoss.getNome().toUpperCase() + " added with success!");
+				
+				dispose();
+			}
 		}
 	}
 	private boolean validateAngles() 

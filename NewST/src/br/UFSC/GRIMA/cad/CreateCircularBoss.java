@@ -320,103 +320,107 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 				}
 			}
 		}
-		if (valido) 
+		if(this.face.validarFeature(boss))
 		{
+			if (valido) 
 			{
-				Point3d coordinates = null;
-				ArrayList<Double> axis = null, refDirection = null;
-				if (this.face.getTipo() == Face.XY) 
 				{
-					coordinates = new Point3d(posX, posY,
-							this.face.getProfundidadeMaxima() - posZ);
-					axis = new ArrayList<Double>();
-					axis.add(0.0);
-					axis.add(0.0);
-					axis.add(1.0);
+					Point3d coordinates = null;
+					ArrayList<Double> axis = null, refDirection = null;
+					if (this.face.getTipo() == Face.XY) 
+					{
+						coordinates = new Point3d(posX, posY,
+								this.face.getProfundidadeMaxima() - posZ);
+						axis = new ArrayList<Double>();
+						axis.add(0.0);
+						axis.add(0.0);
+						axis.add(1.0);
 
-					refDirection = new ArrayList<Double>();
-					refDirection.add(1.0);
-					refDirection.add(0.0);
-					refDirection.add(0.0);
-				} else if (this.face.getTipo() == Face.XZ) 
-				{
-					coordinates = new Point3d(posX, posZ, posY);
-					axis = new ArrayList<Double>();
-					axis.add(0.0);
-					axis.add(-1.0);
-					axis.add(0.0);
+						refDirection = new ArrayList<Double>();
+						refDirection.add(1.0);
+						refDirection.add(0.0);
+						refDirection.add(0.0);
+					} else if (this.face.getTipo() == Face.XZ) 
+					{
+						coordinates = new Point3d(posX, posZ, posY);
+						axis = new ArrayList<Double>();
+						axis.add(0.0);
+						axis.add(-1.0);
+						axis.add(0.0);
 
-					refDirection = new ArrayList<Double>();
-					refDirection.add(1.0);
-					refDirection.add(0.0);
-					refDirection.add(0.0);
+						refDirection = new ArrayList<Double>();
+						refDirection.add(1.0);
+						refDirection.add(0.0);
+						refDirection.add(0.0);
 
-				} else if (this.face.getTipo() == Face.YX)
-				{
-					coordinates = new Point3d(posX, this.face.getLargura()
-							- posY, posZ);
-					axis = new ArrayList<Double>();
-					axis.add(0.0);
-					axis.add(0.0);
-					axis.add(-1.0);
+					} else if (this.face.getTipo() == Face.YX)
+					{
+						coordinates = new Point3d(posX, this.face.getLargura()
+								- posY, posZ);
+						axis = new ArrayList<Double>();
+						axis.add(0.0);
+						axis.add(0.0);
+						axis.add(-1.0);
 
-					refDirection = new ArrayList<Double>();
-					refDirection.add(1.0);
-					refDirection.add(0.0);
-					refDirection.add(0.0);
+						refDirection = new ArrayList<Double>();
+						refDirection.add(1.0);
+						refDirection.add(0.0);
+						refDirection.add(0.0);
 
-				} else if (this.face.getTipo() == Face.YZ)
-				{
-					coordinates = new Point3d(this.face.getProfundidadeMaxima()
-							- posZ, posY, this.face.getComprimento() - posX);
-					axis = new ArrayList<Double>();
-					axis.add(1.0);
-					axis.add(0.0);
-					axis.add(0.0);
+					} else if (this.face.getTipo() == Face.YZ)
+					{
+						coordinates = new Point3d(this.face.getProfundidadeMaxima()
+								- posZ, posY, this.face.getComprimento() - posX);
+						axis = new ArrayList<Double>();
+						axis.add(1.0);
+						axis.add(0.0);
+						axis.add(0.0);
 
-					refDirection = new ArrayList<Double>();
-					refDirection.add(0.0);
-					refDirection.add(0.0);
-					refDirection.add(-1.0);
+						refDirection = new ArrayList<Double>();
+						refDirection.add(0.0);
+						refDirection.add(0.0);
+						refDirection.add(-1.0);
 
-				} else if (this.face.getTipo() == Face.ZX) 
-				{
-					coordinates = new Point3d(posX,
-							this.face.getProfundidadeMaxima() - posZ,
-							this.face.getLargura() - posY);
-					axis = new ArrayList<Double>();
-					axis.add(0.0);
-					axis.add(1.0);
-					axis.add(0.0);
+					} else if (this.face.getTipo() == Face.ZX) 
+					{
+						coordinates = new Point3d(posX,
+								this.face.getProfundidadeMaxima() - posZ,
+								this.face.getLargura() - posY);
+						axis = new ArrayList<Double>();
+						axis.add(0.0);
+						axis.add(1.0);
+						axis.add(0.0);
 
-					refDirection = new ArrayList<Double>();
-					refDirection.add(1.0);
-					refDirection.add(0.0);
-					refDirection.add(0.0);
+						refDirection = new ArrayList<Double>();
+						refDirection.add(1.0);
+						refDirection.add(0.0);
+						refDirection.add(0.0);
 
-				} else if (this.face.getTipo() == Face.ZY) 
-				{
-					coordinates = new Point3d(posZ, posY, posX);
-					axis = new ArrayList<Double>();
-					axis.add(-1.0);
-					axis.add(0.0);
-					axis.add(0.0);
+					} else if (this.face.getTipo() == Face.ZY) 
+					{
+						coordinates = new Point3d(posZ, posY, posX);
+						axis = new ArrayList<Double>();
+						axis.add(-1.0);
+						axis.add(0.0);
+						axis.add(0.0);
 
-					refDirection = new ArrayList<Double>();
-					refDirection.add(0.0);
-					refDirection.add(0.0);
-					refDirection.add(1.0);
+						refDirection = new ArrayList<Double>();
+						refDirection.add(0.0);
+						refDirection.add(0.0);
+						refDirection.add(1.0);
 
+					}
+					Axis2Placement3D position = new Axis2Placement3D(coordinates,	axis, refDirection);
+					position.setName(boss.getNome() + " placement");
+					boss.setPosition(position);
+
+					this.parent.desenhador.repaint();
+					this.parent.atualizarArvore();
+					this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" + "General Profile Boss: " + boss.getNome().toUpperCase() + " added with success!");
+
+					dispose();
 				}
-				Axis2Placement3D position = new Axis2Placement3D(coordinates,	axis, refDirection);
-				position.setName(boss.getNome() + " placement");
-				boss.setPosition(position);
-
-				this.parent.desenhador.repaint();
-				this.parent.atualizarArvore();
-				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" + "General Profile Boss: " + boss.getNome().toUpperCase() + " added with success!");
-
-				dispose();
+		
 			}
 		}
 	}

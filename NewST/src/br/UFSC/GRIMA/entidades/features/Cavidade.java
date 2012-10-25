@@ -447,7 +447,7 @@ public class Cavidade extends Feature implements Serializable {
 				
 				saida[i] = new Point2D.Double(x, y);
 				
-				//System.out.println("saida reta= " + saida[i] + i);
+				System.out.println("saida reta= " + saida[i] + i);
 			} 
 			
 		return saida;

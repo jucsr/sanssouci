@@ -386,7 +386,9 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 						
 //			if (this.cavidade.validarBoss(novoRectangularBoss)) 
 //			{
-			if(valido)
+			if(this.face.validarFeature(boss))
+			{
+				if(valido)
 				{
 					Point3d coordinates = null;
 					ArrayList<Double> axis = null, refDirection = null;
@@ -487,7 +489,8 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 							+ boss.getNome().toUpperCase()
 							+ " adicionado com sucesso!");
 					this.dispose();
-				}
+			}
+		}
 
 //			} else {
 //				JOptionPane.showMessageDialog(null, "Error trying to create the Boss", "invalid Boss", JOptionPane.OK_CANCEL_OPTION);

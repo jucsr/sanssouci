@@ -2014,15 +2014,17 @@ public class Face implements Serializable{
 			saida = Cavidade.determinarPontosEmRoundRectangular(new Point3d(rb.X,rb.Y,rb.Z), rb.getL2(), rb.getL1(), rb.getRadius());
 		}else if(feature.getClass() == GeneralProfileBoss.class)
 		{
-			System.out.println("ENTROU PONTOS generalProfileBoss");
 			GeneralProfileBoss gpb = (GeneralProfileBoss)feature;
 			ArrayList<Point2D> vertex = gpb.getVertexPoints();
-			for(int i=0; i < vertex.size(); i++)
+			int numRetas = vertex.size();
+			double [][] retas;
+			for(int i=0; i < vertex.size()-1; i++)
 			{
 				saida = Cavidade.determinarPontosEmReta(new Point3d( vertex.get(i).getX(), vertex.get(i).getY(), 0.0), 
 														new Point3d(vertex.get(i+1).getX(), vertex.get(i+1).getY(), 0.0 ));
 			}
 		}
+		System.out.println("feature class --> " + feature);
 		return saida;
 	}
 	public double getProfundidade(Feature f)

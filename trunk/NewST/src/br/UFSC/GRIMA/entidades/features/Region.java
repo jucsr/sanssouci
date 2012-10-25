@@ -21,6 +21,8 @@ public class Region extends Feature
 	private int splitV = 11;
 	private double maxDepth;
 	private transient ERegion eRegion;
+	private double width = 0;
+	private double length = 0;
 	
 	public Region(int tipo) 
 	{
@@ -89,5 +91,21 @@ public class Region extends Feature
 		root.add(new DefaultMutableTreeNode("Its Position: " + this.getPosition().getCoordinates()));
 		root.add(new DefaultMutableTreeNode("Its Control Vertex: " + this.controlVertex));
 		return root;
+	}
+	public double getWidth()
+	{
+		return width;
+	}
+	public void setWidth(double width)
+	{
+		this.width = width;
+	}
+	public double getLength()
+	{
+		return length;
+	}
+	public void setLength(double length)
+	{
+		this.length = length;
 	}
 }

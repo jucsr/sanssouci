@@ -82,7 +82,16 @@ public class MapeadoraRegion
 
 			// ----- Criando ferramenta -----
 
-			double L = determinarDiametroMinimo();
+			
+			double L;//determinarDiametroMinimo();
+			if(regionTmp.getLength()>regionTmp.getWidth())
+			{
+				L = regionTmp.getLength();
+			} else
+			{
+				L = regionTmp.getWidth();
+			}			
+			
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills, regionTmp, L);
 
 			// ------ Criando condicoes de usinagem ---------

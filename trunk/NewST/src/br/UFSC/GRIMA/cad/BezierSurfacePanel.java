@@ -41,7 +41,7 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
     double[] yaxis = {0.0, 1.0, 0.0};
     double[] zaxis = {0.0, 0.0, 1.0};
 	
-	double[][][] control_points = {
+	public double[][][] control_points = {
 			{ { -3, -3, 0 }, { -1, -3, 0 }, { 1, -3, 0 }, { 3, -3, 0 } },
 			{ { -3, -1, 0 }, { -1, -1, 0 }, { 1, -1, 0 }, { 3, -1, 0 } },
 			{ { -3, 1, 0 }, { -1, 1, 0 }, { 1, 1, 0 }, { 3, 1, 0 } },

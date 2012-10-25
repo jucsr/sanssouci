@@ -250,6 +250,8 @@ public class CreateRegion extends RegionAreaFrame implements ActionListener
 		Z = ((Double)spinnerPosZ.getValue()).doubleValue();
 //		double posZ = Z;
 		Region region = new Region(Feature.REGION);
+		region.setWidth(width);
+		region.setLength(length);
 		region.setPosicao(X, Y, Z);
 		Point3d [][] controlVertex = new Point3d[4][4];
 		double controlX = 0; 

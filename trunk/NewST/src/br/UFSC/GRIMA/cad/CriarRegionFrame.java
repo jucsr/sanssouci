@@ -33,7 +33,7 @@ import br.UFSC.GRIMA.entidades.features.Region;
 public class CriarRegionFrame extends CreateRegionFrame implements ChangeListener, ItemListener, ActionListener, WindowListener{
 
 		private BezierSurfacePanel beziersurfacepanel;
-		
+		private Region region;
 		public static JComboBox choice;
 		static ColorComboBox color;
 		static JCheckBox checkbox;
@@ -63,6 +63,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		public CriarRegionFrame (JanelaPrincipal parent, Region region)
 		{
 			super(parent);
+			this.region = region;
 			this.setSize(600, 400);
 			this.okButton.addActionListener(this);
 			this.cancelButton.addActionListener(this);
@@ -136,7 +137,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 			choice.addItemListener( this );
 			color.addItemListener( this );
 			this.addWindowListener( this );
-			
+						
 //			splash = new SplashPanel( this );
 //			getContentPane().add( splash );
 		
@@ -186,7 +187,18 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 	 */
 	private void ok() 
 	{
-		System.out.println("OK");
+		for()
+		{
+			for()
+			{
+				for()
+				{
+					
+				}
+			}
+			
+		}
+		region.setControlVertex(new Point3dbeziersurfacepanel.control_points);
 	}
 
 		public void itemStateChanged( ItemEvent ie ){

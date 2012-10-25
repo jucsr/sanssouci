@@ -90,8 +90,9 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.genClosed.setNome("Lucas");
 		this.genClosed.setPosicao(79, 22, 0);
 		this.genClosed.setProfundidade(10);
-		this.genClosed.setRadius(6);
+		this.genClosed.setRadius(20);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
+		
 //		points.add(new Point2D.Double(79,22));
 //		points.add(new Point2D.Double(47,60));
 //		points.add(new Point2D.Double(81,104));
@@ -105,27 +106,31 @@ public class MovimentacaoGeneralClosedPocketTest {
 //		points.add(new Point2D.Double(19,61));
 //		points.add(new Point2D.Double(40,12));
 		
-		points.add(new Point2D.Double(5.0, 35.0));
-		points.add(new Point2D.Double(20.0, 35.0));
-		points.add(new Point2D.Double(20.0, 5.0));
-		points.add(new Point2D.Double(60.0, 5.0));
-		points.add(new Point2D.Double(60.0, 35.0));
-		points.add(new Point2D.Double(95.0, 35.0));
-		points.add(new Point2D.Double(95.0, 65.0));
-		points.add(new Point2D.Double(125.0, 65.0));
-		points.add(new Point2D.Double(125.0, 35.0));
-		points.add(new Point2D.Double(180.0, 35.0));
-		points.add(new Point2D.Double(180.0, 75.0));
-		points.add(new Point2D.Double(155.0, 75.0));
-		points.add(new Point2D.Double(155.0, 100.0));
-		points.add(new Point2D.Double(195.0, 100.0));
-		points.add(new Point2D.Double(195.0, 145.0));
-		points.add(new Point2D.Double(75.0, 145.0));
-		points.add(new Point2D.Double(75.0, 120.0));
-		points.add(new Point2D.Double(40.0, 120.0));
-		points.add(new Point2D.Double(40.0, 95.0));
-		points.add(new Point2D.Double(5.0, 95.0));
+//		points.add(new Point2D.Double(5.0, 35.0));
+//		points.add(new Point2D.Double(20.0, 35.0));
+//		points.add(new Point2D.Double(20.0, 5.0));
+//		points.add(new Point2D.Double(60.0, 5.0));
+//		points.add(new Point2D.Double(60.0, 35.0));
+//		points.add(new Point2D.Double(95.0, 35.0));
+//		points.add(new Point2D.Double(95.0, 65.0));
+//		points.add(new Point2D.Double(125.0, 65.0));
+//		points.add(new Point2D.Double(125.0, 35.0));
+//		points.add(new Point2D.Double(180.0, 35.0));
+//		points.add(new Point2D.Double(180.0, 75.0));
+//		points.add(new Point2D.Double(155.0, 75.0));
+//		points.add(new Point2D.Double(155.0, 100.0));
+//		points.add(new Point2D.Double(195.0, 100.0));
+//		points.add(new Point2D.Double(195.0, 145.0));
+//		points.add(new Point2D.Double(75.0, 145.0));
+//		points.add(new Point2D.Double(75.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 95.0));
+//		points.add(new Point2D.Double(5.0, 95.0));
 		
+		points.add(new Point2D.Double(40.0, 40.0));
+		points.add(new Point2D.Double(40.0, 120.0));
+		points.add(new Point2D.Double(120.0, 120.0));
+		points.add(new Point2D.Double(120.0, 40.0));
 		
 		this.genClosed.setPoints(points);
 		//		this.genClosed.setComprimento(80);
@@ -491,8 +496,11 @@ public class MovimentacaoGeneralClosedPocketTest {
 				}
 			}
 		}
+		
+		System.out.println("Numero De Diametros : " + numeroDeDiametrosAdicionados);
 		raioMedia = raioMedia/numeroDeDiametrosAdicionados;
-
+		raioMedia = 10;
+		
 		for(int i=0;i<menorDistancia.size();i++){
 			if(maiorMenorDistancia<menorDistancia.get(i)){
 				maiorMenorDistancia=menorDistancia.get(i);
@@ -589,6 +597,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 					}
 				}
 			}
+			System.out.println("ENTROU NO 2 WS");
 		}
 
 		System.out.println("Pontos menores:  "+pontosMenores.size());
@@ -619,14 +628,14 @@ public class MovimentacaoGeneralClosedPocketTest {
 				r.lineTo(0, 5*largura);
 				r.lineTo(0, 0);
 
-				for(int i=0;i<pontos.size();i++){
-					for(int k=0;k<pontos.get(i).size();k++){
-						if(pontos.get(i).size()<1){
-							break;
-						}
-						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
-					}
-				}
+//				for(int i=0;i<pontos.size();i++){
+//					for(int k=0;k<pontos.get(i).size();k++){
+//						if(pontos.get(i).size()<1){
+//							break;
+//						}
+//						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
+//					}
+//				}
 //								for(int i=0;i<malha.length;i++){
 //									for(int k=0;k<malha[i].length;k++){
 //										e.add(new Ellipse2D.Double(5*malha[i][k][0],5*malha[i][k][1],5,5));
@@ -638,18 +647,18 @@ public class MovimentacaoGeneralClosedPocketTest {
 //									}
 //									e.add(new Ellipse2D.Double(5*pontosPossiveis.get(i).getX(),5*pontosPossiveis.get(i).getY(),5,5));					
 //								}
-				//				for(int i=0;i<maximos.size();i++){
-				//					if(maximos.size()<1){
-				//						break;
-				//					}
-				//					e.add(new Ellipse2D.Double(5*maximos.get(i).getX(),5*maximos.get(i).getY(),5,5));					
-				//				}
-				for(int i=0;i<pontosMenores.size();i++){
-					if(pontosMenores.size()<1){
-						break;
-					}
-					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
-				}
+								for(int i=0;i<maximos.size();i++){
+									if(maximos.size()<1){
+										break;
+									}
+									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
+								}
+//				for(int i=0;i<pontosMenores.size();i++){
+//					if(pontosMenores.size()<1){
+//						break;
+//					}
+//					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
+//				}
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
 						break;

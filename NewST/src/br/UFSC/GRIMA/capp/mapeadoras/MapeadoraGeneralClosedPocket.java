@@ -835,9 +835,12 @@ public class MapeadoraGeneralClosedPocket {
 		malhaMenoresDistancias = getMalhaMenoresDistancias(-genClosed.getProfundidade(), genClosed, numeroDePontosDaMalha);
 		raioMedia=0;
 		numeroDeDiametrosAdicionados=0;
+		
+		
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
 			for(int k=1;k<malhaMenoresDistancias.length-1;k++){
 				contador = 0;
+				System.out.println("Malha Menores Distancias : "+ malhaMenoresDistancias[i][k]);
 				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k+1])
 					contador++;
 				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k-1])

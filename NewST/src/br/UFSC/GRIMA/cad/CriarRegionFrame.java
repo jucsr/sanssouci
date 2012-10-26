@@ -38,7 +38,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		static ColorComboBox color;
 		static JCheckBox checkbox;
 		static JSpinner n;
-		
+		private Point3d[][] vertex;
 		int[] OVER = { -1, -1 };
 		
 		JButton reset;
@@ -187,18 +187,20 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 	 */
 	private void ok() 
 	{
-		for()
+		vertex = new Point3d[4][4];
+		for(int i = 0; i < beziersurfacepanel.control_points.length; i++)
 		{
-			for()
+			for(int j = 0; j < beziersurfacepanel.control_points[i].length; j++)
 			{
-				for()
-				{
-					
-				}
+				double x = beziersurfacepanel.control_points[i][j][0] * 5;
+				double y = beziersurfacepanel.control_points[i][j][1] * 5;
+				double z = beziersurfacepanel.control_points[i][j][2] * 50;
+				
+				vertex[i][j] = new Point3d(x, y, z);
+				System.out.println("VERTEX: " + new Point3d(x, y, z));
 			}
-			
 		}
-		region.setControlVertex(new Point3dbeziersurfacepanel.control_points);
+		region.setControlVertex(vertex);
 	}
 
 		public void itemStateChanged( ItemEvent ie ){

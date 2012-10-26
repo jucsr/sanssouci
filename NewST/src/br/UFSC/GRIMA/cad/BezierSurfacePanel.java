@@ -627,14 +627,24 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 	
 
 	public void reset(){
+//		for (int i = 0; i < 4; i++) 
+//		{
+//			for (int j = 0; j < 4; j++) {
+//				control_points[i][j][0] = 2 * j - 3;
+//				control_points[i][j][1] = 2 * i - 3;
+//				control_points[i][j][2] = 0;
+//			}
+//		}
+		
 		for (int i = 0; i < 4; i++) 
 		{
 			for (int j = 0; j < 4; j++) {
-				control_points[i][j][0] = 2 * j - 3;
-				control_points[i][j][1] = 2 * i - 3;
+				control_points[i][j][0] = control_points[i][j][0];
+				control_points[i][j][1] = control_points[i][j][1];
 				control_points[i][j][2] = 0;
 			}
 		}
+		
 		newCoef = true;
 		repaint();
 	}

@@ -662,20 +662,20 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 		p[2] = z;
 	}
 
-	public double[] rotatePoint( double[] X ){
+	public double[] rotatePoint(double[] X) {
 		double[] out = new double[3];
-		out[0] = X[0]*xaxis[0] + X[1]*yaxis[0] + X[2]*zaxis[0];
-		out[1] = X[0]*xaxis[1] + X[1]*yaxis[1] + X[2]*zaxis[1];
-		out[2] = X[0]*xaxis[2] + X[1]*yaxis[2] + X[2]*zaxis[2];
+		out[0] = X[0] * xaxis[0] + X[1] * yaxis[0] + X[2] * zaxis[0];
+		out[1] = X[0] * xaxis[1] + X[1] * yaxis[1] + X[2] * zaxis[1];
+		out[2] = X[0] * xaxis[2] + X[1] * yaxis[2] + X[2] * zaxis[2];
 		return out;
 	}
  
 
-	public double[] rotatePoint( double x, double y, double z ){
+	public double[] rotatePoint(double x, double y, double z) {
 		double[] out = new double[3];
-		out[0] = x*xaxis[0] + y*yaxis[0] + z*zaxis[0];
-		out[1] = x*xaxis[1] + y*yaxis[1] + z*zaxis[1];
-		out[2] = x*xaxis[2] + y*yaxis[2] + z*zaxis[2];
+		out[0] = x * xaxis[0] + y * yaxis[0] + z * zaxis[0];
+		out[1] = x * xaxis[1] + y * yaxis[1] + z * zaxis[1];
+		out[2] = x * xaxis[2] + y * yaxis[2] + z * zaxis[2];
 		return out;
 	}
 
@@ -697,37 +697,41 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 
 	// sign = 1  means increasing order
 	// sign = -1 means decreasing order
-	public void sort(int a, int b, int sign){
-        int lo = a;
-        int hi = b;
-        double mid;
+	public void sort(int a, int b, int sign) {
+		int lo = a;
+		int hi = b;
+		double mid;
 		int[] tmp1;
 		double tmp2;
 
-        if (b>a){
-            mid = zorder[(a+b)/2];
-            while(lo<=hi){
-                while( (lo<b) && (sign*zorder[lo]<sign*mid) )  ++lo;
-                while( (hi>a) && (sign*zorder[hi]>sign*mid) )  --hi;
+		if (b > a) {
+			mid = zorder[(a + b) / 2];
+			while (lo <= hi) {
+				while ((lo < b) && (sign * zorder[lo] < sign * mid))
+					++lo;
+				while ((hi > a) && (sign * zorder[hi] > sign * mid))
+					--hi;
 
-                if(lo<=hi){
-					//if ( order[lo][0]
-                    tmp1 = order[lo];
-                    order[lo] = order[hi];
-                    order[hi] = tmp1;
-					
+				if (lo <= hi) {
+					// if ( order[lo][0]
+					tmp1 = order[lo];
+					order[lo] = order[hi];
+					order[hi] = tmp1;
+
 					tmp2 = zorder[lo];
-                    zorder[lo] = zorder[hi];
-                    zorder[hi] = tmp2;
-					
+					zorder[lo] = zorder[hi];
+					zorder[hi] = tmp2;
+
 					lo++;
-					hi--;					
-                }
-            }
-            if(a<hi) sort(a,hi,sign);
-            if(lo<b) sort(lo,b,sign);
-        }
-    }
+					hi--;
+				}
+			}
+			if (a < hi)
+				sort(a, hi, sign);
+			if (lo < b)
+				sort(lo, b, sign);
+		}
+	}
 
 
 	public void sortParameters(){

@@ -192,8 +192,8 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		{
 			for(int j = 0; j < beziersurfacepanel.control_points[i].length; j++)
 			{
-				double x = beziersurfacepanel.control_points[i][j][0] * 5;
-				double y = beziersurfacepanel.control_points[i][j][1] * 5;
+				double x = beziersurfacepanel.control_points[i][j][0] * 5 * 8;
+				double y = beziersurfacepanel.control_points[i][j][1] * 5 * 8;
 				double z = beziersurfacepanel.control_points[i][j][2] * 50;
 				
 				vertex[i][j] = new Point3d(x, y, z);

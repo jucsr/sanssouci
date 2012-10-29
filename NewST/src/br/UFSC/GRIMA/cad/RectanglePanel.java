@@ -51,6 +51,13 @@ public class RectanglePanel extends DesenhadorDeFaces implements MouseListener, 
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 	
 		g2d.setStroke(new BasicStroke());
+		
+		g2d.setColor(new Color(205, 205, 193));
+        g2d.fill(rectangle);
+        
+        g2d.setColor(Color.black);
+        g2d.draw(rectangle);
+        
 		if(grade)
 			this.drawGrade(g2d);
 		
@@ -61,12 +68,7 @@ public class RectanglePanel extends DesenhadorDeFaces implements MouseListener, 
         	g2d.draw(shape);
         }
 		
-		g2d.setColor(new Color(205, 205, 193));
-        g2d.fill(rectangle);
-        
-        g2d.setColor(Color.black);
-        g2d.draw(rectangle);
-        
+		
         g2d.setColor(new Color(255, 255, 0));
         float dash1[] = {5.0f, 2.5f};
 		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));

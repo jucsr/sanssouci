@@ -215,6 +215,7 @@ public class MapeadoraRegion
 		EndMill endMill = null;
 		String ISO = "";
 		ISO = MapeadoraDeWorkingsteps.selectMaterialFerramenta(this.projeto, material, "Condicoes_De_Usinagem_EndMill");
+		
 		for(int i = 0; i < endMills.size(); i++) // seleciona todas as endMills candidatas para usinar a regiao
 		{
 			endMill = endMills.get(i);
@@ -307,23 +308,27 @@ public class MapeadoraRegion
 	{
 		Point3d[][] pontosDaSuperficie = new BezierSurface(regionTmp.getControlVertex(), 21, 21).getMeshArray();
 		double diametroMinimo = 0;
+		double l1Tmp,l2Tmp,l3Tmp,anguloTmp,diametroTmp,deltaZ1,deltaZ2,z0,z1,z2;
+		
+		l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[0][1].x - pontosDaSuperficie[0][0].x), 2) +  Math.pow((pontosDaSuperficie[0][1].z - pontosDaSuperficie[0][0].z), 2), 0.5);
+		diametroMinimo = l1Tmp;
 		
 		for(int i = 0; i < pontosDaSuperficie.length; i++)
 		{
 			for(int j = 0; j < pontosDaSuperficie[0].length - 2; j++)
 			{
-				double l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[i][j + 1].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i][j + 1].z - pontosDaSuperficie[i][j].z), 2), 0.5);
-				double l2Tmp = Math.pow(Math.pow((pontosDaSuperficie[i][j + 2].x - pontosDaSuperficie[i][j + 1].x), 2) +  Math.pow((pontosDaSuperficie[i][j + 2].z - pontosDaSuperficie[i][j + 1].z), 2), 0.5);
-				double l3Tmp = Math.pow(Math.pow((pontosDaSuperficie[i][j + 2].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i][j + 1].z - pontosDaSuperficie[i][j].z), 2), 0.5);
-				double anguloTmp = Math.acos((Math.pow(l2Tmp, 2) + Math.pow(l3Tmp, 2) - Math.pow(l1Tmp, 2)) / (2 * l2Tmp * l3Tmp));
-				double diametroTmp = l1Tmp / Math.sin(anguloTmp);
+				l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[i][j + 1].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i][j + 1].z - pontosDaSuperficie[i][j].z), 2), 0.5);
+				l2Tmp = Math.pow(Math.pow((pontosDaSuperficie[i][j + 2].x - pontosDaSuperficie[i][j + 1].x), 2) +  Math.pow((pontosDaSuperficie[i][j + 2].z - pontosDaSuperficie[i][j + 1].z), 2), 0.5);
+				l3Tmp = Math.pow(Math.pow((pontosDaSuperficie[i][j + 2].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i][j + 1].z - pontosDaSuperficie[i][j].z), 2), 0.5);
+				anguloTmp = Math.acos((Math.pow(l2Tmp, 2) + Math.pow(l3Tmp, 2) - Math.pow(l1Tmp, 2)) / (2 * l2Tmp * l3Tmp));
+				diametroTmp = l1Tmp / Math.sin(anguloTmp);
 				
-				double deltaZ1, deltaZ2;
+				//CONVEXO ou CONCAVO
 				
-				double z0 = pontosDaSuperficie[i][j].z;
-				double z1 = pontosDaSuperficie[i][j + 1].z;
-				double z2 = pontosDaSuperficie[i][j + 2].z;
-				
+				z0 = pontosDaSuperficie[i][j].z;
+				z1 = pontosDaSuperficie[i][j + 1].z;
+				z2 = pontosDaSuperficie[i][j + 2].z;
+		
 				deltaZ1 = z1 - z0;
 				deltaZ2 = z2 - z1;
 				
@@ -334,11 +339,16 @@ public class MapeadoraRegion
 						diametroMinimo = diametroTmp;
 					}
 				}
-				/****************************************************/
-				
-				l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 1][j].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i + 1][j].z - pontosDaSuperficie[i][j].z), 2), 0.5);
-				l2Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 2][j].x - pontosDaSuperficie[i + 1][j].x), 2) +  Math.pow((pontosDaSuperficie[i + 2][j].z - pontosDaSuperficie[i + 1][j].z), 2), 0.5);
-				l3Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 2][j].x - pontosDaSuperficie[i][j].x), 2) +  Math.pow((pontosDaSuperficie[i + 1][j].z - pontosDaSuperficie[i][j].z), 2), 0.5);
+				/****************************************************/				
+			}
+		}
+		for(int j = 0; j < pontosDaSuperficie.length; j++)
+		{
+			for(int i = 0; i < pontosDaSuperficie[0].length - 2; i++)
+			{
+				l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 1][j].y - pontosDaSuperficie[i][j].y), 2) +  Math.pow((pontosDaSuperficie[i + 1][j].z - pontosDaSuperficie[i][j].z), 2), 0.5);
+				l2Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 2][j].y - pontosDaSuperficie[i + 1][j].y), 2) +  Math.pow((pontosDaSuperficie[i + 2][j].z - pontosDaSuperficie[i + 1][j].z), 2), 0.5);
+				l3Tmp = Math.pow(Math.pow((pontosDaSuperficie[i + 2][j].y - pontosDaSuperficie[i][j].y), 2) +  Math.pow((pontosDaSuperficie[i + 1][j].z - pontosDaSuperficie[i][j].z), 2), 0.5);
 				anguloTmp = Math.acos((Math.pow(l2Tmp, 2) + Math.pow(l3Tmp, 2) - Math.pow(l1Tmp, 2)) / (2 * l2Tmp * l3Tmp));
 				diametroTmp = l1Tmp / Math.sin(anguloTmp);
 				
@@ -355,9 +365,10 @@ public class MapeadoraRegion
 					{
 						diametroMinimo = diametroTmp;
 					}
-				}
+				}		
 			}
 		}
+	
 		return diametroMinimo;
 	}
 }

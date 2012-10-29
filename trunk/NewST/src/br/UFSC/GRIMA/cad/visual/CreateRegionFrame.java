@@ -1,17 +1,16 @@
-/*
- * Created by JFormDesigner on Wed May 30 16:54:49 BRT 2012
- */
-
 package br.UFSC.GRIMA.cad.visual;
 
 import java.awt.*;
 import javax.swing.*;
 
-/**
- * @author Lucas
- */
 public class CreateRegionFrame extends JDialog {
 	public CreateRegionFrame(Frame owner) {
+		super(owner);
+		initComponents();
+	}
+
+	public CreateRegionFrame(Dialog owner) {
+		super(owner);
 		initComponents();
 	}
 

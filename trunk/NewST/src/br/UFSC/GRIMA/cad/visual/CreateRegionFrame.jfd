@@ -32,6 +32,14 @@
        <string>title</string>
        <string>Define Control Vertex</string>
       </void>
+      <void method="setProperty">
+       <string>$sizePolicy</string>
+       <int>0</int>
+      </void>
+      <void method="setProperty">
+       <string>$locationPolicy</string>
+       <int>0</int>
+      </void>
       <void method="add">
        <object class="com.jformdesigner.model.FormContainer">
         <string>javax.swing.JPanel</string>

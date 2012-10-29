@@ -68,45 +68,48 @@ public class BezierSurfacePanel extends JPanel implements MouseListener, MouseMo
 	int[] OVER = { -1, -1 };
 
 
-    public BezierSurfacePanel(){
+	public BezierSurfacePanel() {
 		newPoints();
 		newParameters();
 
-		Point axis = new Point( 1,0 );
-			rotate( xaxis, 0, axis );
-			rotate( yaxis, 1.9, axis );
-			rotate( zaxis, 1.7, axis );
+		Point axis = new Point(1, 0);
+		rotate(xaxis, 0, axis);
+		rotate(yaxis, 1.9, axis);
+		rotate(zaxis, 1.7, axis);
 
-		addMouseListener( this );
-		addMouseMotionListener( this );
-		addKeyListener( this );
-    }
-    public BezierSurfacePanel(double[][][] control_points){
-    	this.control_points = control_points;
-  		newPoints();
-  		newParameters();
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		addKeyListener(this);
+	}
 
-  		Point axis = new Point( 1,0 );
-  			rotate( xaxis, 1.7, axis );
-  			rotate( yaxis, 1.7, axis );
-  			rotate( zaxis, 1.7, axis );
+	public BezierSurfacePanel(double[][][] control_points) {
+		this.control_points = control_points;
+		newPoints();
+		newParameters();
 
-  		addMouseListener( this );
-  		addMouseMotionListener( this );
-  		addKeyListener( this );
-      }
+		Point axis = new Point(1, 0);
+		rotate(xaxis, 1.7, axis);
+		rotate(yaxis, 1.7, axis);
+		rotate(zaxis, 1.7, axis);
 
-	public void zoomIn(){
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		addKeyListener(this);
+	}
+
+	public void zoomIn() {
 		zoom--;
-		if ( zoom < 0) zoom = 0;
-		Z = 12*units[zoom];
+		if (zoom < 0)
+			zoom = 0;
+		Z = 12 * units[zoom];
 		repaint();
 	}
 
-	public void zoomOut(){
+	public void zoomOut() {
 		zoom++;
-		if ( zoom > units.length-1 ) zoom = units.length - 1;
-		Z = 12*units[zoom];
+		if (zoom > units.length - 1)
+			zoom = units.length - 1;
+		Z = 12 * units[zoom];
 		repaint();
 	}
 

@@ -51,21 +51,21 @@ public class RectangleRegionPanel extends DesenhadorDeFaces implements MouseList
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 	
 		g2d.setStroke(new BasicStroke());
+		
+		g2d.setColor(new Color(122, 139, 139));
+        g2d.fill(rectangle);
+        
+        g2d.setColor(Color.black);
+        g2d.draw(rectangle);
+        
 		if(grade)
 			this.drawGrade(g2d);
 		
-       
         if(shape != null)
         {
         	g2d.setColor(new Color(255, 69, 0));
         	g2d.draw(shape);
         }
-		
-		g2d.setColor(new Color(205, 205, 193));
-        g2d.fill(rectangle);
-        
-        g2d.setColor(Color.black);
-        g2d.draw(rectangle);
         
         g2d.setColor(new Color(255, 255, 0));
         float dash1[] = {5.0f, 2.5f};
@@ -138,8 +138,6 @@ public class RectangleRegionPanel extends DesenhadorDeFaces implements MouseList
 			this.janelaRectangle.lengthSpinner.setEnabled(true);
 			this.janelaRectangle.widthSpinner.setEnabled(true);
 		}
-		
-
 		repaint();		
 	}
 

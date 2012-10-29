@@ -253,6 +253,8 @@ public class CreateRegion extends RegionAreaFrame implements ActionListener
 		region.setWidth(width);
 		region.setLength(length);
 		region.setPosicao(X, Y, Z);
+		region.setTolerancia(tolerancia);
+		region.setItsId(this.textField1.getText());
 		Point3d [][] controlVertex = new Point3d[4][4];
 		double controlX = 0; 
 		for(int i = 0; i < 4; i++)
@@ -266,7 +268,7 @@ public class CreateRegion extends RegionAreaFrame implements ActionListener
 			}
 			controlX += length/3;
 		}
-		CriarRegionFrame cr = new CriarRegionFrame(this.parent, region);
+		CriarRegionFrame cr = new CriarRegionFrame(this.parent, region, this.face);
 		cr.setVisible(true);
 		this.dispose();
 	}

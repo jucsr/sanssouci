@@ -2,10 +2,8 @@ package br.UFSC.GRIMA.cad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -28,12 +26,15 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.bezierGraphicInterface.ColorComboBox;
 import br.UFSC.GRIMA.cad.visual.CreateRegionFrame;
+import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Region;
 
 public class CriarRegionFrame extends CreateRegionFrame implements ChangeListener, ItemListener, ActionListener, WindowListener{
 
 		private BezierSurfacePanel beziersurfacepanel;
 		private Region region;
+		private Face face;
+		private JanelaPrincipal parent;
 		public static JComboBox choice;
 		static ColorComboBox color;
 		static JCheckBox checkbox;
@@ -60,15 +61,17 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 			this.cancelButton.addActionListener(this);
 			this.init();
 		}
-		public CriarRegionFrame (JanelaPrincipal parent, Region region)
+		public CriarRegionFrame (JanelaPrincipal parent, Region region, Face face)
 		{
 			super(parent);
+			this.parent = parent;
 			this.region = region;
+			this.face = face;
 			this.setSize(600, 400);
 			this.okButton.addActionListener(this);
 			this.cancelButton.addActionListener(this);
 			Point3d [][] points = region.getControlVertex();
-			double escala = (points[3][3].x - points[0][0].x) / 5;
+			double escala = (points[3][3].x - points[0][0].x) / 5; //=========== CUIDADO =========
 			for(int i = 0; i < points.length; i++)
 			{
 				for(int j = 0; j < points[i].length; j++)
@@ -192,8 +195,8 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		{
 			for(int j = 0; j < beziersurfacepanel.control_points[i].length; j++)
 			{
-				double x = beziersurfacepanel.control_points[i][j][0] * 5 * 8;
-				double y = beziersurfacepanel.control_points[i][j][1] * 5 * 8;
+				double x = beziersurfacepanel.control_points[i][j][0] * 5 * 8 + region.getLength() / 2;
+				double y = beziersurfacepanel.control_points[i][j][1] * 5 * 8 + region.getWidth() / 2;
 				double z = beziersurfacepanel.control_points[i][j][2] * 50;
 				
 				vertex[i][j] = new Point3d(x, y, z);
@@ -201,6 +204,11 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 			}
 		}
 		region.setControlVertex(vertex);
+		
+		this.face.addFeature(region);
+		this.parent.desenhador.repaint();
+		this.parent.atualizarArvore();
+		this.dispose();
 	}
 
 		public void itemStateChanged( ItemEvent ie ){

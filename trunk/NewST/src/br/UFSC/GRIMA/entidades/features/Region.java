@@ -88,8 +88,10 @@ public class Region extends Feature
 	{
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Bezier Surface -" + this.getIndice());
 		root.add(new DefaultMutableTreeNode("Its Id: " + this.itsId));
-		root.add(new DefaultMutableTreeNode("Its Position: " + this.getPosition().getCoordinates()));
+//		root.add(new DefaultMutableTreeNode("Its Position: " + this.getPosition().getCoordinates()));
+		root.add(new DefaultMutableTreeNode("Its Position: " + this.getPosicaoX() + ", " + this.getPosicaoY() + ", " + this.getPosicaoZ()));
 		root.add(new DefaultMutableTreeNode("Its Control Vertex: " + this.controlVertex));
+		root.add(new DefaultMutableTreeNode("Roughness: " + this.getTolerancia() + " um"));
 		return root;
 	}
 	public double getWidth()

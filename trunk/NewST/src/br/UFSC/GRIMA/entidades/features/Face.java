@@ -1559,7 +1559,7 @@ public class Face implements Serializable{
 				case Feature.CAVIDADE_FUNDO_ARREDONDADO:
 					tmp = ((CavidadeFundoArredondado)ftmp).getNodo();
 					break;
-				case Feature.BOSS:
+				case Feature.BOSS:  //============= ISTO TAH ESTRANHO!!! ===========
 					if(ftmp.getClass() == CircularBoss.class)
 					{
 						tmp = ((CircularBoss)ftmp).getNode();
@@ -1575,6 +1575,8 @@ public class Face implements Serializable{
 				case Feature.CAVIDADE_PERFIL_GERAL:
 					tmp = ((GeneralClosedPocket)ftmp).getNodo();
 					break;
+				case Feature.REGION:
+					tmp = ((Region)ftmp).getNodo();
 				default:
 					break;
 			}
@@ -1670,12 +1672,12 @@ public class Face implements Serializable{
 	{
 		boolean valido = false;
 		
-		/** Implementar o tratamento de intersecções **/
+		/** Implementar o tratamento de intersecï¿½ï¿½es **/
 		
 //		if(verificaInterseccaoFeatures(feature))
 //		{
 //			valido = false;
-//			JOptionPane.showMessageDialog(null, "Há colisão de features");
+//			JOptionPane.showMessageDialog(null, "Hï¿½ colisï¿½o de features");
 //		}
 //		else
 		{
@@ -1843,7 +1845,7 @@ public class Face implements Serializable{
 						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
 					}
 				}
-				//** Mães inválidas por enquanto inválidas, mas arrumar para que elas possam valer tbm *//
+				//** Mï¿½es invï¿½lidas por enquanto invï¿½lidas, mas arrumar para que elas possam valer tbm *//
 				else if(mae.getClass() == FuroBaseEsferica.class || 
 						mae.getClass() == FuroBaseConica.class ||
 						mae.getClass() == RanhuraPerfilBezier.class ||
@@ -1852,7 +1854,7 @@ public class Face implements Serializable{
 						mae.getClass() == RanhuraPerfilVee.class)
 				{
 					valido = false;
-					JOptionPane.showMessageDialog(null, "A nova feature não pode ser construída dentro desta Feature Mãe");
+					JOptionPane.showMessageDialog(null, "A nova feature nï¿½o pode ser construï¿½da dentro desta Feature Mï¿½e");
 				}
 			}
 			else

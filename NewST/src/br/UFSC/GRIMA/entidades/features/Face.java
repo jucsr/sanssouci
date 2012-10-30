@@ -2018,13 +2018,18 @@ public class Face implements Serializable{
 		{
 			GeneralProfileBoss gpb = (GeneralProfileBoss)feature;
 			ArrayList<Point2D> vertex = gpb.getVertexPoints();
-			int numRetas = vertex.size();
-			double [][] retas;
+			ArrayList<Point2D> retas = new ArrayList<Point2D>();
 			for(int i=0; i < vertex.size()-1; i++)
 			{
 				saida = Cavidade.determinarPontosEmReta(new Point3d( vertex.get(i).getX(), vertex.get(i).getY(), 0.0), 
 														new Point3d(vertex.get(i+1).getX(), vertex.get(i+1).getY(), 0.0 ));
+				for(int j=0; j < saida.length; j++)
+				{
+					retas.add(saida[j]);
+				}
+				
 			}
+			saida = (Point2D[]) retas.toArray();
 		}
 		System.out.println("feature class --> " + feature);
 		return saida;

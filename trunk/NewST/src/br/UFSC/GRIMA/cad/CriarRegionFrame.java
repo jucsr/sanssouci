@@ -301,55 +301,54 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		this.dispose();
 	}
 
-		public void itemStateChanged( ItemEvent ie ){
-				Object obj = ie.getSource();
-				if ( obj == choice ){
-					beziersurfacepanel.newCoef = true;
-					beziersurfacepanel.repaint();
-				} else if ( obj == color ){
-					beziersurfacepanel.repaint();
-				}
-			}
-		 
-		 public void stateChanged( ChangeEvent ce ){
-				Object obj = ce.getSource();
-				if ( obj == n ){
-					beziersurfacepanel.N = ((Integer)n.getValue()).intValue();
-					beziersurfacepanel.newCoef = true;
-					beziersurfacepanel.repaint();
-				}
-			}
-		 
+	public void itemStateChanged(ItemEvent ie) {
+		Object obj = ie.getSource();
+		if (obj == choice) {
+			beziersurfacepanel.newCoef = true;
+			beziersurfacepanel.repaint();
+		} else if (obj == color) {
+			beziersurfacepanel.repaint();
+		}
+	}
 
-			public void windowActivated( WindowEvent we ){
-			}
+	public void stateChanged(ChangeEvent ce) {
+		Object obj = ce.getSource();
+		if (obj == n) {
+			beziersurfacepanel.N = ((Integer) n.getValue()).intValue();
+			beziersurfacepanel.newCoef = true;
+			beziersurfacepanel.repaint();
+		}
+	}
 
-			public void windowClosed( WindowEvent we ){
-				//splash.start();
-			}
+	public void windowActivated(WindowEvent we) {
+	}
 
-//			public void windowClosing( WindowEvent we ){
-//				splash.start();
-//			}
+	public void windowClosed(WindowEvent we) {
+		// splash.start();
+	}
 
-			public void windowDeactivated( WindowEvent we ){
-				//splash.start();
-			}
+	// public void windowClosing( WindowEvent we ){
+	// splash.start();
+	// }
 
-			public void windowDeiconified( WindowEvent we ){
-			}
+	public void windowDeactivated(WindowEvent we) {
+		// splash.start();
+	}
 
-			public void windowIconified( WindowEvent we ){
-			}
+	public void windowDeiconified(WindowEvent we) {
+	}
 
-			public void windowOpened( WindowEvent we ){
-			}
+	public void windowIconified(WindowEvent we) {
+	}
 
-			@Override
-			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+	public void windowOpened(WindowEvent we) {
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 }
 
 

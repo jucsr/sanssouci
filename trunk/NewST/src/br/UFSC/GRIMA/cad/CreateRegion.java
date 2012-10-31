@@ -263,11 +263,19 @@ public class CreateRegion extends RegionAreaFrame implements ActionListener
 			for(int j = 0; j < 4; j++)
 			{
 				controlVertex[i][j] = new Point3d(controlX, controlY, Z);
-				region.setControlVertex(controlVertex);
 				controlY += width/3;
 			}
 			controlX += length/3;
 		}
+//		for(int i = 0; i < controlVertex.length; i++)
+//		{
+//			for(int j = 0; j < controlVertex[i].length; j++)
+//			{
+//				
+//				System.err.println("VERTEX POINTS = " + controlVertex[i][j]);
+//			}
+//		}
+		region.setControlVertex(controlVertex);
 		CriarRegionFrame cr = new CriarRegionFrame(this.parent, region, this.face);
 		cr.setVisible(true);
 		this.dispose();

@@ -28,26 +28,29 @@ public class RegionReader
 		String id = eRegion_surface_list.getIts_id(null);
 		EBezier_surface surface = (EBezier_surface)eRegion_surface_list.getSurface_list(null).getByIndex(1);
 
-		AaCartesian_point vertex = surface.getControl_points_list(null);
+		AaCartesian_point aAVertex = surface.getControl_points_list(null);
 		Point3d[][] controlVertex = null;
 		ArrayList<ArrayList<Point3d>> controlAux = new ArrayList<ArrayList<Point3d>>();
-		SdaiIterator iterator1 = vertex.createIterator();
-		int i = 0;
+		SdaiIterator iterator1 = aAVertex.createIterator();
+		
 		while(iterator1.next())
 		{
-			ACartesian_point vertexX = vertex.getCurrentMember(iterator1);
-			SdaiIterator iterator2 = vertexX.createIterator();
-			int j = 0;
+			ACartesian_point aVertex = aAVertex.getCurrentMember(iterator1);
+			SdaiIterator iterator2 = aVertex.createIterator();
+			
+			ArrayList<Point3d> controlTmp = new ArrayList<Point3d>();
+			
 			while(iterator2.next())
 			{
-				ECartesian_point ponto = vertexX.getCurrentMember(iterator2);
-//				controlVertex[i][j] = new Point3d(ponto.getCoordinates(null).getByIndex(1), ponto.getCoordinates(null).getByIndex(2), ponto.getCoordinates(null).getByIndex(3));
-				controlAux.get(i).add(new Point3d(ponto.getCoordinates(null).getByIndex(1), ponto.getCoordinates(null).getByIndex(2), ponto.getCoordinates(null).getByIndex(3)));
-				j++;
+				ECartesian_point ponto = aVertex.getCurrentMember(iterator2);
+				double x = ponto.getCoordinates(null).getByIndex(1);
+				double y = ponto.getCoordinates(null).getByIndex(1);
+				double z = ponto.getCoordinates(null).getByIndex(1);
+				controlTmp.add(new Point3d(x, y, z));
 			}
-			i++;
+			controlAux.add(controlTmp);
 		}
-		controlVertex = new Point3d[i][]; // ---- ESTRANHO
+		controlVertex = new Point3d[controlAux.size()][controlAux.get(0).size()]; // ---- ESTRANHO
 		for(int k = 0; k < controlAux.size(); k++)
 		{
 			for(int l = 0; l < controlAux.get(k).size(); l++)

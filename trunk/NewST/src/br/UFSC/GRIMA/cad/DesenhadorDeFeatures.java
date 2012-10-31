@@ -21,6 +21,7 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
+import br.UFSC.GRIMA.entidades.features.Region;
 public class DesenhadorDeFeatures
 {
 	public double zoom = 1.0;
@@ -102,11 +103,47 @@ public class DesenhadorDeFeatures
 					}
 				}
 				break;
+			case Feature.REGION:
+				this.desenharRegion((Region)feature, origem, modo, g2d);
+				break;
 			default:
 				break;
 		}
 	}
 	
+	private void desenharRegion(Region region, Point origem, boolean modo, Graphics2D g2d) 
+	{
+		int posX, posY, largura, comprimento, diametro;
+		posX = (int)Math.round((region.getPosicaoX() * zoom) + origem.x);
+		posY = (int)Math.round((region.getPosicaoY() * zoom) + origem.y);
+		largura = (int)Math.round(region.getWidth() * zoom);
+		comprimento = (int)Math.round(region.getLength() * zoom);
+		diametro = 0;
+		if (modo)
+		{
+			g2d.setColor(new Color(210, 180, 140));
+			g2d.setColor(new Color(122, 139, 139));
+			g2d.fillRoundRect(posX, posY, comprimento, largura, diametro, diametro);
+			
+			
+			g2d.setColor(new Color(165, 42, 42));
+			g2d.setColor(Color.black);
+			g2d.drawRoundRect(posX, posY, comprimento, largura, diametro, diametro);
+			
+		}else
+		{
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+			
+			float dash1[] = {5.0f, 2.5f};
+			g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+			
+
+			g2d.setColor(new Color(165, 42, 42));
+			g2d.setColor(Color.black);
+			g2d.drawRoundRect(posX, posY, comprimento, largura, diametro, diametro);
+		}
+	}
 	private void desenharGeneralBoss(GeneralProfileBoss feature, Point origem, boolean modo, Graphics2D g2d) 
 	{
 		GeneralPath forma = new GeneralPath();

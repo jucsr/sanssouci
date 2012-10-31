@@ -1939,6 +1939,7 @@ public class Face implements Serializable{
 		
 		} else if(feature.getClass() == Cavidade.class)
 		{
+			
 			Cavidade cavidade = (Cavidade)feature;
 			shape = new RoundRectangle2D.Double(cavidade.getPosicaoX(), cavidade.getPosicaoY(), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio() * 2, cavidade.getRaio() * 2);
 		
@@ -2008,8 +2009,9 @@ public class Face implements Serializable{
 			saida = Cavidade.determinarPontosEmRetangulo(new Point3d(degrau.X, degrau.Y, 0), degrau.getLargura(), degrau.getComprimento());
 		}else if(feature.getClass() == CircularBoss.class)
 		{
+			System.out.println("Feature nova: "+feature);
 			CircularBoss cb = (CircularBoss)feature;
-			saida = Cavidade.determinarPontosEmCircunferenciaV2(cb.getCentre(), 0, (Math.PI)*2, cb.getDiametro1()/2);
+			saida = Cavidade.determinarPontosEmCircunferenciaV2(new Point3d(cb.X,cb.Y,0), 0, (Math.PI)*2, cb.getDiametro1()/2);
 		}else if(feature.getClass() == RectangularBoss.class)
 		{
 			RectangularBoss rb = (RectangularBoss)feature;
@@ -2019,17 +2021,35 @@ public class Face implements Serializable{
 			GeneralProfileBoss gpb = (GeneralProfileBoss)feature;
 			ArrayList<Point2D> vertex = gpb.getVertexPoints();
 			ArrayList<Point2D> retas = new ArrayList<Point2D>();
-			for(int i=0; i < vertex.size()-1; i++)
+			for(int i=0; i < vertex.size(); i++)
 			{
-				saida = Cavidade.determinarPontosEmReta(new Point3d( vertex.get(i).getX(), vertex.get(i).getY(), 0.0), 
-														new Point3d(vertex.get(i+1).getX(), vertex.get(i+1).getY(), 0.0 ));
-				for(int j=0; j < saida.length; j++)
+				if(i <= vertex.size()-2)
 				{
-					retas.add(saida[j]);
+					saida = Cavidade.determinarPontosEmReta(new Point3d( vertex.get(i).getX(), vertex.get(i).getY(), 0.0), 
+							new Point3d(vertex.get(i+1).getX(), vertex.get(i+1).getY(), 0.0 ));
+					for(int j=0; j < saida.length; j++)
+					{
+						retas.add(saida[j]);
+					}
+					saida = null;
+				}else
+				{
+					/** Para fazer a última reta **/
+					saida = Cavidade.determinarPontosEmReta(new Point3d( vertex.get(vertex.size()-1).getX(), vertex.get(vertex.size()-1).getY(), 0.0), 
+							new Point3d(vertex.get(0).getX(), vertex.get(0).getY(), 0.0 ));
+					for(int n=0; n < saida.length; n++)
+					{
+						retas.add(saida[n]);
+					}
 				}
-				
 			}
-			saida = (Point2D[]) retas.toArray();
+			
+			/** Passar ArrayList para Array **/
+			saida = retas.toArray(saida);
+//			for(int k=0; k < retas.size(); k++)
+//			{
+//				saida[k]=retas.get(k);
+//			}
 		}
 		System.out.println("feature class --> " + feature);
 		return saida;

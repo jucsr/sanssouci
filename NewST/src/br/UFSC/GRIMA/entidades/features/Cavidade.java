@@ -514,9 +514,10 @@ public class Cavidade extends Feature implements Serializable {
 	}
 	public static Point2D[] determinarPontosEmCircunferenciaV2(Point3d center, double anguloInicial, double deltaAngulo, double raio)  
 	{
-		int numeroDePontos = (int)(deltaAngulo); //deltaAngulo em rad
+		System.out.println("center of cincunference: "+center);
+		int numeroDePontos = (int)(deltaAngulo*raio); //deltaAngulo em rad
 		Point2D[] saida = new Point2D [numeroDePontos];
-		double x, y, dAngulo = 0;
+		double x=0.0, y=0.0, dAngulo = 0.0;
 
 		dAngulo = deltaAngulo / numeroDePontos;
 		

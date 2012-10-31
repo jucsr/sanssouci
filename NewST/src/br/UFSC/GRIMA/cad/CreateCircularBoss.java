@@ -320,8 +320,11 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 				}
 			}
 		}
+		
+		boss.setCentre(new Point3d(this.x, this.y, 0));
 		if(this.face.validarFeature(boss))
 		{
+			
 			if (valido) 
 			{
 				{

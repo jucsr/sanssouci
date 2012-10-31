@@ -483,8 +483,8 @@ public class MapeadoraGeneralClosedPocket {
 		
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
-				malha[i][k][0] = genClosed.getPosicaoX()+comprimento*(i+1)/numeroDePontosDaMalha;//x
-				malha[i][k][1] = genClosed.getPosicaoY()+largura*(k+1)/numeroDePontosDaMalha;//y
+				malha[i][k][0] = xMenor+comprimento*(i+1)/numeroDePontosDaMalha;//x
+				malha[i][k][1] = yMenor+largura*(k+1)/numeroDePontosDaMalha;//y
 			}
 		}
 		
@@ -492,14 +492,13 @@ public class MapeadoraGeneralClosedPocket {
 	}
 	
 	public static ArrayList<Point3d> getPontosPossiveis(double z,GeneralClosedPocket genClosed, int numeroDePontosDaMalha){
-		
-//		RoundRectangle2D retanguloCavidade = new RoundRectangle2D.Double(genClosed.getPosicaoX(), genClosed.getPosicaoY(), genClosed.getComprimento(), genClosed.getLargura(), 2*cavidadeTmp.getRaio(), 2*cavidadeTmp.getRaio());
-
+	
 		GeneralPath general = new GeneralPath();
 		ArrayList<Point2D> vertex = genClosed.getPoints();
 		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex), genClosed.getRadius());
+		
 		general.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
-		for(int r=0;r<vertex.size();r++){
+		for(int r=1;r<vertex.size();r++){
 			general.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
 		}
 		general.closePath();
@@ -512,16 +511,21 @@ public class MapeadoraGeneralClosedPocket {
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
 				if(general.contains(malha[i][k][0], malha[i][k][1])){
-					for(int g=0;g<bossArray.size();g++){
-						if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
-							b++;
+					if(bossArray.size()!=0){
+						for(int g=0;g<bossArray.size();g++){
+							if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
+								b++;
+							}
 						}
+						if(b==bossArray.size()){
+							pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
+							//						System.out.println(k);
+						}
+						b=0;
 					}
-					if(b==bossArray.size()){
-						pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
-//						System.out.println(k);
+					else{
+						pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));						
 					}
-					b=0;
 				}
 			}
 		}
@@ -772,20 +776,35 @@ public class MapeadoraGeneralClosedPocket {
 		double malhaMenoresDistancias[][] = new double[numeroDePontosDaMalha][numeroDePontosDaMalha];
 		ArrayList<Point3d> pontosPossiveis = getPontosPossiveis(z, genClosed, numeroDePontosDaMalha);
 		ArrayList<Point2d> coordenadas = getCoordenadas(z, genClosed, numeroDePontosDaMalha);
-		ArrayList<Double> menorDistancia;		
 		double distanciaTmp;
 
-		menorDistancia = new ArrayList<Double>();
+//		for(int i=0;i<pontosPossiveis.size();i++){
+//			distanciaTmp=100;
+//			for(int k=0;k<pontosPeriferia.size();k++){
+//				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+//					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+//					System.out.println("DistanciaTmp : " + distanciaTmp);
+//				}
+//			}
+//			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
+//		}
+//		
+		System.out.println("Pontos Possiveis : " + pontosPossiveis.size());
+		
 		for(int i=0;i<pontosPossiveis.size();i++){
 			distanciaTmp=100;
 			for(int k=0;k<pontosPeriferia.size();k++){
-				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
-					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+//				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+					if(pontosPeriferia.get(k).distance(pontosPossiveis.get(i))<distanciaTmp){
+//					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+					distanciaTmp=pontosPeriferia.get(k).distance(pontosPossiveis.get(i));
 				}
 			}
 			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
-			menorDistancia.add(distanciaTmp);		
+			//				System.out.println(menorDistancia.get(i));
 		}
+		
+		
 		return malhaMenoresDistancias;
 	}
 	
@@ -840,7 +859,7 @@ public class MapeadoraGeneralClosedPocket {
 		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
 			for(int k=1;k<malhaMenoresDistancias.length-1;k++){
 				contador = 0;
-				System.out.println("Malha Menores Distancias : "+ malhaMenoresDistancias[i][k]);
+//				System.out.println("Malha Menores Distancias : "+ malhaMenoresDistancias[i][k]);
 				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k+1])
 					contador++;
 				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k-1])
@@ -867,7 +886,6 @@ public class MapeadoraGeneralClosedPocket {
 			}
 		}
 		raioMedia = raioMedia/numeroDeDiametrosAdicionados;
-		System.out.println("numero de diametros adicionados : " + numeroDeDiametrosAdicionados);
 		maiorDiametro+=2*raioMedia;
 
 		System.out.println("MAIOR DIAMETRO:     "+maiorDiametro);

@@ -425,6 +425,7 @@ public class MapeadoraDeWorkingsteps {
 		ResultSet rs = null;
 
 		String iso = ferr.getMaterial();
+		System.out.println("MAT = " + iso);
 		int mat = materialBloco.getCategory();
 		double diametro = ferr.getDiametroFerramenta();
 

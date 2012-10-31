@@ -11,6 +11,8 @@ import jsdai.dictionary.EBoolean_type;
 import jsdai.dictionary.EDefined_type;
 import jsdai.lang.A_double;
 import jsdai.lang.A_string;
+import jsdai.lang.Aa_double;
+import jsdai.lang.Aggregate;
 import jsdai.lang.EEntity;
 import jsdai.lang.ELogical;
 import jsdai.lang.SdaiException;
@@ -1474,19 +1476,20 @@ public class StepNcProject extends STEPProject
 		eBezier_surface.setName(null, "surface - " + ws.getFeature().getNome());
 		eBezier_surface.setU_degree(null, region.getControlVertex().length);
 		eBezier_surface.setV_degree(null, region.getControlVertex()[0].length);
-		AaCartesian_point controlVertex = eBezier_surface.createControl_points_list(null);
+		Point3d[][] vertex = region.getControlVertex(); // control points of surface
+		AaCartesian_point controlVertex = eBezier_surface.createControl_points_list(null); // creating a array of arrays of cartesian_point
 		
-		for(int i = 0; i < region.getControlVertex().length; i++)
-		{
-			ACartesian_point aTmp = new ACartesian_point();
-			
-			for(int j = 0; j < region.getControlVertex()[i].length; j++)
+		for(int i = 0; i < vertex.length; i++)
+		{			
+			ACartesian_point aTmp = controlVertex.addAggregateByIndex(i + 1); // creating a array of cartesian_point into position i + 1 of controlVertex Array
+			for(int j = 0; j < vertex[i].length; j++)
 			{
-				ECartesian_point point = this.createCartesianPoint("control vertex ", region.getControlVertex()[i][j]);
-				aTmp.addByIndex(j + 1, point);
+				ECartesian_point point = this.createCartesianPoint("control vertex ", vertex[i][j]); // creating the cartesian_point Entity
+				aTmp.addByIndex(j + 1, point); //adding the cartesian_point into Array aTmp
 			}
-			controlVertex.addByIndex(i + 1, (EEntity)aTmp);
+//			controlVertex.addAggregateByIndex(i + 1, aTmp); // is necessary?
 		}
+		
 		eBezier_surface.setSurface_form(null, EB_spline_surface_form.UNSPECIFIED);
 		eBezier_surface.setU_closed(null, ELogical.FALSE);
 		eBezier_surface.setV_closed(null, ELogical.FALSE);

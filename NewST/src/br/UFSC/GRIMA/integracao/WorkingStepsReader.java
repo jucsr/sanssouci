@@ -6,6 +6,8 @@ import jsdai.SCombined_schema.AExecutable;
 import jsdai.SCombined_schema.AMachining_workingstep;
 import jsdai.SCombined_schema.EMachining_feature;
 import jsdai.SCombined_schema.EMachining_workingstep;
+import jsdai.SCombined_schema.EManufacturing_feature;
+import jsdai.SCombined_schema.ERegion;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
@@ -45,49 +47,53 @@ public class WorkingStepsReader {
 	{
 		Vector<Workingstep> workingsteps = new Vector<Workingstep>();
 		SdaiIterator iterator = aMachining_workingstep.createIterator();
-		
-		EMachining_feature eFeature = null;
+		EManufacturing_feature eFeature = null;
 		Feature feature = null;
 
 		while(iterator.next()){
 			
 			EMachining_workingstep eMachining_workingstep = (EMachining_workingstep)aMachining_workingstep.getCurrentMember(iterator);
-
 			
-			if((EMachining_feature)eMachining_workingstep.getIts_feature(null)!= eFeature){
+			if((EManufacturing_feature)eMachining_workingstep.getIts_feature(null)!= eFeature){
 			
-				eFeature = (EMachining_feature)eMachining_workingstep.getIts_feature(null); 
+				eFeature = (EManufacturing_feature)eMachining_workingstep.getIts_feature(null); 
 				feature = FeatureReader.getFeature(eMachining_workingstep);
-			}	
+			}
+			Face face = null;
+			if(eFeature.isKindOf(EMachining_feature.class))
+			{
+				face = FaceReader.getFace((EMachining_feature)eFeature);
+			} else if(eFeature.isKindOf(ERegion.class))
+			{
+				face = FaceReader.getFace((ERegion)eFeature);
+			}
+			feature.setFace(face);
+			Ferramenta ferramenta = FerramentaReader.getFerramenta(eMachining_workingstep);
+			CondicoesDeUsinagem condicoes = CondicoesDeUsinagemReader.getCondicoes(eMachining_workingstep);
+			MachiningOperation operation = MachiningOperationReader.getOperation(eMachining_workingstep);
+			
+			Workingstep wsTmp = new Workingstep( feature , face, ferramenta, condicoes, operation);
 				
-				Face face = FaceReader.getFace(eFeature);
-				feature.setFace(face);
-				Ferramenta ferramenta = FerramentaReader.getFerramenta(eMachining_workingstep);
-				CondicoesDeUsinagem condicoes = CondicoesDeUsinagemReader.getCondicoes(eMachining_workingstep);
-				MachiningOperation operation = MachiningOperationReader.getOperation(eMachining_workingstep);
+			feature.getWorkingsteps().add(wsTmp);
+			
+			String wsId = eMachining_workingstep.getIts_id(null);
+			wsTmp.setId(wsId);
 				
-				Workingstep wsTmp = new Workingstep( feature , face, ferramenta, condicoes, operation);
+			String[] arrayId = wsId.split("_");
+			int last = arrayId.length-1;
+			String wsTipo = arrayId[last];
 				
-				feature.getWorkingsteps().add(wsTmp);
-				
-				String wsId = eMachining_workingstep.getIts_id(null);
-				wsTmp.setId(wsId);
-				
-				String[] arrayId = wsId.split("_");
-				int last = arrayId.length-1;
-				String wsTipo = arrayId[last];
-				
-				if(wsTipo.equals("RGH")){
+			if(wsTipo.equals("RGH")){
 					
-					wsTmp.setTipo(Workingstep.DESBASTE);
+				wsTmp.setTipo(Workingstep.DESBASTE);
 					
-				}else if(wsTipo.equals("FNS")){
+			}else if(wsTipo.equals("FNS")){
 					
-					wsTmp.setTipo(Workingstep.ACABAMENTO);
+				wsTmp.setTipo(Workingstep.ACABAMENTO);
 					
-				}else{
-					System.out.println("Tipo de Ws desconhecido: " + wsTipo);
-				}
+			}else{
+				System.out.println("Tipo de Ws desconhecido: " + wsTipo);
+			}
 				
 				
 				//Victor está setando

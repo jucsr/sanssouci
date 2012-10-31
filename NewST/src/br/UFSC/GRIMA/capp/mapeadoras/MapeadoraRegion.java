@@ -44,7 +44,6 @@ public class MapeadoraRegion
 		this.endMills = ToolManager.getEndMills();
 		this.faceMills = ToolManager.getFaceMills();
 		this.ballEndMills = ToolManager.getBallEndMills();
-		
 		this.mapearRegion();
 	}
 
@@ -105,6 +104,7 @@ public class MapeadoraRegion
 			wsPrecedente = wsTmp;
 
 			wssFeature.add(wsTmp);
+//			System.err.println("================>>>>>>>> WS DESBASTE ZIG_ZAG");
 		}	
 		// ---------------- CRIANDO WORKINGSTEP DE DESBASTE ------------------
 		
@@ -122,7 +122,7 @@ public class MapeadoraRegion
 		
 		double L = determinarDiametroMinimo();
 		EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills, regionTmp, L);
-			
+		System.out.println("MATERIAL DESBASTE 1 = " + endMill.getMaterial());
 			// ------ Criando condicoes de usinagem ---------
 		condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, endMill, this.bloco.getMaterial());
 		
@@ -135,24 +135,31 @@ public class MapeadoraRegion
 		
 		wssFeature.add(wsTmp);
 		
+//		System.err.println("================>>>>>>>> COND US = " + condicoesDeUsinagem.getAp());
+//		System.err.println("================>>>>>>>> WS DESBASTE NORMAL");
+
 		// --------------- CRIANDO WORKINGSTEP FREE FORM --------------------
 		
 			// -------- Criando Operação ---------
 		FreeformOperation freeForm = new FreeformOperation("Free Form Operation", retractPlane);
 		freeForm.setCoolant(true);
-		
+		freeForm.setId("Free form Operation");
 			// -------- Criando Ferramenta --------
 		BallEndMill ballEndMill = chooseBallEndMill(bloco.getMaterial(), ballEndMills, regionTmp, L);
+		System.out.println("material freeform = " + ballEndMill.getMaterial());
 			
 			// --------- Criando Condicoes de Usinagem --------
 		condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(projeto, ballEndMill, bloco.getMaterial());
-		
 			// -------- Criando o Machining Workingstep -------
 		
 		wsTmp = new Workingstep(regionTmp, faceTmp, ballEndMill, condicoesDeUsinagem, freeForm);
 		wsTmp.setId("WS Free Form");
 		wsTmp.setTipo(Workingstep.ACABAMENTO);
 		wsTmp.setWorkingstepPrecedente(wsTmp);
+		
+		wssFeature.add(wsTmp);
+//		System.err.println("================>>>>>>>> WS FREE_FORM");
+		regionTmp.setWorkingsteps(wssFeature);
 	}
 
 	private BallEndMill chooseBallEndMill(Material material, ArrayList<BallEndMill> ballEndMills, Region regionTmp, double L) {
@@ -205,7 +212,20 @@ public class MapeadoraRegion
 
 
 		}
+		ballEndMill = ballEndMillsCandidatas.get(0);
 
+		for (int i = 1; i < ballEndMillsCandidatas.size(); i++) {// Seleciona a
+			// ball end
+			// mill de
+			// maior
+			// diametro
+
+			if (ballEndMillsCandidatas.get(i).getDiametroFerramenta() > ballEndMill
+					.getDiametroFerramenta()) {
+				ballEndMill = ballEndMillsCandidatas.get(i);
+			}
+
+		}
 		return ballEndMill;
 	}
 

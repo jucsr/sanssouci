@@ -286,45 +286,77 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 			}
 		}
 		
-		if(ok)
-		{
-			boss = new CircularBoss();
-			boss.setDiametro1(radius * 2);
-			boss.setDiametro2(radius2 * 2);
-			boss.setPosicao(posX, posY, posZ);
-			boss.setAltura(altura);
-			boss.setNome(this.textField1.getText());
-			
-			if(this.feature.getClass() == Cavidade.class)
-			{
-				Cavidade cavidade = (Cavidade)this.feature;
-				if(cavidade.validarBoss(boss))
-				{
-//					posZ = cavidade.getProfundidade() - altura + cavidade.Z;
-					valido = true;
-					cavidade.addBoss(boss);
-				}
-				
-			} else if(this.feature.getClass() == Degrau.class)
-			{
-				Degrau degrau = (Degrau)this.feature;
-				// ---- IMPLEMENTAR
-			} else if(this.feature.getClass() == GeneralClosedPocket.class)
-			{
-				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
-				if(general.validarBoss(boss))
-				{
-//					posZ = general.getProfundidade() - altura + general.Z;
-					valido = true;
-					general.addBoss(boss);
-				}
-			}
-		}
+//		if(ok)
+//		{
+//			boss = new CircularBoss();
+//			boss.setDiametro1(radius * 2);
+//			boss.setDiametro2(radius2 * 2);
+//			boss.setPosicao(posX, posY, posZ);
+//			boss.setAltura(altura);
+//			boss.setNome(this.textField1.getText());
+//			
+//			if(this.feature.getClass() == Cavidade.class)
+//			{
+//				Cavidade cavidade = (Cavidade)this.feature;
+//				if(cavidade.validarBoss(boss))
+//				{
+////					posZ = cavidade.getProfundidade() - altura + cavidade.Z;
+//					valido = true;
+//					cavidade.addBoss(boss);
+//				}
+//				
+//			} else if(this.feature.getClass() == Degrau.class)
+//			{
+//				Degrau degrau = (Degrau)this.feature;
+//				// ---- IMPLEMENTAR
+//			} else if(this.feature.getClass() == GeneralClosedPocket.class)
+//			{
+//				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
+//				if(general.validarBoss(boss))
+//				{
+////					posZ = general.getProfundidade() - altura + general.Z;
+//					valido = true;
+//					general.addBoss(boss);
+//				}
+//			}
+//		}
+		boss = new CircularBoss();
+		boss.setDiametro1(radius * 2);
+		boss.setDiametro2(radius2 * 2);
+		boss.setPosicao(posX, posY, posZ);
+		boss.setAltura(altura);
+		boss.setNome(this.textField1.getText());
 		
-		boss.setCentre(new Point3d(this.x, this.y, 0));
 		if(this.face.validarFeature(boss))
 		{
-			
+			if(ok)
+			{
+				if(this.feature.getClass() == Cavidade.class)
+				{
+					Cavidade cavidade = (Cavidade)this.feature;
+					if(cavidade.validarBoss(boss))
+					{
+//						posZ = cavidade.getProfundidade() - altura + cavidade.Z;
+						valido = true;
+						cavidade.addBoss(boss);
+					}
+					
+				} else if(this.feature.getClass() == Degrau.class)
+				{
+					Degrau degrau = (Degrau)this.feature;
+					// ---- IMPLEMENTAR
+				} else if(this.feature.getClass() == GeneralClosedPocket.class)
+				{
+					GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
+					if(general.validarBoss(boss))
+					{
+//						posZ = general.getProfundidade() - altura + general.Z;
+						valido = true;
+						general.addBoss(boss);
+					}
+				}
+			}
+			boss.setCentre(new Point3d(this.x, this.y, 0));
 			if (valido) 
 			{
 				{

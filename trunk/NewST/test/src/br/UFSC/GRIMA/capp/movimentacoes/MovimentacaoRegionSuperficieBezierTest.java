@@ -128,10 +128,12 @@ public class MovimentacaoRegionSuperficieBezierTest {
 			double zMaximo=malha[0][0].getZ();
 			
 			for(int i=0;i<malha.length;i++){//PERCORRE A MALHA TODA PARA ACHAR O MENOR Z
-				for(int j=0;j<malha[i].length;j++){				
+				for(int j=0;j<malha[i].length;j++)
+				{				
 					if(zMaximo<malha[i][j].getZ()){
 						zMaximo=malha[i][j].getZ();
 					}
+					System.out.println("Pontos da malha : " + malha[i][j]);
 				}
 			}
 			

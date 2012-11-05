@@ -200,7 +200,7 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 			{
 				double x = region.getPosicaoX() + beziersurfacepanel.control_points[i][j][0] * escala + region.getLength() / 2;
 				double y = region.getPosicaoY() + beziersurfacepanel.control_points[i][j][1] * escala + region.getWidth() / 2;
-				double z = region.getPosicaoZ() + beziersurfacepanel.control_points[i][j][2] * 50;
+				double z = region.getPosicaoZ() + beziersurfacepanel.control_points[i][j][2] * escala;
 				
 				vertex[i][j] = new Point3d(x, y, z);
 				System.out.println("VERTEX: " + new Point3d(x, y, z));

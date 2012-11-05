@@ -479,6 +479,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 //					}
 //				}
 				
+				this.face.addFeature(generalBoss);
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Profile Boss: " +generalBoss.getNome().toUpperCase() + " added with success!");

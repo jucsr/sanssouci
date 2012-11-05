@@ -813,6 +813,7 @@ public class GCodeGenerator {
 								l=0;
 							}
 						}
+						System.out.println("TERMINOU!");
 					}	
 				}
 				if(wsTmp.getFeature().getClass().equals(Region.class) && wsTmp.getFerramenta().getClass().equals(BallEndMill.class)){

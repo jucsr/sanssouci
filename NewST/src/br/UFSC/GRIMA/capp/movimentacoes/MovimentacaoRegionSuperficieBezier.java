@@ -56,6 +56,8 @@ public class MovimentacaoRegionSuperficieBezier {
 				if(zMinimo < malha[i][j].getZ()){
 					zMinimo=malha[i][j].getZ();
 				}		
+
+				System.out.println("Pontos da malha : " + malha[i][j]);
 			}
 		}
 

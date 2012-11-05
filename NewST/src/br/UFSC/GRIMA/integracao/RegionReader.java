@@ -44,8 +44,8 @@ public class RegionReader
 			{
 				ECartesian_point ponto = aVertex.getCurrentMember(iterator2);
 				double x = ponto.getCoordinates(null).getByIndex(1);
-				double y = ponto.getCoordinates(null).getByIndex(1);
-				double z = ponto.getCoordinates(null).getByIndex(1);
+				double y = ponto.getCoordinates(null).getByIndex(2);
+				double z = ponto.getCoordinates(null).getByIndex(3);
 				controlTmp.add(new Point3d(x, y, z));
 			}
 			controlAux.add(controlTmp);

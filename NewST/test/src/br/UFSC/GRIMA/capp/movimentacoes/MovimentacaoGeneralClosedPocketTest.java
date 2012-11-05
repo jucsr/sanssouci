@@ -127,10 +127,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 //		points.add(new Point2D.Double(40.0, 95.0));
 //		points.add(new Point2D.Double(5.0, 95.0));
 		
-		points.add(new Point2D.Double(40.0, 40.0));
 		points.add(new Point2D.Double(40.0, 120.0));
-		points.add(new Point2D.Double(120.0, 120.0));
-		points.add(new Point2D.Double(120.0, 40.0));
+		points.add(new Point2D.Double(40.0, 20.0));
+		points.add(new Point2D.Double(160.0, 20.0));
+		points.add(new Point2D.Double(160.0, 120.0));
 		
 		this.genClosed.setPoints(points);
 		//		this.genClosed.setComprimento(80);
@@ -188,7 +188,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 				raioAtual,
 				z=-10,
 				largura,
-				comprimento;//this.ferramenta.getDiametroFerramenta();
+				comprimento,
+				ae;//this.ferramenta.getDiametroFerramenta();
 		final double diametroFerramenta;
 
 //		GeneralPath general = new GeneralPath();
@@ -203,7 +204,6 @@ public class MovimentacaoGeneralClosedPocketTest {
 		for(int r=0;r<vertex.size();r++){
 			general.lineTo(vertex.get(r).getX(), vertex.get(r).getY());
 			
-			System.err.println("vertex : " + vertex.get(r));
 		}
 		general.closePath();
 
@@ -235,7 +235,6 @@ public class MovimentacaoGeneralClosedPocketTest {
 		largura = yMaior-yMenor;
 		comprimento = xMaior-xMenor;
 
-		System.out.println(largura+" "+comprimento);
 
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
@@ -403,10 +402,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 			for(int i=0;i<periferia.size();i++){
 //			pontosPeriferia.add(getPontosPeriferiaGeneral(vertex, z, raio).get(i)); // ================== CUIDADO, Isto pode fazer o programa mais devagar q o necessario
 			pontosPeriferia.add(periferia.get(i));
-			System.out.println("Pontos da periferia  : " + pontosPeriferia.get(i));
 		}
 
-		System.out.println("Bosses : " + bossArray.size());
 
 		int b=0,c=0;
 		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
@@ -487,9 +484,9 @@ public class MovimentacaoGeneralClosedPocketTest {
 				if(contador>=6){
 					if(raioMenor>malhaMenoresDistancias[i][k])
 						raioMenor = malhaMenoresDistancias[i][k];
-						numeroDeDiametrosAdicionados++;
-						raioMedia+=malhaMenoresDistancias[i][k];
-						maximos.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
+					numeroDeDiametrosAdicionados++;
+					raioMedia = raioMedia + malhaMenoresDistancias[i][k];
+					maximos.add(new Point3d(malha[i][k][0],malha[i][k][1],malhaMenoresDistancias[i][k]));
 					if(diametroTmp>malhaMenoresDistancias[i][k] && malhaMenoresDistancias[i][k]!=0){
 						diametroTmp=malhaMenoresDistancias[i][k];
 					}
@@ -497,9 +494,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			}
 		}
 		
-		System.out.println("Numero De Diametros : " + numeroDeDiametrosAdicionados);
 		raioMedia = raioMedia/numeroDeDiametrosAdicionados;
-		raioMedia = 10;
 		
 		for(int i=0;i<menorDistancia.size();i++){
 			if(maiorMenorDistancia<menorDistancia.get(i)){
@@ -508,35 +503,66 @@ public class MovimentacaoGeneralClosedPocketTest {
 		}
 		System.out.println("Raio Media :  " + raioMedia);
 		System.out.println("Raio Menor :  " + raioMenor);
+
 		diametroFerramenta = 2*raioMedia;
-		numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
+		ae = 0.75*diametroFerramenta;
+		
+		double diferenca;
+		diferenca = 1 + (2*maiorMenorDistancia-diametroFerramenta)/ae; // 1 é por causa do diametro
+		numeroDeCortes = (int) Math.round(diferenca);
+		
+		if(diferenca>numeroDeCortes){
+			numeroDeCortes += 1;
+		}
+					
+		System.out.println("Maior Menor Distancia : " + maiorMenorDistancia);
+		System.out.println("Numero De cortes : " + numeroDeCortes);
+		
+		
 		double temp1=comprimento/numeroDePontosDaMalha,
 				temp2=largura/numeroDePontosDaMalha;
 		double variacao = (temp1+temp2)/2;
 
-		System.out.println("Numero de Cortes : " + numeroDeCortes);
 		pontos = new ArrayList<ArrayList<Point3d>>();
-		for(int i=0;i<numeroDeCortes+10;i++){
+		double raioTmp, distancia;
+		for(int i=0;i<numeroDeCortes;i++)
+		{
 			pontos2 = new ArrayList<Point3d>();
-			for(int k=0;k<menorDistancia.size();k++){
-				if(i==0){
-					if(menorDistancia.get(k)<=diametroFerramenta/2+variacao && menorDistancia.get(k)>=diametroFerramenta/2){
+			raioTmp = raioMedia + i*ae*raioMedia;
+			diferenca = raioTmp - maiorMenorDistancia;
+			
+			for(int k=0;k<menorDistancia.size();k++)
+			{		
+				distancia = menorDistancia.get(k);
+				
+				if(i == 0)
+				{
+					if(distancia + variacao >= raioTmp && distancia <= raioTmp)
+					{
 						pontos2.add(pontosPossiveis.get(k));
 						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
 					}
 				}
-				else{
-					if(menorDistancia.get(k)<=(i+1)*(0.5*diametroFerramenta)+variacao/2 && menorDistancia.get(k)>=(i+1)*(0.5*diametroFerramenta)-variacao/2){
+				else
+				{
+					if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
+					{
 						pontos2.add(pontosPossiveis.get(k));
 						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
+					}
+					else
+					{
+						if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
+						{
+							pontos2.add(pontosPossiveis.get(k));
+						}
 					}
 				}
 			}
 			System.out.println("Tamanho dos pontos :  "+pontos2.size());
 			pontos.add(pontos2);
 		}
-
-		System.out.println(pontosPossiveis.size());
+		
 		pontosMenores = new ArrayList<Point3d>();
 		ArrayList<Point3d> test = new ArrayList<Point3d>();
 
@@ -579,28 +605,57 @@ public class MovimentacaoGeneralClosedPocketTest {
 			menorDistancia.add(distanciaTmp);
 			//				System.out.println(menorDistancia.get(i));
 		}
-		System.out.println(pontosPossiveis.size());
 		
 		final double diametro = 2*raioMenor;
+		ae = 0.75*diametro;
 		
-		numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametro));
-		for(int i=0;i<numeroDeCortes+10;i++){
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		numeroDeCortes = (int) Math.round(diferenca);
+		
+		if(diferenca>numeroDeCortes){
+			numeroDeCortes += 1;
+		}		
+		
+		
+		System.out.println("Numero De cortes 2 : " + numeroDeCortes);
+		for(int i=0;i<numeroDeCortes;i++){
+			pontos2 = new ArrayList<Point3d>();
+			raioTmp = raioMenor + i*ae/2;
+			diferenca = raioTmp - maiorMenorDistancia;
+			
+			System.out.println("RaioTmp : " + raioTmp);
+			System.out.println("Diferença : " + (raioTmp - maiorMenorDistancia));
+			
 			for(int k=0;k<pontosPossiveis.size();k++){
-				if(i==0){
-					if(menorDistancia.get(k)<=diametro/2+variacao && menorDistancia.get(k)>=diametro/2){
+
+				distancia = menorDistancia.get(k);
+				
+				if(i == 0)
+				{
+					if(distancia + variacao >= raioTmp && distancia <= raioTmp)
+					{
 						pontosMenores.add(pontosPossiveis.get(k));
 					}
 				}
-				else{
-					if(menorDistancia.get(k)<=(i+1)*(0.5*diametro)+variacao/2 && menorDistancia.get(k)>=(i+1)*(0.5*diametro)-variacao/2){
+				else
+				{
+					if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
+					{
 						pontosMenores.add(pontosPossiveis.get(k));
+					}
+					else
+					{
+						if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
+						{
+							pontosMenores.add(pontosPossiveis.get(k));
+						}
 					}
 				}
 			}
-			System.out.println("ENTROU NO 2 WS");
+			System.out.println("Pontos menores:  "+pontosMenores.size());
+
 		}
 
-		System.out.println("Pontos menores:  "+pontosMenores.size());
 
 		
 		//ACABAMENTO
@@ -628,14 +683,14 @@ public class MovimentacaoGeneralClosedPocketTest {
 				r.lineTo(0, 5*largura);
 				r.lineTo(0, 0);
 
-//				for(int i=0;i<pontos.size();i++){
-//					for(int k=0;k<pontos.get(i).size();k++){
-//						if(pontos.get(i).size()<1){
-//							break;
-//						}
-//						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
-//					}
-//				}
+				for(int i=0;i<pontos.size();i++){
+					for(int k=0;k<pontos.get(i).size();k++){
+						if(pontos.get(i).size()<1){
+							break;
+						}
+						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
+					}
+				}
 //								for(int i=0;i<malha.length;i++){
 //									for(int k=0;k<malha[i].length;k++){
 //										e.add(new Ellipse2D.Double(5*malha[i][k][0],5*malha[i][k][1],5,5));
@@ -647,18 +702,18 @@ public class MovimentacaoGeneralClosedPocketTest {
 //									}
 //									e.add(new Ellipse2D.Double(5*pontosPossiveis.get(i).getX(),5*pontosPossiveis.get(i).getY(),5,5));					
 //								}
-								for(int i=0;i<maximos.size();i++){
-									if(maximos.size()<1){
-										break;
-									}
-									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
-								}
-//				for(int i=0;i<pontosMenores.size();i++){
-//					if(pontosMenores.size()<1){
-//						break;
-//					}
-//					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
-//				}
+//								for(int i=0;i<maximos.size();i++){
+//									if(maximos.size()<1){
+//										break;
+//									}
+//									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
+//								}
+				for(int i=0;i<pontosMenores.size();i++){
+					if(pontosMenores.size()<1){
+						break;
+					}
+					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
+				}
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
 						break;

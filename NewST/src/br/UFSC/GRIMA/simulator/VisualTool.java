@@ -29,6 +29,7 @@ import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilParcialCircular
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilVee;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRegionSuperficieBezier;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
@@ -43,6 +44,7 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
+import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
@@ -671,8 +673,31 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				}
-				else{
+				else if (featClass.equals(Region.class)){
+					MovimentacaoRegionSuperficieBezier detMov = new MovimentacaoRegionSuperficieBezier(wsTmp);
+					ArrayList<LinearPath> path = detMov.desbaste();
+					Vector movimentacao = new Vector();
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				} else
+				{
 					System.out.println("Feature Class Desconhecida (goToNextWorkingstepPoint): " + projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFeature().getClass());
+					
 				}
 		}
 	}
@@ -761,7 +786,7 @@ public class VisualTool {
 				}
 			}
 			
-		}else if (featClass.equals(RanhuraPerfilBezier.class) || featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class) || featClass.equals(FuroBaseArredondada.class) || featClass.equals(GeneralClosedPocket.class)) {
+		}else if (featClass.equals(RanhuraPerfilBezier.class) || featClass.equals(RanhuraPerfilCircularParcial.class) || featClass.equals(RanhuraPerfilRoundedU.class) || featClass.equals(Ranhura.class) || featClass.equals(RanhuraPerfilVee.class) || featClass.equals(Degrau.class) || featClass.equals(Cavidade.class) || featClass.equals(RanhuraPerfilQuadradoU.class) || featClass.equals(FuroBaseArredondada.class) || featClass.equals(GeneralClosedPocket.class) || featClass.equals(Region.class)) {
 			
 			if (!isMoving) {
 				isMoving = true;

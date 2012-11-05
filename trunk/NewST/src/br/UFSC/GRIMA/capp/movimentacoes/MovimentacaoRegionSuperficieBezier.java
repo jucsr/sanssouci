@@ -234,7 +234,7 @@ public class MovimentacaoRegionSuperficieBezier {
 		tmp = zMaximo%ap;
 		numeroDeAps = (zMaximo-tmp)/ap;
 		
-		System.out.println(numeroDeAps);
+		System.out.println("zMaximo : " + zMaximo);
 		
 		for(int i=0;i<numeroDeAps;i++){
 			z-=ap;

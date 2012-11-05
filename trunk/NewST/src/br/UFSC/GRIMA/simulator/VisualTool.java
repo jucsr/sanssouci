@@ -673,9 +673,9 @@ public class VisualTool {
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
 				}
-				else if (featClass.equals(Region.class)){
+				else if (featClass.equals(Region.class) && wsTmp.getOperation().getClass().equals(BottomAndSideRoughMilling.class)){
 					MovimentacaoRegionSuperficieBezier detMov = new MovimentacaoRegionSuperficieBezier(wsTmp);
-					ArrayList<LinearPath> path = detMov.desbaste();
+					ArrayList<LinearPath> path = detMov.desbaste1();
 					Vector movimentacao = new Vector();
 					 for(int j = 0; j < path.size(); j++)
 						{
@@ -694,7 +694,30 @@ public class VisualTool {
 					setNextX(point3d.getX());
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
-				} else
+				} 
+				else if (featClass.equals(Region.class) && wsTmp.getOperation().getClass().equals(FreeformOperation.class)){
+					MovimentacaoRegionSuperficieBezier detMov = new MovimentacaoRegionSuperficieBezier(wsTmp);
+					ArrayList<LinearPath> path = detMov.acabamento();
+					Vector movimentacao = new Vector();
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				}
+				else
 				{
 					System.out.println("Feature Class Desconhecida (goToNextWorkingstepPoint): " + projetoDeSimulacao.getWorkingsteps().get(workingstepIndex).getFeature().getClass());
 					

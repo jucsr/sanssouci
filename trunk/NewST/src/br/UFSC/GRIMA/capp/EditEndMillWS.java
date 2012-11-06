@@ -8,7 +8,9 @@ import java.awt.event.ItemListener;
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
 import br.UFSC.GRIMA.cad.visual.EditEndMillFrame;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 
@@ -21,7 +23,7 @@ public class EditEndMillWS extends EditEndMillFrame implements ActionListener, I
 	private Workingstep workingstep;
 	private String tipo;
 	
-	private BottomAndSideFinishMilling operation;
+	private BottomAndSideMilling operation;
 	private EndMill endMill;
 	private CondicoesDeUsinagem condicoes;
 	
@@ -32,7 +34,9 @@ public class EditEndMillWS extends EditEndMillFrame implements ActionListener, I
 		this.janelaPrincipal = janelaPrincipal;
 		
 		this.workingstep = wsTmp;
-		this.operation = (BottomAndSideFinishMilling)wsTmp.getOperation();
+		
+		this.operation = (BottomAndSideMilling)wsTmp.getOperation();
+		
 		this.endMill = (EndMill) wsTmp.getFerramenta();
 		this.condicoes = wsTmp.getCondicoesUsinagem();
 		

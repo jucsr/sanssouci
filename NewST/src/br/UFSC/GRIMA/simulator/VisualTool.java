@@ -675,7 +675,7 @@ public class VisualTool {
 				}
 				else if (featClass.equals(Region.class) && wsTmp.getOperation().getClass().equals(BottomAndSideRoughMilling.class)){
 					MovimentacaoRegionSuperficieBezier detMov = new MovimentacaoRegionSuperficieBezier(wsTmp);
-					ArrayList<LinearPath> path = detMov.desbaste1();
+					ArrayList<LinearPath> path = detMov.desbaste();
 					Vector movimentacao = new Vector();
 					 for(int j = 0; j < path.size(); j++)
 						{

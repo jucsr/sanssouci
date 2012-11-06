@@ -59,22 +59,22 @@ public class MovimentacaoRegionSuperficieBezierTest {
 //		Point3d p32 = new Point3d(60, 90, 0);
 //		Point3d p33 = new Point3d(90, 90, -30);
 		
-		Point3d p00 = new Point3d(0, 0, -40);
-		Point3d p01 = new Point3d(30, 0, 0);
-		Point3d p02 = new Point3d(60, 0, 0);
-		Point3d p03 = new Point3d(90, 0, -40);
-		Point3d p10 = new Point3d(0, 30, -40);
-		Point3d p11 = new Point3d(30, 30, 0);
-		Point3d p12 = new Point3d(60, 30, 0);
-		Point3d p13 = new Point3d(90, 30, -40);
-		Point3d p20 = new Point3d(0, 60, -40);
-		Point3d p21 = new Point3d(30, 60, 0);
-		Point3d p22 = new Point3d(60, 60, 0);
-		Point3d p23 = new Point3d(90, 60, -40);
-		Point3d p30 = new Point3d(0, 90, -0);
-		Point3d p31 = new Point3d(30, 90, 0);
-		Point3d p32 = new Point3d(60, 90, 0);
-		Point3d p33 = new Point3d(90, 90, -40);
+//		Point3d p00 = new Point3d(0, 0, -40);
+//		Point3d p01 = new Point3d(30, 0, 0);
+//		Point3d p02 = new Point3d(60, 0, 0);
+//		Point3d p03 = new Point3d(90, 0, -40);
+//		Point3d p10 = new Point3d(0, 30, -40);
+//		Point3d p11 = new Point3d(30, 30, 0);
+//		Point3d p12 = new Point3d(60, 30, 0);
+//		Point3d p13 = new Point3d(90, 30, -40);
+//		Point3d p20 = new Point3d(0, 60, -40);
+//		Point3d p21 = new Point3d(30, 60, 0);
+//		Point3d p22 = new Point3d(60, 60, 0);
+//		Point3d p23 = new Point3d(90, 60, -40);
+//		Point3d p30 = new Point3d(0, 90, -0);
+//		Point3d p31 = new Point3d(30, 90, 0);
+//		Point3d p32 = new Point3d(60, 90, 0);
+//		Point3d p33 = new Point3d(90, 90, -40);
 		
 //		Point3d p00 = new Point3d(0, 0, -40);
 //		Point3d p01 = new Point3d(30, 0, 0);
@@ -92,6 +92,24 @@ public class MovimentacaoRegionSuperficieBezierTest {
 //		Point3d p31 = new Point3d(30, 90, 0);
 //		Point3d p32 = new Point3d(60, 90, 0);
 //		Point3d p33 = new Point3d(90, 90, -40);
+		
+		Point3d p00 = new Point3d(40.0, 42.0, 12.178366415823687);
+		Point3d p01 = new Point3d(40.0, 73.33333333333333, 0.0);
+		Point3d p02 = new Point3d(40.0, 104.66666666666666, 0.0);
+		Point3d p03 = new Point3d(40.0, 136.0, 13.578449506355362);
+		Point3d p10 = new Point3d(85.66666666666666, 42.0, 0.0);
+		Point3d p11 = new Point3d(85.66666666666666, 73.33333333333333, 0.0);
+		Point3d p12 = new Point3d(85.66666666666666, 104.66666666666666, 0.0);
+		Point3d p13 = new Point3d(85.66666666666666, 136.0, 0.0);
+		Point3d p20 = new Point3d(131.33333333333331, 42.0, 0.0);
+		Point3d p21 = new Point3d(131.33333333333331, 73.33333333333333, 0.0);
+		Point3d p22 = new Point3d(131.33333333333331, 104.66666666666666, 0.0);
+		Point3d p23 = new Point3d(131.33333333333331, 136.0, 0.0);
+		Point3d p30 = new Point3d(177.0, 42.0, 12.707540552316948);
+		Point3d p31 = new Point3d(177.0, 73.33333333333333, 0.0);
+		Point3d p32 = new Point3d(177.0, 104.66666666666666, 0.0);
+		Point3d p33 = new Point3d(177.0, 136.0, 15.98865378010534);
+
 		
 		@Before
 		public void init()
@@ -133,7 +151,6 @@ public class MovimentacaoRegionSuperficieBezierTest {
 					if(zMaximo<malha[i][j].getZ()){
 						zMaximo=malha[i][j].getZ();
 					}
-					System.out.println("Pontos da malha : " + malha[i][j]);
 				}
 			}
 			

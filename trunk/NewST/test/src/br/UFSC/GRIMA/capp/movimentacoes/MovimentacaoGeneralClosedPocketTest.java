@@ -673,10 +673,12 @@ public class MovimentacaoGeneralClosedPocketTest {
 			double largura=150, comprimento=200;
 			Point3d[][] matriz = new Point3d[98][98];
 
+			
 
 			painelTest(){
 
 
+			
 				r.moveTo(0,0);
 				r.lineTo(5*comprimento, 0);
 				r.lineTo(5*comprimento, 5*largura);

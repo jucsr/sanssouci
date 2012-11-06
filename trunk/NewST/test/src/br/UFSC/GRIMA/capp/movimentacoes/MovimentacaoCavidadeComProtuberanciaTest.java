@@ -648,8 +648,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 				}
 				g2d.setColor(new Color(100, 100, 251));
 				for(int i=0;i<f.size();i++){
-					g2d.fill(f.get(i));
-					//					g2d.draw(f.get(i));
+//					g2d.fill(f.get(i));
+										g2d.draw(f.get(i));
 				}
 				g2d.setColor(new Color(251, 100, 100));
 				for(int i=0;i<w.size();i++){

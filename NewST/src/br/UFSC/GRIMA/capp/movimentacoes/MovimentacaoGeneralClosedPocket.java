@@ -341,62 +341,7 @@ public class MovimentacaoGeneralClosedPocket {
 		pontoInicial = new Point3d(pontos.get(0).get(0).getX(),pontos.get(0).get(0).getY(), this.ws.getOperation().getRetractPlane());
 
 		
-		
-		double tmp, distancia;
 		int t=0;
-
-		//		for(int i=0;i<pontos.size();i++){
-		//			pontoFinal = pontos.get(i).get(0);
-		//			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-		//			desbaste.add(ligarPontos);
-		//			for(int j=0;j<pontos.get(i).size();j++){
-		//				tmp = 100;
-		//				for(int k=0;k<pontos.get(i).size();k++){
-		//					distancia = OperationsVector.distanceVector(pontoFinal, pontos.get(i).get(k));
-		//					if(distancia<tmp){
-		//						tmp = distancia;
-		//						t=k;
-		//					}
-		//				}
-		//				if(tmp>5 && j!=(pontos.get(i).size()-1)){
-		//					pontoInicial = pontoFinal;
-		//					pontoFinal = new Point3d(pontoInicial.getX(),pontoInicial.getY(),this.ws.getOperation().getRetractPlane());
-		//					ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-		//					ligarPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
-		//					desbaste.add(ligarPontos);
-		//					pontoInicial = pontoFinal;
-		//					pontoFinal = new Point3d(pontos.get(i).get(t).getX(),pontos.get(i).get(t).getY(),this.ws.getOperation().getRetractPlane());
-		//					ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-		//					desbaste.add(ligarPontos);
-		//					pontoInicial = pontoFinal;
-		//					pontoFinal = new Point3d(pontos.get(i).get(t));
-		//					ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-		//					ligarPontos.setTipoDeMovimento(LinearPath.SLOW_MOV);
-		//					desbaste.add(ligarPontos);
-		//				}
-		//				else{
-		//					pontoInicial = pontoFinal;
-		//					pontoFinal = pontos.get(i).get(t);
-		//					ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-		//					ligarPontos.setTipoDeMovimento(LinearPath.SLOW_MOV);
-		//					desbaste.add(ligarPontos);
-		//				}
-		//			}
-		//			
-		//			pontoInicial = pontoFinal;
-		//			pontoFinal = new Point3d(pontoInicial.getX(),pontoInicial.getY(),this.ws.getOperation().getRetractPlane());
-		//			ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-		//			ligarPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
-		//			desbaste.add(ligarPontos);
-		//			
-		//			if(i!=pontos.size()-1){
-		//				pontoInicial = pontoFinal;
-		//				pontoFinal = new Point3d(pontos.get(i+1).get(0).getX(),pontos.get(i+1).get(0).getY(),this.ws.getOperation().getRetractPlane());
-		//				ligarPontos = new LinearPath(pontoInicial, pontoFinal);
-		//				ligarPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
-		//				desbaste.add(ligarPontos);
-		//			}
-		//		}
 
 
 		ArrayList<Point3d> temp;

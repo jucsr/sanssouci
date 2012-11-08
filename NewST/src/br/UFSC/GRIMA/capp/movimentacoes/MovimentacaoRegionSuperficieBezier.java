@@ -6,6 +6,7 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.bReps.BezierSurface;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraRegion;
 import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.LinearPath;
@@ -25,7 +26,7 @@ public class MovimentacaoRegionSuperficieBezier {
 	
 	public ArrayList<LinearPath> desbaste(){
 		
-		double z = -this.ws.getOperation().getStartPoint().z;
+		double z = this.ws.getOperation().getStartPoint().z;
 		double zMinimo=0;
 		double distanciaTmp;
 		double diametroFerramenta = this.ferramenta.getDiametroFerramenta();
@@ -61,32 +62,34 @@ public class MovimentacaoRegionSuperficieBezier {
 
 		numeroDeAps= (int) (zMinimo/ap);
 		
-		
 		for(int h=0;h<numeroDeAps;h++){
 
 			z-=ap;
-
+			System.err.println("Z : " + z);
+			
 			pontosProibidos = new ArrayList<Point3d>();
 			pontosPossiveis = new ArrayList<Point3d>();
-			for(int j=0;j<malha.length;j++){//PERCORRE A SUPERFICIE INTEIRA
-				for(int i=0;i<malha[j].length;i++){
-					if(-malha[i][j].getZ()<=z){
-						if(-malha[i][j].getZ()>=z-0.5){//PEGA OS PONTOS QUE NAO PODE DESBASTAR (PONTOS DA PERIFERIA APENAS, OU SEJA
-							pontosProibidos.add(new Point3d(malha[i][j].x,malha[i][j].y,z));//   PONTOS DA "CASCA" DOS POLIGONOS)
-						}
+			for(int j=0;j<malha.length;j++)
+			{//PERCORRE A SUPERFICIE INTEIRA
+				for(int i=0;i<malha[j].length;i++)
+				{
+					if(-malha[i][j].getZ()<=z && -malha[i][j].getZ()>=z-0.5)//PEGA OS PONTOS QUE NAO PODE DESBASTAR (PONTOS DA PERIFERIA APENAS, OU SEJA
+					{
+						pontosProibidos.add(new Point3d(malha[i][j].x,malha[i][j].y,z));//   PONTOS DA "CASCA" DOS POLIGONOS)
 					}
-					else if((i==0 || i==malha[j].length-1 || j==0 || j==malha.length-1) && -malha[i][j].getZ()<z){
+					else if((i==0 || i==malha[j].length-1 || j==0 || j==malha.length-1) && -malha[i][j].getZ()<z)
+					{
 						pontosPossiveis.add(new Point3d(malha[i][j].x,-malha[i][j].y,z));
 					}
-					if(-malha[i][j].getZ()<z){
+					if(-malha[i][j].getZ()<z)
+					{
 						pontosPossiveis.add(new Point3d(malha[i][j].getX(),malha[i][j].getY(),z));//PEGA OS PONTOS QUE PODE DESBASTAR
 					}
 				}
 			}
 
-
-
-
+			System.err.println("numero de pontos possiveis : " + pontosPossiveis.size());
+			
 			if(pontosPossiveis.size()<1){
 				break;
 			}
@@ -218,13 +221,13 @@ public class MovimentacaoRegionSuperficieBezier {
 		boolean vaiVolta=true,
 				fundo=false;
 		
-		for(int i=0;i<malha.length;i++){//PERCORRE A MALHA TODA PARA ACHAR O MENOR Z
-			for(int j=0;j<malha[i].length;j++){
-				if(zMaximo<malha[i][j].getZ()){
-					zMaximo=malha[i][j].getZ();
-				}
-			}
+		zMaximo = MapeadoraRegion.getZMaximo(malha);
+		if(zMaximo < 0 )
+		{
+			zMaximo = -zMaximo;
 		}
+		
+		System.err.println("=========> zMaximo : " + zMaximo);
 		
 		tmp = (xFim-xInicio)%ae;
 		numeroDeAes = ((xFim-xInicio)-tmp)/ae;

@@ -122,7 +122,7 @@ public class MapeadoraRegion
 		
 		double L = determinarDiametroMinimo();
 		EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills, regionTmp, L);
-		System.out.println("MATERIAL DESBASTE 1 = " + endMill.getMaterial());
+		System.out.println("DIAMETRO MINIMO = " + L);
 			// ------ Criando condicoes de usinagem ---------
 		condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, endMill, this.bloco.getMaterial());
 		
@@ -194,7 +194,7 @@ public class MapeadoraRegion
 					null,
 					"Não é possível usinar esta Feature com as atuais Ball End Mills disponíveis! \n" +
 					"__________________________________________________________"+"\n"+
-					"\tFeature: Ranhura Perfil Bezier \n" +
+					"\tFeature: Region \n" +
 					"\tNome: " + regionTmp.getNome() +"\n" +
 					"\tProfundidade: " + regionTmp.getMaxDepth() +" mm"+"\n" +
 					"\tMaterial Bloco: " + material.getName()+"\n" +
@@ -332,6 +332,7 @@ public class MapeadoraRegion
 		
 		l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[0][1].x - pontosDaSuperficie[0][0].x), 2) +  Math.pow((pontosDaSuperficie[0][1].z - pontosDaSuperficie[0][0].z), 2), 0.5);
 		diametroMinimo = l1Tmp;
+		diametroMinimo = 1000;
 		
 		for(int i = 0; i < pontosDaSuperficie.length; i++)
 		{

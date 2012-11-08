@@ -7,10 +7,12 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
+import javax.media.j3d.PathInterpolator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
@@ -65,6 +67,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 	double x[] = new double[8404];
 	double y[] = new double[8404];
 	private GeneralPath general;
+	ArrayList<Point3d> testeTempo = new ArrayList<Point3d>();
 	@Before
 	public void createProject()
 	{
@@ -90,7 +93,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.genClosed.setNome("Lucas");
 		this.genClosed.setPosicao(79, 22, 0);
 		this.genClosed.setProfundidade(10);
-		this.genClosed.setRadius(20);
+		this.genClosed.setRadius(5);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
 //		points.add(new Point2D.Double(79,22));
@@ -106,31 +109,31 @@ public class MovimentacaoGeneralClosedPocketTest {
 //		points.add(new Point2D.Double(19,61));
 //		points.add(new Point2D.Double(40,12));
 		
-//		points.add(new Point2D.Double(5.0, 35.0));
-//		points.add(new Point2D.Double(20.0, 35.0));
-//		points.add(new Point2D.Double(20.0, 5.0));
-//		points.add(new Point2D.Double(60.0, 5.0));
-//		points.add(new Point2D.Double(60.0, 35.0));
-//		points.add(new Point2D.Double(95.0, 35.0));
-//		points.add(new Point2D.Double(95.0, 65.0));
-//		points.add(new Point2D.Double(125.0, 65.0));
-//		points.add(new Point2D.Double(125.0, 35.0));
-//		points.add(new Point2D.Double(180.0, 35.0));
-//		points.add(new Point2D.Double(180.0, 75.0));
-//		points.add(new Point2D.Double(155.0, 75.0));
-//		points.add(new Point2D.Double(155.0, 100.0));
-//		points.add(new Point2D.Double(195.0, 100.0));
-//		points.add(new Point2D.Double(195.0, 145.0));
-//		points.add(new Point2D.Double(75.0, 145.0));
-//		points.add(new Point2D.Double(75.0, 120.0));
-//		points.add(new Point2D.Double(40.0, 120.0));
-//		points.add(new Point2D.Double(40.0, 95.0));
-//		points.add(new Point2D.Double(5.0, 95.0));
-		
+		points.add(new Point2D.Double(5.0, 35.0));
+		points.add(new Point2D.Double(20.0, 35.0));
+		points.add(new Point2D.Double(20.0, 5.0));
+		points.add(new Point2D.Double(60.0, 5.0));
+		points.add(new Point2D.Double(60.0, 35.0));
+		points.add(new Point2D.Double(95.0, 35.0));
+		points.add(new Point2D.Double(95.0, 65.0));
+		points.add(new Point2D.Double(125.0, 65.0));
+		points.add(new Point2D.Double(125.0, 35.0));
+		points.add(new Point2D.Double(180.0, 35.0));
+		points.add(new Point2D.Double(180.0, 75.0));
+		points.add(new Point2D.Double(155.0, 75.0));
+		points.add(new Point2D.Double(155.0, 100.0));
+		points.add(new Point2D.Double(195.0, 100.0));
+		points.add(new Point2D.Double(195.0, 145.0));
+		points.add(new Point2D.Double(75.0, 145.0));
+		points.add(new Point2D.Double(75.0, 120.0));
 		points.add(new Point2D.Double(40.0, 120.0));
-		points.add(new Point2D.Double(40.0, 20.0));
-		points.add(new Point2D.Double(160.0, 20.0));
-		points.add(new Point2D.Double(160.0, 120.0));
+		points.add(new Point2D.Double(40.0, 95.0));
+		points.add(new Point2D.Double(5.0, 95.0));
+		
+//		points.add(new Point2D.Double(40.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 20.0));
+//		points.add(new Point2D.Double(160.0, 20.0));
+//		points.add(new Point2D.Double(160.0, 120.0));
 		
 		this.genClosed.setPoints(points);
 		//		this.genClosed.setComprimento(80);
@@ -525,6 +528,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 
 		pontos = new ArrayList<ArrayList<Point3d>>();
 		double raioTmp, distancia;
+		
+		
 		for(int i=0;i<numeroDeCortes;i++)
 		{
 			pontos2 = new ArrayList<Point3d>();
@@ -539,6 +544,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 				{
 					if(distancia + variacao >= raioTmp && distancia <= raioTmp)
 					{
+						if(i == 0)
+						{
+							testeTempo.add(pontosPossiveis.get(k));
+						}
 						pontos2.add(pontosPossiveis.get(k));
 						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
 					}
@@ -548,6 +557,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 					if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
 					{
 						pontos2.add(pontosPossiveis.get(k));
+						if(i == 0)
+						{
+							testeTempo.add(pontosPossiveis.get(k));
+						}
 						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
 					}
 					else
@@ -555,6 +568,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 						if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
 						{
 							pontos2.add(pontosPossiveis.get(k));
+							if(i == 0)
+							{
+								testeTempo.add(pontosPossiveis.get(k));
+							}
 						}
 					}
 				}
@@ -562,6 +579,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 			System.out.println("Tamanho dos pontos :  "+pontos2.size());
 			pontos.add(pontos2);
 		}
+		
+		
 		
 		pontosMenores = new ArrayList<Point3d>();
 		ArrayList<Point3d> test = new ArrayList<Point3d>();
@@ -667,6 +686,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 
 			GeneralPath p = new GeneralPath();
 			GeneralPath r = new GeneralPath();
+			GeneralPath uniaoDosPontos = new GeneralPath();
+			ArrayList<GeneralPath> arrayPath = new ArrayList<GeneralPath>();
 			ArrayList<Ellipse2D> e = new ArrayList<Ellipse2D>();
 			ArrayList<Ellipse2D> f = new ArrayList<Ellipse2D>();
 			ArrayList<Ellipse2D> w = new ArrayList<Ellipse2D>();
@@ -678,21 +699,60 @@ public class MovimentacaoGeneralClosedPocketTest {
 			painelTest(){
 
 
-			
-				r.moveTo(0,0);
-				r.lineTo(5*comprimento, 0);
-				r.lineTo(5*comprimento, 5*largura);
-				r.lineTo(0, 5*largura);
-				r.lineTo(0, 0);
-
-				for(int i=0;i<pontos.size();i++){
-					for(int k=0;k<pontos.get(i).size();k++){
-						if(pontos.get(i).size()<1){
-							break;
-						}
-						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
+				double distTmp, distHold;
+				int ee = 0 , posicaoTestada = 0 , numeroDePontosLigados = 0 , posicaoAnterior = 0;
+				
+				
+				uniaoDosPontos.moveTo(2*testeTempo.get(0).getX(), 2*testeTempo.get(0).getY());
+				for(int qq = 0 ; qq < testeTempo.size() ; qq++)
+				{
+					distTmp = 100;
+					for(int ww = 0 ; ww < testeTempo.size() ; ww++)
+					{
+						if(posicaoTestada != ww && posicaoAnterior != ww)
+						{
+							distHold = testeTempo.get(posicaoTestada).distance(testeTempo.get(ww));
+							if(distHold < distTmp)
+							{
+								distTmp = distHold;
+								ee = ww;
+							}	
+						}	
+					}
+					posicaoAnterior = posicaoTestada;
+					posicaoTestada = ee;
+					if(distTmp < 2){
+						uniaoDosPontos.lineTo(2*testeTempo.get(posicaoTestada).getX(), 2*testeTempo.get(posicaoTestada).getY());
+						numeroDePontosLigados++;
+					}
+					else
+					{
+						uniaoDosPontos.closePath();
+						arrayPath.add(uniaoDosPontos);
+						uniaoDosPontos = new GeneralPath();
+						uniaoDosPontos.moveTo(testeTempo.get(posicaoTestada).getX(), testeTempo.get(posicaoTestada).getY());
 					}
 				}
+				uniaoDosPontos.closePath();
+				arrayPath.add(uniaoDosPontos);	
+				System.err.println(arrayPath.size());
+							
+				
+				r.moveTo(0,0);
+				r.lineTo(2*comprimento, 0);
+				r.lineTo(2*comprimento, 2*largura);
+				r.lineTo(0, 2*largura);
+				r.closePath();
+
+//				for(int i=0;i<pontos.size();i++){
+//					for(int k=0;k<pontos.get(i).size();k++){
+//						if(pontos.get(i).size()<1){
+//							break;
+//						}
+////						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
+//						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
+//					}
+//				}
 //								for(int i=0;i<malha.length;i++){
 //									for(int k=0;k<malha[i].length;k++){
 //										e.add(new Ellipse2D.Double(5*malha[i][k][0],5*malha[i][k][1],5,5));
@@ -710,12 +770,13 @@ public class MovimentacaoGeneralClosedPocketTest {
 //									}
 //									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
 //								}
-				for(int i=0;i<pontosMenores.size();i++){
-					if(pontosMenores.size()<1){
-						break;
-					}
-					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
-				}
+//				for(int i=0;i<pontosMenores.size();i++){
+//					if(pontosMenores.size()<1){
+//						break;
+//					}
+//					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
+//				}
+				
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
 						break;
@@ -742,14 +803,19 @@ public class MovimentacaoGeneralClosedPocketTest {
 				g2d.draw(p);
 				g2d.setColor(new Color(100,100,251));
 				g2d.draw(r);
-
+				g2d.setColor(new Color(100,251,100));
+				for(int i  = 0; i < arrayPath.size() ; i++)
+				{
+					g2d.draw(arrayPath.get(i));		
+				}
+				
 				g2d.setColor(new Color(100, 251, 100));
 				for(int i=0;i<e.size();i++){
 					g2d.fill(e.get(i));
 				}
 				g2d.setColor(new Color(100, 100, 251));
 				for(int i=0;i<f.size();i++){
-					g2d.fill(f.get(i));
+					g2d.draw(f.get(i));
 				}
 				g2d.setColor(new Color(251, 100, 100));
 				for(int i=0;i<w.size();i++){

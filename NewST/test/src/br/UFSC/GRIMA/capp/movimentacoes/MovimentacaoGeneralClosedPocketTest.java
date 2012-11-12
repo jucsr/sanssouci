@@ -7,12 +7,11 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
-import javax.media.j3d.PathInterpolator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
@@ -22,8 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
-import br.UFSC.GRIMA.cad.CreateGeneralProfileBoss;
-import br.UFSC.GRIMA.cad.Generate3Dview;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
@@ -36,7 +33,6 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
-import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
@@ -67,6 +63,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 	double x[] = new double[8404];
 	double y[] = new double[8404];
 	private GeneralPath general;
+	double distMax;
 	ArrayList<Point3d> testeTempo = new ArrayList<Point3d>();
 	@Before
 	public void createProject()
@@ -96,39 +93,39 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.genClosed.setRadius(5);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-//		points.add(new Point2D.Double(79,22));
-//		points.add(new Point2D.Double(47,60));
-//		points.add(new Point2D.Double(81,104));
-//		points.add(new Point2D.Double(131,107));
-//		points.add(new Point2D.Double(150,68));
-//		points.add(new Point2D.Double(129,32));
-//		points.add(new Point2D.Double(161,8));
-//		points.add(new Point2D.Double(194,55));
-//		points.add(new Point2D.Double(167,134));
-//		points.add(new Point2D.Double(60,132));
-//		points.add(new Point2D.Double(19,61));
-//		points.add(new Point2D.Double(40,12));
+		points.add(new Point2D.Double(79,22));
+		points.add(new Point2D.Double(47,60));
+		points.add(new Point2D.Double(81,104));
+		points.add(new Point2D.Double(131,107));
+		points.add(new Point2D.Double(150,68));
+		points.add(new Point2D.Double(129,32));
+		points.add(new Point2D.Double(161,8));
+		points.add(new Point2D.Double(194,55));
+		points.add(new Point2D.Double(167,134));
+		points.add(new Point2D.Double(60,132));
+		points.add(new Point2D.Double(19,61));
+		points.add(new Point2D.Double(40,12));
 		
-		points.add(new Point2D.Double(5.0, 35.0));
-		points.add(new Point2D.Double(20.0, 35.0));
-		points.add(new Point2D.Double(20.0, 5.0));
-		points.add(new Point2D.Double(60.0, 5.0));
-		points.add(new Point2D.Double(60.0, 35.0));
-		points.add(new Point2D.Double(95.0, 35.0));
-		points.add(new Point2D.Double(95.0, 65.0));
-		points.add(new Point2D.Double(125.0, 65.0));
-		points.add(new Point2D.Double(125.0, 35.0));
-		points.add(new Point2D.Double(180.0, 35.0));
-		points.add(new Point2D.Double(180.0, 75.0));
-		points.add(new Point2D.Double(155.0, 75.0));
-		points.add(new Point2D.Double(155.0, 100.0));
-		points.add(new Point2D.Double(195.0, 100.0));
-		points.add(new Point2D.Double(195.0, 145.0));
-		points.add(new Point2D.Double(75.0, 145.0));
-		points.add(new Point2D.Double(75.0, 120.0));
-		points.add(new Point2D.Double(40.0, 120.0));
-		points.add(new Point2D.Double(40.0, 95.0));
-		points.add(new Point2D.Double(5.0, 95.0));
+//		points.add(new Point2D.Double(5.0, 35.0));
+//		points.add(new Point2D.Double(20.0, 35.0));
+//		points.add(new Point2D.Double(20.0, 5.0));
+//		points.add(new Point2D.Double(60.0, 5.0));
+//		points.add(new Point2D.Double(60.0, 35.0));
+//		points.add(new Point2D.Double(95.0, 35.0));
+//		points.add(new Point2D.Double(95.0, 65.0));
+//		points.add(new Point2D.Double(125.0, 65.0));
+//		points.add(new Point2D.Double(125.0, 35.0));
+//		points.add(new Point2D.Double(180.0, 35.0));
+//		points.add(new Point2D.Double(180.0, 75.0));
+//		points.add(new Point2D.Double(155.0, 75.0));
+//		points.add(new Point2D.Double(155.0, 100.0));
+//		points.add(new Point2D.Double(195.0, 100.0));
+//		points.add(new Point2D.Double(195.0, 145.0));
+//		points.add(new Point2D.Double(75.0, 145.0));
+//		points.add(new Point2D.Double(75.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 95.0));
+//		points.add(new Point2D.Double(5.0, 95.0));
 		
 //		points.add(new Point2D.Double(40.0, 120.0));
 //		points.add(new Point2D.Double(40.0, 20.0));
@@ -237,6 +234,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 		}
 		largura = yMaior-yMenor;
 		comprimento = xMaior-xMenor;
+		
+		distMax = new Point2d(xMenor , yMenor).distance(new Point2d (xMaior , yMaior));
 
 
 		for(int i=0;i<malha.length;i++){
@@ -544,10 +543,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 				{
 					if(distancia + variacao >= raioTmp && distancia <= raioTmp)
 					{
-						if(i == 0)
-						{
-							testeTempo.add(pontosPossiveis.get(k));
-						}
+						testeTempo.add(pontosPossiveis.get(k));
+						
 						pontos2.add(pontosPossiveis.get(k));
 						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
 					}
@@ -557,10 +554,9 @@ public class MovimentacaoGeneralClosedPocketTest {
 					if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
 					{
 						pontos2.add(pontosPossiveis.get(k));
-						if(i == 0)
-						{
+						
 							testeTempo.add(pontosPossiveis.get(k));
-						}
+						
 						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioMedia, pontosPossiveis.get(k).getY()-raioMedia, raioMedia*2, 2*raioMedia));
 					}
 					else
@@ -568,10 +564,9 @@ public class MovimentacaoGeneralClosedPocketTest {
 						if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
 						{
 							pontos2.add(pontosPossiveis.get(k));
-							if(i == 0)
-							{
+							
 								testeTempo.add(pontosPossiveis.get(k));
-							}
+							
 						}
 					}
 				}
@@ -699,17 +694,30 @@ public class MovimentacaoGeneralClosedPocketTest {
 			painelTest(){
 
 
-				double distTmp, distHold;
-				int ee = 0 , posicaoTestada = 0 , numeroDePontosLigados = 0 , posicaoAnterior = 0;
+				double distTmp, distHold , somaDasDistancias = 0;
+				int ee = 0 , posicaoTestada = 0;
+				ArrayList<Point3d> listaPontosProximos = new ArrayList<Point3d>();	
+				double maiorX = 0, maiorY = 0 , menorX = distMax, menorY = distMax , area = 0;
+				int largura2 , comprimento2;
 				
 				
 				uniaoDosPontos.moveTo(2*testeTempo.get(0).getX(), 2*testeTempo.get(0).getY());
-				for(int qq = 0 ; qq < testeTempo.size() ; qq++)
+				for(int qq = 1 ; qq < testeTempo.size() ; qq++)
 				{
-					distTmp = 100;
+					if(maiorX < testeTempo.get(qq).getX())
+						maiorX = testeTempo.get(qq).getX();
+					if(maiorY < testeTempo.get(qq).getY())
+						maiorY = testeTempo.get(qq).getY();
+					if(menorX > testeTempo.get(qq).getX())
+						menorX = testeTempo.get(qq).getX();
+					if(menorY > testeTempo.get(qq).getY())
+						menorY = testeTempo.get(qq).getY();
+					
+					listaPontosProximos.add(testeTempo.get(posicaoTestada));
+					distTmp = distMax;
 					for(int ww = 0 ; ww < testeTempo.size() ; ww++)
 					{
-						if(posicaoTestada != ww && posicaoAnterior != ww)
+						if(!listaPontosProximos.contains(testeTempo.get(ww)))
 						{
 							distHold = testeTempo.get(posicaoTestada).distance(testeTempo.get(ww));
 							if(distHold < distTmp)
@@ -719,24 +727,41 @@ public class MovimentacaoGeneralClosedPocketTest {
 							}	
 						}	
 					}
-					posicaoAnterior = posicaoTestada;
 					posicaoTestada = ee;
-					if(distTmp < 2){
+					if(distTmp < 10)
+					{
 						uniaoDosPontos.lineTo(2*testeTempo.get(posicaoTestada).getX(), 2*testeTempo.get(posicaoTestada).getY());
-						numeroDePontosLigados++;
+						somaDasDistancias = somaDasDistancias + distTmp;
 					}
 					else
 					{
 						uniaoDosPontos.closePath();
 						arrayPath.add(uniaoDosPontos);
 						uniaoDosPontos = new GeneralPath();
-						uniaoDosPontos.moveTo(testeTempo.get(posicaoTestada).getX(), testeTempo.get(posicaoTestada).getY());
+						uniaoDosPontos.moveTo(2*testeTempo.get(posicaoTestada).getX(), 2*testeTempo.get(posicaoTestada).getY());
 					}
 				}
 				uniaoDosPontos.closePath();
-				arrayPath.add(uniaoDosPontos);	
-				System.err.println(arrayPath.size());
-							
+				arrayPath.add(uniaoDosPontos);
+//				area = somaDasDistancias*raio + diametro;
+//							
+//				comprimento2 = (int) (maiorX - menorX);
+//				largura2 = (int) (maiorY - menorY);
+//				
+//				for(int i = 0 ; i < largura2 ; i++)
+//				{
+//					for(int j = 0 ; j < comprimento2 ; j++)
+//					{
+//						Rectangle2D quadradinhos = new Rectangle2D.Double(menorX + j , menorY + i , 1 , 1);
+//						for(int k = 0 ; k < arrayPath.size() ; k++)
+//						{
+//							if(arrayPath.get(k).contains(quadradinhos))
+//							{
+//								area += 
+//							}
+//						}
+//					}
+//				}
 				
 				r.moveTo(0,0);
 				r.lineTo(2*comprimento, 0);
@@ -749,8 +774,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 //						if(pontos.get(i).size()<1){
 //							break;
 //						}
-////						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
-//						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
+//						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
+////						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
 //					}
 //				}
 //								for(int i=0;i<malha.length;i++){

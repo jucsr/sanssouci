@@ -60,7 +60,6 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 		this.button2.addActionListener(this);
 		
 		linePanel = new LinePanel(projeto);
-		
 		if(feature.getClass() == Cavidade.class)
 		{
 			Cavidade feat = (Cavidade)feature;
@@ -68,6 +67,14 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 			this.spinnerPosZ.setValue(profundidadeFeature + this.feature.Z);
 			this.spinnerPosZ.setEnabled(false);
 			linePanel.shape = new RoundRectangle2D.Double(20 + feat.X, 20 + feat.Y, feat.getComprimento(), feat.getLargura(), 2 * feat.getRaio(), 2 * feat.getRaio());
+		
+//		if(feature.getClass() == Cavidade.class)
+//		{
+//			Cavidade feat = (Cavidade)feature;
+//			profundidadeFeature = feat.getProfundidade();
+//			this.spinnerPosZ.setValue(profundidadeFeature - this.altura);
+//			this.spinnerPosZ.setEnabled(false);
+//			linePanel.shape = new RoundRectangle2D.Double(20 + feat.X, 20 + feat.Y, feat.getComprimento(), feat.getLargura(), 2 * feat.getRaio(), 2 * feat.getRaio());
 		} else if(feature.getClass() == Degrau.class)
 		{
 			Degrau feat = (Degrau)feature;
@@ -177,7 +184,7 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 					linePanel.shape = new RoundRectangle2D.Double(20 + feat.X * zoom, 20 + feat.Y * zoom, feat.getComprimento() * zoom, feat.getLargura() * zoom, 2 * feat.getRaio() * zoom, 2 * feat.getRaio() * zoom);
 				} else if(feature.getClass() == Degrau.class)
 				{
-					Degrau feat = (Degrau)feature;
+//					Degrau feat = (Degrau)feature;
 		
 				} else if(feature.getClass() == GeneralClosedPocket.class)
 				{
@@ -457,6 +464,9 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 				{
 					Degrau degrau = (Degrau)this.feature;
 					// ---- IMPLEMENTAR
+//					Degrau dg = (Degrau)this.feature;
+//					dg.addBoss(generalBoss);
+//					generalBoss.setPaths(paths);
 				} else if(this.feature.getClass() == GeneralClosedPocket.class)
 				{
 					GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
@@ -479,7 +489,6 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 //					}
 //				}
 				
-				this.face.addFeature(generalBoss);
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Profile Boss: " +generalBoss.getNome().toUpperCase() + " added with success!");

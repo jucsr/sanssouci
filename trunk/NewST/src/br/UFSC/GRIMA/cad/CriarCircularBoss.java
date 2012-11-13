@@ -18,7 +18,9 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.cad.visual.CreateCircularBossFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
+import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
@@ -27,8 +29,23 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 		ActionListener {
 	public Face face = null;
 	public JanelaPrincipal parent;
-	private Cavidade cavidade = null;
-	private GeneralClosedPocket generalClosedPocket = null;
+	private Cavidade cavidade;
+	private GeneralClosedPocket generalClosedPocket;
+	private Feature feature;
+	
+	public CriarCircularBoss(JanelaPrincipal parent, Face face, Feature feature) {
+		super(parent);
+		if(feature.getClass() == Cavidade.class)
+		{
+			cavidade = (Cavidade)feature;
+		}else
+		{
+			generalClosedPocket = (GeneralClosedPocket)feature;
+		}
+		this.face = face;
+		this.parent = parent;
+		this.init();
+	}
 	
 	public CriarCircularBoss(JanelaPrincipal parent, Face face, Cavidade cavidade) {
 		super(parent);
@@ -221,12 +238,10 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 				refComprimento22 = posicaoX - raio2;
 				
 				Point2D [] bordaCircular = null;
-				double n = 2*Math.PI*raio2;
-				int numPontos = (int)n;
+//				double n = 2*Math.PI*raio2;
 				
-				bordaCircular = cavidade.determinarPontosEmCircunferencia (new Point3d(posicaoX,posicaoY,posicaoZ), 0.0, 2*Math.PI, raio2, numPontos);
+				bordaCircular = cavidade.determinarPontosEmCircunferenciaV2(new Point3d(posicaoX,posicaoY,posicaoZ), 0.0, 2*Math.PI, raio2);
 
-				
 				switch (face.verticeAtivado) {
 
 				case 0:
@@ -389,6 +404,158 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 		 }
 
 		// CONTINUAR A PARTIR DA LINHA 409 DO CriarFuroBasePlana
+//		if (ok) {
+//			double X = 0, Y = 0, Z = 0;
+//			switch (face.verticeAtivado) {
+//			case 0:
+//				X = posicaoX + cavidade.getPosicaoX();
+//				Y = posicaoY + cavidade.getPosicaoY();
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				break;
+//			case 1:
+//				X = posicaoX;
+//				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				break;
+//			case 2:
+//				X = (face.getComprimento() - cavidade.getPosicaoX() - posicaoX);
+//				Y = (face.getLargura() - cavidade.getPosicaoY() - posicaoY);
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				break;
+//			case 3:
+//				X = (-face.getComprimento() + cavidade.getPosicaoX() + posicaoX);
+//				Y = posicaoY;
+//				Z = cavidade.getProfundidade() - alturaBoss + cavidade.Z;
+//				break;
+//			default:
+//				break;
+//			}
+//			
+//			CircularBoss novoCircularBoss = new CircularBoss();
+//			novoCircularBoss.setPosicao(X, Y, Z);
+//			novoCircularBoss.setAltura(alturaBoss);
+//			novoCircularBoss.setDiametro1(diametro1);
+//			novoCircularBoss.setDiametro2(diametro2);
+//			novoCircularBoss.setNome(this.textField9.getText());
+//			novoCircularBoss.setTolerancia(tolerancia*0.001);
+//			novoCircularBoss.setRugosidade(rugosidade*0.001);
+//			
+//			if (this.cavidade.validarBoss(novoCircularBoss)) 
+//			{
+//				if(face.validarFeature(novoCircularBoss))
+//				{
+//					Point3d coordinates = null;
+//					ArrayList<Double> axis = null, refDirection = null;
+//					if (this.face.getTipo() == Face.XY) 
+//					{
+//						coordinates = new Point3d(novoCircularBoss.X, novoCircularBoss.Y, this.face.getProfundidadeMaxima() - novoCircularBoss.Z);
+//						axis = new ArrayList<Double>();
+//						axis.add(0.0);
+//						axis.add(0.0);
+//						axis.add(1.0);
+//
+//						refDirection = new ArrayList<Double>();
+//						refDirection.add(1.0);
+//						refDirection.add(0.0);
+//						refDirection.add(0.0);
+//					} else if (this.face.getTipo() == Face.XZ) 
+//					{
+//						coordinates = new Point3d(novoCircularBoss.X, novoCircularBoss.Z, novoCircularBoss.Y);
+//						axis = new ArrayList<Double>();
+//						axis.add(0.0);
+//						axis.add(-1.0);
+//						axis.add(0.0);
+//
+//						refDirection = new ArrayList<Double>();
+//						refDirection.add(1.0);
+//						refDirection.add(0.0);
+//						refDirection.add(0.0);
+//
+//					} else if (this.face.getTipo() == Face.YX) 
+//					{
+//						coordinates = new Point3d(novoCircularBoss.X, this.face.getLargura() - novoCircularBoss.Y, novoCircularBoss.Z);
+//						axis = new ArrayList<Double>();
+//						axis.add(0.0);
+//						axis.add(0.0);
+//						axis.add(-1.0);
+//
+//						refDirection = new ArrayList<Double>();
+//						refDirection.add(1.0);
+//						refDirection.add(0.0);
+//						refDirection.add(0.0);
+//
+//					} else if (this.face.getTipo() == Face.YZ)
+//					{
+//						coordinates = new Point3d(
+//								this.face.getProfundidadeMaxima() - novoCircularBoss.Z, novoCircularBoss.Y, this.face.getComprimento() - novoCircularBoss.X);
+//						axis = new ArrayList<Double>();
+//						axis.add(1.0);
+//						axis.add(0.0);
+//						axis.add(0.0);
+//
+//						refDirection = new ArrayList<Double>();
+//						refDirection.add(0.0);
+//						refDirection.add(0.0);
+//						refDirection.add(-1.0);
+//
+//					} else if (this.face.getTipo() == Face.ZX) 
+//					{
+//						coordinates = new Point3d(novoCircularBoss.X, this.face.getProfundidadeMaxima() - novoCircularBoss.Z, this.face.getLargura() - novoCircularBoss.Y);
+//						axis = new ArrayList<Double>();
+//						axis.add(0.0);
+//						axis.add(1.0);
+//						axis.add(0.0);
+//
+//						refDirection = new ArrayList<Double>();
+//						refDirection.add(1.0);
+//						refDirection.add(0.0);
+//						refDirection.add(0.0);
+//
+//					} else if (this.face.getTipo() == Face.ZY) 
+//					{
+//						coordinates = new Point3d(novoCircularBoss.Z, novoCircularBoss.Y, novoCircularBoss.X);
+//						axis = new ArrayList<Double>();
+//						axis.add(-1.0);
+//						axis.add(0.0);
+//						axis.add(0.0);
+//
+//						refDirection = new ArrayList<Double>();
+//						refDirection.add(0.0);
+//						refDirection.add(0.0);
+//						refDirection.add(1.0);
+//
+//					}
+//					Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
+//					position.setName(novoCircularBoss.getNome() + " placement");
+//					novoCircularBoss.setPosition(position);
+//
+//					this.cavidade.addBoss(novoCircularBoss);
+//					/** fazer isto em todas as janelas */
+//					this.parent.desenhador.repaint();
+//					this.parent.atualizarArvore();
+//					/****************** atualiza a ARVORE ***************/
+//					// face.imprimeDados(novoFuro);
+//					// this.setModal(false);
+//					this.parent.setEnabled(true);
+//
+//					this.parent.textArea1.setText(this.parent.textArea1
+//							.getText()
+//							+ "\n"
+//							+ "Boss: "
+//							+ novoCircularBoss.getNome()
+//							+ " adicionado com sucesso!");
+//					this.dispose();
+//				}
+//
+//			} else {
+//				JOptionPane.showMessageDialog(null, "Error trying to create the Boss", "invalid Boss", JOptionPane.OK_CANCEL_OPTION);
+//				String erro = "";
+//				StyleContext sc = StyleContext.getDefaultStyleContext();
+//				AttributeSet aSet = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
+//
+//				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n Error trying to create the Boss!");
+//			}
+//		}
 		if (ok) {
 			double X = 0, Y = 0, Z = 0;
 			switch (face.verticeAtivado) {
@@ -427,6 +594,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 			
 			if (this.cavidade.validarBoss(novoCircularBoss)) 
 			{
+				if(face.validarFeature(novoCircularBoss))
 				{
 					Point3d coordinates = null;
 					ArrayList<Double> axis = null, refDirection = null;
@@ -512,10 +680,27 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 					Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
 					position.setName(novoCircularBoss.getNome() + " placement");
 					novoCircularBoss.setPosition(position);
-					// this.face.addFeature(novoCircularBoss);
 
-					this.cavidade.addBoss(novoCircularBoss);
-					/** fazer isto em todas as janelas */
+					if(this.feature.getClass() == Cavidade.class)
+					{
+						Cavidade cavidade = (Cavidade)this.feature;
+						cavidade.addBoss(novoCircularBoss);
+						
+					} else if(this.feature.getClass() == Degrau.class)
+					{
+//						Degrau degrau = (Degrau)this.feature;
+						// ---- IMPLEMENTAR
+//						Degrau dg = (Degrau)this.feature;
+//						dg.addBoss(generalBoss);
+//						generalBoss.setPaths(paths);
+					} else if(this.feature.getClass() == GeneralClosedPocket.class)
+					{
+						GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
+						general.addBoss(novoCircularBoss);
+					
+					}
+					
+					
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
 					/****************** atualiza a ARVORE ***************/

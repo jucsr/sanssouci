@@ -449,6 +449,7 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 					position.setName(boss.getNome() + " placement");
 					boss.setPosition(position);
 
+					this.face.addFeature(boss);
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
 					this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" + "General Profile Boss: " + boss.getNome().toUpperCase() + " added with success!");

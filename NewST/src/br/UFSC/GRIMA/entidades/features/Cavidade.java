@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.entidades.features;
 
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -279,27 +280,22 @@ public class Cavidade extends Feature implements Serializable {
 		
 		if(boss.getClass() == CircularBoss.class)
 		{
-
 			CircularBoss cb = (CircularBoss)boss;
 			
 			double posX = cb.getPosicaoX();
 			double posY = cb.getPosicaoY();
 			double posZ = cb.getPosicaoZ();
 			double raioMaiorBoss = cb.getDiametro2()/2;
-			double n = 2*Math.PI*raioMaiorBoss;
-			int numPontos = (int)n;
 						
-			/** Discretiza a borda do CircularBoss **/
-			
-			borda = determinarPontosEmCircunferencia (new Point3d(posX,posY,posZ), 0.0, 2*Math.PI, raioMaiorBoss, numPontos);
+			borda = determinarPontosEmCircunferenciaV2 (new Point3d(posX,posY,posZ), 0.0, 2*Math.PI, raioMaiorBoss);
 			
 			for (int i=0; i < borda.length; i++){
-				System.out.println("borda" + borda[i]);
+				
 				if(!cavidade.contains(borda[i])) // verifica se o novo boss esta dentro da cavidade
 				{
 					isValid = false;
 					JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
-				break;
+					break;
 				} else
 				{
 					isValid = true; //tem q ser true pq se nao tiver outro boss o programa nao entra no "for" seguinte
@@ -345,6 +341,21 @@ public class Cavidade extends Feature implements Serializable {
 								isValid = true;
 							}
 							break;
+						}else if(bossTmp.getClass() == GeneralProfileBoss.class)
+						{
+							Shape shape;
+							GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
+							shape = gpb.getForma();
+							if(shape.contains(borda[i]))
+							{
+								JOptionPane.showMessageDialog(null, "The Boss intersects a General Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
+								isValid = false;
+								return isValid;
+							}else
+							{
+								isValid = true;
+							}
+							break;
 						}
 					}
 				}
@@ -352,11 +363,7 @@ public class Cavidade extends Feature implements Serializable {
 			}
 			
 			 		} else if(boss.getClass() == RectangularBoss.class){
-			 			
-					/**
-					 *  implementar para rectangular boss!!!
-					 */
-			 			
+			 	
 			 		RectangularBoss recBoss = (RectangularBoss)boss;
 			 		Point2D [] bordaRect = null;
 			 		double posX = recBoss.getPosicaoX();
@@ -419,11 +426,105 @@ public class Cavidade extends Feature implements Serializable {
 				 						isValid = true;
 				 					}
 				 					break;
+				 				}else if(bossTmp.getClass() == GeneralProfileBoss.class)
+				 				{
+				 					Shape shape;
+									GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
+									shape = gpb.getForma();
+									if(shape.contains(borda[i]))
+									{
+										JOptionPane.showMessageDialog(null, "The Boss intersects a General Boss \n ", "Error at creating the rectangular boss", JOptionPane.OK_CANCEL_OPTION);
+										isValid = false;
+										return isValid;
+									}else
+									{
+										isValid = true;
+									}
+									break;
 				 				}
 				 			}	
 				 		}
 			 		}
 			 		
+			}else if(boss.getClass() == GeneralProfileBoss.class){
+
+				GeneralProfileBoss gpb = (GeneralProfileBoss)boss;
+				Face face = null;
+				Point2D[] pontosGPB;
+				pontosGPB = face.getShapePontos(gpb);
+		 		
+		 		for (int j=0; j < pontosGPB.length; j++){
+		 			
+		 			if(!cavidade.contains(pontosGPB[j])) // verifica se o novo boss esta dentro da cavidade
+			 		{
+			 			isValid = false;
+			 			JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the General boss", JOptionPane.OK_CANCEL_OPTION);
+			 			break;
+			 		} else
+			 		{
+			 			isValid = true;
+			 			/** verificacao de intersecao entre o novo generalBoss e os outros Boss*/
+			 			for (int i = 0; i < this.itsBoss.size(); i ++)
+			 			{
+			 				Boss bossTmp = this.itsBoss.get(i);
+			 				if(bossTmp.getClass() == CircularBoss.class)
+			 				{
+			 					double rad = 0;
+			 					CircularBoss cbTmp = (CircularBoss)bossTmp;
+			 					if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
+			 						rad = cbTmp.getDiametro1() / 2;							
+			 					else
+			 						rad = cbTmp.getDiametro2() / 2;
+					
+			 					Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+
+			 					if (bossCTmp.contains(pontosGPB[j]))
+			 					{
+			 						JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the general boss", JOptionPane.OK_CANCEL_OPTION);
+			 						isValid = false;
+			 						return isValid;
+			 					} else
+			 					{
+			 						isValid = true;
+			 						
+			 					}
+			 					
+			 				}else if(bossTmp.getClass() == RectangularBoss.class)
+			 				{
+			 					RectangularBoss rectangularBoss = (RectangularBoss)boss;
+	 					
+			 					RoundRectangle2D bossAuxTmp = new RoundRectangle2D.Double(rectangularBoss.getPosicaoX(), rectangularBoss.getPosicaoY(), rectangularBoss.getL1(), rectangularBoss.getL2(), rectangularBoss.getRadius(), rectangularBoss.getRadius());
+			 					if(bossAuxTmp.contains(pontosGPB[j]))
+			 					{
+			 						JOptionPane.showMessageDialog(null, "The Boss intersects a Rectangular Boss \n ", "Error at creating the general boss", JOptionPane.OK_CANCEL_OPTION);
+			 						isValid = false;
+			 						return isValid;
+			 					} else
+			 					{
+			 						isValid = true;
+			 					}
+			 					break;
+			 				}else if(bossTmp.getClass() == GeneralProfileBoss.class)
+			 				{
+			 					Shape shape;
+								GeneralProfileBoss gpbTmp = (GeneralProfileBoss)bossTmp;
+								shape = gpbTmp.getForma();
+								if(shape.contains(pontosGPB[i]))
+								{
+									JOptionPane.showMessageDialog(null, "The Boss intersects a General Boss \n ", "Error at creating the general boss", JOptionPane.OK_CANCEL_OPTION);
+									isValid = false;
+									return isValid;
+								}else
+								{
+									isValid = true;
+								}
+								break;
+			 				}
+			 			}	
+			 		}
+		 		}
+		 		
+		
 			}
 		
 		return isValid;
@@ -447,7 +548,6 @@ public class Cavidade extends Feature implements Serializable {
 				
 				saida[i] = new Point2D.Double(x, y);
 				
-				System.out.println("saida reta= " + saida[i] + i);
 			} 
 			
 		return saida;
@@ -514,11 +614,12 @@ public class Cavidade extends Feature implements Serializable {
 	}
 	public static Point2D[] determinarPontosEmCircunferenciaV2(Point3d center, double anguloInicial, double deltaAngulo, double raio)  
 	{
-		System.out.println("center of cincunference: "+center);
+//		System.out.println("center of cincunference: "+center);
 		int numeroDePontos = (int)(deltaAngulo*raio); //deltaAngulo em rad
+//		int numeroDePontos = 360;
 		Point2D[] saida = new Point2D [numeroDePontos];
 		double x=0.0, y=0.0, dAngulo = 0.0;
-
+//		System.out.println("numPontos: "+ numeroDePontos);
 		dAngulo = deltaAngulo / numeroDePontos;
 		
 		for(int i = 0; i < numeroDePontos; i++)
@@ -527,6 +628,7 @@ public class Cavidade extends Feature implements Serializable {
 			y = center.y + raio * Math.sin(anguloInicial + i * dAngulo);
 			
 			saida[i] = new Point2D.Double(x, y);
+//			System.out.printf("saida[%d]: %f, %f\n", i, x, y);
 		}
 		return saida;
 	}
@@ -606,7 +708,6 @@ public class Cavidade extends Feature implements Serializable {
 				saida[2*borda1.length + j] = borda3[j];
 				saida[3*borda1.length + j] = borda4[j];
 			}
-		
 			linhaHor1 = determinarPontosEmReta(iniPos1, endPos1);
 			linhaHor2 = determinarPontosEmReta(iniPos3, endPos3);
 			
@@ -630,6 +731,9 @@ public class Cavidade extends Feature implements Serializable {
 				saida[4*borda1.length + 2*linhaHor1.length + linhaVer1.length + j] = linhaVer2[j];
 				
 			}
+//			for(int k=0; k < saida.length; k++){
+//				System.out.println("saida roundRectangular= " + saida[k] + k);
+//			}
 			
 		return saida;
 	}

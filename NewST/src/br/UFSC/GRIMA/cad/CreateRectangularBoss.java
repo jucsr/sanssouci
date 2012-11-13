@@ -475,7 +475,7 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 					// this.face.addFeature(novoCircularBoss);
 
 					/** fazer isto em todas as janelas */
-					this.face.addFeature(boss);
+					
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
 					/****************** atualiza a ARVORE ***************/

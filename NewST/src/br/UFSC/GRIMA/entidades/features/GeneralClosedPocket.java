@@ -62,6 +62,10 @@ public class GeneralClosedPocket extends Feature
 	{
 		return vertexPoints;
 	}
+	public ArrayList<Point2D> getVertexPoints() 
+	{
+		return vertexPoints;
+	}
 	public void setPoints(ArrayList<Point2D> points) 
 	{
 		this.vertexPoints = points;

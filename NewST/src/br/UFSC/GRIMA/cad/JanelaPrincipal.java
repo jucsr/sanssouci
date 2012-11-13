@@ -2246,9 +2246,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 //					System.out.println("CAVIDADEEEEEE");
 					CriarBoss cb = new CriarBoss(this, this.projeto, face, feature); //criar no .cad
 					cb.setVisible(true);
-				} else if (feature.getClass() == Degrau.class)
-				{
-					
+//				} else if (feature.getClass() == Degrau.class)
+//				{
+//					
 				} else if (feature.getClass() == GeneralClosedPocket.class)
 				{
 					CriarBoss cb = new CriarBoss(this, this.projeto, face, feature);

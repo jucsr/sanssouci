@@ -1717,7 +1717,7 @@ public class Face implements Serializable{
 						else
 							nContem = 1;
 					}
-				}else //cavidade nao tem boss
+				}else 
 				{
 					for(int j=0; j < bordaTmp.length; j++)
 					{
@@ -1727,6 +1727,16 @@ public class Face implements Serializable{
 							nContem = 1;
 					}
 				}
+			}else 
+			{
+				for(int j=0; j < bordaTmp.length; j++)
+				{
+					if(shape.contains(bordaTmp[j]))
+						contem = 1;
+					else
+						nContem = 1;
+				}
+
 			}
 			
 			/** Fazer p as outras features que tem boss **/
@@ -2209,7 +2219,7 @@ public class Face implements Serializable{
 			else
 				break;
 		}
-		
+		System.out.println("dentro: "+dentro);
 		return dentro;
 	}
 	public Feature getMae(Feature feature)
@@ -2231,7 +2241,6 @@ public class Face implements Serializable{
 				Point2D [] borda = this.getShapePontos(feature);
 				
 	//			System.out.println("ShapeTmp: "+ shapeTmp);
-				
 				if(estaDentroDaFeature(shapeTmp, borda))
 				{
 					maes.add(featureTmp);
@@ -2455,7 +2464,7 @@ public class Face implements Serializable{
 
 			for(int i=0; i < vertices.size(); i++)
 			{
-				if(i <= vertices.size()-2)
+				if(i < vertices.size()-1)
 				{
 					saida = Cavidade.determinarPontosEmReta(new Point3d( vertices.get(i).getX(), vertices.get(i).getY(), 0.0), 
 							new Point3d(vertices.get(i+1).getX(), vertices.get(i+1).getY(), 0.0 ));
@@ -2467,7 +2476,7 @@ public class Face implements Serializable{
 				}else
 				{
 					/** Para fazer a última reta **/
-					saida = Cavidade.determinarPontosEmReta(new Point3d( vertices.get(vertices.size()-1).getX(), vertex.get(vertices.size()-1).getY(), 0.0), 
+					saida = Cavidade.determinarPontosEmReta(new Point3d( vertices.get(vertices.size()-1).getX(), vertices.get(vertices.size()-1).getY(), 0.0), 
 							new Point3d(vertices.get(0).getX(), vertices.get(0).getY(), 0.0 ));
 					for(int n=0; n < saida.length; n++)
 					{

@@ -296,97 +296,102 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			generalPocket.setPassante(checkBox1.isSelected());
 			generalPocket.setRugosidade((Double)spinnerRugosidade.getValue());
 			
-			Point3d coordinates = null;
-			ArrayList<Double> axis = null, refDirection = null;
-			if (this.face.getTipo() == Face.XY)
+			if(face.validarFeature(generalPocket))
 			{
-				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), generalPocket.getPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ);
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(0.0);
-				axis.add(1.0);
+				Point3d coordinates = null;
+				ArrayList<Double> axis = null, refDirection = null;
+				if (this.face.getTipo() == Face.XY)
+				{
+					coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), generalPocket.getPoints().get(0).getY(), this.face.getProfundidadeMaxima() - posicaoZ);
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(0.0);
+					axis.add(1.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+				} else if (this.face.getTipo() == Face.XZ)
+				{
+					coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), posicaoZ, generalPocket.getPoints().get(0).getY());
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(-1.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					
+					
+				} else if (this.face.getTipo() == Face.YX)
+				{
+					coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), this.face.getLargura() - generalPocket.getPoints().get(0).getY(), face.getProfundidadeMaxima() - posicaoZ);
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(0.0);
+					axis.add(-1.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					
+				} else if (this.face.getTipo() == Face.YZ)
+				{
+					coordinates = new Point3d(this.face.getProfundidadeMaxima() - posicaoZ, generalPocket.getPoints().get(0).getY(), this.face.getComprimento() - generalPocket.getPoints().get(0).getX());
+					axis = new ArrayList<Double>();
+					axis.add(1.0);
+					axis.add(0.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					refDirection.add(-1.0);
+					
+				} else if (this.face.getTipo() == Face.ZX)
+				{
+					coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), this.face.getProfundidadeMaxima() - posicaoZ, this.face.getLargura() - generalPocket.getPoints().get(0).getY());
+					axis = new ArrayList<Double>();
+					axis.add(0.0);
+					axis.add(1.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(1.0);
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					
+				} else if (this.face.getTipo() == Face.ZY)
+				{
+					coordinates = new Point3d(posicaoZ, generalPocket.getPoints().get(0).getY(), face.getComprimento() - generalPocket.getPoints().get(0).getX());
+					axis = new ArrayList<Double>();
+					axis.add(-1.0);
+					axis.add(0.0);
+					axis.add(0.0);
+					
+					refDirection = new ArrayList<Double>();
+					refDirection.add(0.0);
+					refDirection.add(0.0);
+					refDirection.add(1.0);
+					
+				}
+				Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
+				position.setName(generalPocket.getNome() + " placement");
+				generalPocket.setPosition(position);	
 				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-			} else if (this.face.getTipo() == Face.XZ)
-			{
-				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), posicaoZ, generalPocket.getPoints().get(0).getY());
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(-1.0);
-				axis.add(0.0);
+				this.face.addFeature(generalPocket);
+				this.parent.desenhador.repaint();
+				this.parent.atualizarArvore();
+				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Closed Pocked: " +generalPocket.getNome() + " added with success!");
 				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				
-				
-			} else if (this.face.getTipo() == Face.YX)
-			{
-				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), this.face.getLargura() - generalPocket.getPoints().get(0).getY(), face.getProfundidadeMaxima() - posicaoZ);
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(0.0);
-				axis.add(-1.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				
-			} else if (this.face.getTipo() == Face.YZ)
-			{
-				coordinates = new Point3d(this.face.getProfundidadeMaxima() - posicaoZ, generalPocket.getPoints().get(0).getY(), this.face.getComprimento() - generalPocket.getPoints().get(0).getX());
-				axis = new ArrayList<Double>();
-				axis.add(1.0);
-				axis.add(0.0);
-				axis.add(0.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				refDirection.add(-1.0);
-				
-			} else if (this.face.getTipo() == Face.ZX)
-			{
-				coordinates = new Point3d(generalPocket.getPoints().get(0).getX(), this.face.getProfundidadeMaxima() - posicaoZ, this.face.getLargura() - generalPocket.getPoints().get(0).getY());
-				axis = new ArrayList<Double>();
-				axis.add(0.0);
-				axis.add(1.0);
-				axis.add(0.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(1.0);
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				
-			} else if (this.face.getTipo() == Face.ZY)
-			{
-				coordinates = new Point3d(posicaoZ, generalPocket.getPoints().get(0).getY(), face.getComprimento() - generalPocket.getPoints().get(0).getX());
-				axis = new ArrayList<Double>();
-				axis.add(-1.0);
-				axis.add(0.0);
-				axis.add(0.0);
-				
-				refDirection = new ArrayList<Double>();
-				refDirection.add(0.0);
-				refDirection.add(0.0);
-				refDirection.add(1.0);
-				
+				dispose();
 			}
-			Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
-			position.setName(generalPocket.getNome() + " placement");
-			generalPocket.setPosition(position);	
+
 			
-			this.face.addFeature(generalPocket);
-			this.parent.desenhador.repaint();
-			this.parent.atualizarArvore();
-			this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Closed Pocked: " +generalPocket.getNome() + " added with success!");
-			
-			dispose();
 		}
 	}
 	private boolean validateAngles() 

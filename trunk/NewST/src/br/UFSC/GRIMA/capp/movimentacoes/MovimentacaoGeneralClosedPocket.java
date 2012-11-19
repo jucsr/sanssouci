@@ -37,8 +37,8 @@ public class MovimentacaoGeneralClosedPocket {
 		this.itsBoss = genClosed.getItsBoss();
 		this.ferramenta = this.ws.getFerramenta();
 	}
-
-
+	
+	
 	public ArrayList<LinearPath> getDesbaste(){
 
 
@@ -48,7 +48,7 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<Point2d> coordenadas;
 		ArrayList<Point2D> vertex = genClosed.getPoints();
 		ArrayList<Point3d> pontosMenores;
-		ArrayList<ArrayList<Point3d>> pontos;
+		ArrayList<ArrayList<Point3d>> pontos = null;
 		ArrayList<Double> menorDistancia;
 		ArrayList<Point3d> maximos;		
 		ArrayList<Shape> bossArray;
@@ -71,6 +71,9 @@ public class MovimentacaoGeneralClosedPocket {
 				c,
 				z=-ws.getCondicoesUsinagem().getAp(),
 				diametroPrimeiroWs = this.genClosed.getWorkingsteps().get(0).getFerramenta().getDiametroFerramenta(),
+				diametroSegundoWs,//PODE SER QUE OCORRAM 4 WS
+				diametroTerceiroWs,
+				diametroQuartoWs,
 				diametroFerramenta = this.ferramenta.getDiametroFerramenta(),
 				ae = this.ws.getCondicoesUsinagem().getAe(),
 				malhaMenoresDistancias[][] = new double[numeroDePontosDaMalha-1][numeroDePontosDaMalha-1],
@@ -82,6 +85,7 @@ public class MovimentacaoGeneralClosedPocket {
 				yMaior=0;
 
 
+		//CRIA O GENERAL PATH DO FORMATO
 		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex), raio);
 		general.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
 		for(int r=0;r<vertex.size();r++){
@@ -112,9 +116,18 @@ public class MovimentacaoGeneralClosedPocket {
 			}
 		}
 
-		//REPRODUZIR BOSS
-		bossArray = new ArrayList<Shape>();
-		pontosPeriferia = new ArrayList<Point3d>();
+		//REPRODUZIR BOSS		
+		
+		bossArray = getBossArray(allowanceSide, z);
+		
+		pontosPeriferia = getPontosPeriferia(allowanceSide, z, raio, vertexPoint);
+
+		pontosPossiveis = getPontosPossiveis(malha, general, z, bossArray);
+		
+		coordenadas = getCoordenadas(malha, general, bossArray);
+		
+		
+	/*	
 		//		listaElipses = new ArrayList<Ellipse2D>();	
 		for(int i=0;i<this.itsBoss.size();i++){
 			bossTmp=this.itsBoss.get(i);
@@ -157,11 +170,12 @@ public class MovimentacaoGeneralClosedPocket {
 		for(int i=0;i<periferia.size();i++){
 			pontosPeriferia.add(periferia.get(i));
 		}
-
-		int b=0;
+*/
+		
+		//int b=0;
 		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
-		pontosPossiveis = new ArrayList<Point3d>();
-		coordenadas = new ArrayList<Point2d>();
+		
+		/*
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
 				if(general.contains(malha[i][k][0], malha[i][k][1])){
@@ -178,11 +192,15 @@ public class MovimentacaoGeneralClosedPocket {
 				}
 			}
 		}
-
+*/
+		
 		double distanciaTmp;
 		int numeroDeCortes;
 
-		menorDistancia = new ArrayList<Double>();
+		menorDistancia = getMenorDistancia(pontosPossiveis, pontosPeriferia);
+		malhaMenoresDistancias = getMalhaMenoresDistancias(numeroDePontosDaMalha, pontosPossiveis, pontosPeriferia, coordenadas);
+		
+		/*
 		for(int i=0;i<pontosPossiveis.size();i++){
 			distanciaTmp=100;
 			for(int k=0;k<pontosPeriferia.size();k++){
@@ -193,46 +211,47 @@ public class MovimentacaoGeneralClosedPocket {
 			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
 			menorDistancia.add(distanciaTmp);
 		}
-
+*/
 		maximos = new ArrayList<Point3d>();
 
 		double diametroTmp=1000, raioMedia=0, raioMenor=10000;
 		int contador=0, numeroDeDiametrosAdicionados=0;
 
-		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
-			for(int k=1;k<malhaMenoresDistancias.length-1;k++){
-				contador = 0;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k+1])
-					contador++;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k-1])
-					contador++;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k+1])
-					contador++;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k+1])
-					contador++;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k-1])
-					contador++;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k-1])
-					contador++;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k])
-					contador++;
-				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k])
-					contador++;
-				if(malhaMenoresDistancias[i][k]<=2)
-					contador=0;
-
-				if(contador>=6){
-					if(raioMenor>malhaMenoresDistancias[i][k])
-						raioMenor = malhaMenoresDistancias[i][k];
-					maximos.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
-					if(diametroTmp>malhaMenoresDistancias[i][k] && malhaMenoresDistancias[i][k]!=0){
-						diametroTmp=malhaMenoresDistancias[i][k];
-					}
-				}
-			}
-		}
+//		for(int i=1;i<malhaMenoresDistancias.length-1;i++){
+//			for(int k=1;k<malhaMenoresDistancias.length-1;k++){
+//				contador = 0;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k+1])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i][k-1])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k+1])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k+1])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k-1])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k-1])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i+1][k])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]>=malhaMenoresDistancias[i-1][k])
+//					contador++;
+//				if(malhaMenoresDistancias[i][k]<=2)
+//					contador=0;
+//
+//				if(contador>=6){
+////					if(raioMenor>malhaMenoresDistancias[i][k])
+////						raioMenor = malhaMenoresDistancias[i][k];
+//					maximos.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
+////					if(diametroTmp>malhaMenoresDistancias[i][k] && malhaMenoresDistancias[i][k]!=0){
+////						diametroTmp=malhaMenoresDistancias[i][k];
+////					}
+//				}
+//			}
+//		}
 
 		raioMedia = diametroPrimeiroWs/2;
+		double raioFerramenta = raioMedia;
 
 		for(int i=0;i<menorDistancia.size();i++){
 			if(maiorMenorDistancia<menorDistancia.get(i)){
@@ -242,10 +261,87 @@ public class MovimentacaoGeneralClosedPocket {
 
 		//		numeroDeCortes = (int) (maiorMenorDistancia/ae)+10;
 		//		if(diametroFerramenta!=diametroPrimeiroWs)
-		numeroDeCortes = (int) (maiorMenorDistancia/(0.5*diametroPrimeiroWs));
+		
 		double variacao = (comprimento/numeroDePontosDaMalha+largura/numeroDePontosDaMalha)/2;
-
-
+		double diferenca;		
+		ArrayList<Shape> listaDeBossesCriados;
+		
+		if(diametroFerramenta == diametroPrimeiroWs)
+		{//ESSES PONTOS SÓ PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
+			pontos = new ArrayList<ArrayList<Point3d>>();
+			pontos = getPontos(variacao, diametroPrimeiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+		}
+		
+		listaDeBossesCriados = createBosses(variacao, diametroPrimeiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+		
+		for(int i = 0; i < listaDeBossesCriados.size(); i++)
+		{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
+			bossArray.add(listaDeBossesCriados.get(i));
+		}
+		//AQUI TERMINA O PRIMEIRO WS=====================================
+		
+		//FAZER ALGUMA COISA PRA VER SE VAI PRECISAR FAZER O SEGUNDO WS-----------------------
+		if(this.genClosed.getWorkingsteps().size() >= 2)
+		{
+			pontosPossiveis = getPontosPossiveis(malha, general, z, bossArray);//CALCULA NOVOS PONTOS POSSIVEIS
+			
+			diametroSegundoWs = this.genClosed.getWorkingsteps().get(1).getFerramenta().getDiametroFerramenta();
+			
+			if(diametroFerramenta == diametroSegundoWs)
+			{
+				pontos = new ArrayList<ArrayList<Point3d>>();
+				pontos = getPontos(variacao, diametroSegundoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+			}
+			//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
+			listaDeBossesCriados = createBosses(variacao, diametroSegundoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+			
+			for(int i = 0; i < listaDeBossesCriados.size(); i++)
+			{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
+				bossArray.add(listaDeBossesCriados.get(i));
+			}
+			
+			if(this.genClosed.getWorkingsteps().size() >= 3)
+			{
+				pontosPossiveis = getPontosPossiveis(malha, general, z, bossArray);//CALCULA NOVOS PONTOS POSSIVEIS
+				
+				diametroTerceiroWs = this.genClosed.getWorkingsteps().get(2).getFerramenta().getDiametroFerramenta();
+				
+				if(diametroFerramenta == diametroTerceiroWs)
+				{
+					pontos = new ArrayList<ArrayList<Point3d>>();
+					pontos = getPontos(variacao, diametroTerceiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+				}
+				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
+				listaDeBossesCriados = createBosses(variacao, diametroTerceiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+				
+				for(int i = 0; i < listaDeBossesCriados.size(); i++)
+				{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
+					bossArray.add(listaDeBossesCriados.get(i));
+				}
+				
+				if(this.genClosed.getWorkingsteps().size() >= 4)
+				{
+					pontosPossiveis = getPontosPossiveis(malha, general, z, bossArray);//CALCULA NOVOS PONTOS POSSIVEIS
+					
+					diametroQuartoWs = this.genClosed.getWorkingsteps().get(3).getFerramenta().getDiametroFerramenta();
+					
+					if(diametroFerramenta == diametroQuartoWs)
+					{
+						pontos = new ArrayList<ArrayList<Point3d>>();
+						pontos = getPontos(variacao, diametroQuartoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+					}			
+					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
+					listaDeBossesCriados = createBosses(variacao, diametroQuartoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+					
+					for(int i = 0; i < listaDeBossesCriados.size(); i++)
+					{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
+						bossArray.add(listaDeBossesCriados.get(i));
+					}
+				}
+			}
+			
+		}
+		/*
 		pontos = new ArrayList<ArrayList<Point3d>>();
 		for(int i=0;i<numeroDeCortes;i++){
 			pontos2 = new ArrayList<Point3d>();
@@ -265,7 +361,8 @@ public class MovimentacaoGeneralClosedPocket {
 			}
 			pontos.add(pontos2);
 		}
-
+		*/
+		/*
 		for(int i=0;i<pontos.size();i++){
 			System.out.println("Pontos :  "+pontos.get(i).size());
 		}
@@ -277,6 +374,7 @@ public class MovimentacaoGeneralClosedPocket {
 			pontosMenores = new ArrayList<Point3d>();		
 			pontosPossiveis = new ArrayList<Point3d>();
 			coordenadas = new ArrayList<Point2d>();
+			
 			for(int i=0;i<malha.length;i++){
 				for(int k=0;k<malha[i].length;k++){
 					if(general.contains(malha[i][k][0], malha[i][k][1])){
@@ -338,6 +436,9 @@ public class MovimentacaoGeneralClosedPocket {
 			}
 
 		}
+		
+		*/
+		
 		pontoInicial = new Point3d(pontos.get(0).get(0).getX(),pontos.get(0).get(0).getY(), this.ws.getOperation().getRetractPlane());
 
 		
@@ -555,7 +656,278 @@ public class MovimentacaoGeneralClosedPocket {
 //
 //		return acabamentoTest;
 //	}
+	private ArrayList<Shape> getBossArray(double allowanceSide, double z)
+	{
+		ArrayList<Shape> bossArray = new ArrayList<Shape>();
+		Boss bossTmp;
+		double raioAtual;
+		
+		for(int i=0;i<this.itsBoss.size();i++){
+			bossTmp=this.itsBoss.get(i);
+			if(bossTmp.getClass()==CircularBoss.class){
+				CircularBoss boss = (CircularBoss) bossTmp;
+				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-this.genClosed.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2))+2*allowanceSide;
+				bossArray.add(new Ellipse2D.Double(boss.getPosicaoX()-raioAtual, boss.getPosicaoY()-raioAtual, raioAtual*2, 2*raioAtual));
+			}
+			else if(bossTmp.getClass()==RectangularBoss.class){
+				RectangularBoss boss = (RectangularBoss) bossTmp;
+				bossArray.add(new RoundRectangle2D.Double(bossTmp.getPosicaoX()+allowanceSide, bossTmp.getPosicaoY()+allowanceSide, boss.getL1()-2*allowanceSide, boss.getL2()-2*allowanceSide, boss.getRadius()*2, boss.getRadius()*2));
+			}
+			else if(this.itsBoss.get(i).getClass()==GeneralProfileBoss.class){
+				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
+				ArrayList<Point2D> vertexx = boss.getVertexPoints();
+				vertexx = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertexx), boss.getRadius());		
+				GeneralPath path = new GeneralPath();
+				path.moveTo(vertexx.get(0).getX(), vertexx.get(0).getY());
+				for(int r=0;r<vertexx.size();r++){
+					path.lineTo(vertexx.get(r).getX(), vertexx.get(r).getY());
+				}
+				path.closePath();
+				bossArray.add(path);
+			}
+		}
+		
+		return bossArray;
+	}
+	
+	public ArrayList<Point3d> getPontosPeriferia(double allowanceSide, double z, double raio, ArrayList<Point2D> vertex)
+	{
+		ArrayList<Point3d> pontosPeriferia = new ArrayList<Point3d>();
+		ArrayList<Point3d> periferia = new ArrayList<Point3d>();
+		Point2D borda[];
+		Boss bossTmp;
+		double raioAtual;
+		
+		//		listaElipses = new ArrayList<Ellipse2D>();	
+		for(int i=0;i<this.itsBoss.size();i++){
+			bossTmp=this.itsBoss.get(i);
+			if(bossTmp.getClass()==CircularBoss.class){
+				CircularBoss boss = (CircularBoss) bossTmp;
+				raioAtual=((boss.getDiametro2()-boss.getDiametro1())*(-z-this.genClosed.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2))+2*allowanceSide;
+				borda = Cavidade.determinarPontosEmCircunferencia(new Point3d(boss.getPosicaoX(),boss.getPosicaoY(),z), 0, 2*Math.PI, raioAtual, (int) Math.round(Math.PI*2*raioAtual));
+				for(int k=0;k<borda.length;k++){
+					pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
+				}
+			}
+			else if(bossTmp.getClass()==RectangularBoss.class){
+				RectangularBoss boss = (RectangularBoss) bossTmp;
+				borda = Cavidade.determinarPontosEmRoundRectangular(new Point3d(boss.getPosicaoX()+allowanceSide,boss.getPosicaoY()+allowanceSide,z), boss.getL1()-2*allowanceSide, boss.getL2()-2*allowanceSide, boss.getRadius());
+				for(int k=0;k<borda.length;k++){
+					pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
+				}
+			}
+			else if(this.itsBoss.get(i).getClass()==GeneralProfileBoss.class){
+				GeneralProfileBoss boss = (GeneralProfileBoss) bossTmp;
+				ArrayList<Point2D> vertexx = boss.getVertexPoints();
+				vertexx = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertexx), boss.getRadius());		
+				periferia = getPontosPeriferiaGeneral(vertexx, z, boss.getRadius());
+				for(int q=0;q<periferia.size();q++){
+					pontosPeriferia.add(periferia.get(q));
+				}
+			}
+		}
+		
+		periferia = getPontosPeriferiaGeneral(vertex, z, raio);
+		for(int i=0;i<periferia.size();i++){
+			pontosPeriferia.add(periferia.get(i));
+		}
 
+		return pontosPeriferia;
+	}
+
+	public ArrayList<Point3d> getPontosPossiveis(double[][][] malha, GeneralPath general, double z, ArrayList<Shape> bossArray)
+	{
+		int b=0;
+		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
+		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
+				
+		for(int i=0;i<malha.length;i++){
+			for(int k=0;k<malha[i].length;k++){
+				if(general.contains(malha[i][k][0], malha[i][k][1])){
+					for(int g=0;g<bossArray.size();g++){
+						if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
+							b++;
+						}
+					}
+					if(b==bossArray.size()){
+						pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
+					}
+					b=0;
+				}
+			}
+		}
+		
+		return pontosPossiveis;
+	}
+	
+	public ArrayList<Point2d> getCoordenadas(double[][][] malha, GeneralPath general, ArrayList<Shape> bossArray)
+	{
+		int b=0;
+		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
+		ArrayList<Point2d> coordenadas = new ArrayList<Point2d>();
+		
+		for(int i=0;i<malha.length;i++){
+			for(int k=0;k<malha[i].length;k++){
+				if(general.contains(malha[i][k][0], malha[i][k][1])){
+					for(int g=0;g<bossArray.size();g++){
+						if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
+							b++;
+						}
+					}
+					if(b==bossArray.size()){
+						coordenadas.add(new Point2d(i,k));
+					}
+					b=0;
+				}
+			}
+		}
+		
+		return coordenadas;
+	}
+	
+	private ArrayList<Double> getMenorDistancia(ArrayList<Point3d> pontosPossiveis, ArrayList<Point3d> pontosPeriferia) 
+	{
+		double distanciaTmp;
+		ArrayList<Double> menorDistancia = new ArrayList<Double>();
+		
+		
+		for(int i=0;i<pontosPossiveis.size();i++){
+			distanciaTmp=100;
+			for(int k=0;k<pontosPeriferia.size();k++){
+				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+				}
+			}
+			menorDistancia.add(distanciaTmp);
+		}
+
+		return menorDistancia;
+	}
+	
+	private double[][] getMalhaMenoresDistancias(int numeroDePontosDaMalha, ArrayList<Point3d> pontosPossiveis , ArrayList<Point3d> pontosPeriferia, ArrayList<Point2d> coordenadas) 
+	{
+		double distanciaTmp;
+		double malhaMenoresDistancias[][] = new double[numeroDePontosDaMalha-1][numeroDePontosDaMalha-1];
+
+		for(int i=0;i<pontosPossiveis.size();i++){
+			distanciaTmp=100;
+			for(int k=0;k<pontosPeriferia.size();k++){
+				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+				}
+			}
+			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
+		}
+		
+		return malhaMenoresDistancias;
+	}
+	
+	private	ArrayList<ArrayList<Point3d>> getPontos(double variacao, double raioFerramenta,
+										 double ae, double maiorMenorDistancia, ArrayList<Point3d> pontosPossiveis , ArrayList<Double> menorDistancia)
+	{
+		double raioTmp, distancia, diferenca, diametro;
+		ArrayList<ArrayList<Point3d>> pontos;
+		ArrayList<Point3d> pontos2;
+		int numeroDeCortes;
+	
+		diametro = 2*raioFerramenta;
+		
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		numeroDeCortes = (int) Math.round(diferenca);
+		
+		if(diferenca>numeroDeCortes){
+			numeroDeCortes += 1;
+		}		
+		
+		pontos = new ArrayList<ArrayList<Point3d>>();
+		
+		for(int i=0;i<numeroDeCortes;i++){
+			pontos2 = new ArrayList<Point3d>();
+			raioTmp = raioFerramenta + i*ae*raioFerramenta;
+			diferenca = raioTmp - maiorMenorDistancia;
+			
+			for(int k=0;k<pontosPossiveis.size();k++){
+
+				distancia = menorDistancia.get(k);
+				
+				if(i == 0)
+				{
+					if(distancia + variacao >= raioTmp && distancia <= raioTmp)
+					{
+						pontos2.add(pontosPossiveis.get(k));
+					}
+				}
+				else
+				{
+					if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
+					{
+						pontos2.add(pontosPossiveis.get(k));
+					}
+					else
+					{
+						if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
+						{
+							pontos2.add(pontosPossiveis.get(k));
+						}
+					}
+				}
+			}
+			pontos.add(pontos2);
+		}
+		return pontos;
+	}
+	
+	private	ArrayList<Shape> createBosses(double variacao, double raioFerramenta, double ae, double maiorMenorDistancia, 
+										  ArrayList<Point3d> pontosPossiveis, ArrayList<Double> menorDistancia)
+	{
+		double raioTmp, distancia, diferenca, diametro;
+		ArrayList<Shape> bossArray = new ArrayList<Shape>();
+		int numeroDeCortes;
+		
+		diametro = 2*raioFerramenta;
+		
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		numeroDeCortes = (int) Math.round(diferenca);
+		
+		if(diferenca>numeroDeCortes){
+			numeroDeCortes += 1;
+		}		
+		
+		for(int i=0;i<numeroDeCortes;i++){
+			raioTmp = raioFerramenta + i*ae/2;
+			diferenca = raioTmp - maiorMenorDistancia;
+
+			for(int k=0;k<pontosPossiveis.size();k++){
+
+				distancia = menorDistancia.get(k);
+
+				if(i == 0)
+				{
+					if(distancia + variacao >= raioTmp && distancia <= raioTmp)
+					{
+						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioFerramenta, pontosPossiveis.get(k).getY()-raioFerramenta, diametro, diametro));
+					}
+				}
+				else
+				{
+					if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
+					{
+						bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioFerramenta, pontosPossiveis.get(k).getY()-raioFerramenta, diametro, diametro));
+					}
+					else
+					{
+						if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
+						{
+							bossArray.add(new Ellipse2D.Double(pontosPossiveis.get(k).getX()-raioFerramenta, pontosPossiveis.get(k).getY()-raioFerramenta, diametro, diametro));
+						}
+					}
+				}
+			}
+		}
+
+		return bossArray;
+	}
+	
 	private static ArrayList<Point3d> getPontosPeriferiaGeneral(ArrayList<Point2D> vertex, double z, double raio){
 
 		GeneralPath path = new GeneralPath();

@@ -129,6 +129,9 @@ public class JanelaPrincipalFrame extends JFrame {
 		buttonRemoverWS2 = new JButton();
 		buttonEditarWS2 = new JButton();
 		buttonAlterarWorkplan2 = new JButton();
+		panel14 = new JPanel();
+		scrollPaneWsTree3 = new JScrollPane();
+		treeRelationship = new JTree();
 		scrollPaneDesenho = new JScrollPane();
 		panel1 = new JPanel();
 		scrollPane3 = new JScrollPane();
@@ -881,6 +884,35 @@ public class JanelaPrincipalFrame extends JFrame {
 							}
 							tabbedPane1.addTab("Workplan", panel12);
 
+
+							//======== panel14 ========
+							{
+								panel14.setLayout(new GridBagLayout());
+								((GridBagLayout)panel14.getLayout()).columnWidths = new int[] {0, 0};
+								((GridBagLayout)panel14.getLayout()).rowHeights = new int[] {0, 0, 0};
+								((GridBagLayout)panel14.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+								((GridBagLayout)panel14.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
+
+								//======== scrollPaneWsTree3 ========
+								{
+
+									//---- treeRelationship ----
+									treeRelationship.setModel(new DefaultTreeModel(
+										new DefaultMutableTreeNode("Main Workplan") {
+											{
+												DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("Setup XY");
+													node1.add(new DefaultMutableTreeNode("Workingsteps"));
+												add(node1);
+											}
+										}));
+									scrollPaneWsTree3.setViewportView(treeRelationship);
+								}
+								panel14.add(scrollPaneWsTree3, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 0), 0, 0));
+							}
+							tabbedPane1.addTab("Feature Relationship", panel14);
+
 						}
 						splitPane2.setLeftComponent(tabbedPane1);
 
@@ -1083,6 +1115,7 @@ public class JanelaPrincipalFrame extends JFrame {
 	private JTabbedPane tabbedPane1;
 	private JPanel panel6;
 	public JScrollPane scrollPaneTree;
+	public JScrollPane scrollPaneTree2;
 	public JTree tree2;
 	private JPanel panel7;
 	public JButton buttonBoss;
@@ -1103,6 +1136,9 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JButton buttonRemoverWS2;
 	public JButton buttonEditarWS2;
 	public JButton buttonAlterarWorkplan2;
+	private JPanel panel14;
+	public JScrollPane scrollPaneWsTree3;
+	public JTree treeRelationship;
 	public JScrollPane scrollPaneDesenho;
 	public JPanel panel1;
 	private JScrollPane scrollPane3;

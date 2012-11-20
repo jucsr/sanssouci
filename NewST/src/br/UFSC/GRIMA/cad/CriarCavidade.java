@@ -617,6 +617,14 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				//face.imprimeDados(novaCavidade);
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Cavidade: " +novaCavidade.getNome() + " adicionada com sucesso!");
+				try
+				{
+					Feature mae = novaCavidade.getFeaturePrecedente();
+					mae.itsSons.add(novaCavidade);
+				} catch(Exception e)
+				{
+					
+				}
 				
 				System.out.println("mae = " + novaCavidade.getFeaturePrecedente());
 				dispose();

@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.entidades.features;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -46,6 +47,7 @@ public class Feature implements Serializable {
 	public Vector featuresAnteriores = null;
 	private Face face = null;
 	private int indice = 0;
+	public ArrayList<Feature> itsSons = new ArrayList<Feature>();
 //	private ArrayList<Point3d> pontosDeTrajetoria = null;
 //	private Vector trajetoriasDeMovimentacao;
 	private Vector<Workingstep> workingsteps = new Vector<Workingstep>();

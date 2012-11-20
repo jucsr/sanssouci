@@ -791,6 +791,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		DefaultMutableTreeNode nodoPrincipalWorkplan = new DefaultMutableTreeNode
 		("Main Workplan");
 		
+		
 //		DefaultMutableTreeNode nodosSetups = this.projeto.getNodosSetups(nodoPrincipal);
 //		
 //		nodoPrincipal.add(nodosSetups);
@@ -813,6 +814,18 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		scrollPaneWsTree2.revalidate();
 	}
 	
+	/** aba das features maes e filhas **/
+//	public void atualizarArvoreFeatureRelationship() {
+//		this.tree3 = this.projeto.getJTree();
+//		// this.tree2.addTreeSelectionListener(this);
+//		this.tree3.getSelectionModel().setSelectionMode(
+//				TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+//		scrollPaneTree2.setViewportView(tree3);
+//		scrollPaneTree2.revalidate();
+//		// System.out.println("" + tree2);
+//		// tree2.getSelectionPath();
+//	}
+
 	
 	public JTree getArvore() {
 		return new JTree(new DefaultMutableTreeNode("Projeto"));

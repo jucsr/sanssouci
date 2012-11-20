@@ -139,11 +139,11 @@ public class Cavidade extends Feature implements Serializable {
 			if(this.itsBoss.get(i).getClass() == CircularBoss.class)
 			{
 				CircularBoss circular = (CircularBoss)this.itsBoss.get(i);
-				bossNode.add(circular.getNode());
+				bossNode.add(circular.getNodo());
 			} else if(this.itsBoss.get(i).getClass() == RectangularBoss.class)
 			{
 				RectangularBoss rectangular = (RectangularBoss)this.itsBoss.get(i);
-				bossNode.add(rectangular.getNode());
+				bossNode.add(rectangular.getNodo());
 			} else if(this.itsBoss.get(i).getClass() == GeneralProfileBoss.class)
 			{
 				GeneralProfileBoss general = (GeneralProfileBoss)this.itsBoss.get(i);

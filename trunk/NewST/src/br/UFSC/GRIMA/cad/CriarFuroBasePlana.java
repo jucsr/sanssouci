@@ -541,6 +541,7 @@ public class CriarFuroBasePlana extends FuroFrame implements ActionListener {
 				/** fazer isto em todas as janelas */
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
 				/****************** atualiza a ARVORE ***************/
 				// face.imprimeDados(novoFuro);
 				// this.setModal(false);

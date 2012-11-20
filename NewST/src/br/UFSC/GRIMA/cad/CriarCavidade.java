@@ -614,6 +614,7 @@ public class CriarCavidade extends CavidadeFrame implements ActionListener
 				this.face.addFeature(novaCavidade);
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
 				//face.imprimeDados(novaCavidade);
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Cavidade: " +novaCavidade.getNome() + " adicionada com sucesso!");

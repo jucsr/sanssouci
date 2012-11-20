@@ -22,7 +22,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
-public class Feature implements Serializable {
+public abstract class Feature implements Serializable {
 	
 	public final static int FURO = 0;
 	public final static int DEGRAU = 1;
@@ -94,7 +94,8 @@ public class Feature implements Serializable {
 //	public void setPontosDeTrajetoria(ArrayList<Point3d> pontosDeTrajetoria) {
 //		this.pontosDeTrajetoria = pontosDeTrajetoria;
 //	}
-
+	public abstract DefaultMutableTreeNode getNodo();
+	
 	public DefaultMutableTreeNode getNodoWorkingSteps(DefaultMutableTreeNode root) {
 
 		

@@ -71,7 +71,7 @@ public class RectangularBoss extends Boss
 	}
 
 	
-	public DefaultMutableTreeNode getNode() {
+	public DefaultMutableTreeNode getNodo() {
 		DefaultMutableTreeNode nodo = new DefaultMutableTreeNode("Rectangular Boss -" + this.getIndice());
 		nodo.add(new DefaultMutableTreeNode("Nome: " + this.getNome()));
 		nodo.add(new DefaultMutableTreeNode("Largura: " + this.getL1()));

@@ -1562,11 +1562,11 @@ public class Face implements Serializable{
 				case Feature.BOSS:  //============= ISTO TAH ESTRANHO!!! ===========
 					if(ftmp.getClass() == CircularBoss.class)
 					{
-						tmp = ((CircularBoss)ftmp).getNode();
+						tmp = ((CircularBoss)ftmp).getNodo();
 					}
 					else if(ftmp.getClass() == RectangularBoss.class)
 					{
-						tmp = ((RectangularBoss)ftmp).getNode();
+						tmp = ((RectangularBoss)ftmp).getNodo();
 					} else if(ftmp.getClass() == GeneralProfileBoss.class)
 					{
 						tmp = ((GeneralProfileBoss)ftmp).getNodo();
@@ -1803,10 +1803,10 @@ public class Face implements Serializable{
 //				if(contem == 1 && ncontem == 1)
 //				{
 //					intersectou = true;
-//					System.out.println("Colisão com: "+featureTmp);
+//					System.out.println("Colisï¿½o com: "+featureTmp);
 //					break;
 //				}
-//				System.out.println("Sem colisão com: "+featureTmp);
+//				System.out.println("Sem colisï¿½o com: "+featureTmp);
 //				System.out.printf("contem: %d \nncontem: %d\n", contem, ncontem);
 //				contem = 0;
 //				ncontem = 0;
@@ -1828,7 +1828,7 @@ public class Face implements Serializable{
 //					break;
 //				}
 //						
-//				System.out.println("Sem colisão com: "+featureTmp);
+//				System.out.println("Sem colisï¿½o com: "+featureTmp);
 //			}
 //		return intersectou;
 //	}
@@ -1839,7 +1839,7 @@ public class Face implements Serializable{
 		if(verificaInterseccaoBoss(feature))
 		{
 			valido = false;
-			JOptionPane.showMessageDialog(null, "Há colisão de features");
+			JOptionPane.showMessageDialog(null, "Hï¿½ colisï¿½o de features");
 		}
 		else
 		{
@@ -2475,7 +2475,7 @@ public class Face implements Serializable{
 					saida = null;
 				}else
 				{
-					/** Para fazer a última reta **/
+					/** Para fazer a ï¿½ltima reta **/
 					saida = Cavidade.determinarPontosEmReta(new Point3d( vertices.get(vertices.size()-1).getX(), vertices.get(vertices.size()-1).getY(), 0.0), 
 							new Point3d(vertices.get(0).getX(), vertices.get(0).getY(), 0.0 ));
 					for(int n=0; n < saida.length; n++)
@@ -2522,7 +2522,7 @@ public class Face implements Serializable{
 				}else
 				{
 					
-					/** Para fazer a última reta **/
+					/** Para fazer a ï¿½ltima reta **/
 					saida = Cavidade.determinarPontosEmReta(new Point3d( vertices.get(vertex.size()-1).getX(), vertices.get(vertex.size()-1).getY(), 0.0), 
 							new Point3d(vertices.get(0).getX(), vertices.get(0).getY(), 0.0 ));
 					for(int n=0; n < saida.length; n++)

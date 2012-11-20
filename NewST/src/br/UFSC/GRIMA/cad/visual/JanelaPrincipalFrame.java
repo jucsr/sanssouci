@@ -130,8 +130,8 @@ public class JanelaPrincipalFrame extends JFrame {
 		buttonEditarWS2 = new JButton();
 		buttonAlterarWorkplan2 = new JButton();
 		panel14 = new JPanel();
-		scrollPaneWsTree3 = new JScrollPane();
-		treeRelationship = new JTree();
+		scrollPaneTree2 = new JScrollPane();
+		tree3 = new JTree();
 		scrollPaneDesenho = new JScrollPane();
 		panel1 = new JPanel();
 		scrollPane3 = new JScrollPane();
@@ -889,29 +889,19 @@ public class JanelaPrincipalFrame extends JFrame {
 							{
 								panel14.setLayout(new GridBagLayout());
 								((GridBagLayout)panel14.getLayout()).columnWidths = new int[] {0, 0};
-								((GridBagLayout)panel14.getLayout()).rowHeights = new int[] {0, 0, 0};
+								((GridBagLayout)panel14.getLayout()).rowHeights = new int[] {0, 0};
 								((GridBagLayout)panel14.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
-								((GridBagLayout)panel14.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel14.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-								//======== scrollPaneWsTree3 ========
+								//======== scrollPaneTree2 ========
 								{
-
-									//---- treeRelationship ----
-									treeRelationship.setModel(new DefaultTreeModel(
-										new DefaultMutableTreeNode("Main Workplan") {
-											{
-												DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("Setup XY");
-													node1.add(new DefaultMutableTreeNode("Workingsteps"));
-												add(node1);
-											}
-										}));
-									scrollPaneWsTree3.setViewportView(treeRelationship);
+									scrollPaneTree2.setViewportView(tree3);
 								}
-								panel14.add(scrollPaneWsTree3, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								panel14.add(scrollPaneTree2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 5, 0), 0, 0));
+									new Insets(0, 0, 0, 0), 0, 0));
 							}
-							tabbedPane1.addTab("Feature Relationship", panel14);
+							tabbedPane1.addTab("Precedences", panel14);
 
 						}
 						splitPane2.setLeftComponent(tabbedPane1);
@@ -1115,7 +1105,6 @@ public class JanelaPrincipalFrame extends JFrame {
 	private JTabbedPane tabbedPane1;
 	private JPanel panel6;
 	public JScrollPane scrollPaneTree;
-	public JScrollPane scrollPaneTree2;
 	public JTree tree2;
 	private JPanel panel7;
 	public JButton buttonBoss;
@@ -1137,8 +1126,8 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JButton buttonEditarWS2;
 	public JButton buttonAlterarWorkplan2;
 	private JPanel panel14;
-	public JScrollPane scrollPaneWsTree3;
-	public JTree treeRelationship;
+	public JScrollPane scrollPaneTree2;
+	public JTree tree3;
 	public JScrollPane scrollPaneDesenho;
 	public JPanel panel1;
 	private JScrollPane scrollPane3;

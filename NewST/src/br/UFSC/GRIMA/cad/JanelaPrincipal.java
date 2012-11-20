@@ -321,6 +321,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 
 		// inicializa a arvore de informações do projeto
 		this.atualizarArvore();
+		this.atualizarArvorePrecedencias();
 	}
 
 	public void adjustJFrame() {
@@ -781,7 +782,13 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		// System.out.println("" + tree2);
 		// tree2.getSelectionPath();
 	}
-
+	public void atualizarArvorePrecedencias()
+	{
+		this.tree3 = ArvorePrecedencias.getArvorePrecedencias(projeto);
+		this.tree3.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+		this.scrollPaneTree2.setViewportView(tree3);
+		this.scrollPaneTree2.revalidate();
+	}
 	public void atualizarArvoreCAPP() {
 
 		

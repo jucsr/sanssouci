@@ -769,15 +769,15 @@ public class MovimentacaoGeneralClosedPocketTest {
 				r.lineTo(0, 2*largura);
 				r.closePath();
 
-//				for(int i=0;i<pontos.size();i++){
-//					for(int k=0;k<pontos.get(i).size();k++){
-//						if(pontos.get(i).size()<1){
-//							break;
-//						}
+				for(int i=0;i<pontos.size();i++){
+					for(int k=0;k<pontos.get(i).size();k++){
+						if(pontos.get(i).size()<1){
+							break;
+						}
 //						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
-////						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
-//					}
-//				}
+						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
+					}
+				}
 //								for(int i=0;i<malha.length;i++){
 //									for(int k=0;k<malha[i].length;k++){
 //										e.add(new Ellipse2D.Double(5*malha[i][k][0],5*malha[i][k][1],5,5));
@@ -795,12 +795,12 @@ public class MovimentacaoGeneralClosedPocketTest {
 //									}
 //									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
 //								}
-//				for(int i=0;i<pontosMenores.size();i++){
-//					if(pontosMenores.size()<1){
-//						break;
-//					}
-//					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
-//				}
+				for(int i=0;i<pontosMenores.size();i++){
+					if(pontosMenores.size()<1){
+						break;
+					}
+					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
+				}
 				
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
@@ -840,7 +840,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 				}
 				g2d.setColor(new Color(100, 100, 251));
 				for(int i=0;i<f.size();i++){
-					g2d.draw(f.get(i));
+					g2d.fill(f.get(i));
 				}
 				g2d.setColor(new Color(251, 100, 100));
 				for(int i=0;i<w.size();i++){

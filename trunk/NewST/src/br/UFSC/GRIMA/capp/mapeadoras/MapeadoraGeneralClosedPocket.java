@@ -395,7 +395,6 @@ public class MapeadoraGeneralClosedPocket {
 				//FAZER UMA FUNCAO QUE RETORNE UM INT QUE É O NUMERO DE WS QUE SERAO CRIADAS, E COLOCAR COMO PARAMETRO DO SWITCH--CASE
 
 				ae = 0.75*maiorFerramenta;
-				System.err.println(pontosPossiveis.size());
 				pontos = getPontos(variacao, maiorFerramenta, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				
 				listaDeBossesCriados = createBosses(variacao, maiorFerramenta/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);

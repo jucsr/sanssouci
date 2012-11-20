@@ -43,18 +43,18 @@ public class MovimentacaoGeneralClosedPocket {
 
 
 		ArrayList<LinearPath> desbaste = new ArrayList<LinearPath>();
-		ArrayList<Point3d> pontosPeriferia;
-		ArrayList<Point3d> pontosPossiveis;
-		ArrayList<Point2d> coordenadas;
+		ArrayList<Point3d> pontosPeriferia = new ArrayList<Point3d>();
+		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
+		ArrayList<Point2d> coordenadas = new ArrayList<Point2d>();
 		ArrayList<Point2D> vertex = genClosed.getPoints();
-		ArrayList<Point3d> pontosMenores;
-		ArrayList<ArrayList<Point3d>> pontos = null;
-		ArrayList<Double> menorDistancia;
+		ArrayList<Point3d> pontosMenores = new ArrayList<Point3d>();
+		ArrayList<ArrayList<Point3d>> pontos = new ArrayList<ArrayList<Point3d>>();
+		ArrayList<Double> menorDistancia = new ArrayList<Double>();
 		ArrayList<Point3d> maximos;		
-		ArrayList<Shape> bossArray;
-		ArrayList<Point3d> pontos2;
-		ArrayList<Point2D> vertexPoint;
-		ArrayList<Point3d> periferia;
+		ArrayList<Shape> bossArray = new ArrayList<Shape>();
+		ArrayList<Point3d> pontos2 = new ArrayList<Point3d>();
+		ArrayList<Point2D> vertexPoint = new ArrayList<Point2D>();
+		ArrayList<Point3d> periferia = new ArrayList<Point3d>();
 		Point2D borda[];	
 		LinearPath ligarPontos;
 		Point3d pontoInicial = new Point3d(0,0,0), pontoFinal = null;
@@ -264,15 +264,14 @@ public class MovimentacaoGeneralClosedPocket {
 		
 		double variacao = (comprimento/numeroDePontosDaMalha+largura/numeroDePontosDaMalha)/2;
 		double diferenca;		
-		ArrayList<Shape> listaDeBossesCriados;
+		ArrayList<Shape> listaDeBossesCriados = new ArrayList<Shape>();
 		
 		if(diametroFerramenta == diametroPrimeiroWs)
 		{//ESSES PONTOS SÓ PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
-			pontos = new ArrayList<ArrayList<Point3d>>();
 			pontos = getPontos(variacao, diametroPrimeiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 		}
 		
-		listaDeBossesCriados = createBosses(variacao, diametroPrimeiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+		listaDeBossesCriados = createBosses(variacao, diametroPrimeiroWs/2, 0.75*diametroPrimeiroWs, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 		
 		for(int i = 0; i < listaDeBossesCriados.size(); i++)
 		{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
@@ -289,11 +288,10 @@ public class MovimentacaoGeneralClosedPocket {
 			
 			if(diametroFerramenta == diametroSegundoWs)
 			{
-				pontos = new ArrayList<ArrayList<Point3d>>();
 				pontos = getPontos(variacao, diametroSegundoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 			}
 			//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
-			listaDeBossesCriados = createBosses(variacao, diametroSegundoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+			listaDeBossesCriados = createBosses(variacao, diametroSegundoWs/2, 0.75*diametroSegundoWs, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 			
 			for(int i = 0; i < listaDeBossesCriados.size(); i++)
 			{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
@@ -308,11 +306,10 @@ public class MovimentacaoGeneralClosedPocket {
 				
 				if(diametroFerramenta == diametroTerceiroWs)
 				{
-					pontos = new ArrayList<ArrayList<Point3d>>();
 					pontos = getPontos(variacao, diametroTerceiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				}
 				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
-				listaDeBossesCriados = createBosses(variacao, diametroTerceiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
+				listaDeBossesCriados = createBosses(variacao, diametroTerceiroWs/2, 0.75*diametroTerceiroWs, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				
 				for(int i = 0; i < listaDeBossesCriados.size(); i++)
 				{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
@@ -327,16 +324,8 @@ public class MovimentacaoGeneralClosedPocket {
 					
 					if(diametroFerramenta == diametroQuartoWs)
 					{
-						pontos = new ArrayList<ArrayList<Point3d>>();
 						pontos = getPontos(variacao, diametroQuartoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 					}			
-					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
-					listaDeBossesCriados = createBosses(variacao, diametroQuartoWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
-					
-					for(int i = 0; i < listaDeBossesCriados.size(); i++)
-					{//COLOCANDO OS BOOSES DAS PASSADAS DA FERRAMENTA MAIOR NO ARRAY DE BOSSES
-						bossArray.add(listaDeBossesCriados.get(i));
-					}
 				}
 			}
 			
@@ -843,7 +832,7 @@ public class MovimentacaoGeneralClosedPocket {
 		
 		for(int i=0;i<numeroDeCortes;i++){
 			pontos2 = new ArrayList<Point3d>();
-			raioTmp = raioFerramenta + i*ae*raioFerramenta;
+			raioTmp = raioFerramenta + i*ae;
 			diferenca = raioTmp - maiorMenorDistancia;
 			
 			for(int k=0;k<pontosPossiveis.size();k++){

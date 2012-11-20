@@ -1,6 +1,6 @@
 package br.UFSC.GRIMA.entidades.machiningResources;
 
-public class ToolMagazine
+public class ToolMagazine extends CuttingToolHandlingDevice
 {
 	private double toolChangeTime;
 

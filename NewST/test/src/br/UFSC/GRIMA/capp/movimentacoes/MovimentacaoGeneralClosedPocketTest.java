@@ -640,7 +640,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			System.out.println("RaioTmp : " + raioTmp);
 			System.out.println("Diferença : " + (raioTmp - maiorMenorDistancia));
 			
-			for(int k=0;k<pontosPossiveis.size();k++){
+			for(int k=0;k<menorDistancia.size();k++){
 
 				distancia = menorDistancia.get(k);
 				

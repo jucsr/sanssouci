@@ -366,7 +366,6 @@ public class MapeadoraGeneralClosedPocket {
 			}
 			else
 			{
-				System.err.println("Entrou");
 				if(3*variacaoDaFerramenta <= distEntreFerramentas)
 				{//VER QUANTOS WS VOU PRECISAR ------- 4WS
 					diametro1 = maiorFerramenta - ( (maiorFerramenta - menorFerramenta) / 3 );
@@ -410,8 +409,10 @@ public class MapeadoraGeneralClosedPocket {
 				wsPrecedenteTmp = wsTmp;
 
 				pontosPossiveis = getPontosPossiveis(malha, general, z, bossArray);
-
+				//menorDistancia = getMenorDistancia(pontosPossiveis, pontosPeriferia);
+				
 				ae = 0.75*diametro1;
+				pontos = new ArrayList<ArrayList<Point3d>>();
 				pontos = getPontos(variacao, diametro1, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				
 
@@ -432,12 +433,16 @@ public class MapeadoraGeneralClosedPocket {
 					wsPrecedenteTmp = wsTmp;
 
 					pontosPossiveis = getPontosPossiveis(malha, general, z, bossArray);
+					//menorDistancia = getMenorDistancia(pontosPossiveis, pontosPeriferia);
 
 					ae = 0.75*diametro2;
+					pontos = new ArrayList<ArrayList<Point3d>>();
 					pontos = getPontos(variacao, diametro2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 
 					if(pontos.get(0).size() > 1)
 					{//TEM PONTOS SUFICIENTES PARA FAZER ALGUMA MOVIMENTACAO ENTAO CRIAR UM WS, SE NAO NAO CRIA WS
+						System.err.println("ENTROU");
+						System.err.println(pontos.get(0).size());
 
 						listaDeBossesCriados = createBosses(variacao, diametro2/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 						
@@ -461,6 +466,7 @@ public class MapeadoraGeneralClosedPocket {
 				wsTmp = getWsDesbaste(faceMillMenor, wsPrecedenteTmp, retractPlane, allowanceSide, allowanceBottom, genClosed, faceTmp, condicoesDeUsinagem, bloco);
 				wssFeature.add(wsTmp);
 				wsPrecedenteTmp = wsTmp;
+
 											
 			}
 			/*

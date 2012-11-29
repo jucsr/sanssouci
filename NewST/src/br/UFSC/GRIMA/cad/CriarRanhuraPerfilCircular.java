@@ -628,12 +628,22 @@ public class CriarRanhuraPerfilCircular extends RanhuraPerfilCircularFrame
 					novaRanhura.setPosition(position);	
 						
 					this.face.addFeature(novaRanhura);
+					try
+					{
+						Feature mae = novaRanhura.getFeaturePrecedente();
+						mae.itsSons.add(novaRanhura);
+					} catch(Exception e)
+					{
+						
+					}
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
+					this.parent.atualizarArvorePrecedencias();
+
 					// face.imprimeDados(novaRanhura);
 					this.parent.setEnabled(true);
 					this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Ranhura Perfil Circular Parcial: " + novaRanhura.getNome() + " adicionada com sucesso!");
-
+					
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null,

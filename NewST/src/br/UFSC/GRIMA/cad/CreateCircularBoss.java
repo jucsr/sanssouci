@@ -448,11 +448,20 @@ public class CreateCircularBoss extends CircularBossFrame implements ActionListe
 					Axis2Placement3D position = new Axis2Placement3D(coordinates,	axis, refDirection);
 					position.setName(boss.getNome() + " placement");
 					boss.setPosition(position);
-	
+					
+					try
+					{
+						Feature mae = boss.getFeaturePrecedente();
+						mae.itsSons.add(boss);
+					} catch(Exception e)
+					{
+						
+					}
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
+					this.parent.atualizarArvorePrecedencias();
 					this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" + "General Profile Boss: " + boss.getNome().toUpperCase() + " added with success!");
-
+					
 					dispose();
 				}
 		

@@ -21,6 +21,7 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.FuroFrame;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
@@ -539,6 +540,14 @@ public class CriarFuroBasePlana extends FuroFrame implements ActionListener {
 				this.face.addFeature(novoFuro);
 				
 				/** fazer isto em todas as janelas */
+				try
+				{
+					Feature mae = novoFuro.getFeaturePrecedente();
+					mae.itsSons.add(novoFuro);
+				} catch(Exception e)
+				{
+					
+				}
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
 				this.parent.atualizarArvorePrecedencias();

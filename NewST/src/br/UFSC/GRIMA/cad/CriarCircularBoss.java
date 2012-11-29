@@ -700,9 +700,18 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 					
 					}
 					
-					
+					try
+					{
+						Feature mae = novoCircularBoss.getFeaturePrecedente();
+						mae.itsSons.add(novoCircularBoss);
+					} catch(Exception e)
+					{
+						
+					}
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
+					this.parent.atualizarArvorePrecedencias();
+
 					/****************** atualiza a ARVORE ***************/
 					// face.imprimeDados(novoFuro);
 					// this.setModal(false);
@@ -714,6 +723,7 @@ public class CriarCircularBoss extends CreateCircularBossFrame implements
 							+ "Boss: "
 							+ novoCircularBoss.getNome()
 							+ " adicionado com sucesso!");
+					
 					this.dispose();
 				}
 

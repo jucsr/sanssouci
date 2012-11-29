@@ -488,9 +488,17 @@ public class CreateGeneralProfileBoss extends GeneralProfileBossFrame implements
 //						System.err.println("LINHA final --> " + paths.get(i).getFinalPoint());
 //					}
 //				}
-				
+				try
+				{
+					Feature mae = generalBoss.getFeaturePrecedente();
+					mae.itsSons.add(generalBoss);
+				} catch(Exception e)
+				{
+					
+				}
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Profile Boss: " +generalBoss.getNome().toUpperCase() + " added with success!");
 				
 				dispose();

@@ -475,9 +475,18 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 					// this.face.addFeature(novoCircularBoss);
 
 					/** fazer isto em todas as janelas */
-					
+					try
+					{
+						Feature mae = boss.getFeaturePrecedente();
+						mae.itsSons.add(boss);
+					} catch(Exception e)
+					{
+						
+					}
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
+					this.parent.atualizarArvorePrecedencias();
+
 					/****************** atualiza a ARVORE ***************/
 					// face.imprimeDados(novoFuro);
 					// this.setModal(false);
@@ -489,6 +498,7 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 							+ "Boss: "
 							+ boss.getNome().toUpperCase()
 							+ " adicionado com sucesso!");
+					
 					this.dispose();
 			}
 		}

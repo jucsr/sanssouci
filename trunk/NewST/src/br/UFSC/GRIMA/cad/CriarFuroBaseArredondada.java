@@ -466,16 +466,25 @@ public class CriarFuroBaseArredondada extends FuroBaseArredondadaFrame implement
 				furoBaseArredondada.setPosition(position);	
 				this.face.addFeature(furoBaseArredondada);
 				
-				
 				/** fazer isto em todas as janelas */
+				try
+				{
+					Feature mae = furoBaseArredondada.getFeaturePrecedente();
+					mae.itsSons.add(furoBaseArredondada);
+				} catch(Exception e)
+				{
+					
+				}
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
+
 				/****************** atualiza a ARVORE ***************/
 				// face.imprimeDados(novoFuro);
 				// this.setModal(false);
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Furo Base Arredondada: " + furoBaseArredondada.getNome() + " adicionada com sucesso!");
-
+				
 				this.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Erro ao criar Furo",

@@ -485,16 +485,25 @@ public class CriarFuroBaseEsferica extends FuroBaseEsfericaFrame implements Acti
 				novoFuro.setPosition(position);	
 				this.face.addFeature(novoFuro);
 				
-				
 				/** fazer isto em todas as janelas */
+				try
+				{
+					Feature mae = novoFuro.getFeaturePrecedente();
+					mae.itsSons.add(novoFuro);
+				} catch(Exception e)
+				{
+					
+				}
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
+
 				/****************** atualiza a ARVORE ***************/
 				// face.imprimeDados(novoFuro);
 				// this.setModal(false);
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Furo Base Esférica: " + novoFuro.getNome() + " adicionada com sucesso!");
-
+				
 				this.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Erro ao criar Furo",

@@ -900,11 +900,22 @@ public class CriarDegrau extends DegrauFrame implements ActionListener, ItemList
 					novoDegrau.setPosition(position);	
 					this.face.addFeature(novoDegrau);
 					this.parent.desenhador.repaint();
+					try
+					{
+						Feature mae = novoDegrau.getFeaturePrecedente();
+						mae.itsSons.add(novoDegrau);
+					} catch(Exception e)
+					{
+						
+					}
 					this.parent.atualizarArvore();
+					this.parent.atualizarArvorePrecedencias();
+
 					//face.imprimeDados(novoDegrau);
 					this.parent.setEnabled(true);
 				
 					this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Degrau: " + novoDegrau.getNome() + " adicionado com sucesso!");
+					
 					dispose();
 				}
 				else

@@ -523,14 +523,24 @@ public class CriarFuroConico extends FuroConicoFrame implements ActionListener
 				
 				
 				/** fazer isto em todas as janelas */
+				try
+				{
+					Feature mae = furoConico.getFeaturePrecedente();
+					mae.itsSons.add(furoConico);
+				} catch(Exception e)
+				{
+					
+				}
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
+
 				/****************** atualiza a ARVORE ***************/
 				// face.imprimeDados(novoFuro);
 				// this.setModal(false);
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Furo Cônico: " + furoConico.getNome() + " adicionada com sucesso!");
-
+				
 				this.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Erro ao criar Furo",

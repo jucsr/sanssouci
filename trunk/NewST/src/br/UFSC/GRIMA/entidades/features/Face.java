@@ -1854,6 +1854,7 @@ public class Face implements Serializable{
 					{
 						valido = true;
 						feature.setFeaturePrecedente(mae);
+//						furoBP.itsSons.add(feature);
 					}
 					else
 					{
@@ -1867,6 +1868,7 @@ public class Face implements Serializable{
 					{
 						valido = true;
 						feature.setFeaturePrecedente(mae);
+//						furoBA.itsSons.add(feature);
 					}
 					else
 					{
@@ -1880,6 +1882,7 @@ public class Face implements Serializable{
 					{
 						valido = true;
 						feature.setFeaturePrecedente(mae);
+//						furoC.itsSons.add(feature);
 					}
 					else
 					{
@@ -1900,6 +1903,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							b.itsSons.add(feature);
 						}
 						else
 						{
@@ -1912,6 +1916,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							ranhura.itsSons.add(feature);
 						}
 						else
 						{
@@ -1932,6 +1937,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							b.itsSons.add(feature);
 						}
 						else
 						{
@@ -1944,6 +1950,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							rqu.itsSons.add(feature);
 						}
 						else
 						{
@@ -1964,6 +1971,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							b.itsSons.add(feature);
 						}
 						else
 						{
@@ -1976,6 +1984,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							degrau.itsSons.add(feature);
 						}
 						else
 						{
@@ -2008,6 +2017,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							b.itsSons.add(feature);
 						}
 						else
 						{
@@ -2020,6 +2030,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							cavidade.itsSons.add(feature);
 						}
 						else
 						{
@@ -2041,6 +2052,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							b.itsSons.add(feature);
 						}
 						else
 						{
@@ -2053,6 +2065,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							cavFundoArr.itsSons.add(feature);
 						}
 						else
 						{
@@ -2072,6 +2085,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							b.itsSons.add(feature);
 						}
 						else
 						{
@@ -2084,6 +2098,7 @@ public class Face implements Serializable{
 						{
 							valido = true;
 							feature.setFeaturePrecedente(mae);
+//							generalPocket.itsSons.add(feature);
 						}
 						else
 						{
@@ -2091,47 +2106,48 @@ public class Face implements Serializable{
 							JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
 						}
 					}
-				}else if(mae.getClass() == CircularBoss.class)
-				{
-					CircularBoss cb = (CircularBoss)mae;
-					if(feature.getPosicaoZ() == cb.getPosicaoZ())
-					{
-						valido = true;
-						feature.setFeaturePrecedente(mae);
-					}
-					else
-					{
-						valido = false;
-						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-					}
-				}else if(mae.getClass() == RectangularBoss.class)
-				{
-					RectangularBoss rb = (RectangularBoss)mae;
-					if(feature.getPosicaoZ() == rb.getPosicaoZ())
-					{
-						valido = true;
-						feature.setFeaturePrecedente(mae);
-					}
-					else
-					{
-						valido = false;
-						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-					}
-				}else if(mae.getClass() == GeneralProfileBoss.class)
-				{
-					GeneralProfileBoss gb = (GeneralProfileBoss)mae;
-					if(feature.getPosicaoZ() == gb.getPosicaoZ())
-					{
-						valido = true;
-						feature.setFeaturePrecedente(mae);
-					}
-					else
-					{
-						valido = false;
-						
-						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-					}
 				}
+//				}else if(mae.getClass() == CircularBoss.class)
+//				{
+//					CircularBoss cb = (CircularBoss)mae;
+//					if(feature.getPosicaoZ() == cb.getPosicaoZ())
+//					{
+//						valido = true;
+//						feature.setFeaturePrecedente(mae);
+//					}
+//					else
+//					{
+//						valido = false;
+//						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+//					}
+//				}else if(mae.getClass() == RectangularBoss.class)
+//				{
+//					RectangularBoss rb = (RectangularBoss)mae;
+//					if(feature.getPosicaoZ() == rb.getPosicaoZ())
+//					{
+//						valido = true;
+//						feature.setFeaturePrecedente(mae);
+//					}
+//					else
+//					{
+//						valido = false;
+//						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+//					}
+//				}else if(mae.getClass() == GeneralProfileBoss.class)
+//				{
+//					GeneralProfileBoss gb = (GeneralProfileBoss)mae;
+//					if(feature.getPosicaoZ() == gb.getPosicaoZ())
+//					{
+//						valido = true;
+//						feature.setFeaturePrecedente(mae);
+//					}
+//					else
+//					{
+//						valido = false;
+//						
+//						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+//					}
+//				}
 				//** M�es inv�lidas por enquanto inv�lidas, mas arrumar para que elas possam valer tbm *//
 				else if(mae.getClass() == FuroBaseEsferica.class || 
 						mae.getClass() == FuroBaseConica.class ||
@@ -2244,6 +2260,8 @@ public class Face implements Serializable{
 				if(estaDentroDaFeature(shapeTmp, borda))
 				{
 					maes.add(featureTmp);
+					feature.setFeaturePrecedente(featureTmp);
+					System.out.println("precendente: "+ feature.getFeaturePrecedente());
 					if(featureTmp.getClass() == Cavidade.class)
 					{
 						Cavidade cav = (Cavidade)featureTmp;
@@ -2269,7 +2287,8 @@ public class Face implements Serializable{
 									shapeBoss = this.getShape(gpb);
 								}
 								if(estaDentroDaFeature(shapeBoss, borda))
-							    	maes.add(bossTmp);
+								   	maes.add(bossTmp);
+									feature.setFeaturePrecedente(bossTmp);
 							}
 						}
 					}else if(featureTmp.getClass() == CavidadeFundoArredondado.class)
@@ -2326,6 +2345,8 @@ public class Face implements Serializable{
 								}
 								if(estaDentroDaFeature(shapeBoss, borda))
 							    	maes.add(bossTmp);
+									feature.setFeaturePrecedente(bossTmp);
+
 							}
 						}
 					}else if(featureTmp.getClass() == Degrau.class)
@@ -2354,6 +2375,8 @@ public class Face implements Serializable{
 								}
 								if(estaDentroDaFeature(shapeBoss, borda))
 							    	maes.add(bossTmp);
+									feature.setFeaturePrecedente(bossTmp);
+
 							}
 						}
 					}else if(featureTmp.getClass() == Ranhura.class)

@@ -580,10 +580,19 @@ public class CriarCavidadeFundoArredondado extends CavidadeFundoArredondadoFrame
 				
 				this.face.addFeature(cavidadeFundo);
 				this.parent.desenhador.repaint();
+				try
+				{
+					Feature mae = cavidadeFundo.getFeaturePrecedente();
+					mae.itsSons.add(cavidadeFundo);
+				} catch(Exception e)
+				{
+					
+				}
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Cavidade Fundo Arredondado: " + cavidadeFundo.getNome() + " adicionada com sucesso!");
-
+				
 				dispose();
 			}
 			else

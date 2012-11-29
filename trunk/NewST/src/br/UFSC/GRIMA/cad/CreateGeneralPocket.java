@@ -19,6 +19,7 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.visual.CreateGeneralPocketFrame;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
@@ -382,7 +383,14 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
 				position.setName(generalPocket.getNome() + " placement");
 				generalPocket.setPosition(position);	
-				
+				try
+				{
+					Feature mae = generalPocket.getFeaturePrecedente();
+					mae.itsSons.add(generalPocket);
+				} catch(Exception e)
+				{
+					
+				}
 				this.face.addFeature(generalPocket);
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();

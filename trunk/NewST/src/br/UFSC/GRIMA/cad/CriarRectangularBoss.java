@@ -17,6 +17,7 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.cad.visual.CreateRectangularBossFrame;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
@@ -510,8 +511,18 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 
 					this.cavidade.addBoss(novoRectangularBoss);
 					/** fazer isto em todas as janelas */
+					try
+					{
+						Feature mae = novoRectangularBoss.getFeaturePrecedente();
+						mae.itsSons.add(novoRectangularBoss);
+					} catch(Exception e)
+					{
+						
+					}
 					this.parent.desenhador.repaint();
 					this.parent.atualizarArvore();
+					this.parent.atualizarArvorePrecedencias();
+
 					/****************** atualiza a ARVORE ***************/
 					// face.imprimeDados(novoFuro);
 					// this.setModal(false);
@@ -523,6 +534,7 @@ public class CriarRectangularBoss extends CreateRectangularBossFrame implements
 							+ "Boss: "
 							+ novoRectangularBoss.getNome()
 							+ " adicionado com sucesso!");
+					
 					this.dispose();
 				}
 

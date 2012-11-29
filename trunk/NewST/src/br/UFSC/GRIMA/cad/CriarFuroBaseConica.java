@@ -469,16 +469,25 @@ public class CriarFuroBaseConica extends FuroBaseConicaFrame implements ActionLi
 				
 				this.face.addFeature(furoBaseConica);
 				
-				
 				/** fazer isto em todas as janelas */
+				try
+				{
+					Feature mae = furoBaseConica.getFeaturePrecedente();
+					mae.itsSons.add(furoBaseConica);
+				} catch(Exception e)
+				{
+					
+				}
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
+
 				/****************** atualiza a ARVORE ***************/
 				// face.imprimeDados(novoFuro);
 				// this.setModal(false);
 				this.parent.setEnabled(true);
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "Furo Base Conica: " + furoBaseConica.getNome() + " adicionada com sucesso!");
-
+				
 				this.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Erro ao criar Furo",

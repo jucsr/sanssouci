@@ -394,6 +394,7 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 				this.face.addFeature(generalPocket);
 				this.parent.desenhador.repaint();
 				this.parent.atualizarArvore();
+				this.parent.atualizarArvorePrecedencias();
 				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n" +  "General Closed Pocked: " +generalPocket.getNome() + " added with success!");
 				
 				dispose();

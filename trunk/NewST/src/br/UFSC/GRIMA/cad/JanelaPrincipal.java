@@ -53,6 +53,7 @@ import br.UFSC.GRIMA.cad.visual.Progress3D;
 import br.UFSC.GRIMA.capp.AlterarPosicaoWs;
 import br.UFSC.GRIMA.capp.CAPP;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
+import br.UFSC.GRIMA.capp.CreateMachine;
 import br.UFSC.GRIMA.capp.EditBallEndMillWS;
 import br.UFSC.GRIMA.capp.EditBoringToolWS;
 import br.UFSC.GRIMA.capp.EditBullnoseEndMillWS;
@@ -61,6 +62,7 @@ import br.UFSC.GRIMA.capp.EditEndMillWS;
 import br.UFSC.GRIMA.capp.EditFaceMillWS;
 import br.UFSC.GRIMA.capp.EditReamerWS;
 import br.UFSC.GRIMA.capp.EditTwistDrillWS;
+import br.UFSC.GRIMA.capp.ShopFloor;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
@@ -517,7 +519,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.menuItemGerFerr.addActionListener(ouvidorMenus);
 		this.criarRegion.addActionListener(ouvidorMenus);
 		this.menuItemCriarCavidadeGeneral.addActionListener(ouvidorMenus);
-
+		this.menuItemSetShopFloor.addActionListener(ouvidorMenus);
 		JanelaPrincipal_combobox_actionAdapter ouvidorCombobox = new JanelaPrincipal_combobox_actionAdapter(
 				this);
 		// this.zoomComboBox.addItemListener(ouvidorCombobox);
@@ -1464,11 +1466,15 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		CreateRegion cr = new CreateRegion(this, this.projeto, this.faceTrabalho);
 		cr.setVisible(true);
 	}
-	
 	public void criarCavidadePerfilGeral() 
 	{
 		CreateGeneralPocket cgp = new CreateGeneralPocket(this, this.projeto, faceTrabalho);
 		cgp.setVisible(true);
+	}
+	public void setShopFloor()
+	{
+		ShopFloor sf = new ShopFloor();
+		sf.setVisible(true);
 	}
 	public void mostrarReferencia() {
 		PlanosRef PR = new PlanosRef(this);
@@ -2616,6 +2622,9 @@ class JanelaPrincipal_menus_actionAdapter implements ActionListener {
 		} else if(origem == this.parent.menuItemCriarCavidadeGeneral)
 		{
 			this.parent.criarCavidadePerfilGeral();
+		} else if(origem == parent.menuItemSetShopFloor)
+		{
+			this.parent.setShopFloor();
 		}
 		
 	}

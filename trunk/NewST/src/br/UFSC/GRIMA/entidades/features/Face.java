@@ -1839,7 +1839,7 @@ public class Face implements Serializable{
 		if(verificaInterseccaoBoss(feature))
 		{
 			valido = false;
-			JOptionPane.showMessageDialog(null, "Hï¿½ colisï¿½o de features");
+			JOptionPane.showMessageDialog(null, "Há colisão de features");
 		}
 		else
 		{
@@ -2106,48 +2106,48 @@ public class Face implements Serializable{
 							JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
 						}
 					}
-				}
-//				}else if(mae.getClass() == CircularBoss.class)
-//				{
-//					CircularBoss cb = (CircularBoss)mae;
-//					if(feature.getPosicaoZ() == cb.getPosicaoZ())
-//					{
-//						valido = true;
-//						feature.setFeaturePrecedente(mae);
-//					}
-//					else
-//					{
-//						valido = false;
-//						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-//					}
-//				}else if(mae.getClass() == RectangularBoss.class)
-//				{
-//					RectangularBoss rb = (RectangularBoss)mae;
-//					if(feature.getPosicaoZ() == rb.getPosicaoZ())
-//					{
-//						valido = true;
-//						feature.setFeaturePrecedente(mae);
-//					}
-//					else
-//					{
-//						valido = false;
-//						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-//					}
-//				}else if(mae.getClass() == GeneralProfileBoss.class)
-//				{
-//					GeneralProfileBoss gb = (GeneralProfileBoss)mae;
-//					if(feature.getPosicaoZ() == gb.getPosicaoZ())
-//					{
-//						valido = true;
-//						feature.setFeaturePrecedente(mae);
-//					}
-//					else
-//					{
-//						valido = false;
-//						
-//						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
-//					}
 //				}
+				}else if(mae.getClass() == CircularBoss.class)
+				{
+					CircularBoss cb = (CircularBoss)mae;
+					if(feature.getPosicaoZ() == cb.getPosicaoZ())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == RectangularBoss.class)
+				{
+					RectangularBoss rb = (RectangularBoss)mae;
+					if(feature.getPosicaoZ() == rb.getPosicaoZ())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}else if(mae.getClass() == GeneralProfileBoss.class)
+				{
+					GeneralProfileBoss gb = (GeneralProfileBoss)mae;
+					if(feature.getPosicaoZ() == gb.getPosicaoZ())
+					{
+						valido = true;
+						feature.setFeaturePrecedente(mae);
+					}
+					else
+					{
+						valido = false;
+						
+						JOptionPane.showMessageDialog(null, "Erro ao criar a feature, verifique a posicao Z (deve coincidir com a profundidade da feature )" + mae.getNome() + " (" + getProfundidade(mae) + " mm)");
+					}
+				}
 				//** Mï¿½es invï¿½lidas por enquanto invï¿½lidas, mas arrumar para que elas possam valer tbm *//
 				else if(mae.getClass() == FuroBaseEsferica.class || 
 						mae.getClass() == FuroBaseConica.class ||

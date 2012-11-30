@@ -229,7 +229,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Tool Tip Half Angle", "Hand Of Cut", "Material", "Material Class"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, Double.class, String.class, String.class, String.class
 								};
 								@Override
@@ -371,7 +371,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Tool Tip Half Angle", "Hand Of Cut", "Material", "Material Class"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, Double.class, String.class, String.class, String.class
 								};
 								@Override
@@ -514,7 +514,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Hand Of Cut", "Material", "Material Class"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, String.class, String.class, String.class
 								};
 								@Override
@@ -651,7 +651,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Hand Of Cut", "Material", "Material Class"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, String.class, String.class, String.class
 								};
 								@Override
@@ -793,7 +793,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Edge Radius", "Edge Center Vertical", "Hand Of Cut", "Material", "Material Class"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, Double.class, Object.class, String.class, String.class, String.class
 								};
 								@Override
@@ -938,7 +938,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Edge Radius", "Edge Center Vertical", "Edge Center Horizontal", "Hand Of Cut", "Material", "Material Class"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, Object.class, Object.class, Double.class, String.class, String.class, String.class
 								};
 								@Override
@@ -1051,7 +1051,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Edge Radius", "Hand Of Cut", "Material", "Material Class", "Acoplamento"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, String.class, String.class, String.class, String.class
 								};
 								@Override
@@ -1267,7 +1267,7 @@ public class SelectToolPanelFrame extends JFrame {
 									"Select", "Id", "Name", "Diameter", "Dm", "Cutting Edge Length", "Max Depth", "Off Set Length", "Number Of Teeth", "Hand Of Cut", "Material", "Material Class"
 								}
 							) {
-								Class[] columnTypes = new Class[] {
+								Class<?>[] columnTypes = new Class<?>[] {
 									Boolean.class, Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class, Integer.class, String.class, String.class, String.class
 								};
 								@Override

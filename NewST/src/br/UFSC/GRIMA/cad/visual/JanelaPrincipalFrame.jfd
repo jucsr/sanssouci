@@ -3422,6 +3422,24 @@
             <string>javax.swing.JMenuItem</string>
             <void method="setProperty">
              <string>text</string>
+             <string>Set Shop Floor</string>
+            </void>
+            <void property="name">
+             <string>menuItemSetShopFloor</string>
+            </void>
+            <void method="auxiliary">
+             <void method="setProperty">
+              <string>JavaCodeGenerator.variableModifiers</string>
+              <int>1</int>
+             </void>
+            </void>
+           </object>
+          </void>
+          <void method="add">
+           <object class="com.jformdesigner.model.FormComponent">
+            <string>javax.swing.JMenuItem</string>
+            <void method="setProperty">
+             <string>text</string>
              <string>Definir pontos de apoio</string>
             </void>
             <void method="setProperty">

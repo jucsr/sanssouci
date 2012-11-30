@@ -1,20 +1,19 @@
 /*
- * Created by JFormDesigner on Mon Dec 27 19:42:14 BRST 2010
+ * Created by JFormDesigner on Wed Nov 28 15:08:07 BRST 2012
  */
 
-package br.UFSC.GRIMA.cad.visual;
+package br.UFSC.GRIMA.capp.visual;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.tree.*;
 
-import br.UFSC.GRIMA.cad.DesenhadorDeFaces;
-
 /**
- * @author Victor
+ * @author Brainrain
  */
-public class JanelaPrincipalFrame extends JFrame {
-	public JanelaPrincipalFrame() {
+public class ShopFloorFrame extends JFrame {
+	public ShopFloorFrame() {
 		initComponents();
 	}
 
@@ -59,7 +58,7 @@ public class JanelaPrincipalFrame extends JFrame {
 		menuItemCriarCavidadeFun = new JMenuItem();
 		menuItemCriarCavidadeGeneral = new JMenuItem();
 		criarRegion = new JMenuItem();
-		menuItemRemover = new JMenuItem();
+		importPiece = new JMenuItem();
 		menuItemEditar = new JMenuItem();
 		menuGirar = new JMenuItem();
 		menu3 = new JMenu();
@@ -78,9 +77,9 @@ public class JanelaPrincipalFrame extends JFrame {
 		menuItemVerPlanosReferencia = new JMenuItem();
 		gerar3D = new JMenuItem();
 		menu1 = new JMenu();
-		menuItemGerFerr = new JMenuItem();
+		menuItemAddNewMachine = new JMenuItem();
 		gerarCAPP = new JMenuItem();
-		menuItemSetShopFloor = new JMenuItem();
+		menuItemHalevi = new JMenuItem();
 		definirPontosApoio = new JMenuItem();
 		menuSTEP = new JMenu();
 		menuItemGerar = new JMenuItem();
@@ -116,6 +115,13 @@ public class JanelaPrincipalFrame extends JFrame {
 		panel8 = new JPanel();
 		buttonRemover = new JButton();
 		buttonEditar = new JButton();
+		panel14 = new JPanel();
+		scrollPaneTree2 = new JScrollPane();
+		tree3 = new JTree();
+		scrollPaneDesenho = new JScrollPane();
+		panel1 = new JPanel();
+		scrollPane3 = new JScrollPane();
+		textArea1 = new JTextArea();
 		panel10 = new JPanel();
 		scrollPaneWsTree = new JScrollPane();
 		workingstepsTree = new JTree();
@@ -130,23 +136,10 @@ public class JanelaPrincipalFrame extends JFrame {
 		buttonRemoverWS2 = new JButton();
 		buttonEditarWS2 = new JButton();
 		buttonAlterarWorkplan2 = new JButton();
-		panel14 = new JPanel();
-		scrollPaneTree2 = new JScrollPane();
-		tree3 = new JTree();
-		scrollPaneDesenho = new JScrollPane();
-		panel1 = new JPanel();
-		scrollPane3 = new JScrollPane();
-		textArea1 = new JTextArea();
-		panel2 = new JPanel();
-		label1 = new JLabel();
-		label2 = new JLabel();
-		label3 = new JLabel();
-		label4 = new JLabel();
-		label5 = new JLabel();
 
 		//======== this ========
-		setTitle("STEP Modeler");
-		setIconImage(new ImageIcon(getClass().getResource("/images/iconePrincipal.png")).getImage());
+		setTitle("Shop Floor");
+		setIconImage(new ImageIcon(getClass().getResource("/images/productionIcon.png")).getImage());
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new GridBagLayout());
 		((GridBagLayout)contentPane.getLayout()).columnWidths = new int[] {0, 0, 0};
@@ -225,6 +218,7 @@ public class JanelaPrincipalFrame extends JFrame {
 				{
 					menuCriarFeatureEm.setText("Plano de Trabalho");
 					menuCriarFeatureEm.setFont(menuCriarFeatureEm.getFont().deriveFont(menuCriarFeatureEm.getFont().getStyle() & ~Font.BOLD));
+					menuCriarFeatureEm.setVisible(false);
 
 					//---- fixarFaceXY ----
 					fixarFaceXY.setText("XY");
@@ -264,6 +258,7 @@ public class JanelaPrincipalFrame extends JFrame {
 				{
 					menuCriarFeatures.setText("Adicionar feature");
 					menuCriarFeatures.setFont(menuCriarFeatures.getFont().deriveFont(menuCriarFeatures.getFont().getStyle() & ~Font.BOLD));
+					menuCriarFeatures.setEnabled(false);
 
 					//======== menu10 ========
 					{
@@ -390,11 +385,10 @@ public class JanelaPrincipalFrame extends JFrame {
 				}
 				menuFerramentas.add(menuCriarFeatures);
 
-				//---- menuItemRemover ----
-				menuItemRemover.setText("Remover Feature");
-				menuItemRemover.setFont(menuItemRemover.getFont().deriveFont(menuItemRemover.getFont().getStyle() & ~Font.BOLD));
-				menuItemRemover.setEnabled(false);
-				menuFerramentas.add(menuItemRemover);
+				//---- importPiece ----
+				importPiece.setText("Import piece");
+				importPiece.setFont(importPiece.getFont().deriveFont(importPiece.getFont().getStyle() & ~Font.BOLD));
+				menuFerramentas.add(importPiece);
 
 				//---- menuItemEditar ----
 				menuItemEditar.setText("Editar Feature");
@@ -406,6 +400,7 @@ public class JanelaPrincipalFrame extends JFrame {
 				//---- menuGirar ----
 				menuGirar.setText("Girar Pe\u00e7a");
 				menuGirar.setFont(menuGirar.getFont().deriveFont(menuGirar.getFont().getStyle() & ~Font.BOLD));
+				menuGirar.setVisible(false);
 				menuFerramentas.add(menuGirar);
 			}
 			menuBar1.add(menuFerramentas);
@@ -420,6 +415,7 @@ public class JanelaPrincipalFrame extends JFrame {
 					menu9.setText("Visualizar face");
 					menu9.setToolTipText("Selecione a face que deseja ver");
 					menu9.setFont(menu9.getFont().deriveFont(menu9.getFont().getStyle() & ~Font.BOLD));
+					menu9.setVisible(false);
 
 					//---- vistaPlanoXY ----
 					vistaPlanoXY.setText("XY");
@@ -464,11 +460,13 @@ public class JanelaPrincipalFrame extends JFrame {
 				mostrarFeaturesSecundarias.setText("Mostrar features das outras faces");
 				mostrarFeaturesSecundarias.setFont(mostrarFeaturesSecundarias.getFont().deriveFont(mostrarFeaturesSecundarias.getFont().getStyle() & ~Font.BOLD));
 				mostrarFeaturesSecundarias.setSelected(true);
+				mostrarFeaturesSecundarias.setVisible(false);
 				menu3.add(mostrarFeaturesSecundarias);
 
 				//---- mostrarPecaBruta ----
 				mostrarPecaBruta.setText("Mostrar Pe\u00e7a Bruta");
 				mostrarPecaBruta.setFont(mostrarPecaBruta.getFont().deriveFont(mostrarPecaBruta.getFont().getStyle() & ~Font.BOLD));
+				mostrarPecaBruta.setVisible(false);
 				menu3.add(mostrarPecaBruta);
 
 				//---- mostrarMesa ----
@@ -484,12 +482,14 @@ public class JanelaPrincipalFrame extends JFrame {
 				verEixos.setSelected(true);
 				verEixos.setIcon(new ImageIcon(getClass().getResource("/images/iconeEixos.png")));
 				verEixos.setSelectedIcon(new ImageIcon(getClass().getResource("/images/emblem-default.png")));
+				verEixos.setVisible(false);
 				menu3.add(verEixos);
 				menu3.addSeparator();
 
 				//---- menuItemVerPlanosReferencia ----
 				menuItemVerPlanosReferencia.setText("Ver Planos de refer\u00eancia");
 				menuItemVerPlanosReferencia.setFont(menuItemVerPlanosReferencia.getFont().deriveFont(menuItemVerPlanosReferencia.getFont().getStyle() & ~Font.BOLD));
+				menuItemVerPlanosReferencia.setVisible(false);
 				menu3.add(menuItemVerPlanosReferencia);
 				menu3.addSeparator();
 
@@ -506,11 +506,11 @@ public class JanelaPrincipalFrame extends JFrame {
 				menu1.setText("CAPP");
 				menu1.setFont(menu1.getFont().deriveFont(menu1.getFont().getStyle() | Font.BOLD));
 
-				//---- menuItemGerFerr ----
-				menuItemGerFerr.setText("Gerenciar Ferramentas");
-				menuItemGerFerr.setFont(menuItemGerFerr.getFont().deriveFont(menuItemGerFerr.getFont().getStyle() & ~Font.BOLD));
-				menuItemGerFerr.setIcon(new ImageIcon(getClass().getResource("/images/preferences-system.png")));
-				menu1.add(menuItemGerFerr);
+				//---- menuItemAddNewMachine ----
+				menuItemAddNewMachine.setText("Add new Machine");
+				menuItemAddNewMachine.setFont(menuItemAddNewMachine.getFont().deriveFont(menuItemAddNewMachine.getFont().getStyle() & ~Font.BOLD));
+				menuItemAddNewMachine.setIcon(new ImageIcon(getClass().getResource("/images/newMachineIcon.png")));
+				menu1.add(menuItemAddNewMachine);
 
 				//---- gerarCAPP ----
 				gerarCAPP.setText("Gerar Plano do Processo");
@@ -518,14 +518,16 @@ public class JanelaPrincipalFrame extends JFrame {
 				gerarCAPP.setIcon(new ImageIcon(getClass().getResource("/images/iconeCAPP.png")));
 				menu1.add(gerarCAPP);
 
-				//---- menuItemSetShopFloor ----
-				menuItemSetShopFloor.setText("Set Shop Floor");
-				menu1.add(menuItemSetShopFloor);
+				//---- menuItemHalevi ----
+				menuItemHalevi.setText("Halevi");
+				menuItemHalevi.setVisible(false);
+				menu1.add(menuItemHalevi);
 
 				//---- definirPontosApoio ----
 				definirPontosApoio.setText("Definir pontos de apoio");
 				definirPontosApoio.setFont(definirPontosApoio.getFont().deriveFont(definirPontosApoio.getFont().getStyle() & ~Font.BOLD));
 				definirPontosApoio.setIcon(new ImageIcon(getClass().getResource("/images/iconeApoios.png")));
+				definirPontosApoio.setVisible(false);
 				menu1.add(definirPontosApoio);
 			}
 			menuBar1.add(menu1);
@@ -534,6 +536,7 @@ public class JanelaPrincipalFrame extends JFrame {
 			{
 				menuSTEP.setText("STEP");
 				menuSTEP.setFont(menuSTEP.getFont().deriveFont(menuSTEP.getFont().getStyle() | Font.BOLD));
+				menuSTEP.setVisible(false);
 
 				//---- menuItemGerar ----
 				menuItemGerar.setText("Gerar Arquivo f\u00edsico (.p21)");
@@ -567,7 +570,7 @@ public class JanelaPrincipalFrame extends JFrame {
 				menuAjuda.add(menuItemAbout);
 
 				//---- menuItemHelp ----
-				menuItemHelp.setText("Ajuda");
+				menuItemHelp.setText("Help");
 				menuItemHelp.setFont(menuItemHelp.getFont().deriveFont(menuItemHelp.getFont().getStyle() & ~Font.BOLD));
 				menuItemHelp.setIcon(new ImageIcon(getClass().getResource("/images/help-browser.png")));
 				menuAjuda.add(menuItemHelp);
@@ -638,6 +641,7 @@ public class JanelaPrincipalFrame extends JFrame {
 
 					//======== toolBar3 ========
 					{
+						toolBar3.setVisible(false);
 
 						//---- girarEixoX ----
 						girarEixoX.setIcon(new ImageIcon(getClass().getResource("/images/iconeGirarX.png")));
@@ -709,6 +713,7 @@ public class JanelaPrincipalFrame extends JFrame {
 
 								//======== panel7 ========
 								{
+									panel7.setVisible(false);
 									panel7.setLayout(new GridBagLayout());
 									((GridBagLayout)panel7.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
 									((GridBagLayout)panel7.getLayout()).rowHeights = new int[] {0, 0};
@@ -754,140 +759,7 @@ public class JanelaPrincipalFrame extends JFrame {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
-							tabbedPane1.addTab("Features", panel6);
-
-
-							//======== panel10 ========
-							{
-								panel10.setLayout(new GridBagLayout());
-								((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {0, 0};
-								((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0};
-								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
-								((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
-
-								//======== scrollPaneWsTree ========
-								{
-
-									//---- workingstepsTree ----
-									workingstepsTree.setModel(new DefaultTreeModel(
-										new DefaultMutableTreeNode("Roughing & Finishing Workingsteps") {
-											{
-												DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("Workingsteps");
-													node1.add(new DefaultMutableTreeNode("WS-Desbaste"));
-													node1.add(new DefaultMutableTreeNode("WS-Acabamento"));
-												add(node1);
-											}
-										}));
-									scrollPaneWsTree.setViewportView(workingstepsTree);
-								}
-								panel10.add(scrollPaneWsTree, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 5, 0), 0, 0));
-
-								//======== panel11 ========
-								{
-									panel11.setToolTipText("Selecione um machining workingstep");
-									panel11.setLayout(new GridBagLayout());
-									((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
-									((GridBagLayout)panel11.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
-									((GridBagLayout)panel11.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
-
-									//---- buttonRemoverWS ----
-									buttonRemoverWS.setText("Remover");
-									buttonRemoverWS.setFont(buttonRemoverWS.getFont().deriveFont(buttonRemoverWS.getFont().getStyle() | Font.BOLD));
-									buttonRemoverWS.setToolTipText("Remove o machining workingstep selecionado");
-									panel11.add(buttonRemoverWS, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-
-									//---- buttonEditarWS ----
-									buttonEditarWS.setText("Editar");
-									buttonEditarWS.setFont(buttonEditarWS.getFont().deriveFont(buttonEditarWS.getFont().getStyle() | Font.BOLD));
-									buttonEditarWS.setToolTipText("Edita os par\u00e2metros do machining workingstep selecionado");
-									panel11.add(buttonEditarWS, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-
-									//---- buttonAlterarWorkplan ----
-									buttonAlterarWorkplan.setText("Alterar Sequ\u00eancia");
-									buttonAlterarWorkplan.setFont(buttonAlterarWorkplan.getFont().deriveFont(buttonAlterarWorkplan.getFont().getStyle() | Font.BOLD));
-									buttonAlterarWorkplan.setToolTipText("Altera a ordem de execu\u00e7\u00e3o do machining workingstep selecionado");
-									panel11.add(buttonAlterarWorkplan, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-								}
-								panel10.add(panel11, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 0, 0), 0, 0));
-							}
-							tabbedPane1.addTab("CAPP", panel10);
-
-
-							//======== panel12 ========
-							{
-								panel12.setLayout(new GridBagLayout());
-								((GridBagLayout)panel12.getLayout()).columnWidths = new int[] {0, 0};
-								((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 0, 0};
-								((GridBagLayout)panel12.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
-								((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
-
-								//======== scrollPaneWsTree2 ========
-								{
-
-									//---- workplanTree ----
-									workplanTree.setModel(new DefaultTreeModel(
-										new DefaultMutableTreeNode("Main Workplan") {
-											{
-												DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("Setup XY");
-													node1.add(new DefaultMutableTreeNode("Workingsteps"));
-												add(node1);
-											}
-										}));
-									scrollPaneWsTree2.setViewportView(workplanTree);
-								}
-								panel12.add(scrollPaneWsTree2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 5, 0), 0, 0));
-
-								//======== panel13 ========
-								{
-									panel13.setToolTipText("Selecione um machining workingstep");
-									panel13.setLayout(new GridBagLayout());
-									((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
-									((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
-									((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
-
-									//---- buttonRemoverWS2 ----
-									buttonRemoverWS2.setText("Remover");
-									buttonRemoverWS2.setFont(buttonRemoverWS2.getFont().deriveFont(buttonRemoverWS2.getFont().getStyle() | Font.BOLD));
-									buttonRemoverWS2.setToolTipText("Remove o machining workingstep selecionado");
-									panel13.add(buttonRemoverWS2, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-
-									//---- buttonEditarWS2 ----
-									buttonEditarWS2.setText("Editar");
-									buttonEditarWS2.setFont(buttonEditarWS2.getFont().deriveFont(buttonEditarWS2.getFont().getStyle() | Font.BOLD));
-									buttonEditarWS2.setToolTipText("Edita os par\u00e2metros do machining workingstep selecionado");
-									panel13.add(buttonEditarWS2, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-
-									//---- buttonAlterarWorkplan2 ----
-									buttonAlterarWorkplan2.setText("Alterar Sequ\u00eancia");
-									buttonAlterarWorkplan2.setFont(buttonAlterarWorkplan2.getFont().deriveFont(buttonAlterarWorkplan2.getFont().getStyle() | Font.BOLD));
-									buttonAlterarWorkplan2.setToolTipText("Altera a ordem de execu\u00e7\u00e3o do machining workingstep selecionado");
-									panel13.add(buttonAlterarWorkplan2, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-								}
-								panel12.add(panel13, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 0, 0), 0, 0));
-							}
-							tabbedPane1.addTab("Workplan", panel12);
+							tabbedPane1.addTab("Machines", panel6);
 
 
 							//======== panel14 ========
@@ -954,50 +826,133 @@ public class JanelaPrincipalFrame extends JFrame {
 		pack();
 		setLocationRelativeTo(getOwner());
 
-		//======== panel2 ========
+		//======== panel10 ========
 		{
-			panel2.setLayout(new GridBagLayout());
-			((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-			((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
-			((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-			((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
+			panel10.setLayout(new GridBagLayout());
+			((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {0, 0};
+			((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0};
+			((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+			((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
 
-			//---- label1 ----
-			label1.setText("Status:");
-			label1.setFont(label1.getFont().deriveFont(label1.getFont().getStyle() | Font.BOLD));
-			panel2.add(label1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 5, 5), 0, 0));
+			//======== scrollPaneWsTree ========
+			{
 
-			//---- label2 ----
-			label2.setText("Mostrando a face:");
-			label2.setFont(label2.getFont().deriveFont(label2.getFont().getStyle() & ~Font.BOLD));
-			panel2.add(label2, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 5, 5), 0, 0));
-
-			//---- label3 ----
-			label3.setText("XY");
-			label3.setForeground(Color.red);
-			label3.setFont(new Font("Tahoma", Font.BOLD, 11));
-			panel2.add(label3, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+				//---- workingstepsTree ----
+				workingstepsTree.setModel(new DefaultTreeModel(
+					new DefaultMutableTreeNode("Roughing & Finishing Workingsteps") {
+						{
+							DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("Workingsteps");
+								node1.add(new DefaultMutableTreeNode("WS-Desbaste"));
+								node1.add(new DefaultMutableTreeNode("WS-Acabamento"));
+							add(node1);
+						}
+					}));
+				scrollPaneWsTree.setViewportView(workingstepsTree);
+			}
+			panel10.add(scrollPaneWsTree, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 0), 0, 0));
 
-			//---- label4 ----
-			label4.setText("Criando features na face:");
-			label4.setFont(label4.getFont().deriveFont(label4.getFont().getStyle() & ~Font.BOLD));
-			panel2.add(label4, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 5, 5), 0, 0));
+			//======== panel11 ========
+			{
+				panel11.setToolTipText("Selecione um machining workingstep");
+				panel11.setLayout(new GridBagLayout());
+				((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
+				((GridBagLayout)panel11.getLayout()).rowHeights = new int[] {0, 0};
+				((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+				((GridBagLayout)panel11.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
-			//---- label5 ----
-			label5.setText("XY");
-			label5.setForeground(Color.red);
-			label5.setFont(new Font("Tahoma", Font.BOLD, 11));
-			panel2.add(label5, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+				//---- buttonRemoverWS ----
+				buttonRemoverWS.setText("Remover");
+				buttonRemoverWS.setFont(buttonRemoverWS.getFont().deriveFont(buttonRemoverWS.getFont().getStyle() | Font.BOLD));
+				buttonRemoverWS.setToolTipText("Remove o machining workingstep selecionado");
+				panel11.add(buttonRemoverWS, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 5), 0, 0));
+
+				//---- buttonEditarWS ----
+				buttonEditarWS.setText("Editar");
+				buttonEditarWS.setFont(buttonEditarWS.getFont().deriveFont(buttonEditarWS.getFont().getStyle() | Font.BOLD));
+				buttonEditarWS.setToolTipText("Edita os par\u00e2metros do machining workingstep selecionado");
+				panel11.add(buttonEditarWS, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 5), 0, 0));
+
+				//---- buttonAlterarWorkplan ----
+				buttonAlterarWorkplan.setText("Alterar Sequ\u00eancia");
+				buttonAlterarWorkplan.setFont(buttonAlterarWorkplan.getFont().deriveFont(buttonAlterarWorkplan.getFont().getStyle() | Font.BOLD));
+				buttonAlterarWorkplan.setToolTipText("Altera a ordem de execu\u00e7\u00e3o do machining workingstep selecionado");
+				panel11.add(buttonAlterarWorkplan, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 5), 0, 0));
+			}
+			panel10.add(panel11, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0));
+		}
+
+		//======== panel12 ========
+		{
+			panel12.setLayout(new GridBagLayout());
+			((GridBagLayout)panel12.getLayout()).columnWidths = new int[] {0, 0};
+			((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 0, 0};
+			((GridBagLayout)panel12.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+			((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
+
+			//======== scrollPaneWsTree2 ========
+			{
+
+				//---- workplanTree ----
+				workplanTree.setModel(new DefaultTreeModel(
+					new DefaultMutableTreeNode("Main Workplan") {
+						{
+							DefaultMutableTreeNode node1 = new DefaultMutableTreeNode("Setup XY");
+								node1.add(new DefaultMutableTreeNode("Workingsteps"));
+							add(node1);
+						}
+					}));
+				scrollPaneWsTree2.setViewportView(workplanTree);
+			}
+			panel12.add(scrollPaneWsTree2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 0), 0, 0));
+
+			//======== panel13 ========
+			{
+				panel13.setToolTipText("Selecione um machining workingstep");
+				panel13.setLayout(new GridBagLayout());
+				((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
+				((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0};
+				((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+				((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+				//---- buttonRemoverWS2 ----
+				buttonRemoverWS2.setText("Remover");
+				buttonRemoverWS2.setFont(buttonRemoverWS2.getFont().deriveFont(buttonRemoverWS2.getFont().getStyle() | Font.BOLD));
+				buttonRemoverWS2.setToolTipText("Remove o machining workingstep selecionado");
+				panel13.add(buttonRemoverWS2, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 5), 0, 0));
+
+				//---- buttonEditarWS2 ----
+				buttonEditarWS2.setText("Editar");
+				buttonEditarWS2.setFont(buttonEditarWS2.getFont().deriveFont(buttonEditarWS2.getFont().getStyle() | Font.BOLD));
+				buttonEditarWS2.setToolTipText("Edita os par\u00e2metros do machining workingstep selecionado");
+				panel13.add(buttonEditarWS2, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 5), 0, 0));
+
+				//---- buttonAlterarWorkplan2 ----
+				buttonAlterarWorkplan2.setText("Alterar Sequ\u00eancia");
+				buttonAlterarWorkplan2.setFont(buttonAlterarWorkplan2.getFont().deriveFont(buttonAlterarWorkplan2.getFont().getStyle() | Font.BOLD));
+				buttonAlterarWorkplan2.setToolTipText("Altera a ordem de execu\u00e7\u00e3o do machining workingstep selecionado");
+				panel13.add(buttonAlterarWorkplan2, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 5), 0, 0));
+			}
+			panel12.add(panel13, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0));
 		}
 
 		//---- buttonGroup1 ----
@@ -1060,7 +1015,7 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JMenuItem menuItemCriarCavidadeFun;
 	public JMenuItem menuItemCriarCavidadeGeneral;
 	public JMenuItem criarRegion;
-	public JMenuItem menuItemRemover;
+	public JMenuItem importPiece;
 	public JMenuItem menuItemEditar;
 	public JMenuItem menuGirar;
 	public JMenu menu3;
@@ -1079,9 +1034,9 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JMenuItem menuItemVerPlanosReferencia;
 	public JMenuItem gerar3D;
 	private JMenu menu1;
-	public JMenuItem menuItemGerFerr;
+	public JMenuItem menuItemAddNewMachine;
 	public JMenuItem gerarCAPP;
-	public JMenuItem menuItemSetShopFloor;
+	public JMenuItem menuItemHalevi;
 	public JMenuItem definirPontosApoio;
 	public JMenu menuSTEP;
 	public JMenuItem menuItemGerar;
@@ -1117,6 +1072,13 @@ public class JanelaPrincipalFrame extends JFrame {
 	private JPanel panel8;
 	public JButton buttonRemover;
 	public JButton buttonEditar;
+	private JPanel panel14;
+	public JScrollPane scrollPaneTree2;
+	public JTree tree3;
+	public JScrollPane scrollPaneDesenho;
+	public JPanel panel1;
+	private JScrollPane scrollPane3;
+	public JTextArea textArea1;
 	private JPanel panel10;
 	public JScrollPane scrollPaneWsTree;
 	public JTree workingstepsTree;
@@ -1131,18 +1093,5 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JButton buttonRemoverWS2;
 	public JButton buttonEditarWS2;
 	public JButton buttonAlterarWorkplan2;
-	private JPanel panel14;
-	public JScrollPane scrollPaneTree2;
-	public JTree tree3;
-	public JScrollPane scrollPaneDesenho;
-	public JPanel panel1;
-	private JScrollPane scrollPane3;
-	public JTextArea textArea1;
-	public JPanel panel2;
-	private JLabel label1;
-	private JLabel label2;
-	public JLabel label3;
-	private JLabel label4;
-	public JLabel label5;
-public DesenhadorDeFaces desenhador;	// JFormDesigner - End of variables declaration  //GEN-END:variables
+	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

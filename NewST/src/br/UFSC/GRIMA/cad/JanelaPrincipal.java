@@ -62,7 +62,6 @@ import br.UFSC.GRIMA.capp.EditEndMillWS;
 import br.UFSC.GRIMA.capp.EditFaceMillWS;
 import br.UFSC.GRIMA.capp.EditReamerWS;
 import br.UFSC.GRIMA.capp.EditTwistDrillWS;
-import br.UFSC.GRIMA.capp.ShopFloor;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
@@ -83,6 +82,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.exceptions.MissingDataException;
 import br.UFSC.GRIMA.integracao.ProjectReader;
+import br.UFSC.GRIMA.shopFloor.JanelaShopFloor;
 import br.UFSC.GRIMA.util.PrintUtilities;
 import br.UFSC.GRIMA.util.ToolReader;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -1473,7 +1473,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	}
 	public void setShopFloor()
 	{
-		ShopFloor sf = new ShopFloor();
+		JanelaShopFloor sf = new JanelaShopFloor();
 		sf.setVisible(true);
 	}
 	public void mostrarReferencia() {

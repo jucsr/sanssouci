@@ -7,8 +7,9 @@ import java.awt.event.ActionListener;
 import sun.font.CreatedFontTracker;
 
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
-import br.UFSC.GRIMA.capp.visual.CreateMachineFrame;
-import br.UFSC.GRIMA.capp.visual.CreateMillingMachineFrame;
+import br.UFSC.GRIMA.shopFloor.JanelaShopFloor;
+import br.UFSC.GRIMA.shopFloor.visual.CreateMachineFrame;
+import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
 
 /**
  * 
@@ -17,8 +18,8 @@ import br.UFSC.GRIMA.capp.visual.CreateMillingMachineFrame;
  */
 public class CreateMachine extends CreateMachineFrame implements ActionListener
 {
-	ShopFloor shoopFloor;
-	public CreateMachine(ShopFloor shopFloor) 
+	JanelaShopFloor shoopFloor;
+	public CreateMachine(JanelaShopFloor shopFloor) 
 	{
 		super(shopFloor);
 		this.shoopFloor = shopFloor;

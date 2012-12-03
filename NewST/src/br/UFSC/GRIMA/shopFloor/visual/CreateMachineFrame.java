@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Tue Nov 13 17:03:28 BRST 2012
  */
 
-package br.UFSC.GRIMA.capp.visual;
+package br.UFSC.GRIMA.shopFloor.visual;
 
 import java.awt.*;
 import javax.swing.*;

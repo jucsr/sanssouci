@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
-import br.UFSC.GRIMA.capp.visual.CreateDrillingMachineFrame;
+import br.UFSC.GRIMA.shopFloor.JanelaShopFloor;
+import br.UFSC.GRIMA.shopFloor.visual.CreateDrillingMachineFrame;
 /**
  * 
  * @author jc
@@ -13,7 +14,7 @@ import br.UFSC.GRIMA.capp.visual.CreateDrillingMachineFrame;
  */
 public class CreateDrillingMachine extends CreateDrillingMachineFrame implements ActionListener
 {
-	public ShopFloor shopFloor;
+	public JanelaShopFloor shopFloor;
 	public CreateDrillingMachine(Frame parent) 
 	{
 		super(parent);

@@ -1,4 +1,4 @@
-package br.UFSC.GRIMA.capp;
+package br.UFSC.GRIMA.shopFloor;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;

@@ -1,24 +1,25 @@
 /*
- * Created by JFormDesigner on Tue Nov 27 15:43:32 BRST 2012
+ * Created by JFormDesigner on Mon Nov 19 15:32:52 BRST 2012
  */
 
-package br.UFSC.GRIMA.capp.visual;
+package br.UFSC.GRIMA.shopFloor.visual;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
+import com.jgoodies.forms.factories.*;
 
 /**
  * @author Brainrain
  */
-public class CreateMillingMachineFrame extends JDialog {
-	public CreateMillingMachineFrame(Frame owner) {
+public class CreateDrillingMachineFrame extends JDialog {
+	public CreateDrillingMachineFrame(Frame owner) {
 		super(owner);
 		initComponents();
 	}
 
-	public CreateMillingMachineFrame(Dialog owner) {
+	public CreateDrillingMachineFrame(Dialog owner) {
 		super(owner);
 		initComponents();
 	}
@@ -153,7 +154,7 @@ public class CreateMillingMachineFrame extends JDialog {
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- textField1 ----
-								textField1.setText("Milling Machine");
+								textField1.setText("Drilling Machine");
 								panel3.add(textField1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
@@ -197,7 +198,7 @@ public class CreateMillingMachineFrame extends JDialog {
 								panel10.setLayout(new GridBagLayout());
 								((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
 								((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 								((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
 
 								//======== panel12 ========
@@ -252,16 +253,16 @@ public class CreateMillingMachineFrame extends JDialog {
 								{
 									panel13.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 									panel13.setLayout(new GridBagLayout());
-									((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {0, 0};
 									((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
 									((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 									//---- label12 ----
-									label12.setIcon(new ImageIcon(getClass().getResource("/images/millingMachine.png")));
-									panel13.add(label12, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+									label12.setIcon(new ImageIcon(getClass().getResource("/images/drillingMachine.png")));
+									panel13.add(label12, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
+										new Insets(0, 0, 0, 0), 0, 0));
 								}
 								panel10.add(panel13, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -493,7 +494,7 @@ public class CreateMillingMachineFrame extends JDialog {
 								panel9.setLayout(new GridBagLayout());
 								((GridBagLayout)panel9.getLayout()).columnWidths = new int[] {0, 345, 0, 0};
 								((GridBagLayout)panel9.getLayout()).rowHeights = new int[] {0, 355, 0, 0};
-								((GridBagLayout)panel9.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel9.getLayout()).columnWeights = new double[] {1.0, 1.0, 1.0, 1.0E-4};
 								((GridBagLayout)panel9.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
 
 								//======== layeredPane1 ========
@@ -502,37 +503,37 @@ public class CreateMillingMachineFrame extends JDialog {
 									//---- spinner1 ----
 									spinner1.setModel(new SpinnerNumberModel(200, 0, null, 1));
 									layeredPane1.add(spinner1, JLayeredPane.DEFAULT_LAYER);
-									spinner1.setBounds(125, 200, 51, spinner1.getPreferredSize().height);
+									spinner1.setBounds(110, 255, 51, spinner1.getPreferredSize().height);
 
 									//---- spinner2 ----
 									spinner2.setModel(new SpinnerNumberModel(200, 0, null, 1));
 									layeredPane1.add(spinner2, JLayeredPane.DEFAULT_LAYER);
-									spinner2.setBounds(235, 195, 46, spinner2.getPreferredSize().height);
+									spinner2.setBounds(225, 255, 46, spinner2.getPreferredSize().height);
 
 									//---- spinner3 ----
 									spinner3.setModel(new SpinnerNumberModel(150, 0, null, 1));
 									layeredPane1.add(spinner3, JLayeredPane.DEFAULT_LAYER);
-									spinner3.setBounds(260, 155, 46, spinner3.getPreferredSize().height);
+									spinner3.setBounds(270, 220, 46, spinner3.getPreferredSize().height);
 
 									//---- label3 ----
 									label3.setText("(mm)");
 									layeredPane1.add(label3, JLayeredPane.DEFAULT_LAYER);
-									label3.setBounds(new Rectangle(new Point(285, 200), label3.getPreferredSize()));
+									label3.setBounds(new Rectangle(new Point(275, 260), label3.getPreferredSize()));
 
 									//---- label4 ----
 									label4.setText("(mm)");
 									layeredPane1.add(label4, JLayeredPane.DEFAULT_LAYER);
-									label4.setBounds(new Rectangle(new Point(180, 205), label4.getPreferredSize()));
+									label4.setBounds(new Rectangle(new Point(170, 260), label4.getPreferredSize()));
 
 									//---- label5 ----
 									label5.setText("(mm)");
 									layeredPane1.add(label5, JLayeredPane.DEFAULT_LAYER);
-									label5.setBounds(new Rectangle(new Point(310, 160), label5.getPreferredSize()));
+									label5.setBounds(new Rectangle(new Point(320, 225), label5.getPreferredSize()));
 
 									//---- label6 ----
-									label6.setIcon(new ImageIcon(getClass().getResource("/images/millingMachineTravel.png")));
+									label6.setIcon(new ImageIcon(getClass().getResource("/images/travel1.png")));
 									layeredPane1.add(label6, JLayeredPane.DEFAULT_LAYER);
-									label6.setBounds(0, 0, 385, label6.getPreferredSize().height);
+									label6.setBounds(new Rectangle(new Point(0, 0), label6.getPreferredSize()));
 								}
 								panel9.add(layeredPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,

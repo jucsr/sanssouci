@@ -5,13 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
-import br.UFSC.GRIMA.capp.visual.CreateMillingMachineFrame;
+import br.UFSC.GRIMA.shopFloor.JanelaShopFloor;
+import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
 
 public class CreateMillingMachine extends CreateMillingMachineFrame implements ActionListener
 {
-	public ShopFloor shopFloor;
+	public JanelaShopFloor shopFloor;
 
-	public CreateMillingMachine(ShopFloor shopFloor) 
+	public CreateMillingMachine(JanelaShopFloor shopFloor) 
 	{
 		super(shopFloor);
 		this.shopFloor = shopFloor;

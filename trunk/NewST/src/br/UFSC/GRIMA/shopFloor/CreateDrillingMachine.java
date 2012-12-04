@@ -1,4 +1,4 @@
-package br.UFSC.GRIMA.capp;
+package br.UFSC.GRIMA.shopFloor;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -6,16 +6,18 @@ import java.awt.event.ActionListener;
 
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
 import br.UFSC.GRIMA.shopFloor.JanelaShopFloor;
-import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
-
-public class CreateMillingMachine extends CreateMillingMachineFrame implements ActionListener
+import br.UFSC.GRIMA.shopFloor.visual.CreateDrillingMachineFrame;
+/**
+ * 
+ * @author jc
+ *
+ */
+public class CreateDrillingMachine extends CreateDrillingMachineFrame implements ActionListener
 {
 	public JanelaShopFloor shopFloor;
-
-	public CreateMillingMachine(JanelaShopFloor shopFloor) 
+	public CreateDrillingMachine(Frame parent) 
 	{
-		super(shopFloor);
-		this.shopFloor = shopFloor;
+		super(parent);
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.button1.addActionListener(this);
@@ -29,7 +31,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		this.button9.addActionListener(this);
 		this.button10.addActionListener(this);
 	}
-
+	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		Object o = e.getSource();

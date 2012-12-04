@@ -439,10 +439,8 @@ public class MapeadoraGeneralClosedPocket {
 					pontos = new ArrayList<ArrayList<Point3d>>();
 					pontos = getPontos(variacao, diametro2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 
-					if(pontos.get(0).size() > 1)
+					if(pontos.get(0).size() > 1 && diametro2 != menorFerramenta)
 					{//TEM PONTOS SUFICIENTES PARA FAZER ALGUMA MOVIMENTACAO ENTAO CRIAR UM WS, SE NAO NAO CRIA WS
-						System.err.println("ENTROU");
-						System.err.println(pontos.get(0).size());
 
 						listaDeBossesCriados = createBosses(variacao, diametro2/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 						

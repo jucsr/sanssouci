@@ -3,7 +3,6 @@ package br.UFSC.GRIMA.shopFloor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.UFSC.GRIMA.capp.CreateMachine;
 import br.UFSC.GRIMA.shopFloor.visual.ShopFloorFrame;
 
 /**
@@ -14,8 +13,10 @@ import br.UFSC.GRIMA.shopFloor.visual.ShopFloorFrame;
 public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 {
 	private ShopFloorPanel shopPanel;
-	public JanelaShopFloor()
+	private ShopFloor shopFloor;
+	public JanelaShopFloor(ShopFloor shopFloor)
 	{
+		this.shopFloor = shopFloor;
 		this.addicionarOuvidores();
 	}
 

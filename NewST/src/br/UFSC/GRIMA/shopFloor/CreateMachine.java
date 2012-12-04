@@ -1,15 +1,9 @@
-package br.UFSC.GRIMA.capp;
+package br.UFSC.GRIMA.shopFloor;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import sun.font.CreatedFontTracker;
-
-import br.UFSC.GRIMA.cad.JanelaPrincipal;
-import br.UFSC.GRIMA.shopFloor.JanelaShopFloor;
 import br.UFSC.GRIMA.shopFloor.visual.CreateMachineFrame;
-import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
 
 /**
  * 

@@ -227,5 +227,43 @@ public class Ferramenta implements Serializable
 	public void setMaterialFerramenta(Material materialFerramenta) {
 		this.materialFerramenta = materialFerramenta;
 	}
-
+	public String type(Ferramenta ferramenta)
+	{
+		String saida = "";
+		if(ferramenta.getClass().equals(CenterDrill.class))
+		{
+			saida = "Center Drill";
+		}
+		else if(ferramenta.getClass().equals(TwistDrill.class))
+		{
+			saida = "Twist Drill";
+		}
+		else if(ferramenta.getClass().equals(BoringTool.class))
+		{
+			saida = "Boring Tool";
+		}
+		else if(ferramenta.getClass().equals(BallEndMill.class))
+		{
+			saida = "Ball End Mill";
+		}
+		else if(ferramenta.getClass().equals(FaceMill.class))
+		{
+			saida = "Face Mill";
+		}
+		else if(ferramenta.getClass().equals(BullnoseEndMill.class))
+		{
+			saida = "Bullnose End Mill";
+		}
+		else if(ferramenta.getClass().equals(Reamer.class))
+		{
+			saida = "Reamer";
+		}
+		else if(ferramenta.getClass().equals(EndMill.class))
+		{
+			saida = "End Mill";
+		}
+		
+		return saida;
+	}
+	
 }

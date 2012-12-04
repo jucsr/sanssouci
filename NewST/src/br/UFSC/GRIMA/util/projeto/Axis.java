@@ -6,6 +6,7 @@ public abstract class Axis
 {
 	private String name = "";
 	private Point3d origin = new Point3d();
+	
 	public String getName() {
 		return name;
 	}

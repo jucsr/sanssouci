@@ -17,8 +17,8 @@ public class MachineTool extends MachiningResource
 	private Axis [] axis;
 	private Spindle itsSpindle;
 	private MachineToolCapability itsCapability;
-	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingInformation;
-	private ArrayList<CuttingToolHandlingDevice> toolHandlingInformation;
+	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevice;
+	private ArrayList<CuttingToolHandlingDevice> toolHandlingDevice;
 	
 	public String getItsLocation() 
 	{
@@ -60,20 +60,20 @@ public class MachineTool extends MachiningResource
 	{
 		this.itsCapability = itsCapability;
 	}
-	public ArrayList<WorkpieceHandlingDevice> getWorkpieceHandlingInformation() 
+	public ArrayList<WorkpieceHandlingDevice> getWorkpieceHandlingDevice() 
 	{
-		return workpieceHandlingInformation;
+		return workpieceHandlingDevice;
 	}
-	public void setWorkpieceHandlingInformation(ArrayList<WorkpieceHandlingDevice> workpieceHandlingInformation) 
+	public void setWorkpieceHandlingDevice(ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevice) 
 	{
-		this.workpieceHandlingInformation = workpieceHandlingInformation;
+		this.workpieceHandlingDevice = workpieceHandlingDevice;
 	}
-	public ArrayList<CuttingToolHandlingDevice> getToolHandlingInformation() 
+	public ArrayList<CuttingToolHandlingDevice> getToolHandlingDevice() 
 	{
-		return toolHandlingInformation;
+		return toolHandlingDevice;
 	}
-	public void setToolHandlingInformation(ArrayList<CuttingToolHandlingDevice> toolHandlingInformation) 
+	public void setToolHandlingDevice(ArrayList<CuttingToolHandlingDevice> toolHandlingDevice) 
 	{
-		this.toolHandlingInformation = toolHandlingInformation;
+		this.toolHandlingDevice = toolHandlingDevice;
 	}
 }

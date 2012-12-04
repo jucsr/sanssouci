@@ -26,10 +26,7 @@ import br.UFSC.GRIMA.util.ImageSource;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
-public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener,
-		ItemListener {
-	private static final long serialVersionUID = 5407049021976865441L;
-	private AcessaBD bancoDeDados;
+public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener{
 	public double comprimento = 200;
 	public double largura = 150;
 	public double profundidade = 13;
@@ -84,7 +81,6 @@ public class CriarNovoProjeto extends NovoProjectFrame implements ActionListener
 		
 		this.cancelButton.addActionListener(this);
 		this.okButton.addActionListener(this);
-		this.comboBox1.addItemListener(this);
 		this.button1.addActionListener(this);
 		this.button1.setEnabled(false);
 	}

@@ -22,7 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -33,7 +32,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
@@ -53,7 +51,6 @@ import br.UFSC.GRIMA.cad.visual.Progress3D;
 import br.UFSC.GRIMA.capp.AlterarPosicaoWs;
 import br.UFSC.GRIMA.capp.CAPP;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
-import br.UFSC.GRIMA.capp.CreateMachine;
 import br.UFSC.GRIMA.capp.EditBallEndMillWS;
 import br.UFSC.GRIMA.capp.EditBoringToolWS;
 import br.UFSC.GRIMA.capp.EditBullnoseEndMillWS;
@@ -68,7 +65,6 @@ import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.entidades.StepNcProject;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
-import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
@@ -82,7 +78,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.exceptions.MissingDataException;
 import br.UFSC.GRIMA.integracao.ProjectReader;
-import br.UFSC.GRIMA.shopFloor.JanelaShopFloor;
+import br.UFSC.GRIMA.shopFloor.CriarNovoProjetoShopFloor;
 import br.UFSC.GRIMA.util.PrintUtilities;
 import br.UFSC.GRIMA.util.ToolReader;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -1473,7 +1469,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	}
 	public void setShopFloor()
 	{
-		JanelaShopFloor sf = new JanelaShopFloor();
+		CriarNovoProjetoShopFloor sf = new CriarNovoProjetoShopFloor(projeto.getDadosDeProjeto().getUserID(), projeto.getDadosDeProjeto().getUserName());
 		sf.setVisible(true);
 	}
 	public void mostrarReferencia() {

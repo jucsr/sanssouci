@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 import br.UFSC.GRIMA.cad.ProjectTools;
 import br.UFSC.GRIMA.cad.visual.AddNewFaceMillFrame;
+import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 
 public class AddNewFaceMill extends AddNewFaceMillFrame implements ActionListener, ItemListener
@@ -94,7 +95,8 @@ public class AddNewFaceMill extends AddNewFaceMillFrame implements ActionListene
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
 		
-		Object[] linha = {id, nome, diametro, dm, cuttingEdge, profundidade, offSetLength, hand, material, this.materialClass};
+		FaceMill fm = new FaceMill(nome, material, diametro, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+		Object[] linha = {false, id, nome, diametro, "Face Mill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.table1.getModel();
 		this.projectTools.table1.setModel(modelo);
 		modelo.addRow(linha);

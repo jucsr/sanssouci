@@ -1,26 +1,26 @@
 package br.UFSC.GRIMA.shopFloor;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
 
-import br.UFSC.GRIMA.cad.ProjectTools;
 import br.UFSC.GRIMA.cad.visual.AddNewBallEndMillFrame;
+import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 
 public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionListener, ItemListener
 {
 	private String materialClass = "P";
 	private int handOfCut = 1;
-	private ProjectTools projectTools;
-	public AddNewBallEndMill(Frame owner) 
+	private CreateMillingMachine projectTools;
+	public AddNewBallEndMill(JDialog owner) 
 	{
 		super(owner);
-		this.projectTools = (ProjectTools) owner;
+		this.projectTools = (CreateMillingMachine) owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -73,7 +73,7 @@ public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionL
 	}
 	private void ok()
 	{
-		int id = this.projectTools.ballEndMillTable.getRowCount() + 1;
+		int id = this.projectTools.table1.getRowCount() + 1;
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double cuttingEdge = (Double)this.spinner2.getValue();
@@ -93,9 +93,10 @@ public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionL
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
 		
-		Object[] linha = {id, nome, diametro, dm, cuttingEdge, profundidade,offSetLength, edgeRadius, edgeCenterVertical, hand, material, this.materialClass};
-		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.ballEndMillTable.getModel();
-		this.projectTools.ballEndMillTable.setModel(modelo);
+		BallEndMill bem = new BallEndMill(nome, material, diametro, edgeRadius, edgeCenterVertical, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+		Object[] linha = {false, id, nome, diametro, "Ball End Mill"};
+		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.table1.getModel();
+		this.projectTools.table1.setModel(modelo);
 		modelo.addRow(linha);
 		this.dispose();
 	}

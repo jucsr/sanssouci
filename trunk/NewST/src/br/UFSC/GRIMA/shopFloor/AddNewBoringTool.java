@@ -1,26 +1,26 @@
 package br.UFSC.GRIMA.shopFloor;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
 
-import br.UFSC.GRIMA.cad.ProjectTools;
 import br.UFSC.GRIMA.cad.visual.AddNewBoringToolFrame;
+import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 
 public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionListener, ItemListener
 {
 	private String materialClass = "P";
 	private int handOfCut = 1;
-	private ProjectTools projectTools;
-	public AddNewBoringTool(Frame owner) 
+	private CreateMillingMachine projectTools;
+	public AddNewBoringTool(JDialog owner) 
 	{
 		super(owner);
-		this.projectTools = (ProjectTools) owner;
+		this.projectTools = (CreateMillingMachine) owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -73,7 +73,7 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 	}
 	private void ok()
 	{
-		int id = this.projectTools.boringToolTable.getRowCount() + 1;
+		int id = this.projectTools.table1.getRowCount() + 1;
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double dMinimo = (Double)this.spinner6.getValue();
@@ -93,9 +93,10 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
 		
-		Object[] linha = {id, nome, dMinimo+"-"+diametro, dm, cuttingEdge, profundidade,offSetLength, edgeRadius, hand, material, this.materialClass};
-		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.boringToolTable.getModel();
-		this.projectTools.boringToolTable.setModel(modelo);
+		BoringTool bt = new BoringTool(nome, material, diametro, dMinimo, edgeRadius, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+		Object[] linha = {false, id, nome, diametro, "Boring Tool"};
+		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.table1.getModel();
+		this.projectTools.table1.setModel(modelo);
 		modelo.addRow(linha);
 		this.dispose();
 	}

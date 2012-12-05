@@ -312,7 +312,6 @@ public class CreateMillingMachineFrame extends JDialog {
 								//---- table1 ----
 								table1.setModel(new DefaultTableModel(
 									new Object[][] {
-										{null, null, null, null, null},
 									},
 									new String[] {
 										"Select", "Id", "Name", "Diameter", "Type"
@@ -331,7 +330,6 @@ public class CreateMillingMachineFrame extends JDialog {
 									cm.getColumn(0).setPreferredWidth(30);
 									cm.getColumn(1).setPreferredWidth(30);
 								}
-								table1.setEnabled(false);
 								scrollPane1.setViewportView(table1);
 							}
 							panel4.add(scrollPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
@@ -371,7 +369,7 @@ public class CreateMillingMachineFrame extends JDialog {
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- button5 ----
-								button5.setText("Remove all");
+								button5.setText("Deselect all");
 								panel11.add(button5, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));

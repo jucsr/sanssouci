@@ -26,6 +26,7 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 		this.spinnerY.addChangeListener(this);
 		this.width = ((Double) this.spinnerX.getValue()).doubleValue();
 		this.length = ((Double) this.spinnerY.getValue()).doubleValue();
+		setVisible(true);
 	}
 	
 	private void ok()

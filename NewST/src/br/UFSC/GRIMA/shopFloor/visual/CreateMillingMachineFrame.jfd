@@ -123,7 +123,7 @@ new FormModel {
 									"border": new javax.swing.border.EtchedBorder( 1, null, null )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 										"$columnSpecs": "0, 60"
-										"$rowSpecs": "0:1.0, 0, 0, 0, 0:1.0"
+										"$rowSpecs": "0:1.0, 0, 0, 0, 0, 0, 0:1.0"
 										"$hGap": 5
 										"$vGap": 5
 										"$alignLeft": true
@@ -157,7 +157,7 @@ new FormModel {
 										} )
 										add( new FormComponent( "javax.swing.JSpinner" ) {
 											name: "spinner6"
-											"model": new javax.swing.SpinnerNumberModel {
+											"model": &SpinnerNumberModel0 new javax.swing.SpinnerNumberModel {
 												minimum: 0.0
 												stepSize: 1.0
 												value: 10.0
@@ -187,6 +187,38 @@ new FormModel {
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 											"gridx": 1
 											"gridy": 3
+										} )
+										add( new FormComponent( "javax.swing.JLabel" ) {
+											name: "label13"
+											"text": "Max feed rate (mm/rot)"
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridy": 4
+										} )
+										add( new FormComponent( "javax.swing.JSpinner" ) {
+											name: "spinner8"
+											"model": #SpinnerNumberModel0
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 4
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridy": 4
+											"gridx": 1
+										} )
+										add( new FormComponent( "javax.swing.JLabel" ) {
+											name: "label14"
+											"text": "Rapid Moviment Speed (mm/min)"
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridy": 5
+										} )
+										add( new FormComponent( "javax.swing.JSpinner" ) {
+											name: "spinner9"
+											"model": #SpinnerNumberModel0
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 4
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridy": 5
+											"gridx": 1
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridx": 1
@@ -495,7 +527,7 @@ new FormModel {
 								name: "panel5"
 								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 									"$columnSpecs": "0:1.0, 340, 0:1.0"
-									"$rowSpecs": "0:1.0, 350, 0:1.0"
+									"$rowSpecs": "0:1.0, 0, 350, 0:1.0"
 									"$hGap": 5
 									"$vGap": 5
 									"$alignLeft": true
@@ -504,79 +536,34 @@ new FormModel {
 									name: "panel9"
 									add( new FormContainer( "javax.swing.JLayeredPane", new FormLayoutManager( class javax.swing.JLayeredPane ) ) {
 										name: "layeredPane1"
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner1"
-											"model": &SpinnerNumberModel0 new javax.swing.SpinnerNumberModel {
-												minimum: 0
-												value: 200
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
+										add( new FormComponent( "javax.swing.JButton" ) {
+											name: "button11"
+											"text": "Rotary Axis"
 										}, new FormLayoutConstraints( null ) {
-											"x": 125
+											"width": 105
+											"x": 215
+											"y": 170
+											"height": 25
+										} )
+										add( new FormComponent( "javax.swing.JButton" ) {
+											name: "button12"
+											"text": "Traveling Axis"
+										}, new FormLayoutConstraints( null ) {
+											"x": 110
 											"y": 200
-											"width": 51
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner2"
-											"model": #SpinnerNumberModel0
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( null ) {
-											"x": 235
-											"y": 195
-											"width": 46
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner3"
-											"model": new javax.swing.SpinnerNumberModel {
-												minimum: 0
-												value: 150
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( null ) {
-											"x": 260
-											"y": 155
-											"width": 46
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label3"
-											"text": "(mm)"
-										}, new FormLayoutConstraints( null ) {
-											"x": 285
-											"y": 200
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label4"
-											"text": "(mm)"
-										}, new FormLayoutConstraints( null ) {
-											"x": 180
-											"y": 205
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label5"
-											"text": "(mm)"
-										}, new FormLayoutConstraints( null ) {
-											"x": 310
-											"y": 160
+											"width": 105
 										} )
 										add( new FormComponent( "javax.swing.JLabel" ) {
 											name: "label6"
 											"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/millingMachineTravel.png" )
 										}, new FormLayoutConstraints( null ) {
-											"location": new java.awt.Point( 405, 690 )
-											"size": new java.awt.Dimension( 405, 335 )
+											"location": new java.awt.Point( 585, 115 )
 											"x": 0
 											"y": 0
-											"width": 385
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridx": 1
-										"gridy": 1
+										"gridy": 2
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 							}, new FormLayoutConstraints( null ) {
@@ -640,6 +627,60 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"size": new java.awt.Dimension( 640, 585 )
 			"location": new java.awt.Point( 0, 0 )
+		} )
+		add( new FormComponent( "javax.swing.JSpinner" ) {
+			name: "spinner2"
+			"model": &SpinnerNumberModel1 new javax.swing.SpinnerNumberModel {
+				minimum: 0
+				value: 200
+			}
+			auxiliary() {
+				"JavaCodeGenerator.variableModifiers": 4
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 715, 380 )
+			"size": new java.awt.Dimension( 46, 20 )
+		} )
+		add( new FormComponent( "javax.swing.JSpinner" ) {
+			name: "spinner3"
+			"model": new javax.swing.SpinnerNumberModel {
+				minimum: 0
+				value: 150
+			}
+			auxiliary() {
+				"JavaCodeGenerator.variableModifiers": 4
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 740, 340 )
+			"size": new java.awt.Dimension( 46, 20 )
+		} )
+		add( new FormComponent( "javax.swing.JSpinner" ) {
+			name: "spinner1"
+			"model": #SpinnerNumberModel1
+			auxiliary() {
+				"JavaCodeGenerator.variableModifiers": 4
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 705, 270 )
+			"size": new java.awt.Dimension( 51, 20 )
+		} )
+		add( new FormComponent( "javax.swing.JLabel" ) {
+			name: "label4"
+			"text": "(mm)"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 790, 395 )
+		} )
+		add( new FormComponent( "javax.swing.JLabel" ) {
+			name: "label3"
+			"text": "(mm)"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 810, 340 )
+		} )
+		add( new FormComponent( "javax.swing.JLabel" ) {
+			name: "label5"
+			"text": "(mm)"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 775, 275 )
 		} )
 	}
 }

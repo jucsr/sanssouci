@@ -8,11 +8,12 @@ import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.WorkpieceHandlingDevice;
 import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
+import br.UFSC.GRIMA.util.projeto.Axis;
 
 public class CreateMillingMachine extends CreateMillingMachineFrame implements ActionListener
 {
 	public JanelaShopFloor shopFloor;
-	private MachineTool machineTool;
+	private MachineTool machineTool = new MachineTool();
 	public ArrayList<Ferramenta> tools = new ArrayList<Ferramenta>();
 	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevices;
 	private double lengthMax;
@@ -24,6 +25,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 	private double nMax;
 	private double powerMax;
 	private int axis;
+	private Axis xAxisRotation;
 	
 
 	public CreateMillingMachine(JanelaShopFloor shopFloor) 
@@ -43,17 +45,6 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		this.button9.addActionListener(this);
 		this.button10.addActionListener(this);
 		this.menuItem1.addActionListener(this);
-		this.machineTool = new MachineTool();
-		this.tools = tools;
-		this.workpieceHandlingDevices = workpieceHandlingDevices;
-		this.lengthMax = lengthMax;
-		this.widthMax = widthMax;
-		this.name = name;
-		this.accuracy = accuracy;
-		this.control = control;
-		this.nMax = nMax;
-		this.powerMax = powerMax;
-		this.axis = axis;
 		
 	}
 	
@@ -63,8 +54,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		if(o.equals(okButton))
 		{
 			
-//			machineTool = new MachineTool();
-//			machineTool.setAxis(axis);
+//			machineTool.setAxis();
 //			machineTool.setItsCapability(itsCapability);
 //			machineTool.setItsId(itsId);
 //			machineTool.setItsLocation();
@@ -72,6 +62,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);
 //			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);
+			//mandar o machineToll para o array de machines do shopFloor
 			this.dispose();
 		} 
 		else if(o.equals(cancelButton))
@@ -116,6 +107,14 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 			
 		}
 		else if(o.equals(button10))
+		{
+			
+		}
+		else if(o.equals(button11))
+		{
+			
+		}
+		else if(o.equals(button12))
 		{
 			
 		}

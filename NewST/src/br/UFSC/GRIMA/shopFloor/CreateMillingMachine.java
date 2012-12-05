@@ -54,15 +54,6 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		this.nMax = nMax;
 		this.powerMax = powerMax;
 		this.axis = axis;
-//		machineTool = new MachineTool();
-//		machineTool.setAxis(axis);
-//		machineTool.setItsCapability(itsCapability);
-//		machineTool.setItsId(itsId);
-//		machineTool.setItsLocation();
-//		machineTool.setItsOrigin(itsOrigin);
-//		machineTool.setItsSpindle(itsSpindle);
-//		machineTool.setToolHandlingDevice(toolHandlingDevice);
-//		machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);
 		
 	}
 	

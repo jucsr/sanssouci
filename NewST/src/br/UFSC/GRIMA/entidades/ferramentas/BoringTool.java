@@ -9,6 +9,8 @@ public class BoringTool extends Ferramenta
 	
 	private String diametro; // ATENCAO: eh uma FAIXA de diametros
 	private String acoplamento;
+	private double diametroMax;
+	private double diametroMin;
 	
 	public BoringTool(String nome, String material, String diametro, double edgeRadius,
 			double cuttingEdge, double profundidade, double offSetLength,
@@ -22,6 +24,20 @@ public class BoringTool extends Ferramenta
 		setTolerancia(tolerancia);
 		setHandOfCut(handOfCut);
 		this.acoplamento = acoplamento;
+	}
+	
+	public BoringTool(String nome, String material, double diametroMax, double diametroMin, double edgeRadius,
+			double cuttingEdge, double profundidade, double offSetLength,
+			double dm, double rugosidade, double tolerancia, int handOfCut) {
+		
+		super(nome, material, 0.0, cuttingEdge, profundidade, offSetLength, dm);
+		
+		this.diametroMax = diametroMax;
+		this.diametroMin = diametroMin;
+		setEdgeRadius(edgeRadius);
+		setRugosidade(rugosidade);
+		setTolerancia(tolerancia);
+		setHandOfCut(handOfCut);
 	}
 	
 	public BoringTool(String nome, String material, String diametro, String edgeRadius,
@@ -61,5 +77,21 @@ public class BoringTool extends Ferramenta
 
 	public void setAcoplamento(String acoplamento) {
 		this.acoplamento = acoplamento;
+	}
+
+	public double getDiametroMax() {
+		return diametroMax;
+	}
+
+	public void setDiametroMax(double diametroMax) {
+		this.diametroMax = diametroMax;
+	}
+
+	public double getDiametroMin() {
+		return diametroMin;
+	}
+
+	public void setDiametroMin(double diametroMin) {
+		this.diametroMin = diametroMin;
 	}
 }

@@ -261,15 +261,7 @@ new FormModel {
 									name: "scrollPane1"
 									add( new FormComponent( "javax.swing.JTable" ) {
 										name: "table1"
-										"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
-											add( new java.util.Vector {
-												add( null )
-												add( null )
-												add( null )
-												add( null )
-												add( null )
-											} )
-										}, new java.util.Vector {
+										"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
 											add( "Select" )
 											add( "Id" )
 											add( "Name" )
@@ -294,7 +286,6 @@ new FormModel {
 											add( null )
 											add( null )
 										} )
-										"enabled": false
 										auxiliary() {
 											"JavaCodeGenerator.variableModifiers": 1
 										}
@@ -353,7 +344,7 @@ new FormModel {
 									} )
 									add( new FormComponent( "javax.swing.JButton" ) {
 										name: "button5"
-										"text": "Remove all"
+										"text": "Deselect all"
 										auxiliary() {
 											"JavaCodeGenerator.variableModifiers": 4
 										}

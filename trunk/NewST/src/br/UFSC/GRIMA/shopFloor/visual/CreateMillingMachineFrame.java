@@ -48,6 +48,10 @@ public class CreateMillingMachineFrame extends JDialog {
 		spinner6 = new JSpinner();
 		label11 = new JLabel();
 		spinner7 = new JSpinner();
+		label13 = new JLabel();
+		spinner8 = new JSpinner();
+		label14 = new JLabel();
+		spinner9 = new JSpinner();
 		panel13 = new JPanel();
 		label12 = new JLabel();
 		panel4 = new JPanel();
@@ -75,16 +79,18 @@ public class CreateMillingMachineFrame extends JDialog {
 		panel5 = new JPanel();
 		panel9 = new JPanel();
 		layeredPane1 = new JLayeredPane();
-		spinner1 = new JSpinner();
-		spinner2 = new JSpinner();
-		spinner3 = new JSpinner();
-		label3 = new JLabel();
-		label4 = new JLabel();
-		label5 = new JLabel();
+		button11 = new JButton();
+		button12 = new JButton();
 		label6 = new JLabel();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
+		spinner2 = new JSpinner();
+		spinner3 = new JSpinner();
+		spinner1 = new JSpinner();
+		label4 = new JLabel();
+		label3 = new JLabel();
+		label5 = new JLabel();
 
 		//======== this ========
 		setTitle("Create new Drilling Machine");
@@ -204,9 +210,9 @@ public class CreateMillingMachineFrame extends JDialog {
 								{
 									panel12.setLayout(new GridBagLayout());
 									((GridBagLayout)panel12.getLayout()).columnWidths = new int[] {0, 60, 0};
-									((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0};
+									((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 									((GridBagLayout)panel12.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
-									((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
 
 									//---- label9 ----
 									label9.setText("max n (rpm)");
@@ -241,6 +247,30 @@ public class CreateMillingMachineFrame extends JDialog {
 									//---- spinner7 ----
 									spinner7.setModel(new SpinnerNumberModel(3, 0, null, 1));
 									panel12.add(spinner7, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+
+									//---- label13 ----
+									label13.setText("Max feed rate (mm/rot)");
+									panel12.add(label13, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 5), 0, 0));
+
+									//---- spinner8 ----
+									spinner8.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+									panel12.add(spinner8, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+
+									//---- label14 ----
+									label14.setText("Rapid Moviment Speed (mm/min)");
+									panel12.add(label14, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 5), 0, 0));
+
+									//---- spinner9 ----
+									spinner9.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+									panel12.add(spinner9, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 5, 0), 0, 0));
 								}
@@ -490,49 +520,29 @@ public class CreateMillingMachineFrame extends JDialog {
 							{
 								panel9.setLayout(new GridBagLayout());
 								((GridBagLayout)panel9.getLayout()).columnWidths = new int[] {0, 345, 0, 0};
-								((GridBagLayout)panel9.getLayout()).rowHeights = new int[] {0, 355, 0, 0};
+								((GridBagLayout)panel9.getLayout()).rowHeights = new int[] {0, 0, 355, 0, 0};
 								((GridBagLayout)panel9.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
-								((GridBagLayout)panel9.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel9.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 1.0, 1.0E-4};
 
 								//======== layeredPane1 ========
 								{
 
-									//---- spinner1 ----
-									spinner1.setModel(new SpinnerNumberModel(200, 0, null, 1));
-									layeredPane1.add(spinner1, JLayeredPane.DEFAULT_LAYER);
-									spinner1.setBounds(125, 200, 51, spinner1.getPreferredSize().height);
+									//---- button11 ----
+									button11.setText("Rotary Axis");
+									layeredPane1.add(button11, JLayeredPane.DEFAULT_LAYER);
+									button11.setBounds(215, 170, 105, 25);
 
-									//---- spinner2 ----
-									spinner2.setModel(new SpinnerNumberModel(200, 0, null, 1));
-									layeredPane1.add(spinner2, JLayeredPane.DEFAULT_LAYER);
-									spinner2.setBounds(235, 195, 46, spinner2.getPreferredSize().height);
-
-									//---- spinner3 ----
-									spinner3.setModel(new SpinnerNumberModel(150, 0, null, 1));
-									layeredPane1.add(spinner3, JLayeredPane.DEFAULT_LAYER);
-									spinner3.setBounds(260, 155, 46, spinner3.getPreferredSize().height);
-
-									//---- label3 ----
-									label3.setText("(mm)");
-									layeredPane1.add(label3, JLayeredPane.DEFAULT_LAYER);
-									label3.setBounds(new Rectangle(new Point(285, 200), label3.getPreferredSize()));
-
-									//---- label4 ----
-									label4.setText("(mm)");
-									layeredPane1.add(label4, JLayeredPane.DEFAULT_LAYER);
-									label4.setBounds(new Rectangle(new Point(180, 205), label4.getPreferredSize()));
-
-									//---- label5 ----
-									label5.setText("(mm)");
-									layeredPane1.add(label5, JLayeredPane.DEFAULT_LAYER);
-									label5.setBounds(new Rectangle(new Point(310, 160), label5.getPreferredSize()));
+									//---- button12 ----
+									button12.setText("Traveling Axis");
+									layeredPane1.add(button12, JLayeredPane.DEFAULT_LAYER);
+									button12.setBounds(110, 200, 105, button12.getPreferredSize().height);
 
 									//---- label6 ----
 									label6.setIcon(new ImageIcon(getClass().getResource("/images/millingMachineTravel.png")));
 									layeredPane1.add(label6, JLayeredPane.DEFAULT_LAYER);
-									label6.setBounds(0, 0, 385, label6.getPreferredSize().height);
+									label6.setBounds(new Rectangle(new Point(0, 0), label6.getPreferredSize()));
 								}
-								panel9.add(layeredPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								panel9.add(layeredPane1, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 							}
@@ -577,6 +587,24 @@ public class CreateMillingMachineFrame extends JDialog {
 		contentPane.add(dialogPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(getOwner());
+
+		//---- spinner2 ----
+		spinner2.setModel(new SpinnerNumberModel(200, 0, null, 1));
+
+		//---- spinner3 ----
+		spinner3.setModel(new SpinnerNumberModel(150, 0, null, 1));
+
+		//---- spinner1 ----
+		spinner1.setModel(new SpinnerNumberModel(200, 0, null, 1));
+
+		//---- label4 ----
+		label4.setText("(mm)");
+
+		//---- label3 ----
+		label3.setText("(mm)");
+
+		//---- label5 ----
+		label5.setText("(mm)");
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
@@ -604,6 +632,10 @@ public class CreateMillingMachineFrame extends JDialog {
 	protected JSpinner spinner6;
 	private JLabel label11;
 	protected JSpinner spinner7;
+	private JLabel label13;
+	protected JSpinner spinner8;
+	private JLabel label14;
+	protected JSpinner spinner9;
 	private JPanel panel13;
 	private JLabel label12;
 	private JPanel panel4;
@@ -631,15 +663,17 @@ public class CreateMillingMachineFrame extends JDialog {
 	private JPanel panel5;
 	private JPanel panel9;
 	private JLayeredPane layeredPane1;
-	protected JSpinner spinner1;
-	protected JSpinner spinner2;
-	protected JSpinner spinner3;
-	private JLabel label3;
-	private JLabel label4;
-	private JLabel label5;
+	protected JButton button11;
+	protected JButton button12;
 	private JLabel label6;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;
+	protected JSpinner spinner2;
+	protected JSpinner spinner3;
+	protected JSpinner spinner1;
+	private JLabel label4;
+	private JLabel label3;
+	private JLabel label5;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

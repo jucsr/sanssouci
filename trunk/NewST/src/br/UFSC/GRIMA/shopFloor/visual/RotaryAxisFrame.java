@@ -39,10 +39,22 @@ public class RotaryAxisFrame extends JDialog {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		dialogPane = new JPanel();
 		contentPanel = new JPanel();
-		radioButton1 = new JRadioButton();
-		radioButton2 = new JRadioButton();
+		label4 = new JLabel();
+		textField1 = new JTextField();
+		label1 = new JLabel();
+		comboBox1 = new JComboBox();
+		label2 = new JLabel();
+		spinner1 = new JSpinner();
+		label3 = new JLabel();
+		comboBox2 = new JComboBox();
+		label5 = new JLabel();
+		spinner2 = new JSpinner();
+		label6 = new JLabel();
+		spinner3 = new JSpinner();
+		label7 = new JLabel();
+		spinner4 = new JSpinner();
 		buttonBar = new JPanel();
-		button1 = new JButton();
+		cancelButton = new JButton();
 		okButton = new JButton();
 
 		//======== this ========
@@ -58,35 +70,101 @@ public class RotaryAxisFrame extends JDialog {
 			//======== contentPanel ========
 			{
 				contentPanel.setLayout(new GridBagLayout());
-				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-				((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {27, 98, 48, 0};
+				((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-				((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+				((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
-				//---- radioButton1 ----
-				radioButton1.setText("X Axis Rotation");
-				radioButton1.setSelected(true);
-				radioButton1.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						radioButton3ActionPerformed(e);
-					}
-				});
-				contentPanel.add(radioButton1, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+				//---- label4 ----
+				label4.setText("Name");
+				contentPanel.add(label4, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 5, 5), 0, 0));
 
-				//---- radioButton2 ----
-				radioButton2.setText("Y Axis Rotation");
-				radioButton2.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						radioButton3ActionPerformed(e);
-					}
-				});
-				contentPanel.add(radioButton2, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+				//---- textField1 ----
+				textField1.setText("Axis name");
+				contentPanel.add(textField1, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 0), 0, 0));
+
+				//---- label1 ----
+				label1.setText("Rotary Axis");
+				contentPanel.add(label1, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 5, 5), 0, 0));
+
+				//---- comboBox1 ----
+				comboBox1.setModel(new DefaultComboBoxModel(new String[] {
+					"x",
+					"y"
+				}));
+				contentPanel.add(comboBox1, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 0), 0, 0));
+
+				//---- label2 ----
+				label2.setText("Max Rotation Speed (rpm)");
+				contentPanel.add(label2, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 5), 0, 0));
+
+				//---- spinner1 ----
+				spinner1.setModel(new SpinnerNumberModel(50.0, 0.0, null, 1.0));
+				contentPanel.add(spinner1, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 0), 0, 0));
+
+				//---- label3 ----
+				label3.setText("Rotary Direction");
+				contentPanel.add(label3, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 5), 0, 0));
+
+				//---- comboBox2 ----
+				comboBox2.setModel(new DefaultComboBoxModel(new String[] {
+					"CCW",
+					"CW",
+					"CW & CCW"
+				}));
+				contentPanel.add(comboBox2, new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 0), 0, 0));
+
+				//---- label5 ----
+				label5.setText("Origin x");
+				contentPanel.add(label5, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 5), 0, 0));
+
+				//---- spinner2 ----
+				spinner2.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+				contentPanel.add(spinner2, new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 0), 0, 0));
+
+				//---- label6 ----
+				label6.setText("Origin y");
+				contentPanel.add(label6, new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 5), 0, 0));
+
+				//---- spinner3 ----
+				spinner3.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+				contentPanel.add(spinner3, new GridBagConstraints(2, 8, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 0), 0, 0));
+
+				//---- label7 ----
+				label7.setText("Origin z");
+				contentPanel.add(label7, new GridBagConstraints(1, 9, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 5), 0, 0));
+
+				//---- spinner4 ----
+				spinner4.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+				contentPanel.add(spinner4, new GridBagConstraints(2, 9, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 5, 0), 0, 0));
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -97,9 +175,9 @@ public class RotaryAxisFrame extends JDialog {
 				((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 0, 80};
 				((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
 
-				//---- button1 ----
-				button1.setText("Cancel");
-				buttonBar.add(button1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+				//---- cancelButton ----
+				cancelButton.setText("Cancel");
+				buttonBar.add(cancelButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 5), 0, 0));
 
@@ -120,21 +198,28 @@ public class RotaryAxisFrame extends JDialog {
 		contentPane.add(dialogPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(getOwner());
-
-		//---- buttonGroup1 ----
-		ButtonGroup buttonGroup1 = new ButtonGroup();
-		buttonGroup1.add(radioButton1);
-		buttonGroup1.add(radioButton2);
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	private JPanel dialogPane;
 	private JPanel contentPanel;
-	public JRadioButton radioButton1;
-	public JRadioButton radioButton2;
+	private JLabel label4;
+	protected JTextField textField1;
+	private JLabel label1;
+	protected JComboBox comboBox1;
+	private JLabel label2;
+	protected JSpinner spinner1;
+	private JLabel label3;
+	protected JComboBox comboBox2;
+	private JLabel label5;
+	protected JSpinner spinner2;
+	private JLabel label6;
+	protected JSpinner spinner3;
+	private JLabel label7;
+	protected JSpinner spinner4;
 	private JPanel buttonBar;
-	private JButton button1;
-	private JButton okButton;
+	protected JButton cancelButton;
+	protected JButton okButton;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

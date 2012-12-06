@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
+import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.WorkpieceHandlingDevice;
 import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
 import br.UFSC.GRIMA.util.projeto.Axis;
@@ -13,7 +14,7 @@ import br.UFSC.GRIMA.util.projeto.Axis;
 public class CreateMillingMachine extends CreateMillingMachineFrame implements ActionListener
 {
 	public JanelaShopFloor shopFloor;
-	private MachineTool machineTool = new MachineTool();
+	private MillingMachine millingMachine= new MillingMachine();
 	public ArrayList<Ferramenta> tools = new ArrayList<Ferramenta>();
 	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevices;
 	private double lengthMax;
@@ -44,6 +45,8 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		this.button8.addActionListener(this);
 		this.button9.addActionListener(this);
 		this.button10.addActionListener(this);
+		this.button11.addActionListener(this);
+		this.button12.addActionListener(this);
 		this.menuItem1.addActionListener(this);
 		
 	}
@@ -112,11 +115,13 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		}
 		else if(o.equals(button11))
 		{
-			
+			CreateRotaryAxisShopFloor x = new CreateRotaryAxisShopFloor(this, millingMachine);
+			x.setVisible(true);
 		}
 		else if(o.equals(button12))
 		{
-			
+			CreateTravelingAxisShopFloor y = new CreateTravelingAxisShopFloor(this, mllingMachine);
+			y.setVisible(true);
 		}
 		else if(o.equals(menuItem1))
 		{

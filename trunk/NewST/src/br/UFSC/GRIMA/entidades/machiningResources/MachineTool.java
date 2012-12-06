@@ -14,7 +14,7 @@ public class MachineTool extends MachiningResource
 {
 	private String itsLocation = "";
 	private Point3d itsOrigin = new Point3d();
-	private Axis [] axis;
+	private ArrayList<Axis> axis = new ArrayList<Axis>();
 	private Spindle itsSpindle;
 	private MachineToolCapability itsCapability;
 	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevice;
@@ -36,11 +36,11 @@ public class MachineTool extends MachiningResource
 	{
 		this.itsOrigin = itsOrigin;
 	}
-	public Axis[] getAxis()
+	public ArrayList<Axis> getAxis()
 	{
 		return axis;
 	}
-	public void setAxis(Axis[] axis) 
+	public void setAxis(ArrayList<Axis> axis) 
 	{
 		this.axis = axis;
 	}

@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
-			"title": "Create new Drilling Machine"
+			"title": "Create new Milling Machine"
 			"$sizePolicy": 0
 			"$locationPolicy": 0
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
@@ -112,7 +112,7 @@ new FormModel {
 									"gridy": 1
 								} )
 								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-									"$columnSpecs": "0, 0, 0:1.0"
+									"$columnSpecs": "0, 0:1.0"
 									"$rowSpecs": "0:1.0, 0, 0:1.0"
 									"$hGap": 5
 									"$vGap": 5
@@ -121,109 +121,6 @@ new FormModel {
 								} ) {
 									name: "panel10"
 									"border": new javax.swing.border.EtchedBorder( 1, null, null )
-									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-										"$columnSpecs": "0, 60"
-										"$rowSpecs": "0:1.0, 0, 0, 0, 0, 0, 0:1.0"
-										"$hGap": 5
-										"$vGap": 5
-										"$alignLeft": true
-										"$alignTop": true
-									} ) {
-										name: "panel12"
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label9"
-											"text": "max n (rpm)"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 1
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner5"
-											"model": new javax.swing.SpinnerNumberModel {
-												minimum: 100
-												value: 3000
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 1
-											"gridy": 1
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label10"
-											"text": "max power (KW)"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 2
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner6"
-											"model": &SpinnerNumberModel0 new javax.swing.SpinnerNumberModel {
-												minimum: 0.0
-												stepSize: 1.0
-												value: 10.0
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 1
-											"gridy": 2
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label11"
-											"text": "Number of axis"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 3
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner7"
-											"model": new javax.swing.SpinnerNumberModel {
-												minimum: 0
-												value: 3
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 1
-											"gridy": 3
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label13"
-											"text": "Max feed rate (mm/rot)"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 4
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner8"
-											"model": #SpinnerNumberModel0
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 4
-											"gridx": 1
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label14"
-											"text": "Rapid Moviment Speed (mm/min)"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 5
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner9"
-											"model": #SpinnerNumberModel0
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 5
-											"gridx": 1
-										} )
-									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-										"gridx": 1
-										"gridy": 1
-									} )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 										"$columnSpecs": "0:1.0, 0, 0:1.0"
 										"$rowSpecs": "0"
@@ -241,7 +138,7 @@ new FormModel {
 											"gridx": 1
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-										"gridx": 2
+										"gridx": 1
 										"gridy": 1
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
@@ -526,48 +423,82 @@ new FormModel {
 							} ) {
 								name: "panel5"
 								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-									"$columnSpecs": "0:1.0, 340, 0:1.0"
-									"$rowSpecs": "0:1.0, 0, 350, 0:1.0"
+									"$columnSpecs": "340:1.0"
+									"$rowSpecs": "0:1.0, 350:1.0, 0, 0"
 									"$hGap": 5
 									"$vGap": 5
 									"$alignLeft": true
 									"$alignTop": true
 								} ) {
 									name: "panel9"
-									add( new FormContainer( "javax.swing.JLayeredPane", new FormLayoutManager( class javax.swing.JLayeredPane ) ) {
-										name: "layeredPane1"
+									add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+										name: "scrollPane3"
+										add( new FormComponent( "javax.swing.JTable" ) {
+											name: "table3"
+											"autoCreateRowSorter": true
+											"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
+												add( "Select" )
+												add( "ID" )
+												add( "Name" )
+												add( "Origin" )
+											}, new java.util.Vector {
+												add( class java.lang.Boolean )
+												add( class java.lang.Integer )
+												add( class java.lang.String )
+												add( class java.lang.String )
+											}, new java.util.Vector {
+												add( null )
+												add( null )
+												add( null )
+												add( null )
+											}, new java.util.Vector {
+												add( null )
+												add( null )
+												add( null )
+												add( null )
+											} )
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										} )
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridy": 1
+									} )
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+										"$columnSpecs": "0:1.0, 0, 0, 0:1.0"
+										"$rowSpecs": "0, 0, 0"
+										"$hGap": 5
+										"$vGap": 5
+										"$alignLeft": true
+										"$alignTop": true
+									} ) {
+										name: "panel15"
 										add( new FormComponent( "javax.swing.JButton" ) {
 											name: "button11"
-											"text": "Rotary Axis"
-										}, new FormLayoutConstraints( null ) {
-											"width": 105
-											"x": 215
-											"y": 170
-											"height": 25
+											"text": "Add Rotary Axis"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 4
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridy": 1
+											"gridx": 1
 										} )
 										add( new FormComponent( "javax.swing.JButton" ) {
 											name: "button12"
-											"text": "Traveling Axis"
-										}, new FormLayoutConstraints( null ) {
-											"x": 110
-											"y": 200
-											"width": 105
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label6"
-											"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/millingMachineTravel.png" )
-										}, new FormLayoutConstraints( null ) {
-											"location": new java.awt.Point( 585, 115 )
-											"x": 0
-											"y": 0
+											"text": "Add Traveling Axis"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 4
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 2
+											"gridy": 1
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-										"gridx": 1
 										"gridy": 2
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 							}, new FormLayoutConstraints( null ) {
-								"title": "Travel"
+								"title": "Axis"
 							} )
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
@@ -630,7 +561,7 @@ new FormModel {
 		} )
 		add( new FormComponent( "javax.swing.JSpinner" ) {
 			name: "spinner2"
-			"model": &SpinnerNumberModel1 new javax.swing.SpinnerNumberModel {
+			"model": &SpinnerNumberModel0 new javax.swing.SpinnerNumberModel {
 				minimum: 0
 				value: 200
 			}
@@ -656,7 +587,7 @@ new FormModel {
 		} )
 		add( new FormComponent( "javax.swing.JSpinner" ) {
 			name: "spinner1"
-			"model": #SpinnerNumberModel1
+			"model": #SpinnerNumberModel0
 			auxiliary() {
 				"JavaCodeGenerator.variableModifiers": 4
 			}

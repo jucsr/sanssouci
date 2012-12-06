@@ -1,5 +1,7 @@
 package br.UFSC.GRIMA.cad;
 
+import java.awt.Container;
+
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -57,37 +59,65 @@ public class ArvorePrecedencias
 //			}
 //		}
 //	}
+//	private static DefaultMutableTreeNode getNode(Projeto projeto)
+//	{
+//		
+// 		bloco = projeto.getBloco();
+//		DefaultMutableTreeNode node = new DefaultMutableTreeNode("Precedences: ");
+//		for(int i = 0; i < bloco.getFaces().size(); i++)
+//		{
+//			DefaultMutableTreeNode nodeFaceTmp = new DefaultMutableTreeNode(((Face)bloco.getFaces().elementAt(i)).getStringFace(i));
+//			Face faceTmp = (Face)bloco.getFaces().elementAt(i);
+//			
+//			
+//				for(int j = 0; j < faceTmp.features.size(); j++)
+//				{
+//					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
+////					System.out.println("precedente --> " + featureTmp.getClass() + "\t" + featureTmp.getFeaturePrecedente());
+////					System.out.println("class --> " + featureTmp.getClass());
+//					if(featureTmp.getFeaturePrecedente() == null)
+//					{
+//						DefaultMutableTreeNode nodoFeatureTmp = getRootFeature(featureTmp);
+//						nodeFaceTmp.add(nodoFeatureTmp);
+//						
+//						/*
+//						 * Pesquisar se tem filhas
+//						 */
+//						if(featureTmp.itsSons.size() > 0)
+//						{
+//							temFilhoNode(featureTmp, nodoFeatureTmp.);
+//						}
+//
+//					}
+//				}
+//
+//			node.add(nodeFaceTmp);
+//			}
+//	return node;
+//	}
 	private static void temFilhoNode(Feature featureTmp, DefaultMutableTreeNode nodeFeatureTmp)
 	{
-		//problema: na primeira passada ok, na segunda, se nao tiver filho, nao tem adicao do nó
 			for(int i=0; i < featureTmp.itsSons.size(); i++)
 			{
 				Feature featureSon = (Feature)featureTmp.itsSons.get(i);
-				DefaultMutableTreeNode nodeFeatureSon = getRootFeature(featureSon);
-				nodeFeatureTmp.add(nodeFeatureSon);
 				
-					for(int j=0; j < featureSon.itsSons.size(); j++)
-					{
-						Feature featureSon2 = (Feature)featureSon.itsSons.get(j);
-						DefaultMutableTreeNode nodeFeatureSon2 = getRootFeature(featureSon2);
-						nodeFeatureSon.add(nodeFeatureSon2);
-
-						temFilhoNode(featureSon.itsSons.get(j), nodeFeatureSon2);
-					}
+					DefaultMutableTreeNode nodeFeatureSon = getRootFeature(featureSon);
+					nodeFeatureTmp.add(nodeFeatureSon);
 					
+						for(int j=0; j < featureSon.itsSons.size(); j++)
+						{
+							Feature featureSon2 = (Feature)featureSon.itsSons.get(j);
+//							System.out.println("classFilho --> " + featureSon2.getClass());
+
+							DefaultMutableTreeNode nodeFeatureSon2 = getRootFeature(featureSon2);
+							nodeFeatureSon.add(nodeFeatureSon2);
+
+							temFilhoNode(featureSon.itsSons.get(j), nodeFeatureSon2);
+						}
 			}
-//			if(featureTmp.itsSons.size() == 0)
-//			{
-//				DefaultMutableTreeNode nodeFeatureTmp2 = getRootFeature(featureTmp);
-//				nodeFeatureTmp.add(nodeFeatureTmp2);
-//			}
-			
-		
-		
 	}
 	private static DefaultMutableTreeNode getNode(Projeto projeto)
 	{
-		
  		bloco = projeto.getBloco();
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode("Precedences: ");
 		for(int i = 0; i < bloco.getFaces().size(); i++)
@@ -95,55 +125,43 @@ public class ArvorePrecedencias
 			DefaultMutableTreeNode nodeFaceTmp = new DefaultMutableTreeNode(((Face)bloco.getFaces().elementAt(i)).getStringFace(i));
 			Face faceTmp = (Face)bloco.getFaces().elementAt(i);
 			
-			
 				for(int j = 0; j < faceTmp.features.size(); j++)
 				{
 					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
 //					System.out.println("precedente --> " + featureTmp.getClass() + "\t" + featureTmp.getFeaturePrecedente());
-					
-					System.out.println("class --> " + featureTmp.getClass());
+//					System.out.println("class --> " + featureTmp.getClass());
 					if(featureTmp.getFeaturePrecedente() == null)
 					{
-						
 						DefaultMutableTreeNode nodoFeatureTmp = getRootFeature(featureTmp);
 						nodeFaceTmp.add(nodoFeatureTmp);
-						
 						/*
 						 * Pesquisar se tem filhas
 						 */
 						if(featureTmp.itsSons.size() > 0)
-						temFilhoNode(featureTmp, nodoFeatureTmp);
-//						if(!featureTmp.itsSons.isEmpty()){
-//							for(int k=0; k < featureTmp.itsSons.size(); k++)
-//							{
-//								DefaultMutableTreeNode nodoFeatureSon = getRootFeature((Feature)featureTmp.itsSons.get(k));
-//								nodoFeatureTmp.add(nodoFeatureSon);
-//								featureTmp = (Feature)featureTmp.itsSons.get(k);
-//								while(!featureTmp.itsSons.isEmpty())
-//								{
-//									
-//								}
-//							}
+						{
+							for(int k=0; k < featureTmp.itsSons.size(); k++)
+							{
+								Feature featureSon = featureTmp.itsSons.get(k);
+								if((featureSon.getClass() == CircularBoss.class) ||
+									(featureSon.getClass() == RectangularBoss.class) ||
+								     featureSon.getClass() == GeneralProfileBoss.class)
+								{
+									DefaultMutableTreeNode nodoFilho = (DefaultMutableTreeNode) nodoFeatureTmp.getLastChild();
+//									System.out.println("nodeFilho --> " + nodoFilho);
+									temFilhoNode(featureSon, nodoFilho);
 									
+								}else
+								{
+									DefaultMutableTreeNode nodoFilho = getRootFeature(featureSon);
+									nodoFeatureTmp.add(nodoFilho);
+									temFilhoNode(featureSon, nodoFilho);
+								}
+								
+							}
 						}
 					}
-//					else
-//					{
-//						Feature precedenteTmp = featureTmp.getFeaturePrecedente();
-//						
-//						for(int k = 0; k < faceTmp.features.size(); k++)
-//						{
-//							Feature maeTmp = (Feature)faceTmp.features.get(k);
-//							if(precedenteTmp.equals(maeTmp))
-//							{
-//								
-//							}
-//							
-//						}	
-//						DefaultMutableTreeNode nodoPrecedente = featureTmp.getFeaturePrecedente().getNodo();
-//						DefaultMutableTreeNode nodoFeatureTmp = featureTmp.getNodo();
-//						nodoPrecedente.add(nodoFeatureTmp);
-//					}
+				}
+
 			node.add(nodeFaceTmp);
 			}
 	return node;
@@ -248,34 +266,51 @@ public class ArvorePrecedencias
 			root.add(new DefaultMutableTreeNode("Depth = "
 					+ cavidade.getProfundidade()));
 			root.add(new DefaultMutableTreeNode("Corner radius = " + cavidade.getRaio()));
-			root.add(new DefaultMutableTreeNode("Position X = "
-					+ cavidade.getPosicaoX()));
-			root.add(new DefaultMutableTreeNode("Position Y = "
-					+ cavidade.getPosicaoY()));
-			root.add(new DefaultMutableTreeNode("Position Z = "
-					+ cavidade.getPosicaoZ()));
+			root.add(new DefaultMutableTreeNode("Posicao X, Y, Z = " + cavidade.getPosicaoX() + ", " + cavidade.getPosicaoY() + ", " + cavidade.getPosicaoZ()));
+
 		
+//			if(cavidade.getItsBoss().size() > 0)
+//			{
+//				DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
+//				
+//				for(int i = 0; i < cavidade.getItsBoss().size(); i++)
+//				{
+//					if(cavidade.getItsBoss().get(i).getClass() == CircularBoss.class)
+//					{
+//						CircularBoss circular = (CircularBoss)cavidade.getItsBoss().get(i);
+//						bossNode.add(circular.getNodo());
+//					} else if(cavidade.getItsBoss().get(i).getClass() == RectangularBoss.class)
+//					{
+//						RectangularBoss rectangular = (RectangularBoss)cavidade.getItsBoss().get(i);
+//						bossNode.add(rectangular.getNodo());
+//					} else if(cavidade.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
+//					{
+//						GeneralProfileBoss general = (GeneralProfileBoss)cavidade.getItsBoss().get(i);
+//						bossNode.add(general.getNodo());
+//					}
+//				}
+//				root.add(bossNode);
+//			}
 			if(cavidade.getItsBoss().size() > 0)
 			{
-				DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
-				
+			
 				for(int i = 0; i < cavidade.getItsBoss().size(); i++)
 				{
 					if(cavidade.getItsBoss().get(i).getClass() == CircularBoss.class)
 					{
 						CircularBoss circular = (CircularBoss)cavidade.getItsBoss().get(i);
-						bossNode.add(circular.getNodo());
+						root.add(circular.getNodo());
 					} else if(cavidade.getItsBoss().get(i).getClass() == RectangularBoss.class)
 					{
 						RectangularBoss rectangular = (RectangularBoss)cavidade.getItsBoss().get(i);
-						bossNode.add(rectangular.getNodo());
+						root.add(rectangular.getNodo());
 					} else if(cavidade.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 					{
 						GeneralProfileBoss general = (GeneralProfileBoss)cavidade.getItsBoss().get(i);
-						bossNode.add(general.getNodo());
+						root.add(general.getNodo());
 					}
 				}
-				root.add(bossNode);
+				
 			}
 			
 		}else if(feature.getClass() == GeneralClosedPocket.class)

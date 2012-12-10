@@ -17,11 +17,11 @@ public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionLis
 {
 	private String materialClass = "P";
 	private int handOfCut = 1;
-	private CreateMillingMachine projectTools;
+	private CreateMillingMachine janelaMillingMachine;
 	public AddNewTwistDrill(JDialog owner)
 	{
 		super(owner);
-		this.projectTools = (CreateMillingMachine) owner;
+		this.janelaMillingMachine = (CreateMillingMachine) owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -74,7 +74,7 @@ public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionLis
 	}
 	public void ok()
 	{
-		int id = this.projectTools.table1.getRowCount() + 1;
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double tipAngle = 90 - (Double)this.spinner6.getValue();
@@ -94,10 +94,10 @@ public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionLis
 			hand = "Neutral";
 		
 		TwistDrill td = new TwistDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		projectTools.tools.add(td);
+		janelaMillingMachine.tools.add(td);
 		Object[] linha = {false, id, nome, diametro, "Twist Drill"};
-		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.table1.getModel();
-		this.projectTools.table1.setModel(modelo);
+		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
+		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
 		this.dispose();
 	}

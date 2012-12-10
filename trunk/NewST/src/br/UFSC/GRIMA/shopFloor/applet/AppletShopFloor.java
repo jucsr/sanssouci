@@ -20,7 +20,7 @@ public class AppletShopFloor extends JApplet {
 		// Para carregar os parametros da p�gina HTML
 //		this.userID = Integer.parseInt(getParameter("userID"));
 //		this.userName = getParameter("userName");
-		this.userName = "Cassio";
+		this.userName = "Pedro";
 		this.userID = 106;
 		new CriarNovoProjetoShopFloor(userID, userName);
 	}

@@ -23,7 +23,7 @@ public class CreateTool extends CreateToolFrame implements ActionListener{
 		
 		if(o.equals(okButton))
 		{
-			ok();
+			this.ok();
 			this.dispose();
 		}
 		else if(o.equals(cancelButton))

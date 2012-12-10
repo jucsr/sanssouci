@@ -6,9 +6,14 @@ package br.UFSC.GRIMA.util.projeto;
  */
 public class TravelingAxis extends Axis
 {
+	private int travelingDirection;
 	private double itsTravelingRange;
 	private double itsFeedRateRange;
 	private double rapidMovementSpeed;
+	public static final int X = 0;
+	public static final int Y = 1;
+	public static final int Z = 2;
+	
 	
 	public double getItsTravelingRange() 
 	{
@@ -33,5 +38,11 @@ public class TravelingAxis extends Axis
 	public void setItsFeedRateRange(double itsFeedRateRange) 
 	{
 		this.itsFeedRateRange = itsFeedRateRange;
+	}
+	public int getTravelingDirection() {
+		return travelingDirection;
+	}
+	public void setTravelingDirection(int travelingDirection) {
+		this.travelingDirection = travelingDirection;
 	}
 }

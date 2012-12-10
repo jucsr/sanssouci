@@ -78,6 +78,9 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label12, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
+
+					//---- textField1 ----
+					textField1.setText("TravelingAxis name");
 					panel1.add(textField1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -87,6 +90,9 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label2, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
+
+					//---- spinner4 ----
+					spinner4.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 					panel1.add(spinner4, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -96,6 +102,9 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label3, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
+
+					//---- spinner5 ----
+					spinner5.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 					panel1.add(spinner5, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -105,6 +114,9 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label4, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
+
+					//---- spinner6 ----
+					spinner6.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 					panel1.add(spinner6, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -114,6 +126,9 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label9, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
+
+					//---- spinner1 ----
+					spinner1.setModel(new SpinnerNumberModel(150.0, 0.0, null, 1.0));
 					panel1.add(spinner1, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -123,6 +138,14 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label5, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
+
+					//---- comboBox1 ----
+					comboBox1.setModel(new DefaultComboBoxModel(new String[] {
+						"X",
+						"Y",
+						"Z"
+					}));
+					comboBox1.setMaximumRowCount(3);
 					panel1.add(comboBox1, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -132,6 +155,9 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label10, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
+
+					//---- spinner3 ----
+					spinner3.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 					panel1.add(spinner3, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -141,6 +167,9 @@ public class CreateTravelingAxisFrame extends JDialog {
 					panel1.add(label11, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 5), 0, 0));
+
+					//---- spinner2 ----
+					spinner2.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 					panel1.add(spinner2, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 0), 0, 0));
@@ -155,18 +184,17 @@ public class CreateTravelingAxisFrame extends JDialog {
 			{
 				buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
 				buttonBar.setLayout(new GridBagLayout());
-				((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
-				((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
+				((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {108, 96};
 
 				//---- okButton ----
 				okButton.setText("OK");
-				buttonBar.add(okButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+				buttonBar.add(okButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 5), 0, 0));
 
 				//---- cancelButton ----
 				cancelButton.setText("Cancel");
-				buttonBar.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+				buttonBar.add(cancelButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
 			}
@@ -183,23 +211,23 @@ public class CreateTravelingAxisFrame extends JDialog {
 	private JPanel contentPanel;
 	private JPanel panel1;
 	private JLabel label12;
-	private JTextField textField1;
+	protected JTextField textField1;
 	private JLabel label2;
-	private JSpinner spinner4;
+	protected JSpinner spinner4;
 	private JLabel label3;
-	private JSpinner spinner5;
+	protected JSpinner spinner5;
 	private JLabel label4;
-	private JSpinner spinner6;
+	protected JSpinner spinner6;
 	private JLabel label9;
-	private JSpinner spinner1;
+	protected JSpinner spinner1;
 	private JLabel label5;
-	private JComboBox comboBox1;
+	protected JComboBox comboBox1;
 	private JLabel label10;
-	private JSpinner spinner3;
+	protected JSpinner spinner3;
 	private JLabel label11;
-	private JSpinner spinner2;
+	protected JSpinner spinner2;
 	private JPanel buttonBar;
-	private JButton okButton;
-	private JButton cancelButton;
+	protected JButton okButton;
+	protected JButton cancelButton;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

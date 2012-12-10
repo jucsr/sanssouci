@@ -16,11 +16,11 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 {
 	private String materialClass = "P";
 	private int handOfCut = 1;
-	private CreateMillingMachine projectTools;
+	private CreateMillingMachine janelaMillingMachine;
 	public AddNewBoringTool(JDialog owner) 
 	{
 		super(owner);
-		this.projectTools = (CreateMillingMachine) owner;
+		this.janelaMillingMachine = (CreateMillingMachine) owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -73,7 +73,7 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 	}
 	private void ok()
 	{
-		int id = this.projectTools.table1.getRowCount() + 1;
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double dMinimo = (Double)this.spinner6.getValue();
@@ -94,9 +94,10 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 			hand = "Neutral";
 		
 		BoringTool bt = new BoringTool(nome, material, diametro, dMinimo, edgeRadius, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+		janelaMillingMachine.tools.add(bt);
 		Object[] linha = {false, id, nome, diametro, "Boring Tool"};
-		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.table1.getModel();
-		this.projectTools.table1.setModel(modelo);
+		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
+		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
 		this.dispose();
 	}

@@ -16,11 +16,11 @@ public class AddNewEndMill extends AddNewEndMillFrame implements ActionListener,
 {
 	private String materialClass = "P";
 	private int handOfCut = 1;
-	private CreateMillingMachine projectTools;
+	private CreateMillingMachine janelaMillingMachine;
 	public AddNewEndMill(JDialog owner) 
 	{
 		super(owner);
-		this.projectTools = (CreateMillingMachine)owner;
+		this.janelaMillingMachine = (CreateMillingMachine)owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -73,7 +73,7 @@ public class AddNewEndMill extends AddNewEndMillFrame implements ActionListener,
 	}
 	private void ok() 
 	{
-		int id = this.projectTools.table1.getRowCount() + 1;
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double cuttingEdge = (Double)this.spinner2.getValue();
@@ -92,9 +92,10 @@ public class AddNewEndMill extends AddNewEndMillFrame implements ActionListener,
 			hand = "Neutral";
 		
 		EndMill em = new EndMill(nome, material, diametro, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+		janelaMillingMachine.tools.add(em);
 		Object[] linha = {false, id, nome, diametro, "End Mill"};
-		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.table1.getModel();
-		this.projectTools.table1.setModel(modelo);
+		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
+		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
 		this.dispose();
 	}

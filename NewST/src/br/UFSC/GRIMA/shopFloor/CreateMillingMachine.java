@@ -56,8 +56,6 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		Object o = e.getSource();
 		if(o.equals(okButton))
 		{
-			
-//			machineTool.setAxis();
 //			machineTool.setItsCapability(itsCapability);
 //			machineTool.setItsId(itsId);
 //			machineTool.setItsLocation();
@@ -113,14 +111,14 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		{
 			
 		}
-		else if(o.equals(button11))
+		else if(o.equals(button11))//JA DA SET NOS AXIS
 		{
 			CreateRotaryAxisShopFloor x = new CreateRotaryAxisShopFloor(this, millingMachine);
 			x.setVisible(true);
 		}
-		else if(o.equals(button12))
+		else if(o.equals(button12))//JA DA SET NOS AXIS
 		{
-			CreateTravelingAxisShopFloor y = new CreateTravelingAxisShopFloor(this, mllingMachine);
+			CreateTravelingAxisShopFloor y = new CreateTravelingAxisShopFloor(this, millingMachine);
 			y.setVisible(true);
 		}
 		else if(o.equals(menuItem1))

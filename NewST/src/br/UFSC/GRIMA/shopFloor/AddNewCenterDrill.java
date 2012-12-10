@@ -16,11 +16,11 @@ public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionL
 {
 	private String materialClass = "P";
 	private int handOfCut = 1;
-	private CreateMillingMachine projectTools;
+	private CreateMillingMachine janelaMillingMachine;
 	public AddNewCenterDrill(JDialog owner)
 	{
 		super(owner);
-		this.projectTools = (CreateMillingMachine) owner;
+		this.janelaMillingMachine = (CreateMillingMachine) owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -73,7 +73,7 @@ public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionL
 	}
 	private void ok() 
 	{
-		int id = this.projectTools.table1.getRowCount() + 1;
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner1.getValue();
 		double tipAngle = (180 - (Double)this.spinner4.getValue()) / 2;
@@ -93,9 +93,10 @@ public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionL
 			hand = "Neutral";
 		
 		CenterDrill cd = new CenterDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+		janelaMillingMachine.tools.add(cd);
 		Object[] linha = {false, id, nome, diametro, "Centre Drill"};
-		DefaultTableModel modelo = (DefaultTableModel)this.projectTools.table1.getModel();
-		this.projectTools.table1.setModel(modelo);
+		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
+		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
 		this.dispose();
 	}

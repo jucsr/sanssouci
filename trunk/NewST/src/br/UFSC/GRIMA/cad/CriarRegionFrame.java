@@ -119,8 +119,8 @@ public class CriarRegionFrame extends CreateRegionFrame implements ChangeListene
 		southwest.add(reset = new JButton("Reset"));
 		south.add("West", southwest);
 		JPanel southeast = new JPanel();
-		southeast.add(zoomin = new JButton("Zoom In"));
-		southeast.add(zoomout = new JButton("Zoom Out"));
+		southeast.add(zoomin = new JButton("- zoom"));
+		southeast.add(zoomout = new JButton("+ zoom"));
 		south.add("East", southeast);
 		JLabel statusbar = new JLabel("");
 		statusbar.setPreferredSize(new Dimension(15, 15));

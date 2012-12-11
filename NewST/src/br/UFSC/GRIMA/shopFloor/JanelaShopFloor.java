@@ -44,7 +44,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 
 	private void addNewMachine() 
 	{
-		CreateMachine cm = new CreateMachine(this);
+		CreateMachine cm = new CreateMachine(this, shopFloor);
 		cm.setVisible(true);
 	}
 }

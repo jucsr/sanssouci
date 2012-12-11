@@ -4,18 +4,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.table.DefaultTableModel;
+
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
+import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
 import br.UFSC.GRIMA.entidades.machiningResources.WorkpieceHandlingDevice;
 import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
 import br.UFSC.GRIMA.util.projeto.Axis;
 
 public class CreateMillingMachine extends CreateMillingMachineFrame implements ActionListener
 {
-	public JanelaShopFloor shopFloor;
+	public JanelaShopFloor janelaShopFloor;
+	private ShopFloor shopFloor;
 	private MillingMachine millingMachine= new MillingMachine();
+	private ArrayList<MachineTool> machineTool = new ArrayList<MachineTool>();
 	public ArrayList<Ferramenta> tools = new ArrayList<Ferramenta>();
+	private ArrayList<Spindle> arraySpindle;
 	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevices;
 	private double lengthMax;
 	private double widthMax;
@@ -29,10 +35,11 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 	private Axis xAxisRotation;
 	
 
-	public CreateMillingMachine(JanelaShopFloor shopFloor) 
+	public CreateMillingMachine(JanelaShopFloor janelaShopFloor, ShopFloor shopFloor) 
 	{
-		super(shopFloor);
+		super(janelaShopFloor);
 		this.shopFloor = shopFloor;
+		this.janelaShopFloor = janelaShopFloor;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.button1.addActionListener(this);
@@ -47,6 +54,10 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		this.button10.addActionListener(this);
 		this.button11.addActionListener(this);
 		this.button12.addActionListener(this);
+		this.button13.addActionListener(this);
+		this.button14.addActionListener(this);
+		this.button15.addActionListener(this);
+		this.button16.addActionListener(this);
 		this.menuItem1.addActionListener(this);
 		
 	}
@@ -63,7 +74,10 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);
 //			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);
-			//mandar o machineToll para o array de machines do shopFloor
+			//mandar o machineTool para o array de machines do shopFloor
+			machineTool = shopFloor.getMachines();
+			machineTool.add(millingMachine);
+			shopFloor.setMachines(machineTool);
 			this.dispose();
 		} 
 		else if(o.equals(cancelButton))
@@ -74,14 +88,29 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		{
 			
 		}
-		else if(o.equals(button2))
+		else if(o.equals(button2))//ADD TOOLS
 		{
 			CreateTool ct = new CreateTool(this);
 			ct.setVisible(true);
 		}
-		else if(o.equals(button3))
+		else if(o.equals(button3))//REMOVE TOOLS
 		{
+			DefaultTableModel modelo;
 			
+			for(int i = 0; i < this.table1.getRowCount(); i++)
+			{
+				modelo = (DefaultTableModel)this.table1.getModel();
+				arraySpindle = millingMachine.getItsSpindle();
+				
+				if((Boolean) this.table1.getValueAt(i, 0))
+				{
+					modelo.removeRow(i);	
+					arraySpindle.remove(i);
+					millingMachine.setItsSpindle(arraySpindle);
+					i = 0;
+					i--;
+				}
+			}
 		}
 		else if(o.equals(button4))
 		{
@@ -120,6 +149,44 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		{
 			CreateTravelingAxisShopFloor y = new CreateTravelingAxisShopFloor(this, millingMachine);
 			y.setVisible(true);
+		}
+		else if(o.equals(button13))//ADD SPINDLES
+		{
+			CreateSpindle spindle = new CreateSpindle(this, millingMachine);
+			spindle.setVisible(true);
+		}
+		else if(o.equals(button14))//REMOVE SPINDLES
+		{
+			DefaultTableModel modelo;
+			
+			for(int i = 0; i < this.table4.getRowCount(); i++)
+			{
+				modelo = (DefaultTableModel)this.table4.getModel();
+				arraySpindle = millingMachine.getItsSpindle();
+				
+				if((Boolean) this.table4.getValueAt(i, 0))
+				{
+					modelo.removeRow(i);	
+					arraySpindle.remove(i);
+					millingMachine.setItsSpindle(arraySpindle);
+					i = 0;
+					i--;
+				}
+			}
+		}
+		else if(o.equals(button15))//DESSELECIONA TODOS OS SPINDLES
+		{
+			for(int i = 0; i < this.table4.getRowCount(); i++)
+			{
+				this.table4.setValueAt(false, i, 0);
+			}
+		}
+		else if(o.equals(button16))//SELECIONA TODOS OS SPINDLES
+		{
+			for(int i = 0; i < this.table4.getRowCount(); i++)
+			{
+				this.table4.setValueAt(true, i, 0);
+			}
 		}
 		else if(o.equals(menuItem1))
 		{

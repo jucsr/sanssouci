@@ -10,9 +10,10 @@ import br.UFSC.GRIMA.util.projeto.Axis;
 public abstract class Spindle 
 {
 	private String itsId = "";
-	private Axis itsOrientation;
-	private double spindleMaxPower;
-	private double spindleNoseToTable;
+	private double spindleMaxPower; 
+	private double itsSpeedRange;
+	private double maxTorque;
+	private boolean isCoolant;
 	
 	public String getItsId() 
 	{
@@ -22,14 +23,6 @@ public abstract class Spindle
 	{
 		this.itsId = itsId;
 	}
-	public Axis getItsOrientation() 
-	{
-		return itsOrientation;
-	}
-	public void setItsOrientation(Axis itsOrientation) 
-	{
-		this.itsOrientation = itsOrientation;
-	}
 	public double getSpindleMaxPower() 
 	{
 		return spindleMaxPower;
@@ -38,12 +31,22 @@ public abstract class Spindle
 	{
 		this.spindleMaxPower = spindleMaxPower;
 	}
-	public double getSpindleNoseToTable() 
-	{
-		return spindleNoseToTable;
+	public double getItsSpeedRange() {
+		return itsSpeedRange;
 	}
-	public void setSpindleNoseToTable(double spindleNoseToTable) 
-	{
-		this.spindleNoseToTable = spindleNoseToTable;
+	public void setItsSpeedRange(double itsSpeedRange) {
+		this.itsSpeedRange = itsSpeedRange;
+	}
+	public double getMaxTorque() {
+		return maxTorque;
+	}
+	public void setMaxTorque(double maxTorque) {
+		this.maxTorque = maxTorque;
+	}
+	public boolean getIsCoolant() {
+		return isCoolant;
+	}
+	public void setIsCoolant(boolean isCoolant) {
+		this.isCoolant = isCoolant;
 	}
 }

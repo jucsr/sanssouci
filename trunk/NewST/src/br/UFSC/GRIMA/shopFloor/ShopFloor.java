@@ -10,7 +10,7 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
  *
  */
 public class ShopFloor {
-	private ArrayList<MachineTool> machines;
+	private ArrayList<MachineTool> machines= new ArrayList<MachineTool>();
 	private double length;
 	private double width;
 	private String name;

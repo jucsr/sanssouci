@@ -4,7 +4,7 @@ package br.UFSC.GRIMA.entidades.machiningResources;
  * @author Jc
  *
  */
-public class TurningTypeSpindle 
+public class TurningTypeSpindle extends Spindle
 {
 	private double maxWorkpieceDiameter;
 

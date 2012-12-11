@@ -12,11 +12,13 @@ import br.UFSC.GRIMA.shopFloor.visual.CreateMachineFrame;
  */
 public class CreateMachine extends CreateMachineFrame implements ActionListener
 {
-	JanelaShopFloor shoopFloor;
-	public CreateMachine(JanelaShopFloor shopFloor) 
+	private JanelaShopFloor janelaShoopFloor;
+	private ShopFloor shopFloor;
+	public CreateMachine(JanelaShopFloor janelaShopFloor, ShopFloor shopFloor) 
 	{
-		super(shopFloor);
-		this.shoopFloor = shopFloor;
+		super(janelaShopFloor);
+		this.shopFloor = shopFloor;
+		this.janelaShoopFloor = janelaShopFloor;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 	}
@@ -36,12 +38,12 @@ public class CreateMachine extends CreateMachineFrame implements ActionListener
 	{
 		if(this.radioButton1.isSelected())
 		{
-			CreateDrillingMachine dm = new CreateDrillingMachine(this.shoopFloor);
-			dm.setVisible(true);
-			dispose();
+//			CreateDrillingMachine dm = new CreateDrillingMachine(janelaShoopFloor, shopFloor);
+//			dm.setVisible(true);
+//			dispose();
 		} else if(this.radioButton2.isSelected())
 		{
-			CreateMillingMachine mm = new CreateMillingMachine(this.shoopFloor);
+			CreateMillingMachine mm = new CreateMillingMachine(janelaShoopFloor, shopFloor);
 			mm.setVisible(true);
 			dispose();
 		} else if(this.radioButton3.isSelected())

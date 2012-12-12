@@ -21,23 +21,14 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 	private MillingMachine millingMachine= new MillingMachine();
 	private ArrayList<MachineTool> machineTool = new ArrayList<MachineTool>();
 	public ArrayList<Ferramenta> tools = new ArrayList<Ferramenta>();
-	private ArrayList<Spindle> arraySpindle;
-	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevices;
-	private double lengthMax;
-	private double widthMax;
-	private double highMax;
-	private String name;
-	private double accuracy;
-	private String control;
-	private double nMax;
-	private double powerMax;
-	private int axis;
-	private Axis xAxisRotation;
+	private ArrayList<Spindle> arraySpindle = new ArrayList<Spindle>();
+	private ArrayList<WorkpieceHandlingDevice> arrayWorkpieceHandlingDevices =  new ArrayList<WorkpieceHandlingDevice>();
 	
 
 	public CreateMillingMachine(JanelaShopFloor janelaShopFloor, ShopFloor shopFloor) 
 	{
 		super(janelaShopFloor);
+		millingMachine.setWorkpieceHandlingDevice(arrayWorkpieceHandlingDevices);
 		this.shopFloor = shopFloor;
 		this.janelaShopFloor = janelaShopFloor;
 		this.okButton.addActionListener(this);
@@ -124,31 +115,53 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		{
 			
 		}
-		else if(o.equals(button7))
+		else if(o.equals(button7))//ADD WORKPIECEDEVICES
 		{
-			
+			CreateWorkpieceHandlingDevices workpieceHandling = new CreateWorkpieceHandlingDevices(this, millingMachine);
+			workpieceHandling.setVisible(true);
 		}
-		else if(o.equals(button8))
+		else if(o.equals(button8))//REMOVE WORKPIECEDEVICES
 		{
+			DefaultTableModel modelo;
 			
+			for(int i = 0; i < this.table2.getRowCount(); i++)
+			{
+				modelo = (DefaultTableModel)this.table2.getModel();
+				arrayWorkpieceHandlingDevices = millingMachine.getWorkpieceHandlingDevice();
+				
+				if((Boolean) this.table2.getValueAt(i, 0))
+				{
+					modelo.removeRow(i);	
+					arrayWorkpieceHandlingDevices.remove(i);
+					millingMachine.setWorkpieceHandlingDevice(arrayWorkpieceHandlingDevices);
+					i = 0;
+					i--;
+				}
+			}
 		}
-		else if(o.equals(button9))
+		else if(o.equals(button9))//SELECIONA TODOS OS WORKPIECESHANDLINGDEVICES
 		{
-			
+			for(int i = 0; i < this.table2.getRowCount(); i++)
+			{
+				this.table2.setValueAt(true, i, 0);
+			}
 		}
-		else if(o.equals(button10))
+		else if(o.equals(button10))//DESELECIONA TODOS OS WORKPIECESHANDLINGDEVICES
 		{
-			
+			for(int i = 0; i < this.table2.getRowCount(); i++)
+			{
+				this.table2.setValueAt(false, i, 0);
+			}
 		}
 		else if(o.equals(button11))//JA DA SET NOS AXIS
 		{
-			CreateRotaryAxisShopFloor x = new CreateRotaryAxisShopFloor(this, millingMachine);
-			x.setVisible(true);
+			CreateRotaryAxisShopFloor rotary = new CreateRotaryAxisShopFloor(this, millingMachine);
+			rotary.setVisible(true);
 		}
 		else if(o.equals(button12))//JA DA SET NOS AXIS
 		{
-			CreateTravelingAxisShopFloor y = new CreateTravelingAxisShopFloor(this, millingMachine);
-			y.setVisible(true);
+			CreateTravelingAxisShopFloor traveling = new CreateTravelingAxisShopFloor(this, millingMachine);
+			traveling.setVisible(true);
 		}
 		else if(o.equals(button13))//ADD SPINDLES
 		{

@@ -372,14 +372,13 @@ public class CreateMillingMachineFrame extends JDialog {
 									//---- table2 ----
 									table2.setModel(new DefaultTableModel(
 										new Object[][] {
-											{null, null, null, null},
 										},
 										new String[] {
-											"Select", "Id", "Name", "Type"
+											"Select", "Name", "Max load Capacity", "Type"
 										}
 									) {
 										Class<?>[] columnTypes = new Class<?>[] {
-											Boolean.class, String.class, String.class, String.class
+											Boolean.class, String.class, Integer.class, String.class
 										};
 										@Override
 										public Class<?> getColumnClass(int columnIndex) {
@@ -389,9 +388,8 @@ public class CreateMillingMachineFrame extends JDialog {
 									{
 										TableColumnModel cm = table2.getColumnModel();
 										cm.getColumn(0).setPreferredWidth(30);
-										cm.getColumn(1).setPreferredWidth(30);
+										cm.getColumn(2).setPreferredWidth(30);
 									}
-									table2.setEnabled(false);
 									scrollPane2.setViewportView(table2);
 								}
 								panel8.add(scrollPane2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
@@ -435,7 +433,7 @@ public class CreateMillingMachineFrame extends JDialog {
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- button10 ----
-								button10.setText("Remove all");
+								button10.setText("Deselect all");
 								panel14.add(button10, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
@@ -744,7 +742,7 @@ public class CreateMillingMachineFrame extends JDialog {
 	private JPanel panel7;
 	private JPanel panel8;
 	private JScrollPane scrollPane2;
-	protected JTable table2;
+	public JTable table2;
 	private JPanel panel14;
 	protected JButton button6;
 	protected JButton button7;

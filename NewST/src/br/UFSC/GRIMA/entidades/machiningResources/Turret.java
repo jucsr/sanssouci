@@ -4,7 +4,7 @@ package br.UFSC.GRIMA.entidades.machiningResources;
  * @author Jc
  *
  */
-public class Turrent extends CuttingToolHandlingDevice
+public class Turret extends CuttingToolHandlingDevice
 {
 	private boolean autoChange;
 	private double indexTime;

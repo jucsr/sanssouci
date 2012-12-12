@@ -8,6 +8,7 @@ public abstract class WorkpieceHandlingDevice
 	private String itsId = "";
 	private double maxLoadCapacity;
 	private Point3d itsOrigin = new Point3d();
+	private String type;
 	
 	public WorkpieceHandlingDevice(String itsId)
 	{
@@ -30,6 +31,12 @@ public abstract class WorkpieceHandlingDevice
 	}
 	public void setItsOrigin(Point3d itsOrigin) {
 		this.itsOrigin = itsOrigin;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

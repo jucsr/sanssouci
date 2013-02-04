@@ -93,18 +93,25 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.genClosed.setRadius(5);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-		points.add(new Point2D.Double(79,22));
-		points.add(new Point2D.Double(47,60));
-		points.add(new Point2D.Double(81,104));
-		points.add(new Point2D.Double(131,107));
-		points.add(new Point2D.Double(150,68));
-		points.add(new Point2D.Double(129,32));
-		points.add(new Point2D.Double(161,8));
-		points.add(new Point2D.Double(194,55));
-		points.add(new Point2D.Double(167,134));
-		points.add(new Point2D.Double(60,132));
-		points.add(new Point2D.Double(19,61));
-		points.add(new Point2D.Double(40,12));
+		points.add(new Point2D.Double(10,40));
+		points.add(new Point2D.Double(10,80));
+		points.add(new Point2D.Double(120,80));
+		points.add(new Point2D.Double(120,10));
+		points.add(new Point2D.Double(50,10));
+		points.add(new Point2D.Double(50,40));
+				
+//		points.add(new Point2D.Double(79,22));
+//		points.add(new Point2D.Double(47,60));
+//		points.add(new Point2D.Double(81,104));
+//		points.add(new Point2D.Double(131,107));
+//		points.add(new Point2D.Double(150,68));
+//		points.add(new Point2D.Double(129,32));
+//		points.add(new Point2D.Double(161,8));
+//		points.add(new Point2D.Double(194,55));
+//		points.add(new Point2D.Double(167,134));
+//		points.add(new Point2D.Double(60,132));
+//		points.add(new Point2D.Double(19,61));
+//		points.add(new Point2D.Double(40,12));
 		
 //		points.add(new Point2D.Double(5.0, 35.0));
 //		points.add(new Point2D.Double(20.0, 35.0));
@@ -148,8 +155,11 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.boss.setNome("lucas");
 		this.boss.createGeometricalElements();
 
-		this.boss1 = new RectangularBoss(20, 10, 10, 5);
-		this.boss1.setPosicao(40, 30, 0);
+//		this.boss1 = new RectangularBoss(20, 10, 10, 5);
+//		this.boss1.setPosicao(40, 30, 0);
+		
+		this.boss1 = new RectangularBoss(30, 25, 10, 0);
+		this.boss1.setPosicao(80, 35, 0);
 
 		this.boss2 = new RectangularBoss(20, 20, 10, 7);
 		this.boss2.setPosicao(50, 45, 0);
@@ -172,7 +182,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 //				this.itsBoss.add(this.boss);
-//				this.itsBoss.add(this.boss1);
+				this.itsBoss.add(this.boss1);
 //				this.itsBoss.add(this.boss2);
 //				this.itsBoss.add(this.boss3);
 		genClosed.setItsBoss(this.itsBoss);

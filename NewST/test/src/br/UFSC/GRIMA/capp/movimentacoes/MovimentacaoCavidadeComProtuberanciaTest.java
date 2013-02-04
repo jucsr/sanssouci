@@ -48,6 +48,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 	CircularBoss boss;
 	CircularBoss boss1;
 	CircularBoss boss2;
+	RectangularBoss boss4;
 	Boss boss3;
 	Face faceXY;
 	ArrayList<ArrayList<Point3d>> pontos;
@@ -134,6 +135,11 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.boss2.setPosicao(124, 41, 0);
 		this.boss2.setNome("lucas");
 		this.boss2.createGeometricalElements();
+		
+		this.boss4 = new RectangularBoss(30, 25, 10, 0);
+		this.boss4.setPosicao(80, 35, 0);
+		
+		
 
 
 		//		this.boss1 = new RectangularBoss(38, 28, 10, 0);

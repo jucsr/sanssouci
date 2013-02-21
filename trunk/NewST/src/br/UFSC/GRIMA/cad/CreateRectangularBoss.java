@@ -350,167 +350,187 @@ public class CreateRectangularBoss extends RectangularBossFrame implements Actio
 			ok = false;
 		}
 		
-		if(ok)
-		{
+//		if(ok)
+//		{
+//			RectangularBoss boss = new RectangularBoss(length, width, heigth, radius);
+//			boss.setPosicao(X, Y, posZ);
+//			boss.setNome(this.textField1.getText());
+//			boss.setTolerancia(tolerancia*0.001);
+//			boss.setRugosidade(tolerancia*0.001);
+//			
+//			if(this.feature.getClass() == Cavidade.class)
+//			{
+//				Cavidade cavidade = (Cavidade)this.feature;
+//				if(cavidade.validarBoss(boss))
+//				{
+//					Z = cavidade.getProfundidade() - heigth + cavidade.Z;
+//					valido = true;
+//					cavidade.addBoss(boss);
+//				}
+//				
+//			} else if(this.feature.getClass() == Degrau.class)
+//			{
+//				Degrau degrau = (Degrau)this.feature;
+//				// ---- IMPLEMENTAR
+//			} else if(this.feature.getClass() == GeneralClosedPocket.class)
+//			{
+//				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
+//				if(general.validarBoss(boss))
+//				{
+//					Z = general.getProfundidade() - heigth + general.Z;
+//					valido = true;
+//					general.addBoss(boss);
+//				}
+//			}
 			RectangularBoss boss = new RectangularBoss(length, width, heigth, radius);
 			boss.setPosicao(X, Y, posZ);
 			boss.setNome(this.textField1.getText());
 			boss.setTolerancia(tolerancia*0.001);
 			boss.setRugosidade(tolerancia*0.001);
 			
-			if(this.feature.getClass() == Cavidade.class)
-			{
-				Cavidade cavidade = (Cavidade)this.feature;
-				if(cavidade.validarBoss(boss))
-				{
-					Z = cavidade.getProfundidade() - heigth + cavidade.Z;
-					valido = true;
-					cavidade.addBoss(boss);
-				}
-				
-			} else if(this.feature.getClass() == Degrau.class)
-			{
-				Degrau degrau = (Degrau)this.feature;
-				// ---- IMPLEMENTAR
-			} else if(this.feature.getClass() == GeneralClosedPocket.class)
-			{
-				GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
-				if(general.validarBoss(boss))
-				{
-					Z = general.getProfundidade() - heigth + general.Z;
-					valido = true;
-					general.addBoss(boss);
-				}
-			}
-			
-						
-//			if (this.cavidade.validarBoss(novoRectangularBoss)) 
-//			{
 			if(this.face.validarFeature(boss))
 			{
-				if(valido)
+				if(ok)
 				{
-					Point3d coordinates = null;
-					ArrayList<Double> axis = null, refDirection = null;
-					if (this.face.getTipo() == Face.XY) 
+					if(this.feature.getClass() == Cavidade.class)
 					{
-						coordinates = new Point3d(boss.X + length / 2, boss.Y + width / 2, this.face.getProfundidadeMaxima() - boss.Z);
-						axis = new ArrayList<Double>();
-						axis.add(0.0);
-						axis.add(0.0);
-						axis.add(1.0);
-
-						refDirection = new ArrayList<Double>();
-						refDirection.add(1.0);
-						refDirection.add(0.0);
-						refDirection.add(0.0);
-					} else if (this.face.getTipo() == Face.XZ)
-					{
-						coordinates = new Point3d(boss.X - length / 2, boss.Z, boss.Y + width / 2); // ---- verificar
-						axis = new ArrayList<Double>();
-						axis.add(0.0);
-						axis.add(-1.0);
-						axis.add(0.0);
-
-						refDirection = new ArrayList<Double>();
-						refDirection.add(1.0);
-						refDirection.add(0.0);
-						refDirection.add(0.0);
-
-					} else if (this.face.getTipo() == Face.YX) {
-						coordinates = new Point3d(boss.X, this.face.getLargura() - boss.Y, boss.Z);
-						axis = new ArrayList<Double>();
-						axis.add(0.0);
-						axis.add(0.0);
-						axis.add(-1.0);
-
-						refDirection = new ArrayList<Double>();
-						refDirection.add(1.0);
-						refDirection.add(0.0);
-						refDirection.add(0.0);
-
-					} else if (this.face.getTipo() == Face.YZ) {
-						coordinates = new Point3d(
-								this.face.getProfundidadeMaxima() - boss.Z, boss.Y, this.face.getComprimento() - boss.X);
-						axis = new ArrayList<Double>();
-						axis.add(1.0);
-						axis.add(0.0);
-						axis.add(0.0);
-
-						refDirection = new ArrayList<Double>();
-						refDirection.add(0.0);
-						refDirection.add(0.0);
-						refDirection.add(-1.0);
-
-					} else if (this.face.getTipo() == Face.ZX) 
-					{
-						coordinates = new Point3d(boss.X, this.face.getProfundidadeMaxima() - boss.Z, this.face.getLargura() - boss.Y);
-						axis = new ArrayList<Double>();
-						axis.add(0.0);
-						axis.add(1.0);
-						axis.add(0.0);
-
-						refDirection = new ArrayList<Double>();
-						refDirection.add(1.0);
-						refDirection.add(0.0);
-						refDirection.add(0.0);
-
-					} else if (this.face.getTipo() == Face.ZY) 
-					{
-						coordinates = new Point3d(boss.Z, boss.Y, boss.X);
-						axis = new ArrayList<Double>();
-						axis.add(-1.0);
-						axis.add(0.0);
-						axis.add(0.0);
-
-						refDirection = new ArrayList<Double>();
-						refDirection.add(0.0);
-						refDirection.add(0.0);
-						refDirection.add(1.0);
-
-					}
-					Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
-					position.setName(boss.getNome() + " placement");
-					boss.setPosition(position);
-					// this.face.addFeature(novoCircularBoss);
-
-					/** fazer isto em todas as janelas */
-					try
-					{
-						Feature mae = boss.getFeaturePrecedente();
-						mae.itsSons.add(boss);
-					} catch(Exception e)
-					{
+						Cavidade cavidade = (Cavidade)this.feature;
+						if(cavidade.validarBoss(boss))
+						{
+							Z = cavidade.getProfundidade() - heigth + cavidade.Z;
+							valido = true;
+							cavidade.addBoss(boss);
+						}
 						
+					} else if(this.feature.getClass() == Degrau.class)
+					{
+						Degrau degrau = (Degrau)this.feature;
+						// ---- IMPLEMENTAR
+					} else if(this.feature.getClass() == GeneralClosedPocket.class)
+					{
+						GeneralClosedPocket general = (GeneralClosedPocket)this.feature;
+						if(general.validarBoss(boss))
+						{
+							Z = general.getProfundidade() - heigth + general.Z;
+							valido = true;
+							general.addBoss(boss);
+						}
 					}
-					this.parent.desenhador.repaint();
-					this.parent.atualizarArvore();
-					this.parent.atualizarArvorePrecedencias();
-
-					/****************** atualiza a ARVORE ***************/
-					// face.imprimeDados(novoFuro);
-					// this.setModal(false);
-					this.parent.setEnabled(true);
-
-					this.parent.textArea1.setText(this.parent.textArea1
-							.getText()
-							+ "\n"
-							+ "Boss: "
-							+ boss.getNome().toUpperCase()
-							+ " adicionado com sucesso!");
 					
-					this.dispose();
+					if(valido)
+					{
+						Point3d coordinates = null;
+						ArrayList<Double> axis = null, refDirection = null;
+						if (this.face.getTipo() == Face.XY) 
+						{
+							coordinates = new Point3d(boss.X + length / 2, boss.Y + width / 2, this.face.getProfundidadeMaxima() - boss.Z);
+							axis = new ArrayList<Double>();
+							axis.add(0.0);
+							axis.add(0.0);
+							axis.add(1.0);
+	
+							refDirection = new ArrayList<Double>();
+							refDirection.add(1.0);
+							refDirection.add(0.0);
+							refDirection.add(0.0);
+						} else if (this.face.getTipo() == Face.XZ)
+						{
+							coordinates = new Point3d(boss.X - length / 2, boss.Z, boss.Y + width / 2); // ---- verificar
+							axis = new ArrayList<Double>();
+							axis.add(0.0);
+							axis.add(-1.0);
+							axis.add(0.0);
+	
+							refDirection = new ArrayList<Double>();
+							refDirection.add(1.0);
+							refDirection.add(0.0);
+							refDirection.add(0.0);
+	
+						} else if (this.face.getTipo() == Face.YX) {
+							coordinates = new Point3d(boss.X, this.face.getLargura() - boss.Y, boss.Z);
+							axis = new ArrayList<Double>();
+							axis.add(0.0);
+							axis.add(0.0);
+							axis.add(-1.0);
+	
+							refDirection = new ArrayList<Double>();
+							refDirection.add(1.0);
+							refDirection.add(0.0);
+							refDirection.add(0.0);
+	
+						} else if (this.face.getTipo() == Face.YZ) {
+							coordinates = new Point3d(
+									this.face.getProfundidadeMaxima() - boss.Z, boss.Y, this.face.getComprimento() - boss.X);
+							axis = new ArrayList<Double>();
+							axis.add(1.0);
+							axis.add(0.0);
+							axis.add(0.0);
+	
+							refDirection = new ArrayList<Double>();
+							refDirection.add(0.0);
+							refDirection.add(0.0);
+							refDirection.add(-1.0);
+	
+						} else if (this.face.getTipo() == Face.ZX) 
+						{
+							coordinates = new Point3d(boss.X, this.face.getProfundidadeMaxima() - boss.Z, this.face.getLargura() - boss.Y);
+							axis = new ArrayList<Double>();
+							axis.add(0.0);
+							axis.add(1.0);
+							axis.add(0.0);
+	
+							refDirection = new ArrayList<Double>();
+							refDirection.add(1.0);
+							refDirection.add(0.0);
+							refDirection.add(0.0);
+	
+						} else if (this.face.getTipo() == Face.ZY) 
+						{
+							coordinates = new Point3d(boss.Z, boss.Y, boss.X);
+							axis = new ArrayList<Double>();
+							axis.add(-1.0);
+							axis.add(0.0);
+							axis.add(0.0);
+	
+							refDirection = new ArrayList<Double>();
+							refDirection.add(0.0);
+							refDirection.add(0.0);
+							refDirection.add(1.0);
+	
+						}
+						Axis2Placement3D position = new Axis2Placement3D(coordinates, axis, refDirection);
+						position.setName(boss.getNome() + " placement");
+						boss.setPosition(position);
+						// this.face.addFeature(novoCircularBoss);
+	
+						/** fazer isto em todas as janelas */
+						try
+						{
+							Feature mae = boss.getFeaturePrecedente();
+							mae.itsSons.add(boss);
+						} catch(Exception e)
+						{
+							
+						}
+						this.parent.desenhador.repaint();
+						this.parent.atualizarArvore();
+						this.parent.atualizarArvorePrecedencias();
+	
+						/****************** atualiza a ARVORE ***************/
+						// face.imprimeDados(novoFuro);
+						// this.setModal(false);
+						this.parent.setEnabled(true);
+	
+						this.parent.textArea1.setText(this.parent.textArea1
+								.getText()
+								+ "\n"
+								+ "Boss: "
+								+ boss.getNome().toUpperCase()
+								+ " adicionado com sucesso!");
+						
+						this.dispose();
+				}
 			}
-		}
-
-//			} else {
-//				JOptionPane.showMessageDialog(null, "Error trying to create the Boss", "invalid Boss", JOptionPane.OK_CANCEL_OPTION);
-////				String erro = "";
-////				StyleContext sc = StyleContext.getDefaultStyleContext();
-////				AttributeSet aSet = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.red);
-//
-//				this.parent.textArea1.setText(this.parent.textArea1.getText() + "\n Error trying to create the Boss!");
-//			}
 		}
 	}
 }

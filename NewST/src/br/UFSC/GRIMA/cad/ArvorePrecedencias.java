@@ -322,23 +322,23 @@ public class ArvorePrecedencias
 			root.add(new DefaultMutableTreeNode("pos Z = " + gcp.getPosicaoZ()));
 			root.add(new DefaultMutableTreeNode("Radius = " + gcp.getRadius()));
 			
-			DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
-			root.add(bossNode);
+//			DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
+//			root.add(bossNode);
 			
 			for(int i = 0; i < gcp.getItsBoss().size(); i++)
 			{
 				if(gcp.getItsBoss().get(i).getClass() == CircularBoss.class)
 				{
 					CircularBoss circular = (CircularBoss)gcp.getItsBoss().get(i);
-					bossNode.add(circular.getNodo());
+					root.add(circular.getNodo());
 				} else if(gcp.getItsBoss().get(i).getClass() == RectangularBoss.class)
 				{
 					RectangularBoss rectangular = (RectangularBoss)gcp.getItsBoss().get(i);
-					bossNode.add(rectangular.getNodo());
+					root.add(rectangular.getNodo());
 				} else if(gcp.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 				{
 					GeneralProfileBoss general = (GeneralProfileBoss)gcp.getItsBoss().get(i);
-					bossNode.add(general.getNodo());
+					root.add(general.getNodo());
 				}
 			}
 		}else if(feature.getClass() == Ranhura.class)

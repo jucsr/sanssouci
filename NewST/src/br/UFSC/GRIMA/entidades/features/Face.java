@@ -1839,7 +1839,7 @@ public class Face implements Serializable{
 		if(verificaInterseccaoBoss(feature))
 		{
 			valido = false;
-			JOptionPane.showMessageDialog(null, "Há colisão de features");
+			JOptionPane.showMessageDialog(null, "Há colisão do boss com outra Feature");
 		}
 		else
 		{

@@ -14,9 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import br.UFSC.GRIMA.capp.CAPP;
-import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
-import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
 /**
@@ -264,6 +262,24 @@ public class AcessaBD extends Conexao {
 
 		return false;
 	}
+	
+	public boolean salvoNoBDMachines(MachineTool machine, int userID) {  // verifica se o projeto está salvo no BD
+		Query = "SELECT * FROM Maquinas_Usuarios WHERE NomeMaquina = '"
+			+ machine.getItsId() + "'"
+			+ " AND UserID = " + userID;
+
+		try {
+			statement = conn.createStatement();
+			rs = statement.executeQuery(Query);
+			if (rs.next())
+				return true;
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,
+					"Erro ao conectar com o servidor.", "Erro", 0);
+		}
+
+		return false;
+	}
 
 	public boolean insertProjeto(Projeto projeto, String pString) {
 
@@ -333,7 +349,40 @@ public class AcessaBD extends Conexao {
 
 		return false;
 	}
+	
+	public boolean insertMaquina(MachineTool machine, String tString, int userID) {
 
+		Query = "INSERT INTO Maquinas_Usuarios (NomeMaquina, UserID, StringMaquina, Hora_Criado, Data_Criado, Hora_Modificado, Data_Modificado ) VALUES ('"
+			+ machine.getItsId()
+			+ "', '"
+			+ userID
+			+ "', '"
+			+ tString
+			+ "', "
+			+ "CURRENT_TIME"
+			+ ", "
+			+ "CURRENT_DATE"
+			+ ", "
+			+ "CURRENT_TIME" 
+			+ ", " 
+			+ "CURRENT_DATE" 
+			+ ")";
+
+		try {
+			statement = conn.createStatement();
+			statement.executeUpdate(Query);
+			return true;
+		} catch (SQLException e) {
+			JOptionPane
+			.showMessageDialog(
+					null,
+					"Erro ao inserir a nova maquina no banco de dados do sistema.\nTente novamente mais tarde.",
+					"Erro", 0);
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 
 	public boolean incProntas() {
 		Query = "UPDATE ordens1 SET prontas = " + "'" + "'" + ", data_mod = "
@@ -450,6 +499,25 @@ public class AcessaBD extends Conexao {
 		
 	}
 	
+	public boolean existeMaquina(int userID, String machineName)
+	{
+		Query = "SELECT * FROM Maquinas_Usuarios WHERE NomeMaquina = '"
+				+ machineName + "'"
+				+ " AND UserID = " + userID;
+
+			try {
+				statement = conn.createStatement();
+				rs = statement.executeQuery(Query);
+				if (rs.next())
+					return true;
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null,
+						"Erro ao conectar com o servidor.", "Erro", 0);
+			}
+
+			return false;
+	}
+	
 	public boolean updateFerramentasProjeto(Projeto projeto, String tString) {
 
 		Query = "UPDATE Projetos_Usuarios SET"
@@ -474,6 +542,31 @@ public class AcessaBD extends Conexao {
 
 		return false;
 
+	}
+	
+	public boolean updateMaquina(MachineTool machine, String tString, int userID) {
+
+		Query = "UPDATE Maquinas_Usuarios SET"
+			+ " StringMaquinas = " + "'" + tString + "'" 
+			+ ", Data_Modificado = " + "CURRENT_DATE" + ", Hora_Modificado = " + "CURRENT_TIME" + 
+			" WHERE NomeMaquina ="
+			+ "'" + machine.getItsId() + "'"
+			+ " AND UserID = " + userID;
+
+		try {
+			statement = conn.createStatement();
+			statement.executeUpdate(Query);
+			return true;
+		} catch (SQLException e) {
+			JOptionPane
+			.showMessageDialog(
+					null,
+					"Erro ao inserir a nova maquina no banco de dados do sistema.\nTente novamente mais tarde.",
+					"Erro", 0);
+			e.printStackTrace();
+		}
+
+		return false;
 
 	}
 

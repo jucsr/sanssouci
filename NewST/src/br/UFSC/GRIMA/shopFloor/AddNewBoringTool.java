@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import br.UFSC.GRIMA.cad.visual.AddNewBoringToolFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionListener, ItemListener
 {
@@ -94,7 +95,7 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 			hand = "Neutral";
 		
 		BoringTool bt = new BoringTool(nome, material, diametro, dMinimo, edgeRadius, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.tools.add(bt);
+		janelaMillingMachine.toolList.add(bt);
 		Object[] linha = {false, id, nome, diametro, "Boring Tool"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

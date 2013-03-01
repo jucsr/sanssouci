@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import br.UFSC.GRIMA.cad.visual.AddNewEndMillFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewEndMill extends AddNewEndMillFrame implements ActionListener, ItemListener
 {
@@ -92,7 +93,7 @@ public class AddNewEndMill extends AddNewEndMillFrame implements ActionListener,
 			hand = "Neutral";
 		
 		EndMill em = new EndMill(nome, material, diametro, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.tools.add(em);
+		janelaMillingMachine.toolList.add(em);
 		Object[] linha = {false, id, nome, diametro, "End Mill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

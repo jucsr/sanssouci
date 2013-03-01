@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import br.UFSC.GRIMA.cad.visual.AddNewTwistDrillFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionListener, ItemListener
 {
@@ -94,7 +95,7 @@ public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionLis
 			hand = "Neutral";
 		
 		TwistDrill td = new TwistDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.tools.add(td);
+		janelaMillingMachine.toolList.add(td);
 		Object[] linha = {false, id, nome, diametro, "Twist Drill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

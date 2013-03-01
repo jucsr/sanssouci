@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.entidades.machiningResources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
@@ -10,7 +11,7 @@ import br.UFSC.GRIMA.util.projeto.Axis;
  * @author Jc
  *
  */
-public class MachineTool extends MachiningResource
+public class MachineTool extends MachiningResource implements Serializable
 {
 	private String itsLocation = "";
 	private Point3d itsOrigin = new Point3d();

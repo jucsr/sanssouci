@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import br.UFSC.GRIMA.cad.visual.AddNewCenterDrillFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionListener, ItemListener
 {
@@ -93,7 +94,7 @@ public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionL
 			hand = "Neutral";
 		
 		CenterDrill cd = new CenterDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.tools.add(cd);
+		janelaMillingMachine.toolList.add(cd);
 		Object[] linha = {false, id, nome, diametro, "Centre Drill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

@@ -12,6 +12,7 @@ import br.UFSC.GRIMA.cad.ProjectTools;
 import br.UFSC.GRIMA.cad.visual.AddNewReamerFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewReamer extends AddNewReamerFrame implements ActionListener, ItemListener
 {
@@ -94,7 +95,7 @@ public class AddNewReamer extends AddNewReamerFrame implements ActionListener, I
 			hand = "Neutral";
 		
 		Reamer r = new Reamer(nome, material, diametro, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut, numberOfTeeth);
-		janelaMillingMachine.tools.add(r);
+		janelaMillingMachine.toolList.add(r);
 		Object[] linha = {false, id, nome, diametro, "Reamer"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

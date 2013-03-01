@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.entidades.machiningResources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
@@ -9,7 +10,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
  * @author Jc
  *
  */
-public abstract class CuttingToolHandlingDevice 
+public abstract class CuttingToolHandlingDevice implements Serializable
 {
 	private String itsId = "";
 	private int itsToolCapacity;

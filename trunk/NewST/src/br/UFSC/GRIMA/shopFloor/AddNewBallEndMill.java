@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import br.UFSC.GRIMA.cad.visual.AddNewBallEndMillFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionListener, ItemListener
 {
@@ -94,7 +96,7 @@ public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionL
 			hand = "Neutral";
 		
 		BallEndMill bem = new BallEndMill(nome, material, diametro, edgeRadius, edgeCenterVertical, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.tools.add(bem);
+		janelaMillingMachine.toolList.add(bem);
 		Object[] linha = {false, id, nome, diametro, "Ball End Mill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

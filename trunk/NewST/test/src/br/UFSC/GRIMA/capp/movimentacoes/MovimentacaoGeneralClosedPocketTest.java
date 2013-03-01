@@ -90,7 +90,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.genClosed.setNome("Lucas");
 		this.genClosed.setPosicao(79, 22, 0);
 		this.genClosed.setProfundidade(10);
-		this.genClosed.setRadius(5);
+		this.genClosed.setRadius(10);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
 		points.add(new Point2D.Double(10,40));
@@ -463,6 +463,9 @@ public class MovimentacaoGeneralClosedPocketTest {
 			malhaMenoresDistancias[(int) coordenadas.get(i).getX()][(int) coordenadas.get(i).getY()] = distanciaTmp;
 			menorDistancia.add(distanciaTmp);
 			//				System.out.println(menorDistancia.get(i));
+//			System.out.println(coordenadas.get(i).getX());
+//			System.out.println(coordenadas.get(i).getY());
+//			System.out.println(distanciaTmp);
 		}
 
 		maximos = new ArrayList<Point3d>();
@@ -779,15 +782,17 @@ public class MovimentacaoGeneralClosedPocketTest {
 				r.lineTo(0, 2*largura);
 				r.closePath();
 
-				for(int i=0;i<pontos.size();i++){
-					for(int k=0;k<pontos.get(i).size();k++){
-						if(pontos.get(i).size()<1){
-							break;
-						}
-//						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
-						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX()-diametroFerramenta,2*pontos.get(i).get(k).getY()-diametroFerramenta,2*diametroFerramenta,2*diametroFerramenta));
-					}
-				}
+				int escala = 2;
+				
+//				for(int i=0;i<pontos.size();i++){
+//					for(int k=0;k<pontos.get(i).size();k++){
+//						if(pontos.get(i).size()<1){
+//							break;
+//						}
+////						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
+//						f.add(new Ellipse2D.Double(escala*(pontos.get(i).get(k).getX()-diametroFerramenta/2),escala*(pontos.get(i).get(k).getY()-diametroFerramenta/2),escala*diametroFerramenta,escala*diametroFerramenta));
+//					}
+//				}
 //								for(int i=0;i<malha.length;i++){
 //									for(int k=0;k<malha[i].length;k++){
 //										e.add(new Ellipse2D.Double(5*malha[i][k][0],5*malha[i][k][1],5,5));
@@ -799,26 +804,40 @@ public class MovimentacaoGeneralClosedPocketTest {
 //									}
 //									e.add(new Ellipse2D.Double(5*pontosPossiveis.get(i).getX(),5*pontosPossiveis.get(i).getY(),5,5));					
 //								}
-//								for(int i=0;i<maximos.size();i++){
-//									if(maximos.size()<1){
-//										break;
-//									}
-//									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
-//								}
-				for(int i=0;i<pontosMenores.size();i++){
-					if(pontosMenores.size()<1){
-						break;
-					}
-					e.add(new Ellipse2D.Double(2*pontosMenores.get(i).getX()-diametro,2*pontosMenores.get(i).getY()-diametro,diametro*2,diametro*2));					
-				}
+								for(int i=0;i<maximos.size();i++){
+									if(maximos.size()<1){
+										break;
+									}
+									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
+								}
+//				for(int i=0;i<pontosMenores.size();i++){
+//					if(pontosMenores.size()<1){
+//						break;
+//					}
+//					e.add(new Ellipse2D.Double(escala*(pontosMenores.get(i).getX()-diametro/2),escala*(pontosMenores.get(i).getY()-diametro/2),diametro*escala,diametro*escala));					
+//				}
 				
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
 						break;
 					}
-					w.add(new Ellipse2D.Double(2*pontosPeriferia.get(i).getX(),2*pontosPeriferia.get(i).getY(),2,2));
+					w.add(new Ellipse2D.Double(escala*(pontosPeriferia.get(i).getX()-2/2),escala*(pontosPeriferia.get(i).getY()-2/2),escala*2,escala*2));
 				}
 
+//				for(int i = 0; i < pontos.size(); i++)
+//				{
+//					for(int k = 0; k < pontos.get(i).size(); k++)
+//					{
+//						System.out.println(pontos.get(i).get(k).getZ());
+//					}
+//				}
+//				for(int i = 0; i < pontosMenores.size(); i++)
+//				{
+//					System.out.println(pontosMenores.get(i).getZ());
+//				}
+				
+				
+				
 			}
 
 
@@ -836,13 +855,13 @@ public class MovimentacaoGeneralClosedPocketTest {
 				//g2d.draw(new Ellipse2D.Double());
 				g2d.setColor(new Color(251, 100, 100));
 				g2d.draw(p);
-				g2d.setColor(new Color(100,100,251));
-				g2d.draw(r);
-				g2d.setColor(new Color(100,251,100));
-				for(int i  = 0; i < arrayPath.size() ; i++)
-				{
-					g2d.draw(arrayPath.get(i));		
-				}
+//				g2d.setColor(new Color(100,100,251));
+//				g2d.draw(r);
+//				g2d.setColor(new Color(100,251,100));
+//				for(int i  = 0; i < arrayPath.size() ; i++)
+//				{
+//					g2d.draw(arrayPath.get(i));		
+//				}
 				
 				g2d.setColor(new Color(100, 251, 100));
 				for(int i=0;i<e.size();i++){

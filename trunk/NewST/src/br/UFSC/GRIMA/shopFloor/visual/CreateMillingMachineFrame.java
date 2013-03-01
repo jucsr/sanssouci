@@ -5,6 +5,7 @@
 package br.UFSC.GRIMA.shopFloor.visual;
 
 import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -47,10 +48,24 @@ public class CreateMillingMachineFrame extends JDialog {
 		panel6 = new JPanel();
 		label2 = new JLabel();
 		textField2 = new JTextField();
+		panel19 = new JPanel();
+		label15 = new JLabel();
+		spinner8 = new JSpinner();
+		label16 = new JLabel();
+		spinner9 = new JSpinner();
+		label17 = new JLabel();
+		spinner10 = new JSpinner();
+		label18 = new JLabel();
+		spinner11 = new JSpinner();
+		label20 = new JLabel();
+		spinner12 = new JSpinner();
+		panel20 = new JPanel();
+		label19 = new JLabel();
 		scrollPane1 = new JScrollPane();
 		table1 = new JTable();
 		panel11 = new JPanel();
 		button1 = new JButton();
+		button17 = new JButton();
 		button2 = new JButton();
 		button3 = new JButton();
 		button4 = new JButton();
@@ -247,31 +262,121 @@ public class CreateMillingMachineFrame extends JDialog {
 						{
 							panel4.setLayout(new GridBagLayout());
 							((GridBagLayout)panel4.getLayout()).columnWidths = new int[] {0, 0, 0};
-							((GridBagLayout)panel4.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+							((GridBagLayout)panel4.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
 							((GridBagLayout)panel4.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-							((GridBagLayout)panel4.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel4.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0, 0.0, 1.0E-4};
 
 							//======== panel6 ========
 							{
 								panel6.setLayout(new GridBagLayout());
-								((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+								((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {0, 0, 0};
 								((GridBagLayout)panel6.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-								((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
 								((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 								//---- label2 ----
 								label2.setText("its Id");
-								panel6.add(label2, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								panel6.add(label2, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- textField2 ----
 								textField2.setText("Default Magazine");
-								panel6.add(textField2, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+								panel6.add(textField2, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
+
+								//======== panel19 ========
+								{
+									panel19.setLayout(new GridBagLayout());
+									((GridBagLayout)panel19.getLayout()).columnWidths = new int[] {0, 52, 0, 55, 0, 55, 0, 55, 0, 55, 38, 0};
+									((GridBagLayout)panel19.getLayout()).rowHeights = new int[] {0, 0};
+									((GridBagLayout)panel19.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel19.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+									//---- label15 ----
+									label15.setText("Capacity");
+									panel19.add(label15, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner8 ----
+									spinner8.setModel(new SpinnerNumberModel(0, 0, null, 1));
+									panel19.add(spinner8, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label16 ----
+									label16.setText("Max Weight");
+									panel19.add(label16, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner9 ----
+									spinner9.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner9, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label17 ----
+									label17.setText("Max Tool Diameter");
+									panel19.add(label17, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner10 ----
+									spinner10.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner10, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label18 ----
+									label18.setText("Max Tool Length");
+									panel19.add(label18, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner11 ----
+									spinner11.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner11, new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label20 ----
+									label20.setText("Change Time");
+									panel19.add(label20, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner12 ----
+									spinner12.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner12, new GridBagConstraints(9, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+								}
+								panel6.add(panel19, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 0), 0, 0));
 							}
 							panel4.add(panel6, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 0), 0, 0));
+
+							//======== panel20 ========
+							{
+								panel20.setLayout(new GridBagLayout());
+								((GridBagLayout)panel20.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+								((GridBagLayout)panel20.getLayout()).rowHeights = new int[] {0, 0};
+								((GridBagLayout)panel20.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel20.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+								//---- label19 ----
+								label19.setText("Avaliable Tools");
+								panel20.add(label19, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
+							}
+							panel4.add(panel20, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 0), 0, 0));
 
@@ -283,11 +388,11 @@ public class CreateMillingMachineFrame extends JDialog {
 									new Object[][] {
 									},
 									new String[] {
-										"Select", "Id", "Name", "Diameter", "Type"
+										"Select", "Id", "Name", "Diameter", "Type", "Current Tool"
 									}
 								) {
 									Class<?>[] columnTypes = new Class<?>[] {
-										Boolean.class, String.class, String.class, Double.class, String.class
+										Boolean.class, String.class, String.class, Double.class, String.class, Boolean.class
 									};
 									@Override
 									public Class<?> getColumnClass(int columnIndex) {
@@ -301,16 +406,16 @@ public class CreateMillingMachineFrame extends JDialog {
 								}
 								scrollPane1.setViewportView(table1);
 							}
-							panel4.add(scrollPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+							panel4.add(scrollPane1, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 0), 0, 0));
 
 							//======== panel11 ========
 							{
 								panel11.setLayout(new GridBagLayout());
-								((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
+								((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0};
 								((GridBagLayout)panel11.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-								((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 								((GridBagLayout)panel11.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 								//---- button1 ----
@@ -319,35 +424,41 @@ public class CreateMillingMachineFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
+								//---- button17 ----
+								button17.setText("Current Tool");
+								panel11.add(button17, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 5), 0, 0));
+
 								//---- button2 ----
 								button2.setText("Add New Tool");
-								panel11.add(button2, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								panel11.add(button2, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- button3 ----
 								button3.setText("Remove Tool");
-								panel11.add(button3, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+								panel11.add(button3, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- button4 ----
 								button4.setText("Select all");
-								panel11.add(button4, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
+								panel11.add(button4, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- button5 ----
 								button5.setText("Deselect all");
-								panel11.add(button5, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0,
+								panel11.add(button5, new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 							}
-							panel4.add(panel11, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+							panel4.add(panel11, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 0, 0), 0, 0));
 						}
-						tabbedPane1.addTab("Tool Handling Devices", panel4);
+						tabbedPane1.addTab("Tool Magazine", panel4);
 
 
 						//======== panel7 ========
@@ -731,10 +842,24 @@ public class CreateMillingMachineFrame extends JDialog {
 	private JPanel panel6;
 	private JLabel label2;
 	protected JTextField textField2;
+	private JPanel panel19;
+	private JLabel label15;
+	protected JSpinner spinner8;
+	private JLabel label16;
+	protected JSpinner spinner9;
+	private JLabel label17;
+	protected JSpinner spinner10;
+	private JLabel label18;
+	protected JSpinner spinner11;
+	private JLabel label20;
+	protected JSpinner spinner12;
+	private JPanel panel20;
+	private JLabel label19;
 	private JScrollPane scrollPane1;
 	public JTable table1;
 	private JPanel panel11;
 	protected JButton button1;
+	protected JButton button17;
 	protected JButton button2;
 	protected JButton button3;
 	protected JButton button4;

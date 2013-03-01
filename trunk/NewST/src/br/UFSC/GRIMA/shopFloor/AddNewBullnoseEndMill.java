@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import br.UFSC.GRIMA.cad.visual.AddNewBullnoseEndMillFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewBullnoseEndMill extends AddNewBullnoseEndMillFrame implements ActionListener, ItemListener
 {
@@ -95,7 +96,7 @@ public class AddNewBullnoseEndMill extends AddNewBullnoseEndMillFrame implements
 			hand = "Neutral";
 		
 		BullnoseEndMill bem = new BullnoseEndMill(nome, material, diametro, edgeRadius, edgeCenterVertical, edgeCenterHorizontal, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.tools.add(bem);
+		janelaMillingMachine.toolList.add(bem);
 		Object[] linha = {false, id, nome, diametro, "Bullnose End Mill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

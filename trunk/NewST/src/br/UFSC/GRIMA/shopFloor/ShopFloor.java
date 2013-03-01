@@ -74,6 +74,14 @@ public class ShopFloor {
 	public void setOrganization(String organization) {
 		this.organization = organization;
 	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
 	
 	
 }

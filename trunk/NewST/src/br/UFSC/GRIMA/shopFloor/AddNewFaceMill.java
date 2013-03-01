@@ -12,6 +12,7 @@ import br.UFSC.GRIMA.cad.ProjectTools;
 import br.UFSC.GRIMA.cad.visual.AddNewFaceMillFrame;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 
 public class AddNewFaceMill extends AddNewFaceMillFrame implements ActionListener, ItemListener
 {
@@ -96,7 +97,7 @@ public class AddNewFaceMill extends AddNewFaceMillFrame implements ActionListene
 			hand = "Neutral";
 		
 		FaceMill fm = new FaceMill(nome, material, diametro, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.tools.add(fm);
+		janelaMillingMachine.toolList.add(fm);
 		Object[] linha = {false, id, nome, diametro, "Face Mill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);

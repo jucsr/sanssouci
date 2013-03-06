@@ -2422,6 +2422,7 @@ public class Face implements Serializable{
 		{
 			GeneralClosedPocket gcp = (GeneralClosedPocket)feature;
 		//	shape = new RoundRectangle2D.Double(gcp.getPosicaoX(), cavidade.getPosicaoY(), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio() * 2, cavidade.getRaio() * 2);
+			
 			shape = gcp.getForma();
 					
 		} else if(feature.getClass() == Ranhura.class)
@@ -2443,7 +2444,7 @@ public class Face implements Serializable{
 		} else if(feature.getClass() == RectangularBoss.class)
 		{
 			RectangularBoss rb = (RectangularBoss)feature;
-			shape = new RoundRectangle2D.Double(rb.X, rb.Y, rb.getL2(), rb.getL1(), rb.getRadius()*2, rb.getRadius()*2);
+			shape = new RoundRectangle2D.Double(rb.X, rb.Y, rb.getL1(), rb.getL2(), rb.getRadius()*2, rb.getRadius()*2);
 		
 		} else if(feature.getClass() == GeneralProfileBoss.class)
 		{
@@ -2523,7 +2524,7 @@ public class Face implements Serializable{
 		}else if(feature.getClass() == RectangularBoss.class)
 		{
 			RectangularBoss rb = (RectangularBoss)feature;
-			saida = Cavidade.determinarPontosEmRoundRectangular(new Point3d(rb.X,rb.Y,rb.Z), rb.getL2(), rb.getL1(), rb.getRadius());
+			saida = Cavidade.determinarPontosEmRoundRectangular(new Point3d(rb.X,rb.Y,rb.Z), rb.getL1(), rb.getL2(), rb.getRadius());
 		}else if(feature.getClass() == GeneralProfileBoss.class)
 		{
 			GeneralProfileBoss gpb = (GeneralProfileBoss)feature;

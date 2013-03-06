@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.entidades.features;
 
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -23,6 +24,7 @@ public class GeneralClosedPocket extends Feature
 	private double radius = 0;
 	private double profundidade = 0;
 	
+	public Face face = null;
 	public Cavidade cavidade = null;
 	private ArrayList<Point2D> vertexPoints;
 	private GeneralPath forma; 	// � o desenho da borda do GeneralClosedPocket
@@ -30,7 +32,9 @@ public class GeneralClosedPocket extends Feature
 	private ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 	private transient EClosed_pocket eClosed_pocket;
 	private int [] indices = {0, 0, 0, 0, 0, 0, 0};
-		
+	
+	
+	
 	public GeneralClosedPocket()
 	{
 		super(Cavidade.CAVIDADE_PERFIL_GERAL);
@@ -203,77 +207,92 @@ public class GeneralClosedPocket extends Feature
 
 			}
 			
-			 		} else if(boss.getClass() == RectangularBoss.class){
-			 			
-					
-			 		RectangularBoss recBoss = (RectangularBoss)boss;
-			 		Point2D [] bordaRect = null;
-			 		double posX = recBoss.getPosicaoX();
-					double posY = recBoss.getPosicaoY();
-					double posZ = recBoss.getPosicaoZ();
-					double comprimento = recBoss.getL1();
-					double largura = recBoss.getL2();
-					double raio = recBoss.getRadius();
-	
-			 		bordaRect = cavidade.determinarPontosEmRoundRectangular(new Point3d(posX,posY,posZ), comprimento, largura, raio);
-			
-			 		for (int j=0; j < bordaRect.length; j++){
-			 			System.out.println("bordaRect[j]" + bordaRect[j] + j);
-			 			if(!forma.contains(bordaRect[j])) // verifica se o novo boss esta dentro da cavidade
-				 		{
-				 			isValid = false;
-				 			JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
-				 			break;
-				 		} else
-				 		{
-				 			isValid = true;
-				 			/** verificacao de intersecao entre o novo rectangularBoss e os outros Boss*/
-				 			for (int i = 0; i < this.itsBoss.size(); i ++)
-				 			{
-				 				Boss bossTmp = this.itsBoss.get(i);
-				 				if(bossTmp.getClass() == CircularBoss.class)
-				 				{
-				 					double rad = 0;
-				 					CircularBoss cbTmp = (CircularBoss)bossTmp;
-				 					if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
-				 						rad = cbTmp.getDiametro1() / 2;							
-				 					else
-				 						rad = cbTmp.getDiametro2() / 2;
-						
-				 					Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+		} else if(boss.getClass() == RectangularBoss.class){
+		
+	 		RectangularBoss recBoss = (RectangularBoss)boss;
+	 		Point2D [] bordaRect = null;
+	 		double posX = recBoss.getPosicaoX();
+			double posY = recBoss.getPosicaoY();
+			double posZ = recBoss.getPosicaoZ();
+			double comprimento = recBoss.getL1();
+			double largura = recBoss.getL2();
+			double raio = recBoss.getRadius();
 
-				 					if (bossCTmp.contains(bordaRect[j]))
-				 					{
-				 						JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
-				 						isValid = false;
-				 						return isValid;
-				 					} else
-				 					{
-				 						isValid = true;
-				 						
-				 					}
-				 					
-				 				}else if(bossTmp.getClass() == RectangularBoss.class)
-				 				{
-				 					RectangularBoss rectangularBoss = (RectangularBoss)boss;
+	 		bordaRect = cavidade.determinarPontosEmRoundRectangular(new Point3d(posX,posY,posZ), comprimento, largura, raio);
+	
+	 		for (int j=0; j < bordaRect.length; j++){
+//	 			System.out.println("bordaRect[j]" + bordaRect[j] + j);
+	 			if(!forma.contains(bordaRect[j])) // verifica se o novo boss esta dentro da cavidade
+		 		{
+		 			isValid = false;
+		 			JOptionPane.showMessageDialog(null, "The Boss intersects with the wall of the closed pocket", "Error at creating the rectangular boss", JOptionPane.OK_CANCEL_OPTION);
+		 			break;
+		 		} else
+		 		{
+		 			isValid = true;
+		 			/** verificacao de intersecao entre o novo rectangularBoss e os outros Boss*/
+		 			for (int i = 0; i < this.itsBoss.size(); i ++)
+		 			{
+		 				Boss bossTmp = this.itsBoss.get(i);
+		 				if(bossTmp.getClass() == CircularBoss.class)
+		 				{
+		 					double rad = 0;
+		 					CircularBoss cbTmp = (CircularBoss)bossTmp;
+		 					if(cbTmp.getDiametro1() >= cbTmp.getDiametro2())
+		 						rad = cbTmp.getDiametro1() / 2;							
+		 					else
+		 						rad = cbTmp.getDiametro2() / 2;
+				
+		 					Ellipse2D bossCTmp = new Ellipse2D.Double(cbTmp.X - rad, cbTmp.Y - rad, rad * 2, rad * 2);
+
+		 					if (bossCTmp.contains(bordaRect[j]))
+		 					{
+		 						JOptionPane.showMessageDialog(null, "The Boss intersects with other Circular Boss \n ", "Error at creating the rectangular boss", JOptionPane.OK_CANCEL_OPTION);
+		 						isValid = false;
+		 						return isValid;
+		 					} else
+		 					{
+		 						isValid = true;
+		 						
+		 					}
 		 					
-				 					RoundRectangle2D bossAuxTmp = new RoundRectangle2D.Double(rectangularBoss.getPosicaoX(), rectangularBoss.getPosicaoY(), rectangularBoss.getL1(), rectangularBoss.getL2(), rectangularBoss.getRadius(), rectangularBoss.getRadius());
-				 					if(bossAuxTmp.contains(bordaRect[j]))
-				 					{
-				 						JOptionPane.showMessageDialog(null, "The Boss intersects a Rectangular Boss \n ", "Error at creating the circular boss", JOptionPane.OK_CANCEL_OPTION);
-				 						isValid = false;
-				 						return isValid;
-				 					} else
-				 					{
-				 						isValid = true;
-				 					}
-				 					break;
-				 				}
-				 			}	
-				 		}
-			 		}
+		 				}else if(bossTmp.getClass() == RectangularBoss.class)
+		 				{
+		 					RectangularBoss rectangularBoss = (RectangularBoss)bossTmp;
+ 					
+		 					RoundRectangle2D bossAuxTmp = new RoundRectangle2D.Double(rectangularBoss.getPosicaoX(), rectangularBoss.getPosicaoY(), rectangularBoss.getL1(), rectangularBoss.getL2(), rectangularBoss.getRadius(), rectangularBoss.getRadius());
+		 					if(bossAuxTmp.contains(bordaRect[j]))
+		 					{
+		 						JOptionPane.showMessageDialog(null, "The Boss intersects a Rectangular Boss \n ", "Error at creating the rectangular boss", JOptionPane.OK_CANCEL_OPTION);
+		 						isValid = false;
+		 						return isValid;
+		 					} else
+		 					{
+		 						isValid = true;
+		 					}
+		 					
+		 					break;
+		 				}else if(bossTmp.getClass() == GeneralProfileBoss.class)
+		 				{
+		 					Shape shape;
+							GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
+							shape = gpb.getForma();
+							if(shape.contains(bordaRect[j]))
+							{
+								JOptionPane.showMessageDialog(null, "The Boss intersects a General Boss \n ", "Error at creating the rectangular boss", JOptionPane.OK_CANCEL_OPTION);
+								isValid = false;
+								return isValid;
+							}else
+							{
+								isValid = true;
+							}
+							break;
+		 				}
+		 			}	
+		 		}
+	 		}
 			 		
-			}
+		}
 		
 		return isValid;
 	

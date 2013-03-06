@@ -362,7 +362,7 @@ public class Cavidade extends Feature implements Serializable {
 
 			}
 			
-			 		} else if(boss.getClass() == RectangularBoss.class){
+		} else if(boss.getClass() == RectangularBoss.class){
 			 	
 			 		RectangularBoss recBoss = (RectangularBoss)boss;
 			 		Point2D [] bordaRect = null;

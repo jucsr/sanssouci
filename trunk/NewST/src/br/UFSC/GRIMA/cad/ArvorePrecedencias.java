@@ -177,36 +177,36 @@ public class ArvorePrecedencias
 		if(feature.getClass() == FuroBasePlana.class)
 		{
 			FuroBasePlana furo = (FuroBasePlana)feature;
-			root = new DefaultMutableTreeNode("Furo -"	+ furo.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + furo.getNome()));
-			root.add(new DefaultMutableTreeNode("Raio = " + furo.getRaio()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + furo.getProfundidade()));
-			root.add(new DefaultMutableTreeNode("Posicao X, Y, Z = " + furo.getPosicaoX() + ", " + furo.getPosicaoY() + ", " + furo.getPosicaoZ()));
+			root = new DefaultMutableTreeNode("Hole -"	+ furo.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + furo.getNome()));
+			root.add(new DefaultMutableTreeNode("Radius = " + furo.getRaio()));
+			root.add(new DefaultMutableTreeNode("Depth = " + furo.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Position X, Y, Z = " + furo.getPosicaoX() + ", " + furo.getPosicaoY() + ", " + furo.getPosicaoZ()));
 		
 		} else if(feature.getClass() == FuroBaseArredondada.class)
 		{
 			FuroBaseArredondada fba = (FuroBaseArredondada)feature;
-			root = new DefaultMutableTreeNode("FuroBaseArredondada -"	+ fba.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + fba.getNome()));
-			root.add(new DefaultMutableTreeNode("Raio = " + fba.getRaio()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + fba.getProfundidade()));
-			root.add(new DefaultMutableTreeNode("Posicao X, Y, Z = " + fba.getPosicaoX() + ", " + fba.getPosicaoY() + ", " + fba.getPosicaoZ()));
+			root = new DefaultMutableTreeNode("Hole with rounded bottom -"	+ fba.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + fba.getNome()));
+			root.add(new DefaultMutableTreeNode("Radius = " + fba.getRaio()));
+			root.add(new DefaultMutableTreeNode("Depth = " + fba.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Position X, Y, Z = " + fba.getPosicaoX() + ", " + fba.getPosicaoY() + ", " + fba.getPosicaoZ()));
 			root.add(new DefaultMutableTreeNode("r1 = " + fba.getR1() + " mm"));
 			
 		}else if(feature.getClass() == FuroBaseConica.class)
 		{
 			FuroBaseConica fbc = (FuroBaseConica)feature;
-			root = new DefaultMutableTreeNode("FuroBaseConica -"	+ fbc.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + fbc.getNome()));
-			root.add(new DefaultMutableTreeNode("Raio = " + fbc.getRaio()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + fbc.getProfundidade()));
-			root.add(new DefaultMutableTreeNode("Posicao X, Y, Z = " + fbc.getPosicaoX() + ", " + fbc.getPosicaoY() + ", " + fbc.getPosicaoZ()));
+			root = new DefaultMutableTreeNode("Hole with conic bottom -"	+ fbc.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + fbc.getNome()));
+			root.add(new DefaultMutableTreeNode("Radius = " + fbc.getRaio()));
+			root.add(new DefaultMutableTreeNode("Depth = " + fbc.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Position X, Y, Z = " + fbc.getPosicaoX() + ", " + fbc.getPosicaoY() + ", " + fbc.getPosicaoZ()));
 			root.add(new DefaultMutableTreeNode("Angle = " + fbc.getTipAngle() + "Â°"));
 			
 		}else if(feature.getClass() == FuroBaseEsferica.class)
 		{
 			FuroBaseEsferica fbe = (FuroBaseEsferica)feature;
-			root = new DefaultMutableTreeNode("FuroBaseEsferica -"	+ fbe.getIndice());
+			root = new DefaultMutableTreeNode("Hole with spheric bottom -"	+ fbe.getIndice());
 			root.add(new DefaultMutableTreeNode("Nome: " + fbe.getNome()));
 			root.add(new DefaultMutableTreeNode("Raio = " + fbe.getRaio()));
 			root.add(new DefaultMutableTreeNode("Profundidade = " + fbe.getProfundidade()));
@@ -215,25 +215,25 @@ public class ArvorePrecedencias
 		}else if(feature.getClass() == FuroConico.class)
 		{
 			FuroConico fc = (FuroConico)feature;
-			root = new DefaultMutableTreeNode("FuroConico -"	+ fc.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + fc.getNome()));
-			root.add(new DefaultMutableTreeNode("Raio = " + fc.getRaio()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + fc.getProfundidade()));
-			root.add(new DefaultMutableTreeNode("Posicao X, Y, Z = " + fc.getPosicaoX() + ", " + fc.getPosicaoY() + ", " + fc.getPosicaoZ()));
+			root = new DefaultMutableTreeNode("Conic Hole -"	+ fc.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + fc.getNome()));
+			root.add(new DefaultMutableTreeNode("Radius = " + fc.getRaio()));
+			root.add(new DefaultMutableTreeNode("Depth = " + fc.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Position X, Y, Z = " + fc.getPosicaoX() + ", " + fc.getPosicaoY() + ", " + fc.getPosicaoZ()));
 			root.add(new DefaultMutableTreeNode("r1 = " + fc.getRaio1() + " mm"));
 			
 		}else if(feature.getClass() == Degrau.class)
 		{
 			Degrau dg = (Degrau)feature;
-			root = new DefaultMutableTreeNode("Degrau -"	+ dg.getIndice());
+			root = new DefaultMutableTreeNode("Step -"	+ dg.getIndice());
 			root.add(new DefaultMutableTreeNode
-					("Largura = " + dg.getLargura()));
+					("width = " + dg.getLargura()));
 			root.add(new DefaultMutableTreeNode
-					("Profundidade = " +dg.getProfundidade()));
+					("Depth = " +dg.getProfundidade()));
 			root.add(new DefaultMutableTreeNode
-					("prosiÃ§Ã£o Z = " + dg.getPosicaoZ()));
+					("Position Z = " + dg.getPosicaoZ()));
 			root.add(new DefaultMutableTreeNode
-					("Eixo : " + dg.getTipoStringEixo()));
+					("Axis : " + dg.getTipoStringEixo()));
 			
 //			DefaultMutableTreeNode bossNode = new DefaultMutableTreeNode("Its Boss:");
 //			root.add(bossNode);
@@ -262,11 +262,11 @@ public class ArvorePrecedencias
 			root.add(new DefaultMutableTreeNode("Name: "+ cavidade.getNome()));
 			root.add(new DefaultMutableTreeNode("Length = "
 					+ cavidade.getComprimento()));
-			root.add(new DefaultMutableTreeNode("Largura = " + cavidade.getLargura()));
+			root.add(new DefaultMutableTreeNode("width = " + cavidade.getLargura()));
 			root.add(new DefaultMutableTreeNode("Depth = "
 					+ cavidade.getProfundidade()));
 			root.add(new DefaultMutableTreeNode("Corner radius = " + cavidade.getRaio()));
-			root.add(new DefaultMutableTreeNode("Posicao X, Y, Z = " + cavidade.getPosicaoX() + ", " + cavidade.getPosicaoY() + ", " + cavidade.getPosicaoZ()));
+			root.add(new DefaultMutableTreeNode("Position X, Y, Z = " + cavidade.getPosicaoX() + ", " + cavidade.getPosicaoY() + ", " + cavidade.getPosicaoZ()));
 
 		
 //			if(cavidade.getItsBoss().size() > 0)
@@ -307,7 +307,13 @@ public class ArvorePrecedencias
 					} else if(cavidade.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 					{
 						GeneralProfileBoss general = (GeneralProfileBoss)cavidade.getItsBoss().get(i);
-						root.add(general.getNodo());
+//						root.add(general.getNodo());
+						root = new DefaultMutableTreeNode("General Profile Boss -"	+ general.getIndice());
+						root.add(new DefaultMutableTreeNode("Name: " + general.getNome()));
+						root.add(new DefaultMutableTreeNode("Height: " + general.getAltura()));
+						root.add(new DefaultMutableTreeNode("Roughness: " + general.getRugosidade()));
+						root.add(new DefaultMutableTreeNode("Radius = " + general.getRadius()));
+						root.add(new DefaultMutableTreeNode("Position Z =  " + general.Z));
 					}
 				}
 				
@@ -317,8 +323,8 @@ public class ArvorePrecedencias
 		{
 			GeneralClosedPocket gcp = (GeneralClosedPocket)feature;
 			root = new DefaultMutableTreeNode("GeneralClosedPocket -"	+ gcp.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + gcp.getNome()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + gcp.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Name: " + gcp.getNome()));
+			root.add(new DefaultMutableTreeNode("Depth = " + gcp.getProfundidade()));
 			root.add(new DefaultMutableTreeNode("pos Z = " + gcp.getPosicaoZ()));
 			root.add(new DefaultMutableTreeNode("Radius = " + gcp.getRadius()));
 			
@@ -338,68 +344,73 @@ public class ArvorePrecedencias
 				} else if(gcp.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 				{
 					GeneralProfileBoss general = (GeneralProfileBoss)gcp.getItsBoss().get(i);
-					root.add(general.getNodo());
+//					root.add(general.getNodo());
+					root = new DefaultMutableTreeNode("General Profile Boss -"	+ general.getIndice());
+					root.add(new DefaultMutableTreeNode("Name: " + general.getNome()));
+					root.add(new DefaultMutableTreeNode("Height: " + general.getAltura()));
+					root.add(new DefaultMutableTreeNode("Roughness: " + general.getRugosidade()));
+					root.add(new DefaultMutableTreeNode("Radius = " + general.getRadius()));
+					root.add(new DefaultMutableTreeNode("Position Z =  " + general.Z));
 				}
 			}
 		}else if(feature.getClass() == Ranhura.class)
 		{
 			Ranhura ranhura = (Ranhura)feature;
-			root = new DefaultMutableTreeNode("Ranhura -"	+ ranhura.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + ranhura.getNome()));
-			root.add(new DefaultMutableTreeNode("Largura = " + ranhura.getLargura()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + ranhura.getProfundidade()));
-			root.add(new DefaultMutableTreeNode("posição Z = " + ranhura.getPosicaoZ()));
-			root.add(new DefaultMutableTreeNode("Deslocamento : " + ranhura.getDeslocamento()));
-			root.add(new DefaultMutableTreeNode("Eixo : " + ranhura.getStringEixo()));
+			root = new DefaultMutableTreeNode("Slot -"	+ ranhura.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + ranhura.getNome()));
+			root.add(new DefaultMutableTreeNode("Width = " + ranhura.getLargura()));
+			root.add(new DefaultMutableTreeNode("Depth = " + ranhura.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Position Z = " + ranhura.getPosicaoZ()));
+			root.add(new DefaultMutableTreeNode("Displacement : " + ranhura.getDeslocamento()));
+			root.add(new DefaultMutableTreeNode("Axis : " + ranhura.getStringEixo()));
 			
 		}else if(feature.getClass() == RanhuraPerfilBezier.class)
 		{
 			RanhuraPerfilBezier rBezier = (RanhuraPerfilBezier)feature;
-			root = new DefaultMutableTreeNode("RanhuraPerfilBezier -"	+ rBezier.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + rBezier.getNome()));
+			root = new DefaultMutableTreeNode("Slot with general profile -"	+ rBezier.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + rBezier.getNome()));
 			
 		}else if(feature.getClass() == RanhuraPerfilCircularParcial.class)
 		{
 			RanhuraPerfilCircularParcial rcp = (RanhuraPerfilCircularParcial)feature;
-			root = new DefaultMutableTreeNode("RanhuraPerfilCircularParcial -"	+ rcp.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + rcp.getNome()));
-			root.add(new DefaultMutableTreeNode("Raio = " + rcp.getRaio()));
-			root.add(new DefaultMutableTreeNode("Angulo = " + rcp.getAngulo()));
+			root = new DefaultMutableTreeNode("Slot with partial circular profile -"	+ rcp.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + rcp.getNome()));
+			root.add(new DefaultMutableTreeNode("Radius = " + rcp.getRaio()));
+			root.add(new DefaultMutableTreeNode("Angle = " + rcp.getAngulo()));
 			root.add(new DefaultMutableTreeNode("Dz = " + rcp.getDz()));
 			
 		}else if(feature.getClass() == RanhuraPerfilQuadradoU.class)
 		{
 			RanhuraPerfilQuadradoU rpq = (RanhuraPerfilQuadradoU)feature;
-			root = new DefaultMutableTreeNode("RanhuraPerfilQuadradoU -"	+ rpq.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + rpq.getNome()));
-			root.add(new DefaultMutableTreeNode("Largura 1 = " + rpq.getLargura()));
-			root.add(new DefaultMutableTreeNode("Largura 2 = " + rpq.getLargura2()));
-			root.add(new DefaultMutableTreeNode("Ângulo = " + rpq.getAngulo()));
-			root.add(new DefaultMutableTreeNode("raio = " + rpq.getRaio()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + rpq.getProfundidade()));
-			root.add(new DefaultMutableTreeNode("posição Z = " + rpq.getPosicaoZ()));
-			root.add(new DefaultMutableTreeNode("Deslocamento : " + rpq.getDeslocamento()));
-			root.add(new DefaultMutableTreeNode("Eixo : " + rpq.getStringEixo()));
+			root = new DefaultMutableTreeNode("Slot with square U profile -"	+ rpq.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + rpq.getNome()));
+			root.add(new DefaultMutableTreeNode("width 1 = " + rpq.getLargura()));
+			root.add(new DefaultMutableTreeNode("width 2 = " + rpq.getLargura2()));
+			root.add(new DefaultMutableTreeNode("Angle = " + rpq.getAngulo()));
+			root.add(new DefaultMutableTreeNode("Radius = " + rpq.getRaio()));
+			root.add(new DefaultMutableTreeNode("Depth = " + rpq.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Position Z = " + rpq.getPosicaoZ()));
+			root.add(new DefaultMutableTreeNode("Displacement : " + rpq.getDeslocamento()));
+			root.add(new DefaultMutableTreeNode("Axis : " + rpq.getStringEixo()));
 			
 		}else if(feature.getClass() == RanhuraPerfilRoundedU.class)
 		{
 			RanhuraPerfilRoundedU rru = (RanhuraPerfilRoundedU)feature;
-			root = new DefaultMutableTreeNode("RanhuraPerfilRoundedU -"	+ rru.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + rru.getNome()));
+			root = new DefaultMutableTreeNode("Slot with rounded U profile -"	+ rru.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + rru.getNome()));
 			
 		}else if(feature.getClass() == RanhuraPerfilVee.class)
 		{
 			RanhuraPerfilVee rv = (RanhuraPerfilVee)feature;
-			root = new DefaultMutableTreeNode("RanhuraPerfilVee -"	+ rv.getIndice());
-			root.add(new DefaultMutableTreeNode("Nome: " + rv.getNome()));
-			root.add(new DefaultMutableTreeNode("Nome: " + rv.getNome()));
-			root.add(new DefaultMutableTreeNode("Largura = " + rv.getLargura()));
-			root.add(new DefaultMutableTreeNode("Ã¢ngulo = " + rv.getAngulo()));
-			root.add(new DefaultMutableTreeNode("raio = " + rv.getRaio()));
-			root.add(new DefaultMutableTreeNode("Profundidade = " + rv.getProfundidade()));
-			root.add(new DefaultMutableTreeNode("posiÃ§Ã£o Z = " + rv.getPosicaoZ()));
-			root.add(new DefaultMutableTreeNode("Deslocamento : " + rv.getDeslocamento()));
-			root.add(new DefaultMutableTreeNode("Eixo : " + rv.getStringEixo()));
+			root = new DefaultMutableTreeNode("Slot with Vee profile -"	+ rv.getIndice());
+			root.add(new DefaultMutableTreeNode("Name: " + rv.getNome()));
+			root.add(new DefaultMutableTreeNode("Width = " + rv.getLargura()));
+			root.add(new DefaultMutableTreeNode("Angle = " + rv.getAngulo()));
+			root.add(new DefaultMutableTreeNode("Radius = " + rv.getRaio()));
+			root.add(new DefaultMutableTreeNode("Depth = " + rv.getProfundidade()));
+			root.add(new DefaultMutableTreeNode("Position Z = " + rv.getPosicaoZ()));
+			root.add(new DefaultMutableTreeNode("Displacement : " + rv.getDeslocamento()));
+			root.add(new DefaultMutableTreeNode("Axis : " + rv.getStringEixo()));
 		}
 		return root;
 	}

@@ -307,13 +307,13 @@ public class ArvorePrecedencias
 					} else if(cavidade.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 					{
 						GeneralProfileBoss general = (GeneralProfileBoss)cavidade.getItsBoss().get(i);
-//						root.add(general.getNodo());
-						root = new DefaultMutableTreeNode("General Profile Boss -"	+ general.getIndice());
-						root.add(new DefaultMutableTreeNode("Name: " + general.getNome()));
-						root.add(new DefaultMutableTreeNode("Height: " + general.getAltura()));
-						root.add(new DefaultMutableTreeNode("Roughness: " + general.getRugosidade()));
-						root.add(new DefaultMutableTreeNode("Radius = " + general.getRadius()));
-						root.add(new DefaultMutableTreeNode("Position Z =  " + general.Z));
+						root.add(general.getNodo2());
+//						root = new DefaultMutableTreeNode("General Profile Boss -"	+ general.getIndice());
+//						root.add(new DefaultMutableTreeNode("Name: " + general.getNome()));
+//						root.add(new DefaultMutableTreeNode("Height: " + general.getAltura()));
+//						root.add(new DefaultMutableTreeNode("Roughness: " + general.getRugosidade()));
+//						root.add(new DefaultMutableTreeNode("Radius = " + general.getRadius()));
+//						root.add(new DefaultMutableTreeNode("Position Z =  " + general.Z));
 					}
 				}
 				
@@ -344,13 +344,13 @@ public class ArvorePrecedencias
 				} else if(gcp.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 				{
 					GeneralProfileBoss general = (GeneralProfileBoss)gcp.getItsBoss().get(i);
-//					root.add(general.getNodo());
-					root = new DefaultMutableTreeNode("General Profile Boss -"	+ general.getIndice());
-					root.add(new DefaultMutableTreeNode("Name: " + general.getNome()));
-					root.add(new DefaultMutableTreeNode("Height: " + general.getAltura()));
-					root.add(new DefaultMutableTreeNode("Roughness: " + general.getRugosidade()));
-					root.add(new DefaultMutableTreeNode("Radius = " + general.getRadius()));
-					root.add(new DefaultMutableTreeNode("Position Z =  " + general.Z));
+					root.add(general.getNodo2());
+//					root = new DefaultMutableTreeNode("General Profile Boss -"	+ general.getIndice());
+//					root.add(new DefaultMutableTreeNode("Name: " + general.getNome()));
+//					root.add(new DefaultMutableTreeNode("Height: " + general.getAltura()));
+//					root.add(new DefaultMutableTreeNode("Roughness: " + general.getRugosidade()));
+//					root.add(new DefaultMutableTreeNode("Radius = " + general.getRadius()));
+//					root.add(new DefaultMutableTreeNode("Position Z =  " + general.Z));
 				}
 			}
 		}else if(feature.getClass() == Ranhura.class)

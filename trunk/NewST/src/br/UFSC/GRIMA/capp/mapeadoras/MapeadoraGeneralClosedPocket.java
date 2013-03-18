@@ -371,6 +371,9 @@ public class MapeadoraGeneralClosedPocket {
 					diametro1 = maiorFerramenta - ( (maiorFerramenta - menorFerramenta) / 3 );
 					diametro2 = maiorFerramenta - 2*( (maiorFerramenta - menorFerramenta) / 3 );
 					
+					System.err.println(diametro1 + "   Diametro 1");
+					System.err.println(diametro2 + "   Diametro 2");
+					
 					faceMill1 = chooseFaceMill(bloco.getMaterial(),
 							faceMills, genClosed, 0, diametro1);
 					diametro1 = faceMill1.getDiametroFerramenta();
@@ -416,7 +419,7 @@ public class MapeadoraGeneralClosedPocket {
 				pontos = getPontos(variacao, diametro1, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				
 
-				if(pontos.get(0).size() > 1)
+				if(pontos.get(0).size() > 1 && 3*variacaoDaFerramenta <= distEntreFerramentas)
 				{//TEM PONTOS SUFICIENTES PARA FAZER ALGUMA MOVIMENTACAO ENTA CRIAR UM WS, SE NAO NAO CRIA WS
 					
 					listaDeBossesCriados = createBosses(variacao, diametro1/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
@@ -427,6 +430,8 @@ public class MapeadoraGeneralClosedPocket {
 					}
 
 					//CRIAR WS
+									
+					System.err.println(faceMill1 + "     Ferramenta" + "       " + pontos.get(0).size());
 					
 					wsTmp = getWsDesbaste(faceMill1, wsPrecedenteTmp, retractPlane, allowanceSide, allowanceBottom, genClosed, faceTmp, condicoesDeUsinagem, bloco);
 					wssFeature.add(wsTmp);
@@ -627,6 +632,7 @@ public class MapeadoraGeneralClosedPocket {
 		operation.setStartPoint(new Point3d(0, 0, 0));
 
 		// CONDIÇÕES DE USINAGEM
+
 		condicoesDeUsinagem = MapeadoraDeWorkingsteps
 				.getCondicoesDeUsinagem(this.projeto, faceMill, bloco
 						.getMaterial());

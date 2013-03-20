@@ -82,6 +82,18 @@ public class GeneralProfileBoss extends Boss
 		}
 		return root;
 	}
+	
+	public DefaultMutableTreeNode getNodo2()
+	{
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("General Profile Boss -" + this.getIndice());
+		root.add(new DefaultMutableTreeNode("Nome: " + this.getNome()));
+		root.add(new DefaultMutableTreeNode("Altura: " + this.getAltura()));
+		root.add(new DefaultMutableTreeNode("Rugosidade: " + this.getRugosidade()));
+		root.add(new DefaultMutableTreeNode("Radius = " + this.getRadius()));
+		root.add(new DefaultMutableTreeNode("position Z =  " + this.Z));
+		
+		return root;
+	}
 
 	public ArrayList<Path> getPaths() 
 	{

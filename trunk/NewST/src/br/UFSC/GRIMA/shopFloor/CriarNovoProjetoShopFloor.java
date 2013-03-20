@@ -16,7 +16,16 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 	private ShopFloor shopFloor;
 	private double length;
 	private double width;
+	private ProjetoSF projetoSF;
 	
+	public ProjetoSF getProjetoSF() {
+		return projetoSF;
+	}
+
+	public void setProjetoSF(ProjetoSF projetoSF) {
+		this.projetoSF = projetoSF;
+	}
+
 	public CriarNovoProjetoShopFloor(int userID, String userName){
 		this.userID = userID;
 		this.userName = userName;
@@ -32,8 +41,10 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 	private void ok()
 	{
 		shopFloor = new ShopFloor(userName, userID, length, width);
-		this.janelaShopFloor = new JanelaShopFloor(shopFloor);
+		this.projetoSF = new ProjetoSF(this.shopFloor);
+		this.janelaShopFloor = new JanelaShopFloor(shopFloor, projetoSF);
 		this.janelaShopFloor.setVisible(true);
+		
 		this.dispose();
 	}
 	

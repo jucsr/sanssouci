@@ -14,9 +14,12 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 {
 	private ShopFloorPanel shopPanel;
 	private ShopFloor shopFloor;
-	public JanelaShopFloor(ShopFloor shopFloor)
+	private ProjetoSF projetoSF;
+	
+	public JanelaShopFloor(ShopFloor shopFloorNew, ProjetoSF projetoSFNew)
 	{
-		this.shopFloor = shopFloor;
+		this.shopFloor = shopFloorNew;
+		this.projetoSF = projetoSFNew;
 		this.addicionarOuvidores();
 	}
 
@@ -26,7 +29,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.menuItemAbout.addActionListener(this);
 		this.menuItemAbrir.addActionListener(this);
 		this.menuItemAddNewMachine.addActionListener(this);
-		
+		this.menuItemAddNewWS.addActionListener(this);
 	}
 
 	@Override
@@ -39,7 +42,16 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		} else if(o.equals(menuItemAddNewMachine))
 		{
 			this.addNewMachine();
+		} else if(o.equals(menuItemAddNewWS))
+		{
+			this.addNewWS();
 		}
+	}
+
+	private void addNewWS()
+	{
+		CreateNewWorkingStep newWS = new CreateNewWorkingStep(this, shopFloor, projetoSF);
+		newWS.setVisible(true);
 	}
 
 	private void addNewMachine() 
@@ -47,4 +59,5 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		CreateMachine cm = new CreateMachine(this, shopFloor);
 		cm.setVisible(true);
 	}
+	
 }

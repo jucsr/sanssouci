@@ -31,9 +31,13 @@ public class Workingstep implements Serializable{
 	private Vector movimentacao;
 	private String id = "";
 	//private DeterminadorDeTempo dT;
-	private int tempo;
+	private double tempo;
+	private double custo;
 	private Workingstep workingstepPrecedente;
-		
+	
+	public Workingstep(){
+
+	}
 	public Workingstep(Feature feature, Face faceMae){
 		this.feature = feature;
 		this.face = faceMae;
@@ -111,13 +115,21 @@ public class Workingstep implements Serializable{
 	{
 		return this.movimentacao;
 	}
-	public void setTempo(int tempo)
+	public void setTempo(double tempo)
 	{
 		this.tempo = tempo;
 	}
-	public int getTempo()
+	public double getTempo()
 	{
 		return this.tempo;
+	}
+	public void setCusto(double custo)
+	{
+		this.custo = custo;
+	}
+	public double getCusto()
+	{
+		return this.custo;
 	}
 	public String getDados(String tab){
 		String saida = "";

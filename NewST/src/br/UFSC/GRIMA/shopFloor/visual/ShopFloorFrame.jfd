@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_09" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_04" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -687,9 +687,8 @@ new FormModel {
 						}
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItemEditar"
-						"text": "Editar Feature"
-						"enabled": false
+						name: "menuItemAddNewWS"
+						"text": "Add new Workingstep"
 						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1

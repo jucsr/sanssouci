@@ -2,6 +2,10 @@ package br.UFSC.GRIMA.entidades.ferramentas;
 
 public class BallEndMill extends Ferramenta
 {
+	public BallEndMill() {
+		
+		
+	}
 	
 	public BallEndMill(String nome, String material, double diametro, double edgeRadius, double edgeCenterVertical,
 			double cuttingEdge, double profundidade, double offSetLength,

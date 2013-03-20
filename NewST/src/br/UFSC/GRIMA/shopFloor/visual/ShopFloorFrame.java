@@ -59,7 +59,7 @@ public class ShopFloorFrame extends JFrame {
 		menuItemCriarCavidadeGeneral = new JMenuItem();
 		criarRegion = new JMenuItem();
 		importPiece = new JMenuItem();
-		menuItemEditar = new JMenuItem();
+		menuItemAddNewWS = new JMenuItem();
 		menuGirar = new JMenuItem();
 		menu3 = new JMenu();
 		menu9 = new JMenu();
@@ -390,11 +390,10 @@ public class ShopFloorFrame extends JFrame {
 				importPiece.setFont(importPiece.getFont().deriveFont(importPiece.getFont().getStyle() & ~Font.BOLD));
 				menuFerramentas.add(importPiece);
 
-				//---- menuItemEditar ----
-				menuItemEditar.setText("Editar Feature");
-				menuItemEditar.setEnabled(false);
-				menuItemEditar.setFont(menuItemEditar.getFont().deriveFont(menuItemEditar.getFont().getStyle() & ~Font.BOLD));
-				menuFerramentas.add(menuItemEditar);
+				//---- menuItemAddNewWS ----
+				menuItemAddNewWS.setText("Add new Workingstep");
+				menuItemAddNewWS.setFont(menuItemAddNewWS.getFont().deriveFont(menuItemAddNewWS.getFont().getStyle() & ~Font.BOLD));
+				menuFerramentas.add(menuItemAddNewWS);
 				menuFerramentas.addSeparator();
 
 				//---- menuGirar ----
@@ -1016,7 +1015,7 @@ public class ShopFloorFrame extends JFrame {
 	public JMenuItem menuItemCriarCavidadeGeneral;
 	public JMenuItem criarRegion;
 	public JMenuItem importPiece;
-	public JMenuItem menuItemEditar;
+	public JMenuItem menuItemAddNewWS;
 	public JMenuItem menuGirar;
 	public JMenu menu3;
 	public JMenu menu9;

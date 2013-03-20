@@ -2261,7 +2261,7 @@ public class Face implements Serializable{
 				{
 					maes.add(featureTmp);
 					feature.setFeaturePrecedente(featureTmp);
-					System.out.println("precendente: "+ feature.getFeaturePrecedente());
+//					System.out.println("precendente: "+ feature.getFeaturePrecedente());
 					if(featureTmp.getClass() == Cavidade.class)
 					{
 						Cavidade cav = (Cavidade)featureTmp;

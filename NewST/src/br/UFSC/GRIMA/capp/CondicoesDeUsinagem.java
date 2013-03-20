@@ -26,6 +26,10 @@ public class CondicoesDeUsinagem implements Serializable{
 	
 	public Ferramenta ferramenta;
 	
+	public CondicoesDeUsinagem(){
+		
+	}
+	
 	public CondicoesDeUsinagem(Material material, Ferramenta ferramenta2){
 		this.material = material;
 		this.ferramenta = ferramenta2;

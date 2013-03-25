@@ -678,11 +678,11 @@ public class VisualTool {
 					ArrayList<LinearPath> path = null;
 
 					
-					if(wsTmp.getFerramenta().getClass() == EndMill.class)
+					if(wsTmp.getFerramenta().getClass().equals(EndMill.class))
 					{
 						path = detMov.desbaste();
 					}
-					else if(wsTmp.getFerramenta().getClass() == FaceMill.class)
+					else if(wsTmp.getFerramenta().getClass().equals(FaceMill.class))
 					{
 						path = detMov.desbaste1();
 					}

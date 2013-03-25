@@ -733,7 +733,7 @@ public class GCodeGenerator {
 
 					MovimentacaoRegionSuperficieBezier regionBezier= new MovimentacaoRegionSuperficieBezier(wsTmp);
 
-
+					
 					this.feedRate = wsTmp.getCondicoesUsinagem().getVf();
 					this.spindleRotation = wsTmp.getCondicoesUsinagem().getN();
 					this.rotationDirection = wsTmp.getFerramenta().getHandOfCut();
@@ -744,10 +744,10 @@ public class GCodeGenerator {
 						ArrayList<LinearPath> desbaste = null;
 						int l=0;
 
-						if(wsTmp.getFerramenta().getClass() == EndMill.class){
+						if(wsTmp.getFerramenta().getClass().equals(EndMill.class)){
 							desbaste = regionBezier.desbaste();
 						}
-						else if(wsTmp.getFerramenta().getClass() == FaceMill.class){
+						else if(wsTmp.getFerramenta().getClass().equals(FaceMill.class)){
 							desbaste = regionBezier.desbaste1();	
 						}
 

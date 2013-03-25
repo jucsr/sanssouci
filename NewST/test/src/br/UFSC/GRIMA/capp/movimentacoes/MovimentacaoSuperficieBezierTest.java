@@ -29,7 +29,7 @@ import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 public class MovimentacaoSuperficieBezierTest {
 	ArrayList<Point3d> poligono = new ArrayList<Point3d>();
 	int a=0;
-	double plano=10;
+	double plano=21;
 	ArrayList<Point3d> subArrayPossivelX = new ArrayList<Point3d>();
 	ArrayList<Point3d> subArrayPossivelY = new ArrayList<Point3d>();
 	double[][][] control_points = {
@@ -57,23 +57,39 @@ public class MovimentacaoSuperficieBezierTest {
 //	Point3d p32 = new Point3d(60, 90, 0);
 //	Point3d p33 = new Point3d(90, 90, 30);
 	
-	Point3d p00 = new Point3d(0, 0, 40);
-	Point3d p01 = new Point3d(30, 0, 0);
-	Point3d p02 = new Point3d(60, 0, 0);
-	Point3d p03 = new Point3d(90, 0, 0);
-	Point3d p10 = new Point3d(0, 30, 0);
-	Point3d p11 = new Point3d(30, 30, 20);
-	Point3d p12 = new Point3d(60, 30, 40);
-	Point3d p13 = new Point3d(90, 30, 00);
-	Point3d p20 = new Point3d(0, 60, 0);
-	Point3d p21 = new Point3d(30, 60, 40);
-	Point3d p22 = new Point3d(60, 60, 20);
-	Point3d p23 = new Point3d(90, 60, 0);
-	Point3d p30 = new Point3d(0, 90, 0);
-	Point3d p31 = new Point3d(30, 90, 0);
-	Point3d p32 = new Point3d(60, 90, 0);
-	Point3d p33 = new Point3d(90, 90, 40);
+//	Point3d p00 = new Point3d(0, 0, 40);
+//	Point3d p01 = new Point3d(30, 0, 0);
+//	Point3d p02 = new Point3d(60, 0, 0);
+//	Point3d p03 = new Point3d(90, 0, 0);
+//	Point3d p10 = new Point3d(0, 30, 0);
+//	Point3d p11 = new Point3d(30, 30, 20);
+//	Point3d p12 = new Point3d(60, 30, 40);
+//	Point3d p13 = new Point3d(90, 30, 00);
+//	Point3d p20 = new Point3d(0, 60, 0);
+//	Point3d p21 = new Point3d(30, 60, 40);
+//	Point3d p22 = new Point3d(60, 60, 20);
+//	Point3d p23 = new Point3d(90, 60, 0);
+//	Point3d p30 = new Point3d(0, 90, 0);
+//	Point3d p31 = new Point3d(30, 90, 0);
+//	Point3d p32 = new Point3d(60, 90, 0);
+//	Point3d p33 = new Point3d(90, 90, 40);
 	
+	Point3d p00 = new Point3d(0, 0, 0);
+	Point3d p01 = new Point3d(30, 0, 40);
+	Point3d p02 = new Point3d(60, 0, 40);
+	Point3d p03 = new Point3d(90, 0, 0);
+	Point3d p10 = new Point3d(0, 30, 40);
+	Point3d p11 = new Point3d(30, 30, 0);
+	Point3d p12 = new Point3d(60, 30, 0);
+	Point3d p13 = new Point3d(90, 30, 40);
+	Point3d p20 = new Point3d(0, 60, 40);
+	Point3d p21 = new Point3d(30, 60, 0);
+	Point3d p22 = new Point3d(60, 60, 0);
+	Point3d p23 = new Point3d(90, 60, 40);
+	Point3d p30 = new Point3d(0, 90, 0);
+	Point3d p31 = new Point3d(30, 90, 40);
+	Point3d p32 = new Point3d(60, 90, 40);
+	Point3d p33 = new Point3d(90, 90, 0);
 	@Test
 	public void bezierTest()
 	{
@@ -119,7 +135,7 @@ public class MovimentacaoSuperficieBezierTest {
 		for(int j=0;j<malha.length;j++){
 			for(int i=0;i<malha[j].length;i++){
 				if(malha[i][j].getZ()<=plano){
-					if(malha[i][j].getZ()>=plano-0.5){
+					if(malha[i][j].getZ()>=plano-0.25){
 						subArray.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
 						continue;
 					}
@@ -350,14 +366,14 @@ public class MovimentacaoSuperficieBezierTest {
 					if(i!=menorDistanciaX.size()-1){
 						if(menorDistanciaX.get(i-1)<menorDistanciaX.get(i) &&
 							menorDistanciaX.get(i+1)<menorDistanciaX.get(i) &&
-							(menorDistanciaX.get(i-1)+0.1<menorDistanciaX.get(i) ||
-							menorDistanciaX.get(i+1)+0.1<menorDistanciaX.get(i))){
+							(menorDistanciaX.get(i-1)+0.05<menorDistanciaX.get(i) ||
+							menorDistanciaX.get(i+1)+0.05<menorDistanciaX.get(i))){
 							maximos.add(subArrayPossivelX.get(i));
 						}
 						if(menorDistanciaY.get(i-1)<menorDistanciaY.get(i) &&
 								menorDistanciaY.get(i+1)<menorDistanciaY.get(i) &&
-							(menorDistanciaY.get(i-1)+0.1<menorDistanciaY.get(i) ||
-							menorDistanciaY.get(i+1)+0.1<menorDistanciaY.get(i))){
+							(menorDistanciaY.get(i-1)+0.05<menorDistanciaY.get(i) ||
+							menorDistanciaY.get(i+1)+0.05<menorDistanciaY.get(i))){
 								maximos.add(subArrayPossivelY.get(i));
 							}
 					}
@@ -390,7 +406,7 @@ public class MovimentacaoSuperficieBezierTest {
 //						}
 //						else{
 							//p.lineTo(5*maximos.get(i).getX(),5*maximos.get(i).getY());
-							w.add(new Ellipse2D.Double(5*maximos.get(i).getX(),5*maximos.get(i).getY(),5,5));
+							w.add(new Ellipse2D.Double(5*maximos.get(i).getX(),5*maximos.get(i).getY(),1,1));
 //						}
 					}
 				}
@@ -403,7 +419,7 @@ public class MovimentacaoSuperficieBezierTest {
 //						}
 //						else{
 							//p.lineTo(5*pontosOrdenados.get(k).get(i).getX(),5*pontosOrdenados.get(k).get(i).getY());
-							e.add(new Ellipse2D.Double(5*pontosOrdenados.get(k).get(i).getX(),5*pontosOrdenados.get(k).get(i).getY(),5,5));
+							e.add(new Ellipse2D.Double(5*pontosOrdenados.get(k).get(i).getX(),5*pontosOrdenados.get(k).get(i).getY(),2,2));
 //						}
 					}
 				}
@@ -430,7 +446,7 @@ public class MovimentacaoSuperficieBezierTest {
 
 				g2d.setColor(new Color(100, 251, 100));
 				for(int i=0;i<e.size();i++){
-					g2d.draw(e.get(i));
+					g2d.draw(e.get(i)); //path
 				}
 				g2d.setColor(new Color(251, 100, 100));
 				for(int i=0;i<w.size();i++){

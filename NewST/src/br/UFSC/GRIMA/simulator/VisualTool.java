@@ -238,7 +238,7 @@ public class VisualTool {
 				
 				System.out.println("WORKINGSTEP ATUAL : " + wsTmp.getClass());
 				System.out.println("WORKINGSTEP ATUAL : " + wsTmp.getId());
-				System.out.println("WORKINGSTEP ATUAL : " + wsTmp.getFeature().getPosition().getCoordinates());
+//				System.out.println("WORKINGSTEP ATUAL : " + wsTmp.getFeature().getPosition().getCoordinates());
 				
 				wsTmp.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(wsTmp));
 				System.out.println("PONTO INICIAL : " + wsTmp.getPontos()[0]);

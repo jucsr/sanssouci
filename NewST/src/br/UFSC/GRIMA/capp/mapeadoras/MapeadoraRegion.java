@@ -64,10 +64,10 @@ public class MapeadoraRegion
 		}
 		
 		zMaximo = getZMaximo(malha);
-		if(zMaximo > 0)
-		{
-			zMaximo = -zMaximo;
-		}
+//		if(zMaximo > 0)
+//		{
+//			zMaximo = -zMaximo;
+//		}
 		
 		// ---------------- CRIANDO WORKINGSTEP DE DESBASTE (zigue-zague)------------------
 		
@@ -110,12 +110,12 @@ public class MapeadoraRegion
 			// -----Criando operação ----
 		BottomAndSideRoughMilling desbaste1 = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
 
-		if(zMaximo>=regionTmp.getPosicaoZ()){
-			desbaste1.setStartPoint(new Point3d(0, 0, 0));
-		}
-		else if(zMaximo<regionTmp.getPosicaoZ()){
+//		if(zMaximo>=regionTmp.getPosicaoZ()){
+//			desbaste1.setStartPoint(new Point3d(0, 0, 0));
+//		}
+//		else if(zMaximo<regionTmp.getPosicaoZ()){
 			desbaste1.setStartPoint(new Point3d(0, 0, zMaximo));			
-		}
+//		}
 		
 			// ----- Criando ferramenta -----
 		
@@ -397,9 +397,11 @@ public class MapeadoraRegion
 		zMaximo=malha[0][0].getZ();
 		
 		for(int i=0;i<malha.length;i++){//PERCORRE A MALHA TODA PARA ACHAR O MENOR Z
+			
+			
 			for(int j=0;j<malha[i].length;j++){				
-				if(zMaximo<malha[i][j].getZ()){
-					zMaximo=-malha[i][j].getZ();
+				if(zMaximo>malha[i][j].getZ()){
+					zMaximo=malha[i][j].getZ();
 				}
 			}
 		}

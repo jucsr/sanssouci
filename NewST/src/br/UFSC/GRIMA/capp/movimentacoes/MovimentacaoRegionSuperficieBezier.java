@@ -26,7 +26,7 @@ public class MovimentacaoRegionSuperficieBezier {
 	
 	public ArrayList<LinearPath> desbaste(){
 		
-		double z = this.ws.getOperation().getStartPoint().z;
+		double z;
 		double zMinimo=0;
 		double distanciaTmp;
 		double diametroFerramenta = this.ferramenta.getDiametroFerramenta();
@@ -49,6 +49,11 @@ public class MovimentacaoRegionSuperficieBezier {
 		Point3d pontoFinal;
 		LinearPath ligarPontos;
 
+		z = MapeadoraRegion.getZMaximo(malha);
+		if(z < 0 )
+		{
+			z = -z;
+		};
 		
 		
 		for(int i=0;i<malha.length;i++){//PERCORRE A MALHA TODA PARA ACHAR O MENOR Z
@@ -59,13 +64,13 @@ public class MovimentacaoRegionSuperficieBezier {
 				}		
 			}
 		}
+	
 
 		numeroDeAps= (int) (zMinimo/ap);
 		
 		for(int h=0;h<numeroDeAps;h++){
 
 			z-=ap;
-			System.err.println("Z : " + z);
 			
 			pontosProibidos = new ArrayList<Point3d>();
 			pontosPossiveis = new ArrayList<Point3d>();
@@ -88,8 +93,6 @@ public class MovimentacaoRegionSuperficieBezier {
 				}
 			}
 
-			System.err.println("numero de pontos possiveis : " + pontosPossiveis.size());
-			
 			if(pontosPossiveis.size()<1){
 				break;
 			}
@@ -227,7 +230,6 @@ public class MovimentacaoRegionSuperficieBezier {
 			zMaximo = -zMaximo;
 		}
 		
-		System.err.println("=========> zMaximo : " + zMaximo);
 		
 		tmp = (xFim-xInicio)%ae;
 		numeroDeAes = ((xFim-xInicio)-tmp)/ae;

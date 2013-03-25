@@ -251,22 +251,22 @@ public class MovimentacaoSuperficieBezierTest {
 				LimitedLine l2 = new LimitedLine(new Point3d(comprimento,0,plano), new Point3d(comprimento,largura,plano));
 				LimitedLine l3 = new LimitedLine(new Point3d(comprimento,largura,plano), new Point3d(0,largura,plano));
 				LimitedLine l4 = new LimitedLine(new Point3d(0,largura,plano), new Point3d(0,0,plano));
-				double distanciaTmp;
+				double distanciaTmp = 100;
 				ArrayList<Double> menorDistanciaX = new ArrayList<Double>();
 				ArrayList<Double> menorDistanciaY = new ArrayList<Double>();
 
 				for(int i=0;i<subArrayPossivelY.size();i++){
 					/*CALCULO DA MENOR DISTANCIA VARRENDO NO SENTIDO Y*/
-					distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l1, subArrayPossivelY.get(i));
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelY.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelY.get(i));
-					}
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelY.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelY.get(i));
-					}
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelY.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelY.get(i));
-					}
+//					distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l1, subArrayPossivelY.get(i));
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelY.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelY.get(i));
+//					}
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelY.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelY.get(i));
+//					}
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelY.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelY.get(i));
+//					}
 					for(int k=0;k<poligono.size();k++){
 						if(OperationsVector.distanceVector(poligono.get(k), subArrayPossivelY.get(i))<distanciaTmp){
 							distanciaTmp=OperationsVector.distanceVector(poligono.get(k), subArrayPossivelY.get(i));
@@ -276,16 +276,16 @@ public class MovimentacaoSuperficieBezierTest {
 
 					/*CALCULO DA MENOR DISTANCIA VARRENDO NO SENTIDO X*/
 					distanciaTmp=100;
-					distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l1, subArrayPossivelX.get(i));
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i));
-					}
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i));
-					}
-					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i))<distanciaTmp){
-						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i));
-					}
+//					distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l1, subArrayPossivelX.get(i));
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l2, subArrayPossivelX.get(i));
+//					}
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l3, subArrayPossivelX.get(i));
+//					}
+//					if(OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i))<distanciaTmp){
+//						distanciaTmp=OperationsVector.calculateDistanceBetweenLineAndPoint(l4, subArrayPossivelX.get(i));
+//					}
 					for(int k=0;k<poligono.size();k++){
 						if(OperationsVector.distanceVector(poligono.get(k), subArrayPossivelX.get(i))<distanciaTmp){
 							distanciaTmp=OperationsVector.distanceVector(poligono.get(k), subArrayPossivelX.get(i));
@@ -351,6 +351,13 @@ public class MovimentacaoSuperficieBezierTest {
 							}
 						}
 						temp.add(pontos.get(i).get(t));
+						
+						
+						// IMPRIMIR OS PONTOS PARA COLOCAR NO MATLAB
+						System.out.println(pontos.get(i).get(t).getY());
+//						System.out.println(pontos.get(i).get(t).getX());
+//						System.out.println(menorDistancia);
+						
 						pontos.get(i).remove(t);
 					}
 					pontosOrdenados.add(temp);

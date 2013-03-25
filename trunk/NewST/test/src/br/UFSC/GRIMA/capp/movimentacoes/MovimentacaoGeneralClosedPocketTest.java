@@ -696,6 +696,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			GeneralPath r = new GeneralPath();
 			GeneralPath uniaoDosPontos = new GeneralPath();
 			ArrayList<GeneralPath> arrayPath = new ArrayList<GeneralPath>();
+			ArrayList<Ellipse2D> m = new ArrayList<Ellipse2D>();
 			ArrayList<Ellipse2D> e = new ArrayList<Ellipse2D>();
 			ArrayList<Ellipse2D> f = new ArrayList<Ellipse2D>();
 			ArrayList<Ellipse2D> w = new ArrayList<Ellipse2D>();
@@ -782,17 +783,18 @@ public class MovimentacaoGeneralClosedPocketTest {
 				r.lineTo(0, 2*largura);
 				r.closePath();
 
-				int escala = 2;
+				int escala = 3;
+				int raioBolinha = 2;
 				
-//				for(int i=0;i<pontos.size();i++){
-//					for(int k=0;k<pontos.get(i).size();k++){
-//						if(pontos.get(i).size()<1){
-//							break;
-//						}
-////						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
-//						f.add(new Ellipse2D.Double(escala*(pontos.get(i).get(k).getX()-diametroFerramenta/2),escala*(pontos.get(i).get(k).getY()-diametroFerramenta/2),escala*diametroFerramenta,escala*diametroFerramenta));
-//					}
-//				}
+				for(int i=0;i<pontos.size();i++){
+					for(int k=0;k<pontos.get(i).size();k++){
+						if(pontos.get(i).size()<1){
+							break;
+						}
+//						f.add(new Ellipse2D.Double(2*pontos.get(i).get(k).getX(),2*pontos.get(i).get(k).getY(),5,5));
+						f.add(new Ellipse2D.Double(escala*(pontos.get(i).get(k).getX()-raioBolinha-diametroFerramenta/2),escala*(pontos.get(i).get(k).getY()-raioBolinha-diametroFerramenta/2),escala*diametroFerramenta,escala*diametroFerramenta));
+					}
+				}
 //								for(int i=0;i<malha.length;i++){
 //									for(int k=0;k<malha[i].length;k++){
 //										e.add(new Ellipse2D.Double(5*malha[i][k][0],5*malha[i][k][1],5,5));
@@ -808,20 +810,20 @@ public class MovimentacaoGeneralClosedPocketTest {
 									if(maximos.size()<1){
 										break;
 									}
-									e.add(new Ellipse2D.Double(2*maximos.get(i).getX(),2*maximos.get(i).getY(),2,2));					
+									m.add(new Ellipse2D.Double(escala*(maximos.get(i).getX()-raioBolinha),escala*(maximos.get(i).getY()-raioBolinha),2*raioBolinha,2*raioBolinha));					
 								}
-//				for(int i=0;i<pontosMenores.size();i++){
-//					if(pontosMenores.size()<1){
-//						break;
-//					}
-//					e.add(new Ellipse2D.Double(escala*(pontosMenores.get(i).getX()-diametro/2),escala*(pontosMenores.get(i).getY()-diametro/2),diametro*escala,diametro*escala));					
-//				}
+				for(int i=0;i<pontosMenores.size();i++){
+					if(pontosMenores.size()<1){
+						break;
+					}
+					e.add(new Ellipse2D.Double(escala*(pontosMenores.get(i).getX()-raioBolinha-diametro/2),escala*(pontosMenores.get(i).getY()-raioBolinha-diametro/2),escala*diametro,escala*diametro));					
+				}
 				
 				for(int i=0;i<pontosPeriferia.size();i++){
 					if(pontosPeriferia.size()<1){
 						break;
 					}
-					w.add(new Ellipse2D.Double(escala*(pontosPeriferia.get(i).getX()-2/2),escala*(pontosPeriferia.get(i).getY()-2/2),escala*2,escala*2));
+					w.add(new Ellipse2D.Double(escala*(pontosPeriferia.get(i).getX()-raioBolinha),escala*(pontosPeriferia.get(i).getY()-raioBolinha),2*raioBolinha,2*raioBolinha));
 				}
 
 //				for(int i = 0; i < pontos.size(); i++)
@@ -874,6 +876,10 @@ public class MovimentacaoGeneralClosedPocketTest {
 				g2d.setColor(new Color(251, 100, 100));
 				for(int i=0;i<w.size();i++){
 					g2d.fill(w.get(i));
+				}
+				g2d.setColor(new Color(255, 165, 0));
+				for(int i=0;i<m.size();i++){
+					g2d.fill(m.get(i));
 				}
 //				g2d.setColor(new Color(0,0,0));
 //				g2d.draw(general);

@@ -17,9 +17,12 @@ import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Bloco;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
@@ -66,6 +69,7 @@ public class MapeadoraFuroBasePlana {
 		this.reamers = ToolManager.getReamers();
 
 		this.mapearFuroBasePlana();
+		
 
 	}
 
@@ -82,10 +86,19 @@ public class MapeadoraFuroBasePlana {
 				&& furoTmp.getRugosidade() <= Feature.LIMITE_TOLERANCIA) {
 			furoTmp.setAcabamento(true);
 		}
+		
+		System.out.println(furoTmp.getFeaturePrecedente().equals(CircularBoss.class));
 
 		if(furoTmp.getFeaturePrecedente()!= null){
-			
-			wsPrecedenteTmp = furoTmp.getFeaturePrecedente().getWorkingsteps().lastElement();
+			if(		furoTmp.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 
+					furoTmp.getFeaturePrecedente().getClass().equals(RectangularBoss.class) ||
+					furoTmp.getFeaturePrecedente().getClass().equals(CircularBoss.class))
+			{
+				wsPrecedenteTmp = furoTmp.getFeaturePrecedente().getFeaturePrecedente().getWorkingsteps().lastElement();
+			}
+			else{
+				wsPrecedenteTmp = furoTmp.getFeaturePrecedente().getWorkingsteps().lastElement();
+			}
 			
 		}else{
 			//Nao tem ws precedente

@@ -2,6 +2,9 @@ package br.UFSC.GRIMA.entidades.ferramentas;
 
 public class Reamer extends Ferramenta
 {
+	public Reamer(){
+		
+	}
 	
 	public Reamer(String nome, String material, double diametro,
 			double cuttingEdge, double profundidade, double offSetLength,

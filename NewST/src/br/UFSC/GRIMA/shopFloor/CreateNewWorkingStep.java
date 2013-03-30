@@ -5,8 +5,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.Boring;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
+import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
+import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.shopFloor.visual.CreateNewWorkingStepFrame;
 
 public class CreateNewWorkingStep extends CreateNewWorkingStepFrame implements ActionListener{
@@ -46,9 +53,12 @@ public class CreateNewWorkingStep extends CreateNewWorkingStepFrame implements A
 	{
 		if(this.radioButton1.isSelected())
 		{
-//			AddNewBoringTool bt = new AddNewBoringTool(JDialog);
-//			bt.setVisible(true);
-//			dispose();
+			MachiningOperation boring = new Boring("name", 5);
+			ws.setOperation(boring);
+
+			EditBoringToolWS bTool = new EditBoringToolWS(janelaShopFloor, projetoSF, ws);
+			bTool.setVisible(true);
+			dispose();
 		} else if(this.radioButton2.isSelected())
 		{
 			MachiningOperation bsFinishMilling = new BottomAndSideFinishMilling("name", 5);
@@ -61,24 +71,52 @@ public class CreateNewWorkingStep extends CreateNewWorkingStepFrame implements A
 			dispose();
 		} else if(this.radioButton3.isSelected())
 		{
-//			EditBallEndMillWS bmWS = new EditBallEndMillWS(janelaShopFloor, wsArray);
-//			bmWS.setVisible(true);
-//			dispose();
+			MachiningOperation bsRoughMilling = new BottomAndSideRoughMilling("name", 5);
+			ws.setOperation(bsRoughMilling);
+
+			EditBallEndMillWS bmWS = new EditBallEndMillWS(janelaShopFloor, projetoSF, ws);
+			bmWS.setVisible(true);
+			dispose();
 		} else if(this.radioButton4.isSelected())
 		{
-			
+			MachiningOperation drilling = new Drilling("name", 5);
+			ws.setOperation(drilling);
+
+			EditCenterDrillWS cd = new EditCenterDrillWS(janelaShopFloor, projetoSF, ws);
+			cd.setVisible(true);
+			dispose();
 		} else if(this.radioButton5.isSelected())
 		{
-			
+//			MachiningOperation freeForm = new FreeformOperation("name", 5);
+//			ws.setOperation(freeForm);
+//
+//			EditBallEndMillWS bmWS = new EditBallEndMillWS(janelaShopFloor, projetoSF, ws);
+//			bmWS.setVisible(true);
+//			dispose();
 		} else if(this.radioButton6.isSelected())
 		{
-			
+			MachiningOperation pfinish = new PlaneFinishMilling("name", 5);
+			ws.setOperation(pfinish);
+
+			EditFaceMillWS fm = new EditFaceMillWS(janelaShopFloor, projetoSF, ws);
+			fm.setVisible(true);
+			dispose();
 		} else if(this.radioButton7.isSelected())
 		{
-			
+			MachiningOperation pRough = new PlaneRoughMilling("name", 5);
+			ws.setOperation(pRough);
+
+			EditFaceMillWS fm = new EditFaceMillWS(janelaShopFloor, projetoSF, ws);
+			fm.setVisible(true);
+			dispose();
 		} else if(this.radioButton8.isSelected())
 		{
-			
+			MachiningOperation r = new Reaming("name", 5);
+			ws.setOperation(r);
+
+			EditReamerWS fm = new EditReamerWS(janelaShopFloor, projetoSF, ws);
+			fm.setVisible(true);
+			dispose();
 		} 
 	}
 }

@@ -92,6 +92,7 @@ public class CreateNewWorkingStepFrame extends JDialog {
 
 					//---- radioButton5 ----
 					radioButton5.setText("Free form operation");
+					radioButton5.setEnabled(false);
 					panel1.add(radioButton5, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
@@ -159,9 +160,9 @@ public class CreateNewWorkingStepFrame extends JDialog {
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	protected JPanel dialogPane;
-	protected JPanel contentPanel;
-	protected JPanel panel1;
+	private JPanel dialogPane;
+	private JPanel contentPanel;
+	private JPanel panel1;
 	protected JRadioButton radioButton1;
 	protected JRadioButton radioButton2;
 	protected JRadioButton radioButton3;
@@ -170,7 +171,7 @@ public class CreateNewWorkingStepFrame extends JDialog {
 	protected JRadioButton radioButton6;
 	protected JRadioButton radioButton7;
 	protected JRadioButton radioButton8;
-	protected JPanel buttonBar;
+	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables

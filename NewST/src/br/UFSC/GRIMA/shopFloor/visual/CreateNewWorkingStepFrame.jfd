@@ -75,6 +75,7 @@ new FormModel {
 							name: "radioButton5"
 							"text": "Free form operation"
 							"$buttonGroup": new FormReference( "buttonGroup1" )
+							"enabled": false
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4
 							}

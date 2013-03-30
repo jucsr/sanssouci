@@ -6,7 +6,9 @@ package br.UFSC.GRIMA.entidades.ferramentas;
  */
 public class CenterDrill extends Ferramenta
 {
-	
+	public CenterDrill(){
+		
+	}
 	public CenterDrill(String nome, String material, double diametro,
 			double tipAngle, double cuttingEdge, double profundidade,
 			double offSetLength, double dm, double rugosidade,

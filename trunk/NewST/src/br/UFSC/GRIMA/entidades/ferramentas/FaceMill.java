@@ -3,6 +3,10 @@ package br.UFSC.GRIMA.entidades.ferramentas;
 public class FaceMill extends Ferramenta
 {
 
+	public FaceMill(){
+		
+	}
+	
 	public FaceMill(String nome, String material, double diametro,
 			double cuttingEdge, double profundidade, double offSetLength,
 			double dm, double rugosidade, double tolerancia, int handOfCut) {

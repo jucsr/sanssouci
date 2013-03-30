@@ -1,5 +1,5 @@
 /*
- * Created by JFormDesigner on Tue Aug 30 13:55:55 BRT 2011
+ * Created by JFormDesigner on Tue Aug 30 13:55:24 BRT 2011
  */
 
 package br.UFSC.GRIMA.shopFloor.visual;
@@ -13,13 +13,13 @@ import com.jgoodies.forms.factories.*;
 /**
  * @author ssiaum
  */
-public class EditBallEndMillFrame extends JDialog {
-	public EditBallEndMillFrame(Frame owner) {
+public class EditFaceMillFrame extends JDialog {
+	public EditFaceMillFrame(Frame owner) {
 		super(owner);
 		initComponents();
 	}
 
-	public EditBallEndMillFrame(Dialog owner) {
+	public EditFaceMillFrame(Dialog owner) {
 		super(owner);
 		initComponents();
 	}
@@ -32,24 +32,23 @@ public class EditBallEndMillFrame extends JDialog {
 		label3 = new JLabel();
 		formattedTextField1 = new JFormattedTextField();
 		label4 = new JLabel();
-		textField2 = new JTextField();
+		label5 = new JLabel();
 		tabbedPane1 = new JTabbedPane();
 		panel1 = new JPanel();
-		panel11 = new JPanel();
-		panel12 = new JPanel();
+		panel10 = new JPanel();
 		panel12a = new JPanel();
 		layeredPane2 = new JLayeredPane();
 		spinner13 = new JSpinner();
 		spinner14 = new JSpinner();
 		spinner15 = new JSpinner();
 		label28 = new JLabel();
-		panel13 = new JPanel();
-		panel14 = new JPanel();
-		label23 = new JLabel();
-		label24 = new JLabel();
-		label17 = new JLabel();
+		panel11 = new JPanel();
+		panel12 = new JPanel();
+		label21 = new JLabel();
+		label22 = new JLabel();
+		label13 = new JLabel();
 		formattedTextField3 = new JFormattedTextField();
-		label18 = new JLabel();
+		label15 = new JLabel();
 		checkBox3 = new JCheckBox();
 		panel2 = new JPanel();
 		panel5 = new JPanel();
@@ -57,9 +56,10 @@ public class EditBallEndMillFrame extends JDialog {
 		layeredPane1 = new JLayeredPane();
 		spinner1 = new JSpinner();
 		spinner2 = new JSpinner();
+		spinner3 = new JSpinner();
 		spinner4 = new JSpinner();
 		spinner5 = new JSpinner();
-		spinner3 = new JSpinner();
+		spinner6 = new JSpinner();
 		label6 = new JLabel();
 		panel7 = new JPanel();
 		panel8 = new JPanel();
@@ -85,14 +85,14 @@ public class EditBallEndMillFrame extends JDialog {
 		label12 = new JLabel();
 		spinner11 = new JSpinner();
 		spinner12 = new JSpinner();
-		label25 = new JLabel();
-		panel10 = new JPanel();
+		label23 = new JLabel();
+		panel13 = new JPanel();
 		panel15 = new JPanel();
 		panel16 = new JPanel();
 		label1 = new JLabel();
-		spinner6 = new JSpinner();
-		label2 = new JLabel();
 		spinner16 = new JSpinner();
+		label2 = new JLabel();
+		spinner17 = new JSpinner();
 		scrollPane3 = new JScrollPane();
 		table1 = new JTable();
 		buttonBar = new JPanel();
@@ -114,13 +114,13 @@ public class EditBallEndMillFrame extends JDialog {
 				contentPanel.setLayout(new GridBagLayout());
 				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0};
 				((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
 				((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
 
 				//======== panel4 ========
 				{
 					panel4.setLayout(new GridBagLayout());
-					((GridBagLayout)panel4.getLayout()).columnWidths = new int[] {0, 100, 0};
+					((GridBagLayout)panel4.getLayout()).columnWidths = new int[] {0, 0, 0};
 					((GridBagLayout)panel4.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
 					((GridBagLayout)panel4.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
 					((GridBagLayout)panel4.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
@@ -133,7 +133,7 @@ public class EditBallEndMillFrame extends JDialog {
 
 					//---- formattedTextField1 ----
 					formattedTextField1.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
-					formattedTextField1.setText("ID01 bottomAndSide");
+					formattedTextField1.setText("ID01 Plane");
 					panel4.add(formattedTextField1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -145,10 +145,10 @@ public class EditBallEndMillFrame extends JDialog {
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 5), 0, 0));
 
-					//---- textField2 ----
-					textField2.setText("Closed Pocket");
-					textField2.setVisible(false);
-					panel4.add(textField2, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+					//---- label5 ----
+					label5.setText("feature");
+					label5.setVisible(false);
+					panel4.add(label5, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 0), 0, 0));
 				}
@@ -162,139 +162,127 @@ public class EditBallEndMillFrame extends JDialog {
 					//======== panel1 ========
 					{
 						panel1.setLayout(new GridBagLayout());
-						((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0};
+						((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0};
 						((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0};
-						((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+						((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
 						((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
-						//======== panel11 ========
+						//======== panel10 ========
 						{
-							panel11.setLayout(new GridBagLayout());
-							((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0};
-							((GridBagLayout)panel11.getLayout()).rowHeights = new int[] {0, 0};
-							((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
-							((GridBagLayout)panel11.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+							panel10.setBorder(new EtchedBorder());
+							panel10.setLayout(new GridBagLayout());
+							((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {345, 0, 0};
+							((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {340, 0};
+							((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
-							//======== panel12 ========
+							//======== panel12a ========
 							{
-								panel12.setBorder(new EtchedBorder());
-								panel12.setLayout(new GridBagLayout());
-								((GridBagLayout)panel12.getLayout()).columnWidths = new int[] {345, 0, 0};
-								((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 340, 0};
-								((GridBagLayout)panel12.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
-								((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+								panel12a.setBorder(new EtchedBorder());
+								panel12a.setLayout(new GridBagLayout());
+								((GridBagLayout)panel12a.getLayout()).columnWidths = new int[] {340, 0};
+								((GridBagLayout)panel12a.getLayout()).rowHeights = new int[] {340, 0};
+								((GridBagLayout)panel12a.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+								((GridBagLayout)panel12a.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
-								//======== panel12a ========
+								//======== layeredPane2 ========
 								{
-									panel12a.setBorder(new EtchedBorder());
-									panel12a.setLayout(new GridBagLayout());
-									((GridBagLayout)panel12a.getLayout()).columnWidths = new int[] {340, 0};
-									((GridBagLayout)panel12a.getLayout()).rowHeights = new int[] {340, 0};
-									((GridBagLayout)panel12a.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
-									((GridBagLayout)panel12a.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+									layeredPane2.setBorder(new EtchedBorder());
 
-									//======== layeredPane2 ========
-									{
-										layeredPane2.setBorder(new EtchedBorder());
+									//---- spinner13 ----
+									spinner13.setModel(new SpinnerNumberModel(0.5, 0.0, 10.0, 0.1));
+									spinner13.setEnabled(false);
+									layeredPane2.add(spinner13, JLayeredPane.DEFAULT_LAYER);
+									spinner13.setBounds(270, 215, 44, spinner13.getPreferredSize().height);
 
-										//---- spinner13 ----
-										spinner13.setModel(new SpinnerNumberModel(0.5, 0.0, 10.0, 0.1));
-										layeredPane2.add(spinner13, JLayeredPane.DEFAULT_LAYER);
-										spinner13.setBounds(260, 225, 44, spinner13.getPreferredSize().height);
+									//---- spinner14 ----
+									spinner14.setModel(new SpinnerNumberModel(0.5, 0.0, 10.0, 0.1));
+									layeredPane2.add(spinner14, JLayeredPane.DEFAULT_LAYER);
+									spinner14.setBounds(130, 280, 44, spinner14.getPreferredSize().height);
 
-										//---- spinner14 ----
-										spinner14.setModel(new SpinnerNumberModel(0.5, 0.0, 10.0, 0.1));
-										layeredPane2.add(spinner14, JLayeredPane.DEFAULT_LAYER);
-										spinner14.setBounds(135, 280, 44, spinner14.getPreferredSize().height);
+									//---- spinner15 ----
+									spinner15.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+									layeredPane2.add(spinner15, JLayeredPane.DEFAULT_LAYER);
+									spinner15.setBounds(290, 115, 45, spinner15.getPreferredSize().height);
 
-										//---- spinner15 ----
-										spinner15.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-										layeredPane2.add(spinner15, JLayeredPane.DEFAULT_LAYER);
-										spinner15.setBounds(290, 120, 45, spinner15.getPreferredSize().height);
-
-										//---- label28 ----
-										label28.setIcon(new ImageIcon(getClass().getResource("/images/OperationBall.png")));
-										layeredPane2.add(label28, JLayeredPane.DEFAULT_LAYER);
-										label28.setBounds(new Rectangle(new Point(0, 0), label28.getPreferredSize()));
-									}
-									panel12a.add(layeredPane2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 0), 0, 0));
+									//---- label28 ----
+									label28.setIcon(new ImageIcon(getClass().getResource("/images/OperationFaceMill.png")));
+									layeredPane2.add(label28, JLayeredPane.DEFAULT_LAYER);
+									label28.setBounds(new Rectangle(new Point(0, 0), label28.getPreferredSize()));
 								}
-								panel12.add(panel12a, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 0, 5), 0, 0));
-
-								//======== panel13 ========
-								{
-									panel13.setLayout(new GridBagLayout());
-									((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {0, 0, 0};
-									((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-									((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-									((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
-
-									//======== panel14 ========
-									{
-										panel14.setBorder(new EtchedBorder());
-										panel14.setLayout(new GridBagLayout());
-										((GridBagLayout)panel14.getLayout()).columnWidths = new int[] {0, 0, 0};
-										((GridBagLayout)panel14.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-										((GridBagLayout)panel14.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-										((GridBagLayout)panel14.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-
-										//---- label23 ----
-										label23.setText("Type: ");
-										panel14.add(label23, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 5, 5), 0, 0));
-
-										//---- label24 ----
-										label24.setText("Bottom and Side Rough Or Finish Milling");
-										panel14.add(label24, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 5, 0), 0, 0));
-
-										//---- label17 ----
-										label17.setText("Id:");
-										panel14.add(label17, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 5, 5), 0, 0));
-
-										//---- formattedTextField3 ----
-										formattedTextField3.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
-										formattedTextField3.setText("ID02");
-										panel14.add(formattedTextField3, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 5, 0), 0, 0));
-
-										//---- label18 ----
-										label18.setText("Coolant:");
-										panel14.add(label18, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 0, 5), 0, 0));
-
-										//---- checkBox3 ----
-										checkBox3.setBorderPaintedFlat(true);
-										checkBox3.setSelected(true);
-										panel14.add(checkBox3, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
-											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 0, 0), 0, 0));
-									}
-									panel13.add(panel14, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 0), 0, 0));
-								}
-								panel12.add(panel13, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								panel12a.add(layeredPane2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
-							panel11.add(panel12, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+							panel10.add(panel12a, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 0, 5), 0, 0));
+
+							//======== panel11 ========
+							{
+								panel11.setLayout(new GridBagLayout());
+								((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0};
+								((GridBagLayout)panel11.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+								((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel11.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+
+								//======== panel12 ========
+								{
+									panel12.setBorder(new EtchedBorder());
+									panel12.setLayout(new GridBagLayout());
+									((GridBagLayout)panel12.getLayout()).columnWidths = new int[] {0, 0, 0};
+									((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel12.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+									//---- label21 ----
+									label21.setText("Type: ");
+									panel12.add(label21, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 5), 0, 0));
+
+									//---- label22 ----
+									label22.setText("Plane rough or finish ");
+									panel12.add(label22, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+
+									//---- label13 ----
+									label13.setText("Id:");
+									panel12.add(label13, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 5), 0, 0));
+
+									//---- formattedTextField3 ----
+									formattedTextField3.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
+									panel12.add(formattedTextField3, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+
+									//---- label15 ----
+									label15.setText("Coolant:");
+									panel12.add(label15, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- checkBox3 ----
+									checkBox3.setBorderPaintedFlat(true);
+									checkBox3.setSelected(true);
+									panel12.add(checkBox3, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 0), 0, 0));
+								}
+								panel11.add(panel12, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 0), 0, 0));
+							}
+							panel10.add(panel11, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 0, 0), 0, 0));
 						}
-						panel1.add(panel11, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+						panel1.add(panel10, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-							new Insets(0, 0, 0, 0), 0, 0));
+							new Insets(0, 0, 0, 5), 0, 0));
 					}
 					tabbedPane1.addTab("Operation", panel1);
 
@@ -302,7 +290,7 @@ public class EditBallEndMillFrame extends JDialog {
 					//======== panel2 ========
 					{
 						panel2.setLayout(new GridBagLayout());
-						((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {345, 0, 0};
+						((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0};
 						((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {340, 0};
 						((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
 						((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
@@ -329,34 +317,39 @@ public class EditBallEndMillFrame extends JDialog {
 									layeredPane1.setBackground(Color.white);
 
 									//---- spinner1 ----
-									spinner1.setModel(new SpinnerNumberModel(80.0, 0.0, null, 1.0));
+									spinner1.setModel(new SpinnerNumberModel(70.0, 0.0, null, 1.0));
 									layeredPane1.add(spinner1, JLayeredPane.DEFAULT_LAYER);
-									spinner1.setBounds(90, 225, 41, spinner1.getPreferredSize().height);
+									spinner1.setBounds(230, 155, 40, spinner1.getPreferredSize().height);
 
 									//---- spinner2 ----
 									spinner2.setModel(new SpinnerNumberModel(60.0, 0.0, null, 1.0));
 									layeredPane1.add(spinner2, JLayeredPane.DEFAULT_LAYER);
-									spinner2.setBounds(200, 240, 36, spinner2.getPreferredSize().height);
+									spinner2.setBounds(70, 220, 36, spinner2.getPreferredSize().height);
+
+									//---- spinner3 ----
+									spinner3.setModel(new SpinnerNumberModel(40.0, 0.0, null, 1.0));
+									layeredPane1.add(spinner3, JLayeredPane.DEFAULT_LAYER);
+									spinner3.setBounds(185, 255, 40, spinner3.getPreferredSize().height);
 
 									//---- spinner4 ----
 									spinner4.setModel(new SpinnerNumberModel(20.0, 1.0, null, 1.0));
 									layeredPane1.add(spinner4, JLayeredPane.DEFAULT_LAYER);
-									spinner4.setBounds(150, 320, 36, spinner4.getPreferredSize().height);
+									spinner4.setBounds(126, 304, 36, spinner4.getPreferredSize().height);
 
 									//---- spinner5 ----
 									spinner5.setModel(new SpinnerNumberModel(20.0, 0.0, null, 1.0));
 									layeredPane1.add(spinner5, JLayeredPane.DEFAULT_LAYER);
-									spinner5.setBounds(150, 0, 40, 21);
+									spinner5.setBounds(125, 15, 41, spinner5.getPreferredSize().height);
 
-									//---- spinner3 ----
-									spinner3.setModel(new SpinnerNumberModel(70.0, 0.0, null, 1.0));
-									layeredPane1.add(spinner3, JLayeredPane.DEFAULT_LAYER);
-									spinner3.setBounds(45, 160, 41, spinner3.getPreferredSize().height);
+									//---- spinner6 ----
+									spinner6.setModel(new SpinnerNumberModel(20.0, 0.0, null, 1.0));
+									layeredPane1.add(spinner6, JLayeredPane.DEFAULT_LAYER);
+									spinner6.setBounds(125, 165, 40, 21);
 
 									//---- label6 ----
-									label6.setIcon(new ImageIcon(getClass().getResource("/images/ballEndMill.png")));
+									label6.setIcon(new ImageIcon(getClass().getResource("/images/faceMill.png")));
 									layeredPane1.add(label6, JLayeredPane.DEFAULT_LAYER);
-									label6.setBounds(new Rectangle(new Point(0, 0), label6.getPreferredSize()));
+									label6.setBounds(0, 0, label6.getPreferredSize().width, 344);
 								}
 								panel6.add(layeredPane1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -392,7 +385,7 @@ public class EditBallEndMillFrame extends JDialog {
 										new Insets(0, 0, 5, 5), 0, 0));
 
 									//---- textField1 ----
-									textField1.setText("ball end mill");
+									textField1.setText("SF20");
 									textField1.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
 									panel8.add(textField1, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -483,11 +476,12 @@ public class EditBallEndMillFrame extends JDialog {
 
 					//======== panel3 ========
 					{
+						panel3.setBorder(new EtchedBorder());
 						panel3.setLayout(new GridBagLayout());
 						((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {0, 555, 0, 0};
-						((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {0, 0};
+						((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {340, 0};
 						((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
-						((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+						((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 						//======== layeredPane3 ========
 						{
@@ -495,52 +489,52 @@ public class EditBallEndMillFrame extends JDialog {
 							//---- spinner7 ----
 							spinner7.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 							layeredPane3.add(spinner7, JLayeredPane.DEFAULT_LAYER);
-							spinner7.setBounds(310, 115, 50, spinner7.getPreferredSize().height);
+							spinner7.setBounds(120, 200, 50, spinner7.getPreferredSize().height);
 
 							//---- label19 ----
 							label19.setText("m/min");
 							layeredPane3.add(label19, JLayeredPane.DEFAULT_LAYER);
-							label19.setBounds(365, 120, 50, label19.getPreferredSize().height);
+							label19.setBounds(175, 205, 50, label19.getPreferredSize().height);
 
 							//---- spinner9 ----
 							spinner9.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 							layeredPane3.add(spinner9, JLayeredPane.DEFAULT_LAYER);
-							spinner9.setBounds(150, 95, 55, spinner9.getPreferredSize().height);
+							spinner9.setBounds(310, 120, 50, spinner9.getPreferredSize().height);
 
 							//---- label20 ----
 							label20.setText("mm/rot");
 							layeredPane3.add(label20, JLayeredPane.DEFAULT_LAYER);
-							label20.setBounds(220, 100, 45, label20.getPreferredSize().height);
+							label20.setBounds(365, 125, 50, label20.getPreferredSize().height);
 
 							//---- spinner10 ----
 							spinner10.setModel(new SpinnerNumberModel(0, 0, null, 1));
 							layeredPane3.add(spinner10, JLayeredPane.DEFAULT_LAYER);
-							spinner10.setBounds(315, 35, 60, spinner10.getPreferredSize().height);
+							spinner10.setBounds(225, 65, 60, spinner10.getPreferredSize().height);
 
 							//---- label14 ----
 							label14.setText("rpm");
 							layeredPane3.add(label14, JLayeredPane.DEFAULT_LAYER);
-							label14.setBounds(380, 40, 35, label14.getPreferredSize().height);
+							label14.setBounds(290, 70, 35, label14.getPreferredSize().height);
 
 							//---- label12 ----
 							label12.setText("Cut Speed");
 							layeredPane3.add(label12, JLayeredPane.DEFAULT_LAYER);
-							label12.setBounds(275, 100, 65, label12.getPreferredSize().height);
+							label12.setBounds(185, 175, 70, label12.getPreferredSize().height);
 
 							//---- spinner11 ----
 							spinner11.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 							layeredPane3.add(spinner11, JLayeredPane.DEFAULT_LAYER);
-							spinner11.setBounds(425, 165, 46, spinner11.getPreferredSize().height);
+							spinner11.setBounds(345, 190, 46, spinner11.getPreferredSize().height);
 
 							//---- spinner12 ----
 							spinner12.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 							layeredPane3.add(spinner12, JLayeredPane.DEFAULT_LAYER);
-							spinner12.setBounds(350, 225, 50, 20);
+							spinner12.setBounds(270, 255, 50, 20);
 
-							//---- label25 ----
-							label25.setIcon(new ImageIcon(getClass().getResource("/images/technologyBallEndMill.png")));
-							layeredPane3.add(label25, JLayeredPane.DEFAULT_LAYER);
-							label25.setBounds(new Rectangle(new Point(0, 0), label25.getPreferredSize()));
+							//---- label23 ----
+							label23.setIcon(new ImageIcon(getClass().getResource("/images/technologyMill.png")));
+							layeredPane3.add(label23, JLayeredPane.DEFAULT_LAYER);
+							label23.setBounds(new Rectangle(new Point(0, 0), label23.getPreferredSize()));
 						}
 						panel3.add(layeredPane3, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -549,13 +543,13 @@ public class EditBallEndMillFrame extends JDialog {
 					tabbedPane1.addTab("Technology", panel3);
 
 
-					//======== panel10 ========
+					//======== panel13 ========
 					{
-						panel10.setLayout(new GridBagLayout());
-						((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {96, 0, 0, 0};
-						((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
-						((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
-						((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
+						panel13.setLayout(new GridBagLayout());
+						((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {96, 0, 0, 0};
+						((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
+						((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
 						//======== panel15 ========
 						{
@@ -579,9 +573,9 @@ public class EditBallEndMillFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
-								//---- spinner6 ----
-								spinner6.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-								panel16.add(spinner6, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+								//---- spinner16 ----
+								spinner16.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+								panel16.add(spinner16, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 
@@ -591,9 +585,9 @@ public class EditBallEndMillFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
 
-								//---- spinner16 ----
-								spinner16.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-								panel16.add(spinner16, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								//---- spinner17 ----
+								spinner17.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+								panel16.add(spinner17, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
@@ -601,7 +595,7 @@ public class EditBallEndMillFrame extends JDialog {
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 5), 0, 0));
 						}
-						panel10.add(panel15, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+						panel13.add(panel15, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 5, 5), 0, 0));
 
@@ -627,11 +621,11 @@ public class EditBallEndMillFrame extends JDialog {
 							table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 							scrollPane3.setViewportView(table1);
 						}
-						panel10.add(scrollPane3, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+						panel13.add(scrollPane3, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 5, 5), 0, 0));
 					}
-					tabbedPane1.addTab("Cost, Time & Relations", panel10);
+					tabbedPane1.addTab("Cost, Time & Relations", panel13);
 
 				}
 				contentPanel.add(tabbedPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
@@ -674,24 +668,23 @@ public class EditBallEndMillFrame extends JDialog {
 	private JLabel label3;
 	protected JFormattedTextField formattedTextField1;
 	private JLabel label4;
-	protected JTextField textField2;
+	protected JLabel label5;
 	private JTabbedPane tabbedPane1;
 	private JPanel panel1;
-	private JPanel panel11;
-	private JPanel panel12;
+	private JPanel panel10;
 	private JPanel panel12a;
 	private JLayeredPane layeredPane2;
 	protected JSpinner spinner13;
 	protected JSpinner spinner14;
 	protected JSpinner spinner15;
-	protected JLabel label28;
-	private JPanel panel13;
-	private JPanel panel14;
-	private JLabel label23;
-	protected JLabel label24;
-	private JLabel label17;
+	private JLabel label28;
+	private JPanel panel11;
+	private JPanel panel12;
+	private JLabel label21;
+	private JLabel label22;
+	private JLabel label13;
 	protected JFormattedTextField formattedTextField3;
-	private JLabel label18;
+	private JLabel label15;
 	protected JCheckBox checkBox3;
 	private JPanel panel2;
 	private JPanel panel5;
@@ -699,9 +692,10 @@ public class EditBallEndMillFrame extends JDialog {
 	private JLayeredPane layeredPane1;
 	protected JSpinner spinner1;
 	protected JSpinner spinner2;
+	protected JSpinner spinner3;
 	protected JSpinner spinner4;
 	protected JSpinner spinner5;
-	protected JSpinner spinner3;
+	protected JSpinner spinner6;
 	protected JLabel label6;
 	private JPanel panel7;
 	private JPanel panel8;
@@ -727,14 +721,14 @@ public class EditBallEndMillFrame extends JDialog {
 	private JLabel label12;
 	protected JSpinner spinner11;
 	protected JSpinner spinner12;
-	private JLabel label25;
-	private JPanel panel10;
+	private JLabel label23;
+	private JPanel panel13;
 	private JPanel panel15;
 	private JPanel panel16;
 	private JLabel label1;
-	protected JSpinner spinner6;
-	private JLabel label2;
 	protected JSpinner spinner16;
+	private JLabel label2;
+	protected JSpinner spinner17;
 	private JScrollPane scrollPane3;
 	protected JTable table1;
 	private JPanel buttonBar;

@@ -12,6 +12,10 @@ public class BoringTool extends Ferramenta
 	private double diametroMax;
 	private double diametroMin;
 	
+	public BoringTool(){
+		
+	}
+	
 	public BoringTool(String nome, String material, String diametro, double edgeRadius,
 			double cuttingEdge, double profundidade, double offSetLength,
 			double dm, double rugosidade, double tolerancia, int handOfCut, String acoplamento) {

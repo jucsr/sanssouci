@@ -301,6 +301,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		setDoneCAPP(this.projeto.isCappDone());
 		atualizarArvore();
 		atualizarArvoreCAPP();
+		atualizarArvorePrecedencias();
 	}
 
 	public void initComponents() {
@@ -627,6 +628,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 								}
 							}
 							this.atualizarArvore();
+							this.atualizarArvorePrecedencias();
 							this.desenhador.repaint();
 							JOptionPane.showMessageDialog(null,
 									"As features foram removidas com sucesso",
@@ -658,6 +660,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 											JOptionPane.INFORMATION_MESSAGE);
 							this.modificado = false;
 							this.atualizarArvore();
+							this.atualizarArvorePrecedencias();
 							setDoneCAPP(false);
 							ToolManager.setToolManagerDone(false);
 							// System.out.println("elementos: " +
@@ -1172,7 +1175,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			setDoneCAPP(this.projeto.isCappDone());
 			this.atualizarArvore();
 			this.atualizarArvoreCAPP();
-			
+			this.atualizarArvorePrecedencias();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

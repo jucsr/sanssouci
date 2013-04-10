@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_01" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.6.0_37" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -42,7 +42,7 @@ new FormModel {
 								name: "panel2"
 								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 									"$columnSpecs": "0, 0:1.0"
-									"$rowSpecs": "0, 0, 0, 0"
+									"$rowSpecs": "0, 0, 0, 0, 0"
 									"$hGap": 5
 									"$vGap": 5
 									"$alignLeft": true
@@ -106,6 +106,53 @@ new FormModel {
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridx": 1
 										"gridy": 3
+									} )
+									add( new FormComponent( "javax.swing.JLabel" ) {
+										name: "label21"
+										"text": "Its Origin"
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridy": 4
+									} )
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+										"$columnSpecs": "default, labelcompgap, default, labelcompgap, default, labelcompgap, default, labelcompgap, default, labelcompgap, default"
+										"$rowSpecs": "default"
+									} ) {
+										name: "panel18"
+										add( new FormComponent( "javax.swing.JLabel" ) {
+											name: "label22"
+											"text": "X"
+										}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+											"gridX": 1
+											"gridY": 1
+										} )
+										add( new FormComponent( "javax.swing.JSpinner" ) {
+											name: "spinner13"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+											"gridWidth": 3
+											"gridX": 3
+										} )
+										add( new FormComponent( "javax.swing.JLabel" ) {
+											name: "label23"
+											"text": "Y"
+										}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+											"gridX": 7
+											"gridY": 1
+										} )
+										add( new FormComponent( "javax.swing.JSpinner" ) {
+											name: "spinner14"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+											"gridX": 9
+											"gridWidth": 3
+										} )
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 1
+										"gridy": 4
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 									"gridx": 1

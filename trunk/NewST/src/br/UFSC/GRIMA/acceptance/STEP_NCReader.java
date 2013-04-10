@@ -34,6 +34,7 @@ public class STEP_NCReader  {
 	AMilling_tool_dimension aTool_dimension;
 	String path;
 	public ProjectReader projectReader;
+	
 	CondicoesDeUsinagemReader condicoesReader;
 	
 	public Projeto projeto;

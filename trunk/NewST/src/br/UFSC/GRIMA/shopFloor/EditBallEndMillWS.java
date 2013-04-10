@@ -192,7 +192,7 @@ public class EditBallEndMillWS extends EditBallEndMillFrame implements ActionLis
 		projetoSF.setWorkingsteps(wsArray);
 		
 		//Chamada do metodo de atualizaçao da JTree
-		//this.janelaShopFloor.atualizarArvorePrecendences(); //New
+		this.janelaShopFloor.atualizarArvorePrecendences(); //New
 		
 		this.dispose();
 	}

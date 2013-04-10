@@ -1,8 +1,15 @@
 package br.UFSC.GRIMA.shopFloor;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -11,13 +18,14 @@ import br.UFSC.GRIMA.shopFloor.visual.NovoProjetoShopFloorFrame;
 public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame implements ActionListener, ChangeListener
 {
 	private JanelaShopFloor janelaShopFloor;
-	private int userID;
+	private int userID,x=10,y=10;
 	private String userName;
 	private ShopFloor shopFloor;
 	private double length;
 	private double width;
 	private ProjetoSF projetoSF;
-	
+	private Desenho pdesenho;
+	private Rectangle2D floor;
 	public ProjetoSF getProjetoSF() {
 		return projetoSF;
 	}
@@ -36,10 +44,17 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 		this.width = ((Double) this.spinnerX.getValue()).doubleValue();
 		this.length = ((Double) this.spinnerY.getValue()).doubleValue();
 		setVisible(true);
+		this.floor = new Rectangle2D.Double(x, y, width, length);
+		this.pdesenho = new Desenho();
+		this.panel8.setLayout(new BorderLayout());
+		this.panel8.add(pdesenho);
+		this.pdesenho.repaint();
+		
 	}
 	
 	private void ok()
 	{
+		
 		shopFloor = new ShopFloor(userName, userID, length, width);
 		this.projetoSF = new ProjetoSF(this.shopFloor);
 		this.janelaShopFloor = new JanelaShopFloor(shopFloor, projetoSF);
@@ -68,11 +83,38 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 		{
 			this.width = ((Double) this.spinnerX.getValue()).doubleValue();
 			
+			floor = new Rectangle2D.Double(x, y, width, length);
+			pdesenho.repaint();
+			
 		}
 		else if(o.equals(spinnerY))
 		{
 			this.length = ((Double) this.spinnerY.getValue()).doubleValue();	
 			
+			floor = new Rectangle2D.Double(x, y, width, length);
+			pdesenho.repaint();
 		}
 	}
+	
+	class Desenho extends JPanel
+	{
+		public Desenho()
+		{
+			
+		}
+		public void paintComponent(Graphics g)
+		{
+			super.paintComponent(g);
+			Graphics2D g2d = (Graphics2D) g;
+			
+			g2d.setColor(Color.BLUE);
+			
+			g2d.draw(floor);
+			
+			g2d.dispose();
+			
+		}
+	}
+	
 }
+

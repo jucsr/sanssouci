@@ -8,7 +8,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
+import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.bancoDeDados.AcessaBD;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
@@ -20,7 +23,7 @@ import br.UFSC.GRIMA.entidades.machiningResources.ToolMagazine;
 import br.UFSC.GRIMA.entidades.machiningResources.WorkpieceHandlingDevice;
 import br.UFSC.GRIMA.shopFloor.visual.CreateMillingMachineFrame;
 
-public class CreateMillingMachine extends CreateMillingMachineFrame implements ActionListener
+public class CreateMillingMachine extends CreateMillingMachineFrame implements ActionListener,ChangeListener
 {
 	AcessaBD aBD = new AcessaBD("150.162.105.1", "webTools", "webcad", "julio123");
 	public JanelaShopFloor janelaShopFloor;
@@ -65,6 +68,8 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		this.button16.addActionListener(this);
 		this.button17.addActionListener(this);
 		this.menuItem1.addActionListener(this);
+		this.spinner14.addChangeListener(this);
+		this.spinner13.addChangeListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent e) 
@@ -75,7 +80,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 //			machineTool.setItsCapability(itsCapability);
 //			machineTool.setItsId(itsId);
 //			machineTool.setItsLocation();
-//			machineTool.setItsOrigin(itsOrigin);
+			millingMachine.setItsOrigin(new Point3d(((Double)spinner13.getValue()).doubleValue(),((Double)spinner14.getValue()).doubleValue(),0));
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);
 //			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);
@@ -345,4 +350,11 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		return lyly;
 	}
 
-}
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		// TODO Auto-generated method stub
+		
+		}
+	}
+
+

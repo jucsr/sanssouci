@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.shopFloor;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,9 +35,10 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.projetoSF = projetoSFNew;
 		this.addicionarOuvidores();
 		shopPanel = new ShopFloorPanel (projetoSF,shopFloor);
+		this.panel1.setLayout(new BorderLayout());
 		this.panel1.add(shopPanel);
 		this.zooming = ((Double)spinnerZoom.getValue()).doubleValue();
-		
+		this.shopPanel.repaint();
 		this.atualizarArvorePrecendences(); //New
 	}
 
@@ -79,13 +81,13 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			
 		} else if(o.equals(zoomMais))
 		{
-			this.zooming++; // add 5 to value of zooming
+			this.zooming = zooming + 5; // add 5 to value of zooming
 			this.spinnerZoom.setValue(zooming);
 			shopPanel.zooming(zooming);
 			shopPanel.repaint();
 		}else if (o.equals(zoomMenos)){
 			
-			this.zooming--; // decrease 5 of zooming
+			this.zooming = zooming - 5; // decrease 5 of zooming
 			this.spinnerZoom.setValue(zooming);
 			shopPanel.zooming(zooming);
 			shopPanel.repaint();
@@ -135,7 +137,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			}
 		}
 		
-		//Associação da JTree criada ao objeto visual tree3 e atualizacao da mesma
+		//Associaï¿½ï¿½o da JTree criada ao objeto visual tree3 e atualizacao da mesma
 		this.tree3 = new JTree(root);
 		scrollPaneTree2.setViewportView(tree3);
 		scrollPaneTree2.revalidate();
@@ -149,7 +151,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		
 		for (int i = 0; i < projetoSF.getWorkingsteps().size(); i++)
 		{
-			//Salva em array os workingsteps de primeiro nível
+			//Salva em array os workingsteps de primeiro nï¿½vel
 			if (projetoSF.getWorkingsteps().get(i).getWorkingstepPrecedente() == null)
 			{
 				workingstepsIniciais.add(projetoSF.getWorkingsteps().get(i));
@@ -164,7 +166,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		
 		}
 		
-		//Associação da JTree criada ao objeto visual tree3 e atualizacao da mesma
+		//Associaï¿½ï¿½o da JTree criada ao objeto visual tree3 e atualizacao da mesma
 		this.tree3 = new JTree(root);
 		scrollPaneTree2.setViewportView(tree3);
 		scrollPaneTree2.revalidate();
@@ -177,7 +179,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		//Adiciona ao root somente workingsteps sem precedentes e sem poscedentes
 		if (ws.getWorkingstepPrecedente() == null && ws.getWorkingstepsPoscedentesDiretos(wsArray).size() == 0)
 		{
-			System.out.println("entrou no if, não tem precedente nem poscedente, adicionado ao root");
+			System.out.println("entrou no if, nï¿½o tem precedente nem poscedente, adicionado ao root");
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(ws.getId());
 			return newNode;
 		}
@@ -212,7 +214,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			return newRoot2;
 		}
 		
-		//Adiciona ao root recursivo nós sem poscedentes
+		//Adiciona ao root recursivo nï¿½s sem poscedentes
 		if (ws.getWorkingstepsPoscedentesDiretos(wsArray) == null)
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(ws.getId());

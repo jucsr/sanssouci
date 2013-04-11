@@ -71,10 +71,10 @@ public class MapeadoraRegion
 		
 		// ---------------- CRIANDO WORKINGSTEP DE DESBASTE (zigue-zague)------------------
 		
-					// -----Criando operação ----
+					// -----Criando operaï¿½ï¿½o ----
 		System.err.println("===============>>>>>>>>> zMaximo  " + zMaximo + "  Posicao : " + regionTmp.getPosicaoZ());
 		
-		if(zMaximo<regionTmp.getPosicaoZ()){
+		if(zMaximo>regionTmp.getPosicaoZ()){
 			BottomAndSideRoughMilling desbaste1 = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
 			desbaste1.setStartPoint(new Point3d(0, 0, 0));
 
@@ -107,7 +107,7 @@ public class MapeadoraRegion
 		}	
 		// ---------------- CRIANDO WORKINGSTEP DE DESBASTE ------------------
 		
-			// -----Criando operação ----
+			// -----Criando operaï¿½ï¿½o ----
 		BottomAndSideRoughMilling desbaste1 = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
 
 //		if(zMaximo>=regionTmp.getPosicaoZ()){
@@ -139,7 +139,7 @@ public class MapeadoraRegion
 
 		// --------------- CRIANDO WORKINGSTEP FREE FORM --------------------
 		
-			// -------- Criando Operação ---------
+			// -------- Criando Operaï¿½ï¿½o ---------
 		FreeformOperation freeForm = new FreeformOperation("Free Form Operation", retractPlane);
 		freeForm.setCoolant(true);
 		freeForm.setId("Free form Operation");
@@ -191,7 +191,7 @@ public class MapeadoraRegion
 			JOptionPane
 			.showMessageDialog(
 					null,
-					"Não é possível usinar esta Feature com as atuais Ball End Mills disponíveis! \n" +
+					"Nï¿½o ï¿½ possï¿½vel usinar esta Feature com as atuais Ball End Mills disponï¿½veis! \n" +
 					"__________________________________________________________"+"\n"+
 					"\tFeature: Ranhura Perfil Bezier \n" +
 					"\tNome: " + regionTmp.getNome() +"\n" +
@@ -199,10 +199,10 @@ public class MapeadoraRegion
 					"\tMaterial Bloco: " + material.getName()+"\n" +
 					"__________________________________________________________"+"\n"+
 					"\tMotivo: Do grupo das Ball End Mills do projeto, nenhuma satisfaz os" +"\n"+
-					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
+					"\tseguintes requisitos necessï¿½rios para a usinagem desta feature:"+"\n\n" +
 					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
 					"\tDiametro da Ferramenta deve ser menor igual a: " + L+" mm" +"\n" +
-					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + regionTmp.getMaxDepth()+" mm"+"\n\n" +
+					"\tProfundidade Mï¿½xima da Ferramenta deve ser maior igual a: " + regionTmp.getMaxDepth()+" mm"+"\n\n" +
 					"\tAdicione Ball End Mills adequadas ao projeto."
 					,
 					"Erro", JOptionPane.ERROR_MESSAGE);
@@ -248,7 +248,7 @@ public class MapeadoraRegion
 			JOptionPane
 			.showMessageDialog(
 					null,
-					"Não é possível usinar esta Feature com as atuais End Mills disponíveis! \n" +
+					"Nï¿½o ï¿½ possï¿½vel usinar esta Feature com as atuais End Mills disponï¿½veis! \n" +
 					"__________________________________________________________"+"\n"+
 					"\tFeature: Region \n" +
 					"\tName: " + region.getNome() + "\n" +
@@ -256,9 +256,9 @@ public class MapeadoraRegion
 					"\tRaw Block Material: " + material.getName()+"\n" +
 					"__________________________________________________________"+"\n"+
 					"\tMotivo: Do grupo das End Mills do projeto, nenhuma satisfaz os" +"\n"+
-					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
+					"\tseguintes requisitos necessï¿½rios para a usinagem desta feature:"+"\n\n" +
 					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
-					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (region.getMaxDepth())+" mm"+"\n\n" +
+					"\tProfundidade Mï¿½xima da Ferramenta deve ser maior igual a: " + (region.getMaxDepth())+" mm"+"\n\n" +
 					"\tAdd End Mills adequadas ao projeto."
 					,
 					"Erro", JOptionPane.ERROR_MESSAGE);
@@ -295,7 +295,7 @@ public class MapeadoraRegion
 			JOptionPane
 			.showMessageDialog(
 					null,
-					"Não é possível usinar esta Feature com as atuais Face Mills disponíveis! \n" +
+					"Nï¿½o ï¿½ possï¿½vel usinar esta Feature com as atuais Face Mills disponï¿½veis! \n" +
 					"__________________________________________________________"+"\n"+
 					"\tFeature: Region \n" +
 					"\tName: " + region.getNome() + "\n" +
@@ -303,9 +303,9 @@ public class MapeadoraRegion
 					"\tRaw Block Material: " + material.getName()+"\n" +
 					"__________________________________________________________"+"\n"+
 					"\tMotivo: Do grupo das Face Mills do projeto, nenhuma satisfaz os" +"\n"+
-					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
+					"\tseguintes requisitos necessï¿½rios para a usinagem desta feature:"+"\n\n" +
 					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
-					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (region.getMaxDepth())+" mm"+"\n\n" +
+					"\tProfundidade Mï¿½xima da Ferramenta deve ser maior igual a: " + (region.getMaxDepth())+" mm"+"\n\n" +
 					"\tAdd Face Mills adequadas ao projeto."
 					,
 					"Erro", JOptionPane.ERROR_MESSAGE);
@@ -329,9 +329,10 @@ public class MapeadoraRegion
 		double diametroMinimo = 0;
 		double l1Tmp,l2Tmp,l3Tmp,anguloTmp,diametroTmp,deltaZ1,deltaZ2,z0,z1,z2;
 		
-		l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[0][1].x - pontosDaSuperficie[0][0].x), 2) +  Math.pow((pontosDaSuperficie[0][1].z - pontosDaSuperficie[0][0].z), 2), 0.5);
-		diametroMinimo = l1Tmp;
-		
+//		l1Tmp = Math.pow(Math.pow((pontosDaSuperficie[0][1].x - pontosDaSuperficie[0][0].x), 2) +  Math.pow((pontosDaSuperficie[0][1].z - pontosDaSuperficie[0][0].z), 2), 0.5);
+//		diametroMinimo = l1Tmp;
+		diametroMinimo = 1000;
+
 		for(int i = 0; i < pontosDaSuperficie.length; i++)
 		{
 			for(int j = 0; j < pontosDaSuperficie[0].length - 2; j++)

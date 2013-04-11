@@ -24,6 +24,7 @@ public class ShopFloorPanel extends JPanel
 		this.projetoSF= projetoSF;
 		this.shopFloor = shopFloor;
 		this.floor = new Rectangle2D.Double(10,10,this.shopFloor.getWidth(),this.shopFloor.getLength());
+
 	}
 	public void paintComponent(Graphics g)
 	{	super.paintComponent(g);

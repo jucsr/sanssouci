@@ -188,6 +188,9 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		wsArray.add(ws);
 		projetoSF.setWorkingsteps(wsArray);
 		
+		//Chamada do metodo de atualizaçao da JTree
+		this.janelaShopFloor.atualizarArvorePrecendences(); //New
+		
 		this.dispose();
 	}
 

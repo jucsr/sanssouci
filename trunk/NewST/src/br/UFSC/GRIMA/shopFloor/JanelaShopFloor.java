@@ -6,6 +6,14 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import java.util.ArrayList; //New
+import java.util.Vector; //New
+
+import javax.swing.JTree; //New
+import javax.swing.tree.DefaultMutableTreeNode; //New
+
+import br.UFSC.GRIMA.capp.Workingstep; //New
+
 import br.UFSC.GRIMA.shopFloor.visual.ShopFloorFrame;
 
 /**
@@ -28,6 +36,8 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		shopPanel = new ShopFloorPanel (projetoSF,shopFloor);
 		this.panel1.add(shopPanel);
 		this.zooming = ((Double)spinnerZoom.getValue()).doubleValue();
+		
+		this.atualizarArvorePrecendences(); //New
 	}
 
 	private void addicionarOuvidores() 
@@ -97,4 +107,118 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		cm.setVisible(true);
 	}
 	
+	
+	/*public void atualizarArvorePrecendences()
+	{
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine Workingsteps");
+		
+		for (int i = 0; i < projetoSF.getWorkingsteps().size(); i++)
+		{			
+			if (projetoSF.getWorkingsteps().get(i).getWorkingstepPrecedente() == null)
+			{
+				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(projetoSF.getWorkingsteps().get(i).getId());
+				root.add(newNode);
+			}
+			else
+			{
+						
+			}
+		}		
+		
+		if (projetoSF.getWorkingsteps().size() > 0)
+		{			
+			for (int i=0;i<projetoSF.getWorkingsteps().get(0).getWorkingstepsPoscedentesDiretos
+					(projetoSF.getWorkingsteps()).size();i++)
+			{
+				System.out.println("Poscedente "+i+": "+
+				    projetoSF.getWorkingsteps().get(0).getWorkingstepsPoscedentesDiretos(projetoSF.getWorkingsteps()).get(i).getId());
+			}
+		}
+		
+		//Associação da JTree criada ao objeto visual tree3 e atualizacao da mesma
+		this.tree3 = new JTree(root);
+		scrollPaneTree2.setViewportView(tree3);
+		scrollPaneTree2.revalidate();
+	}
+	*/
+	
+	public void atualizarArvorePrecendences()
+	{
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine Workingsteps");
+		ArrayList<Workingstep> workingstepsIniciais = new ArrayList<Workingstep>();
+		
+		for (int i = 0; i < projetoSF.getWorkingsteps().size(); i++)
+		{
+			//Salva em array os workingsteps de primeiro nível
+			if (projetoSF.getWorkingsteps().get(i).getWorkingstepPrecedente() == null)
+			{
+				workingstepsIniciais.add(projetoSF.getWorkingsteps().get(i));
+			}
+		
+		}
+		
+		for (int i = 0; i < workingstepsIniciais.size(); i++)
+		{
+			
+			root.add(addTreeSubNode(root, workingstepsIniciais.get(i), projetoSF.getWorkingsteps()));
+		
+		}
+		
+		//Associação da JTree criada ao objeto visual tree3 e atualizacao da mesma
+		this.tree3 = new JTree(root);
+		scrollPaneTree2.setViewportView(tree3);
+		scrollPaneTree2.revalidate();
+	}
+	
+	public DefaultMutableTreeNode addTreeSubNode (DefaultMutableTreeNode root, Workingstep ws, ArrayList<Workingstep> wsArray)
+	{
+		int i;
+		
+		//Adiciona ao root somente workingsteps sem precedentes e sem poscedentes
+		if (ws.getWorkingstepPrecedente() == null && ws.getWorkingstepsPoscedentesDiretos(wsArray).size() == 0)
+		{
+			System.out.println("entrou no if, não tem precedente nem poscedente, adicionado ao root");
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(ws.getId());
+			return newNode;
+		}
+		
+		//Adiciona ao root somente workingsteps sem precedentes, tratando casos com poscedentes com recursividade
+		if (ws.getWorkingstepPrecedente() == null)
+		{
+			//System.out.println("entrou no else");
+			DefaultMutableTreeNode newRoot = new DefaultMutableTreeNode(ws.getId());
+			//if (get(i).getWorkingstepsPoscedentes)
+			//newRoot.add(addTreeSubNode(newRoot, ws, wsArray));
+			
+			for (i=0;i < ws.getWorkingstepsPoscedentesDiretos(wsArray).size();i++)
+			{
+				newRoot.add(addTreeSubNode(newRoot, ws.getWorkingstepsPoscedentesDiretos(wsArray).get(i), wsArray));
+			}
+			//root.add(newRoot);
+			
+			//DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(projetoSF.getWorkingsteps().get(i).getId());
+			//newRoot.add(newNode);
+			return newRoot;
+		}
+		
+		//Adiciona ao root recursivo workingsteps com precedentes e poscedentes
+		if (ws.getWorkingstepsPoscedentesDiretos(wsArray) != null)
+		{
+			DefaultMutableTreeNode newRoot2 = new DefaultMutableTreeNode(ws.getId());
+			for (i=0;i < ws.getWorkingstepsPoscedentesDiretos(wsArray).size();i++)
+			{
+				newRoot2.add(addTreeSubNode(newRoot2, ws.getWorkingstepsPoscedentesDiretos(wsArray).get(i), wsArray));
+			}
+			return newRoot2;
+		}
+		
+		//Adiciona ao root recursivo nós sem poscedentes
+		if (ws.getWorkingstepsPoscedentesDiretos(wsArray) == null)
+		{
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(ws.getId());
+			return newNode;
+		}
+		//projetoSF.getWorkingsteps().get(i).i
+		return null;
+	}
 }

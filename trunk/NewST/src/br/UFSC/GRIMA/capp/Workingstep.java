@@ -12,11 +12,12 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.shopFloor.ProjetoSF;
 import br.UFSC.GRIMA.util.PassaParaString;
 import br.UFSC.GRIMA.util.Ponto;
 
 public class Workingstep implements Serializable{
-	
+		
 	public static final int DESBASTE = 1, ACABAMENTO = 2;
 	private int tipo;
 	private Feature feature;
@@ -244,5 +245,22 @@ public class Workingstep implements Serializable{
 
 		return wsAssociadas;
 
+	}
+	
+	public ArrayList<Workingstep> getWorkingstepsPoscedentesDiretos(ArrayList<Workingstep> wsArray)
+	{
+		ArrayList<Workingstep> wsPoscedentesArray = new ArrayList<Workingstep>();
+		
+		if(wsArray.size() > 0)
+		{
+			for (int i = 0; i < wsArray.size(); i++)
+			{
+				if (this == wsArray.get(i).getWorkingstepPrecedente())
+				{
+					wsPoscedentesArray.add(wsArray.get(i));
+				}
+			}
+		}
+		return wsPoscedentesArray;
 	}
 }

@@ -188,6 +188,9 @@ public class EditBoringToolWS extends EditBoringToolFrame implements ActionListe
 		wsArray.add(ws);
 		projetoSF.setWorkingsteps(wsArray);
 		
+		//Chamada do metodo de atualizaçao da JTree
+		this.janelaShopFloor.atualizarArvorePrecendences(); //New
+		
 		this.dispose();
 	}
 

@@ -177,6 +177,9 @@ public class EditReamerWS extends EditReamerFrame implements ActionListener, Ite
 		wsArray.add(ws);
 		projetoSF.setWorkingsteps(wsArray);
 		
+		//Chamada do metodo de atualizaçao da JTree
+		this.janelaShopFloor.atualizarArvorePrecendences(); //New
+		
 		this.dispose();
 	}
 

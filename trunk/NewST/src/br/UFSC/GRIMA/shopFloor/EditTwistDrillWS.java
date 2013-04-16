@@ -9,14 +9,12 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.cad.JanelaPrincipal;
-import br.UFSC.GRIMA.cad.visual.EditTwistDrillFrame;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
-import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
+import br.UFSC.GRIMA.shopFloor.visual.EditTwistDrillFrame;
 
 public class EditTwistDrillWS extends EditTwistDrillFrame implements ActionListener, ItemListener{
 

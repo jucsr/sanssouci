@@ -9,7 +9,6 @@ import br.UFSC.GRIMA.capp.machiningOperations.Boring;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
-import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
@@ -117,6 +116,14 @@ public class CreateNewWorkingStep extends CreateNewWorkingStepFrame implements A
 			EditReamerWS fm = new EditReamerWS(janelaShopFloor, projetoSF, ws);
 			fm.setVisible(true);
 			dispose();
-		} 
+		} else if(this.radioButton9.isSelected())
+		{
+			MachiningOperation operation = new Drilling("", 5);
+			ws.setOperation(operation);
+					
+			EditTwistDrillWS fm = new EditTwistDrillWS(janelaShopFloor, projetoSF, ws);
+			fm.setVisible(true);
+			dispose();
+		}
 	}
 }

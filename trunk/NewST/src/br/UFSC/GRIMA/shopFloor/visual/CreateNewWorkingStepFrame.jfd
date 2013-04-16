@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_04" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_09" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -20,13 +20,24 @@ new FormModel {
 					name: "contentPanel"
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 						"$columnSpecs": "0, 0, 0"
-						"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0"
+						"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0"
 						"$hGap": 5
 						"$vGap": 5
 						"$alignLeft": true
 						"$alignTop": true
 					} ) {
 						name: "panel1"
+						add( new FormComponent( "javax.swing.JRadioButton" ) {
+							name: "radioButton9"
+							"text": "Drilling"
+							"$buttonGroup": &FormReference0 new FormReference( "buttonGroup1" )
+							"selected": true
+							auxiliary() {
+								"JavaCodeGenerator.variableModifiers": 4
+							}
+						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+							"gridx": 1
+						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
 							name: "radioButton1"
 							"text": "Boring"
@@ -36,17 +47,17 @@ new FormModel {
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 							"gridx": 1
+							"gridy": 1
 						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
 							name: "radioButton2"
 							"text": "Bottom and side finish milling"
-							"selected": true
 							"$buttonGroup": new FormReference( "buttonGroup1" )
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 1
+							"gridy": 2
 							"gridx": 1
 						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
@@ -57,7 +68,7 @@ new FormModel {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 2
+							"gridy": 3
 							"gridx": 1
 						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
@@ -68,7 +79,7 @@ new FormModel {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 3
+							"gridy": 4
 							"gridx": 1
 						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
@@ -80,7 +91,7 @@ new FormModel {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 4
+							"gridy": 5
 							"gridx": 1
 						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
@@ -91,7 +102,7 @@ new FormModel {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 5
+							"gridy": 6
 							"gridx": 1
 						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
@@ -102,18 +113,18 @@ new FormModel {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 6
+							"gridy": 7
 							"gridx": 1
 						} )
 						add( new FormComponent( "javax.swing.JRadioButton" ) {
 							name: "radioButton8"
 							"text": "Reaming"
-							"$buttonGroup": new FormReference( "buttonGroup1" )
+							"$buttonGroup": #FormReference0
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 7
+							"gridy": 8
 							"gridx": 1
 						} )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
@@ -160,12 +171,12 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 25 )
-			"size": new java.awt.Dimension( 370, 320 )
+			"size": new java.awt.Dimension( 375, 355 )
 		} )
 		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
 			name: "buttonGroup1"
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 355 )
+			"location": new java.awt.Point( 0, 410 )
 		} )
 	}
 }

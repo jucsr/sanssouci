@@ -27,6 +27,7 @@ public class CreateNewWorkingStepFrame extends JDialog {
 		dialogPane = new JPanel();
 		contentPanel = new JPanel();
 		panel1 = new JPanel();
+		radioButton9 = new JRadioButton();
 		radioButton1 = new JRadioButton();
 		radioButton2 = new JRadioButton();
 		radioButton3 = new JRadioButton();
@@ -61,57 +62,63 @@ public class CreateNewWorkingStepFrame extends JDialog {
 				{
 					panel1.setLayout(new GridBagLayout());
 					((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-					((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
+					((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 					((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-					((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+					((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+
+					//---- radioButton9 ----
+					radioButton9.setText("Drilling");
+					radioButton9.setSelected(true);
+					panel1.add(radioButton9, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton1 ----
 					radioButton1.setText("Boring");
-					panel1.add(radioButton1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton2 ----
 					radioButton2.setText("Bottom and side finish milling");
-					radioButton2.setSelected(true);
-					panel1.add(radioButton2, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton2, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton3 ----
 					radioButton3.setText("Bottom and side rough milling");
-					panel1.add(radioButton3, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton3, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton4 ----
 					radioButton4.setText("Center Drilling");
-					panel1.add(radioButton4, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton4, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton5 ----
 					radioButton5.setText("Free form operation");
 					radioButton5.setEnabled(false);
-					panel1.add(radioButton5, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton5, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton6 ----
 					radioButton6.setText("Plane finish milling");
-					panel1.add(radioButton6, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton6, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton7 ----
 					radioButton7.setText("Plane rough milling");
-					panel1.add(radioButton7, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton7, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- radioButton8 ----
 					radioButton8.setText("Reaming");
-					panel1.add(radioButton8, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0,
+					panel1.add(radioButton8, new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 5), 0, 0));
 				}
@@ -148,6 +155,7 @@ public class CreateNewWorkingStepFrame extends JDialog {
 
 		//---- buttonGroup1 ----
 		ButtonGroup buttonGroup1 = new ButtonGroup();
+		buttonGroup1.add(radioButton9);
 		buttonGroup1.add(radioButton1);
 		buttonGroup1.add(radioButton2);
 		buttonGroup1.add(radioButton3);
@@ -163,6 +171,7 @@ public class CreateNewWorkingStepFrame extends JDialog {
 	private JPanel dialogPane;
 	private JPanel contentPanel;
 	private JPanel panel1;
+	protected JRadioButton radioButton9;
 	protected JRadioButton radioButton1;
 	protected JRadioButton radioButton2;
 	protected JRadioButton radioButton3;

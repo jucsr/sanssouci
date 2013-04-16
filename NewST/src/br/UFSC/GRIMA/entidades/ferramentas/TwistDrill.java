@@ -34,5 +34,8 @@ public class TwistDrill extends Ferramenta {
 		this.setToolTipHalfAngle(toolTipHalfAngle);
 		
 	}
-	
+	public TwistDrill()
+	{
+		
+	}
 }

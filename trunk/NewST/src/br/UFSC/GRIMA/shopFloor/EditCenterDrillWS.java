@@ -108,7 +108,7 @@ public class EditCenterDrillWS extends EditCenterDrillFrame implements ActionLis
 			for(int j=0; j < wsArray.size(); j++)
 			{
 				model2 = (DefaultTableModel) table1.getModel();
-				Object row [] = {false, wsArray.get(j).getId(), wsArray.get(j).getOperation().getId()};
+				Object row [] = {false, wsArray.get(j).getId(), wsArray.get(j).getOperation().getOperationType()};
 				model2.addRow(row);
 				
 			}
@@ -139,7 +139,7 @@ public class EditCenterDrillWS extends EditCenterDrillFrame implements ActionLis
 	private void ok() 
 	{
 		//ID Workinstep
-		this.ws.setId(this.formattedTextField1.getText()+"_"+this.tipo);
+		this.ws.setId(this.formattedTextField1.getText());
 		
 		//OPERATION
 		this.ws.getOperation().setId(this.formattedTextField2.getText());
@@ -179,7 +179,7 @@ public class EditCenterDrillWS extends EditCenterDrillFrame implements ActionLis
 		wsArray.add(ws);
 		projetoSF.setWorkingsteps(wsArray);
 		
-		//Chamada do metodo de atualizaçao da JTree
+		//Chamada do metodo de atualizaï¿½ao da JTree
 		this.janelaShopFloor.atualizarArvorePrecendences(); //New
 		
 		this.dispose();

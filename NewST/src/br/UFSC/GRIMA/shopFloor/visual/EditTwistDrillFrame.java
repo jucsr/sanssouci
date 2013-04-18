@@ -7,6 +7,7 @@ package br.UFSC.GRIMA.shopFloor.visual;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.table.*;
 import com.jgoodies.forms.factories.*;
 
 /**
@@ -89,6 +90,8 @@ public class EditTwistDrillFrame extends JDialog {
 		spinner12 = new JSpinner();
 		label13 = new JLabel();
 		spinner16 = new JSpinner();
+		panel15 = new JPanel();
+		label14 = new JLabel();
 		scrollPane1 = new JScrollPane();
 		table1 = new JTable();
 		buttonBar = new JPanel();
@@ -129,6 +132,7 @@ public class EditTwistDrillFrame extends JDialog {
 
 					//---- formattedTextField1 ----
 					formattedTextField1.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
+					formattedTextField1.setText("DRILLING WORKINGSTEP");
 					panel4.add(formattedTextField1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 0), 0, 0));
@@ -244,6 +248,7 @@ public class EditTwistDrillFrame extends JDialog {
 
 								//---- formattedTextField2 ----
 								formattedTextField2.setFont(new Font("Berlin Sans FB", Font.PLAIN, 13));
+								formattedTextField2.setText("drilling operation");
 								panel10.add(formattedTextField2, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
@@ -522,9 +527,9 @@ public class EditTwistDrillFrame extends JDialog {
 					{
 						panel13.setLayout(new GridBagLayout());
 						((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {0, 0, 0};
-						((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+						((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
 						((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-						((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0, 1.0E-4};
 
 						//======== panel14 ========
 						{
@@ -556,11 +561,46 @@ public class EditTwistDrillFrame extends JDialog {
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 5, 0), 0, 0));
 
+						//======== panel15 ========
+						{
+							panel15.setLayout(new GridBagLayout());
+							((GridBagLayout)panel15.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+							((GridBagLayout)panel15.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+							((GridBagLayout)panel15.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+							((GridBagLayout)panel15.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+							//---- label14 ----
+							label14.setText("Precedent Machining Workingstep");
+							panel15.add(label14, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 5), 0, 0));
+						}
+						panel13.add(panel15, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 5, 0), 0, 0));
+
 						//======== scrollPane1 ========
 						{
+
+							//---- table1 ----
+							table1.setModel(new DefaultTableModel(
+								new Object[][] {
+								},
+								new String[] {
+									"Select", "Workingstep ID", "Operation Type"
+								}
+							) {
+								Class<?>[] columnTypes = new Class<?>[] {
+									Boolean.class, String.class, String.class
+								};
+								@Override
+								public Class<?> getColumnClass(int columnIndex) {
+									return columnTypes[columnIndex];
+								}
+							});
 							scrollPane1.setViewportView(table1);
 						}
-						panel13.add(scrollPane1, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+						panel13.add(scrollPane1, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 0, 0), 0, 0));
 					}
@@ -665,8 +705,10 @@ public class EditTwistDrillFrame extends JDialog {
 	protected JSpinner spinner12;
 	private JLabel label13;
 	protected JSpinner spinner16;
+	private JPanel panel15;
+	private JLabel label14;
 	private JScrollPane scrollPane1;
-	private JTable table1;
+	protected JTable table1;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

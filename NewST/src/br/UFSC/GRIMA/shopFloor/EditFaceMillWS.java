@@ -112,7 +112,7 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 			for(int j=0; j < wsArray.size(); j++)
 			{
 				model2 = (DefaultTableModel) table1.getModel();
-				Object row [] = {false, wsArray.get(j).getId(), wsArray.get(j).getOperation().getId()};
+				Object row [] = {false, wsArray.get(j).getId(), wsArray.get(j).getOperation().getOperationType()};
 				model2.addRow(row);
 				
 			}
@@ -143,7 +143,7 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 	private void ok() 
 	{
 		//ID Workinstep
-		this.ws.setId(this.formattedTextField1.getText()+"_"+this.tipo);
+		this.ws.setId(this.formattedTextField1.getText());
 		
 		//OPERATION
 		this.ws.getOperation().setId(this.formattedTextField3.getText());
@@ -188,7 +188,7 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		wsArray.add(ws);
 		projetoSF.setWorkingsteps(wsArray);
 		
-		//Chamada do metodo de atualizaçao da JTree
+		//Chamada do metodo de atualizaï¿½ao da JTree
 		this.janelaShopFloor.atualizarArvorePrecendences(); //New
 		
 		this.dispose();

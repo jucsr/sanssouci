@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
@@ -42,12 +44,47 @@ public class EditTwistDrillWS extends EditTwistDrillFrame implements ActionListe
 		this.janelaShopFloor = janelaShopFloorNew;
 		this.wsArray = projetoSFNew.getWorkingsteps();
 		this.ws = wsNew;
+		this.loadWorkingstepsList();
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
 		this.comboBox3.addItemListener(this);
-		
+		this.table1.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e)
+			{
+				int indicePrecedente = table1.getSelectedRow();
+
+				if((Boolean)(table1.getValueAt(indicePrecedente, 0)) == true)
+				{
+					for(int i = 0; i < table1.getRowCount(); i++)
+					{
+						if (i != indicePrecedente)
+						table1.setValueAt(false, i, 0);
+					}
+				} else
+				{
+					table1.setValueAt(false, indicePrecedente, 0);
+				} 
+				if((Boolean)(table1.getValueAt(indicePrecedente, 0)) == true)
+				{
+					workingstepPrecedente = wsArray.get(indicePrecedente);
+				}else
+					workingstepPrecedente = null;
+			}
+		});
 		this.setVisible(true);
+	}
+
+	private void loadWorkingstepsList()
+	{
+		wsArray = this.projetoSF.getWorkingsteps();
+		DefaultTableModel modelo = (DefaultTableModel) table1.getModel();
+		
+		for(int i = 0; i < wsArray.size(); i++)
+		{
+			Object row [] = {false, wsArray.get(i).getId(), wsArray.get(i).getOperation().getOperationType()};
+			modelo.addRow(row);
+		}
 	}
 
 
@@ -128,7 +165,12 @@ public class EditTwistDrillWS extends EditTwistDrillFrame implements ActionListe
 		this.condicoes.setVc((Double) this.spinner13.getValue());
 		this.condicoes.setF((Double) this.spinner14.getValue());
 		
-		
+		this.ws.setOperation(operation);
+		this.ws.setFerramenta(twistDrill);
+		this.ws.setCondicoesUsinagem(condicoes);
+		this.ws.setWorkingstepPrecedente(workingstepPrecedente);
+		this.wsArray.add(ws);
+		this.projetoSF.setWorkingsteps(wsArray);
 		this.janelaShopFloor.atualizarArvorePrecendences();
 		
 		this.dispose();

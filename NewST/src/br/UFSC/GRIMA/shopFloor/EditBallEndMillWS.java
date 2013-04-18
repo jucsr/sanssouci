@@ -115,7 +115,7 @@ public class EditBallEndMillWS extends EditBallEndMillFrame implements ActionLis
 			for(int j=0; j < wsArray.size(); j++)
 			{
 				model2 = (DefaultTableModel) table1.getModel();
-				Object row [] = {false, wsArray.get(j).getId(), wsArray.get(j).getOperation().getId()};
+				Object row [] = {false, wsArray.get(j).getId(), wsArray.get(j).getOperation().getOperationType()};
 				model2.addRow(row);
 				
 			}

@@ -24,7 +24,7 @@ import br.UFSC.GRIMA.shopFloor.visual.ShopFloorFrame;
  */
 public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 {
-	private ShopFloorPanel shopPanel; // painel capable of drawing
+	public ShopFloorPanel shopPanel; // painel capable of drawing
 	private ShopFloor shopFloor;
 	private ProjetoSF projetoSF;
 	private double zooming =0;
@@ -34,7 +34,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.shopFloor = shopFloorNew;
 		this.projetoSF = projetoSFNew;
 		this.addicionarOuvidores();
-		shopPanel = new ShopFloorPanel (projetoSF,shopFloor);
+		this.shopPanel = new ShopFloorPanel (projetoSF,shopFloor);
 		this.panel1.setLayout(new BorderLayout());
 		this.panel1.add(shopPanel);
 		this.zooming = ((Double)spinnerZoom.getValue()).doubleValue();

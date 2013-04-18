@@ -121,7 +121,6 @@ public class CreateMillingMachineFrame extends JDialog {
 		spinner7 = new JSpinner();
 		label11 = new JLabel();
 		checkBox1 = new JCheckBox();
-		CellConstraints cc = new CellConstraints();
 
 		//======== this ========
 		setTitle("Create new Milling Machine");
@@ -232,19 +231,35 @@ public class CreateMillingMachineFrame extends JDialog {
 
 								//======== panel18 ========
 								{
-									panel18.setLayout(new FormLayout(
-										"5*(default, $lcgap), default",
-										"default"));
+									panel18.setLayout(new GridBagLayout());
+									((GridBagLayout)panel18.getLayout()).columnWidths = new int[] {0, 5, 50, 5, 0, 5, 0, 5, 50, 5, 5, 5, 0};
+									((GridBagLayout)panel18.getLayout()).rowHeights = new int[] {0, 0};
+									((GridBagLayout)panel18.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel18.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 									//---- label22 ----
 									label22.setText("X");
-									panel18.add(label22, cc.xy(1, 1));
-									panel18.add(spinner13, cc.xywh(3, 1, 3, 1));
+									panel18.add(label22, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+										new Insets(0, 0, 0, 0), 0, 0));
+
+									//---- spinner13 ----
+									spinner13.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									panel18.add(spinner13, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+										new Insets(0, 0, 0, 0), 0, 0));
 
 									//---- label23 ----
 									label23.setText("Y");
-									panel18.add(label23, cc.xy(7, 1));
-									panel18.add(spinner14, cc.xywh(9, 1, 3, 1));
+									panel18.add(label23, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+										new Insets(0, 0, 0, 0), 0, 0));
+
+									//---- spinner14 ----
+									spinner14.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									panel18.add(spinner14, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+										new Insets(0, 0, 0, 0), 0, 0));
 								}
 								panel3.add(panel18, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.7.0_01" class="java.beans.XMLDecoder">
+<java version="1.7.0_09" class="java.beans.XMLDecoder">
  <object class="com.jformdesigner.model.FormModel">
   <void property="contentType">
    <string>form/swing</string>
@@ -691,7 +691,7 @@
                        <double>1.0</double>
                       </void>
                       <void property="value">
-                       <double>200.0</double>
+                       <double>20.0</double>
                       </void>
                      </object>
                     </void>
@@ -790,7 +790,7 @@
                        <double>1.0</double>
                       </void>
                       <void property="value">
-                       <double>150.0</double>
+                       <double>15.0</double>
                       </void>
                      </object>
                     </void>

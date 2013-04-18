@@ -93,6 +93,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 			machineTools = shopFloor.getMachines();
 			machineTools.add(millingMachine);
 			shopFloor.setMachines(machineTools);
+			janelaShopFloor.shopPanel.repaint();
 			this.dispose();
 		} 
 		else if(o.equals(cancelButton))
@@ -253,7 +254,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 			else
 			{
 				System.out.println("Erro");
-				//Janela de erro avisando que mais de uma ferramenta está selecionada.
+				//Janela de erro avisando que mais de uma ferramenta estï¿½ selecionada.
 			}
 		}
 		else if(o.equals(menuItem1))

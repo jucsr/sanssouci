@@ -26,6 +26,7 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 	private ProjetoSF projetoSF;
 	private Desenho pdesenho;
 	private Rectangle2D floor;
+	public double escala = 10;
 	public ProjetoSF getProjetoSF() {
 		return projetoSF;
 	}
@@ -41,10 +42,10 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 		this.cancelButton.addActionListener(this);
 		this.spinnerX.addChangeListener(this);
 		this.spinnerY.addChangeListener(this);
-		this.width = ((Double) this.spinnerX.getValue()).doubleValue();
-		this.length = ((Double) this.spinnerY.getValue()).doubleValue();
-		setVisible(true);
-		this.floor = new Rectangle2D.Double(x, y, width, length);
+		this.width = ((Double) this.spinnerY.getValue()).doubleValue();
+		this.length = ((Double) this.spinnerX.getValue()).doubleValue();
+		this.setVisible(true);
+		this.floor = new Rectangle2D.Double(x, y, length * escala, width * escala);
 		this.pdesenho = new Desenho();
 		this.panel8.setLayout(new BorderLayout());
 		this.panel8.add(pdesenho);
@@ -81,17 +82,17 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 		Object o = e.getSource();
 		if(o.equals(spinnerX))
 		{
-			this.width = ((Double) this.spinnerX.getValue()).doubleValue();
+			this.length = ((Double) this.spinnerX.getValue()).doubleValue();
 			
-			floor = new Rectangle2D.Double(x, y, width, length);
+			floor = new Rectangle2D.Double(x, y, length * escala, width * escala);
 			pdesenho.repaint();
 			
 		}
 		else if(o.equals(spinnerY))
 		{
-			this.length = ((Double) this.spinnerY.getValue()).doubleValue();	
+			this.width = ((Double) this.spinnerY.getValue()).doubleValue();	
 			
-			floor = new Rectangle2D.Double(x, y, width, length);
+			floor = new Rectangle2D.Double(x, y, length * escala, width * escala);
 			pdesenho.repaint();
 		}
 	}
@@ -115,6 +116,5 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 			
 		}
 	}
-	
 }
 

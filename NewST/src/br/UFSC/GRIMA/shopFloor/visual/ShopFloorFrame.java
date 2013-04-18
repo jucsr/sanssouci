@@ -627,7 +627,7 @@ public class ShopFloorFrame extends JFrame {
 						toolBar2.add(zoomMenos);
 
 						//---- spinnerZoom ----
-						spinnerZoom.setModel(new SpinnerNumberModel(100.0, 5.0, 500.0, 5.0));
+						spinnerZoom.setModel(new SpinnerNumberModel(100.0, 10.0, 1000.0, 10.0));
 						spinnerZoom.setFont(new Font("Courier New", Font.PLAIN, 20));
 						toolBar2.add(spinnerZoom);
 

@@ -218,7 +218,7 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- spinnerX ----
-								spinnerX.setModel(new SpinnerNumberModel(200.0, 0.0, null, 1.0));
+								spinnerX.setModel(new SpinnerNumberModel(20.0, 0.0, null, 1.0));
 								panel7.add(spinnerX, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
@@ -238,7 +238,7 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- spinnerY ----
-								spinnerY.setModel(new SpinnerNumberModel(150.0, 0.0, null, 1.0));
+								spinnerY.setModel(new SpinnerNumberModel(15.0, 0.0, null, 1.0));
 								panel7.add(spinnerY, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));

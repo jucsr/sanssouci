@@ -816,7 +816,7 @@ new FormModel {
 						}
 					} )
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
-						name: "mostrarMesa"
+						name: "mostrarGrade"
 						"text": "Mostrar Grade"
 						"font": #SwingDerivedFont8
 						"selected": true

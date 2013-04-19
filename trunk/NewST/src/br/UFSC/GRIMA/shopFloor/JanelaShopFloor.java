@@ -12,6 +12,7 @@ import java.util.Vector; //New
 
 import javax.swing.JTree; //New
 import javax.swing.tree.DefaultMutableTreeNode; //New
+import javax.swing.tree.TreeSelectionModel;
 
 import br.UFSC.GRIMA.capp.Workingstep; //New
 
@@ -40,6 +41,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.zooming = ((Double)spinnerZoom.getValue()).doubleValue();
 		this.shopPanel.repaint();
 		this.atualizarArvorePrecendences(); //New
+		this.atualizarArvoreMaquinas();
 	}
 
 	private void addicionarOuvidores() 
@@ -51,6 +53,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.menuItemAddNewWS.addActionListener(this);
 		this.zoomMenos.addActionListener(this);
 		this.zoomMais.addActionListener(this);
+		this.mostrarGrade.addActionListener(this);
 		this.spinnerZoom.addChangeListener(new ChangeListener(){
 
 			@Override
@@ -62,7 +65,6 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			}
 			
 		});
-		
 	}
 
 	@Override
@@ -81,21 +83,43 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			
 		} else if(o.equals(zoomMais))
 		{
-			this.zooming = zooming + 5; // add 5 to value of zooming
+			this.zooming = zooming + 10; // add 5 to value of zooming
 			this.spinnerZoom.setValue(zooming);
 			shopPanel.zooming(zooming);
 			shopPanel.repaint();
 		}else if (o.equals(zoomMenos)){
 			
-			this.zooming = zooming - 5; // decrease 5 of zooming
+			this.zooming = zooming - 10; // decrease 5 of zooming
 			this.spinnerZoom.setValue(zooming);
 			shopPanel.zooming(zooming);
+			shopPanel.repaint();
+		}else if(o.equals(mostrarGrade))
+		{
+			if(mostrarGrade.isSelected())
+				shopPanel.grade = true;
+			else
+				shopPanel.grade = false;
 			shopPanel.repaint();
 		}
 	}
 	
 		
-	
+	public void atualizarArvoreMaquinas()
+	{
+		
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machines");
+		this.tree2 = new JTree(root);
+		
+		for(int i = 0; i < shopFloor.getMachines().size(); i++)
+		{
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode("Its ID : " + shopFloor.getMachines().get(i).getItsId());
+			root.add(node);
+		}
+		
+		this.tree2.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+		scrollPaneTree.setViewportView(tree2);
+		scrollPaneTree.revalidate();
+	}
 
 	private void addNewWS()
 	{

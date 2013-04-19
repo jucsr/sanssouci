@@ -81,6 +81,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 //			machineTool.setItsId(itsId);
 //			machineTool.setItsLocation();
 			millingMachine.setItsOrigin(new Point3d(((Double)spinner13.getValue()).doubleValue(),((Double)spinner14.getValue()).doubleValue(),0));
+			millingMachine.setItsId(textField1.getText());
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);
 //			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);
@@ -94,6 +95,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 			machineTools.add(millingMachine);
 			shopFloor.setMachines(machineTools);
 			janelaShopFloor.shopPanel.repaint();
+			janelaShopFloor.atualizarArvoreMaquinas();
 			this.dispose();
 		} 
 		else if(o.equals(cancelButton))

@@ -72,7 +72,7 @@ public class ShopFloorFrame extends JFrame {
 		vistaPlanosPrincipais = new JCheckBoxMenuItem();
 		mostrarFeaturesSecundarias = new JCheckBoxMenuItem();
 		mostrarPecaBruta = new JCheckBoxMenuItem();
-		mostrarMesa = new JCheckBoxMenuItem();
+		mostrarGrade = new JCheckBoxMenuItem();
 		verEixos = new JCheckBoxMenuItem();
 		menuItemVerPlanosReferencia = new JMenuItem();
 		gerar3D = new JMenuItem();
@@ -468,12 +468,12 @@ public class ShopFloorFrame extends JFrame {
 				mostrarPecaBruta.setVisible(false);
 				menu3.add(mostrarPecaBruta);
 
-				//---- mostrarMesa ----
-				mostrarMesa.setText("Mostrar Grade");
-				mostrarMesa.setFont(mostrarMesa.getFont().deriveFont(mostrarMesa.getFont().getStyle() & ~Font.BOLD));
-				mostrarMesa.setSelected(true);
-				mostrarMesa.setIcon(new ImageIcon(getClass().getResource("/images/iconeGrade.png")));
-				menu3.add(mostrarMesa);
+				//---- mostrarGrade ----
+				mostrarGrade.setText("Mostrar Grade");
+				mostrarGrade.setFont(mostrarGrade.getFont().deriveFont(mostrarGrade.getFont().getStyle() & ~Font.BOLD));
+				mostrarGrade.setSelected(true);
+				mostrarGrade.setIcon(new ImageIcon(getClass().getResource("/images/iconeGrade.png")));
+				menu3.add(mostrarGrade);
 
 				//---- verEixos ----
 				verEixos.setText("Mostrar Eixos");
@@ -1028,7 +1028,7 @@ public class ShopFloorFrame extends JFrame {
 	public JCheckBoxMenuItem vistaPlanosPrincipais;
 	public JCheckBoxMenuItem mostrarFeaturesSecundarias;
 	public JCheckBoxMenuItem mostrarPecaBruta;
-	public JCheckBoxMenuItem mostrarMesa;
+	public JCheckBoxMenuItem mostrarGrade;
 	public JCheckBoxMenuItem verEixos;
 	public JMenuItem menuItemVerPlanosReferencia;
 	public JMenuItem gerar3D;

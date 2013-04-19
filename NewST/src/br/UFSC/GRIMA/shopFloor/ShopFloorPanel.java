@@ -2,6 +2,7 @@ package br.UFSC.GRIMA.shopFloor;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -31,6 +32,7 @@ public class ShopFloorPanel extends JPanel
 	private Point2D origemParaDesenho = new Point2D.Double();
 	public boolean grade = true;
 	private double escala = 10;
+	private Dimension tamanho;
 	public ShopFloorPanel(ProjetoSF projetoSF,ShopFloor shopFloor)
 	{
 		
@@ -43,16 +45,21 @@ public class ShopFloorPanel extends JPanel
 	{	
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.translate(origemParaDesenho.getX(), origemParaDesenho.getY());
 		
+		g2d.translate(origemParaDesenho.getX(), origemParaDesenho.getY() + this.zoom * this.shopFloor.getWidth() * escala);
+		g2d.scale(1, -1);
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+		
+		this.tamanho = new Dimension( (int)(origemParaDesenho.getX() * 2 + this.zoom * this.shopFloor.getLength() * escala), (int)(origemParaDesenho.getY() * 2 + this.zoom * this.shopFloor.getWidth() * escala));
+		this.revalidate();
+
+		this.setPreferredSize(this.tamanho);
 		
 		this.desenharAreaDoChaoDeFabrica(g2d);
 		if(grade)
 			this.desenharGrade(g2d);
-		
-		this.desenharGrade(g2d);
+
 		this.desenharMillingMachines(g2d);
 		this.desenharDrillingMachines(g2d);
 		g2d.dispose();

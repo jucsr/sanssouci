@@ -43,8 +43,10 @@ public class CreateMillingMachineFrame extends JDialog {
 		panel18 = new JPanel();
 		label22 = new JLabel();
 		spinner13 = new JSpinner();
+		label24 = new JLabel();
 		label23 = new JLabel();
 		spinner14 = new JSpinner();
+		label25 = new JLabel();
 		panel10 = new JPanel();
 		panel13 = new JPanel();
 		label12 = new JLabel();
@@ -201,7 +203,7 @@ public class CreateMillingMachineFrame extends JDialog {
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- spinner4 ----
-								spinner4.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+								spinner4.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
 								panel3.add(spinner4, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
@@ -249,6 +251,12 @@ public class CreateMillingMachineFrame extends JDialog {
 										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 										new Insets(0, 0, 0, 0), 0, 0));
 
+									//---- label24 ----
+									label24.setText("m");
+									panel18.add(label24, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+										new Insets(0, 0, 0, 0), 0, 0));
+
 									//---- label23 ----
 									label23.setText("Y");
 									panel18.add(label23, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
@@ -258,6 +266,12 @@ public class CreateMillingMachineFrame extends JDialog {
 									//---- spinner14 ----
 									spinner14.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
 									panel18.add(spinner14, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+										new Insets(0, 0, 0, 0), 0, 0));
+
+									//---- label25 ----
+									label25.setText("m");
+									panel18.add(label25, new GridBagConstraints(10, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
@@ -885,8 +899,10 @@ public class CreateMillingMachineFrame extends JDialog {
 	private JPanel panel18;
 	private JLabel label22;
 	public JSpinner spinner13;
+	private JLabel label24;
 	private JLabel label23;
 	public JSpinner spinner14;
+	private JLabel label25;
 	private JPanel panel10;
 	private JPanel panel13;
 	private JLabel label12;

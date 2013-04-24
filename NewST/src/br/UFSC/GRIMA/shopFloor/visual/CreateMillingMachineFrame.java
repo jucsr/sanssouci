@@ -36,6 +36,7 @@ public class CreateMillingMachineFrame extends JDialog {
 		label1 = new JLabel();
 		textField1 = new JTextField();
 		label7 = new JLabel();
+		panel21 = new JPanel();
 		spinner4 = new JSpinner();
 		label8 = new JLabel();
 		comboBox1 = new JComboBox();
@@ -202,9 +203,21 @@ public class CreateMillingMachineFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
-								//---- spinner4 ----
-								spinner4.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
-								panel3.add(spinner4, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+								//======== panel21 ========
+								{
+									panel21.setLayout(new GridBagLayout());
+									((GridBagLayout)panel21.getLayout()).columnWidths = new int[] {0, 60, 0};
+									((GridBagLayout)panel21.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel21.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel21.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+									//---- spinner4 ----
+									spinner4.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
+									panel21.add(spinner4, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+								}
+								panel3.add(panel21, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 
@@ -234,9 +247,9 @@ public class CreateMillingMachineFrame extends JDialog {
 								//======== panel18 ========
 								{
 									panel18.setLayout(new GridBagLayout());
-									((GridBagLayout)panel18.getLayout()).columnWidths = new int[] {0, 5, 50, 5, 0, 5, 0, 5, 50, 5, 5, 5, 0};
+									((GridBagLayout)panel18.getLayout()).columnWidths = new int[] {0, 5, 50, 5, 0, 5, 20, 0, 5, 50, 5, 5, 5, 0};
 									((GridBagLayout)panel18.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel18.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel18.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 									((GridBagLayout)panel18.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 									//---- label22 ----
@@ -246,7 +259,7 @@ public class CreateMillingMachineFrame extends JDialog {
 										new Insets(0, 0, 0, 0), 0, 0));
 
 									//---- spinner13 ----
-									spinner13.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									spinner13.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 									panel18.add(spinner13, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 										new Insets(0, 0, 0, 0), 0, 0));
@@ -259,19 +272,19 @@ public class CreateMillingMachineFrame extends JDialog {
 
 									//---- label23 ----
 									label23.setText("Y");
-									panel18.add(label23, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
+									panel18.add(label23, new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 										new Insets(0, 0, 0, 0), 0, 0));
 
 									//---- spinner14 ----
-									spinner14.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
-									panel18.add(spinner14, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0,
+									spinner14.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel18.add(spinner14, new GridBagConstraints(9, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 										new Insets(0, 0, 0, 0), 0, 0));
 
 									//---- label25 ----
 									label25.setText("m");
-									panel18.add(label25, new GridBagConstraints(10, 0, 1, 1, 0.0, 0.0,
+									panel18.add(label25, new GridBagConstraints(11, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
@@ -892,6 +905,7 @@ public class CreateMillingMachineFrame extends JDialog {
 	private JLabel label1;
 	protected JTextField textField1;
 	private JLabel label7;
+	private JPanel panel21;
 	protected JSpinner spinner4;
 	private JLabel label8;
 	protected JComboBox comboBox1;

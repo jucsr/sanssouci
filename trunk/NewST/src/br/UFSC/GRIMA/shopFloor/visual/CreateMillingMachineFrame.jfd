@@ -71,16 +71,29 @@ new FormModel {
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridy": 2
 									} )
-									add( new FormComponent( "javax.swing.JSpinner" ) {
-										name: "spinner4"
-										"model": new javax.swing.SpinnerNumberModel {
-											minimum: 0.0
-											stepSize: 0.01
-											value: 0.01
-										}
-										auxiliary() {
-											"JavaCodeGenerator.variableModifiers": 4
-										}
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+										"$columnSpecs": "0, 60"
+										"$rowSpecs": "0, 0, 0"
+										"$hGap": 5
+										"$vGap": 5
+										"$alignLeft": true
+										"$alignTop": true
+									} ) {
+										name: "panel21"
+										add( new FormComponent( "javax.swing.JSpinner" ) {
+											name: "spinner4"
+											"model": new javax.swing.SpinnerNumberModel {
+												minimum: 0.0
+												stepSize: 0.01
+												value: 0.01
+											}
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 4
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 1
+											"gridy": 1
+										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridx": 1
 										"gridy": 2
@@ -114,7 +127,7 @@ new FormModel {
 										"gridy": 4
 									} )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-										"$columnSpecs": "0, 5, 50, 5, 0, 5, 0, 5, 50, 5, 5, 5"
+										"$columnSpecs": "0, 5, 50, 5, 0, 5, 20, 0, 5, 50, 5, 5, 5"
 										"$rowSpecs": "center:0"
 										"$alignTop": true
 										"$alignLeft": true
@@ -127,6 +140,7 @@ new FormModel {
 										add( new FormComponent( "javax.swing.JSpinner" ) {
 											name: "spinner13"
 											"model": new javax.swing.SpinnerNumberModel {
+												minimum: 0.0
 												stepSize: 1.0
 												value: 0.0
 											}
@@ -146,11 +160,12 @@ new FormModel {
 											name: "label23"
 											"text": "Y"
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 6
+											"gridx": 7
 										} )
 										add( new FormComponent( "javax.swing.JSpinner" ) {
 											name: "spinner14"
 											"model": new javax.swing.SpinnerNumberModel {
+												minimum: 0.0
 												stepSize: 1.0
 												value: 0.0
 											}
@@ -158,13 +173,13 @@ new FormModel {
 												"JavaCodeGenerator.variableModifiers": 1
 											}
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 8
+											"gridx": 9
 										} )
 										add( new FormComponent( "javax.swing.JLabel" ) {
 											name: "label25"
 											"text": "m"
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 10
+											"gridx": 11
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridx": 1

@@ -77,26 +77,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		Object o = e.getSource();
 		if(o.equals(okButton))
 		{
-//			machineTool.setItsCapability(itsCapability);
-//			machineTool.setItsId(itsId);
-//			machineTool.setItsLocation();
-			millingMachine.setItsOrigin(new Point3d(((Double)spinner13.getValue()).doubleValue(),((Double)spinner14.getValue()).doubleValue(),0));
-			millingMachine.setItsId(textField1.getText());
-//			machineTool.setItsSpindle(itsSpindle);
-//			machineTool.setToolHandlingDevice(toolHandlingDevice);
-//			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);
-			//mandar o machineTool para o array de machines do shopFloor
-			
-			//SETAR AS FERRAMENTAS ANTES!
-//			CuttingToolHandlingDevice cuttingTool = new CuttingToolHandlingDevice(this);
-			//... (sets)
-			setMagazine();
-			machineTools = shopFloor.getMachines();
-			machineTools.add(millingMachine);
-			shopFloor.setMachines(machineTools);
-			janelaShopFloor.shopPanel.repaint();
-			janelaShopFloor.atualizarArvoreMaquinas();
-			this.dispose();
+			this.ok();
 		} 
 		else if(o.equals(cancelButton))
 		{
@@ -268,12 +249,43 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 			try {
 				saveMachine();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
 	}
 	
+	private void ok() 
+	{
+		
+//		machineTool.setItsCapability(itsCapability);
+//		machineTool.setItsId(itsId);
+//		machineTool.setItsLocation();
+		millingMachine.setItsOrigin(new Point3d(((Double)spinner13.getValue()).doubleValue(),((Double)spinner14.getValue()).doubleValue(),0));
+		if(janelaShopFloor.validateMachine(shopFloor, millingMachine))
+		{
+			millingMachine.setItsId(textField1.getText());
+//			machineTool.setItsSpindle(itsSpindle);
+//			machineTool.setToolHandlingDevice(toolHandlingDevice);
+//			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);
+			//mandar o machineTool para o array de machines do shopFloor
+			
+			//SETAR AS FERRAMENTAS ANTES!
+//			CuttingToolHandlingDevice cuttingTool = new CuttingToolHandlingDevice(this);
+			//... (sets)
+			setMagazine();
+			machineTools = shopFloor.getMachines();
+			machineTools.add(millingMachine);
+			shopFloor.setMachines(machineTools);
+			janelaShopFloor.shopPanel.repaint();
+			janelaShopFloor.atualizarArvoreMaquinas();
+			this.dispose();		
+		} else
+		{
+			JOptionPane.showMessageDialog(null, "The machine was not created");
+		}
+		
+	}
+
 	private void setMagazine()
 	{
 		ToolMagazine toolMagazine = new ToolMagazine();
@@ -355,7 +367,6 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
 		
 		}
 	}

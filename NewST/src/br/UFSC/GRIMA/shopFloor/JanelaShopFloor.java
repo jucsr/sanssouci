@@ -3,6 +3,7 @@ package br.UFSC.GRIMA.shopFloor;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -10,11 +11,13 @@ import javax.swing.event.ChangeListener;
 import java.util.ArrayList; //New
 import java.util.Vector; //New
 
+import javax.swing.JOptionPane;
 import javax.swing.JTree; //New
 import javax.swing.tree.DefaultMutableTreeNode; //New
 import javax.swing.tree.TreeSelectionModel;
 
 import br.UFSC.GRIMA.capp.Workingstep; //New
+import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 
 import br.UFSC.GRIMA.shopFloor.visual.ShopFloorFrame;
 
@@ -246,5 +249,53 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		}
 		//projetoSF.getWorkingsteps().get(i).i
 		return null;
+	}
+	/**
+	 * 
+	 * @param shopFloor
+	 * @param newMachine --> machine to be validate
+	 * @return --> is valid or not
+	 */
+	public boolean validateMachine(ShopFloor shopFloor, MachineTool newMachine)
+	{
+		boolean isValid = false;
+		ArrayList<MachineTool> machines = shopFloor.getMachines();
+		Rectangle2D floor = new Rectangle2D.Double(0, 0, shopFloor.getLength(), shopFloor.getWidth());
+		Rectangle2D newRect = new Rectangle2D.Double(newMachine.getItsOrigin().x, newMachine.getItsOrigin().y, 3, 2);
+		if(floor.contains(newRect))
+		{
+			if(machines.size() ==0)
+			{
+				if(floor.contains(newRect))
+				{
+					isValid = true;
+				} else
+				{
+					isValid = false;
+					JOptionPane.showMessageDialog(null, "The machine is out of the shop floor area", "Erro", JOptionPane.ERROR_MESSAGE);  
+				}
+			} else
+			{
+				for(int i = 0; i < machines.size(); i++)
+				{
+					MachineTool machineTmp = machines.get(i);
+					Rectangle2D rectTmp = new Rectangle2D.Double(machineTmp.getItsOrigin().x, machineTmp.getItsOrigin().y, 3, 2);
+					if(rectTmp.intersects(newRect) || rectTmp.contains(newRect))
+					{
+						isValid = false;
+						JOptionPane.showMessageDialog(null, "There is a collition between machines", "Erro", JOptionPane.ERROR_MESSAGE);  
+
+					} else
+					{
+						isValid = true;
+					}
+				}
+			}
+		} else
+		{
+			JOptionPane.showMessageDialog(null, "The machine is out of the shop floor area", "Erro", JOptionPane.ERROR_MESSAGE);  
+			isValid = false;
+		}
+		return isValid;
 	}
 }

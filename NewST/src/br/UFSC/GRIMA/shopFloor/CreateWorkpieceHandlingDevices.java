@@ -44,6 +44,7 @@ public class CreateWorkpieceHandlingDevices extends CreateWorkpieceHandlingDevic
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
+		this.comboBox1.setSelectedIndex(4);
 		this.millingMachine = millingMachine;
 		type = "Chuck";
 	}

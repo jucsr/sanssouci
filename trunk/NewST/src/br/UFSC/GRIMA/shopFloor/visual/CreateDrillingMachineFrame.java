@@ -26,6 +26,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+		// Generated using JFormDesigner Evaluation license - ms hojmm
 		menuBar1 = new JMenuBar();
 		menu1 = new JMenu();
 		menuItem1 = new JMenuItem();
@@ -83,6 +84,14 @@ public class CreateDrillingMachineFrame extends JDialog {
 		label4 = new JLabel();
 		label5 = new JLabel();
 		label6 = new JLabel();
+		panel15 = new JPanel();
+		scrollPane4 = new JScrollPane();
+		table4 = new JTable();
+		panel17 = new JPanel();
+		button13 = new JButton();
+		button14 = new JButton();
+		button16 = new JButton();
+		button15 = new JButton();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -110,6 +119,14 @@ public class CreateDrillingMachineFrame extends JDialog {
 		//======== dialogPane ========
 		{
 			dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
+
+			// JFormDesigner evaluation mark
+			dialogPane.setBorder(new javax.swing.border.CompoundBorder(
+				new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
+					"JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
+					javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
+					java.awt.Color.red), dialogPane.getBorder())); dialogPane.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
+
 			dialogPane.setLayout(new BorderLayout());
 
 			//======== contentPanel ========
@@ -545,6 +562,78 @@ public class CreateDrillingMachineFrame extends JDialog {
 						}
 						tabbedPane1.addTab("Travel", panel5);
 
+
+						//======== panel15 ========
+						{
+							panel15.setLayout(new GridBagLayout());
+							((GridBagLayout)panel15.getLayout()).columnWidths = new int[] {0, 0};
+							((GridBagLayout)panel15.getLayout()).rowHeights = new int[] {0, 0, 0};
+							((GridBagLayout)panel15.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+							((GridBagLayout)panel15.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
+
+							//======== scrollPane4 ========
+							{
+
+								//---- table4 ----
+								table4.setModel(new DefaultTableModel(
+									new Object[][] {
+									},
+									new String[] {
+										"Select", "Name", "Type", "Max Diameter", "Max Power", "Max Torque", "Speed Range", "Coolant"
+									}
+								) {
+									Class<?>[] columnTypes = new Class<?>[] {
+										Boolean.class, String.class, String.class, Double.class, Double.class, Double.class, Double.class, Boolean.class
+									};
+									@Override
+									public Class<?> getColumnClass(int columnIndex) {
+										return columnTypes[columnIndex];
+									}
+								});
+								scrollPane4.setViewportView(table4);
+							}
+							panel15.add(scrollPane4, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 0), 0, 0));
+
+							//======== panel17 ========
+							{
+								panel17.setLayout(new GridBagLayout());
+								((GridBagLayout)panel17.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0};
+								((GridBagLayout)panel17.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+								((GridBagLayout)panel17.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel17.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+								//---- button13 ----
+								button13.setText("Add Spindle");
+								panel17.add(button13, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 5), 0, 0));
+
+								//---- button14 ----
+								button14.setText("Remove Spindle");
+								panel17.add(button14, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 5), 0, 0));
+
+								//---- button16 ----
+								button16.setText("Select All");
+								panel17.add(button16, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 5), 0, 0));
+
+								//---- button15 ----
+								button15.setText("Deselect All");
+								panel17.add(button15, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 5), 0, 0));
+							}
+							panel15.add(panel17, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 0, 0), 0, 0));
+						}
+						tabbedPane1.addTab("Spindle", panel15);
+
 					}
 					panel1.add(tabbedPane1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -584,6 +673,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+	// Generated using JFormDesigner Evaluation license - ms hojmm
 	private JMenuBar menuBar1;
 	private JMenu menu1;
 	protected JMenuItem menuItem1;
@@ -641,6 +731,14 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JLabel label4;
 	private JLabel label5;
 	private JLabel label6;
+	private JPanel panel15;
+	private JScrollPane scrollPane4;
+	public JTable table4;
+	private JPanel panel17;
+	protected JButton button13;
+	protected JButton button14;
+	protected JButton button16;
+	protected JButton button15;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

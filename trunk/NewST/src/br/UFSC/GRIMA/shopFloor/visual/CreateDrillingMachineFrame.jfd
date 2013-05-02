@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_09" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.6.0_37" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -587,6 +587,116 @@ new FormModel {
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 							}, new FormLayoutConstraints( null ) {
 								"title": "Travel"
+							} )
+							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+								"$columnSpecs": "0:1.0"
+								"$rowSpecs": "0:1.0, 0"
+								"$hGap": 5
+								"$vGap": 5
+								"$alignLeft": true
+								"$alignTop": true
+							} ) {
+								name: "panel15"
+								add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+									name: "scrollPane4"
+									add( new FormComponent( "javax.swing.JTable" ) {
+										name: "table4"
+										"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
+											add( "Select" )
+											add( "Name" )
+											add( "Type" )
+											add( "Max Diameter" )
+											add( "Max Power" )
+											add( "Max Torque" )
+											add( "Speed Range" )
+											add( "Coolant" )
+										}, new java.util.Vector {
+											add( class java.lang.Boolean )
+											add( class java.lang.String )
+											add( class java.lang.String )
+											add( class java.lang.Double )
+											add( class java.lang.Double )
+											add( class java.lang.Double )
+											add( class java.lang.Double )
+											add( class java.lang.Boolean )
+										}, new java.util.Vector {
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+										}, new java.util.Vector {
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+										} )
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+									} )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+									"$columnSpecs": "0:1.0, 0, 0, 0, 0, 0:1.0"
+									"$rowSpecs": "0, 0, 0"
+									"$hGap": 5
+									"$vGap": 5
+									"$alignLeft": true
+									"$alignTop": true
+								} ) {
+									name: "panel17"
+									add( new FormComponent( "javax.swing.JButton" ) {
+										name: "button13"
+										"text": "Add Spindle"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 1
+										"gridy": 1
+									} )
+									add( new FormComponent( "javax.swing.JButton" ) {
+										name: "button14"
+										"text": "Remove Spindle"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 2
+										"gridy": 1
+									} )
+									add( new FormComponent( "javax.swing.JButton" ) {
+										name: "button16"
+										"text": "Select All"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 3
+										"gridy": 1
+									} )
+									add( new FormComponent( "javax.swing.JButton" ) {
+										name: "button15"
+										"text": "Deselect All"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 4
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 4
+										"gridy": 1
+									} )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+									"gridy": 1
+								} )
+							}, new FormLayoutConstraints( null ) {
+								"title": "Spindle"
 							} )
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {

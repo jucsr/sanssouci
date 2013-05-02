@@ -33,10 +33,13 @@ public class MovimentacaoRegionSuperficieBezier {
 		double maiorMenorDistancia=0;
 		double menor=100;
 		double distanciaTemp;
+		double ae = this.ws.getCondicoesUsinagem().getAe();
 		double ap=this.ws.getCondicoesUsinagem().getAp();
+		double comprimento, largura;
 		int numeroDeAps;
 		int numeroDeCortes;
 		int t=0,m;
+		int numeroPontos=200;
 		ArrayList<LinearPath> desbaste = new ArrayList<LinearPath>();
 		ArrayList<Point3d> pontosProibidos;
 		ArrayList<Point3d> pontosPossiveis;
@@ -44,13 +47,22 @@ public class MovimentacaoRegionSuperficieBezier {
 		ArrayList<Point3d> pontos2 = null;
 		ArrayList<Point3d> temp;
 		ArrayList<Double> menorDistancia;
-		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 200, 200).getMeshArray();
+		Point3d controlVertex [][] = regionBezier.getControlVertex();
+		Point3d malha[][] = new BezierSurface(controlVertex, numeroPontos, numeroPontos).getMeshArray();
 		Point3d pontoInicial = new Point3d(0,0,0);
 		Point3d pontoFinal;
 		LinearPath ligarPontos;
-
+		
+		
+		largura = (double) controlVertex[3][3].getY()-controlVertex[0][0].getY();
+		comprimento = (double) controlVertex[3][3].getX()-controlVertex[0][0].getX();
+		
+		double temp1,temp2;
+		temp1=comprimento/numeroPontos;
+		temp2=largura/numeroPontos;
+		
 		z = MapeadoraRegion.getZMaximo(malha);
-		if(z < 0 )
+		if(z > 0 )
 		{
 			z = -z;
 		};
@@ -82,10 +94,10 @@ public class MovimentacaoRegionSuperficieBezier {
 					{
 						pontosProibidos.add(new Point3d(malha[i][j].x,malha[i][j].y,z));//   PONTOS DA "CASCA" DOS POLIGONOS)
 					}
-					else if((i==0 || i==malha[j].length-1 || j==0 || j==malha.length-1) && -malha[i][j].getZ()<z)
-					{
-						pontosPossiveis.add(new Point3d(malha[i][j].x,-malha[i][j].y,z));
-					}
+//					else if((i==0 || i==malha[j].length-1 || j==0 || j==malha.length-1) && -malha[i][j].getZ()<z)
+//					{
+//						pontosPossiveis.add(new Point3d(malha[i][j].x,malha[i][j].y,z));
+//					}
 					if(-malha[i][j].getZ()<z)
 					{
 						pontosPossiveis.add(new Point3d(malha[i][j].getX(),malha[i][j].getY(),z));//PEGA OS PONTOS QUE PODE DESBASTAR
@@ -114,21 +126,69 @@ public class MovimentacaoRegionSuperficieBezier {
 				}
 			}
 
-			numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
+			//numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
 
+			double variacao = (temp1+temp2)/2;
 
 			pontos = new ArrayList<ArrayList<Point3d>>();
-			for(int i=0;i<numeroDeCortes;i++){
+			double raioTmp, distancia, diferenca;
+			double raioMedia = diametroFerramenta/2;
+			
+			diferenca = (2*maiorMenorDistancia-diametroFerramenta)/ae; // 1 é por causa do diametro		
+			numeroDeCortes = (int) Math.round(diferenca);
+		
+			
+			if(diferenca>numeroDeCortes){
+				numeroDeCortes += 1;
+			}
+			
+//			pontos = new ArrayList<ArrayList<Point3d>>();
+//			for(int i=0;i<numeroDeCortes;i++){
+//				pontos2 = new ArrayList<Point3d>();
+//				for(int k=0;k<menorDistancia.size();k++){
+//					if(menorDistancia.get(k)<=(i+1)*(0.75*diametroFerramenta) && menorDistancia.get(k)>=(i+1)*(0.75*diametroFerramenta)-0.5){
+//						pontos2.add(pontosPossiveis.get(k));
+//					}
+//				}
+//				pontos.add(pontos2);
+//			}
+			
+			for(int i=0;i<numeroDeCortes;i++)
+			{
 				pontos2 = new ArrayList<Point3d>();
-				for(int k=0;k<menorDistancia.size();k++){
-					if(menorDistancia.get(k)<=(i+1)*(0.75*diametroFerramenta) && menorDistancia.get(k)>=(i+1)*(0.75*diametroFerramenta)-0.5){
-						pontos2.add(pontosPossiveis.get(k));
+				raioTmp = raioMedia + i*0.75*raioMedia;
+				diferenca = raioTmp - maiorMenorDistancia;
+														
+				for(int k=0;k<menorDistancia.size();k++)
+				{		
+					distancia = menorDistancia.get(k);
+					
+					if(i == 0)
+					{
+						if(distancia + variacao >= raioTmp && distancia <= raioTmp)
+						{								
+							pontos2.add(pontosPossiveis.get(k));
+						}
+					}
+					else
+					{
+						if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
+						{
+							pontos2.add(pontosPossiveis.get(k));
+						}
+						else
+						{
+							if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
+							{
+								pontos2.add(pontosPossiveis.get(k));
+							}
+						}
 					}
 				}
-				pontos.add(pontos2);
+				pontos.add(pontos2);	
 			}
 
-
+			
 			for(int i=0;i<pontos.size();i++){
 				if(pontos.get(i).size()==0 || pontos.get(i).size()==1){
 					continue;
@@ -147,9 +207,11 @@ public class MovimentacaoRegionSuperficieBezier {
 				distanciaTemp=OperationsVector.distanceVector(pontos.get(i).get(0),pontos.get(i).get(1));
 				temp = new ArrayList<Point3d>();
 				temp.add(pontos.get(i).get(0));
+				pontos.get(i).remove(0);
 				for(int k=0;k<pontos.get(i).size();k++){
 					menor=100;
 					t=0;
+					//m = pontos.get(i).size();
 					for(int j=0;j<pontos.get(i).size();j++){
 						if(temp.get(k)!=pontos.get(i).get(j)){
 							distanciaTemp=OperationsVector.distanceVector(temp.get(k), pontos.get(i).get(j));
@@ -160,7 +222,7 @@ public class MovimentacaoRegionSuperficieBezier {
 							}
 						}
 					}
-					if(menor>5){
+					if(menor>diametroFerramenta/2){
 						ligarPontos = new LinearPath(pontoInicial, new Point3d(pontoInicial.getX(),pontoInicial.getY(),this.ws.getOperation().getRetractPlane()));
 						ligarPontos.setTipoDeMovimento(LinearPath.FAST_MOV);
 						desbaste.add(ligarPontos);
@@ -177,6 +239,7 @@ public class MovimentacaoRegionSuperficieBezier {
 						pontoInicial = new Point3d(pontos.get(i).get(t).getX(),pontos.get(i).get(t).getY(),z);
 					}
 					temp.add(pontos.get(i).get(t));
+					pontos.get(i).remove(t);
 					if(pontos.get(i).size()==0 || pontos.get(i).size()==1){
 						continue;
 					}

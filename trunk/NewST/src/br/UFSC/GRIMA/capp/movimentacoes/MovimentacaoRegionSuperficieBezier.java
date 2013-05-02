@@ -147,8 +147,7 @@ public class MovimentacaoRegionSuperficieBezier {
 				distanciaTemp=OperationsVector.distanceVector(pontos.get(i).get(0),pontos.get(i).get(1));
 				temp = new ArrayList<Point3d>();
 				temp.add(pontos.get(i).get(0));
-				m=pontos.get(i).size();
-				for(int k=0;k<m;k++){
+				for(int k=0;k<pontos.get(i).size();k++){
 					menor=100;
 					t=0;
 					for(int j=0;j<pontos.get(i).size();j++){
@@ -178,7 +177,6 @@ public class MovimentacaoRegionSuperficieBezier {
 						pontoInicial = new Point3d(pontos.get(i).get(t).getX(),pontos.get(i).get(t).getY(),z);
 					}
 					temp.add(pontos.get(i).get(t));
-					pontos.get(i).remove(t);
 					if(pontos.get(i).size()==0 || pontos.get(i).size()==1){
 						continue;
 					}

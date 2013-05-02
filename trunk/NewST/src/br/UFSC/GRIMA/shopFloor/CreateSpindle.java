@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
+import br.UFSC.GRIMA.entidades.machiningResources.DrillingMachine;
+import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingTypeSpindle;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
@@ -17,7 +19,8 @@ import br.UFSC.GRIMA.shopFloor.visual.CreateSpindleFrame;
 public class CreateSpindle extends CreateSpindleFrame implements ActionListener, ItemListener {
 
 	private CreateMillingMachine janelaMillingMachine;
-	private MillingMachine millingMachine;
+	private CreateDrillingMachine janelaDrillingMachine;
+	private MachineTool millingMachine;
 	private Spindle spindle;
 	private String name;
 	private boolean isCoolant;
@@ -28,8 +31,15 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 	private String type;
 	private ArrayList<Spindle> arraySpindle;
 	
-	
-	public CreateSpindle(CreateMillingMachine janelaMillingMachine, MillingMachine millingMachine) {
+	public CreateSpindle(CreateDrillingMachine janelaDrillingMachine, MachineTool drillingMachine){
+		super(janelaDrillingMachine);
+		this.millingMachine = drillingMachine;
+		this.janelaDrillingMachine = janelaDrillingMachine;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+	}
+	public CreateSpindle(CreateMillingMachine janelaMillingMachine, MachineTool millingMachine) {
 		super(janelaMillingMachine);
 		this.millingMachine = millingMachine;
 		this.janelaMillingMachine = janelaMillingMachine;
@@ -100,10 +110,19 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 		spindle.setSpindleMaxPower(spindleMaxPower);
 		
 		Object[] linha = {false, name, type, maxDiameter, spindleMaxPower, maxTorque, itsSpeedRange, isCoolant};
-		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table4.getModel();
+		if(this.janelaMillingMachine != null){
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table4.getModel();
+		
 		this.janelaMillingMachine.table4.setModel(modelo);
+		
 		modelo.addRow(linha);
-
+		}else{
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table4.getModel();
+			
+			this.janelaDrillingMachine.table4.setModel(modelo);
+			
+			modelo.addRow(linha);
+		}
 		arraySpindle.add(spindle);
 		millingMachine.setItsSpindle(arraySpindle);
 	}

@@ -38,9 +38,9 @@ public class CreateMachine extends CreateMachineFrame implements ActionListener
 	{
 		if(this.radioButton1.isSelected())
 		{
-//			CreateDrillingMachine dm = new CreateDrillingMachine(janelaShoopFloor, shopFloor);
-//			dm.setVisible(true);
-//			dispose();
+			CreateDrillingMachine dm = new CreateDrillingMachine(janelaShoopFloor, shopFloor);
+			dm.setVisible(true);
+			dispose();
 		} else if(this.radioButton2.isSelected())
 		{
 			CreateMillingMachine mm = new CreateMillingMachine(janelaShoopFloor, shopFloor);

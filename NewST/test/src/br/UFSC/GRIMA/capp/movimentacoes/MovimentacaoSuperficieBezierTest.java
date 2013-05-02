@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 import javax.vecmath.Point3d;
 
 import org.junit.Test;
@@ -27,9 +28,10 @@ import br.UFSC.GRIMA.util.operationsVector.OperationVectorTest;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 
 public class MovimentacaoSuperficieBezierTest {
+	int numeroPontos = 200;
 	ArrayList<Point3d> poligono = new ArrayList<Point3d>();
 	int a=0;
-	double plano=21;
+	double plano=20;
 	ArrayList<Point3d> subArrayPossivelX = new ArrayList<Point3d>();
 	ArrayList<Point3d> subArrayPossivelY = new ArrayList<Point3d>();
 	double[][][] control_points = {
@@ -75,21 +77,21 @@ public class MovimentacaoSuperficieBezierTest {
 //	Point3d p33 = new Point3d(90, 90, 40);
 	
 	Point3d p00 = new Point3d(0, 0, 0);
-	Point3d p01 = new Point3d(30, 0, 40);
-	Point3d p02 = new Point3d(60, 0, 40);
-	Point3d p03 = new Point3d(90, 0, 0);
-	Point3d p10 = new Point3d(0, 30, 40);
-	Point3d p11 = new Point3d(30, 30, 0);
-	Point3d p12 = new Point3d(60, 30, 0);
-	Point3d p13 = new Point3d(90, 30, 40);
-	Point3d p20 = new Point3d(0, 60, 40);
-	Point3d p21 = new Point3d(30, 60, 0);
-	Point3d p22 = new Point3d(60, 60, 0);
-	Point3d p23 = new Point3d(90, 60, 40);
-	Point3d p30 = new Point3d(0, 90, 0);
-	Point3d p31 = new Point3d(30, 90, 40);
-	Point3d p32 = new Point3d(60, 90, 40);
-	Point3d p33 = new Point3d(90, 90, 0);
+	Point3d p01 = new Point3d(67, 0, 90);
+	Point3d p02 = new Point3d(134, 0, 90);
+	Point3d p03 = new Point3d(201, 0, 0);
+	Point3d p10 = new Point3d(0, 67, 90);
+	Point3d p11 = new Point3d(67, 67, 0);
+	Point3d p12 = new Point3d(134, 67, 0);
+	Point3d p13 = new Point3d(201, 67, 90);
+	Point3d p20 = new Point3d(0, 134, 90);
+	Point3d p21 = new Point3d(67, 134, 0);
+	Point3d p22 = new Point3d(134, 134, 0);
+	Point3d p23 = new Point3d(201, 134, 90);
+	Point3d p30 = new Point3d(0, 201, 0);
+	Point3d p31 = new Point3d(67, 201, 90);
+	Point3d p32 = new Point3d(134, 201, 90);
+	Point3d p33 = new Point3d(201, 201, 0);
 	@Test
 	public void bezierTest()
 	{
@@ -110,15 +112,15 @@ public class MovimentacaoSuperficieBezierTest {
 		controlVertex[3][2] = p32;
 		controlVertex[3][3] = p33;
 		
-		BezierSurface b = new BezierSurface(controlVertex, 200,200);
+		BezierSurface b = new BezierSurface(controlVertex, numeroPontos,numeroPontos);
 //		System.out.println(b.getMeshArray()[0][0]);
-		for(int i = 0; i < b.getMeshArray().length; i++)
-		{
-			for(int j = 0; j < b.getMeshArray()[i].length; j++)
-			{
-				//System.out.println("[" + i + "]" + "[" + j + "]" + b.getMeshArray()[i][j]);
-			}
-		}
+//		for(int i = 0; i < b.getMeshArray().length; i++)
+//		{
+//			for(int j = 0; j < b.getMeshArray()[i].length; j++)
+//			{
+//				//System.out.println("[" + i + "]" + "[" + j + "]" + b.getMeshArray()[i][j]);
+//			}
+//		}
 //		for(int j = 0; j < b.getMeshArray()[0].length; j++)
 //		{
 //			System.out.println(b.getMeshArray()[0][j]);
@@ -131,27 +133,30 @@ public class MovimentacaoSuperficieBezierTest {
 		Point3d malha[][] = b.getMeshArray();
 		ArrayList<Point3d> subArray = new ArrayList<Point3d>();
 
-		
 		for(int j=0;j<malha.length;j++){
 			for(int i=0;i<malha[j].length;i++){
 				if(malha[i][j].getZ()<=plano){
 					if(malha[i][j].getZ()>=plano-0.25){
 						subArray.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
+						poligono.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
 						continue;
 					}
 				}
 				else if((i==0 || i==malha[j].length-1 || j==0 || j==malha.length-1) && malha[i][j].getZ()<plano){
 					subArray.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
+					poligono.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
 					continue;
 				}
 			}
 		}
+		
+		// PONTOS QUE PODEM SER USINADOS
 		for(int i=0;i<malha.length;i++){
 			for(int j=0;j<malha[i].length;j++){
-				if(malha[i][j].getZ()<plano){
+				if(malha[i][j].getZ()<=plano){
 					subArrayPossivelY.add(new Point3d(malha[i][j].x,malha[i][j].y,plano));
 				}
-				if(malha[j][i].getZ()<plano){
+				if(malha[j][i].getZ()<=plano){
 					subArrayPossivelX.add(new Point3d(malha[j][i].x,malha[j][i].y,plano));
 				}
 			}
@@ -159,6 +164,8 @@ public class MovimentacaoSuperficieBezierTest {
 		/*****************************************/
 		/*
 		 * JUNTAR OS PONTOS MAIS PROXIMOS DA PERIFERIA
+		 * PERGUNTA : PORQUE OS PONTOS PRECISAM ESTAR EM ORDEM ?
+		 * RESPOSTA : NAO VEJO MOTIVO PARA TER FEITO ISSO...
 		 */
 	
 		double distanciaTemp=OperationsVector.distanceVector(subArray.get(0),subArray.get(1)),
@@ -167,33 +174,33 @@ public class MovimentacaoSuperficieBezierTest {
 				
 		
 		
-		poligono.add(subArray.get(u)); 
-		subArray.remove(u);
-		a=subArray.size();
-		k=0;
-
-		for(int j=0;j<a;j++){
-			menorDistancia=100;
-			for(int i=0;i<subArray.size();i++){
-				if(poligono.get(j)!=subArray.get(i)){
-//					if(j!=0){
-//						if(poligono.get(j-1)!=subArray.get(i)){
-//							distanciaTemp=OperationsVector.distanceVector(poligono.get(j),subArray.get(i));
-//						}
+//		poligono.add(subArray.get(u)); 
+//		subArray.remove(u);
+//		a=subArray.size();
+//		k=0;
+//
+//		for(int j=0;j<a;j++){
+//			menorDistancia=100;
+//			for(int i=0;i<subArray.size();i++){
+//				if(poligono.get(j)!=subArray.get(i)){
+////					if(j!=0){
+////						if(poligono.get(j-1)!=subArray.get(i)){
+////							distanciaTemp=OperationsVector.distanceVector(poligono.get(j),subArray.get(i));
+////						}
+////					}
+////					else{
+//					distanciaTemp=OperationsVector.distanceVector(poligono.get(j),subArray.get(i));		
+////					}
+//
+//					if(distanciaTemp<menorDistancia){
+//						menorDistancia=distanciaTemp;
+//						k=i;
 //					}
-//					else{
-					distanciaTemp=OperationsVector.distanceVector(poligono.get(j),subArray.get(i));		
-//					}
-
-					if(distanciaTemp<menorDistancia){
-						menorDistancia=distanciaTemp;
-						k=i;
-					}
-				}				
-			}
-			poligono.add(subArray.get(k));
-			subArray.remove(k);
-		}
+//				}				
+//			}
+//			poligono.add(subArray.get(k));
+//			subArray.remove(k);
+//		}
 
 
 		JFrame frame1 = new JFrame("BEZIER SURFACE");
@@ -203,7 +210,7 @@ public class MovimentacaoSuperficieBezierTest {
 		painel1.setLayout(new BorderLayout());
 		frame1.getContentPane().add(painel1);
 		J3D j3d = new J3D(painel1);
-		OperationBezierSurface operation = new OperationBezierSurface("BEZIER_SURFACE", controlVertex, 11, 11);
+		OperationBezierSurface operation = new OperationBezierSurface("BEZIER_SURFACE", controlVertex, 11, 11); // Numero de pontos de controle ?
 		
 		j3d.addSolid(operation);
 		
@@ -217,7 +224,6 @@ public class MovimentacaoSuperficieBezierTest {
 			ArrayList<Ellipse2D> e = new ArrayList<Ellipse2D>();
 			ArrayList<Ellipse2D> w = new ArrayList<Ellipse2D>();
 			double largura, comprimento;
-			Point3d[][] matriz = new Point3d[98][98];
 			
 			painelTest(){
 				r.moveTo(5*poligono.get(0).getX(),5*poligono.get(0).getY());
@@ -232,25 +238,30 @@ public class MovimentacaoSuperficieBezierTest {
 				//p.closePath();
 				largura = (double) controlVertex[3][3].getY()-controlVertex[0][0].getY();
 				comprimento = (double) controlVertex[3][3].getX()-controlVertex[0][0].getX();
-				double deltaX,deltaY;
-				deltaX=comprimento/100;
-				deltaY=largura/100;
-				for(int i=0;i<98;i++){
-					for(int k=0;k<98;k++){
-						matriz[i][k]=new Point3d(deltaX*(k+1),deltaY*(i+1),plano);
-//						System.out.println(matriz[i][k].y);
-					}
-				}
+				
+				double temp1,temp2;
+				temp1=comprimento/numeroPontos;
+				temp2=largura/numeroPontos;
+				
+				//MATRIZ NAO É USADA PRA ABSOLUTAMENTE NADA...
+				
+//				for(int i=0;i<tamanhoMatriz-1;i++){
+//					for(int k=0;k<tamanhoMatriz-1;k++){
+//						matriz[i][k]=new Point3d(deltaX*(k+1),deltaY*(i+1),plano);
+////						System.out.println(matriz[i][k].y);
+//					}
+//				}
 				r.moveTo(0,0);
 				r.lineTo(5*comprimento, 0);
 				r.lineTo(5*comprimento, 5*largura);
 				r.lineTo(0, 5*largura);
 				r.lineTo(0, 0);
 
-				LimitedLine l1 = new LimitedLine(new Point3d(0,0,plano), new Point3d(comprimento,0,plano));
-				LimitedLine l2 = new LimitedLine(new Point3d(comprimento,0,plano), new Point3d(comprimento,largura,plano));
-				LimitedLine l3 = new LimitedLine(new Point3d(comprimento,largura,plano), new Point3d(0,largura,plano));
-				LimitedLine l4 = new LimitedLine(new Point3d(0,largura,plano), new Point3d(0,0,plano));
+//				LimitedLine l1 = new LimitedLine(new Point3d(0,0,plano), new Point3d(comprimento,0,plano));
+//				LimitedLine l2 = new LimitedLine(new Point3d(comprimento,0,plano), new Point3d(comprimento,largura,plano));
+//				LimitedLine l3 = new LimitedLine(new Point3d(comprimento,largura,plano), new Point3d(0,largura,plano));
+//				LimitedLine l4 = new LimitedLine(new Point3d(0,largura,plano), new Point3d(0,0,plano));
+				
 				double distanciaTmp = 100;
 				ArrayList<Double> menorDistanciaX = new ArrayList<Double>();
 				ArrayList<Double> menorDistanciaY = new ArrayList<Double>();
@@ -301,8 +312,9 @@ public class MovimentacaoSuperficieBezierTest {
 //				System.out.println(menorDistanciaY.size());
 				
 				
-				double diametroFerramenta = 10, maiorMenorDistancia=0;
+				double diametroFerramenta = 20, maiorMenorDistancia=0;
 				int numeroDeCortes;
+				double ae = 0.75*diametroFerramenta;
 				ArrayList<ArrayList<Point3d>> pontos = new ArrayList<ArrayList<Point3d>>();
 				ArrayList<Point3d> pontos2 = null;
 
@@ -312,53 +324,117 @@ public class MovimentacaoSuperficieBezierTest {
 					}
 				}
 				
-				numeroDeCortes = (int) (maiorMenorDistancia/(0.75*diametroFerramenta));
+				numeroDeCortes = (int) (maiorMenorDistancia/(ae));
 				
-				for(int i=0;i<numeroDeCortes;i++){
-					pontos2 = new ArrayList<Point3d>();
-					for(int k=0;k<menorDistanciaX.size();k++){
-						if(menorDistanciaX.get(k)<=(i+1)*(0.75*diametroFerramenta) && menorDistanciaX.get(k)>=(i+1)*(0.75*diametroFerramenta)-0.5){
-							pontos2.add(subArrayPossivelX.get(k));
-						}
-					}
-					pontos.add(pontos2);
+				//VER ESSE 0,5...NAO PODE SER UM NUMERO CHUTADO! OLHAR MovimentacaoGeneralTest
+				
+				
+				//atual
+//				for(int i=0;i<numeroDeCortes;i++){
+//					pontos2 = new ArrayList<Point3d>();
+//					for(int k=0;k<menorDistanciaX.size();k++){
+//						if(menorDistanciaX.get(k)<=(i+1)*(0.75*diametroFerramenta) && menorDistanciaX.get(k)>=(i+1)*(0.75*diametroFerramenta)-0.5){
+//							pontos2.add(subArrayPossivelX.get(k));
+//						}
+//					}
+//					System.err.println("pontos2   " + pontos2.size());
+//					pontos.add(pontos2);
+//				}
+				//
+
+				double variacao = (temp1+temp2)/2;
+
+				pontos = new ArrayList<ArrayList<Point3d>>();
+				double raioTmp, distancia, diferenca;
+				double raioMedia = diametroFerramenta/2;
+				
+				diferenca = (2*maiorMenorDistancia-diametroFerramenta)/ae; // 1 é por causa do diametro		
+				numeroDeCortes = (int) Math.round(diferenca);
+			
+				
+				if(diferenca>numeroDeCortes){
+					numeroDeCortes += 1;
 				}
 				
 				
+				//=====================================================================================================================================================
+				//novo
+								
 				
+				for(int i=0;i<numeroDeCortes;i++)
+				{
+					pontos2 = new ArrayList<Point3d>();
+					raioTmp = raioMedia + i*0.75*raioMedia;
+					diferenca = raioTmp - maiorMenorDistancia;
+															
+					for(int k=0;k<menorDistanciaY.size();k++)
+					{		
+						distancia = menorDistanciaY.get(k);
+						
+						if(i == 0)
+						{
+							if(distancia + variacao >= raioTmp && distancia <= raioTmp)
+							{								
+								pontos2.add(subArrayPossivelY.get(k));
+							}
+						}
+						else
+						{
+							if(distancia + variacao/2 >= raioTmp && distancia - variacao/2 <= raioTmp)
+							{
+								pontos2.add(subArrayPossivelY.get(k));
+							}
+							else
+							{
+								if(distancia + variacao/2 >= raioTmp - diferenca && distancia - variacao/2 <= raioTmp - diferenca)
+								{
+									pontos2.add(subArrayPossivelY.get(k));
+								}
+							}
+						}
+					}
+					pontos.add(pontos2);	
+				}
+				//=====================================================================================================================================================
+				
+				
+				
+				//ORDENA OS PONTOS PARA QUE A FRESADORA SIGA CORRETAMENTE O CAMINHO...
 				
 				ArrayList<ArrayList<Point3d>> pontosOrdenados = new ArrayList<ArrayList<Point3d>>();
 				ArrayList<Point3d> temp = null;
 				double menorDistancia=100;
 				int t=0,m;
-				double distanciaTemp;
+				double distanciaTemp = 100;
+				
+				//Ordenar corretamente esses pontos, o remove está deixando o Array nulo por isso está dando erro!
+				
+				
+//				for(int i = 0; i < pontos.size(); i++)
+//				{
+//					
+//				}
 				
 				for(int i=0;i<pontos.size();i++){
-					distanciaTemp=OperationsVector.distanceVector(pontos.get(i).get(0),pontos.get(i).get(1));
+					if(pontos.get(i).size() > 2)
+						distanciaTemp = OperationsVector.distanceVector(pontos.get(i).get(0),pontos.get(i).get(1));
+					else
+						continue;
 					temp = new ArrayList<Point3d>();
 					temp.add(pontos.get(i).get(0));
-					m=pontos.get(i).size();
-					for(int k=0;k<m;k++){
-						menorDistancia=100;
-						for(int j=0;j<pontos.get(i).size();j++){
-							if(temp.get(k)!=pontos.get(i).get(j)){
-								distanciaTemp=OperationsVector.distanceVector(temp.get(k), pontos.get(i).get(j));
+					for(int k = 0; k < pontos.get(i).size(); k++){
+						menorDistancia = 100;
+						for(int j = 0; j < pontos.get(i).size(); j++){
+							if(temp.get(k) != pontos.get(i).get(j)){
+								distanciaTemp = OperationsVector.distanceVector(temp.get(k), pontos.get(i).get(j));
 								
-								if(distanciaTemp<menorDistancia){
-									menorDistancia=distanciaTemp;							
-									t=j;
+								if(distanciaTemp < menorDistancia){
+									menorDistancia = distanciaTemp;							
+									t = j;
 								}
 							}
 						}
 						temp.add(pontos.get(i).get(t));
-						
-						
-						// IMPRIMIR OS PONTOS PARA COLOCAR NO MATLAB
-						System.out.println(pontos.get(i).get(t).getY());
-//						System.out.println(pontos.get(i).get(t).getX());
-//						System.out.println(menorDistancia);
-						
-						pontos.get(i).remove(t);
 					}
 					pontosOrdenados.add(temp);
 				}
@@ -385,6 +461,7 @@ public class MovimentacaoSuperficieBezierTest {
 							}
 					}
 				}
+				
 //				for(int i=0;i<testeY.size();i++){
 //					for(int k=0;k<testeX.size();k++){
 //						if(Math.abs(testeY.get(i).x-testeX.get(k).x)<0.5 &&

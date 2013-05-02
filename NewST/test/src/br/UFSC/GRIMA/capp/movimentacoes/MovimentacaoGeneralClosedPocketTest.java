@@ -547,7 +547,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			pontos2 = new ArrayList<Point3d>();
 			raioTmp = raioMedia + i*ae*raioMedia;
 			diferenca = raioTmp - maiorMenorDistancia;
-			
+						
 			for(int k=0;k<menorDistancia.size();k++)
 			{		
 				distancia = menorDistancia.get(k);

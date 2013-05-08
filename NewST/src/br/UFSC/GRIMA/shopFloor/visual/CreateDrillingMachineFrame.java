@@ -330,7 +330,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 								//---- table1 ----
 								table1.setModel(new DefaultTableModel(
 									new Object[][] {
-										{null, null, null, null, null},
 									},
 									new String[] {
 										"Select", "Id", "Name", "Diameter", "Type"
@@ -349,7 +348,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 									cm.getColumn(0).setPreferredWidth(30);
 									cm.getColumn(1).setPreferredWidth(30);
 								}
-								table1.setEnabled(false);
 								scrollPane1.setViewportView(table1);
 							}
 							panel4.add(scrollPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
@@ -423,7 +421,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 									//---- table2 ----
 									table2.setModel(new DefaultTableModel(
 										new Object[][] {
-											{null, null, null, null},
 										},
 										new String[] {
 											"Select", "Id", "Name", "Type"
@@ -442,7 +439,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 										cm.getColumn(0).setPreferredWidth(30);
 										cm.getColumn(1).setPreferredWidth(30);
 									}
-									table2.setEnabled(false);
 									scrollPane2.setViewportView(table2);
 								}
 								panel8.add(scrollPane2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
@@ -704,7 +700,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JLabel label2;
 	protected JTextField textField2;
 	private JScrollPane scrollPane1;
-	protected JTable table1;
+	public JTable table1;
 	private JPanel panel11;
 	protected JButton button1;
 	protected JButton button2;
@@ -714,7 +710,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JPanel panel7;
 	private JPanel panel8;
 	private JScrollPane scrollPane2;
-	protected JTable table2;
+	public JTable table2;
 	private JPanel panel14;
 	protected JButton button6;
 	protected JButton button7;

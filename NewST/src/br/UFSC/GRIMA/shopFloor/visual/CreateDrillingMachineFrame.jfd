@@ -259,15 +259,7 @@ new FormModel {
 									name: "scrollPane1"
 									add( new FormComponent( "javax.swing.JTable" ) {
 										name: "table1"
-										"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
-											add( new java.util.Vector {
-												add( null )
-												add( null )
-												add( null )
-												add( null )
-												add( null )
-											} )
-										}, new java.util.Vector {
+										"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
 											add( "Select" )
 											add( "Id" )
 											add( "Name" )
@@ -292,9 +284,8 @@ new FormModel {
 											add( null )
 											add( null )
 										} )
-										"enabled": false
 										auxiliary() {
-											"JavaCodeGenerator.variableModifiers": 4
+											"JavaCodeGenerator.variableModifiers": 1
 										}
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
@@ -388,14 +379,7 @@ new FormModel {
 										name: "scrollPane2"
 										add( new FormComponent( "javax.swing.JTable" ) {
 											name: "table2"
-											"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
-												add( new java.util.Vector {
-													add( null )
-													add( null )
-													add( null )
-													add( null )
-												} )
-											}, new java.util.Vector {
+											"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
 												add( "Select" )
 												add( "Id" )
 												add( "Name" )
@@ -416,9 +400,8 @@ new FormModel {
 												add( null )
 												add( null )
 											} )
-											"enabled": false
 											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
+												"JavaCodeGenerator.variableModifiers": 1
 											}
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )

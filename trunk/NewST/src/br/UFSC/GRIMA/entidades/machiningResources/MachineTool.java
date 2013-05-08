@@ -18,8 +18,8 @@ public class MachineTool extends MachiningResource implements Serializable
 	private ArrayList<Axis> axis = new ArrayList<Axis>();
 	private ArrayList<Spindle> itsSpindle = new ArrayList<Spindle>();
 	private MachineToolCapability itsCapability;
-	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevice;
-	private ArrayList<CuttingToolHandlingDevice> toolHandlingDevice;
+	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevice = new ArrayList<WorkpieceHandlingDevice>();
+	private ArrayList<CuttingToolHandlingDevice> toolHandlingDevice = new ArrayList<CuttingToolHandlingDevice>();
 	
 	public String getItsLocation() 
 	{

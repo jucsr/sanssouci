@@ -19,15 +19,36 @@ public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionLis
 	private String materialClass = "P";
 	private int handOfCut = 1;
 	private CreateMillingMachine janelaMillingMachine;
-	public AddNewTwistDrill(JDialog owner)
+	private CreateDrillingMachine janelaDrillingMachine;
+	public AddNewTwistDrill(CreateMillingMachine owner)
 	{
 		super(owner);
-		this.janelaMillingMachine = (CreateMillingMachine) owner;
+		this.janelaMillingMachine =  owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
 		this.comboBox3.addItemListener(this);
 	}
+	
+	public AddNewTwistDrill(CreateDrillingMachine owner)
+	{
+		super(owner);
+		this.janelaDrillingMachine =  owner;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox3.addItemListener(this);
+	}
+	
+	/*public AddNewTwistDrill(CreateTurningMachine owner)
+	{
+		super(owner);
+		this.janelaTurningMachine =  owner;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox3.addItemListener(this);
+	}*/
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -75,7 +96,6 @@ public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionLis
 	}
 	public void ok()
 	{
-		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double tipAngle = 90 - (Double)this.spinner6.getValue();
@@ -94,12 +114,31 @@ public class AddNewTwistDrill extends AddNewTwistDrillFrame implements ActionLis
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
 		
+		if(janelaMillingMachine !=(null)){
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		TwistDrill td = new TwistDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
 		janelaMillingMachine.toolList.add(td);
 		Object[] linha = {false, id, nome, diametro, "Twist Drill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
+		}else if(janelaDrillingMachine != (null)){
+				int id = this.janelaDrillingMachine.table1.getRowCount() + 1;
+				TwistDrill td = new TwistDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+				janelaDrillingMachine.toolList.add(td);
+				Object[] linha = {false, id, nome, diametro, "Twist Drill"};
+				DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table1.getModel();
+				this.janelaDrillingMachine.table1.setModel(modelo);
+				modelo.addRow(linha);
+			}/*else if(janelaTurningMachine != (null)){
+				int id = this.janelaTurningMachine.table1.getRowCount() + 1;
+				TwistDrill td = new TwistDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+				janelaTurningMachine.toolList.add(td);
+				Object[] linha = {false, id, nome, diametro, "Twist Drill"};
+				DefaultTableModel modelo = (DefaultTableModel)this.janelaTurningMachine.table1.getModel();
+				this.janelaTurningMachine.table1.setModel(modelo);
+				modelo.addRow(linha);
+				}*/
 		this.dispose();
 	}
 }

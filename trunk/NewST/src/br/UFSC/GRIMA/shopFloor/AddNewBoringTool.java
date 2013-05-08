@@ -18,10 +18,21 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 	private String materialClass = "P";
 	private int handOfCut = 1;
 	private CreateMillingMachine janelaMillingMachine;
-	public AddNewBoringTool(JDialog owner) 
+	private CreateDrillingMachine janelaDrillingMachine;
+	public AddNewBoringTool(CreateMillingMachine owner) 
 	{
 		super(owner);
 		this.janelaMillingMachine = (CreateMillingMachine) owner;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox3.addItemListener(this);
+	}
+	
+	public AddNewBoringTool(CreateDrillingMachine owner) 
+	{
+		super(owner);
+		this.janelaDrillingMachine =  owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -74,7 +85,7 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 	}
 	private void ok()
 	{
-		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
+		
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double dMinimo = (Double)this.spinner6.getValue();
@@ -93,13 +104,32 @@ public class AddNewBoringTool extends AddNewBoringToolFrame implements ActionLis
 			hand = "Left";
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
-		
+		if(janelaMillingMachine !=(null)){
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		BoringTool bt = new BoringTool(nome, material, diametro, dMinimo, edgeRadius, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
 		janelaMillingMachine.toolList.add(bt);
 		Object[] linha = {false, id, nome, diametro, "Boring Tool"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
+		}else if(janelaDrillingMachine != null){
+			int id = this.janelaDrillingMachine.table1.getRowCount() + 1;
+			BoringTool bt = new BoringTool(nome, material, diametro, dMinimo, edgeRadius, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+			janelaDrillingMachine.toolList.add(bt);
+			Object[] linha = {false, id, nome, diametro, "Boring Tool"};
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table1.getModel();
+			this.janelaDrillingMachine.table1.setModel(modelo);
+			modelo.addRow(linha);
+			}/*else if(janelaTurningMachine != (null)){
+				int id = this.janelaTurningMachine.table1.getRowCount() + 1;
+				BoringTool bt = new BoringTool(nome, material, diametro, dMinimo, edgeRadius, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+				janelaTurningMachine.toolList.add(bt);
+				Object[] linha = {false, id, nome, diametro, "Boring Tool"};
+				DefaultTableModel modelo = (DefaultTableModel)this.janelaTurningMachine.table1.getModel();
+				this.janelaTurningMachine.table1.setModel(modelo);
+				modelo.addRow(linha);
+				}
+				*/
 		this.dispose();
 	}
 }

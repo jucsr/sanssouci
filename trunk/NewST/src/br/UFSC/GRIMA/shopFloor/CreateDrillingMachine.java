@@ -58,14 +58,7 @@ public class CreateDrillingMachine extends CreateDrillingMachineFrame implements
 		this.button14.addActionListener(this);
 		this.button15.addActionListener(this);
 		this.button16.addActionListener(this);
-		this.spinner1.addChangeListener(this);
-		this.spinner2.addChangeListener(this);
-		this.spinner3.addChangeListener(this);
-		this.spinner4.addChangeListener(this);
-		this.spinner5.addChangeListener(this);
-		this.spinner6.addChangeListener(this);
-		this.spinner7.addChangeListener(this);
-		
+	
 	}
 	
 	
@@ -80,36 +73,78 @@ public class CreateDrillingMachine extends CreateDrillingMachineFrame implements
 		{
 			this.dispose();
 			
-		} else if(o.equals(button1))
+		} else if(o.equals(button1))// VIEW TOOL
 		{
 			
-		} else if(o.equals(button2))
+		} else if(o.equals(button2))// ADD TOOL
+		{
+			CreateTool ct = new CreateTool(this);
+			ct.setVisible(true);
+		} else if(o.equals(button3)) // REMOVE TOOL
+		{
+			DefaultTableModel modelo;
+			
+			for(int i = 0; i < this.table1.getRowCount(); i++)
+			{
+				modelo = (DefaultTableModel)this.table1.getModel();
+				
+				if((Boolean) this.table1.getValueAt(i, 0))
+				{
+					modelo.removeRow(i);	
+					toolList.remove(i);
+					i = 0;
+					i--;
+				}
+			}
+		}  else if(o.equals(button4))// SELECT ALL
+		{
+			for(int i = 0; i < this.table1.getRowCount(); i++)
+			{
+				this.table1.setValueAt(true, i, 0);
+			}
+		} else if(o.equals(button5))// REMOVE ALL
+		{
+			for(int i = 0; i < this.table1.getRowCount(); i++)
+			{
+				this.table1.setValueAt(false, i, 0);
+			}
+		} else if(o.equals(button6))// VIEW DEVICE
 		{
 			
-		} else if(o.equals(button3))
+		} else if(o.equals(button7))// ADD DEVICE
 		{
-			
-		}  else if(o.equals(button4))
+			CreateWorkpieceHandlingDevices workpieceHandling = new CreateWorkpieceHandlingDevices(this, drillingMachine);
+			workpieceHandling.setVisible(true);
+		} else if(o.equals(button8))// REMOVE DEVICE
 		{
+				DefaultTableModel modelo;
 			
-		} else if(o.equals(button5))
+			for(int i = 0; i < this.table2.getRowCount(); i++)
+			{
+				modelo = (DefaultTableModel)this.table2.getModel();
+				arrayWorkpieceHandlingDevices = drillingMachine.getWorkpieceHandlingDevice();
+				
+				if((Boolean) this.table2.getValueAt(i, 0))
+				{
+					modelo.removeRow(i);	
+					arrayWorkpieceHandlingDevices.remove(i);
+					drillingMachine.setWorkpieceHandlingDevice(arrayWorkpieceHandlingDevices);
+					i = 0;
+					i--;
+				}
+			}
+		} else if(o.equals(button9))// SELECT ALL(DEVICE)
 		{
-			
-		} else if(o.equals(button6))
+			for(int i = 0; i < this.table2.getRowCount(); i++)
+			{
+				this.table2.setValueAt(true, i, 0);
+			}
+		} else if(o.equals(button10))// REMOVE ALL(DEVICE)
 		{
-			
-		} else if(o.equals(button7))
-		{
-			
-		} else if(o.equals(button8))
-		{
-			
-		} else if(o.equals(button9))
-		{
-			
-		} else if(o.equals(button10))
-		{
-			
+			for(int i = 0; i < this.table2.getRowCount(); i++)
+			{
+				this.table2.setValueAt(false, i, 0);
+			}
 		}else if(o.equals(button13))//ADD SPINDLES
 		{
 			CreateSpindle spindle = new CreateSpindle(this, drillingMachine);

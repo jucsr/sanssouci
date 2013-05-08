@@ -19,7 +19,9 @@ public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionL
 	private String materialClass = "P";
 	private int handOfCut = 1;
 	private CreateMillingMachine janelaMillingMachine;
-	public AddNewBallEndMill(JDialog owner) 
+	private CreateDrillingMachine janelaDrillingMachine;
+	//private CreateTurningMachine janelaTurningMachine;
+	public AddNewBallEndMill(CreateMillingMachine owner) 
 	{
 		super(owner);
 		this.janelaMillingMachine = (CreateMillingMachine) owner;
@@ -28,6 +30,28 @@ public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionL
 		this.comboBox1.addItemListener(this);
 		this.comboBox3.addItemListener(this);
 	}
+	
+	public AddNewBallEndMill(CreateDrillingMachine owner) 
+	{
+		super(owner);
+		this.janelaDrillingMachine = owner;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox3.addItemListener(this);
+	}
+	
+	/*public AddNewBallEndMill(CreateTurningMachine owner) 
+	{
+		super(owner);
+		this.janelaTurningMachine = owner;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox3.addItemListener(this);
+	}
+	  */
+	
 	@Override
 	public void itemStateChanged(ItemEvent e) 
 	{
@@ -75,7 +99,7 @@ public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionL
 	}
 	private void ok()
 	{
-		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
+		
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double cuttingEdge = (Double)this.spinner2.getValue();
@@ -94,13 +118,32 @@ public class AddNewBallEndMill extends AddNewBallEndMillFrame implements ActionL
 			hand = "Left";
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
-		
+				
 		BallEndMill bem = new BallEndMill(nome, material, diametro, edgeRadius, edgeCenterVertical, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
-		janelaMillingMachine.toolList.add(bem);
-		Object[] linha = {false, id, nome, diametro, "Ball End Mill"};
-		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
-		this.janelaMillingMachine.table1.setModel(modelo);
-		modelo.addRow(linha);
+		
+		if(!janelaMillingMachine.equals(null)){
+			int id = this.janelaMillingMachine.table1.getRowCount() + 1;
+			janelaMillingMachine.toolList.add(bem);
+			Object[] linha = {false, id, nome, diametro, "Ball End Mill"};
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
+			this.janelaMillingMachine.table1.setModel(modelo);
+			modelo.addRow(linha);
+		}else if(!janelaDrillingMachine.equals(null)){
+			int id = this.janelaDrillingMachine.table1.getRowCount() + 1;
+			janelaDrillingMachine.toolList.add(bem);
+			Object[] linha = {false, id, nome, diametro, "Ball End Mill"};
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table1.getModel();
+			this.janelaDrillingMachine.table1.setModel(modelo);
+			modelo.addRow(linha);
+		}/*else if(!janelaTurningMachine.equals(null)){
+			int id = this.janelaTurningMachine.table1.getRowCount() + 1;
+			janelaTurningMachine.toolList.add(bem);
+			Object[] linha = {false, id, nome, diametro, "Ball End Mill"};
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaTurningMachine.table1.getModel();
+			this.janelaTurningMachine.table1.setModel(modelo);
+			modelo.addRow(linha);
+		}
+		*/
 		this.dispose();
 	}
 }

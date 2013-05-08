@@ -19,7 +19,8 @@ public class AddNewReamer extends AddNewReamerFrame implements ActionListener, I
 	private String materialClass = "P";
 	private int handOfCut = 1;
 	private CreateMillingMachine janelaMillingMachine;
-	public AddNewReamer(JDialog owner) 
+	private CreateDrillingMachine janelaDrillingMachine;
+	public AddNewReamer(CreateMillingMachine owner) 
 	{
 		super(owner);
 		this.janelaMillingMachine = (CreateMillingMachine) owner;
@@ -28,6 +29,17 @@ public class AddNewReamer extends AddNewReamerFrame implements ActionListener, I
 		this.comboBox1.addItemListener(this);
 		this.comboBox3.addItemListener(this);
 	}
+	
+	public AddNewReamer(CreateDrillingMachine owner) 
+	{
+		super(owner);
+		this.janelaDrillingMachine =  owner;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox3.addItemListener(this);
+	}
+	
 	@Override
 	public void itemStateChanged(ItemEvent e)
 	{
@@ -75,7 +87,7 @@ public class AddNewReamer extends AddNewReamerFrame implements ActionListener, I
 	}
 	private void ok() 
 	{
-		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
+		
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner4.getValue();
 		double cuttingEdge = (Double)this.spinner3.getValue();
@@ -94,12 +106,23 @@ public class AddNewReamer extends AddNewReamerFrame implements ActionListener, I
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
 		
+		if(janelaMillingMachine !=(null)){
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		Reamer r = new Reamer(nome, material, diametro, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut, numberOfTeeth);
 		janelaMillingMachine.toolList.add(r);
 		Object[] linha = {false, id, nome, diametro, "Reamer"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
+		}else if(janelaDrillingMachine!=(null)){
+			int id = this.janelaDrillingMachine.table1.getRowCount() + 1;
+			Reamer r = new Reamer(nome, material, diametro, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut, numberOfTeeth);
+			janelaDrillingMachine.toolList.add(r);
+			Object[] linha = {false, id, nome, diametro, "Reamer"};
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table1.getModel();
+			this.janelaDrillingMachine.table1.setModel(modelo);
+			modelo.addRow(linha);
+			}
 		this.dispose();
 	}
 }

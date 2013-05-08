@@ -12,6 +12,7 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.entidades.machiningResources.BarFeeder;
 import br.UFSC.GRIMA.entidades.machiningResources.Chuck;
 import br.UFSC.GRIMA.entidades.machiningResources.Collet;
+import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.Pallet;
 import br.UFSC.GRIMA.entidades.machiningResources.Table;
@@ -22,7 +23,7 @@ public class CreateWorkpieceHandlingDevices extends CreateWorkpieceHandlingDevic
 	
 	private WorkpieceHandlingDevice workpieceHandlingDevice;
 	private ArrayList<WorkpieceHandlingDevice> arrayWorkpiece = new ArrayList<WorkpieceHandlingDevice>();
-	private MillingMachine millingMachine;
+	private MachineTool millingMachine;
 	private String name;
 	private String type;
 	private Point3d origin;
@@ -35,10 +36,21 @@ public class CreateWorkpieceHandlingDevices extends CreateWorkpieceHandlingDevic
 	private double maxDiameter;
 	private double maxAllowedLength;
 	private CreateMillingMachine janelaMillingMachine;
+	private CreateDrillingMachine janelaDrillingMachine;
 	private String itsId;
 	
+	public CreateWorkpieceHandlingDevices(CreateDrillingMachine janelaDrillingMachine, MachineTool millingMachine) {
+		super(janelaDrillingMachine);
+		this.janelaDrillingMachine = janelaDrillingMachine;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox1.setSelectedIndex(4);
+		this.millingMachine = millingMachine;
+		type = "Table";
+	}
 	
-	public CreateWorkpieceHandlingDevices(CreateMillingMachine janelaMillingMachine, MillingMachine millingMachine) {
+	public CreateWorkpieceHandlingDevices(CreateMillingMachine janelaMillingMachine, MachineTool millingMachine) {
 		super(janelaMillingMachine);
 		this.janelaMillingMachine = janelaMillingMachine;
 		this.okButton.addActionListener(this);
@@ -46,7 +58,7 @@ public class CreateWorkpieceHandlingDevices extends CreateWorkpieceHandlingDevic
 		this.comboBox1.addItemListener(this);
 		this.comboBox1.setSelectedIndex(4);
 		this.millingMachine = millingMachine;
-		type = "Chuck";
+		type = "Table";
 	}
 
 	@Override
@@ -73,13 +85,18 @@ public class CreateWorkpieceHandlingDevices extends CreateWorkpieceHandlingDevic
 		originY = ((Double) this.spinner3.getValue()).doubleValue();
 		originZ = ((Double) this.spinner4.getValue()).doubleValue();
 		origin = new Point3d(originX, originY, originZ);
-		arrayWorkpiece = millingMachine.getWorkpieceHandlingDevice();
+		
 		
 		Object[] linha = {false, name, maxLoadCapacity, type};
+		if(janelaMillingMachine != (null)){
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table2.getModel();
 		this.janelaMillingMachine.table2.setModel(modelo);
 		modelo.addRow(linha);
-		
+		}else if(janelaDrillingMachine!=(null)){
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table2.getModel();
+			this.janelaDrillingMachine.table2.setModel(modelo);
+			modelo.addRow(linha);
+			}
 		if(type == "Chuck")
 		{
 			workpieceHandlingDevice = new Chuck(name);
@@ -121,7 +138,9 @@ public class CreateWorkpieceHandlingDevices extends CreateWorkpieceHandlingDevic
 			workpieceHandlingDevice.setItsOrigin(origin);
 			workpieceHandlingDevice.setMaxLoadCapacity(maxLoadCapacity);
 		}
+		
 		arrayWorkpiece.add(workpieceHandlingDevice);
+	
 		millingMachine.setWorkpieceHandlingDevice(arrayWorkpiece);
 		
 	}

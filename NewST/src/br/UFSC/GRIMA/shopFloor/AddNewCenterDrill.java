@@ -18,10 +18,21 @@ public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionL
 	private String materialClass = "P";
 	private int handOfCut = 1;
 	private CreateMillingMachine janelaMillingMachine;
-	public AddNewCenterDrill(JDialog owner)
+	private CreateDrillingMachine janelaDrillingMachine;
+	public AddNewCenterDrill(CreateMillingMachine owner)
 	{
 		super(owner);
 		this.janelaMillingMachine = (CreateMillingMachine) owner;
+		this.okButton.addActionListener(this);
+		this.cancelButton.addActionListener(this);
+		this.comboBox1.addItemListener(this);
+		this.comboBox3.addItemListener(this);
+	}
+	
+	public AddNewCenterDrill(CreateDrillingMachine owner)
+	{
+		super(owner);
+		this.janelaDrillingMachine =  owner;
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
@@ -74,7 +85,7 @@ public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionL
 	}
 	private void ok() 
 	{
-		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
+		
 		String nome = this.textField1.getText();
 		double diametro = (Double)this.spinner1.getValue();
 		double tipAngle = (180 - (Double)this.spinner4.getValue()) / 2;
@@ -93,12 +104,23 @@ public class AddNewCenterDrill extends AddNewCenterDrillFrame implements ActionL
 		else if(this.handOfCut == Ferramenta.NEUTRAL_HAND_OF_CUT)
 			hand = "Neutral";
 		
+		if(janelaMillingMachine != (null)){
+		int id = this.janelaMillingMachine.table1.getRowCount() + 1;
 		CenterDrill cd = new CenterDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
 		janelaMillingMachine.toolList.add(cd);
 		Object[] linha = {false, id, nome, diametro, "Centre Drill"};
 		DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table1.getModel();
 		this.janelaMillingMachine.table1.setModel(modelo);
 		modelo.addRow(linha);
+		}else if(janelaDrillingMachine != (null)){
+			int id = this.janelaDrillingMachine.table1.getRowCount() + 1;
+			CenterDrill cd = new CenterDrill(nome, material, diametro, tipAngle, cuttingEdge, profundidade, offSetLength, dm, rugosidade, tolerancia, handOfCut);
+			janelaDrillingMachine.toolList.add(cd);
+			Object[] linha = {false, id, nome, diametro, "Centre Drill"};
+			DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table1.getModel();
+			this.janelaDrillingMachine.table1.setModel(modelo);
+			modelo.addRow(linha);
+			}
 		this.dispose();
 	}
 }

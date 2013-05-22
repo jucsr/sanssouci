@@ -2761,7 +2761,29 @@ public class StepNcProject extends STEPProject
 		strategyRetract.setTool_orientation(null, retract);
 		eFree_form_operation.setApproach(null, strategyApproach);
 		eFree_form_operation.setRetract(null, strategyRetract);
+		eFree_form_operation.setIts_machining_strategy(null, this.createFreeFormStategy(ws));
 		return eFree_form_operation;
+	}
+	private EFreeform_strategy createFreeFormStategy(Workingstep ws) throws SdaiException
+	{
+		EUv_strategy strategy = (EUv_strategy)this.model.createEntityInstance(EUv_strategy.class);
+		strategy.setPathmode(null, EPathmode_type.ZIGZAG);
+		strategy.setCutmode(null, ECutmode_type.CONVENTIONAL);
+		ETolerances tolerances = (ETolerances)model.createEntityInstance(ETolerances.class);
+		tolerances.setChordal_tolerance(null, .05); /** ARRUMAR DEPOIS **/
+		tolerances.setScallop_height(null, .05); /** ARRUMAR DEPOIS **/
+		strategy.setIts_milling_tolerances(null, tolerances);
+		ArrayList<Double> uRatios = new ArrayList<Double>();
+		uRatios.add(1.0);
+		uRatios.add(0.0);
+		uRatios.add(0.0);
+		ArrayList<Double> vRatios = new ArrayList<Double>();
+		vRatios.add(0.0);
+		vRatios.add(1.0);
+		vRatios.add(0.0);
+		strategy.setForward_direction(null, createDirection("u direction", uRatios));
+		strategy.setSideward_direction(null, createDirection("v direction", vRatios));
+		return strategy;
 	}
 //	private EMachining_operation createOperations(Feature featureType, int finishingType, String name, double retractPlane, double ap, double ae, double vc) throws SdaiException
 //	{

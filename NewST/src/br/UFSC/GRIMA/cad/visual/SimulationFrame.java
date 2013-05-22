@@ -170,19 +170,19 @@ public class SimulationFrame extends JFrame {
 				((GridBagLayout)buttonBar.getLayout()).rowWeights = new double[] {0.0, 1.0};
 
 				//---- iniciar ----
-				iniciar.setText("Iniciar");
+				iniciar.setText("start");
 				buttonBar.add(iniciar, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 5, 5), 0, 0));
 
 				//---- pausar ----
-				pausar.setText("Pausar");
+				pausar.setText("pause");
 				buttonBar.add(pausar, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 5, 5), 0, 0));
 
 				//---- reiniciar ----
-				reiniciar.setText("Reiniciar");
+				reiniciar.setText("reset");
 				buttonBar.add(reiniciar, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 5, 5), 0, 0));

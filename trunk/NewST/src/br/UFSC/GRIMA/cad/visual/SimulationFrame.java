@@ -145,7 +145,7 @@ public class SimulationFrame extends JFrame {
 					((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
 
 					//---- label1 ----
-					label1.setText("Velocidade de Simula\u00e7\u00e3o (%) :");
+					label1.setText("Simulation Speed (%) :");
 					label1.setHorizontalAlignment(SwingConstants.CENTER);
 					label1.setForeground(Color.blue);
 					panel2.add(label1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,

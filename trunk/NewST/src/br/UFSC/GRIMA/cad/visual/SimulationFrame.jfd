@@ -442,7 +442,7 @@
               <string>javax.swing.JLabel</string>
               <void method="setProperty">
                <string>text</string>
-               <string>Velocidade de Simulação (%) :</string>
+               <string>Simulation Speed (%) :</string>
               </void>
               <void method="setProperty">
                <string>horizontalAlignment</string>

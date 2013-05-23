@@ -68,7 +68,6 @@ public class JanelaCodigoStep extends JanelaCodigoSTEP_view implements
 			this.workingsteps = reader.getAllWorkingSteps();
 			
 			this.projeto = reader.getProjeto();
-			
 			this.editTextArea(HeaderUtil.changeHeader(stepNcProject.createSTEP21File(), "GRIMA"));
 		
 //			stepNcProject.closeAndDeleteSession();

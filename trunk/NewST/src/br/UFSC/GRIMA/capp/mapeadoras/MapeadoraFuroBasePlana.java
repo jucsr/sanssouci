@@ -87,7 +87,7 @@ public class MapeadoraFuroBasePlana {
 			furoTmp.setAcabamento(true);
 		}
 		
-		System.out.println(furoTmp.getFeaturePrecedente().equals(CircularBoss.class));
+//		System.out.println(furoTmp.getFeaturePrecedente().equals(CircularBoss.class));
 
 		if(furoTmp.getFeaturePrecedente()!= null){
 			if(		furoTmp.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 

@@ -196,7 +196,7 @@ public static Feature getFeature(EMachining_workingstep wkstep) throws SdaiExcep
 			
 			feature = DegrauReader.getDegrau(step);
 			
-		} if (wkstep.getIts_feature(null).isKindOf(ERegion.class))
+		}else if (wkstep.getIts_feature(null).isKindOf(ERegion.class)) //New
 		{
 			ERegion_surface_list eRegion_surface_list = (ERegion_surface_list)wkstep.getIts_feature(null);
 			

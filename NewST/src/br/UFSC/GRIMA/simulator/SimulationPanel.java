@@ -72,7 +72,7 @@ public class SimulationPanel extends SimulationFrame implements ActionListener {
 			this.lateralToolPanel.add(lateralTPanel);
 
 			tPanel.setVelocity(slider.getValue()/2 + 0.1);
-			label1.setText("Velocidade de Simula\u00e7\u00e3o (%): "
+			label1.setText("Simulation Speed (%): "
 					+ (slider.getValue()/2 + 0.1));
 
 			System.out.println("A");
@@ -99,7 +99,7 @@ public class SimulationPanel extends SimulationFrame implements ActionListener {
 
 		public void stateChanged(ChangeEvent arg0) {
 			tPanel.setVelocity(slider.getValue()/2 + 0.1);
-			label1.setText("Velocidade de Simula\u00e7\u00e3o (%): "
+			label1.setText("Simulation Speed (%): "
 					+ (slider.getValue()/2 + 0.1));
 
 		}

@@ -128,6 +128,9 @@ public class ArvorePrecedencias
 				for(int j = 0; j < faceTmp.features.size(); j++)
 				{
 					Feature featureTmp = (Feature)faceTmp.features.elementAt(j);
+					
+					System.out.println("precedente da feature "+j+ ": " + featureTmp.getFeaturePrecedente()); //New
+					
 //					System.out.println("precedente --> " + featureTmp.getClass() + "\t" + featureTmp.getFeaturePrecedente());
 //					System.out.println("class --> " + featureTmp.getClass());
 					if(featureTmp.getFeaturePrecedente() == null)

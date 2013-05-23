@@ -1,5 +1,7 @@
 package br.UFSC.GRIMA.acceptance;
 
+import java.awt.Shape;
+import java.awt.geom.Point2D;
 import java.util.Vector;
 
 import jsdai.SCombined_schema.AExecutable;
@@ -126,6 +128,110 @@ public class STEP_NCReader  {
 		
 		return allFeatures;
 	}
+	
+	public void setFeaturesPrecedences(Vector<Feature> features)
+	{
+		
+		
+		Vector<Feature> featuresTmp = new Vector<Feature>();
+		featuresTmp = features;
+		int i, j;
+		
+		//for(i=0;i<featuresTmp.size();i++)
+		for(i=featuresTmp.size() - 1;i >= 0;i--) //Compara do último até o primeiro
+		{
+			//features.get(i).getFace().getShape(features.get(i));
+			
+			//featuresTmp.removeElementAt(i);
+			
+			//for(j=1;j<featuresTmp.size();j++) //j=1 pois a feature i=0 é a mesma j=0
+			//for(j=0;j<featuresTmp.size();j++)
+			for(j=featuresTmp.size() - 1;j >= 0;j--) //Compara do último até o primeiro
+			{
+				Shape shapeI = featuresTmp.get(i).getFace().getShape(featuresTmp.get(i));
+				Shape shapeJ = featuresTmp.get(j).getFace().getShape(featuresTmp.get(j));
+				Point2D [] bordaI = featuresTmp.get(i).getFace().getShapePontos(featuresTmp.get(i));
+				Point2D [] bordaJ = featuresTmp.get(j).getFace().getShapePontos(featuresTmp.get(j));
+				
+				for(int k=0; k < bordaJ.length; k++) //Checa se a feature i é precedente de j
+				{
+					if(shapeI.contains(bordaJ[k]))
+					{
+						if(featuresTmp.get(j).getFeaturePrecedente() == null) //Checa se a feature j já possui precedente
+						{
+							if(featuresTmp.get(i).Z < featuresTmp.get(j).Z) //Checa se o i esta acima do j
+							{	
+								featuresTmp.get(j).setFeaturePrecedente(featuresTmp.get(i)); //Define a feature i como precedente de j
+								featuresTmp.get(j).featureMae = featuresTmp.get(i); //Define a feature i como mãe de j
+								
+								featuresTmp.get(i).itsSons.add(featuresTmp.get(j)); //Adiciona a feature j como filha da feature i
+								
+							}
+						}
+					}
+					
+				}
+				for(int k=0; k < bordaI.length; k++) //Checa se a feature j é precedente de i
+				{
+					if(shapeJ.contains(bordaI[k]))
+					{
+						if(featuresTmp.get(i).getFeaturePrecedente() == null) //Checa se a feature i já possui precedente
+						{
+							if(featuresTmp.get(j).Z < featuresTmp.get(i).Z) //Checa se o j esta acima do i
+							{
+								featuresTmp.get(i).setFeaturePrecedente(featuresTmp.get(j)); //Define a feature j como precedente de i
+								featuresTmp.get(i).featureMae = featuresTmp.get(j); //Define a feature j como mãe de i
+							
+								featuresTmp.get(j).itsSons.add(featuresTmp.get(i)); //Adiciona a feature i como filha da feature j
+							}
+						}
+					}
+					
+				}
+				
+			}
+			//featuresTmp.removeElementAt(i); //Remove primeiro elemento da lista
+			
+		}
+	}
+
+	/*public void setFeaturesPrecedences(Vector<Feature> features)
+	{
+		Vector<Feature> featuresTmp = new Vector<Feature>();
+		featuresTmp = features;
+		
+				Shape shapeI = featuresTmp.get(0).getFace().getShape(featuresTmp.get(0));
+				Shape shapeJ = featuresTmp.get(1).getFace().getShape(featuresTmp.get(1));
+				Point2D [] bordaI = featuresTmp.get(0).getFace().getShapePontos(featuresTmp.get(0));
+				Point2D [] bordaJ = featuresTmp.get(1).getFace().getShapePontos(featuresTmp.get(1));
+				
+				for(int k=0; k < bordaJ.length; k++) //Checa se a feature i é precedente de j
+				{
+					if(shapeI.contains(bordaJ[k]))
+					{
+						if(featuresTmp.get(1).getFeaturePrecedente() == null) //Checa se a feature j já possui precedente
+						{
+							if(featuresTmp.get(0).Z < featuresTmp.get(1).Z) //Checa se o i esta acima do j
+							{	
+								featuresTmp.get(1).setFeaturePrecedente(featuresTmp.get(0));
+							}
+						}
+					}
+					
+				}
+				for(int k=0; k < bordaI.length; k++) //Checa se a feature j é precedente de i
+				{
+					if(shapeJ.contains(bordaI[k]))
+					{
+						if(featuresTmp.get(0).getFeaturePrecedente() == null) //Checa se a feature i já possui precedente
+						{
+							featuresTmp.get(0).setFeaturePrecedente(featuresTmp.get(1));
+						}
+					}
+					
+				}
+			
+	}*/
 
 	public void setFeaturesBloco(Vector<Vector<Feature>> allFeatures, Bloco bloco){
 		

@@ -14,7 +14,6 @@ import javax.vecmath.Point3d;
 import jsdai.SCombined_schema.EClosed_pocket;
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
-import br.UFSC.GRIMA.util.Path;
 /**
  * 
  * @author Jc

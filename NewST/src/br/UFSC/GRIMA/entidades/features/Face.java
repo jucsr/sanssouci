@@ -1839,7 +1839,7 @@ public class Face implements Serializable{
 		if(verificaInterseccaoBoss(feature))
 		{
 			valido = false;
-			JOptionPane.showMessageDialog(null, "Há colisão do boss com outra Feature");
+			JOptionPane.showMessageDialog(null, "Hï¿½ colisï¿½o do boss com outra Feature");
 		}
 		else
 		{
@@ -2422,9 +2422,16 @@ public class Face implements Serializable{
 		{
 			GeneralClosedPocket gcp = (GeneralClosedPocket)feature;
 		//	shape = new RoundRectangle2D.Double(gcp.getPosicaoX(), cavidade.getPosicaoY(), cavidade.getComprimento(), cavidade.getLargura(), cavidade.getRaio() * 2, cavidade.getRaio() * 2);
+//			shape = gcp.getForma();
+			shape = new GeneralPath();
+			ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInRoundPolygon(gcp.getVertexPoints(), gcp.getRadius());
+			((GeneralPath)shape).moveTo(vertices.get(0).getX(), vertices.get(0).getY());
+			for(int i = 1; i < vertices.size(); i++)
+			{
+				((GeneralPath)shape).lineTo(vertices.get(i).getX(), vertices.get(i).getY());
+			}
+			((GeneralPath)shape).closePath();
 			
-			shape = gcp.getForma();
-					
 		} else if(feature.getClass() == Ranhura.class)
 		{
 			Ranhura ranhura = (Ranhura)feature;

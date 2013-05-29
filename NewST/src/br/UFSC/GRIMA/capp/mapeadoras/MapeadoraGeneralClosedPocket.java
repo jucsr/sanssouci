@@ -69,11 +69,15 @@ public class MapeadoraGeneralClosedPocket {
 		double retractPlane = 5;
 
 		wssFeature = new Vector<Workingstep>();
-
-		if (genClosed.getTolerancia() <= Feature.LIMITE_RUGOSIDADE
-				&& genClosed.getRugosidade() <= Feature.LIMITE_TOLERANCIA) {
-			genClosed.setAcabamento(true);
-		}
+/*
+ *  Comentei o que segue ... verificar pq estava aew!!!
+ *  Tenho a impressao que foi copiado e colado da classe mapeadora de cavidade retangular!!!
+ *  
+ */
+//		if (genClosed.getTolerancia() <= Feature.LIMITE_RUGOSIDADE
+//				&& genClosed.getRugosidade() <= Feature.LIMITE_TOLERANCIA) {
+//			genClosed.setAcabamento(true);
+//		} 
 
 		if(genClosed.getFeaturePrecedente()!= null){
 			
@@ -84,7 +88,7 @@ public class MapeadoraGeneralClosedPocket {
 			wsPrecedenteTmp = null;
 			
 		}
-		
+		System.out.println("AAAAAAAAAAAAAAA = " + genClosed.isAcabamento());
 		if (genClosed.isAcabamento()) {
 
 			// WORKINGSTEPS DE DESBASTE
@@ -115,8 +119,7 @@ public class MapeadoraGeneralClosedPocket {
 					.getCondicoesDeUsinagem(this.projeto, faceMill, bloco
 							.getMaterial());
 			// WORKINGSTEP
-			wsTmp = new Workingstep(genClosed, faceTmp, faceMill,
-					condicoesDeUsinagem, operation1);
+			wsTmp = new Workingstep(genClosed, faceTmp, faceMill, condicoesDeUsinagem, operation1);
 			wsTmp.setTipo(Workingstep.DESBASTE);
 			wsTmp.setId("Pocket_RGH");
 			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
@@ -127,8 +130,7 @@ public class MapeadoraGeneralClosedPocket {
 			
 			//FRESA PRA ACABAMENTO ANTECIPADA
 			// FERRAMENTA
-			EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills,
-					genClosed);
+			EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills, genClosed);
 			
 			double dEndMill = endMill.getDiametroFerramenta();
 			
@@ -354,9 +356,9 @@ public class MapeadoraGeneralClosedPocket {
 			allowanceSide = 0;
 			allowanceBottom = 0;
 			
-			// 1 - PARA QUE SEJA CRIADO 4 WS PRECISA VER SE ALGUMA COISA É UNSINADA EM TODOS OS WS, PARA ISSO UTILIZAR A LOGICA DA MOVIMENTACAO (VAI FICAR MUITO DEMORADO?)
-			//     AQUI JÁ TENHO OS VALORES DA MAIOR E DA MENOR FERRAMENTA
-			//     COMPARAR AS DUAS FERRAMENTAS PARA VER SE A DIFERENÇA É MUITO GRANDE, SE FOR UTILIZAR O PASSO 1. CASO NAO UTILIZAR SÓ 1 WS COM A MENOR FERRAMENTA
+			// 1 - PARA QUE SEJA CRIADO 4 WS PRECISA VER SE ALGUMA COISA ï¿½ UNSINADA EM TODOS OS WS, PARA ISSO UTILIZAR A LOGICA DA MOVIMENTACAO (VAI FICAR MUITO DEMORADO?)
+			//     AQUI Jï¿½ TENHO OS VALORES DA MAIOR E DA MENOR FERRAMENTA
+			//     COMPARAR AS DUAS FERRAMENTAS PARA VER SE A DIFERENï¿½A ï¿½ MUITO GRANDE, SE FOR UTILIZAR O PASSO 1. CASO NAO UTILIZAR Sï¿½ 1 WS COM A MENOR FERRAMENTA
 			
 			if(distEntreFerramentas < variacaoDaFerramenta)
 			{//CRIAR WS COM A MENOR FERRAMENTE POIS A MAIOR E A MENOR SAO QUASE DO MESMO TAMANHO.
@@ -394,7 +396,7 @@ public class MapeadoraGeneralClosedPocket {
 				double diferenca;		
 				ArrayList<Shape> listaDeBossesCriados;
 				//USAR SWITCH--CASE PRA VER QUANTOS WS VOU PODER CRIAR ? 
-				//FAZER UMA FUNCAO QUE RETORNE UM INT QUE É O NUMERO DE WS QUE SERAO CRIADAS, E COLOCAR COMO PARAMETRO DO SWITCH--CASE
+				//FAZER UMA FUNCAO QUE RETORNE UM INT QUE ï¿½ O NUMERO DE WS QUE SERAO CRIADAS, E COLOCAR COMO PARAMETRO DO SWITCH--CASE
 
 				ae = 0.75*maiorFerramenta;
 				pontos = getPontos(variacao, maiorFerramenta, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
@@ -464,7 +466,7 @@ public class MapeadoraGeneralClosedPocket {
 
 				}
 
-				//CRIAR WS DA MENOR FERRAMENTA E DAS PARTES FORÇADAS(CANTOS)
+				//CRIAR WS DA MENOR FERRAMENTA E DAS PARTES FORï¿½ADAS(CANTOS)
 				
 				wsTmp = getWsDesbaste(faceMillMenor, wsPrecedenteTmp, retractPlane, allowanceSide, allowanceBottom, genClosed, faceTmp, condicoesDeUsinagem, bloco);
 				wssFeature.add(wsTmp);
@@ -671,17 +673,16 @@ public class MapeadoraGeneralClosedPocket {
 			// candidatas
 
 			faceMill = faceMills.get(i);
-
+			
 			if (faceMill.getMaterial().equals(ISO)
 					&& faceMill.getDiametroFerramenta() <= (L - 2 * limite_desbaste)
 					&& faceMill.getProfundidadeMaxima() >= (genClosed
-							.getProfundidade() - limite_desbaste_fundo )) {
+							.getProfundidade() - limite_desbaste_fundo)) {
 
 				faceMillsCandidatas.add(faceMill);
-
 			}
 		}
-			
+
 		if (faceMillsCandidatas.size() == 0) {
 
 			JOptionPane
@@ -862,7 +863,7 @@ public class MapeadoraGeneralClosedPocket {
 
 		diametro = 2*raioFerramenta;
 
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 
 		if(diferenca>numeroDeCortes){
@@ -979,7 +980,7 @@ public class MapeadoraGeneralClosedPocket {
 
 		diametro = 2*raioFerramenta;
 
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 
 		if(diferenca>numeroDeCortes){
@@ -1552,7 +1553,7 @@ public class MapeadoraGeneralClosedPocket {
 	
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){
@@ -1607,7 +1608,7 @@ public class MapeadoraGeneralClosedPocket {
 		
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){

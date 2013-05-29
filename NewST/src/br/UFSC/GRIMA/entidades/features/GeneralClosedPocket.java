@@ -132,6 +132,14 @@ public class GeneralClosedPocket extends Feature
 		boolean isValid = false;
 		Point2D [] bordaCircular = null;  //usado para discretizar a borda do boss
 		
+		forma = new GeneralPath();
+		ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInRoundPolygon(vertexPoints, radius);
+		forma.moveTo(vertices.get(0).getX(), vertices.get(0).getY());
+		for(int i = 1; i < vertices.size(); i++)
+		{
+			forma.lineTo(vertices.get(i).getX(), vertices.get(i).getY());
+		}
+		forma.closePath();
 		
 		if(boss.getClass() == CircularBoss.class)
 		{
@@ -148,15 +156,6 @@ public class GeneralClosedPocket extends Feature
 			/** Discretiza a borda do CircularBoss **/
 			
 			bordaCircular = cavidade.determinarPontosEmCircunferencia (new Point3d(posX,posY,posZ), 0.0, 2*Math.PI, raioMaiorBoss, numPontos);
-		
-			forma = new GeneralPath();
-			ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInRoundPolygon(vertexPoints, radius);
-			forma.moveTo(vertices.get(0).getX(), vertices.get(0).getY());
-			for(int i = 1; i < vertices.size(); i++)
-			{
-				forma.lineTo(vertices.get(i).getX(), vertices.get(i).getY());
-			}
-			forma.closePath();
 			
 			for (int i=0; i < bordaCircular.length; i++){
 

@@ -17,6 +17,7 @@ public class MovimentacaoRegionSuperficieBezier {
 	private Workingstep ws;
 	private Region regionBezier;
 	private Ferramenta ferramenta;
+	private int numeroPontos = 200;
 
 	public MovimentacaoRegionSuperficieBezier(Workingstep ws){
 		this.ws = ws;
@@ -39,7 +40,6 @@ public class MovimentacaoRegionSuperficieBezier {
 		int numeroDeAps;
 		int numeroDeCortes;
 		int t=0,m;
-		int numeroPontos=200;
 		ArrayList<LinearPath> desbaste = new ArrayList<LinearPath>();
 		ArrayList<Point3d> pontosProibidos;
 		ArrayList<Point3d> pontosPossiveis;
@@ -56,7 +56,7 @@ public class MovimentacaoRegionSuperficieBezier {
 		
 		largura = (double) controlVertex[3][3].getY()-controlVertex[0][0].getY();
 		comprimento = (double) controlVertex[3][3].getX()-controlVertex[0][0].getX();
-		
+				
 		double temp1,temp2;
 		temp1=comprimento/numeroPontos;
 		temp2=largura/numeroPontos;
@@ -105,6 +105,12 @@ public class MovimentacaoRegionSuperficieBezier {
 				}
 			}
 
+//			if(h==0)
+//				for(int i = 0; i < pontosPossiveis.size(); i++)
+//				{
+//					System.out.println(pontosPossiveis.get(i).z);
+//				}
+			
 			if(pontosPossiveis.size()<1){
 				break;
 			}
@@ -213,7 +219,7 @@ public class MovimentacaoRegionSuperficieBezier {
 					t=0;
 					//m = pontos.get(i).size();
 					for(int j=0;j<pontos.get(i).size();j++){
-						if(temp.get(k)!=pontos.get(i).get(j)){
+						if(!temp.contains(pontos.get(i).get(j))){
 							distanciaTemp=OperationsVector.distanceVector(temp.get(k), pontos.get(i).get(j));
 
 							if(distanciaTemp<menor){
@@ -239,7 +245,7 @@ public class MovimentacaoRegionSuperficieBezier {
 						pontoInicial = new Point3d(pontos.get(i).get(t).getX(),pontos.get(i).get(t).getY(),z);
 					}
 					temp.add(pontos.get(i).get(t));
-					pontos.get(i).remove(t);
+					//pontos.get(i).remove(t);
 					if(pontos.get(i).size()==0 || pontos.get(i).size()==1){
 						continue;
 					}
@@ -257,6 +263,9 @@ public class MovimentacaoRegionSuperficieBezier {
 				}
 				//				pontosOrdenados.add(temp);
 			}
+			pontoFinal = new Point3d(pontoInicial.getX(),pontoInicial.getY(),this.ws.getOperation().getRetractPlane());
+			ligarPontos = new LinearPath(pontoInicial,pontoFinal);
+			desbaste.add(ligarPontos);
 		}
 		return desbaste;
 	}
@@ -265,7 +274,7 @@ public class MovimentacaoRegionSuperficieBezier {
 		ArrayList<LinearPath> 	desbaste1 = new ArrayList<LinearPath>();
 		LinearPath ligaPontos;
 
-		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), 200, 200).getMeshArray(),
+		Point3d malha[][] = new BezierSurface(regionBezier.getControlVertex(), numeroPontos, numeroPontos).getMeshArray(),
 				initialPoint = new Point3d(0,0,0),
 				finalPoint;
 		double 	ap=this.ws.getCondicoesUsinagem().getAp(),

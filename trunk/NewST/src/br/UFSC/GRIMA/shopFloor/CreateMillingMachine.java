@@ -244,7 +244,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		{
 			setMagazine();
 			machineTools = shopFloor.getMachines();
-			machineTools.add(millingMachine);
+			
 			shopFloor.setMachines(machineTools);
 			try {
 				saveMachine();

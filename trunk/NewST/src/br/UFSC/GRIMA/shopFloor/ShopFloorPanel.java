@@ -123,7 +123,7 @@ public class ShopFloorPanel extends JPanel
 			MachineTool machineTmp = this.machines.get(i);
 			if(machineTmp.getClass() == DrillingMachine.class)
 			{
-				Ellipse2D drilling2DTmp = new Ellipse2D.Double(machineTmp.getItsOrigin().x * escala * zoom, machineTmp.getItsOrigin().y * escala * zoom, 40 * zoom * escala, 30 * zoom * escala);
+				Ellipse2D drilling2DTmp = new Ellipse2D.Double(machineTmp.getItsOrigin().x * escala * zoom, machineTmp.getItsOrigin().y * escala * zoom, 3 * zoom * escala, 2 * zoom * escala);
 				g2d.fill(drilling2DTmp);
 				g2d.draw(drilling2DTmp);
 			}

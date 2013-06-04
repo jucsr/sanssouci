@@ -263,6 +263,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		millingMachine.setItsOrigin(new Point3d(((Double)spinner13.getValue()).doubleValue(),((Double)spinner14.getValue()).doubleValue(),0));
 		if(janelaShopFloor.validateMachine(shopFloor, millingMachine))
 		{
+			millingMachine.setAccuracy(((Double)spinner4.getValue()).doubleValue());
 			millingMachine.setItsId(textField1.getText());
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);

@@ -284,6 +284,7 @@ public class CreateDrillingMachine extends CreateDrillingMachineFrame implements
 		drillingMachine.setItsOrigin(new Point3d(((Double)spinner8.getValue()).doubleValue(),((Double)spinner9.getValue()).doubleValue(),0));
 		if(janelaShopFloor.validateMachine(shopFloor, drillingMachine))
 		{
+			drillingMachine.setAccuracy(((Double)spinner4.getValue()).doubleValue());
 			drillingMachine.setItsId(textField1.getText());
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);

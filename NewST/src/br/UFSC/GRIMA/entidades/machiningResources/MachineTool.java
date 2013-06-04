@@ -20,7 +20,13 @@ public class MachineTool extends MachiningResource implements Serializable
 	private MachineToolCapability itsCapability;
 	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevice = new ArrayList<WorkpieceHandlingDevice>();
 	private ArrayList<CuttingToolHandlingDevice> toolHandlingDevice = new ArrayList<CuttingToolHandlingDevice>();
-	
+	private double accuracy = 0.1; 
+	public double getAccuracy() {
+		return accuracy;
+	}
+	public void setAccuracy(double accuracy) {
+		this.accuracy = accuracy;
+	}
 	public String getItsLocation() 
 	{
 		return itsLocation;

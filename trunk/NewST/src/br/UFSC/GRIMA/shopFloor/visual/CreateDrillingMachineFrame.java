@@ -26,7 +26,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		// Generated using JFormDesigner Evaluation license - ms hojmm
+		// Generated using JFormDesigner Evaluation license - rei aroldo
 		menuBar1 = new JMenuBar();
 		menu1 = new JMenu();
 		menuItem1 = new JMenuItem();
@@ -42,6 +42,11 @@ public class CreateDrillingMachineFrame extends JDialog {
 		spinner4 = new JSpinner();
 		label8 = new JLabel();
 		comboBox1 = new JComboBox();
+		panel16 = new JPanel();
+		label14 = new JLabel();
+		spinner8 = new JSpinner();
+		label15 = new JLabel();
+		spinner9 = new JSpinner();
 		panel10 = new JPanel();
 		panel12 = new JPanel();
 		label9 = new JLabel();
@@ -56,6 +61,18 @@ public class CreateDrillingMachineFrame extends JDialog {
 		panel6 = new JPanel();
 		label2 = new JLabel();
 		textField2 = new JTextField();
+		panel18 = new JPanel();
+		panel19 = new JPanel();
+		label17 = new JLabel();
+		spinner11 = new JSpinner();
+		label13 = new JLabel();
+		spinner10 = new JSpinner();
+		label18 = new JLabel();
+		spinner12 = new JSpinner();
+		label19 = new JLabel();
+		spinner13 = new JSpinner();
+		label20 = new JLabel();
+		spinner14 = new JSpinner();
 		scrollPane1 = new JScrollPane();
 		table1 = new JTable();
 		panel11 = new JPanel();
@@ -160,9 +177,9 @@ public class CreateDrillingMachineFrame extends JDialog {
 							{
 								panel3.setLayout(new GridBagLayout());
 								((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {0, 0, 0};
-								((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
+								((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0};
 								((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-								((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
 								//---- label1 ----
 								label1.setText("Its Id");
@@ -192,7 +209,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 								label8.setText("Control");
 								panel3.add(label8, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 0, 5), 0, 0));
+									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- comboBox1 ----
 								comboBox1.setModel(new DefaultComboBoxModel(new String[] {
@@ -203,7 +220,43 @@ public class CreateDrillingMachineFrame extends JDialog {
 								}));
 								panel3.add(comboBox1, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 0, 0), 0, 0));
+									new Insets(0, 0, 5, 0), 0, 0));
+
+								//======== panel16 ========
+								{
+									panel16.setLayout(new GridBagLayout());
+									((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+									//---- label14 ----
+									label14.setText("X");
+									panel16.add(label14, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 5), 0, 0));
+
+									//---- spinner8 ----
+									spinner8.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									panel16.add(spinner8, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+
+									//---- label15 ----
+									label15.setText("Y");
+									panel16.add(label15, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 5), 0, 0));
+
+									//---- spinner9 ----
+									spinner9.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									panel16.add(spinner9, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+								}
+								panel3.add(panel16, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
 							}
 							panel2.add(panel3, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -295,10 +348,10 @@ public class CreateDrillingMachineFrame extends JDialog {
 						//======== panel4 ========
 						{
 							panel4.setLayout(new GridBagLayout());
-							((GridBagLayout)panel4.getLayout()).columnWidths = new int[] {0, 0, 0};
-							((GridBagLayout)panel4.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-							((GridBagLayout)panel4.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-							((GridBagLayout)panel4.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel4.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0};
+							((GridBagLayout)panel4.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
+							((GridBagLayout)panel4.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+							((GridBagLayout)panel4.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0, 0.0, 1.0E-4};
 
 							//======== panel6 ========
 							{
@@ -320,7 +373,88 @@ public class CreateDrillingMachineFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 							}
-							panel4.add(panel6, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+							panel4.add(panel6, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 0), 0, 0));
+
+							//======== panel18 ========
+							{
+								panel18.setLayout(new GridBagLayout());
+								((GridBagLayout)panel18.getLayout()).columnWidths = new int[] {0, 0, 0};
+								((GridBagLayout)panel18.getLayout()).rowHeights = new int[] {0, 0};
+								((GridBagLayout)panel18.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel18.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+								//======== panel19 ========
+								{
+									panel19.setLayout(new GridBagLayout());
+									((GridBagLayout)panel19.getLayout()).columnWidths = new int[] {0, 52, 0, 0, 55, 0, 0, 0, 55, 0, 55, 0, 55, 38};
+
+									//---- label17 ----
+									label17.setText("Max Weight");
+									panel19.add(label17, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner11 ----
+									spinner11.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner11, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label13 ----
+									label13.setText("Capacity");
+									panel19.add(label13, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner10 ----
+									spinner10.setModel(new SpinnerNumberModel(0, 0, null, 1));
+									panel19.add(spinner10, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label18 ----
+									label18.setText("Max Tool Diameter");
+									panel19.add(label18, new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner12 ----
+									spinner12.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner12, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label19 ----
+									label19.setText("Max Tool Length");
+									panel19.add(label19, new GridBagConstraints(9, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner13 ----
+									spinner13.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner13, new GridBagConstraints(10, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label20 ----
+									label20.setText("Change Time");
+									panel19.add(label20, new GridBagConstraints(11, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner14 ----
+									spinner14.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+									panel19.add(spinner14, new GridBagConstraints(12, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+								}
+								panel18.add(panel19, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
+							}
+							panel4.add(panel18, new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 0), 0, 0));
 
@@ -350,7 +484,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 								}
 								scrollPane1.setViewportView(table1);
 							}
-							panel4.add(scrollPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+							panel4.add(scrollPane1, new GridBagConstraints(5, 2, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 0), 0, 0));
 
@@ -392,7 +526,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 							}
-							panel4.add(panel11, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+							panel4.add(panel11, new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 0, 0), 0, 0));
 						}
@@ -669,7 +803,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	// Generated using JFormDesigner Evaluation license - ms hojmm
+	// Generated using JFormDesigner Evaluation license - rei aroldo
 	private JMenuBar menuBar1;
 	private JMenu menu1;
 	protected JMenuItem menuItem1;
@@ -685,6 +819,11 @@ public class CreateDrillingMachineFrame extends JDialog {
 	protected JSpinner spinner4;
 	private JLabel label8;
 	protected JComboBox comboBox1;
+	private JPanel panel16;
+	private JLabel label14;
+	protected JSpinner spinner8;
+	private JLabel label15;
+	protected JSpinner spinner9;
 	private JPanel panel10;
 	private JPanel panel12;
 	private JLabel label9;
@@ -699,6 +838,18 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JPanel panel6;
 	private JLabel label2;
 	protected JTextField textField2;
+	private JPanel panel18;
+	private JPanel panel19;
+	private JLabel label17;
+	protected JSpinner spinner11;
+	private JLabel label13;
+	protected JSpinner spinner10;
+	private JLabel label18;
+	protected JSpinner spinner12;
+	private JLabel label19;
+	protected JSpinner spinner13;
+	private JLabel label20;
+	protected JSpinner spinner14;
 	private JScrollPane scrollPane1;
 	public JTable table1;
 	private JPanel panel11;

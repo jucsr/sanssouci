@@ -508,6 +508,7 @@ public class AcessaBD extends Conexao {
 			try {
 				statement = conn.createStatement();
 				rs = statement.executeQuery(Query);
+				JOptionPane.showMessageDialog(null,"Save with sucess");
 				if (rs.next())
 					return true;
 			} catch (SQLException e) {

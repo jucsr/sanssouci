@@ -200,7 +200,7 @@ public class CreateDrillingMachine extends CreateDrillingMachineFrame implements
 		{
 			setMagazine();
 			machineTools = shopFloor.getMachines();
-			machineTools.add(drillingMachine);
+			
 			shopFloor.setMachines(machineTools);
 			try {
 				saveMachine();

@@ -12,12 +12,15 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 public class Halevi 
 {
 	private ShopFloor shopFloor; // dado de entrada necess√°rio
-	private ArrayList<Workingstep> workingsteps; // dado de entrada necessario
+	private ArrayList<Workingstep> opmatrix; // dado de entrada necessario
+	private ArrayList<MachineTool> machineTools; // vetor de maquinas
 	private ArrayList<Integer> bestSequence; // apenas os indices do array workingstep sao apresentados na ordem de execucao
-	private ArrayList<ArrayList<Double>> zMatrix; // n operacoes em m maquinas
+	private ArrayList<ArrayList<Double>> zMatrix = new ArrayList<ArrayList<Double>>() ; // n operacoes em m maquinas
+	private ArrayList<ArrayList<Double>>cMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Integer>> pMatrix; 
 	private int LotSize = 1000; // em unidades
 	private double machineSetupTime = 30; //em minutos
+	
 	/**
 	 *  este m√©todo deve criar a matriz universal de halevi e as matrizes auxiliares Z e P
 	 *  
@@ -27,12 +30,20 @@ public class Halevi
 	public Halevi(ShopFloor shopFloor, ArrayList<Workingstep> workingsteps)
 	{
 		this.shopFloor = shopFloor;
-		this.workingsteps = workingsteps;
+		this.opmatrix = workingsteps;
+		this.machineTools = shopFloor.getMachines();
 	}
-	private ArrayList<ArrayList<Double>> getUniversalCostMatrix()
-	{
-		
-		return null;
+	public ArrayList<ArrayList<Double>> getUniversalCostMatrix()
+	{	
+		for(int i = 0; i < opmatrix.size(); i++){
+			ArrayList<Double> aux = new ArrayList<Double>();
+			for(int f = 0; f < machineTools.size();f++){
+				aux.add((opmatrix.get(i).getTemposNasMaquinas().get(f) * machineTools.get(f).getRelativeCost()));
+			}
+			cMatrix.add(aux);
+			
+		}
+		return cMatrix;
 	}
 	private ArrayList<ArrayList<Double>> getUniversalTimeMatrix()
 	{
@@ -42,20 +53,34 @@ public class Halevi
 	/**
 	 * 	metodo que calcula a matriz Z (de Tempos/Custos)
 	 */
-	private void solveZMatrix()
-	{
-		ArrayList<MachineTool> machines = this.shopFloor.getMachines();
-		for(int i = workingsteps.size() - 1; i < workingsteps.size() - 1; i--)
-		{
-			Workingstep wsTmp = workingsteps.get(i);
-			Workingstep wsTmpAnterior = workingsteps.get(i + 1);
-			int size = wsTmp.getTemposNasMaquinas().size();
-			for(int j = 0; j < size; j++)
-			{
-				double tempoTmp = wsTmpAnterior.getTemposNasMaquinas().get(j);
-			}
-		}
-	}
+	public void solveZMatrix()
+	{	
+		
+		
+		for(int i = (cMatrix.size()-1); i>=0;i--){
+			System.out.println("vez" +i);
+			int aux =cMatrix.get(i).size();
+			for(int f = 0 ; f < aux ; f++){
+				Double indice =cMatrix.get(i).get(f); 
+				System.out.println("coluna" +f);
+				Linha line = new Linha();
+				for(int j = 0; j< aux;j++){
+					System.out.println("elemento" +j);
+					
+					if(f==j){
+						line.add((indice+cMatrix.get(i).get(j)));
+					}else {
+						line.add((indice+0.2+cMatrix.get(i).get(j)));	
+					}
+					
+				}
+				cMatrix.get(i).set(f,line.min());
+				
+			}//termino de coluna
+			zMatrix.add(cMatrix.get(i));
+			
+		}//termino de linha
+	}//termino da função
 	/**
 	 * 	metodo para calculo da matriz P (de sequencias)
 	 */
@@ -77,10 +102,10 @@ public class Halevi
 		this.shopFloor = shopFloor;
 	}
 	public ArrayList<Workingstep> getWorkingsteps() {
-		return workingsteps;
+		return opmatrix;
 	}
 	public void setWorkingsteps(ArrayList<Workingstep> workingsteps) {
-		this.workingsteps = workingsteps;
+		this.opmatrix = workingsteps;
 	}
 	public ArrayList<Integer> getBestSequence() {
 		return bestSequence;

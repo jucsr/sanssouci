@@ -1246,7 +1246,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			this.projeto.getDadosDeProjeto().setUserID(idAtual);
 			this.projeto.getDadosDeProjeto().setUserName(userNameAtual);
 	
-			//chamar o método de criação de precedências do stepNcReader
+			//chamar o mï¿½todo de criaï¿½ï¿½o de precedï¿½ncias do stepNcReader
 			Vector<Feature> featuresTmp = new Vector<Feature>();
 			//System.out.println("tamanho: "+featuresXY.size());
 			/*
@@ -1383,7 +1383,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 
 		this.atualizarArvore();
 		this.atualizarArvoreCAPP();
-
+		this.atualizarArvorePrecedencias(); //New
 	}
 	
 	public boolean deleteFile(File file) {

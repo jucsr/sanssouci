@@ -33,6 +33,9 @@ public class Workingstep implements Serializable{
 	private String id = "";
 	//private DeterminadorDeTempo dT;
 	private double tempo;
+	private ArrayList<Double> temposNasMaquinas = new ArrayList<Double>(); // Tempo que leva efetuar a remocao do material na maquina i, i + 1, ...
+	private ArrayList<Double> custosNasMaquinas = new ArrayList<Double>(); // custo da operacao na maquina i, i + 1, ...
+
 	private double custo;
 	private Workingstep workingstepPrecedente;
 	
@@ -262,5 +265,17 @@ public class Workingstep implements Serializable{
 			}
 		}
 		return wsPoscedentesArray;
+	}
+	public ArrayList<Double> getTemposNasMaquinas() {
+		return temposNasMaquinas;
+	}
+	public void setTemposNasMaquinas(ArrayList<Double> temposNasMaquinas) {
+		this.temposNasMaquinas = temposNasMaquinas;
+	}
+	public ArrayList<Double> getCustosNasMaquinas() {
+		return custosNasMaquinas;
+	}
+	public void setCustosNasMaquinas(ArrayList<Double> custosNasMaquinas) {
+		this.custosNasMaquinas = custosNasMaquinas;
 	}
 }

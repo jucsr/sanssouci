@@ -21,6 +21,9 @@ public class MachineTool extends MachiningResource implements Serializable
 	private ArrayList<WorkpieceHandlingDevice> workpieceHandlingDevice = new ArrayList<WorkpieceHandlingDevice>();
 	private ArrayList<CuttingToolHandlingDevice> toolHandlingDevice = new ArrayList<CuttingToolHandlingDevice>();
 	private double accuracy = 0.1; 
+	private double relativeCost = 4; // custo relativo (reais/hora)
+	private double setUpTime; // tempo de setup para cada maquina (minutos)
+	
 	public double getAccuracy() {
 		return accuracy;
 	}
@@ -82,5 +85,17 @@ public class MachineTool extends MachiningResource implements Serializable
 	public void setToolHandlingDevice(ArrayList<CuttingToolHandlingDevice> toolHandlingDevice) 
 	{
 		this.toolHandlingDevice = toolHandlingDevice;
+	}
+	public double getRelativeCost() {
+		return relativeCost;
+	}
+	public void setRelativeCost(double relativeCost) {
+		this.relativeCost = relativeCost;
+	}
+	public double getSetUpTime() {
+		return setUpTime;
+	}
+	public void setSetUpTime(double setUpTime) {
+		this.setUpTime = setUpTime;
 	}
 }

@@ -8,6 +8,15 @@ public class ProjetoSF
 {
 	private ShopFloor shopFloor;
 	private ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
+	private int lotSize=1000;
+	
+	
+	public int getLotSize() {
+		return lotSize;
+	}
+	public void setLotSize(int lotSize) {
+		this.lotSize = lotSize;
+	}
 	public ProjetoSF(ShopFloor shopFloor)
 	{
 		this.shopFloor = shopFloor;

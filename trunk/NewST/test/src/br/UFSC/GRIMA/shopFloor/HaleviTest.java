@@ -40,7 +40,7 @@ public class HaleviTest
 		ArrayList<Double> temposNasMaquinasOp70 = new ArrayList<Double>();
 		ArrayList<Double> temposNasMaquinasOp80 = new ArrayList<Double>();
 		ArrayList<Double> temposNasMaquinasOp90 = new ArrayList<Double>();
-
+		
 		temposNasMaquinasOp10.add(0.57);
 		temposNasMaquinasOp10.add(0.62);
 		temposNasMaquinasOp10.add(1.28);
@@ -104,15 +104,7 @@ public class HaleviTest
 		temposNasMaquinasOp90.add(99.0);
 		temposNasMaquinasOp90.add(0.45);
 		
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp10);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp20);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp30);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp40);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp50);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp60);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp70);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp80);
-		ws10.setTemposNasMaquinas(temposNasMaquinasOp90);
+		
 		
 		Workingstep ws20 = new Workingstep();
 		Workingstep ws30 = new Workingstep();
@@ -122,6 +114,16 @@ public class HaleviTest
 		Workingstep ws70 = new Workingstep();
 		Workingstep ws80 = new Workingstep();
 		Workingstep ws90 = new Workingstep();
+		ws10.setTemposNasMaquinas(temposNasMaquinasOp10);
+		ws20.setTemposNasMaquinas(temposNasMaquinasOp20);
+		ws30.setTemposNasMaquinas(temposNasMaquinasOp30);
+		ws40.setTemposNasMaquinas(temposNasMaquinasOp40);
+		ws50.setTemposNasMaquinas(temposNasMaquinasOp50);
+		ws60.setTemposNasMaquinas(temposNasMaquinasOp60);
+		ws70.setTemposNasMaquinas(temposNasMaquinasOp70);
+		ws80.setTemposNasMaquinas(temposNasMaquinasOp80);
+		ws90.setTemposNasMaquinas(temposNasMaquinasOp90);
+		
 		this.workingsteps.add(ws10);
 		this.workingsteps.add(ws20);
 		this.workingsteps.add(ws30);
@@ -131,6 +133,7 @@ public class HaleviTest
 		this.workingsteps.add(ws70);
 		this.workingsteps.add(ws80);
 		this.workingsteps.add(ws90);
+		
 		
 		Bloco bloco = new Bloco(200, 150, 50);
 		Projeto p = new Projeto();
@@ -181,7 +184,9 @@ public class HaleviTest
 	public void solveZMatrixTest()
 	{
 		this.halevi = new Halevi(this.shopFloor, this.workingsteps);
-		this.halevi.getzMatrix();
+		this.halevi.getUniversalCostMatrix();
+		//System.out.println(this.halevi.getUniversalCostMatrix());
+		this.halevi.solveZMatrix();
 		System.out.println(this.halevi.getzMatrix());
 	}
 }

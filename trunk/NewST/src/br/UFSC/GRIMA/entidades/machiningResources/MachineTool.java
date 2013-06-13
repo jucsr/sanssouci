@@ -22,7 +22,7 @@ public class MachineTool extends MachiningResource implements Serializable
 	private ArrayList<CuttingToolHandlingDevice> toolHandlingDevice = new ArrayList<CuttingToolHandlingDevice>();
 	private double accuracy = 0.1; 
 	private double relativeCost = 4; // custo relativo (reais/hora)
-	private double setUpTime; // tempo de setup para cada maquina (minutos)
+	private double setUpTime = 30; // tempo de setup para cada maquina (minutos)
 	
 	public double getAccuracy() {
 		return accuracy;

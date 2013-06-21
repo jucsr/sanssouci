@@ -17,10 +17,11 @@ public class Halevi
 	private ArrayList<Integer> bestSequence; // apenas os indices do array workingstep sao apresentados na ordem de execucao
 	private ArrayList<ArrayList<Double>> zMatrix = new ArrayList<ArrayList<Double>>() ; // n operacoes em m maquinas
 	private ArrayList<ArrayList<Double>>cMatrix = new ArrayList<ArrayList<Double>>();
-	private ArrayList<ArrayList<Integer>> pMatrix; 
+	private ArrayList<ArrayList<Integer>> pMatrix=new ArrayList<ArrayList<Integer>>(); ; 
+	private ArrayList<ArrayList<Double>>pauxMatrix;
 	private int LotSize = 1000; // em unidades
 	private double machineSetupTime = 30; //em minutos
-	
+	private double opimpossible = 99.0;
 	/**
 	 *  este m√©todo deve criar a matriz universal de halevi e as matrizes auxiliares Z e P
 	 *  
@@ -56,37 +57,56 @@ public class Halevi
 	public void solveZMatrix()
 	{	
 		
-		
-		for(int i = (cMatrix.size()-1); i>=0;i--){
-			System.out.println("vez" +i);
-			int aux =cMatrix.get(i).size();
+		fillMatrix();
+		for(int i = (zMatrix.size()-2); i>=0;i--){
+			//System.out.println("vez" +i);
+			int aux =zMatrix.get(i).size();
 			for(int f = 0 ; f < aux ; f++){
-				Double indice =cMatrix.get(i).get(f); 
-				System.out.println("coluna" +f);
+				double indice =zMatrix.get(i).get(f); 
+				//System.out.println("coluna" +f);
 				Linha line = new Linha();
 				for(int j = 0; j< aux;j++){
-					System.out.println("elemento" +j);
+					//System.out.println("elemento" +j);
 					
 					if(f==j){
-						line.add((indice+cMatrix.get(i).get(j)));
+						line.add((indice+zMatrix.get((i+1)).get(j)));
+						
 					}else {
-						line.add((indice+0.2+cMatrix.get(i).get(j)));	
+						line.add((indice+0.2+zMatrix.get((i+1)).get(j)));	
 					}
-					
+					//System.out.println("line "+line);
 				}
-				cMatrix.get(i).set(f,line.min());
+				zMatrix.get(i).set(f,line.min());
+				if(line.min() >= opimpossible){
+					pMatrix.get(i).set(f, -1);
+					
+				}else{
+				pMatrix.get(i).set(f,line.indexmin());
+				System.out.println(""+pMatrix);
 				
+				}
 			}//termino de coluna
-			zMatrix.add(cMatrix.get(i));
+			
 			
 		}//termino de linha
 	}//termino da função
 	/**
 	 * 	metodo para calculo da matriz P (de sequencias)
 	 */
-	private void solvePMatrix()
+	private void fillMatrix()
 	{
-		
+		for(int i = 0; i < cMatrix.size();i++){
+			zMatrix.add(cMatrix.get(i));
+		}
+		int j = cMatrix.get(0).size();
+		ArrayList<Integer> line = new ArrayList<Integer>();
+		for(int k = 0 ; k < j;k++){
+			line.add(0);
+		}
+		for(int i = 0; i < cMatrix.size();i++){
+			
+			pMatrix.add(line);
+		}
 	}
 	/**
 	 * 	cria as penalidades

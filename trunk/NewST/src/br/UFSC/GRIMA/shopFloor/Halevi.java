@@ -82,7 +82,7 @@ public class Halevi
 					
 				}else{
 				pMatrix.get(i).set(f,line.indexmin());
-				System.out.println(""+pMatrix);
+				//System.out.println(""+pMatrix);
 				
 				}
 			}//termino de coluna
@@ -98,13 +98,14 @@ public class Halevi
 		for(int i = 0; i < cMatrix.size();i++){
 			zMatrix.add(cMatrix.get(i));
 		}
-		int j = cMatrix.get(0).size();
-		ArrayList<Integer> line = new ArrayList<Integer>();
-		for(int k = 0 ; k < j;k++){
-			line.add(0);
-		}
-		for(int i = 0; i < cMatrix.size();i++){
-			
+		
+		
+		for(int i = 0; i< cMatrix.size();i++) {
+			int j = cMatrix.get(0).size();
+			ArrayList<Integer> line = new ArrayList<Integer>();
+			for(int w = 0; w < j ;w++){
+				line.add(0);
+			}
 			pMatrix.add(line);
 		}
 	}

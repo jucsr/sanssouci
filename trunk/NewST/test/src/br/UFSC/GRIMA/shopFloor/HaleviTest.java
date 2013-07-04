@@ -187,6 +187,7 @@ public class HaleviTest
 		this.halevi.getUniversalCostMatrix();
 		//System.out.println(this.halevi.getUniversalCostMatrix());
 		this.halevi.solveZMatrix();
-		System.out.println(this.halevi.getzMatrix());
+		System.out.println(this.halevi.getpMatrix());
+		//System.out.println(this.halevi.getzMatrix());
 	}
 }

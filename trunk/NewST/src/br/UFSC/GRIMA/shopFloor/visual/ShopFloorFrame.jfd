@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_09" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_17" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -680,7 +680,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "importPiece"
-						"text": "Import piece"
+						"text": "Import piece (.p21)"
 						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -817,7 +817,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "mostrarGrade"
-						"text": "Mostrar Grade"
+						"text": "show grid"
 						"font": #SwingDerivedFont8
 						"selected": true
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeGrade.png" )
@@ -852,6 +852,23 @@ new FormModel {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
 					} )
+					add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+						name: "radioButtonMenuItem1"
+						"text": "view piece"
+						"$buttonGroup": new FormReference( "buttonGroup1" )
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 4
+						}
+					} )
+					add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+						name: "radioButtonMenuItem2"
+						"text": "show shoop floor"
+						"$buttonGroup": new FormReference( "buttonGroup1" )
+						"selected": true
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 4
+						}
+					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator10"
 						auxiliary() {
@@ -860,7 +877,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "gerar3D"
-						"text": "Gerar Modelo em 3D"
+						"text": "generate 3D piece model"
 						"font": #SwingDerivedFont8
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone3D.png" )
 						auxiliary() {
@@ -1147,6 +1164,11 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 1120 )
 			"size": new java.awt.Dimension( 367, 390 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup1"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 1520 )
 		} )
 	}
 }

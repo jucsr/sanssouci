@@ -75,6 +75,8 @@ public class ShopFloorFrame extends JFrame {
 		mostrarGrade = new JCheckBoxMenuItem();
 		verEixos = new JCheckBoxMenuItem();
 		menuItemVerPlanosReferencia = new JMenuItem();
+		radioButtonMenuItem1 = new JRadioButtonMenuItem();
+		radioButtonMenuItem2 = new JRadioButtonMenuItem();
 		gerar3D = new JMenuItem();
 		menu1 = new JMenu();
 		menuItemAddNewMachine = new JMenuItem();
@@ -386,7 +388,7 @@ public class ShopFloorFrame extends JFrame {
 				menuFerramentas.add(menuCriarFeatures);
 
 				//---- importPiece ----
-				importPiece.setText("Import piece");
+				importPiece.setText("Import piece (.p21)");
 				importPiece.setFont(importPiece.getFont().deriveFont(importPiece.getFont().getStyle() & ~Font.BOLD));
 				menuFerramentas.add(importPiece);
 
@@ -469,7 +471,7 @@ public class ShopFloorFrame extends JFrame {
 				menu3.add(mostrarPecaBruta);
 
 				//---- mostrarGrade ----
-				mostrarGrade.setText("Mostrar Grade");
+				mostrarGrade.setText("show grid");
 				mostrarGrade.setFont(mostrarGrade.getFont().deriveFont(mostrarGrade.getFont().getStyle() & ~Font.BOLD));
 				mostrarGrade.setSelected(true);
 				mostrarGrade.setIcon(new ImageIcon(getClass().getResource("/images/iconeGrade.png")));
@@ -490,10 +492,19 @@ public class ShopFloorFrame extends JFrame {
 				menuItemVerPlanosReferencia.setFont(menuItemVerPlanosReferencia.getFont().deriveFont(menuItemVerPlanosReferencia.getFont().getStyle() & ~Font.BOLD));
 				menuItemVerPlanosReferencia.setVisible(false);
 				menu3.add(menuItemVerPlanosReferencia);
+
+				//---- radioButtonMenuItem1 ----
+				radioButtonMenuItem1.setText("view piece");
+				menu3.add(radioButtonMenuItem1);
+
+				//---- radioButtonMenuItem2 ----
+				radioButtonMenuItem2.setText("show shoop floor");
+				radioButtonMenuItem2.setSelected(true);
+				menu3.add(radioButtonMenuItem2);
 				menu3.addSeparator();
 
 				//---- gerar3D ----
-				gerar3D.setText("Gerar Modelo em 3D");
+				gerar3D.setText("generate 3D piece model");
 				gerar3D.setFont(gerar3D.getFont().deriveFont(gerar3D.getFont().getStyle() & ~Font.BOLD));
 				gerar3D.setIcon(new ImageIcon(getClass().getResource("/images/icone3D.png")));
 				menu3.add(gerar3D);
@@ -962,6 +973,8 @@ public class ShopFloorFrame extends JFrame {
 		buttonGroup1.add(fixarFaceYX);
 		buttonGroup1.add(fixarFaceZY);
 		buttonGroup1.add(fixarFaceZX);
+		buttonGroup1.add(radioButtonMenuItem1);
+		buttonGroup1.add(radioButtonMenuItem2);
 
 		//---- buttonGroup2 ----
 		ButtonGroup buttonGroup2 = new ButtonGroup();
@@ -1031,6 +1044,8 @@ public class ShopFloorFrame extends JFrame {
 	public JCheckBoxMenuItem mostrarGrade;
 	public JCheckBoxMenuItem verEixos;
 	public JMenuItem menuItemVerPlanosReferencia;
+	protected JRadioButtonMenuItem radioButtonMenuItem1;
+	protected JRadioButtonMenuItem radioButtonMenuItem2;
 	public JMenuItem gerar3D;
 	private JMenu menu1;
 	public JMenuItem menuItemAddNewMachine;

@@ -1306,6 +1306,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.atualizarArvoreCAPP();
 		
 		this.atualizarArvorePrecedencias(); //New
+		
+		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(
+				this.getProjeto()); //New
 
 	}
 	
@@ -1384,6 +1387,10 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.atualizarArvore();
 		this.atualizarArvoreCAPP();
 		this.atualizarArvorePrecedencias(); //New
+		
+		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(
+				this.getProjeto()); //New
+		
 	}
 	
 	public boolean deleteFile(File file) {

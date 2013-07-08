@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.shopFloor;
 
 import java.awt.BorderLayout;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
@@ -8,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import java.io.File;
 import java.util.ArrayList; //New
 import java.util.Vector; //New
 
@@ -16,10 +18,22 @@ import javax.swing.JTree; //New
 import javax.swing.tree.DefaultMutableTreeNode; //New
 import javax.swing.tree.TreeSelectionModel;
 
+import jsdai.lang.SdaiException;
+import jsdai.lang.SdaiSession;
+
+import br.UFSC.GRIMA.acceptance.STEP_NCReader;
+import br.UFSC.GRIMA.cad.ProjectTools;
+import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep; //New
+import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
+import br.UFSC.GRIMA.integracao.ProjectReader;
 
 import br.UFSC.GRIMA.shopFloor.visual.ShopFloorFrame;
+import br.UFSC.GRIMA.util.ToolReader;
+import br.UFSC.GRIMA.util.projeto.Projeto;
 
 /**
  * 
@@ -32,6 +46,10 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 	private ShopFloor shopFloor;
 	private ProjetoSF projetoSF;
 	private double zooming =0;
+	
+	private Projeto projeto = null; //New
+	private Face faceVisualizada = null; //New
+	private Face faceTrabalho = null; //New
 	
 	public JanelaShopFloor(ShopFloor shopFloorNew, ProjetoSF projetoSFNew)
 	{
@@ -57,6 +75,9 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.zoomMenos.addActionListener(this);
 		this.zoomMais.addActionListener(this);
 		this.mostrarGrade.addActionListener(this);
+		
+		this.importPiece.addActionListener(this); //New
+		
 		this.spinnerZoom.addChangeListener(new ChangeListener(){
 
 			@Override
@@ -103,10 +124,138 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			else
 				shopPanel.grade = false;
 			shopPanel.repaint();
+		}else if(o.equals(importPiece))
+		{
+			importarPeca();
 		}
 	}
 	
+	public void importarPeca() 
+	{
+		FileDialog fd = new FileDialog(this, "Abrir", FileDialog.LOAD);
+
+		fd.setVisible(true);
+
+		String dir = fd.getDirectory();
+		String file = fd.getFile();
+		String filePath = dir + file;
+
+		System.out.println("PATH : " + filePath);
+
+		STEP_NCReader stepNcReader;
 		
+		try {
+
+			System.out.println("SESSION : " + SdaiSession.getSession());
+			
+			if(SdaiSession.getSession() != null){
+				
+				SdaiSession.getSession().closeSession();
+				
+//				if(stepNc!= null)
+//				stepNc.closeAndDeleteSession();
+			}
+			this.textArea1.setText(this.textArea1.getText() + "\nAbrindo Arquivo Físico .p21" + filePath);
+
+			deleteFile(new File("C:\\repositories.tmp"));
+			
+			stepNcReader = new STEP_NCReader(filePath, ProjectReader.FILE_21);
+			stepNcReader.getAllFeatures(stepNcReader.getAllWorkingSteps());
+			
+			
+			//int idAtual = this.projeto.getDadosDeProjeto().getUserID();
+			//String userNameAtual = this.projeto.getDadosDeProjeto().getUserName();
+			
+			int idAtual = this.shopFloor.getUserID();
+			String userNameAtual = this.shopFloor.getName();
+			
+			
+			this.projeto = stepNcReader.getProjeto();
+			
+			this.projeto.getDadosDeProjeto().setUserID(idAtual);
+			this.projeto.getDadosDeProjeto().setUserName(userNameAtual);
+	
+			//chamar o m�todo de cria��o de preced�ncias do stepNcReader
+			Vector<Feature> featuresTmp = new Vector<Feature>();
+			
+			for(int k=0;k<this.projeto.getBloco().getFaces().size();k++)
+			{
+				featuresTmp = ((Face)this.projeto.getBloco().getFaces().get(k)).features;
+				stepNcReader.setFeaturesPrecedences(featuresTmp);
+			}
+			/*
+			for(int j=0; j<featuresXY.size();j++)
+			{
+				System.out.println("precedente da feature "+j+ ": " + featuresXY.get(j).getFeaturePrecedente());
+			}*/
+			//System.out.println("precedente da feature 1 : " + featuresXY.get(0).getFeaturePrecedente());
+			//System.out.println("precedente da feature 2 : " + featuresXY.get(1).getFeaturePrecedente());
+	
+		} catch (SdaiException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		this.setTitle("STEP Modeler - " + this.projeto.getDadosDeProjeto().getProjectName());
+		this.faceVisualizada = (Face) this.projeto.getBloco().faces
+		.elementAt(0);
+		this.faceTrabalho = (Face) this.projeto.getBloco().faces
+		.elementAt(0);
+		//this.desenhador.alterarProjeto(this.projeto);
+		
+		this.projeto.setConn(new ToolReader().getConn());
+		this.projeto.setStatement(new ToolReader().getStatement());
+
+		//setDoneCAPP(false);
+
+		ProjectTools.setProjectToolsDone(true);
+		ToolManager.setCenterDrills(this.projeto.getCenterDrills());
+		ToolManager.setTwistDrills(this.projeto.getTwistDrills());
+		ToolManager.setFaceMills(this.projeto.getFaceMills());
+		ToolManager.setEndMills(this.projeto.getEndMills());
+		ToolManager.setBallEndMills(this.projeto.getBallEndMills());
+		ToolManager.setBullnoseEndMills(this.projeto.getBullnoseEndMills());
+		ToolManager.setReamers(this.projeto.getReamers());
+		ToolManager.setBoringTools(this.projeto.getBoringTools());
+
+		//setDoneCAPP(true);
+		
+		//this.atualizarArvore();
+		//this.atualizarArvoreCAPP();
+		
+		//this.atualizarArvorePrecedencias(); //New
+		
+		/*MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(
+				this.getProjeto()); //New
+		*/
+		atualizarArvorePrecendences(this.projeto);
+
+	}
+	
+	public boolean deleteFile(File file) {
+		boolean ok = false;
+
+		if (file.isFile()) {
+			file.delete();
+		} else {
+			file.delete();
+
+			if (file.listFiles() != null) {
+				File[] files = file.listFiles();
+				for (int i = 0; i < files.length; i++) {
+					this.deleteFile(files[i]);
+				}
+			}
+		}
+
+		return ok;
+	}
+	
+
 	public void atualizarArvoreMaquinas()
 	{
 		
@@ -177,6 +326,34 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		ArrayList<Workingstep> workingstepsIniciais = new ArrayList<Workingstep>();
 		
 		for (int i = 0; i < projetoSF.getWorkingsteps().size(); i++)
+		{
+			//Salva em array os workingsteps de primeiro n�vel
+			if (projetoSF.getWorkingsteps().get(i).getWorkingstepPrecedente() == null)
+			{
+				workingstepsIniciais.add(projetoSF.getWorkingsteps().get(i));
+			}
+		
+		}
+		
+		for (int i = 0; i < workingstepsIniciais.size(); i++)
+		{
+			
+			root.add(addTreeSubNode(root, workingstepsIniciais.get(i), projetoSF.getWorkingsteps()));
+		
+		}
+		
+		//Associa��o da JTree criada ao objeto visual tree3 e atualizacao da mesma
+		this.tree3 = new JTree(root);
+		scrollPaneTree2.setViewportView(tree3);
+		scrollPaneTree2.revalidate();
+	}
+	
+	public  void atualizarArvorePrecendences(Projeto projeto)
+	{
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine Workingsteps");
+		ArrayList<Workingstep> workingstepsIniciais = new ArrayList<Workingstep>();
+		
+		for (int i = 0; i < this.projeto.getWorkingsteps().size(); i++)
 		{
 			//Salva em array os workingsteps de primeiro n�vel
 			if (projetoSF.getWorkingsteps().get(i).getWorkingstepPrecedente() == null)

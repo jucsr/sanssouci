@@ -263,24 +263,51 @@ new FormModel {
 							}, new FormLayoutConstraints( class java.lang.String ) {
 								"value": "left"
 							} )
-							add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-								name: "scrollPaneDesenho"
-								auxiliary() {
-									"JavaCodeGenerator.variableModifiers": 1
-								}
-								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-									"$columnSpecs": "0, 0:1.0"
-									"$rowSpecs": "0, 500:1.0, 0"
-									"$hGap": 5
-									"$vGap": 5
-									"$alignLeft": true
-									"$alignTop": true
-								} ) {
-									name: "panel1"
-									"minimumSize": new java.awt.Dimension( 400, 400 )
+							add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+								name: "tabbedPane2"
+								add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+									name: "scrollPaneDesenho"
 									auxiliary() {
 										"JavaCodeGenerator.variableModifiers": 1
 									}
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+										"$columnSpecs": "0, 0:1.0"
+										"$rowSpecs": "0, 500:1.0, 0"
+										"$hGap": 5
+										"$vGap": 5
+										"$alignLeft": true
+										"$alignTop": true
+									} ) {
+										name: "panel1"
+										"minimumSize": &Dimension0 new java.awt.Dimension( 400, 400 )
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+									} )
+								}, new FormLayoutConstraints( null ) {
+									"title": "shop floor"
+								} )
+								add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+									name: "scrollPaneDesenho2"
+									auxiliary() {
+										"JavaCodeGenerator.variableModifiers": 1
+									}
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+										"$columnSpecs": "0, 0:1.0"
+										"$rowSpecs": "0, 500:1.0, 0"
+										"$hGap": 5
+										"$vGap": 5
+										"$alignLeft": true
+										"$alignTop": true
+									} ) {
+										name: "panel2"
+										"minimumSize": #Dimension0
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+									} )
+								}, new FormLayoutConstraints( null ) {
+									"title": "piece"
 								} )
 							}, new FormLayoutConstraints( class java.lang.String ) {
 								"value": "right"

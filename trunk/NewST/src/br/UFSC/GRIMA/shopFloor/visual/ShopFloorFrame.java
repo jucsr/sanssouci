@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.tree.*;
 
+import br.UFSC.GRIMA.cad.DesenhadorDeFaces;
+
 /**
  * @author Brainrain
  */
@@ -120,8 +122,11 @@ public class ShopFloorFrame extends JFrame {
 		panel14 = new JPanel();
 		scrollPaneTree2 = new JScrollPane();
 		tree3 = new JTree();
+		tabbedPane2 = new JTabbedPane();
 		scrollPaneDesenho = new JScrollPane();
 		panel1 = new JPanel();
+		scrollPaneDesenho2 = new JScrollPane();
+		panel2 = new JPanel();
 		scrollPane3 = new JScrollPane();
 		textArea1 = new JTextArea();
 		panel10 = new JPanel();
@@ -793,21 +798,44 @@ public class ShopFloorFrame extends JFrame {
 						}
 						splitPane2.setLeftComponent(tabbedPane1);
 
-						//======== scrollPaneDesenho ========
+						//======== tabbedPane2 ========
 						{
 
-							//======== panel1 ========
+							//======== scrollPaneDesenho ========
 							{
-								panel1.setMinimumSize(new Dimension(400, 400));
-								panel1.setLayout(new GridBagLayout());
-								((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0};
-								((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 505, 0, 0};
-								((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-								((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+								//======== panel1 ========
+								{
+									panel1.setMinimumSize(new Dimension(400, 400));
+									panel1.setLayout(new GridBagLayout());
+									((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0};
+									((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 505, 0, 0};
+									((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+								}
+								scrollPaneDesenho.setViewportView(panel1);
 							}
-							scrollPaneDesenho.setViewportView(panel1);
+							tabbedPane2.addTab("shop floor", scrollPaneDesenho);
+
+
+							//======== scrollPaneDesenho2 ========
+							{
+
+								//======== panel2 ========
+								{
+									panel2.setMinimumSize(new Dimension(400, 400));
+									panel2.setLayout(new GridBagLayout());
+									((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0};
+									((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 505, 0, 0};
+									((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+								}
+								scrollPaneDesenho2.setViewportView(panel2);
+							}
+							tabbedPane2.addTab("piece", scrollPaneDesenho2);
+
 						}
-						splitPane2.setRightComponent(scrollPaneDesenho);
+						splitPane2.setRightComponent(tabbedPane2);
 					}
 					splitPane1.setTopComponent(splitPane2);
 
@@ -1089,8 +1117,11 @@ public class ShopFloorFrame extends JFrame {
 	private JPanel panel14;
 	public JScrollPane scrollPaneTree2;
 	public JTree tree3;
+	private JTabbedPane tabbedPane2;
 	public JScrollPane scrollPaneDesenho;
 	public JPanel panel1;
+	public JScrollPane scrollPaneDesenho2;
+	public JPanel panel2;
 	private JScrollPane scrollPane3;
 	public JTextArea textArea1;
 	private JPanel panel10;
@@ -1107,5 +1138,6 @@ public class ShopFloorFrame extends JFrame {
 	public JButton buttonRemoverWS2;
 	public JButton buttonEditarWS2;
 	public JButton buttonAlterarWorkplan2;
+	public DesenhadorDeFaces desenhador; // New
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

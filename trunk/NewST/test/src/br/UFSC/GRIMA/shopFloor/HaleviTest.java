@@ -115,14 +115,23 @@ public class HaleviTest
 		Workingstep ws80 = new Workingstep();
 		Workingstep ws90 = new Workingstep();
 		ws10.setTemposNasMaquinas(temposNasMaquinasOp10);
+		ws10.setWorkingstepPrecedente(null);
 		ws20.setTemposNasMaquinas(temposNasMaquinasOp20);
+		ws20.setWorkingstepPrecedente(ws10);
 		ws30.setTemposNasMaquinas(temposNasMaquinasOp30);
+		ws30.setWorkingstepPrecedente(ws20);
 		ws40.setTemposNasMaquinas(temposNasMaquinasOp40);
+		ws40.setWorkingstepPrecedente(ws30);
 		ws50.setTemposNasMaquinas(temposNasMaquinasOp50);
+		ws50.setWorkingstepPrecedente(ws10);
 		ws60.setTemposNasMaquinas(temposNasMaquinasOp60);
+		ws60.setWorkingstepPrecedente(ws50);
 		ws70.setTemposNasMaquinas(temposNasMaquinasOp70);
+		ws70.setWorkingstepPrecedente(ws20);
 		ws80.setTemposNasMaquinas(temposNasMaquinasOp80);
+		ws80.setWorkingstepPrecedente(ws70);
 		ws90.setTemposNasMaquinas(temposNasMaquinasOp90);
+		ws90.setWorkingstepPrecedente(ws80);
 		
 		this.workingsteps.add(ws10);
 		this.workingsteps.add(ws20);

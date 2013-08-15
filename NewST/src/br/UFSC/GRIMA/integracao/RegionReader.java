@@ -62,7 +62,10 @@ public class RegionReader
 		region.setItsId(id);
 		region.setControlVertex(controlVertex);
 		setPosicaoRegionReader(region, eRegion_surface_list);
-		
+		double length = controlVertex[controlVertex.length - 1][controlVertex.length - 1].x - controlVertex[0][0].x;
+		double width = controlVertex[controlVertex.length - 1][controlVertex.length - 1].y - controlVertex[0][0].y;
+		region.setLength(length);
+		region.setWidth(width);
 		return region;
 	}
 	private static void setPosicaoRegionReader(Region region, ERegion_surface_list eRegion_surface_list) throws SdaiException
@@ -71,7 +74,7 @@ public class RegionReader
 		
 		Face faceAtual = FaceReader.getFace(eRegion_surface_list);
 		
-if(faceAtual.getTipo()==Face.XY){
+		if(faceAtual.getTipo()==Face.XY){
 			
 			x = eRegion_surface_list.getFeature_placement(null).getLocation(null)
 			.getCoordinates(null).getByIndex(1);

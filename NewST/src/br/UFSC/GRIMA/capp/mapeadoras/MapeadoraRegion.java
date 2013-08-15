@@ -89,7 +89,8 @@ public class MapeadoraRegion
 			{
 				L = regionTmp.getWidth();
 			}			
-			
+
+
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills, regionTmp, L);
 
 			// ------ Criando condicoes de usinagem ---------
@@ -154,7 +155,7 @@ public class MapeadoraRegion
 		wsTmp = new Workingstep(regionTmp, faceTmp, ballEndMill, condicoesDeUsinagem, freeForm);
 		wsTmp.setId("WS Free Form");
 		wsTmp.setTipo(Workingstep.ACABAMENTO);
-		wsTmp.setWorkingstepPrecedente(wsTmp);
+		wsTmp.setWorkingstepPrecedente(wsPrecedente);
 		
 		wssFeature.add(wsTmp);
 //		System.err.println("================>>>>>>>> WS FREE_FORM");
@@ -310,7 +311,7 @@ public class MapeadoraRegion
 					,
 					"Erro", JOptionPane.ERROR_MESSAGE);
 			
-			throw new NullPointerException("Nenhuma End Mill selecionada");
+			throw new NullPointerException("Nenhuma Face Mill selecionada");
 		}
 		faceMill = faceMillsCandidatas.get(0);
 		for(int i = 1; i < faceMillsCandidatas.size(); i++)

@@ -155,7 +155,8 @@ public class MapeadoraFuroBasePlana {
 				wsTmp = new Workingstep(furoTmp, faceTmp, centerDrill,
 						condicoesDeUsinagem, operation1);
 				wsTmp.setTipo(Workingstep.DESBASTE);
-				wsTmp.setId("FlatBottomHole_RGH");
+//				wsTmp.setId("FlatBottomHole_RGH");
+				wsTmp.setId(furoTmp.getNome() + "_RGH");
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 				wsPrecedenteTmp = wsTmp;
 				
@@ -191,7 +192,7 @@ public class MapeadoraFuroBasePlana {
 			wsTmp = new Workingstep(furoTmp, faceTmp, twistDrill,
 					condicoesDeUsinagem, operation2);
 			wsTmp.setTipo(Workingstep.DESBASTE);
-			wsTmp.setId("FlatBottomHole_RGH");
+			wsTmp.setId(furoTmp.getNome() + "_RGH");
 			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 			wsPrecedenteTmp = wsTmp;
 
@@ -248,7 +249,7 @@ public class MapeadoraFuroBasePlana {
 				wsTmp = new Workingstep(furoTmp, faceTmp, faceMill,
 						condicoesDeUsinagem, operation3);
 				wsTmp.setTipo(Workingstep.DESBASTE);
-				wsTmp.setId("FlatBottomHole_RGH");
+				wsTmp.setId(furoTmp.getNome() + "_RGH");
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 				wsPrecedenteTmp = wsTmp;
 
@@ -441,7 +442,7 @@ public class MapeadoraFuroBasePlana {
 				wsTmp = new Workingstep(furoTmp, faceTmp, centerDrill,
 						condicoesDeUsinagem, operation1);
 				wsTmp.setTipo(Workingstep.DESBASTE);
-				wsTmp.setId("FlatBottomHole_RGH");
+				wsTmp.setId(furoTmp.getNome() + "_RGH");
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 				wsPrecedenteTmp = wsTmp;
 				
@@ -477,7 +478,7 @@ public class MapeadoraFuroBasePlana {
 			wsTmp = new Workingstep(furoTmp, faceTmp, twistDrill,
 					condicoesDeUsinagem, operation2);
 			wsTmp.setTipo(Workingstep.DESBASTE);
-			wsTmp.setId("FlatBottomHole_RGH");
+			wsTmp.setId(furoTmp.getNome() + "_RGH");
 			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 			wsPrecedenteTmp = wsTmp;
 
@@ -535,7 +536,7 @@ public class MapeadoraFuroBasePlana {
 				wsTmp = new Workingstep(furoTmp, faceTmp, faceMill,
 						condicoesDeUsinagem, operation3);
 				wsTmp.setTipo(Workingstep.DESBASTE);
-				wsTmp.setId("FlatBottomHole_RGH");
+				wsTmp.setId(furoTmp.getNome() + "_RGH");
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 				wsPrecedenteTmp = wsTmp;
 
@@ -580,7 +581,7 @@ public class MapeadoraFuroBasePlana {
 				wsTmp = new Workingstep(furoTmp, faceTmp, faceMill,
 						condicoesDeUsinagem, operation3);
 				wsTmp.setTipo(Workingstep.DESBASTE);
-				wsTmp.setId("FlatBottomHole_RGH");
+				wsTmp.setId(furoTmp.getNome() + "_RGH");
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 				wsPrecedenteTmp = wsTmp;
 

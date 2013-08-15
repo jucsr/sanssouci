@@ -121,7 +121,7 @@ public class MapeadoraGeneralClosedPocket {
 			// WORKINGSTEP
 			wsTmp = new Workingstep(genClosed, faceTmp, faceMill, condicoesDeUsinagem, operation1);
 			wsTmp.setTipo(Workingstep.DESBASTE);
-			wsTmp.setId("Pocket_RGH");
+			wsTmp.setId(this.genClosed.getNome() + "_RGH");
 			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 			wsPrecedenteTmp = wsTmp;
 
@@ -179,7 +179,7 @@ public class MapeadoraGeneralClosedPocket {
 				wsTmp = new Workingstep(genClosed, faceTmp, faceMill2,
 						condicoesDeUsinagem, operation2);
 				wsTmp.setTipo(Workingstep.DESBASTE);
-				wsTmp.setId("Pocket_RGH");
+				wsTmp.setId(this.genClosed.getNome() + "_RGH");
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 				wsPrecedenteTmp = wsTmp;
 
@@ -642,7 +642,7 @@ public class MapeadoraGeneralClosedPocket {
 		wsTmp = new Workingstep(genClosed, faceTmp, faceMill,
 				condicoesDeUsinagem, operation);
 		wsTmp.setTipo(Workingstep.DESBASTE);
-		wsTmp.setId("Pocket_RGH");
+		wsTmp.setId(this.genClosed.getNome() + "_RGH");
 		wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 					
 		return wsTmp;

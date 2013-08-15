@@ -2464,6 +2464,10 @@ public class Face implements Serializable{
 //				((Path2D)shape).lineTo(gpb.getPosicaoX(), gpb.getPosicaoY());
 //			}
 //			((Path2D)shape).closePath();
+		} else if(feature.getClass() == Region.class)
+		{
+			Region region = (Region)feature;
+			shape = new Rectangle2D.Double(region.X, region.Y, region.getLength(), region.getWidth());
 		}
 		return shape;
 	}
@@ -2570,6 +2574,10 @@ public class Face implements Serializable{
 //			{
 //				saida[k]=retas.get(k);
 //			}
+		} else if(feature.getClass() == Region.class)
+		{
+			Region region = (Region)feature;
+			saida = Cavidade.determinarPontosEmRetangulo(new Point3d(region.X, region.Y, 0), region.getWidth(), region.getLength());
 		}
 		System.out.println("feature class --> " + feature);
 		return saida;

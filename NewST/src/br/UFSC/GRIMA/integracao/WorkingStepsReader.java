@@ -78,7 +78,7 @@ public class WorkingStepsReader {
 			
 			String wsId = eMachining_workingstep.getIts_id(null);
 			wsTmp.setId(wsId);
-				
+//				System.out.println("*******NOME ---> " + wsId);
 			String[] arrayId = wsId.split("_");
 			int last = arrayId.length-1;
 			String wsTipo = arrayId[last];

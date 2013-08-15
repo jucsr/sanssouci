@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -61,19 +62,27 @@ import br.UFSC.GRIMA.capp.EditReamerWS;
 import br.UFSC.GRIMA.capp.EditTwistDrillWS;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
+import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
+import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
+import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.entidades.StepNcProject;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
+import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.exceptions.MissingDataException;
@@ -833,7 +842,305 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 //		// System.out.println("" + tree2);
 //		// tree2.getSelectionPath();
 //	}
+	public void atualizarArvorePrecendences()
+	{
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machining Workingsteps");
+		ArrayList<Workingstep> workingstepsIniciais = new ArrayList<Workingstep>();
+		Vector<Workingstep> vetorWSXY = projeto.getWorkingsteps().get(0);
+		
+		for (int i = 0; i < vetorWSXY.size(); i++) 
+		{
+			//Salva em array os workingsteps de primeiro n�vel
+			/*
+			 * Para a face XY
+			 */
+			vetorWSXY = projeto.getWorkingsteps().get(0);
+			if (vetorWSXY.elementAt(i).getWorkingstepPrecedente() == null)
+			{
+				workingstepsIniciais.add(vetorWSXY.elementAt(i));
+			}
+		}
+		ArrayList <Workingstep> aux = new ArrayList<Workingstep>();
+		for(int i = 0; i < vetorWSXY.size(); i++)
+		{
+			aux.add(vetorWSXY.elementAt(i));
+		}
+		
+		for (int i = 0; i < workingstepsIniciais.size(); i++)
+		{
+			root.add(addTreeSubNode(root, workingstepsIniciais.get(i), aux));
+		}
+		
+		//Associacao da JTree criada ao objeto visual tree3 e atualizacao da mesma
+		this.tree3 = new JTree(root);
+		scrollPaneTree2.setViewportView(tree3);
+		scrollPaneTree2.revalidate();
+	}
+	
+	public DefaultMutableTreeNode addTreeSubNode (DefaultMutableTreeNode root, Workingstep ws, ArrayList<Workingstep> wsArray)
+	{
+		int i;
 
+		//Adiciona ao root somente workingsteps sem precedentes e sem poscedentes
+		if (ws.getWorkingstepPrecedente() == null && ws.getWorkingstepsPoscedentesDiretos(wsArray).size() == 0)
+		{
+			System.out.println("entrou no if, nao tem precedente nem poscedente, adicionado ao root");
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(ws.getId());
+			/**
+			 * 
+			 */
+			DefaultMutableTreeNode nodoFeatureTmp = new DefaultMutableTreeNode("Its Feature:");
+			DefaultMutableTreeNode nodoOperationTmp = new DefaultMutableTreeNode("Its Operation:");
+			DefaultMutableTreeNode nodoFerramentaTmp = new DefaultMutableTreeNode("Its Tool:");
+			DefaultMutableTreeNode nodoCondicoesTmp = new DefaultMutableTreeNode("Its Technology:");
+			
+			newNode.add(nodoFeatureTmp);
+			newNode.add(nodoOperationTmp);
+			newNode.add(nodoFerramentaTmp);
+			newNode.add(nodoCondicoesTmp);
+			
+			MachiningOperation operationTmp = ws.getOperation();
+			Ferramenta ferrTmp = ws.getFerramenta();
+			CondicoesDeUsinagem condTmp = ws.getCondicoesUsinagem();
+			
+			nodoFeatureTmp.add(new DefaultMutableTreeNode("Name : " + ws.getFeature().getNome()));
+
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Type : " + operationTmp.getId()));
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Coolant : " + operationTmp.isCoolant()));
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Retract Plane : " + operationTmp.getRetractPlane()));
+			
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Type : " + ferrTmp.getClass().toString().substring(42)));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Name : " + ferrTmp.getName()));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Diameter : " + ferrTmp.getDiametroFerramenta() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Cutting Edge Length : " + ferrTmp.getCuttingEdgeLength() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Max Depth : " + ferrTmp.getProfundidadeMaxima() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Off Set Length : " + ferrTmp.getOffsetLength() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Hand Of Cut : " + ferrTmp.getStringHandOfCut()));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Material : Carbide - " + ferrTmp.getMaterial()));
+			if(ferrTmp.getClass() == CenterDrill.class || ferrTmp.getClass() == TwistDrill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Tip Tool Half Angle : " + ferrTmp.getToolTipHalfAngle() + " °"));
+			} else if (ferrTmp.getClass() == BallEndMill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+			} else if (ferrTmp.getClass() == BullnoseEndMill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode( "Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Vertical: " + ferrTmp.getEdgeCenterVertical() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Horizontal: " + ferrTmp.getEdgeCenterHorizontal() + " mm"));				
+			}
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("vc : " + condTmp.getVc() + " m/min"));
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("f : " + condTmp.getF() + " mm/rot"));
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("n : " + (int)condTmp.getN() + " rpm"));
+			if(operationTmp.getClass() == BottomAndSideFinishMilling.class || operationTmp.getClass() == BottomAndSideRoughMilling.class || operationTmp.getClass() == FreeformOperation.class || operationTmp.getClass() == PlaneRoughMilling.class || operationTmp.getClass() == PlaneFinishMilling.class)
+			{	
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("ap : " + condTmp.getAp() + " mm"));
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("ae : " + condTmp.getAe() + " mm"));
+			}
+			
+			return newNode;
+		}
+		
+		//Adiciona ao root somente workingsteps sem precedentes, tratando casos com poscedentes com recursividade
+		if (ws.getWorkingstepPrecedente() == null)
+		{
+			System.out.println("entrou no else");
+			DefaultMutableTreeNode newRoot = new DefaultMutableTreeNode(ws.getId());
+			//if (get(i).getWorkingstepsPoscedentes)
+			//newRoot.add(addTreeSubNode(newRoot, ws, wsArray));
+			
+			for (i=0;i < ws.getWorkingstepsPoscedentesDiretos(wsArray).size();i++)
+			{
+				
+				/**
+				 * 
+				 */
+				
+				DefaultMutableTreeNode nodoFeatureTmp = new DefaultMutableTreeNode("Its Feature:");
+				DefaultMutableTreeNode nodoOperationTmp = new DefaultMutableTreeNode("Its Operation:");
+				DefaultMutableTreeNode nodoFerramentaTmp = new DefaultMutableTreeNode("Its Tool:");
+				DefaultMutableTreeNode nodoCondicoesTmp = new DefaultMutableTreeNode("Its Technology:");
+				
+				newRoot.add(nodoFeatureTmp);
+				newRoot.add(nodoOperationTmp);
+				newRoot.add(nodoFerramentaTmp);
+				newRoot.add(nodoCondicoesTmp);
+				
+				MachiningOperation operationTmp = ws.getOperation();
+				Ferramenta ferrTmp = ws.getFerramenta();
+				CondicoesDeUsinagem condTmp = ws.getCondicoesUsinagem();
+				
+				nodoFeatureTmp.add(new DefaultMutableTreeNode("Name : " + ws.getFeature().getNome()));
+
+				nodoOperationTmp.add(new DefaultMutableTreeNode("Type : " + operationTmp.getId()));
+				nodoOperationTmp.add(new DefaultMutableTreeNode("Coolant : " + operationTmp.isCoolant()));
+				nodoOperationTmp.add(new DefaultMutableTreeNode("Retract Plane : " + operationTmp.getRetractPlane()));
+				
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Type : " + ferrTmp.getClass().toString().substring(42)));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Name : " + ferrTmp.getName()));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Diameter : " + ferrTmp.getDiametroFerramenta() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Cutting Edge Length : " + ferrTmp.getCuttingEdgeLength() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Max Depth : " + ferrTmp.getProfundidadeMaxima() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Off Set Length : " + ferrTmp.getOffsetLength() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Hand Of Cut : " + ferrTmp.getStringHandOfCut()));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Material : Carbide - " + ferrTmp.getMaterial()));
+				if(ferrTmp.getClass() == CenterDrill.class || ferrTmp.getClass() == TwistDrill.class)
+				{
+					nodoFerramentaTmp.add(new DefaultMutableTreeNode("Tip Tool Half Angle : " + ferrTmp.getToolTipHalfAngle() + " °"));
+				} else if (ferrTmp.getClass() == BallEndMill.class)
+				{
+					nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+				} else if (ferrTmp.getClass() == BullnoseEndMill.class)
+				{
+					nodoFerramentaTmp.add(new DefaultMutableTreeNode( "Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+					nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Vertical: " + ferrTmp.getEdgeCenterVertical() + " mm"));
+					nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Horizontal: " + ferrTmp.getEdgeCenterHorizontal() + " mm"));				
+				}
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("vc : " + condTmp.getVc() + " m/min"));
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("f : " + condTmp.getF() + " mm/rot"));
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("n : " + (int)condTmp.getN() + " rpm"));
+				if(operationTmp.getClass() == BottomAndSideFinishMilling.class || operationTmp.getClass() == BottomAndSideRoughMilling.class || operationTmp.getClass() == FreeformOperation.class || operationTmp.getClass() == PlaneRoughMilling.class || operationTmp.getClass() == PlaneFinishMilling.class)
+				{	
+					nodoCondicoesTmp.add(new DefaultMutableTreeNode("ap : " + condTmp.getAp() + " mm"));
+					nodoCondicoesTmp.add(new DefaultMutableTreeNode("ae : " + condTmp.getAe() + " mm"));
+				}
+				newRoot.add(addTreeSubNode(newRoot, ws.getWorkingstepsPoscedentesDiretos(wsArray).get(i), wsArray));
+			}
+			//root.add(newRoot);
+			
+			//DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(projetoSF.getWorkingsteps().get(i).getId());
+			//newRoot.add(newNode);
+			return newRoot;
+		}
+		
+		//Adiciona ao root recursivo workingsteps com precedentes e poscedentes
+		if (ws.getWorkingstepsPoscedentesDiretos(wsArray) != null)
+		{
+			System.out.println("COM PRE e POS");
+			DefaultMutableTreeNode newRoot = new DefaultMutableTreeNode(ws.getId());
+			
+			/**
+			 * 
+			 */
+			DefaultMutableTreeNode nodoFeatureTmp = new DefaultMutableTreeNode("Its Feature:");
+			DefaultMutableTreeNode nodoOperationTmp = new DefaultMutableTreeNode("Its Operation:");
+			DefaultMutableTreeNode nodoFerramentaTmp = new DefaultMutableTreeNode("Its Tool:");
+			DefaultMutableTreeNode nodoCondicoesTmp = new DefaultMutableTreeNode("Its Technology:");
+			
+			newRoot.add(nodoFeatureTmp);
+			newRoot.add(nodoOperationTmp);
+			newRoot.add(nodoFerramentaTmp);
+			newRoot.add(nodoCondicoesTmp);
+			
+			MachiningOperation operationTmp = ws.getOperation();
+			Ferramenta ferrTmp = ws.getFerramenta();
+			CondicoesDeUsinagem condTmp = ws.getCondicoesUsinagem();
+			
+			nodoFeatureTmp.add(new DefaultMutableTreeNode("Name : " + ws.getFeature().getNome()));
+
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Type : " + operationTmp.getId()));
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Coolant : " + operationTmp.isCoolant()));
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Retract Plane : " + operationTmp.getRetractPlane()));
+			
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Type : " + ferrTmp.getClass().toString().substring(42)));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Name : " + ferrTmp.getName()));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Diameter : " + ferrTmp.getDiametroFerramenta() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Cutting Edge Length : " + ferrTmp.getCuttingEdgeLength() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Max Depth : " + ferrTmp.getProfundidadeMaxima() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Off Set Length : " + ferrTmp.getOffsetLength() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Hand Of Cut : " + ferrTmp.getStringHandOfCut()));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Material : Carbide - " + ferrTmp.getMaterial()));
+			if(ferrTmp.getClass() == CenterDrill.class || ferrTmp.getClass() == TwistDrill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Tip Tool Half Angle : " + ferrTmp.getToolTipHalfAngle() + " °"));
+			} else if (ferrTmp.getClass() == BallEndMill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+			} else if (ferrTmp.getClass() == BullnoseEndMill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode( "Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Vertical: " + ferrTmp.getEdgeCenterVertical() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Horizontal: " + ferrTmp.getEdgeCenterHorizontal() + " mm"));				
+			}
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("vc : " + condTmp.getVc() + " m/min"));
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("f : " + condTmp.getF() + " mm/rot"));
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("n : " + (int)condTmp.getN() + " rpm"));
+			if(operationTmp.getClass() == BottomAndSideFinishMilling.class || operationTmp.getClass() == BottomAndSideRoughMilling.class || operationTmp.getClass() == FreeformOperation.class || operationTmp.getClass() == PlaneRoughMilling.class || operationTmp.getClass() == PlaneFinishMilling.class)
+			{	
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("ap : " + condTmp.getAp() + " mm"));
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("ae : " + condTmp.getAe() + " mm"));
+			}
+			for (i = 0; i < ws.getWorkingstepsPoscedentesDiretos(wsArray).size(); i++)
+			{
+				newRoot.add(addTreeSubNode(newRoot, ws.getWorkingstepsPoscedentesDiretos(wsArray).get(i), wsArray));
+			}
+			return newRoot;
+		}
+		
+		//Adiciona ao root recursivo nos sem poscedentes
+		if (ws.getWorkingstepsPoscedentesDiretos(wsArray) == null)
+		{
+			System.out.println("--------------------- SEM POSSEDENTES");
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(ws.getId());
+			
+			/**
+			 * 
+			 */
+			DefaultMutableTreeNode nodoFeatureTmp = new DefaultMutableTreeNode("Its Feature:");
+			DefaultMutableTreeNode nodoOperationTmp = new DefaultMutableTreeNode("Its Operation:");
+			DefaultMutableTreeNode nodoFerramentaTmp = new DefaultMutableTreeNode("Its Tool:");
+			DefaultMutableTreeNode nodoCondicoesTmp = new DefaultMutableTreeNode("Its Technology:");
+			
+			newNode.add(nodoFeatureTmp);
+			newNode.add(nodoOperationTmp);
+			newNode.add(nodoFerramentaTmp);
+			newNode.add(nodoCondicoesTmp);
+			
+			MachiningOperation operationTmp = ws.getOperation();
+			Ferramenta ferrTmp = ws.getFerramenta();
+			CondicoesDeUsinagem condTmp = ws.getCondicoesUsinagem();
+			
+			nodoFeatureTmp.add(new DefaultMutableTreeNode("Name : " + ws.getFeature().getNome()));
+
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Type : " + operationTmp.getId()));
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Coolant : " + operationTmp.isCoolant()));
+			nodoOperationTmp.add(new DefaultMutableTreeNode("Retract Plane : " + operationTmp.getRetractPlane()));
+			
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Type : " + ferrTmp.getClass().toString().substring(42)));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Name : " + ferrTmp.getName()));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Diameter : " + ferrTmp.getDiametroFerramenta() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Cutting Edge Length : " + ferrTmp.getCuttingEdgeLength() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Max Depth : " + ferrTmp.getProfundidadeMaxima() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Off Set Length : " + ferrTmp.getOffsetLength() + " mm"));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Hand Of Cut : " + ferrTmp.getStringHandOfCut()));
+			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Material : Carbide - " + ferrTmp.getMaterial()));
+			if(ferrTmp.getClass() == CenterDrill.class || ferrTmp.getClass() == TwistDrill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Tip Tool Half Angle : " + ferrTmp.getToolTipHalfAngle() + " °"));
+			} else if (ferrTmp.getClass() == BallEndMill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+			} else if (ferrTmp.getClass() == BullnoseEndMill.class)
+			{
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode( "Edge Radius: " + ferrTmp.getEdgeRadius() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Vertical: " + ferrTmp.getEdgeCenterVertical() + " mm"));
+				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Horizontal: " + ferrTmp.getEdgeCenterHorizontal() + " mm"));				
+			}
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("vc : " + condTmp.getVc() + " m/min"));
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("f : " + condTmp.getF() + " mm/rot"));
+			nodoCondicoesTmp.add(new DefaultMutableTreeNode("n : " + (int)condTmp.getN() + " rpm"));
+			if(operationTmp.getClass() == BottomAndSideFinishMilling.class || operationTmp.getClass() == BottomAndSideRoughMilling.class || operationTmp.getClass() == FreeformOperation.class || operationTmp.getClass() == PlaneRoughMilling.class || operationTmp.getClass() == PlaneFinishMilling.class)
+			{	
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("ap : " + condTmp.getAp() + " mm"));
+				nodoCondicoesTmp.add(new DefaultMutableTreeNode("ae : " + condTmp.getAe() + " mm"));
+			}
+			
+			return newNode;
+		}
+		//projetoSF.getWorkingsteps().get(i).i
+		return null;
+	}
+	
 	
 	public JTree getArvore() {
 		return new JTree(new DefaultMutableTreeNode("Projeto"));
@@ -1177,6 +1484,14 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			this.atualizarArvoreCAPP();
 			this.atualizarArvorePrecedencias();
 			
+			Region region = (Region)((Face)projeto.getBloco().faces.elementAt(0)).features.elementAt(0);
+			
+			for(int i = 0; i < region.getWorkingsteps().size(); i++)
+			{
+				System.out.println(region.getWorkingsteps().get(i).getWorkingstepPrecedente());
+				System.out.println(i);
+			}
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane
@@ -1306,9 +1621,8 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.atualizarArvoreCAPP();
 		
 		this.atualizarArvorePrecedencias(); //New
-		
-		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(
-				this.getProjeto()); //New
+		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(this.getProjeto()); //New
+		this.atualizarArvorePrecendences();
 
 	}
 	
@@ -1814,11 +2128,11 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 						int i = JOptionPane.
 						showConfirmDialog(
 								null,
-								"A eliminação deste Machining Workingstep causará a remoção\n" +
-								"dos seguintes Machining Workinsteps associados:\n" +
+								"eliminating this machining workingstep cause \n" +
+								"the removal of machinings workingsteps associated:\n" +
 								wsAss + "\n"							
-								+ "\nDeseja eliminá-los?",
-								"Remover Machining Workingstep",
+								+ "\nwant to eliminate them?",
+								"Remove  Machining Workingstep",
 								JOptionPane.OK_CANCEL_OPTION);
 
 						if(i==JOptionPane.OK_OPTION){
@@ -1968,11 +2282,11 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 						int i = JOptionPane.
 						showConfirmDialog(
 								null,
-								"A eliminação deste Machining Workingstep causará a remoção\n" +
-								"dos seguintes Machining Workinsteps associados:\n" +
+								"eliminating this machining workingstep cause \n" +
+								"the removal of machinings workingsteps associated:\n" +
 								wsAss + "\n"							
-								+ "\nDeseja eliminá-los?",
-								"Remover Machining Workingstep",
+								+ "\nwant to eliminate them?",
+								"Remove  Machining Workingstep",
 								JOptionPane.OK_CANCEL_OPTION);
 
 						if(i==JOptionPane.OK_OPTION){

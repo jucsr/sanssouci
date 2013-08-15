@@ -28,6 +28,7 @@ import jsdai.SCombined_schema.EThrough_bottom_condition;
 import jsdai.SCombined_schema.EVee_profile;
 import jsdai.lang.SdaiException;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.Region;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 
 public class FeatureReader {
@@ -211,44 +212,87 @@ public static Feature getFeature(EMachining_workingstep wkstep) throws SdaiExcep
 		/**
 		 *   CUIDADO!!!! -----> ALGUMAS CLASSES DE LEITURA PODEM ESTAR AINDA USANDO ESTA PARTE DO CODIGO
 		 */
-//		EMachining_feature eFeature = (EMachining_feature) wkstep.getIts_feature(null);
-//		
-//		double zLinhaX = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(1);
-//		double zLinhaY = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(2);
-//		double zLinhaZ = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(3);
-//		
-//		
-//		ArrayList<Double> axis = new ArrayList<Double>();
-//		axis.add(zLinhaX);
-//		axis.add(zLinhaY);
-//		axis.add(zLinhaZ);
-//		
-//		zLinhaX = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(1);
-//		zLinhaY = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(2);
-//		zLinhaZ = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(3);
-//		
-//		
-//		ArrayList<Double> refDirection = new ArrayList<Double>();
-//		refDirection.add(zLinhaX);
-//		refDirection.add(zLinhaY);
-//		refDirection.add(zLinhaZ);
-//		
-//		double x = eFeature.getFeature_placement(null).getLocation(null)
-//		.getCoordinates(null).getByIndex(1);
-//		double y = eFeature.getFeature_placement(null).getLocation(null)
-//		.getCoordinates(null).getByIndex(2);
-//		double z = eFeature.getFeature_placement(null).getLocation(null)
-//		.getCoordinates(null).getByIndex(3);
-//		
-//		Point3d coordinates = new Point3d(x,y,z);
-//		
-//		/**
-//		 * *********** Setando para todas as features, não há necessidade de setar em cada reader !!!! *******
-//		 */
-//		
-//		Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
-//		position.setName(eFeature.getFeature_placement(null).getName(null));
-//		feature.setPosition(position);
+		if(feature.getClass() != Region.class)
+		{
+			EMachining_feature eFeature = (EMachining_feature) wkstep.getIts_feature(null);
+			
+			double zLinhaX = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(1);
+			double zLinhaY = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(2);
+			double zLinhaZ = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(3);
+			
+			
+			ArrayList<Double> axis = new ArrayList<Double>();
+			axis.add(zLinhaX);
+			axis.add(zLinhaY);
+			axis.add(zLinhaZ);
+			
+			zLinhaX = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(1);
+			zLinhaY = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(2);
+			zLinhaZ = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(3);
+			
+			
+			ArrayList<Double> refDirection = new ArrayList<Double>();
+			refDirection.add(zLinhaX);
+			refDirection.add(zLinhaY);
+			refDirection.add(zLinhaZ);
+			
+			double x = eFeature.getFeature_placement(null).getLocation(null)
+			.getCoordinates(null).getByIndex(1);
+			double y = eFeature.getFeature_placement(null).getLocation(null)
+			.getCoordinates(null).getByIndex(2);
+			double z = eFeature.getFeature_placement(null).getLocation(null)
+			.getCoordinates(null).getByIndex(3);
+			
+			Point3d coordinates = new Point3d(x,y,z);
+			
+			/**
+			 * *********** Setando para todas as features, não há necessidade de setar em cada reader !!!! *******
+			 */
+			
+			Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
+			position.setName(eFeature.getFeature_placement(null).getName(null));
+			feature.setPosition(position);
+		} else if(feature.getClass() == Region.class)
+		{
+			ERegion eFeature = (ERegion)wkstep.getIts_feature(null);
+			double zLinhaX = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(1);
+			double zLinhaY = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(2);
+			double zLinhaZ = eFeature.getFeature_placement(null).getAxis(null).getDirection_ratios(null).getByIndex(3);
+			
+			
+			ArrayList<Double> axis = new ArrayList<Double>();
+			axis.add(zLinhaX);
+			axis.add(zLinhaY);
+			axis.add(zLinhaZ);
+			
+			zLinhaX = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(1);
+			zLinhaY = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(2);
+			zLinhaZ = eFeature.getFeature_placement(null).getRef_direction(null).getDirection_ratios(null).getByIndex(3);
+			
+			
+			ArrayList<Double> refDirection = new ArrayList<Double>();
+			refDirection.add(zLinhaX);
+			refDirection.add(zLinhaY);
+			refDirection.add(zLinhaZ);
+			
+			double x = eFeature.getFeature_placement(null).getLocation(null)
+			.getCoordinates(null).getByIndex(1);
+			double y = eFeature.getFeature_placement(null).getLocation(null)
+			.getCoordinates(null).getByIndex(2);
+			double z = eFeature.getFeature_placement(null).getLocation(null)
+			.getCoordinates(null).getByIndex(3);
+			
+			Point3d coordinates = new Point3d(x,y,z);
+			
+			/**
+			 * *********** Setando para todas as features, não há necessidade de setar em cada reader !!!! *******
+			 */
+			
+			Axis2Placement3D position = new Axis2Placement3D(coordinates,axis,refDirection);
+			position.setName(eFeature.getFeature_placement(null).getName(null));
+			feature.setPosition(position);
+		}
+		
 		
 		return feature;
 	}

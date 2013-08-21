@@ -81,8 +81,15 @@ public class MapeadoraGeneralClosedPocket {
 
 		if(genClosed.getFeaturePrecedente()!= null){
 			
-			wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
-			
+			if(		genClosed.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 
+					genClosed.getFeaturePrecedente().getClass().equals(RectangularBoss.class) ||
+					genClosed.getFeaturePrecedente().getClass().equals(CircularBoss.class))
+			{
+				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getFeaturePrecedente().getWorkingsteps().lastElement();
+			}
+			else{
+				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
+			}			
 		}else{
 			//Nao tem ws precedente
 			wsPrecedenteTmp = null;

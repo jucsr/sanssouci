@@ -79,6 +79,8 @@ public class ShopFloorFrame extends JFrame {
 		menu1 = new JMenu();
 		menuItemAddNewMachine = new JMenuItem();
 		gerarCAPP = new JMenuItem();
+		menu2 = new JMenu();
+		menuItem2 = new JMenuItem();
 		menuItemHalevi = new JMenuItem();
 		definirPontosApoio = new JMenuItem();
 		menuSTEP = new JMenu();
@@ -531,6 +533,16 @@ public class ShopFloorFrame extends JFrame {
 				gerarCAPP.setFont(gerarCAPP.getFont().deriveFont(gerarCAPP.getFont().getStyle() & ~Font.BOLD));
 				gerarCAPP.setIcon(new ImageIcon(getClass().getResource("/images/iconeCAPP.png")));
 				menu1.add(gerarCAPP);
+
+				//======== menu2 ========
+				{
+					menu2.setText("Halevi");
+
+					//---- menuItem2 ----
+					menuItem2.setText("Calculate Time Matrix");
+					menu2.add(menuItem2);
+				}
+				menu1.add(menu2);
 
 				//---- menuItemHalevi ----
 				menuItemHalevi.setText("Halevi");
@@ -1107,6 +1119,8 @@ public class ShopFloorFrame extends JFrame {
 	private JMenu menu1;
 	public JMenuItem menuItemAddNewMachine;
 	public JMenuItem gerarCAPP;
+	private JMenu menu2;
+	public JMenuItem menuItem2;
 	public JMenuItem menuItemHalevi;
 	public JMenuItem definirPontosApoio;
 	public JMenu menuSTEP;

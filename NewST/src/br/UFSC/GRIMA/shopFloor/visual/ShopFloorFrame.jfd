@@ -966,6 +966,17 @@ new FormModel {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
 					} )
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "menu2"
+						"text": "Halevi"
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem2"
+							"text": "Calculate Time Matrix"
+							auxiliary() {
+								"JavaCodeGenerator.variableModifiers": 1
+							}
+						} )
+					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemHalevi"
 						"text": "Halevi"

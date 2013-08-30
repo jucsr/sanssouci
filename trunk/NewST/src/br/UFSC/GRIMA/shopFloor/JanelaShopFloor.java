@@ -91,7 +91,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.mostrarGrade.addActionListener(this);
 		
 		this.importPiece.addActionListener(this); //New
-		
+		this.menuItem2.addActionListener(this);
 		this.spinnerZoom.addChangeListener(new ChangeListener(){
 
 			@Override
@@ -141,6 +141,9 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		}else if(o.equals(importPiece))
 		{
 			importarPeca();
+		}else if(o == this.menuItem2)
+		{
+			TabelaTempos tabela = new TabelaTempos(projetoSF);
 		}
 	}
 	

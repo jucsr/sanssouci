@@ -3,14 +3,15 @@ package br.UFSC.GRIMA.shopFloor;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class ProjetoSF 
 {
 	private ShopFloor shopFloor;
 	private ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
 	private int lotSize=1000;
-	
-	
+	private Projeto projeto;
+
 	public int getLotSize() {
 		return lotSize;
 	}

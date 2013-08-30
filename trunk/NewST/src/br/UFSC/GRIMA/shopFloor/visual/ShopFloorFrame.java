@@ -1,19 +1,15 @@
-/*
- * Created by JFormDesigner on Wed Nov 28 15:08:07 BRST 2012
- */
-
 package br.UFSC.GRIMA.shopFloor.visual;
 
 import java.awt.*;
+import java.beans.PropertyVetoException;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.tree.*;
 
 import br.UFSC.GRIMA.cad.DesenhadorDeFaces;
+import com.jgoodies.forms.factories.*;
 
-/**
- * @author Brainrain
- */
 public class ShopFloorFrame extends JFrame {
 	public ShopFloorFrame() {
 		initComponents();
@@ -125,8 +121,11 @@ public class ShopFloorFrame extends JFrame {
 		tabbedPane2 = new JTabbedPane();
 		scrollPaneDesenho = new JScrollPane();
 		panel1 = new JPanel();
+		splitPane3 = new JSplitPane();
 		scrollPaneDesenho2 = new JScrollPane();
 		panel2 = new JPanel();
+		internalFrame1 = new JInternalFrame();
+		panel15 = new JPanel();
 		scrollPane3 = new JScrollPane();
 		textArea1 = new JTextArea();
 		panel10 = new JPanel();
@@ -696,14 +695,14 @@ public class ShopFloorFrame extends JFrame {
 					splitPane1.setOrientation(JSplitPane.VERTICAL_SPLIT);
 					splitPane1.setMinimumSize(new Dimension(800, 600));
 					splitPane1.setPreferredSize(new Dimension(800, 600));
-					splitPane1.setResizeWeight(0.8);
+					splitPane1.setResizeWeight(0.9);
 					splitPane1.setOneTouchExpandable(true);
 
 					//======== splitPane2 ========
 					{
 						splitPane2.setMinimumSize(new Dimension(0, 0));
 						splitPane2.setOneTouchExpandable(true);
-						splitPane2.setResizeWeight(0.1);
+						splitPane2.setResizeWeight(0.2);
 
 						//======== tabbedPane1 ========
 						{
@@ -818,21 +817,51 @@ public class ShopFloorFrame extends JFrame {
 							tabbedPane2.addTab("shop floor", scrollPaneDesenho);
 
 
-							//======== scrollPaneDesenho2 ========
+							//======== splitPane3 ========
 							{
+								splitPane3.setOrientation(JSplitPane.VERTICAL_SPLIT);
+								splitPane3.setResizeWeight(0.7);
+								splitPane3.setOneTouchExpandable(true);
 
-								//======== panel2 ========
+								//======== scrollPaneDesenho2 ========
 								{
-									panel2.setMinimumSize(new Dimension(400, 400));
-									panel2.setLayout(new GridBagLayout());
-									((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0};
-									((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 505, 0, 0};
-									((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-									((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+									//======== panel2 ========
+									{
+										panel2.setMinimumSize(new Dimension(400, 400));
+										panel2.setLayout(new GridBagLayout());
+										((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0};
+										((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 505, 0, 0};
+										((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+										((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+									}
+									scrollPaneDesenho2.setViewportView(panel2);
 								}
-								scrollPaneDesenho2.setViewportView(panel2);
+								splitPane3.setTopComponent(scrollPaneDesenho2);
+
+								//======== internalFrame1 ========
+								{
+									internalFrame1.setVisible(true);
+									internalFrame1.setMaximizable(true);
+									internalFrame1.setResizable(true);
+									Container internalFrame1ContentPane = internalFrame1.getContentPane();
+									internalFrame1ContentPane.setLayout(new GridBagLayout());
+									((GridBagLayout)internalFrame1ContentPane.getLayout()).columnWidths = new int[] {0, 0, 0};
+									((GridBagLayout)internalFrame1ContentPane.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+									((GridBagLayout)internalFrame1ContentPane.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+									((GridBagLayout)internalFrame1ContentPane.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+									//======== panel15 ========
+									{
+										panel15.setLayout(new BorderLayout());
+									}
+									internalFrame1ContentPane.add(panel15, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+								}
+								splitPane3.setBottomComponent(internalFrame1);
 							}
-							tabbedPane2.addTab("piece", scrollPaneDesenho2);
+							tabbedPane2.addTab("piece", splitPane3);
 
 						}
 						splitPane2.setRightComponent(tabbedPane2);
@@ -1120,8 +1149,11 @@ public class ShopFloorFrame extends JFrame {
 	private JTabbedPane tabbedPane2;
 	public JScrollPane scrollPaneDesenho;
 	public JPanel panel1;
+	private JSplitPane splitPane3;
 	public JScrollPane scrollPaneDesenho2;
 	public JPanel panel2;
+	private JInternalFrame internalFrame1;
+	public JPanel panel15;
 	private JScrollPane scrollPane3;
 	public JTextArea textArea1;
 	private JPanel panel10;
@@ -1138,6 +1170,6 @@ public class ShopFloorFrame extends JFrame {
 	public JButton buttonRemoverWS2;
 	public JButton buttonEditarWS2;
 	public JButton buttonAlterarWorkplan2;
-	public DesenhadorDeFaces desenhador; // New
+	public DesenhadorDeFaces desenhador;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

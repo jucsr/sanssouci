@@ -245,7 +245,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		ToolManager.setBoringTools(this.projeto.getBoringTools());
 
 		//setDoneCAPP(true);
-		
+		this.projetoSF.setProjeto(this.projeto);
 		//this.atualizarArvore();
 		//this.atualizarArvoreCAPP();
 		

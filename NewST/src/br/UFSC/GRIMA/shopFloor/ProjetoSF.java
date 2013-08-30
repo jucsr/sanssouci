@@ -34,4 +34,10 @@ public class ProjetoSF
 	public void setWorkingsteps(ArrayList<Workingstep> workingstepsNew) {
 		this.workingsteps = workingstepsNew;
 	}
+	public Projeto getProjeto() {
+		return projeto;
+	}
+	public void setProjeto(Projeto projeto) {
+		this.projeto = projeto;
+	}
 }

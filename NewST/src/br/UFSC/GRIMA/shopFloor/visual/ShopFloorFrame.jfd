@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_17" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_25" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -138,7 +138,7 @@ new FormModel {
 						"orientation": 0
 						"minimumSize": new java.awt.Dimension( 800, 600 )
 						"preferredSize": new java.awt.Dimension( 800, 600 )
-						"resizeWeight": 0.8
+						"resizeWeight": 0.9
 						"oneTouchExpandable": true
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -147,7 +147,7 @@ new FormModel {
 							name: "splitPane2"
 							"minimumSize": new java.awt.Dimension( 0, 0 )
 							"oneTouchExpandable": true
-							"resizeWeight": 0.1
+							"resizeWeight": 0.2
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -287,24 +287,56 @@ new FormModel {
 								}, new FormLayoutConstraints( null ) {
 									"title": "shop floor"
 								} )
-								add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-									name: "scrollPaneDesenho2"
-									auxiliary() {
-										"JavaCodeGenerator.variableModifiers": 1
-									}
-									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+								add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
+									name: "splitPane3"
+									"orientation": 0
+									"resizeWeight": 0.7
+									"oneTouchExpandable": true
+									add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+										name: "scrollPaneDesenho2"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+											"$columnSpecs": "0, 0:1.0"
+											"$rowSpecs": "0, 500:1.0, 0"
+											"$hGap": 5
+											"$vGap": 5
+											"$alignLeft": true
+											"$alignTop": true
+										} ) {
+											name: "panel2"
+											"minimumSize": #Dimension0
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										} )
+									}, new FormLayoutConstraints( class java.lang.String ) {
+										"value": "left"
+									} )
+									add( new FormContainer( "javax.swing.JInternalFrame", new FormLayoutManager( class java.awt.GridBagLayout ) {
 										"$columnSpecs": "0, 0:1.0"
-										"$rowSpecs": "0, 500:1.0, 0"
+										"$rowSpecs": "0, 0:1.0, 0"
 										"$hGap": 5
 										"$vGap": 5
 										"$alignLeft": true
 										"$alignTop": true
 									} ) {
-										name: "panel2"
-										"minimumSize": #Dimension0
-										auxiliary() {
-											"JavaCodeGenerator.variableModifiers": 1
-										}
+										name: "internalFrame1"
+										"visible": true
+										"maximizable": true
+										"resizable": true
+										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+											name: "panel15"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 1
+											"gridy": 1
+										} )
+									}, new FormLayoutConstraints( class java.lang.String ) {
+										"value": "right"
 									} )
 								}, new FormLayoutConstraints( null ) {
 									"title": "piece"

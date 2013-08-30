@@ -1,8 +1,6 @@
 package br.UFSC.GRIMA.cad;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
+import javax.swing.JPanel;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 
@@ -38,7 +36,6 @@ import br.UFSC.GRIMA.operationSolids.CompoundSolid;
 import br.UFSC.GRIMA.operationSolids.OperationBezierProfile;
 import br.UFSC.GRIMA.operationSolids.OperationBezierSurface;
 import br.UFSC.GRIMA.operationSolids.OperationBlock;
-import br.UFSC.GRIMA.operationSolids.OperationBlock1;
 import br.UFSC.GRIMA.operationSolids.OperationConicalHoleBottom;
 import br.UFSC.GRIMA.operationSolids.OperationCylinder_1;
 import br.UFSC.GRIMA.operationSolids.OperationGeneralClosedPocked;
@@ -68,7 +65,14 @@ public class Generate3Dview extends Frame3D
 		this.createCoordinateSystem();
 		this.createBlock();
 	}
-	
+	public Generate3Dview(Projeto projeto, JPanel panel)
+	{
+		this.projeto = projeto;
+		this.setSize(600, 400);
+		this.j3d = new J3D(panel);
+		this.createCoordinateSystem();
+		this.createBlock();
+	}
 	private void createCoordinateSystem() 
 	{
 		Bloco bloco = (Bloco) projeto.getBloco();

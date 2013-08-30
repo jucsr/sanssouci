@@ -820,7 +820,7 @@ public class ShopFloorFrame extends JFrame {
 							//======== splitPane3 ========
 							{
 								splitPane3.setOrientation(JSplitPane.VERTICAL_SPLIT);
-								splitPane3.setResizeWeight(0.7);
+								splitPane3.setResizeWeight(0.5);
 								splitPane3.setOneTouchExpandable(true);
 
 								//======== scrollPaneDesenho2 ========

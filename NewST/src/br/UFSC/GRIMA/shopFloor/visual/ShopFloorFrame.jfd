@@ -290,7 +290,7 @@ new FormModel {
 								add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
 									name: "splitPane3"
 									"orientation": 0
-									"resizeWeight": 0.7
+									"resizeWeight": 0.5
 									"oneTouchExpandable": true
 									add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 										name: "scrollPaneDesenho2"

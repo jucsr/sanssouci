@@ -42,7 +42,7 @@ public class TabelaTemposFrame extends JFrame {
 			//======== contentPanel ========
 			{
 				contentPanel.setLayout(new FormLayout(
-					"default, $lcgap, default",
+					"default, $lcgap, default:grow, $lcgap, default",
 					"2*(default, $lgap), default"));
 
 				//======== scrollPane1 ========
@@ -53,11 +53,11 @@ public class TabelaTemposFrame extends JFrame {
 						new Object[][] {
 						},
 						new String[] {
-							"M. Workingsteps", "ID", "Priorities", "Machine 1"
+							"M. Workingsteps", "ID", "Priorities"
 						}
 					) {
 						Class<?>[] columnTypes = new Class<?>[] {
-							String.class, Integer.class, Integer.class, Double.class
+							String.class, Integer.class, Integer.class
 						};
 						@Override
 						public Class<?> getColumnClass(int columnIndex) {
@@ -97,9 +97,9 @@ public class TabelaTemposFrame extends JFrame {
 	private JPanel dialogPane;
 	private JPanel contentPanel;
 	private JScrollPane scrollPane1;
-	public JTable table1;
+	protected JTable table1;
 	private JPanel buttonBar;
-	private JButton okButton;
-	private JButton cancelButton;
+	protected JButton okButton;
+	protected JButton cancelButton;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.shopFloor;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -14,7 +15,7 @@ public class TabelaTempos extends TabelaTemposFrame
 	public TabelaTempos(ProjetoSF projetoSF)
 	{
 		this.projetoSF = projetoSF;
-//		this.calculateTempo();
+		this.calculateTempo();
 		this.init();
 		this.setVisible(true);
 	}
@@ -26,11 +27,15 @@ public class TabelaTempos extends TabelaTemposFrame
 		{
 			workingsteps.add(this.projetoSF.getProjeto().getWorkingsteps().get(0).elementAt(i));
 		}
-		DefaultTableModel modelo = (DefaultTableModel)this.table1.getModel();
-		for(int j = 0; j < machines.size(); j++)
+		Vector<String> cabecalho = new Vector<String>();
+		cabecalho.add("M. Workingsteps");
+		cabecalho.add("ID");
+		cabecalho.add("Priorities");
+		for(int i = 0; i < machines.size(); i++)
 		{
-			modelo.addColumn(machines.get(j).getItsId());
+			cabecalho.add(machines.get(i).getItsId());
 		}
+		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
 		for(int i = 0; i < workingsteps.size(); i++)
 		{
 			Workingstep wsTmp = workingsteps.get(i);
@@ -40,7 +45,7 @@ public class TabelaTempos extends TabelaTemposFrame
 			this.table1.setModel(modelo);
 			modelo.addRow(linha);
 		}
-//		this.table1.setValueAt(2.66, 1, 3);
+//		modelo.setValueAt(23, 5, 5);
 	}
 	private void calculateTempo() 
 	{

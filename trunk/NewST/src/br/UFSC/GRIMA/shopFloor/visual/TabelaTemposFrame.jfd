@@ -31,9 +31,9 @@ new FormModel {
 								add( null )
 								add( null )
 							}, new java.util.Vector {
-								add( null )
-								add( null )
-								add( null )
+								add( new com.jformdesigner.model.SwingTableColumn( null, 100, 75, 0, true ) )
+								add( new com.jformdesigner.model.SwingTableColumn( null, 25, 25, 0, true ) )
+								add( new com.jformdesigner.model.SwingTableColumn( null, 55, 25, 0, true ) )
 							} )
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4

@@ -64,6 +64,15 @@ public class TabelaTemposFrame extends JFrame {
 							return columnTypes[columnIndex];
 						}
 					});
+					{
+						TableColumnModel cm = table1.getColumnModel();
+						cm.getColumn(0).setMinWidth(75);
+						cm.getColumn(0).setPreferredWidth(100);
+						cm.getColumn(1).setMinWidth(25);
+						cm.getColumn(1).setPreferredWidth(25);
+						cm.getColumn(2).setMinWidth(25);
+						cm.getColumn(2).setPreferredWidth(55);
+					}
 					scrollPane1.setViewportView(table1);
 				}
 				contentPanel.add(scrollPane1, cc.xy(3, 3));

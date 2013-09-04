@@ -42,8 +42,8 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		super(janelaShopFloor);
 		this.userID = shopFloor.getUserID();
 		this.machineTools = shopFloor.getMachines();
-		millingMachine.setWorkpieceHandlingDevice(arrayWorkpieceHandlingDevices);
-		millingMachine.setToolHandlingDevice(listaDeMagazines);
+		this.millingMachine.setWorkpieceHandlingDevice(arrayWorkpieceHandlingDevices);
+		this.millingMachine.setToolHandlingDevice(listaDeMagazines);
 		this.shopFloor = shopFloor;
 		this.janelaShopFloor = janelaShopFloor;
 		this.okButton.addActionListener(this);
@@ -276,7 +276,7 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 			setMagazine();
 			machineTools = shopFloor.getMachines();
 			machineTools.add(millingMachine);
-			shopFloor.setMachines(machineTools);
+//			shopFloor.setMachines(machineTools);
 			janelaShopFloor.shopPanel.repaint();
 			janelaShopFloor.atualizarArvoreMaquinas();
 			this.dispose();		
@@ -284,7 +284,6 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 		{
 			JOptionPane.showMessageDialog(null, "The machine was not created");
 		}
-		
 	}
 
 	private void setMagazine()

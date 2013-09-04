@@ -5,17 +5,19 @@ import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList; //New
 import java.util.Vector; //New
 
 import javax.swing.JOptionPane;
 import javax.swing.JTree; //New
 import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode; //New
 import javax.swing.tree.TreeSelectionModel;
 
@@ -64,13 +66,14 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 	private Projeto projeto = null; //New
 	private Face faceVisualizada = null; //New
 	private Face faceTrabalho = null; //New
+	public DesenhadorDeFaces desenhador;
 	
 	public JanelaShopFloor(ShopFloor shopFloorNew, ProjetoSF projetoSFNew)
 	{
 		this.shopFloor = shopFloorNew;
 		this.projetoSF = projetoSFNew;
 		this.addicionarOuvidores();
-		this.shopPanel = new ShopFloorPanel (projetoSF,shopFloor);
+		this.shopPanel = new ShopFloorPanel (this.projetoSF, this.shopFloor);
 		this.panel1.setLayout(new BorderLayout());
 		this.panel1.add(shopPanel);
 		this.zooming = ((Double)spinnerZoom.getValue()).doubleValue();
@@ -89,11 +92,12 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.zoomMenos.addActionListener(this);
 		this.zoomMais.addActionListener(this);
 		this.mostrarGrade.addActionListener(this);
-		
+		this.menuItemSalvar.addActionListener(this);
 		this.importPiece.addActionListener(this); //New
 		this.menuItem2.addActionListener(this);
+		this.buttonAbrir.addActionListener(this);
+		this.buttonSalvar.addActionListener(this);
 		this.spinnerZoom.addChangeListener(new ChangeListener(){
-
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				zooming = ((Double)spinnerZoom.getValue()).doubleValue();
@@ -101,7 +105,6 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 				shopPanel.zooming(zooming);
 				shopPanel.repaint();
 			}
-			
 		});
 	}
 
@@ -125,25 +128,31 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			this.spinnerZoom.setValue(zooming);
 			shopPanel.zooming(zooming);
 			shopPanel.repaint();
-		}else if (o.equals(zoomMenos)){
+		} else if (o.equals(zoomMenos)){
 			
 			this.zooming = zooming - 10; // decrease 5 of zooming
 			this.spinnerZoom.setValue(zooming);
 			shopPanel.zooming(zooming);
 			shopPanel.repaint();
-		}else if(o.equals(mostrarGrade))
+		} else if(o.equals(mostrarGrade))
 		{
 			if(mostrarGrade.isSelected())
 				shopPanel.grade = true;
 			else
 				shopPanel.grade = false;
 			shopPanel.repaint();
-		}else if(o.equals(importPiece))
+		} else if(o.equals(importPiece))
 		{
 			importarPeca();
-		}else if(o == this.menuItem2)
+		} else if(o == this.menuItem2)
 		{
-			TabelaTempos tabela = new TabelaTempos(projetoSF);
+			new TabelaTempos(projetoSF);
+		} else if(o == this.menuItemSalvar || o == this.buttonSalvar)
+		{
+			this.salvar();
+		} else if(o == this.menuItemAbrir || o == this.buttonAbrir)
+		{
+			this.abrir();
 		}
 	}
 	
@@ -251,10 +260,10 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		
 		//this.atualizarArvorePrecedencias(); //New
 		
-		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(this.projeto); //New
+		new MapeadoraDeWorkingsteps(this.projeto); //New
 	
 //		atualizarArvorePrecendences(this.projeto);
-		atualizarArvorePrecendencesWorkingsteps();
+		this.atualizarArvorePrecendencesWorkingsteps();
 		this.gerar3D();
 	}
 	public void gerar3D() 
@@ -310,6 +319,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		for(int i = 0; i < shopFloor.getMachines().size(); i++)
 		{
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode("Its ID : " + shopFloor.getMachines().get(i).getItsId());
+			System.out.println("******** ---- >>" + i + "\t" + shopFloor.getMachines().get(i).getItsId());
 			root.add(node);
 		}
 		
@@ -326,7 +336,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 
 	private void addNewMachine() 
 	{
-		CreateMachine cm = new CreateMachine(this, shopFloor);
+		CreateMachine cm = new CreateMachine(this, this.shopFloor);
 		cm.setVisible(true);
 	}
 	
@@ -787,5 +797,97 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			isValid = false;
 		}
 		return isValid;
+	}
+	
+	public void salvar() 
+	{
+		FileDialog fd = new FileDialog(this, "Salvar", FileDialog.SAVE);
+		for(int i = 0; i < projetoSF.getShopFloor().getMachines().size(); i++)
+		{
+			System.out.println("NOMES DAS MAQUINAS = " + projetoSF.getShopFloor().getMachines().get(i).getItsId());
+		}
+		fd.setFile(this.projetoSF.getShopFloor().getName());
+		fd.setVisible(true);
+		String dir = fd.getDirectory();
+		String file = fd.getFile();
+		String filePath = dir + file + ".SFL";
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filePath, false));
+			out.writeObject(this.projetoSF);
+			out.flush();
+			out.close();
+			this.textArea1.setText(this.textArea1.getText() + "\n" + "'" + file.toUpperCase() + "'" + " foi salvo no Computador com sucesso!");
+
+			// arquivo vai estar salvo
+			// this.salvo = true;//global
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.textArea1.setText(this.textArea1.getText() + "\nErro ao salvar " + "'" + file.toUpperCase() + "'");
+		}
+	}
+	
+	public void abrir() 
+	{
+		FileDialog fd = new FileDialog(this, "Abrir", FileDialog.LOAD);
+
+		fd.setVisible(true);
+
+		String dir = fd.getDirectory();
+		String file = fd.getFile();
+		String filePath = dir + file;
+		try {
+			this.textArea1.setText(this.textArea1.getText() + "\nOpening " + filePath);
+
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath));
+
+			this.projetoSF = (ProjetoSF) (in.readObject());
+			this.shopFloor = this.projetoSF.getShopFloor();
+			this.projeto = this.projetoSF.getProjeto();
+			this.setTitle("Shop Floor - " + this.projeto.getDadosDeProjeto().getProjectName());
+			in.close();
+		
+			this.shopPanel = new ShopFloorPanel (this.projetoSF, this.shopFloor);
+			this.panel1.setLayout(new BorderLayout());
+			this.panel1.add(shopPanel);
+			this.zooming = ((Double)spinnerZoom.getValue()).doubleValue();
+			this.panel1.repaint();
+			this.shopPanel.repaint();
+			
+			// inicializa o desenhador
+			this.desenhador = new DesenhadorDeFaces(this.projeto);
+			this.scrollPaneDesenho2.setViewportView(this.desenhador);
+			this.desenhador.revalidate();
+			this.scrollPaneDesenho2.revalidate();
+			
+			this.faceVisualizada = (Face) this.projeto.getBloco().faces.elementAt(0);
+			this.faceTrabalho = (Face) this.projeto.getBloco().faces.elementAt(0);
+			this.desenhador.alterarProjeto(this.projeto);
+			this.atualizarArvoreMaquinas();
+			this.atualizarArvorePrecendencesWorkingsteps();
+			this.gerar3D();
+//			this.atualizarArvore();
+//			this.atualizarArvoreCAPP();
+//			this.atualizarArvorePrecedencias();
+			
+//			Region region = (Region)((Face)projeto.getBloco().faces.elementAt(0)).features.elementAt(0);
+//			
+//			for(int i = 0; i < region.getWorkingsteps().size(); i++)
+//			{
+//				System.out.println(region.getWorkingsteps().get(i).getWorkingstepPrecedente());
+//				System.out.println(i);
+//			}
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"                O arquivo que você esta tentando abrir "
+									+ "\n não corresponde ao tipo de dados suportados pelo sistema",
+							"Erro ao tentar abrir o arquivo",
+							JOptionPane.OK_CANCEL_OPTION);
+			this.textArea1.setText(this.textArea1.getText() + "\nErro ao abrir " + filePath);
+
+		}
 	}
 }

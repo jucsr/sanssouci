@@ -1,11 +1,12 @@
 package br.UFSC.GRIMA.shopFloor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
-public class ProjetoSF 
+public class ProjetoSF implements Serializable
 {
 	private ShopFloor shopFloor;
 	private ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();

@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.shopFloor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
@@ -9,7 +10,7 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
  * @author Pedro
  *
  */
-public class ShopFloor {
+public class ShopFloor implements Serializable {
 	private ArrayList<MachineTool> machines= new ArrayList<MachineTool>();
 	private double length;
 	private double width;

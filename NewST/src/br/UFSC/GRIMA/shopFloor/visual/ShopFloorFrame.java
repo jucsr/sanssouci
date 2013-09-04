@@ -537,9 +537,11 @@ public class ShopFloorFrame extends JFrame {
 				//======== menu2 ========
 				{
 					menu2.setText("Halevi");
+					menu2.setFont(menu2.getFont().deriveFont(menu2.getFont().getStyle() & ~Font.BOLD));
 
 					//---- menuItem2 ----
 					menuItem2.setText("Calculate Time Matrix");
+					menuItem2.setFont(menuItem2.getFont().deriveFont(menuItem2.getFont().getStyle() & ~Font.BOLD));
 					menu2.add(menuItem2);
 				}
 				menu1.add(menu2);
@@ -1184,6 +1186,5 @@ public class ShopFloorFrame extends JFrame {
 	public JButton buttonRemoverWS2;
 	public JButton buttonEditarWS2;
 	public JButton buttonAlterarWorkplan2;
-	public DesenhadorDeFaces desenhador;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

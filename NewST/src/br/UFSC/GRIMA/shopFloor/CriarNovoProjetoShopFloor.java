@@ -56,7 +56,7 @@ public class CriarNovoProjetoShopFloor extends NovoProjetoShopFloorFrame impleme
 	private void ok()
 	{
 		
-		shopFloor = new ShopFloor(userName, userID, length, width);
+		shopFloor = new ShopFloor(this.textField4.getText(), userID, length, width);
 		this.projetoSF = new ProjetoSF(this.shopFloor);
 		this.janelaShopFloor = new JanelaShopFloor(shopFloor, projetoSF);
 		this.janelaShopFloor.setVisible(true);

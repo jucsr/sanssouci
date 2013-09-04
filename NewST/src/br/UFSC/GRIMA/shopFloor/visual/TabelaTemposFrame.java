@@ -43,7 +43,7 @@ public class TabelaTemposFrame extends JFrame {
 			{
 				contentPanel.setLayout(new FormLayout(
 					"default, $lcgap, default:grow, $lcgap, default",
-					"2*(default, $lgap), default"));
+					"default, $lgap, default:grow, $lgap, default"));
 
 				//======== scrollPane1 ========
 				{

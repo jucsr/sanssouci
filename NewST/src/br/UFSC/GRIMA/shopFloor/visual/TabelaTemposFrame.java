@@ -41,9 +41,11 @@ public class TabelaTemposFrame extends JFrame {
 
 			//======== contentPanel ========
 			{
-				contentPanel.setLayout(new FormLayout(
-					"default, $lcgap, default:grow, $lcgap, default",
-					"default, $lgap, default:grow, $lgap, default"));
+				contentPanel.setLayout(new GridBagLayout());
+				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 5, 0, 5, 0, 0};
+				((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0, 5, 0, 0};
+				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
+				((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 0.0, 1.0E-4};
 
 				//======== scrollPane1 ========
 				{
@@ -75,7 +77,9 @@ public class TabelaTemposFrame extends JFrame {
 					}
 					scrollPane1.setViewportView(table1);
 				}
-				contentPanel.add(scrollPane1, cc.xy(3, 3));
+				contentPanel.add(scrollPane1, new GridBagConstraints(2, 1, 1, 2, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 

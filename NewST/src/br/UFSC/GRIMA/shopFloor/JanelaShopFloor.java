@@ -95,6 +95,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.menuItemSalvar.addActionListener(this);
 		this.importPiece.addActionListener(this); //New
 		this.menuItem2.addActionListener(this);
+		this.menuItem3.addActionListener(this);
 		this.buttonAbrir.addActionListener(this);
 		this.buttonSalvar.addActionListener(this);
 		this.spinnerZoom.addChangeListener(new ChangeListener(){
@@ -153,6 +154,9 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		} else if(o == this.menuItemAbrir || o == this.buttonAbrir)
 		{
 			this.abrir();
+		} else if(o == this.menuItem3)
+		{
+			new TabelaCustosETempos(this, projetoSF);
 		}
 	}
 	

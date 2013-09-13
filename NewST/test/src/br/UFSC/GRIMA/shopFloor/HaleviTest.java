@@ -19,10 +19,14 @@ import br.UFSC.GRIMA.util.projeto.Projeto;
  */
 public class HaleviTest 
 {
-	private ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
+	public ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
 	private ShopFloor shopFloor; 
-	private ArrayList<MachineTool> machines = new ArrayList<MachineTool>();
-	private Halevi halevi;
+	public ArrayList<MachineTool> machines = new ArrayList<MachineTool>();
+	public Halevi halevi;
+	public HaleviTest()
+	{
+		initComponents();
+	}
 	
 	@Before
 	public void initComponents()
@@ -116,22 +120,31 @@ public class HaleviTest
 		Workingstep ws90 = new Workingstep();
 		ws10.setTemposNasMaquinas(temposNasMaquinasOp10);
 		ws10.setWorkingstepPrecedente(null);
+		ws10.setId("Bottom And Side Rough Milling");
 		ws20.setTemposNasMaquinas(temposNasMaquinasOp20);
 		ws20.setWorkingstepPrecedente(ws10);
+		ws20.setId("Bottom And Side Rough Milling");
 		ws30.setTemposNasMaquinas(temposNasMaquinasOp30);
 		ws30.setWorkingstepPrecedente(ws20);
+		ws30.setId("Bottom And Side Rough Milling");
 		ws40.setTemposNasMaquinas(temposNasMaquinasOp40);
 		ws40.setWorkingstepPrecedente(ws30);
+		ws40.setId("Bottom And Side Finish Milling");
 		ws50.setTemposNasMaquinas(temposNasMaquinasOp50);
 		ws50.setWorkingstepPrecedente(ws10);
+		ws50.setId("Bottom And Side Rough Milling");
 		ws60.setTemposNasMaquinas(temposNasMaquinasOp60);
 		ws60.setWorkingstepPrecedente(ws50);
+		ws60.setId("Bottom And Side Finish Milling");
 		ws70.setTemposNasMaquinas(temposNasMaquinasOp70);
 		ws70.setWorkingstepPrecedente(ws20);
+		ws70.setId("Center Drilling");
 		ws80.setTemposNasMaquinas(temposNasMaquinasOp80);
 		ws80.setWorkingstepPrecedente(ws70);
+		ws80.setId("Drilling");
 		ws90.setTemposNasMaquinas(temposNasMaquinasOp90);
 		ws90.setWorkingstepPrecedente(ws80);
+		ws90.setId("Boring");
 		
 		this.workingsteps.add(ws10);
 		this.workingsteps.add(ws20);
@@ -164,16 +177,22 @@ public class HaleviTest
 		
 		m1.setRelativeCost(4);
 		m1.setSetUpTime(30);
+		m1.setItsId("MAQ 1");
 		m2.setRelativeCost(3);
 		m2.setSetUpTime(30);
+		m2.setItsId("MAQ 2");
 		m3.setRelativeCost(1.4);
 		m3.setSetUpTime(30);
+		m3.setItsId("MAQ 3");
 		m4.setRelativeCost(1);
 		m4.setSetUpTime(30);
+		m4.setItsId("MAQ 4");
 		m5.setRelativeCost(1);
 		m5.setSetUpTime(30);
+		m5.setItsId("MAQ 5");
 		m6.setRelativeCost(2);
 		m6.setSetUpTime(30);
+		m6.setItsId("MAQ 6");
 
 		this.machines.add(m1);
 		this.machines.add(m2);

@@ -1,6 +1,8 @@
 package br.UFSC.GRIMA.util.findPoints;
 
-public abstract class LimitedElement 
+import java.io.Serializable;
+
+public abstract class LimitedElement implements Serializable
 {
 	
 }

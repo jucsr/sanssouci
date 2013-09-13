@@ -1,18 +1,10 @@
-/*
- * Created by JFormDesigner on Mon Nov 19 15:32:52 BRST 2012
- */
-
 package br.UFSC.GRIMA.shopFloor.visual;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
-import com.jgoodies.forms.factories.*;
 
-/**
- * @author Brainrain
- */
 public class CreateDrillingMachineFrame extends JDialog {
 	public CreateDrillingMachineFrame(Frame owner) {
 		super(owner);
@@ -26,7 +18,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		// Generated using JFormDesigner Evaluation license - rei aroldo
 		menuBar1 = new JMenuBar();
 		menu1 = new JMenu();
 		menuItem1 = new JMenuItem();
@@ -136,14 +127,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 		//======== dialogPane ========
 		{
 			dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-
-			// JFormDesigner evaluation mark
-			dialogPane.setBorder(new javax.swing.border.CompoundBorder(
-				new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
-					"JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
-					javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-					java.awt.Color.red), dialogPane.getBorder())); dialogPane.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
-
 			dialogPane.setLayout(new BorderLayout());
 
 			//======== contentPanel ========
@@ -200,7 +183,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 									new Insets(0, 0, 5, 5), 0, 0));
 
 								//---- spinner4 ----
-								spinner4.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+								spinner4.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
 								panel3.add(spinner4, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
@@ -225,34 +208,34 @@ public class CreateDrillingMachineFrame extends JDialog {
 								//======== panel16 ========
 								{
 									panel16.setLayout(new GridBagLayout());
-									((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-									((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-									((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-									((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 45, 25, 0, 40, 0};
+									((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0};
+									((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 									//---- label14 ----
 									label14.setText("X");
 									panel16.add(label14, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 5), 0, 0));
+										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- spinner8 ----
 									spinner8.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
 									panel16.add(spinner8, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 0), 0, 0));
+										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- label15 ----
 									label15.setText("Y");
-									panel16.add(label15, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+									panel16.add(label15, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 5), 0, 0));
+										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- spinner9 ----
 									spinner9.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
-									panel16.add(spinner9, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+									panel16.add(spinner9, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 0), 0, 0));
+										new Insets(0, 0, 0, 0), 0, 0));
 								}
 								panel3.add(panel16, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -803,7 +786,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	// Generated using JFormDesigner Evaluation license - rei aroldo
 	private JMenuBar menuBar1;
 	private JMenu menu1;
 	protected JMenuItem menuItem1;

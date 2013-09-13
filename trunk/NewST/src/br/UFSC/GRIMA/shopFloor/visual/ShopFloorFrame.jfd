@@ -973,7 +973,15 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "menuItem2"
 							"text": "Calculate Time Matrix"
-							"font": new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+							"font": &SwingDerivedFont10 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+							auxiliary() {
+								"JavaCodeGenerator.variableModifiers": 1
+							}
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "menuItem3"
+							"text": "Calculate Min Time"
+							"font": #SwingDerivedFont10
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -1010,7 +1018,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemGerar"
 						"text": "Gerar Arquivo físico (.p21)"
-						"font": &SwingDerivedFont10 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+						"font": &SwingDerivedFont11 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeParte21.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1019,7 +1027,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemAbrirSTEP"
 						"text": "Abrir Arquivo físico (.p21)"
-						"font": #SwingDerivedFont10
+						"font": #SwingDerivedFont11
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone abrir arquivo 21.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1046,7 +1054,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemAbout"
 						"text": "About"
-						"font": &SwingDerivedFont11 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+						"font": &SwingDerivedFont12 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeAbout.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1055,7 +1063,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemHelp"
 						"text": "Help"
-						"font": #SwingDerivedFont11
+						"font": #SwingDerivedFont12
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/help-browser.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1117,7 +1125,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonRemoverWS"
 					"text": "Remover"
-					"font": &SwingDerivedFont12 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+					"font": &SwingDerivedFont13 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
 					"toolTipText": "Remove o machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -1128,7 +1136,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonEditarWS"
 					"text": "Editar"
-					"font": #SwingDerivedFont12
+					"font": #SwingDerivedFont13
 					"toolTipText": "Edita os parâmetros do machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -1139,7 +1147,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonAlterarWorkplan"
 					"text": "Alterar Sequência"
-					"font": #SwingDerivedFont12
+					"font": #SwingDerivedFont13
 					"toolTipText": "Altera a ordem de execução do machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -1200,7 +1208,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonRemoverWS2"
 					"text": "Remover"
-					"font": #SwingDerivedFont12
+					"font": #SwingDerivedFont13
 					"toolTipText": "Remove o machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -1211,7 +1219,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonEditarWS2"
 					"text": "Editar"
-					"font": #SwingDerivedFont12
+					"font": #SwingDerivedFont13
 					"toolTipText": "Edita os parâmetros do machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -1222,7 +1230,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonAlterarWorkplan2"
 					"text": "Alterar Sequência"
-					"font": #SwingDerivedFont12
+					"font": #SwingDerivedFont13
 					"toolTipText": "Altera a ordem de execução do machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1

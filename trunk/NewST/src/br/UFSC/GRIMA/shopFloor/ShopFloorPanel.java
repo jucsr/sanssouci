@@ -3,6 +3,7 @@ package br.UFSC.GRIMA.shopFloor;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -112,6 +113,11 @@ public class ShopFloorPanel extends JPanel
 				g2d.fill(milling2DTmp);
 				g2d.setColor(Color.black);
 				g2d.draw(milling2DTmp);
+				g2d.setColor(Color.black);
+				g2d.scale(1, -1);
+				g2d.drawString(machineTmp.getItsId(), (float)(machineTmp.getItsOrigin().x * escala * zoom), -(float)(machineTmp.getItsOrigin().y * escala * zoom));
+				g2d.scale(1, -1);
+
 			}
 		}
 	}
@@ -124,8 +130,15 @@ public class ShopFloorPanel extends JPanel
 			if(machineTmp.getClass() == DrillingMachine.class)
 			{
 				Ellipse2D drilling2DTmp = new Ellipse2D.Double(machineTmp.getItsOrigin().x * escala * zoom, machineTmp.getItsOrigin().y * escala * zoom, 3 * zoom * escala, 2 * zoom * escala);
+				g2d.setColor(new Color(255, 165, 79));
 				g2d.fill(drilling2DTmp);
+				g2d.setColor(Color.red);
 				g2d.draw(drilling2DTmp);
+				g2d.setColor(Color.black);
+				g2d.scale(1, -1);
+				g2d.drawString(machineTmp.getItsId(), (float)(machineTmp.getItsOrigin().x * escala * zoom), -(float)(machineTmp.getItsOrigin().y * escala * zoom));
+				g2d.scale(1, -1);
+
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.6.0_37" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_25" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -75,8 +75,8 @@ new FormModel {
 										name: "spinner4"
 										"model": new javax.swing.SpinnerNumberModel {
 											minimum: 0.0
-											stepSize: 1.0
-											value: 0.0
+											stepSize: 0.01
+											value: 0.01
 										}
 										auxiliary() {
 											"JavaCodeGenerator.variableModifiers": 4
@@ -108,8 +108,8 @@ new FormModel {
 										"gridy": 3
 									} )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-										"$columnSpecs": "0, 0, 0"
-										"$rowSpecs": "0, 0, 0"
+										"$columnSpecs": "0, 0, 40, 20, 0, 40"
+										"$rowSpecs": "0"
 										"$hGap": 5
 										"$vGap": 5
 										"$alignLeft": true
@@ -138,8 +138,7 @@ new FormModel {
 											name: "label15"
 											"text": "Y"
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 1
-											"gridy": 1
+											"gridx": 4
 										} )
 										add( new FormComponent( "javax.swing.JSpinner" ) {
 											name: "spinner9"
@@ -151,8 +150,7 @@ new FormModel {
 												"JavaCodeGenerator.variableModifiers": 4
 											}
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 2
-											"gridy": 1
+											"gridx": 5
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridy": 4
@@ -902,7 +900,7 @@ new FormModel {
 			}
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 640, 585 )
+			"size": new java.awt.Dimension( 620, 545 )
 		} )
 	}
 }

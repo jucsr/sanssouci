@@ -45,6 +45,8 @@ public class CalculateMachiningTimeTest
 	Workingstep workingstep;
 	ArrayList<MachineTool> machines = new ArrayList<MachineTool>();
 	Material material;
+	MachineTool m1;
+
 	@Before
 	public void createProject(){
 		
@@ -152,15 +154,15 @@ public class CalculateMachiningTimeTest
 		cond2.setVc(120); 
 		
 		workingstep = new Workingstep();
-		workingstep.setFeature(degrau);
+		workingstep.setFeature(cavidade);
 		workingstep.setFerramenta(faceMill);
 		workingstep.setOperation(operation);
 		workingstep.setCondicoesUsinagem(cond2);
 		
-		MachineTool m1 = new MachineTool();
+		m1 = new MachineTool();
 		ArrayList<Spindle> spindles = new ArrayList<Spindle>();
 		Spindle spindle = new MillingTypeSpindle();
-		spindle.setSpindleMaxPower(5); 	// kW
+		spindle.setSpindleMaxPower(1); 	// kW
 		spindle.setItsSpeedRange(5000); // RPM
 		spindle.setMaxTorque(1);		// N-m
 		spindles.add(spindle);
@@ -175,7 +177,7 @@ public class CalculateMachiningTimeTest
 	@Test
 	public void calcularTempo()
 	{
-		CalculateMachiningTime calculate = new CalculateMachiningTime(workingstep, machines, material);
+		CalculateMachiningTime calculate = new CalculateMachiningTime(workingstep, m1, material);
 	double tempo = calculate.calculateTimes();
 	System.out.println("Tempo = " + tempo);
 	}

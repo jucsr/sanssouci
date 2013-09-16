@@ -7,41 +7,64 @@ import javax.swing.table.DefaultTableModel;
 
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
+import br.UFSC.GRIMA.shopFloor.util.CalculateMachiningTime;
 import br.UFSC.GRIMA.shopFloor.visual.TabelaTemposFrame;
 
 public class TabelaTempos extends TabelaTemposFrame
 {
 	private ProjetoSF projetoSF;
+	ArrayList<Workingstep> workingsteps;
+	ArrayList<MachineTool> machines; 
+	
 	public TabelaTempos(ProjetoSF projetoSF)
 	{
 		this.projetoSF = projetoSF;
-		this.calculateTempo();
-		this.init();
-		this.setVisible(true);
-	}
-	private void init()
-	{
-		ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
-		ArrayList<MachineTool> machines = projetoSF.getShopFloor().getMachines();
+		workingsteps= new ArrayList<Workingstep>();
 		for(int i = 0; i < this.projetoSF.getProjeto().getWorkingsteps().get(0).size(); i++)
 		{
 			workingsteps.add(this.projetoSF.getProjeto().getWorkingsteps().get(0).elementAt(i));
 		}
+		machines = projetoSF.getShopFloor().getMachines();
+		this.init();
+		this.calculateTempo();
+		this.setVisible(true);
+	}
+	private void init()
+	{
+		
 		Vector<String> cabecalho = new Vector<String>();
 		cabecalho.add("M. Workingsteps");
 		cabecalho.add("ID");
 		cabecalho.add("Priorities");
+		
 		for(int i = 0; i < machines.size(); i++)
 		{
 			cabecalho.add(machines.get(i).getItsId());
 		}
 		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
+		
 		for(int i = 0; i < workingsteps.size(); i++)
 		{
 			Workingstep wsTmp = workingsteps.get(i);
+			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
+			int idPrecedente = 0;
+			if(wsPrecedente == null)
+			{
+				idPrecedente = 0;
+			} else
+			{
+				for(int j = 0; j < workingsteps.size(); j++)
+				{
+					if(wsPrecedente == workingsteps.get(j))
+					{
+						idPrecedente = 10 + j * 10;
+					}
+				}
+			}
+			
 			String nome = wsTmp.getId();
 			int id = 10 + i * 10;
-			Object[] linha = {nome, id};
+			Object[] linha = {nome, id, idPrecedente};
 			this.table1.setModel(modelo);
 			modelo.addRow(linha);
 		}
@@ -49,6 +72,18 @@ public class TabelaTempos extends TabelaTemposFrame
 	}
 	private void calculateTempo() 
 	{
+		double T = 0;
+		for(int i = 0; i < workingsteps.size(); i++){
+			for(int j = 0; j < machines.size(); j++ ){
+			
+				CalculateMachiningTime calculateTime = new CalculateMachiningTime(workingsteps.get(i), machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
+				T = calculateTime.calculateTimes();
+				
+				System.out.println("P = "+ ((machines.get(j).getItsSpindle()).size()));
+			this.table1.getModel().setValueAt(T, i, j + 3);
+
+			}
+		}
 		
 	}
 }

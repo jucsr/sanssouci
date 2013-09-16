@@ -22,6 +22,7 @@ import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.Furo;
 import br.UFSC.GRIMA.entidades.features.FuroBaseArredondada;
 import br.UFSC.GRIMA.entidades.features.FuroBaseConica;
 import br.UFSC.GRIMA.entidades.features.FuroBaseEsferica;
@@ -55,10 +56,10 @@ public class CalculateMachiningTime
 	
 	
 	private Workingstep workingstep;
-	private ArrayList<MachineTool> machines;
+	private MachineTool machine;
 
 	
-	public CalculateMachiningTime(Workingstep workingstep, ArrayList<MachineTool> machines, Material material)
+	public CalculateMachiningTime(Workingstep workingstep, MachineTool machine, Material material)
 	{
 		conexao.setConn("150.162.105.1", "webTools", "webcad", "julio123");
 		
@@ -83,7 +84,7 @@ public class CalculateMachiningTime
 		}
 		
 		this.workingstep = workingstep;
-		this.machines = machines;
+		this.machine = machine;
 		this.calculateTimes();
 	}
 	
@@ -93,15 +94,15 @@ public class CalculateMachiningTime
 				comprimento = 0, VolumeR = 0, VolumePP = 0, Volume1P = 0, np = 0, nd;
 		
 		
-		for(int i = 0; i < machines.size(); i++){
+	//	for(int i = 0; i < machines.size(); i++){
 			
-			MachineTool machineTemp = machines.get(i);
-			for(int j = 0; j<machineTemp.getItsSpindle().size(); j++){
+			//MachineTool machineTemp = machines.get(i);
+			for(int j = 0; j < machine.getItsSpindle().size(); j++){
 				
-				Spindle spindleTemp = machineTemp.getItsSpindle().get(j);
+				Spindle spindleTemp = machine.getItsSpindle().get(j);
 				P = spindleTemp.getSpindleMaxPower();
 			}
-		}
+	//	}
 		
 		fn = workingstep.getCondicoesUsinagem().getF();
 		Vc = workingstep.getCondicoesUsinagem().getVc();
@@ -120,7 +121,6 @@ public class CalculateMachiningTime
 					
 				prof = furo.getProfundidade();
 			
-
 		}else if(feature.getClass() == FuroBaseArredondada.class){
 			
 			FuroBaseArredondada furo = ((FuroBaseArredondada)feature);	
@@ -225,12 +225,12 @@ public class CalculateMachiningTime
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				this.workingstep.getFeature().getClass() == Cavidade.class)
 		{
-				n = Vc*1000/(Math.PI*D);
-				Vf = n*fn*nd;
-				Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI *Math.acos(1-(2*ae/D)));
+				n = Vc * 1000 /(Math.PI * D);
+				Vf = n * fn * nd;
+				Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
 				Kc = Kc1*Math.pow(Hm, -Z);
-				ap_max = (P*60*Math.pow(10,6))/(ae*Vf*Kc);
-				
+				ap_max = (P * 60 * Math.pow(10, 6))/(ae * Vf * Kc);
+				System.out.println("APMAX = " + ap_max);
 				workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
 				Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
 				
@@ -271,6 +271,16 @@ public class CalculateMachiningTime
 				T = comprimento/Vf;
 				T = np*T;
 			}
+			
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == FuroBasePlana.class ){
+			
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI *Math.acos(1-(2*ae/D)));
+			Kc = Kc1*Math.pow(Hm, -Z);
+			ap_max = (P*60*Math.pow(10,6))/(ae*Vf*Kc);
 			
 		}
 		

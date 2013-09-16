@@ -162,7 +162,7 @@ public class CalculateMachiningTimeTest
 		m1 = new MachineTool();
 		ArrayList<Spindle> spindles = new ArrayList<Spindle>();
 		Spindle spindle = new MillingTypeSpindle();
-		spindle.setSpindleMaxPower(1); 	// kW
+		spindle.setSpindleMaxPower(5); 	// kW
 		spindle.setItsSpeedRange(5000); // RPM
 		spindle.setMaxTorque(1);		// N-m
 		spindles.add(spindle);

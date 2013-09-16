@@ -115,6 +115,8 @@ public class CalculateMachiningTime
 		
 		Feature feature = workingstep.getFeature();
 		
+		//--------- Get Profundidade------------
+		
 		if (feature.getClass()== FuroBasePlana.class)
 		{
 				FuroBasePlana furo = ((FuroBasePlana)feature);
@@ -164,6 +166,8 @@ public class CalculateMachiningTime
 			comprimento = degrau.getComprimento();
 		}
 		
+	//------------- Calculando Tempos--------------
+		
 		if(this.workingstep.getOperation().getClass() == Drilling.class || 
 				this.workingstep.getOperation().getClass() == CenterDrilling.class)
 		{
@@ -196,7 +200,7 @@ public class CalculateMachiningTime
 			Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI *Math.acos(1-(2*ae/D)));
 			Kc = Kc1*Math.pow(Hm, -Z);
 			ap_max = (P*60*Math.pow(10, 6))/(ae*Vf*Kc);
-			
+		
 			
 			if (ap_max < ap){
 				
@@ -229,8 +233,12 @@ public class CalculateMachiningTime
 				Vf = n * fn * nd;
 				Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
 				Kc = Kc1*Math.pow(Hm, -Z);
-				ap_max = (P * 60 * Math.pow(10, 6))/(ae * Vf * Kc);
-				System.out.println("APMAX = " + ap_max);
+				ap_max = (P * 60 * Math.pow(10, 2)*9.81)/(ae * Vf * Kc);
+				double vfm = (P * 60 * Math.pow(10, 6))/(ae * ap * Kc);
+				System.out.println("Ap max = "+ap_max);
+				System.out.println("vfm = "+vfm);
+				System.out.println("Vf = "+Vf);
+				
 				workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
 				Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
 				
@@ -251,7 +259,6 @@ public class CalculateMachiningTime
 			Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI *Math.acos(1-(2*ae/D)));
 			Kc = Kc1*Math.pow(Hm, -Z);
 			ap_max = (P*60*Math.pow(10, 6))/(ae*Vf*Kc);
-			
 			if (ap_max < ap){
 				
 				VolumeR = prof*larg*comprimento;  // Volume da ranhura

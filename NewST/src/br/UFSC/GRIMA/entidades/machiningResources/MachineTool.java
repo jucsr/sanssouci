@@ -98,4 +98,8 @@ public class MachineTool extends MachiningResource implements Serializable
 	public void setSetUpTime(double setUpTime) {
 		this.setUpTime = setUpTime;
 	}
+	public static int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

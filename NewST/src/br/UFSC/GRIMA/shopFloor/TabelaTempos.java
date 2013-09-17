@@ -74,15 +74,20 @@ public class TabelaTempos extends TabelaTemposFrame
 	{
 		double T = 0;
 		for(int i = 0; i < workingsteps.size(); i++){
+			ArrayList<Double> temposNasMaquinas = new ArrayList<Double>();
 			for(int j = 0; j < machines.size(); j++ ){
 			
 				CalculateMachiningTime calculateTime = new CalculateMachiningTime(workingsteps.get(i), machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
-				T = calculateTime.calculateTimes();
+				if(calculateTime.calculateTimes()== 0){
+				T = 1000;
+				}else T = calculateTime.calculateTimes();
 				
+				temposNasMaquinas.add(T);
 				System.out.println("P = "+ ((machines.get(j).getItsSpindle()).size()));
 			this.table1.getModel().setValueAt(T, i, j + 3);
 
-			}
+			}    
+			workingsteps.get(i).setTemposNasMaquinas(temposNasMaquinas);
 		}
 		
 	}

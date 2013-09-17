@@ -29,7 +29,9 @@ import br.UFSC.GRIMA.entidades.features.FuroBaseEsferica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
+import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
+import br.UFSC.GRIMA.integracao.WorkingStepsReader;
 import br.UFSC.GRIMA.util.Ponto;
 
 /**
@@ -180,7 +182,7 @@ public class CalculateMachiningTime
 			if(P_teste <= P){
 				
 				T = prof/Vf;
-					
+				
 			}else{
 				
 				fn_max = ((P*100000)/(1.25*Math.pow(D,2)*K*n))*(1/1.5);
@@ -191,9 +193,9 @@ public class CalculateMachiningTime
 			}
 					
 
-		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+		}else if(machine.getClass()== MillingMachine.class &&(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) &&
-				this.workingstep.getFeature().getClass() == Ranhura.class)
+				(this.workingstep.getFeature().getClass() == Ranhura.class))
 		{
 			n = Vc*1000/(Math.PI*D);
 			Vf = n*fn*nd;
@@ -225,20 +227,18 @@ public class CalculateMachiningTime
 				T = comprimento/Vf;
 				T = np*T;
 			}
-		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+		}else if(machine.getClass()== MillingMachine.class &&(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
-				this.workingstep.getFeature().getClass() == Cavidade.class)
+				(this.workingstep.getFeature().getClass() == Cavidade.class))
 		{
 				n = Vc * 1000 /(Math.PI * D);
 				Vf = n * fn * nd;
-				Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
-				Kc = Kc1*Math.pow(Hm, -Z);
-				ap_max = (P * 60 * Math.pow(10, 2)*9.81)/(ae * Vf * Kc);
-				double vfm = (P * 60 * Math.pow(10, 6))/(ae * ap * Kc);
-				System.out.println("Ap max = "+ap_max);
-				System.out.println("vfm = "+vfm);
-				System.out.println("Vf = "+Vf);
-				
+			
+				//	Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
+			//	Kc = Kc1*Math.pow(Hm, -Z);
+			//	ap_max = (P * 60 * Math.pow(10, 2)*9.81)/(ae * Vf * Kc);
+			//	double vfm = (P * 60 * Math.pow(10, 6))/(ae * ap * Kc);
+			
 				workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
 				Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
 				
@@ -285,9 +285,37 @@ public class CalculateMachiningTime
 			
 			n = Vc*1000/(Math.PI*D);
 			Vf = n*fn*nd;
-			Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI *Math.acos(1-(2*ae/D)));
-			Kc = Kc1*Math.pow(Hm, -Z);
-			ap_max = (P*60*Math.pow(10,6))/(ae*Vf*Kc);
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
+			
+			for(int i = 0; i < movimentacao.size()-1; i++){
+				
+				Ponto p1 = (Ponto)movimentacao.elementAt(i);
+				Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+				comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+			}
+		
+			T = comprimento/Vf;
+			
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == FuroBaseArredondada.class ){
+			
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
+			
+			for(int i = 0; i < movimentacao.size()-1; i++){
+				
+				Ponto p1 = (Ponto)movimentacao.elementAt(i);
+				Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+				comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+			}
+		
+			T = comprimento/Vf;
 			
 		}
 		

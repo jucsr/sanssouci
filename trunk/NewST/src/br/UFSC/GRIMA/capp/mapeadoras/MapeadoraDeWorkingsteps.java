@@ -708,10 +708,31 @@ public class MapeadoraDeWorkingsteps {
 
 				}
 			}
-
+			if(materialBloco.getCategory() == Material.ACO_ALTA_LIGA||
+					materialBloco.getCategory() == Material.ACO_ALTO_CARBONO||
+					materialBloco.getCategory() == Material.ACO_BAIXA_LIGA||
+				    materialBloco.getCategory()==Material.ACO_EXTRA_DURO||
+				    materialBloco.getCategory()==Material.ACO_INOX_AUST||
+				    materialBloco.getCategory()==Material.ACO_INOX_AUST_FUND||
+				    materialBloco.getCategory()==Material.ACO_SEM_LIGA||
+				    materialBloco.getCategory()==Material.FERRO_FUNDIDO_CINZENTO||
+				    materialBloco.getCategory()==Material.FERRO_FUNDIDO_MALEAVEL||
+				    materialBloco.getCategory()==Material.FERRO_FUNDIDO_NODULAR){
+				 
+				ap = 0.10*diametro;
+			
+			}else if(materialBloco.getCategory() == Material.LIGA_ALUMINIO||
+					materialBloco.getCategory()==Material.LIGA_COBRE){
+				
+				ap = 0.20*diametro;
+			}else if(materialBloco.getCategory() == Material.LIGA_TITANIO||
+					materialBloco.getCategory()==Material.SUPER_LIGA_NI){
+				
+				ap = 0.05*diametro;
+			}
 			n = vc * 1000 / (Math.PI * diametro);
 			vf = f * n;
-			ap = 2;
+//			ap = 2;
 			ae = 0.75 * ferr.getDiametroFerramenta();
 
 			if (ferr.getClass() == BallEndMill.class

@@ -39,13 +39,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 		label15 = new JLabel();
 		spinner9 = new JSpinner();
 		panel10 = new JPanel();
-		panel12 = new JPanel();
-		label9 = new JLabel();
-		spinner5 = new JSpinner();
-		label10 = new JLabel();
-		spinner6 = new JSpinner();
-		label11 = new JLabel();
-		spinner7 = new JSpinner();
 		panel13 = new JPanel();
 		label12 = new JLabel();
 		panel4 = new JPanel();
@@ -103,6 +96,13 @@ public class CreateDrillingMachineFrame extends JDialog {
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
+		panel12 = new JPanel();
+		label9 = new JLabel();
+		spinner5 = new JSpinner();
+		label10 = new JLabel();
+		spinner6 = new JSpinner();
+		label11 = new JLabel();
+		spinner7 = new JSpinner();
 
 		//======== this ========
 		setTitle("Create new Drilling Machine");
@@ -253,54 +253,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 								((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
 								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 								((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
-
-								//======== panel12 ========
-								{
-									panel12.setLayout(new GridBagLayout());
-									((GridBagLayout)panel12.getLayout()).columnWidths = new int[] {0, 60, 0};
-									((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0};
-									((GridBagLayout)panel12.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
-									((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
-
-									//---- label9 ----
-									label9.setText("max n (rpm)");
-									panel12.add(label9, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 5), 0, 0));
-
-									//---- spinner5 ----
-									spinner5.setModel(new SpinnerNumberModel(3000, 100, null, 1));
-									panel12.add(spinner5, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 0), 0, 0));
-
-									//---- label10 ----
-									label10.setText("max power (KW)");
-									panel12.add(label10, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 5), 0, 0));
-
-									//---- spinner6 ----
-									spinner6.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
-									panel12.add(spinner6, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 0), 0, 0));
-
-									//---- label11 ----
-									label11.setText("Number of axis");
-									panel12.add(label11, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 5), 0, 0));
-
-									//---- spinner7 ----
-									spinner7.setModel(new SpinnerNumberModel(3, 0, null, 1));
-									panel12.add(spinner7, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 5, 0), 0, 0));
-								}
-								panel10.add(panel12, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 5, 5), 0, 0));
 
 								//======== panel13 ========
 								{
@@ -782,6 +734,51 @@ public class CreateDrillingMachineFrame extends JDialog {
 		contentPane.add(dialogPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(getOwner());
+
+		//======== panel12 ========
+		{
+			panel12.setLayout(new GridBagLayout());
+			((GridBagLayout)panel12.getLayout()).columnWidths = new int[] {0, 60, 0};
+			((GridBagLayout)panel12.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0};
+			((GridBagLayout)panel12.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+			((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+
+			//---- label9 ----
+			label9.setText("max n (rpm)");
+			panel12.add(label9, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 5, 5), 0, 0));
+
+			//---- spinner5 ----
+			spinner5.setModel(new SpinnerNumberModel(3000, 100, null, 1));
+			panel12.add(spinner5, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 5, 0), 0, 0));
+
+			//---- label10 ----
+			label10.setText("max power (KW)");
+			panel12.add(label10, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 5, 5), 0, 0));
+
+			//---- spinner6 ----
+			spinner6.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+			panel12.add(spinner6, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 5, 0), 0, 0));
+
+			//---- label11 ----
+			label11.setText("Number of axis");
+			panel12.add(label11, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 5, 5), 0, 0));
+
+			//---- spinner7 ----
+			spinner7.setModel(new SpinnerNumberModel(3, 0, null, 1));
+			panel12.add(spinner7, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 5, 0), 0, 0));
+		}
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
@@ -807,13 +804,6 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JLabel label15;
 	protected JSpinner spinner9;
 	private JPanel panel10;
-	private JPanel panel12;
-	private JLabel label9;
-	protected JSpinner spinner5;
-	private JLabel label10;
-	protected JSpinner spinner6;
-	private JLabel label11;
-	protected JSpinner spinner7;
 	private JPanel panel13;
 	private JLabel label12;
 	private JPanel panel4;
@@ -871,5 +861,12 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;
+	private JPanel panel12;
+	private JLabel label9;
+	protected JSpinner spinner5;
+	private JLabel label10;
+	protected JSpinner spinner6;
+	private JLabel label11;
+	protected JSpinner spinner7;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

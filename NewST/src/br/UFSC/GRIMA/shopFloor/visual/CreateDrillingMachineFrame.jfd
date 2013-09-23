@@ -170,77 +170,6 @@ new FormModel {
 									name: "panel10"
 									"border": new javax.swing.border.EtchedBorder( 1, null, null )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-										"$columnSpecs": "0, 60"
-										"$rowSpecs": "0:1.0, 0, 0, 0, 0:1.0"
-										"$hGap": 5
-										"$vGap": 5
-										"$alignLeft": true
-										"$alignTop": true
-									} ) {
-										name: "panel12"
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label9"
-											"text": "max n (rpm)"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 1
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner5"
-											"model": new javax.swing.SpinnerNumberModel {
-												minimum: 100
-												value: 3000
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 1
-											"gridy": 1
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label10"
-											"text": "max power (KW)"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 2
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner6"
-											"model": new javax.swing.SpinnerNumberModel {
-												minimum: 0.0
-												stepSize: 1.0
-												value: 10.0
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 1
-											"gridy": 2
-										} )
-										add( new FormComponent( "javax.swing.JLabel" ) {
-											name: "label11"
-											"text": "Number of axis"
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridy": 3
-										} )
-										add( new FormComponent( "javax.swing.JSpinner" ) {
-											name: "spinner7"
-											"model": new javax.swing.SpinnerNumberModel {
-												minimum: 0
-												value: 3
-											}
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
-											}
-										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-											"gridx": 1
-											"gridy": 3
-										} )
-									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-										"gridx": 1
-										"gridy": 1
-									} )
-									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 										"$columnSpecs": "0"
 										"$rowSpecs": "0"
 										"$hGap": 5
@@ -901,6 +830,77 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
 			"size": new java.awt.Dimension( 620, 545 )
+		} )
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0, 60"
+			"$rowSpecs": "0:1.0, 0, 0, 0, 0:1.0"
+			"$hGap": 5
+			"$vGap": 5
+			"$alignLeft": true
+			"$alignTop": true
+		} ) {
+			name: "panel12"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label9"
+				"text": "max n (rpm)"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JSpinner" ) {
+				name: "spinner5"
+				"model": new javax.swing.SpinnerNumberModel {
+					minimum: 100
+					value: 3000
+				}
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 4
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label10"
+				"text": "max power (KW)"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JSpinner" ) {
+				name: "spinner6"
+				"model": new javax.swing.SpinnerNumberModel {
+					minimum: 0.0
+					stepSize: 1.0
+					value: 10.0
+				}
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 4
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label11"
+				"text": "Number of axis"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 3
+			} )
+			add( new FormComponent( "javax.swing.JSpinner" ) {
+				name: "spinner7"
+				"model": new javax.swing.SpinnerNumberModel {
+					minimum: 0
+					value: 3
+				}
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 4
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+				"gridy": 3
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 755, 305 )
+			"size": new java.awt.Dimension( 145, 250 )
 		} )
 	}
 }

@@ -30,10 +30,14 @@ public class CreateDrillingMachineFrame extends JDialog {
 		label1 = new JLabel();
 		textField1 = new JTextField();
 		label7 = new JLabel();
+		panel22 = new JPanel();
 		spinner4 = new JSpinner();
 		label8 = new JLabel();
+		panel21 = new JPanel();
 		comboBox1 = new JComboBox();
 		panel16 = new JPanel();
+		label16 = new JLabel();
+		panel20 = new JPanel();
 		label14 = new JLabel();
 		spinner8 = new JSpinner();
 		label15 = new JLabel();
@@ -132,17 +136,17 @@ public class CreateDrillingMachineFrame extends JDialog {
 			//======== contentPanel ========
 			{
 				contentPanel.setLayout(new GridBagLayout());
-				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0};
+				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0};
 				((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0};
-				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
 				((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
 				//======== panel1 ========
 				{
 					panel1.setLayout(new GridBagLayout());
-					((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0};
+					((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0};
 					((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0};
-					((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0E-4};
+					((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
 					((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 					//======== tabbedPane1 ========
@@ -182,9 +186,21 @@ public class CreateDrillingMachineFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
-								//---- spinner4 ----
-								spinner4.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
-								panel3.add(spinner4, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+								//======== panel22 ========
+								{
+									panel22.setLayout(new GridBagLayout());
+									((GridBagLayout)panel22.getLayout()).columnWidths = new int[] {50, 0};
+									((GridBagLayout)panel22.getLayout()).rowHeights = new int[] {0, 0};
+									((GridBagLayout)panel22.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+									((GridBagLayout)panel22.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+									//---- spinner4 ----
+									spinner4.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
+									panel22.add(spinner4, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 0), 0, 0));
+								}
+								panel3.add(panel22, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 
@@ -194,52 +210,82 @@ public class CreateDrillingMachineFrame extends JDialog {
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 
-								//---- comboBox1 ----
-								comboBox1.setModel(new DefaultComboBoxModel(new String[] {
-									"None",
-									"Fanuc",
-									"Mazak",
-									"Siemens"
-								}));
-								panel3.add(comboBox1, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+								//======== panel21 ========
+								{
+									panel21.setLayout(new GridBagLayout());
+									((GridBagLayout)panel21.getLayout()).columnWidths = new int[] {0, 0};
+									((GridBagLayout)panel21.getLayout()).rowHeights = new int[] {0, 0};
+									((GridBagLayout)panel21.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+									((GridBagLayout)panel21.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+									//---- comboBox1 ----
+									comboBox1.setModel(new DefaultComboBoxModel(new String[] {
+										"None",
+										"Fanuc",
+										"Mazak",
+										"Siemens"
+									}));
+									panel21.add(comboBox1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 0), 0, 0));
+								}
+								panel3.add(panel21, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 
 								//======== panel16 ========
 								{
 									panel16.setLayout(new GridBagLayout());
-									((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 45, 25, 0, 40, 0};
+									((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0};
 									((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
 									((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
-									//---- label14 ----
-									label14.setText("X");
-									panel16.add(label14, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-
-									//---- spinner8 ----
-									spinner8.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
-									panel16.add(spinner8, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-
-									//---- label15 ----
-									label15.setText("Y");
-									panel16.add(label15, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
-										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
-
-									//---- spinner9 ----
-									spinner9.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
-									panel16.add(spinner9, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+									//---- label16 ----
+									label16.setText("Location (m)");
+									panel16.add(label16, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
 								panel3.add(panel16, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 5), 0, 0));
+
+								//======== panel20 ========
+								{
+									panel20.setLayout(new GridBagLayout());
+									((GridBagLayout)panel20.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
+									((GridBagLayout)panel20.getLayout()).rowHeights = new int[] {0, 0};
+									((GridBagLayout)panel20.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel20.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+									//---- label14 ----
+									label14.setText("X");
+									panel20.add(label14, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner8 ----
+									spinner8.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									panel20.add(spinner8, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label15 ----
+									label15.setText("Y");
+									panel20.add(label15, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinner9 ----
+									spinner9.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									panel20.add(spinner9, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 0), 0, 0));
+								}
+								panel3.add(panel20, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 0), 0, 0));
 							}
 							panel2.add(panel3, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -251,7 +297,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 								panel10.setLayout(new GridBagLayout());
 								((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
 								((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
 								((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
 
 								//======== panel13 ========
@@ -269,9 +315,9 @@ public class CreateDrillingMachineFrame extends JDialog {
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
-								panel10.add(panel13, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+								panel10.add(panel13, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-									new Insets(0, 0, 5, 0), 0, 0));
+									new Insets(0, 0, 5, 5), 0, 0));
 							}
 							panel2.add(panel10, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -702,9 +748,9 @@ public class CreateDrillingMachineFrame extends JDialog {
 					}
 					panel1.add(tabbedPane1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(0, 0, 0, 5), 0, 0));
+						new Insets(0, 0, 0, 0), 0, 0));
 				}
-				contentPanel.add(panel1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+				contentPanel.add(panel1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
 			}
@@ -732,7 +778,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 			dialogPane.add(buttonBar, BorderLayout.SOUTH);
 		}
 		contentPane.add(dialogPane, BorderLayout.CENTER);
-		pack();
+		setSize(450, 515);
 		setLocationRelativeTo(getOwner());
 
 		//======== panel12 ========
@@ -795,10 +841,14 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JLabel label1;
 	protected JTextField textField1;
 	private JLabel label7;
+	private JPanel panel22;
 	protected JSpinner spinner4;
 	private JLabel label8;
+	private JPanel panel21;
 	protected JComboBox comboBox1;
 	private JPanel panel16;
+	private JLabel label16;
+	private JPanel panel20;
 	private JLabel label14;
 	protected JSpinner spinner8;
 	private JLabel label15;

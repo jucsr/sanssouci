@@ -20,6 +20,11 @@ import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoFuroBaseArredondada;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilGenerico;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilParcialCircular;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilRoundedU;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
@@ -31,7 +36,15 @@ import br.UFSC.GRIMA.entidades.features.FuroBaseEsferica;
 import br.UFSC.GRIMA.entidades.features.FuroBasePlana;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.Ranhura;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilRoundedU;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
+import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
@@ -357,7 +370,299 @@ public class CalculateMachiningTime
 				}
 			
 				T = comprimento/Vf;
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilQuadradoU.class && 
+				workingstep.getFerramenta().getClass()== FaceMill.class  ){
+			
+
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilQuadradoU detMov = new MovimentacaoRanhuraPerfilQuadradoU(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoDesbasteRanhuraPerfilQuadradoU();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+			
+			
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilQuadradoU.class && 
+				(workingstep.getFerramenta().getClass()== BullnoseEndMill.class || workingstep.getFerramenta().getClass()== BallEndMill.class )
+				){
+			
+
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilQuadradoU detMov = new MovimentacaoRanhuraPerfilQuadradoU(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilQuadradoU();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+			
+			
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilCircularParcial.class && 
+				workingstep.getFerramenta().getClass()== FaceMill.class  ){
+			
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilParcialCircular detMov = new MovimentacaoRanhuraPerfilParcialCircular(workingstep, workingstep.getFace());
+			ArrayList<LinearPath> path = detMov.getMovimentacaoDesbasteRanhuraPerfilCircularParcial();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+			
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilCircularParcial.class && 
+				workingstep.getFerramenta().getClass()== BallEndMill.class ){
+			
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilParcialCircular detMov = new MovimentacaoRanhuraPerfilParcialCircular(workingstep, workingstep.getFace());
+			ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilCircularParcial();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilVee.class && 
+				workingstep.getFerramenta().getClass()== FaceMill.class  ){
+			
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilVee detMov = new MovimentacaoRanhuraPerfilVee(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoDesbasteRanhuraPerfilVee();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilVee.class && 
+				workingstep.getFerramenta().getClass()== BallEndMill.class  ){
+			
+			n = Vc*1000/(Math.PI*D);
+			Vf = n*fn*nd;
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilVee detMov = new MovimentacaoRanhuraPerfilVee(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilVee();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilRoundedU.class && 
+				workingstep.getFerramenta().getClass()== FaceMill.class  ){
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilRoundedU detMov = new MovimentacaoRanhuraPerfilRoundedU(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoDesbasteRanhuraPerfilRoundedU();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+			
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilRoundedU.class && 
+				(workingstep.getFerramenta().getClass()== BallEndMill.class && workingstep.getFerramenta().getClass() == EndMill.class)){
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilRoundedU detMov = new MovimentacaoRanhuraPerfilRoundedU(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilRoundedU();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+			
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilBezier.class && 
+				workingstep.getFerramenta().getClass()== FaceMill.class  ){
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilGenerico detMov = new MovimentacaoRanhuraPerfilGenerico(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoDesbasteRanhuraPerfilGenerico();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
+		
+		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				this.workingstep.getFeature().getClass() == RanhuraPerfilBezier.class && 
+				workingstep.getFerramenta().getClass()== BallEndMill.class  ){
+			
+			workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoRanhuraPerfilGenerico detMov = new MovimentacaoRanhuraPerfilGenerico(workingstep);
+			ArrayList<LinearPath> path = detMov.getMovimentacaoAcabamentoRanhuraPerfilGenerico();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				T = comprimento/Vf;
 		}
+		
 		
 		
 		return T;

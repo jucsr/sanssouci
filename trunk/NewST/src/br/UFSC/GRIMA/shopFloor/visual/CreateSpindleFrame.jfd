@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_01" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_25" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -67,7 +67,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label1"
-							"text": "Max cutting tool diameter"
+							"text": "Max cutting tool diameter (mm)"
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
@@ -78,9 +78,9 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JSpinner" ) {
 							name: "spinner1"
 							"model": new javax.swing.SpinnerNumberModel {
-								minimum: 0.0
+								minimum: 1.0
 								stepSize: 1.0
-								value: 0.0
+								value: 20.0
 							}
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4
@@ -91,7 +91,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label6"
-							"text": "Rotation speed range"
+							"text": "Rotation speed range(rpm)"
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 							"gridy": 4
 							"gridx": 1
@@ -101,7 +101,7 @@ new FormModel {
 							"model": new javax.swing.SpinnerNumberModel {
 								minimum: 0.0
 								stepSize: 1.0
-								value: 0.0
+								value: 6000.0
 							}
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4
@@ -112,7 +112,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label9"
-							"text": "Max power"
+							"text": "Max power (kW)"
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 							"gridx": 1
 							"gridy": 5
@@ -122,7 +122,7 @@ new FormModel {
 							"model": new javax.swing.SpinnerNumberModel {
 								minimum: 0.0
 								stepSize: 1.0
-								value: 0.0
+								value: 5.0
 							}
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4
@@ -133,7 +133,7 @@ new FormModel {
 						} )
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label10"
-							"text": "Max torque"
+							"text": "Max torque (N-m)"
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 							"gridx": 1
 							"gridy": 6
@@ -143,7 +143,7 @@ new FormModel {
 							"model": new javax.swing.SpinnerNumberModel {
 								minimum: 0.0
 								stepSize: 1.0
-								value: 0.0
+								value: 7.0
 							}
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 4

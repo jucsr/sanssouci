@@ -99,49 +99,49 @@ public class CreateSpindleFrame extends JDialog {
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- label1 ----
-					label1.setText("Max cutting tool diameter");
+					label1.setText("Max cutting tool diameter (mm)");
 					panel16.add(label1, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- spinner1 ----
-					spinner1.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+					spinner1.setModel(new SpinnerNumberModel(20.0, 1.0, null, 1.0));
 					panel16.add(spinner1, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- label6 ----
-					label6.setText("Rotation speed range");
+					label6.setText("Rotation speed range(rpm)");
 					panel16.add(label6, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- spinner5 ----
-					spinner5.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+					spinner5.setModel(new SpinnerNumberModel(6000.0, 0.0, null, 1.0));
 					panel16.add(spinner5, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- label9 ----
-					label9.setText("Max power");
+					label9.setText("Max power (kW)");
 					panel16.add(label9, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- spinner6 ----
-					spinner6.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+					spinner6.setModel(new SpinnerNumberModel(5.0, 0.0, null, 1.0));
 					panel16.add(spinner6, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- label10 ----
-					label10.setText("Max torque");
+					label10.setText("Max torque (N-m)");
 					panel16.add(label10, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));
 
 					//---- spinner7 ----
-					spinner7.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
+					spinner7.setModel(new SpinnerNumberModel(7.0, 0.0, null, 1.0));
 					panel16.add(spinner7, new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 5, 5), 0, 0));

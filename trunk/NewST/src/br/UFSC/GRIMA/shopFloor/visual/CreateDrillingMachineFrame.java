@@ -778,7 +778,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 			dialogPane.add(buttonBar, BorderLayout.SOUTH);
 		}
 		contentPane.add(dialogPane, BorderLayout.CENTER);
-		setSize(450, 515);
+		setSize(515, 515);
 		setLocationRelativeTo(getOwner());
 
 		//======== panel12 ========

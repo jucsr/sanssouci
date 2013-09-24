@@ -79,7 +79,8 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		this.zooming = ((Double)spinnerZoom.getValue()).doubleValue();
 		this.shopPanel.repaint();
 		this.atualizarArvorePrecendences(); //New
-		this.atualizarArvoreMaquinas();
+//		this.atualizarArvoreMaquinas();
+		this.atualizarArvoreMaquinas1();
 	}
 
 	private void addicionarOuvidores() 
@@ -313,10 +314,16 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		return ok;
 	}
 	
-
+	public void atualizarArvoreMaquinas1()
+	{
+		ArvoreMaquinas arvore = new ArvoreMaquinas(projetoSF);
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machines");
+		this.tree2 = arvore.getArvoreMaquinas();
+		scrollPaneTree.setViewportView(tree2);
+		scrollPaneTree.revalidate();
+	}
 	public void atualizarArvoreMaquinas()
 	{
-		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machines");
 		this.tree2 = new JTree(root);
 		
@@ -331,7 +338,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		scrollPaneTree.setViewportView(tree2);
 		scrollPaneTree.revalidate();
 	}
-
+	
 	private void addNewWS()
 	{
 		CreateNewWorkingStep newWS = new CreateNewWorkingStep(this, shopFloor, projetoSF);

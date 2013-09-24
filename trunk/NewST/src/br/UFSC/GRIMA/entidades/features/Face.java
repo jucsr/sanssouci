@@ -1650,7 +1650,7 @@ public class Face implements Serializable{
 			Point2D [] bordaTmp = this.getShapePontos(featureTmp);
 			Point2D [] bordaBossTmp = null;
 			Shape shape = this.getShape(feature);
-			
+			System.out.println("BORDA : " + bordaTmp);
 			if(featureTmp.getClass() == Cavidade.class)
 			{
 				Cavidade cav = (Cavidade)featureTmp;
@@ -2578,6 +2578,10 @@ public class Face implements Serializable{
 		{
 			Region region = (Region)feature;
 			saida = Cavidade.determinarPontosEmRetangulo(new Point3d(region.X, region.Y, 0), region.getWidth(), region.getLength());
+		} else if(feature.getClass() == Ranhura.class)
+		{
+			Ranhura ranhura = (Ranhura)feature;
+			saida = Cavidade.determinarPontosEmRetangulo(new Point3d(ranhura.X, ranhura.Y, 0), ranhura.getComprimento(), ranhura.getComprimento());
 		}
 		System.out.println("feature class --> " + feature);
 		return saida;

@@ -26,6 +26,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
+import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingTypeSpindle;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
@@ -159,7 +160,7 @@ public class CalculateMachiningTimeTest
 		workingstep.setOperation(operation);
 		workingstep.setCondicoesUsinagem(cond2);
 		
-		m1 = new MachineTool();
+		m1 = new MillingMachine();
 		ArrayList<Spindle> spindles = new ArrayList<Spindle>();
 		Spindle spindle = new MillingTypeSpindle();
 		spindle.setSpindleMaxPower(5); 	// kW

@@ -299,7 +299,8 @@ public class CreateDrillingMachine extends CreateDrillingMachineFrame implements
 			machineTools.add(drillingMachine);
 			shopFloor.setMachines(machineTools);
 			janelaShopFloor.shopPanel.repaint();
-			janelaShopFloor.atualizarArvoreMaquinas();
+//			janelaShopFloor.atualizarArvoreMaquinas();
+			janelaShopFloor.atualizarArvoreMaquinas1();
 			this.dispose();		
 		} else
 		{

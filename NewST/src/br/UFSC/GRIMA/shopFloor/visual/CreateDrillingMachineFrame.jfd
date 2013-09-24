@@ -862,7 +862,7 @@ new FormModel {
 			}
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 5, 15 )
-			"size": new java.awt.Dimension( 450, 515 )
+			"size": new java.awt.Dimension( 515, 515 )
 		} )
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "0, 60"

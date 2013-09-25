@@ -84,6 +84,8 @@ public class ArvoreMaquinas
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode("Its ToolMagazine: ");
 		CuttingToolHandlingDevice magazine = machine.getToolHandlingDevice().get(0);
 		node.add(new DefaultMutableTreeNode("Its Tool Capacity: " + magazine.getItsToolCapacity()));
+		node.add(new DefaultMutableTreeNode("Its Max allowed tool weight: " + magazine.getMaxAllowedToolWeight()));
+		node.add(new DefaultMutableTreeNode("Its Max allowed tool length: " + magazine.getMaxAllowedToolLength()));
 		node.add(new DefaultMutableTreeNode("Its Current Tool : " + magazine.getItsCurrentTool()));
 		// por ora so esses aew
 		
@@ -122,7 +124,7 @@ public class ArvoreMaquinas
 		for(int i = 0; i < machine.getItsSpindle().size(); i++)
 		{
 			spindle = machine.getItsSpindle().get(i);
-			nodeItsSpindle = new DefaultMutableTreeNode("Its Id: " + spindle.getItsId());
+			nodeItsSpindle.add(new DefaultMutableTreeNode("Its Id: " + spindle.getItsId()));
 			nodeItsSpindle.add(new DefaultMutableTreeNode("Max Power (kW): " + spindle.getSpindleMaxPower()));
 			nodeItsSpindle.add(new DefaultMutableTreeNode("Max Speed (rpm): " + spindle.getItsSpeedRange()));
 			nodeItsSpindle.add(new DefaultMutableTreeNode("Max Torque (N-m): " + spindle.getMaxTorque()));

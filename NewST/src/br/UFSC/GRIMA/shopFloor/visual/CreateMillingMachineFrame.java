@@ -375,68 +375,68 @@ public class CreateMillingMachineFrame extends JDialog {
 								//======== panel19 ========
 								{
 									panel19.setLayout(new GridBagLayout());
-									((GridBagLayout)panel19.getLayout()).columnWidths = new int[] {0, 52, 0, 55, 0, 55, 0, 55, 0, 55, 38, 0};
-									((GridBagLayout)panel19.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel19.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
-									((GridBagLayout)panel19.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+									((GridBagLayout)panel19.getLayout()).columnWidths = new int[] {0, 52, 0, 55, 0, 50, 0};
+									((GridBagLayout)panel19.getLayout()).rowHeights = new int[] {0, 0, 0};
+									((GridBagLayout)panel19.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel19.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
 
 									//---- label15 ----
 									label15.setText("Capacity");
 									panel19.add(label15, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
+										new Insets(0, 0, 5, 5), 0, 0));
 
 									//---- spinner8 ----
-									spinner8.setModel(new SpinnerNumberModel(0, 0, null, 1));
+									spinner8.setModel(new SpinnerNumberModel(10, 0, null, 1));
 									panel19.add(spinner8, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
+										new Insets(0, 0, 5, 5), 0, 0));
 
 									//---- label16 ----
-									label16.setText("Max Weight");
+									label16.setText("Max Weight (kg)");
 									panel19.add(label16, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
+										new Insets(0, 0, 5, 5), 0, 0));
 
 									//---- spinner9 ----
 									spinner9.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 									panel19.add(spinner9, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
+										new Insets(0, 0, 5, 5), 0, 0));
 
 									//---- label17 ----
-									label17.setText("Max Tool Diameter");
+									label17.setText("Max Tool Diameter (mm)");
 									panel19.add(label17, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
+										new Insets(0, 0, 5, 5), 0, 0));
 
 									//---- spinner10 ----
 									spinner10.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 									panel19.add(spinner10, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-										new Insets(0, 0, 0, 5), 0, 0));
+										new Insets(0, 0, 5, 0), 0, 0));
 
 									//---- label18 ----
-									label18.setText("Max Tool Length");
-									panel19.add(label18, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
+									label18.setText("Max Tool Length (mm)");
+									panel19.add(label18, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- spinner11 ----
-									spinner11.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
-									panel19.add(spinner11, new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0,
+									spinner11.setModel(new SpinnerNumberModel(20.0, 0.0, null, 1.0));
+									panel19.add(spinner11, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- label20 ----
-									label20.setText("Change Time");
-									panel19.add(label20, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0,
+									label20.setText("Change Time (s)");
+									panel19.add(label20, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- spinner12 ----
 									spinner12.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
-									panel19.add(spinner12, new GridBagConstraints(9, 0, 1, 1, 0.0, 0.0,
+									panel19.add(spinner12, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 								}
@@ -819,7 +819,7 @@ public class CreateMillingMachineFrame extends JDialog {
 			dialogPane.add(buttonBar, BorderLayout.SOUTH);
 		}
 		contentPane.add(dialogPane, BorderLayout.CENTER);
-		setSize(720, 550);
+		setSize(760, 550);
 		setLocationRelativeTo(getOwner());
 
 		//---- spinner2 ----

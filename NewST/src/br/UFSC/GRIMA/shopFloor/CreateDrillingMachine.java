@@ -306,9 +306,7 @@ public class CreateDrillingMachine extends CreateDrillingMachineFrame implements
 		{
 			JOptionPane.showMessageDialog(null, "The machine was not created");
 		}
-		
 	}
-	
 	private void setMagazine()
 	{
 		ToolMagazine toolMagazine = new ToolMagazine();

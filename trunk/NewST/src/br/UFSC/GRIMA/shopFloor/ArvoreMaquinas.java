@@ -39,25 +39,30 @@ public class ArvoreMaquinas
 	}
 	private DefaultMutableTreeNode criarRaizEFolhas()
 	{
-		DefaultMutableTreeNode root = null;
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machines Tool");
 		for(int i = 0; i < this.machines.size(); i++)
 		{
 			MachineTool machineTmp = this.machines.get(i);
-			root = new DefaultMutableTreeNode("Machine Tool");
-			
+			DefaultMutableTreeNode root1 = new DefaultMutableTreeNode("Machine " + (i + 1));
 			DefaultMutableTreeNode nodeGeneralTmp = new DefaultMutableTreeNode("General Data: ");
-			if(machineTmp.getToolHandlingDevice().size() > 0)
+			nodeGeneralTmp.add(new DefaultMutableTreeNode("Id: " + machineTmp.getItsId()));
+//			nodeGeneralTmp.add(new DefaultMutableTreeNode("machine Location: " + machineTmp.getItsLocation()));
+			nodeGeneralTmp.add(new DefaultMutableTreeNode("accuracy: " + machineTmp.getAccuracy()));
+			root1.add(nodeGeneralTmp);
+			if(machineTmp.getToolHandlingDevice().get(0).getToolList().size() > 0)
 			{
-				root.add(this.createNodeToolMagazine(machineTmp));
+//				System.err.println(machineTmp.getToolHandlingDevice().size());
+				root1.add(this.createNodeToolMagazine(machineTmp));
 			}
 			if(machineTmp.getWorkpieceHandlingDevice().size() > 0)
 			{
-				root.add(this.createNodeWorkpieceHandlingDevices(machineTmp));
+				root1.add(this.createNodeWorkpieceHandlingDevices(machineTmp));
 			}
 			if(machineTmp.getItsSpindle().size() > 0)
 			{
-				root.add(this.createNodeItsSpindle(machineTmp));
+				root1.add(this.createNodeItsSpindle(machineTmp));
 			}
+			root.add(root1);
 		}
 		return root;
 	}

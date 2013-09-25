@@ -19,154 +19,166 @@ new FormModel {
 				} ) {
 					name: "contentPanel"
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-						"$columnSpecs": "0:1.0, 0, 0, 0:1.0"
-						"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0"
+						"$columnSpecs": "0, 0"
+						"$rowSpecs": "0, 0, 0"
 						"$hGap": 5
 						"$vGap": 5
 						"$alignLeft": true
 						"$alignTop": true
 					} ) {
-						name: "panel16"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label13"
-							"text": "Name"
+						name: "panel1"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+							"$columnSpecs": "0:1.0, 0, 0, 0:1.0"
+							"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0"
+							"$hGap": 5
+							"$vGap": 5
+							"$alignLeft": true
+							"$alignTop": true
+						} ) {
+							name: "panel16"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label13"
+								"text": "Name"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+								"gridy": 1
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "textField1"
+								"text": "Spindle"
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+								"gridy": 1
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label14"
+								"text": "Spindle type"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+								"gridy": 2
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBox1"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "Milling"
+									addElement( "Milling" )
+									addElement( "Turning" )
+								}
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+								"gridy": 2
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label1"
+								"text": "Max cutting tool diameter (mm)"
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+								"gridy": 3
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinner1"
+								"model": new javax.swing.SpinnerNumberModel {
+									minimum: 1.0
+									stepSize: 1.0
+									value: 20.0
+								}
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+								"gridy": 3
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label6"
+								"text": "Rotation speed range(rpm)"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridy": 4
+								"gridx": 1
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinner5"
+								"model": new javax.swing.SpinnerNumberModel {
+									minimum: 0.0
+									stepSize: 1000.0
+									value: 6000.0
+								}
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+								"gridy": 4
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label9"
+								"text": "Max power (kW)"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+								"gridy": 5
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinner6"
+								"model": new javax.swing.SpinnerNumberModel {
+									minimum: 0.0
+									stepSize: 1.0
+									value: 5.0
+								}
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+								"gridy": 5
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label10"
+								"text": "Max torque (N-m)"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+								"gridy": 6
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinner7"
+								"model": new javax.swing.SpinnerNumberModel {
+									minimum: 0.0
+									stepSize: 1.0
+									value: 7.0
+								}
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+								"gridy": 6
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label11"
+								"text": "Coolant information"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+								"gridy": 7
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "checkBox1"
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 4
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 2
+								"gridy": 7
+							} )
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 1
 							"gridy": 1
-						} )
-						add( new FormComponent( "javax.swing.JTextField" ) {
-							name: "textField1"
-							"text": "Spindle"
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
-							"gridy": 1
-						} )
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label14"
-							"text": "Spindle type"
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 1
-							"gridy": 2
-						} )
-						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "comboBox1"
-							"model": new javax.swing.DefaultComboBoxModel {
-								selectedItem: "Milling"
-								addElement( "Milling" )
-								addElement( "Turning" )
-							}
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
-							"gridy": 2
-						} )
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label1"
-							"text": "Max cutting tool diameter (mm)"
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 1
-							"gridy": 3
-						} )
-						add( new FormComponent( "javax.swing.JSpinner" ) {
-							name: "spinner1"
-							"model": new javax.swing.SpinnerNumberModel {
-								minimum: 1.0
-								stepSize: 1.0
-								value: 20.0
-							}
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
-							"gridy": 3
-						} )
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label6"
-							"text": "Rotation speed range(rpm)"
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridy": 4
-							"gridx": 1
-						} )
-						add( new FormComponent( "javax.swing.JSpinner" ) {
-							name: "spinner5"
-							"model": new javax.swing.SpinnerNumberModel {
-								minimum: 0.0
-								stepSize: 1.0
-								value: 6000.0
-							}
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
-							"gridy": 4
-						} )
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label9"
-							"text": "Max power (kW)"
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 1
-							"gridy": 5
-						} )
-						add( new FormComponent( "javax.swing.JSpinner" ) {
-							name: "spinner6"
-							"model": new javax.swing.SpinnerNumberModel {
-								minimum: 0.0
-								stepSize: 1.0
-								value: 5.0
-							}
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
-							"gridy": 5
-						} )
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label10"
-							"text": "Max torque (N-m)"
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 1
-							"gridy": 6
-						} )
-						add( new FormComponent( "javax.swing.JSpinner" ) {
-							name: "spinner7"
-							"model": new javax.swing.SpinnerNumberModel {
-								minimum: 0.0
-								stepSize: 1.0
-								value: 7.0
-							}
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
-							"gridy": 6
-						} )
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label11"
-							"text": "Coolant information"
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 1
-							"gridy": 7
-						} )
-						add( new FormComponent( "javax.swing.JCheckBox" ) {
-							name: "checkBox1"
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 4
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
-							"gridy": 7
 						} )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridy": 1
@@ -210,7 +222,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 305, 300 )
+			"size": new java.awt.Dimension( 305, 325 )
 		} )
 	}
 }

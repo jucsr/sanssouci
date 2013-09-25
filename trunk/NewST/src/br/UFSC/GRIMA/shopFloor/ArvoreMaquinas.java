@@ -88,7 +88,8 @@ public class ArvoreMaquinas
 		node.add(new DefaultMutableTreeNode("Its Max allowed tool length: " + magazine.getMaxAllowedToolLength()));
 		node.add(new DefaultMutableTreeNode("Its Current Tool : " + magazine.getItsCurrentTool()));
 		// por ora so esses aew
-		
+		DefaultMutableTreeNode listaDeFerramentas = new DefaultMutableTreeNode("Tool List in Magazine");
+
 		for(int i = 0; i < magazine.getToolList().size(); i++)
 		{
 			Ferramenta tool = magazine.getToolList().get(i);
@@ -113,8 +114,9 @@ public class ArvoreMaquinas
 				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Vertical: " + tool.getEdgeCenterVertical() + " mm"));
 				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Edge Center Horizontal: " + tool.getEdgeCenterHorizontal() + " mm"));				
 			}		
-			node.add(nodoFerramentaTmp);
+			listaDeFerramentas.add(nodoFerramentaTmp);
 		}
+		node.add(listaDeFerramentas);
 		 return node;
 	}
 	private DefaultMutableTreeNode createNodeItsSpindle(MachineTool machine)

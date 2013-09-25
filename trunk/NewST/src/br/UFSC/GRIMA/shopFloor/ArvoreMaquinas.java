@@ -47,7 +47,7 @@ public class ArvoreMaquinas
 			DefaultMutableTreeNode nodeGeneralTmp = new DefaultMutableTreeNode("General Data: ");
 			nodeGeneralTmp.add(new DefaultMutableTreeNode("Id: " + machineTmp.getItsId()));
 //			nodeGeneralTmp.add(new DefaultMutableTreeNode("machine Location: " + machineTmp.getItsLocation()));
-			nodeGeneralTmp.add(new DefaultMutableTreeNode("accuracy: " + machineTmp.getAccuracy()));
+			nodeGeneralTmp.add(new DefaultMutableTreeNode("accuracy (um): " + machineTmp.getAccuracy()));
 			root1.add(nodeGeneralTmp);
 			if(machineTmp.getToolHandlingDevice().get(0).getToolList().size() > 0)
 			{

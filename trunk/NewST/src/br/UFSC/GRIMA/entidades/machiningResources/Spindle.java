@@ -1,5 +1,7 @@
 package br.UFSC.GRIMA.entidades.machiningResources;
 
+import java.io.Serializable;
+
 import br.UFSC.GRIMA.util.projeto.Axis;
 
 /**
@@ -7,7 +9,7 @@ import br.UFSC.GRIMA.util.projeto.Axis;
  * @author Jc
  *
  */
-public abstract class Spindle 
+public abstract class Spindle implements Serializable
 {
 	private String itsId = "";
 	private double spindleMaxPower; 

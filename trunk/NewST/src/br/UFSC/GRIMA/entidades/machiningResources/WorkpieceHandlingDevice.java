@@ -1,9 +1,11 @@
 package br.UFSC.GRIMA.entidades.machiningResources;
 
+import java.io.Serializable;
+
 import javax.vecmath.Point3d;
 
 
-public abstract class WorkpieceHandlingDevice 
+public abstract class WorkpieceHandlingDevice implements Serializable
 {
 	private String itsId = "";
 	private double maxLoadCapacity;

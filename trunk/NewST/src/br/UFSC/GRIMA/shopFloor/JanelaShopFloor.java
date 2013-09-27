@@ -854,7 +854,8 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			this.projetoSF = (ProjetoSF) (in.readObject());
 			this.shopFloor = this.projetoSF.getShopFloor();
 			this.projeto = this.projetoSF.getProjeto();
-			this.setTitle("Shop Floor - " + this.projeto.getDadosDeProjeto().getProjectName());
+//			this.setTitle("Shop Floor - " + this.projeto.getDadosDeProjeto().getProjectName());
+			this.setTitle("Shop Floor - " + this.projetoSF.getShopFloor().getName());
 			in.close();
 		
 			this.shopPanel = new ShopFloorPanel (this.projetoSF, this.shopFloor);

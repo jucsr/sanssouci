@@ -1,6 +1,8 @@
 package br.UFSC.GRIMA.util;
 
-public class Ponto {
+import java.io.Serializable;
+
+public class Ponto implements Serializable{
 
 	private double x;
 	private double y;

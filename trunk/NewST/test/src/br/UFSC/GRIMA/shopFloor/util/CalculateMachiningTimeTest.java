@@ -58,7 +58,7 @@ public class CalculateMachiningTimeTest
 		
 		props.add(properties);
 		
-		material = new Material("Aço", Material.ACO_ALTO_CARBONO, props);
+		material = new Material("Aço", Material.ACO_SEM_LIGA, props);
 		
 		bloco = new Bloco(200.0, 150.0, 40.0, material);
 		
@@ -123,16 +123,16 @@ public class CalculateMachiningTimeTest
 	 * 	Creating Tool
 	 */
 		FaceMill faceMill = new FaceMill();
-		faceMill.setDiametroFerramenta(10);
+		faceMill.setDiametroFerramenta(20);
 		faceMill.setCuttingEdgeLength(20);
 		faceMill.setProfundidadeMaxima(60);
-		faceMill.setMaterialClasse(Ferramenta.P);
+		faceMill.setMaterialClasse(Ferramenta.H);
 		faceMill.setNumberOfTeeth(4);
 		
 		TwistDrill twistDrill = new TwistDrill();
 		twistDrill.setDiametroFerramenta(10);
 		twistDrill.setProfundidadeMaxima(50);
-		twistDrill.setMaterialClasse(TwistDrill.P);
+		twistDrill.setMaterialClasse(TwistDrill.H);
 		
 		/*
 		 *  Creating Operation
@@ -149,10 +149,10 @@ public class CalculateMachiningTimeTest
 		cond.setF(0.245); // mm/rotacao
 		
 		CondicoesDeUsinagem cond2 = new CondicoesDeUsinagem();
-		cond2.setAe(7.5);
+		cond2.setAe(faceMill.getDiametroFerramenta()*0.75);
 		cond2.setF(0.0235);
 		cond2.setAp(2);
-		cond2.setVc(120); 
+		cond2.setVc(55); 
 		
 		workingstep = new Workingstep();
 		workingstep.setFeature(cavidade);
@@ -163,9 +163,9 @@ public class CalculateMachiningTimeTest
 		m1 = new MillingMachine();
 		ArrayList<Spindle> spindles = new ArrayList<Spindle>();
 		Spindle spindle = new MillingTypeSpindle();
-		spindle.setSpindleMaxPower(5); 	// kW
+		spindle.setSpindleMaxPower(10); 	// kW
 		spindle.setItsSpeedRange(5000); // RPM
-		spindle.setMaxTorque(1);		// N-m
+		spindle.setMaxTorque(200);		// N-m
 		spindles.add(spindle);
 		m1.setItsSpindle(spindles);
 		this.machines.add(m1);

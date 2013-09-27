@@ -1,8 +1,10 @@
 package br.UFSC.GRIMA.util.projeto;
 
+import java.io.Serializable;
+
 import javax.vecmath.Point3d;
 
-public abstract class Axis
+public abstract class Axis implements Serializable
 {
 	private String name = "";
 	private Point3d origin = new Point3d();

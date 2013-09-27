@@ -93,7 +93,7 @@ public class ArvoreMaquinas
 		for(int i = 0; i < magazine.getToolList().size(); i++)
 		{
 			Ferramenta tool = magazine.getToolList().get(i);
-			DefaultMutableTreeNode nodoFerramentaTmp = new DefaultMutableTreeNode("Tool List : " + tool.getName());
+			DefaultMutableTreeNode nodoFerramentaTmp = new DefaultMutableTreeNode("Tool " + (i + 1) + " -> "+ tool.getName());
 		
 			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Type : " + tool.getClass().toString().substring(42)));
 			nodoFerramentaTmp.add(new DefaultMutableTreeNode("Diameter : " + tool.getDiametroFerramenta() + " mm"));

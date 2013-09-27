@@ -110,19 +110,18 @@ public class CalculateMachiningTime
 	
 	public double calculateTimes() 
 	{	
-		double P = 0,P_teste= 0, fn = 0, Vc, D, n, Vf = 0, prof = 0, T = 0, fn_max = 0, larg = 0, raio = 0,ap = 0, ae = 0, Hm = 0, Kc = 0, ap_max = 0,
-				comprimento = 0, VolumeR = 0, VolumePP = 0, Volume1P = 0, np = 0, nd;
+		double P = 0,P_teste = 0, fn = 0, Vc, D, n, Vf = 0, prof = 0, T = 0, fn_max = 0, larg = 0, raio = 0,ap = 0, ae = 0, Hm = 0, Kc = 0, ap_max = 0,
+				comprimento = 0, VolumeR = 0, VolumePP = 0, Volume1P = 0, np = 0, nd,  Vfm = 0, Tm = 0, RPM = 0, Tc = 0;
 		
 		
-	//	for(int i = 0; i < machines.size(); i++){
-			
-			//MachineTool machineTemp = machines.get(i);
-			for(int j = 0; j < machine.getItsSpindle().size(); j++){
+		for(int j = 0; j < machine.getItsSpindle().size(); j++){
 				
 				Spindle spindleTemp = machine.getItsSpindle().get(j);
 				P = spindleTemp.getSpindleMaxPower();
-			}
-	//	}
+				Tm = spindleTemp.getMaxTorque();
+				RPM = spindleTemp.getItsSpeedRange();
+		}
+
 		
 		fn = workingstep.getCondicoesUsinagem().getF();
 		Vc = workingstep.getCondicoesUsinagem().getVc();
@@ -130,6 +129,7 @@ public class CalculateMachiningTime
 		ap = workingstep.getCondicoesUsinagem().getAp();
 		ae = workingstep.getCondicoesUsinagem().getAe();
 		nd = workingstep.getFerramenta().getNumberOfTeeth();
+	
 		
 		workingstep.getFeature().getClass();
 		
@@ -249,13 +249,57 @@ public class CalculateMachiningTime
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				(this.workingstep.getFeature().getClass() == Cavidade.class))
 		{
-				n = Vc * 1000 /(Math.PI * D);
-				Vf = n * fn * nd;
-			
-				//	Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
-			    //	Kc = Kc1*Math.pow(Hm, -Z);
-		    	//	ap_max = (P * 60 * Math.pow(10, 2)*9.81)/(ae * Vf * Kc);
-			   //	double vfm = (P * 60 * Math.pow(10, 6))/(ae * ap * Kc);
+				
+	    		
+		    //	if(workingstep.getFeature().getRugosidade() >= machine.getAccuracy()&& this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ){
+		    		
+			System.out.println("ap "+ap);
+		    		
+		    		n = Vc * 1000 /(Math.PI * D);
+					Vf = n * fn * nd;
+					Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
+			    	Kc = Kc1*Math.pow(Hm, -Z);
+			    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
+			 		System.out.println("Tc"+Tc);
+			 		System.out.println("n"+n);
+			    	if(Tc > Tm){
+			    		
+			    		System.out.println("Entrou 1");
+			    		double Vf_ant = 0;
+			    		Vf_ant = (Tm*2*Math.PI*n)/(ap*ae*Kc);
+			    		System.out.println("Vf2 "+Vf);
+			    		if(Vf_ant >= Vf*1.57&& Vf_ant <= Vf*0.42){
+			    			System.out.println("Entrou 2");
+			    			n = Vf/fn*nd;
+			    			System.out.println("n2 "+n);
+			    		}else{
+			    			System.out.println("Entrou 3");
+			    			
+			    			double ap_teste = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
+			    			System.out.println("ap teste "+ap_teste);
+			    			if(ap >= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) {
+			    				workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);}
+			    			else workingstep.getCondicoesUsinagem().setAp(ap);
+			    		}
+			    	}
+			    	if(n > RPM){
+			    		System.out.println("Entrou 4");
+			    		n = RPM;
+			    		Vf = n * fn * nd;
+			    	}
+			    	P_teste = (ap*ae*Vf*Kc)/(60*102*9.81);
+			    	if(P_teste > P){
+			    		
+			    		System.out.println("Entrou 5");
+			    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
+			    		
+			    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
+		    			else workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
+			    	}
+			    	
+		    //	}
+				
+				
 			
 				workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
 				Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
@@ -267,7 +311,9 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
+				System.out.println("ap = "+ap+"\t L = "+comprimento+"\tVf "+Vf);
 				T = comprimento/Vf;
+	
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				this.workingstep.getFeature().getClass() == Degrau.class)

@@ -49,6 +49,7 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
 import br.UFSC.GRIMA.integracao.WorkingStepsReader;
+import br.UFSC.GRIMA.simulator.ProjetoDeSimulacao;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Ponto;
 
@@ -72,7 +73,7 @@ public class CalculateMachiningTime
 	private double K; 
 	private double Kc1;
 	private double Z;
-//	private double Kc;
+	private double Kc;
 	
 	
 	private Workingstep workingstep;
@@ -110,8 +111,8 @@ public class CalculateMachiningTime
 	
 	public double calculateTimes() 
 	{	
-		double P = 0,P_teste = 0, fn = 0, Vc, D, n, Vf = 0, prof = 0, T = 0, fn_max = 0, larg = 0, raio = 0,ap = 0, ae = 0, Hm = 0, Kc = 0, ap_max = 0,
-				comprimento = 0, VolumeR = 0, VolumePP = 0, Volume1P = 0, np = 0, nd,  Vfm = 0, Tm = 0, RPM = 0, Tc = 0;
+		double P = 0,P_teste = 0,P_max = 0, fn = 0, Vc, D, n, Vf = 0, prof = 0, T = 0, fn_max = 0, larg = 0, raio = 0,ap = 0, ae = 0, Hm = 0, Kc2 = 0, ap_max = 0,
+				comprimento = 0, VolumeR = 0, VolumePP = 0, Volume1P = 0, np = 0, nd,  Vfm = 0, Tm = 0, RPM = 0, Tc = 0, T_max = 0;
 		
 		
 		for(int j = 0; j < machine.getItsSpindle().size(); j++){
@@ -215,36 +216,81 @@ public class CalculateMachiningTime
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) &&
 				(this.workingstep.getFeature().getClass() == Ranhura.class))
 		{
-			n = Vc*1000/(Math.PI*D);
-			Vf = n*fn*nd;
-			Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI *Math.acos(1-(2*ae/D)));
-			Kc = Kc1*Math.pow(Hm, -Z);
-			ap_max = (P*60*Math.pow(10, 6))/(ae*Vf*Kc);
-		
+			 //	if(workingstep.getFeature().getRugosidade() >= machine.getAccuracy()&& this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ){
+    		
+			System.out.println("ap "+ap);
+		    		
+		    		
+		    		
+					n = Vc * 1000 /(Math.PI * D);
+					Vf = n * fn * nd;
+					Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
+					Kc = Kc1*Math.pow(Hm, -Z);
+			    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
+			 		System.out.println("Torque "+Tc);
+			 		System.out.println("n "+n);
+			 		
+			 		System.out.println("Kc calculado: "+Kc2);
+					System.out.println("Kc tabela: "+Kc);
+					
+			    	if(Tc > Tm){
+			    		
+			    		System.out.println("Entrou 1");
+			    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
+			    		System.out.println("Vf max "+Vf_max+"Vf: "+Vf);
+			    		
+			    		if(Vf_max >= Vf*1.57&& Vf_max <= Vf*0.42){
+			    			System.out.println("Entrou 2");
+			    			n = Vf_max/fn*nd;
+			    			System.out.println("n2 "+n);
+			    		
+			    		}else{
+			    			
+			    			System.out.println("Entrou 3");
+			    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
+			    			System.out.println("ap max "+ap_max);
+			    		
+			    			workingstep.getCondicoesUsinagem().setAp(ap_max);
+			    		}
+			    	}
+			    	if(n > RPM){
+			    		System.out.println("Entrou 4 ");
+			    		n = RPM;
+			    		Vf = n * fn * nd;
+			    	}
+			    	P_teste = (ap*ae*Vf*Kc)/(60*102*9.81);
+			    	System.out.println("Potencia teste: "+P_teste+" ap: "+ap+" Vf"+Vf);
+			    	if(P_teste > P){
+			    		
+			    		System.out.println("P: "+P);
+			    		System.out.println("Entrou 5");
+			    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
+			    		
+			    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
+		    			else workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
+			    	}
+			    	
+		    //	}
+				
+				workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+				Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
+				System.out.println("mov = " + movimentacao);
 			
-			if (ap_max < ap){
-				
-				Volume1P = D*ap_max*comprimento;  // Volume tirado na primeira passagem
-				VolumeR = prof*larg*comprimento;  // Volume da ranhura
-				VolumePP = ap_max*ae*comprimento; // Volume tirado em cada passagem
-				np = (VolumeR-Volume1P)/VolumePP; // Numero de passagens da fresa
-				np = Math.floor(np);
-				np += 1;
+			    	
+			    
+					
+					for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
 			
-				T = comprimento/Vf;
-				T = np*T;
-			}else{
-				
-				Volume1P = D*ap*comprimento;  // Volume tirado na primeira passagem
-				VolumeR = prof*larg*comprimento;  // Volume da ranhura
-				VolumePP = ap*ae*comprimento; // Volume tirado em cada passagem
-				np = (VolumeR-Volume1P)/VolumePP; // Numero de passagens da fresa
-				np = Math.floor(np);
-				np += 1;
+				System.out.println("ap = "+ap+"\t L = "+comprimento+"\tVf "+Vf);
 				
 				T = comprimento/Vf;
-				T = np*T;
-			}
+			
+			
 		}else if(machine.getClass()== MillingMachine.class &&(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				(this.workingstep.getFeature().getClass() == Cavidade.class))
@@ -255,41 +301,56 @@ public class CalculateMachiningTime
 		    		
 			System.out.println("ap "+ap);
 		    		
-		    		n = Vc * 1000 /(Math.PI * D);
+			workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
+    		workingstep.getCondicoesUsinagem().setAe(D*0.75);
+    		
+    		System.out.println("ap wst "+workingstep.getCondicoesUsinagem().getAp());
+			
+					n = Vc * 1000 /(Math.PI * D);
+					P_max = (P/RPM)*n;
 					Vf = n * fn * nd;
 					Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
-			    	Kc = Kc1*Math.pow(Hm, -Z);
+					Kc = Kc1*Math.pow(Hm, -Z);
+					Kc = Kc/100;
 			    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-			 		System.out.println("Tc"+Tc);
-			 		System.out.println("n"+n);
-			    	if(Tc > Tm){
+			 		T_max = ((-Tm/RPM)*n)+Tm; 
+			    	System.out.println("Torque "+Tc);
+			 		System.out.println("n "+n);
+			 		
+			 		System.out.println("Kc : "+Kc);
+					
+			    	if(Tc > T_max){
 			    		
 			    		System.out.println("Entrou 1");
-			    		double Vf_ant = 0;
-			    		Vf_ant = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-			    		System.out.println("Vf2 "+Vf);
-			    		if(Vf_ant >= Vf*1.57&& Vf_ant <= Vf*0.42){
+			    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
+			    		System.out.println("Vf max "+Vf_max+"Vf: "+Vf);
+			    		
+			    		if(Vf_max >= Vf*1.57&& Vf_max <= Vf*0.42){
 			    			System.out.println("Entrou 2");
-			    			n = Vf/fn*nd;
+			    			n = Vf_max/fn*nd;
 			    			System.out.println("n2 "+n);
+			    		
 			    		}else{
-			    			System.out.println("Entrou 3");
 			    			
-			    			double ap_teste = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
-			    			System.out.println("ap teste "+ap_teste);
-			    			if(ap >= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) {
-			    				workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);}
-			    			else workingstep.getCondicoesUsinagem().setAp(ap);
+			    			System.out.println("Entrou 3");
+			    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
+			    			System.out.println("ap max "+ap_max);
+			    		
+			    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 			    		}
 			    	}
 			    	if(n > RPM){
-			    		System.out.println("Entrou 4");
+			    		System.out.println("Entrou 4 ");
 			    		n = RPM;
+			    		P_max = (P/RPM)*n;
 			    		Vf = n * fn * nd;
 			    	}
 			    	P_teste = (ap*ae*Vf*Kc)/(60*102*9.81);
+			    	System.out.println("Potencia teste: "+P_teste+" ap: "+ap+" Vf"+Vf);
+			    	
 			    	if(P_teste > P){
 			    		
+			    		System.out.println("P: "+P);
 			    		System.out.println("Entrou 5");
 			    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 			    		

@@ -21,4 +21,6 @@ public abstract class Axis implements Serializable
 	public void setOrigin(Point3d origin) {
 		this.origin = origin;
 	}
+	public abstract String getTypeOfAxisString();
+
 }

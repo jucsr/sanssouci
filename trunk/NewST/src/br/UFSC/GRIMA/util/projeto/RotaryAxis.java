@@ -1,10 +1,16 @@
 package br.UFSC.GRIMA.util.projeto;
-
+/**
+ * 
+ * @author Jc
+ *
+ */
 public class RotaryAxis extends Axis
 {
+	
 	private double maxRotSpeed;
 	private int rotaryType;
 	private int rotaryDirection;
+	private String typeOfAxisString;
 	public static final int CCW_TYPE = 0;
 	public static final int CW_TYPE = 1;
 	public static final int CW_AND_CCW_TYPE = 2;
@@ -28,5 +34,10 @@ public class RotaryAxis extends Axis
 	}
 	public void setRotaryType(int rotaryType) {
 		this.rotaryType = rotaryType;
+	}
+	public String getTypeOfAxisString()
+	{
+		this.typeOfAxisString = "Rotary Axis";
+		return this.typeOfAxisString;
 	}
 }

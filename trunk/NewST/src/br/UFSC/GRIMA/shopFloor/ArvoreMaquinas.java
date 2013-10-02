@@ -5,13 +5,6 @@ import java.util.ArrayList;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
-import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
-import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
-import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
-import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
-import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
-import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
@@ -21,6 +14,9 @@ import br.UFSC.GRIMA.entidades.machiningResources.CuttingToolHandlingDevice;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
 import br.UFSC.GRIMA.entidades.machiningResources.WorkpieceHandlingDevice;
+import br.UFSC.GRIMA.util.projeto.Axis;
+import br.UFSC.GRIMA.util.projeto.RotaryAxis;
+import br.UFSC.GRIMA.util.projeto.TravelingAxis;
 
 public class ArvoreMaquinas  
 {
@@ -62,9 +58,43 @@ public class ArvoreMaquinas
 			{
 				root1.add(this.createNodeItsSpindle(machineTmp));
 			}
+			if(machineTmp.getAxis().size() > 0)
+			{
+				root1.add(this.createAxis(machineTmp));
+			}
 			root.add(root1);
 		}
 		return root;
+	}
+	private DefaultMutableTreeNode createAxis(MachineTool machine)
+	{
+		ArrayList<Axis> axis = machine.getAxis();
+		DefaultMutableTreeNode axisNode = new DefaultMutableTreeNode("Axis");
+		
+		for(int i = 0; i < axis.size(); i++)
+		{
+			Axis axisTmp = axis.get(i);
+			if(axisTmp.getClass() == TravelingAxis.class)
+			{
+				TravelingAxis travel = (TravelingAxis)axisTmp;
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode("Axis " + (i + 1) +" -> " + axisTmp.getTypeOfAxisString());
+				node.add(new DefaultMutableTreeNode("Traveling Range (mm): "+  travel.getName()));
+				node.add(new DefaultMutableTreeNode("Max Feed Rate Speed (mm/min): "+  travel.getItsFeedRateRange()));
+				node.add(new DefaultMutableTreeNode("Traveling Range (mm): "+  travel.getItsTravelingRange()));
+				node.add(new DefaultMutableTreeNode("Rapid Movement Speed (m/min): " + travel.getRapidMovementSpeed()));
+				node.add(new DefaultMutableTreeNode("Its Origin: " + travel.getOrigin()));
+				axisNode.add(node);
+			} else if(axisTmp.getClass() == RotaryAxis.class)
+			{
+				RotaryAxis rotary = (RotaryAxis)axisTmp;
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode("Axis " + (i + 1) +" -> " + axisTmp.getTypeOfAxisString());
+				node.add(new DefaultMutableTreeNode("Traveling Range (mm): "+  rotary.getName()));
+				node.add(new DefaultMutableTreeNode("Max Root Speed (rpm): "+  rotary.getMaxRotSpeed()));
+				node.add(new DefaultMutableTreeNode("Its Origin: " + rotary.getOrigin()));
+				axisNode.add(node);
+			}
+		}
+		return axisNode;
 	}
 	private DefaultMutableTreeNode createNodeWorkpieceHandlingDevices(MachineTool machine)
 	{

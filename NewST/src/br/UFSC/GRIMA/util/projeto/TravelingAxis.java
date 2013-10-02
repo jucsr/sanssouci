@@ -13,7 +13,7 @@ public class TravelingAxis extends Axis
 	public static final int X = 0;
 	public static final int Y = 1;
 	public static final int Z = 2;
-	
+	private String typeOfAxisString;
 	
 	public double getItsTravelingRange() 
 	{
@@ -44,5 +44,10 @@ public class TravelingAxis extends Axis
 	}
 	public void setTravelingDirection(int travelingDirection) {
 		this.travelingDirection = travelingDirection;
+	}
+	public String getTypeOfAxisString()
+	{
+		this.typeOfAxisString = "Traveling Axis";
+		return this.typeOfAxisString;
 	}
 }

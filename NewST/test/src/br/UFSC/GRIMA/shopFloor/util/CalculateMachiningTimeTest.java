@@ -70,8 +70,8 @@ public class CalculateMachiningTimeTest
 		
 		//adicionando feature na face
 		faceXY = (Face)(bloco.faces.elementAt(Face.XY));
-		faceXY.features.addElement(cavidade);
 		
+
 		// ---- feature definition ----
 	
 		cavidade = new Cavidade();
@@ -103,7 +103,9 @@ public class CalculateMachiningTimeTest
 		ranhura.setLargura(40);
 		ranhura.setProfundidade(20);
 		ranhura.setEixo(Ranhura.HORIZONTAL);
-				
+		faceXY.features.addElement(ranhura);	
+    	System.out.println("Face "+faceXY.getComprimento());
+
 		// criando um furo
 		
 		furo = new FuroBasePlana();
@@ -155,10 +157,12 @@ public class CalculateMachiningTimeTest
 		cond2.setVc(55); 
 		
 		workingstep = new Workingstep();
-		workingstep.setFeature(cavidade);
+		workingstep.setFeature(ranhura);
 		workingstep.setFerramenta(faceMill);
 		workingstep.setOperation(operation);
 		workingstep.setCondicoesUsinagem(cond2);
+		workingstep.setFace(faceXY);
+
 		
 		m1 = new MillingMachine();
 		ArrayList<Spindle> spindles = new ArrayList<Spindle>();

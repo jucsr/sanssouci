@@ -32,6 +32,8 @@ public class CreateDrillingMachineFrame extends JDialog {
 		label7 = new JLabel();
 		panel22 = new JPanel();
 		spinner4 = new JSpinner();
+		label21 = new JLabel();
+		spinnerCost = new JSpinner();
 		label8 = new JLabel();
 		panel21 = new JPanel();
 		comboBox1 = new JComboBox();
@@ -189,14 +191,26 @@ public class CreateDrillingMachineFrame extends JDialog {
 								//======== panel22 ========
 								{
 									panel22.setLayout(new GridBagLayout());
-									((GridBagLayout)panel22.getLayout()).columnWidths = new int[] {50, 0};
+									((GridBagLayout)panel22.getLayout()).columnWidths = new int[] {55, 0, 0, 50, 0};
 									((GridBagLayout)panel22.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel22.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+									((GridBagLayout)panel22.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
 									((GridBagLayout)panel22.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 									//---- spinner4 ----
 									spinner4.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
 									panel22.add(spinner4, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label21 ----
+									label21.setText("Cost/hour");
+									panel22.add(label21, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinnerCost ----
+									spinnerCost.setModel(new SpinnerNumberModel(5.0, 0.0, null, 0.2));
+									panel22.add(spinnerCost, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
@@ -266,7 +280,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- spinner8 ----
-									spinner8.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									spinner8.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 									panel20.add(spinner8, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
@@ -278,7 +292,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- spinner9 ----
-									spinner9.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
+									spinner9.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 									panel20.add(spinner9, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));
@@ -843,6 +857,8 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JLabel label7;
 	private JPanel panel22;
 	protected JSpinner spinner4;
+	private JLabel label21;
+	protected JSpinner spinnerCost;
 	private JLabel label8;
 	private JPanel panel21;
 	protected JComboBox comboBox1;

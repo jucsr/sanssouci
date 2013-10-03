@@ -24,6 +24,7 @@ import javax.swing.tree.TreeSelectionModel;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiSession;
 import br.UFSC.GRIMA.acceptance.STEP_NCReader;
+import br.UFSC.GRIMA.cad.ArvorePrecedencias;
 import br.UFSC.GRIMA.cad.DesenhadorDeFaces;
 import br.UFSC.GRIMA.cad.Generate3Dview;
 import br.UFSC.GRIMA.cad.ProjectTools;
@@ -223,11 +224,9 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			//System.out.println("precedente da feature 2 : " + featuresXY.get(1).getFeaturePrecedente());
 	
 		} catch (SdaiException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 //		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		// inicializa o desenhador
@@ -266,7 +265,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		//this.atualizarArvorePrecedencias(); //New
 		
 		new MapeadoraDeWorkingsteps(this.projeto); //New
-	
+		this.atualizarArvorePrecedenciasFeatures();
 //		atualizarArvorePrecendences(this.projeto);
 		this.atualizarArvorePrecendencesWorkingsteps();
 		this.gerar3D();
@@ -317,7 +316,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 	public void atualizarArvoreMaquinas1()
 	{
 		ArvoreMaquinas arvore = new ArvoreMaquinas(projetoSF);
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machines");
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine List");
 		this.tree2 = arvore.getArvoreMaquinas();
 		scrollPaneTree.setViewportView(tree2);
 		scrollPaneTree.revalidate();
@@ -350,8 +349,19 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		CreateMachine cm = new CreateMachine(this, this.shopFloor);
 		cm.setVisible(true);
 	}
-	
-	
+	/**
+	 * 	Atualiza arvore de precedencias das features
+	 */
+	public void atualizarArvorePrecedenciasFeatures()
+	{
+		this.treePrecedencesFeatures = ArvorePrecedencias.getArvorePrecedencias(projeto);
+		this.treePrecedencesFeatures.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+		this.scrollPane1.setViewportView(treePrecedencesFeatures);
+		this.scrollPane1.revalidate();
+	}
+	/**
+	 * 	Atualiza arvore de precedencias dos machining workingsteps
+	 */
 	public void atualizarArvorePrecendencesWorkingsteps()
 	{
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine Workingsteps");

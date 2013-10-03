@@ -221,13 +221,13 @@ public class CreateMillingMachineFrame extends JDialog {
 										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- label26 ----
-									label26.setText("Cost / Hour");
+									label26.setText("Cost/Hour");
 									panel21.add(label26, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 
 									//---- spinnerCost ----
-									spinnerCost.setModel(new SpinnerNumberModel(0.01, 0.0, null, 0.01));
+									spinnerCost.setModel(new SpinnerNumberModel(5.0, 0.0, null, 0.2));
 									panel21.add(spinnerCost, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));

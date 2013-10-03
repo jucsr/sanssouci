@@ -35,15 +35,16 @@ public class ArvoreMaquinas
 	}
 	private DefaultMutableTreeNode criarRaizEFolhas()
 	{
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machines Tool");
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machines Tool List");
 		for(int i = 0; i < this.machines.size(); i++)
 		{
 			MachineTool machineTmp = this.machines.get(i);
 			DefaultMutableTreeNode root1 = new DefaultMutableTreeNode("Machine " + (i + 1));
 			DefaultMutableTreeNode nodeGeneralTmp = new DefaultMutableTreeNode("General Data: ");
 			nodeGeneralTmp.add(new DefaultMutableTreeNode("Id: " + machineTmp.getItsId()));
-//			nodeGeneralTmp.add(new DefaultMutableTreeNode("machine Location: " + machineTmp.getItsLocation()));
 			nodeGeneralTmp.add(new DefaultMutableTreeNode("accuracy (um): " + machineTmp.getAccuracy()));
+			nodeGeneralTmp.add(new DefaultMutableTreeNode("machine Location: " + machineTmp.getItsOrigin()));
+			nodeGeneralTmp.add(new DefaultMutableTreeNode("Relative Cost ($/hour): " + machineTmp.getRelativeCost()));
 			root1.add(nodeGeneralTmp);
 			if(machineTmp.getToolHandlingDevice().get(0).getToolList().size() > 0)
 			{

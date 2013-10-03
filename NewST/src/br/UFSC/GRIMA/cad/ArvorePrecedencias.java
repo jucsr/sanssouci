@@ -119,7 +119,7 @@ public class ArvorePrecedencias
 	private static DefaultMutableTreeNode getNode(Projeto projeto)
 	{
  		bloco = projeto.getBloco();
-		DefaultMutableTreeNode node = new DefaultMutableTreeNode("Precedences: ");
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode("Precedences Features : ");
 		for(int i = 0; i < bloco.getFaces().size(); i++)
 		{
 			DefaultMutableTreeNode nodeFaceTmp = new DefaultMutableTreeNode(((Face)bloco.getFaces().elementAt(i)).getStringFace(i));

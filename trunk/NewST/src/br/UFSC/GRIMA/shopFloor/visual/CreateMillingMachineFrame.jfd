@@ -93,7 +93,7 @@ new FormModel {
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 										add( new FormComponent( "javax.swing.JLabel" ) {
 											name: "label26"
-											"text": "Cost / Hour"
+											"text": "Cost/Hour"
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 											"gridx": 2
 										} )
@@ -101,8 +101,8 @@ new FormModel {
 											name: "spinnerCost"
 											"model": new javax.swing.SpinnerNumberModel {
 												minimum: 0.0
-												stepSize: 0.01
-												value: 0.01
+												stepSize: 0.2
+												value: 5.0
 											}
 											auxiliary() {
 												"JavaCodeGenerator.variableModifiers": 4

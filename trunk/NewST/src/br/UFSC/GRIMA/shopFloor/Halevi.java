@@ -21,7 +21,7 @@ public class Halevi
 	private ArrayList<ArrayList<Double>>pauxMatrix;
 	private int LotSize = 1000; // em unidades
 	private double machineSetupTime = 30; //em minutos
-	private double opimpossible = 99.0;
+	private double opimpossible = 999.0;
 	/**
 	 *  este m√©todo deve criar a matriz universal de halevi e as matrizes auxiliares Z e P
 	 *  
@@ -89,7 +89,7 @@ public class Halevi
 			
 			
 		}//termino de linha
-	}//termino da função
+	}//termino da funÔøΩÔøΩo
 	/**
 	 * 	metodo para calculo da matriz P (de sequencias)
 	 */

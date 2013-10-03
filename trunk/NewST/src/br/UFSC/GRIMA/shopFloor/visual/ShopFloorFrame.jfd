@@ -147,7 +147,7 @@ new FormModel {
 							name: "splitPane2"
 							"minimumSize": new java.awt.Dimension( 0, 0 )
 							"oneTouchExpandable": true
-							"resizeWeight": 0.2
+							"resizeWeight": 0.3
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -246,6 +246,30 @@ new FormModel {
 								} ) {
 									name: "panel14"
 									add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+										name: "scrollPane1"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+										add( new FormComponent( "javax.swing.JTree" ) {
+											name: "treePrecedencesFeatures"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										} )
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+								}, new FormLayoutConstraints( null ) {
+									"title": "Feature Precedences"
+								} )
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+									"$columnSpecs": "0:1.0"
+									"$rowSpecs": "0:1.0"
+									"$hGap": 5
+									"$vGap": 5
+									"$alignLeft": true
+									"$alignTop": true
+								} ) {
+									name: "panel16"
+									add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 										name: "scrollPaneTree2"
 										auxiliary() {
 											"JavaCodeGenerator.variableModifiers": 1
@@ -258,7 +282,7 @@ new FormModel {
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 								}, new FormLayoutConstraints( null ) {
-									"title": "Precedences"
+									"title": "WS Precedences"
 								} )
 							}, new FormLayoutConstraints( class java.lang.String ) {
 								"value": "left"

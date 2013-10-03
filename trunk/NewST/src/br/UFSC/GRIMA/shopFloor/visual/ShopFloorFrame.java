@@ -119,6 +119,9 @@ public class ShopFloorFrame extends JFrame {
 		buttonRemover = new JButton();
 		buttonEditar = new JButton();
 		panel14 = new JPanel();
+		scrollPane1 = new JScrollPane();
+		treePrecedencesFeatures = new JTree();
+		panel16 = new JPanel();
 		scrollPaneTree2 = new JScrollPane();
 		tree3 = new JTree();
 		tabbedPane2 = new JTabbedPane();
@@ -722,7 +725,7 @@ public class ShopFloorFrame extends JFrame {
 					{
 						splitPane2.setMinimumSize(new Dimension(0, 0));
 						splitPane2.setOneTouchExpandable(true);
-						splitPane2.setResizeWeight(0.2);
+						splitPane2.setResizeWeight(0.3);
 
 						//======== tabbedPane1 ========
 						{
@@ -804,15 +807,34 @@ public class ShopFloorFrame extends JFrame {
 								((GridBagLayout)panel14.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
 								((GridBagLayout)panel14.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
+								//======== scrollPane1 ========
+								{
+									scrollPane1.setViewportView(treePrecedencesFeatures);
+								}
+								panel14.add(scrollPane1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 0), 0, 0));
+							}
+							tabbedPane1.addTab("Feature Precedences", panel14);
+
+
+							//======== panel16 ========
+							{
+								panel16.setLayout(new GridBagLayout());
+								((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0};
+								((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0};
+								((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+								((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+
 								//======== scrollPaneTree2 ========
 								{
 									scrollPaneTree2.setViewportView(tree3);
 								}
-								panel14.add(scrollPaneTree2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								panel16.add(scrollPaneTree2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
-							tabbedPane1.addTab("Precedences", panel14);
+							tabbedPane1.addTab("WS Precedences", panel16);
 
 						}
 						splitPane2.setLeftComponent(tabbedPane1);
@@ -1167,6 +1189,9 @@ public class ShopFloorFrame extends JFrame {
 	public JButton buttonRemover;
 	public JButton buttonEditar;
 	private JPanel panel14;
+	public JScrollPane scrollPane1;
+	public JTree treePrecedencesFeatures;
+	private JPanel panel16;
 	public JScrollPane scrollPaneTree2;
 	public JTree tree3;
 	private JTabbedPane tabbedPane2;

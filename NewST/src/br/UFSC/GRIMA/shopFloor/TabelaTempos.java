@@ -73,11 +73,13 @@ public class TabelaTempos extends TabelaTemposFrame
 	private void calculateTempo() 
 	{
 		double T = 0;
+		Workingstep wstTemp;
 		for(int i = 0; i < workingsteps.size(); i++){
 			ArrayList<Double> temposNasMaquinas = new ArrayList<Double>();
+			wstTemp = workingsteps.get(i);
 			for(int j = 0; j < machines.size(); j++ ){
 			
-				CalculateMachiningTime calculateTime = new CalculateMachiningTime(workingsteps.get(i), machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
+				CalculateMachiningTime calculateTime = new CalculateMachiningTime(wstTemp, machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
 				if(calculateTime.calculateTimes()== 0){
 				T = 1000;
 				}else T = calculateTime.calculateTimes();

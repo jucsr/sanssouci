@@ -361,7 +361,8 @@ public class CalculateMachiningTime
 		    			else workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
 			    	}
 			    	
-
+			    	
+			    	
 				workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
 				Vector movimentacao = (Vector)(DeterminarMovimentacao.getPontosMovimentacao(workingstep)).elementAt(0);
 				

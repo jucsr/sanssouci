@@ -267,15 +267,14 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<Shape> listaDeBossesCriados = new ArrayList<Shape>();
 		
 		if(diametroFerramenta == diametroPrimeiroWs)
-		{//ESSES PONTOS SÓ PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
+		{//ESSES PONTOS Sï¿½ PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
 			pontos = getPontos(variacao, diametroPrimeiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 		}
 	
 		//AQUI TERMINA O PRIMEIRO WS=====================================
 		
 		//FAZER ALGUMA COISA PRA VER SE VAI PRECISAR FAZER O SEGUNDO WS-----------------------
-		if(	this.genClosed.getWorkingsteps().size() >= 2 &&
-			!this.ws.equals(this.genClosed.getWorkingsteps().get(0)))
+		if(	this.genClosed.getWorkingsteps().size() >= 2 &&  !this.ws.equals(this.genClosed.getWorkingsteps().get(0)))
 		{
 			listaDeBossesCriados = createBosses(variacao, diametroPrimeiroWs/2, this.genClosed.getWorkingsteps().get(0).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 			
@@ -299,10 +298,9 @@ public class MovimentacaoGeneralClosedPocket {
 			}
 			
 			
-			if(	this.genClosed.getWorkingsteps().size() >= 3 &&
-				!this.ws.equals(this.genClosed.getWorkingsteps().get(1)))
+			if(	this.genClosed.getWorkingsteps().size() >= 3 && !this.ws.equals(this.genClosed.getWorkingsteps().get(1)))
 			{
-				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
+				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE Jï¿½ FORAM USINADOS
 				listaDeBossesCriados = createBosses(variacao, diametroSegundoWs/2, this.genClosed.getWorkingsteps().get(1).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				
 				for(int i = 0; i < listaDeBossesCriados.size(); i++)
@@ -327,7 +325,7 @@ public class MovimentacaoGeneralClosedPocket {
 				if(	this.genClosed.getWorkingsteps().size() == 4 &&
 					!this.ws.equals(this.genClosed.getWorkingsteps().get(2)))
 				{
-					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
+					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE Jï¿½ FORAM USINADOS
 					listaDeBossesCriados = createBosses(variacao, diametroTerceiroWs/2, this.genClosed.getWorkingsteps().get(2).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 					
 					for(int i = 0; i < listaDeBossesCriados.size(); i++)
@@ -446,7 +444,7 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		
 		*/
-		
+//		System.out.println("PONTOS -----> " + pontos.get(0));
 		pontoInicial = new Point3d(pontos.get(0).get(0).getX(),pontos.get(0).get(0).getY(), this.ws.getOperation().getRetractPlane());
 
 		
@@ -840,7 +838,7 @@ public class MovimentacaoGeneralClosedPocket {
 	
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){
@@ -894,7 +892,7 @@ public class MovimentacaoGeneralClosedPocket {
 		
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){

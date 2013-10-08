@@ -316,7 +316,6 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 	public void atualizarArvoreMaquinas1()
 	{
 		ArvoreMaquinas arvore = new ArvoreMaquinas(projetoSF);
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine List");
 		this.tree2 = arvore.getArvoreMaquinas();
 		scrollPaneTree.setViewportView(tree2);
 		scrollPaneTree.revalidate();
@@ -400,7 +399,8 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 	
 	public void atualizarArvorePrecendences()
 	{
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine Workingsteps");
+//		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Machine Workingsteps");
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Feature Precedences");
 		ArrayList<Workingstep> workingstepsIniciais = new ArrayList<Workingstep>();
 		
 		for (int i = 0; i < projetoSF.getWorkingsteps().size(); i++)
@@ -421,9 +421,9 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		}
 		
 		//Associa��o da JTree criada ao objeto visual tree3 e atualizacao da mesma
-		this.tree3 = new JTree(root);
-		scrollPaneTree2.setViewportView(tree3);
-		scrollPaneTree2.revalidate();
+		this.treePrecedencesFeatures = new JTree(root);
+		scrollPane1.setViewportView(treePrecedencesFeatures);
+		scrollPane1.revalidate();
 	}
 	
 	public  void atualizarArvorePrecendences(Projeto projeto)

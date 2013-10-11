@@ -236,13 +236,13 @@ public class CalculateMachiningTime
 			 		
 			 		System.out.println("Kc : "+Kc);
 					
-			    	if(Tc > T_max){
+			    	if(Tc < T_max){
 			    		
 			    		System.out.println("Entrou 1");
-			    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
+			    		double Vf_max = (T_max*2*Math.PI*n)/(ap*ae*Kc);
 			    		System.out.println("Vf max "+Vf_max+" Vf: "+Vf);
 			    		
-			    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
+			    		if(Vf_max <= Vf*1.57){
 			    			System.out.println("Entrou 2");
 			    			Vf = Vf_max; 
 			    			n = Vf/fn*nd;
@@ -300,12 +300,13 @@ public class CalculateMachiningTime
 				T = comprimento/Vf;
 			
 			
-		}else if(machine.getClass()== MillingMachine.class &&(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
+		}else if(machine.getClass()== MillingMachine.class &&
+				(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				(this.workingstep.getFeature().getClass() == Cavidade.class))
 		{
 				
-	    
+			Cavidade cavidade = (Cavidade)this.workingstep.getFeature();
 		   	workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
     		workingstep.getCondicoesUsinagem().setAe(D*0.75);
     		
@@ -373,8 +374,10 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				System.out.println("ap = "+ap+"\t L = "+comprimento+"\tVf "+Vf);
-				T = comprimento/Vf;
+				double profundidade = cavidade.getProfundidade();
+				int nPassadas = (int) Math.ceil(profundidade / ap);
+				System.err.println("ap = "+ap+"\t L = "+comprimento*nPassadas+"\tVf "+Vf);
+				T = comprimento*nPassadas/Vf;
 	
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 

@@ -29,6 +29,10 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingMachine;
 import br.UFSC.GRIMA.entidades.machiningResources.MillingTypeSpindle;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
+import br.UFSC.GRIMA.shopFloor.ProjetoSF;
+import br.UFSC.GRIMA.shopFloor.ShopFloor;
+import br.UFSC.GRIMA.shopFloor.TabelaTempos;
+import br.UFSC.GRIMA.shopFloor.visual.TabelaTemposFrame;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -45,8 +49,12 @@ public class CalculateMachiningTimeTest
 	Face faceXY;
 	Workingstep workingstep;
 	ArrayList<MachineTool> machines = new ArrayList<MachineTool>();
+	ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
 	Material material;
-	MachineTool m1;
+	MachineTool m1, m2;
+	ProjetoSF projetosf;
+	ShopFloor shopfloor;
+	TabelaTempos tabelaTempos;
 
 	@Before
 	public void createProject(){
@@ -71,7 +79,8 @@ public class CalculateMachiningTimeTest
 		//adicionando feature na face
 		faceXY = (Face)(bloco.faces.elementAt(Face.XY));
 		
-
+		
+		
 		// ---- feature definition ----
 	
 		cavidade = new Cavidade();
@@ -157,33 +166,46 @@ public class CalculateMachiningTimeTest
 		cond2.setVc(55); 
 		
 		workingstep = new Workingstep();
-		workingstep.setFeature(ranhura);
+		workingstep.setFeature(cavidade);
 		workingstep.setFerramenta(faceMill);
 		workingstep.setOperation(operation);
 		workingstep.setCondicoesUsinagem(cond2);
 		workingstep.setFace(faceXY);
-
+		this.workingsteps.add(workingstep);
 		
 		m1 = new MillingMachine();
 		ArrayList<Spindle> spindles = new ArrayList<Spindle>();
 		Spindle spindle = new MillingTypeSpindle();
-		spindle.setSpindleMaxPower(10); 	// kW
+		spindle.setSpindleMaxPower(3); 	// kW
 		spindle.setItsSpeedRange(5000); // RPM
-		spindle.setMaxTorque(10);		// N-m
+		spindle.setMaxTorque(4);		// N-m
 		spindles.add(spindle);
 		m1.setItsSpindle(spindles);
 		this.machines.add(m1);
 		
-//		if(workingstep.getOperation().getClass().equals(CenterDrilling.class))
-//		{
-//			
-//		} else if(workingstep.get)
+
+		m2 = new MillingMachine();
+		ArrayList<Spindle> spindles2 = new ArrayList<Spindle>();
+		Spindle spindle2 = new MillingTypeSpindle();
+		spindle2.setSpindleMaxPower(7); 	// kW
+		spindle2.setItsSpeedRange(8000); // RPM
+		spindle2.setMaxTorque(9);		// N-m
+		spindles2.add(spindle2);
+		m2.setItsSpindle(spindles2);
+		this.machines.add(m2);
+		
+		shopfloor = new ShopFloor("Projeto Tteste", 10, 20, 15);
+		shopfloor.setMachines(machines);
+		projetosf = new ProjetoSF(shopfloor);
+		projetosf.setWorkingsteps(workingsteps);
 	}
 	@Test
 	public void calcularTempo()
 	{
 		CalculateMachiningTime calculate = new CalculateMachiningTime(workingstep, m1, material);
-	double tempo = calculate.calculateTimes();
-	System.out.println("Tempo = " + tempo);
+		double tempo = calculate.calculateTimes();
+		tabelaTempos = new TabelaTempos(projetosf);
+		tabelaTempos.setVisible(true);
+		System.out.println("Tempo = " + tempo);
 	}
 }

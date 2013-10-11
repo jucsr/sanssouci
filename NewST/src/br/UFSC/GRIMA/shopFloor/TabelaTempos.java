@@ -27,7 +27,7 @@ public class TabelaTempos extends TabelaTemposFrame
 		machines = projetoSF.getShopFloor().getMachines();
 		this.init();
 		this.calculateTempo();
-		this.setVisible(true);
+		this.setVisible(true); 
 	}
 	private void init()
 	{
@@ -77,6 +77,7 @@ public class TabelaTempos extends TabelaTemposFrame
 		for(int i = 0; i < workingsteps.size(); i++){
 			ArrayList<Double> temposNasMaquinas = new ArrayList<Double>();
 			wstTemp = workingsteps.get(i);
+			
 			for(int j = 0; j < machines.size(); j++ ){
 			
 				CalculateMachiningTime calculateTime = new CalculateMachiningTime(wstTemp, machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());

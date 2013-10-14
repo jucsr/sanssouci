@@ -2,6 +2,7 @@ package br.UFSC.GRIMA.acceptance;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import jsdai.SCombined_schema.AExecutable;
@@ -10,6 +11,7 @@ import jsdai.SCombined_schema.AMachining_tool;
 import jsdai.SCombined_schema.AMilling_machine_tool_body;
 import jsdai.SCombined_schema.AMilling_tool_dimension;
 import jsdai.SCombined_schema.ATool_body;
+import jsdai.SCombined_schema.EManufacturing_feature;
 import jsdai.SCombined_schema.EWorkpiece;
 import jsdai.SCombined_schema.EWorkplan;
 import jsdai.lang.ASdaiModel;
@@ -93,7 +95,6 @@ public class STEP_NCReader  {
 			allWorkingsteps.add(wssFace);
 		
 		}
-			
 		this.projeto.setWorkingsteps(allWorkingsteps);
 		this.projeto.setAllToolsFromWs(allWorkingsteps);
 		
@@ -111,21 +112,20 @@ public class STEP_NCReader  {
 			allFeatures.add(new Vector<Feature>());
 
 			Vector<Workingstep> workingstepsTmp = allWorkingsteps.get(i);
-
+			Vector<Feature> usedFeatures = new Vector<Feature>();
 			for(int j = 0; j< workingstepsTmp.size(); j++ )
-				
-				if(workingstepsTmp.get(j).getFeature()!= featureTmp){
-
-					featureTmp = workingstepsTmp.get(j).getFeature();
-					
+			{
+				featureTmp = workingstepsTmp.get(j).getFeature();
+				if(!alreadyUsed(usedFeatures, featureTmp))
+				{
 					allFeatures.get(i).add(featureTmp);
-
+					usedFeatures.add(featureTmp);
 				}	
-
+			}
 		}
 
 		setFeaturesBloco(allFeatures, this.projeto.getBloco());
-		
+
 		return allFeatures;
 	}
 	
@@ -250,7 +250,22 @@ public class STEP_NCReader  {
 			}
 		}
 	}
-	
+	static private Boolean alreadyUsed(Vector<Feature> usedFeatures, Feature eFeature)
+	{
+		boolean answer = false;
+		if (usedFeatures.size() > 0)
+		{
+			for(int i = 0; i < usedFeatures.size(); i++)
+			{
+				if (eFeature.equals(usedFeatures.get(i)))
+				{
+					answer = true;
+					break;
+				}
+			}
+		}
+		return answer;
+	}
 	public Projeto getProjeto() {
 		return projeto;
 	}

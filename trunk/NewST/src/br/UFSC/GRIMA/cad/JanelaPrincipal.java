@@ -872,9 +872,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		}
 		
 		//Associacao da JTree criada ao objeto visual tree3 e atualizacao da mesma
-		this.tree3 = new JTree(root);
-		scrollPaneTree2.setViewportView(tree3);
-		scrollPaneTree2.revalidate();
+		this.tree1 = new JTree(root);
+		scrollPane1.setViewportView(tree1);
+		scrollPane1.revalidate();
 	}
 	
 	public DefaultMutableTreeNode addTreeSubNode (DefaultMutableTreeNode root, Workingstep ws, ArrayList<Workingstep> wsArray)
@@ -1533,13 +1533,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		String file = fd.getFile();
 		String filePath = dir + file;
 
-		System.out.println("PATH : " + filePath);
-
 		STEP_NCReader stepNcReader;
 		
 		try {
-
-			System.out.println("SESSION : " + SdaiSession.getSession());
 			
 			if(SdaiSession.getSession() != null){
 				
@@ -1554,12 +1550,12 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			
 			stepNcReader = new STEP_NCReader(filePath, ProjectReader.FILE_21);
 			stepNcReader.getAllFeatures(stepNcReader.getAllWorkingSteps());
-			
+
 			int idAtual = this.projeto.getDadosDeProjeto().getUserID();
 			String userNameAtual = this.projeto.getDadosDeProjeto().getUserName();
 			
 			this.projeto = stepNcReader.getProjeto();
-			
+
 			this.projeto.getDadosDeProjeto().setUserID(idAtual);
 			this.projeto.getDadosDeProjeto().setUserName(userNameAtual);
 	
@@ -1573,6 +1569,8 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			}*/	
 			//System.out.println("precedente da feature 1 : " + featuresXY.get(0).getFeaturePrecedente());
 			//System.out.println("precedente da feature 2 : " + featuresXY.get(1).getFeaturePrecedente());
+			
+
 			for(int k=0;k<this.projeto.getBloco().getFaces().size();k++)
 			{
 				featuresTmp = ((Face)this.projeto.getBloco().getFaces().get(k)).features;
@@ -1587,11 +1585,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			//System.out.println("precedente da feature 2 : " + featuresXY.get(1).getFeaturePrecedente());
 	
 		} catch (SdaiException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 //		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		
@@ -1618,12 +1614,11 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		ToolManager.setBoringTools(this.projeto.getBoringTools());
 
 		setDoneCAPP(true);
-		
 		this.atualizarArvore();
 		this.atualizarArvoreCAPP();
 		
 		this.atualizarArvorePrecedencias(); //New
-		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(this.getProjeto()); //New
+		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(this.projeto); //New
 		this.atualizarArvorePrecendences();
 
 	}
@@ -1638,13 +1633,9 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		String file = fd.getFile();
 		String filePath = dir + file;
 
-		System.out.println("PATH : " + filePath);
-
 		STEP_NCReader stepNcReader;
 		
 		try {
-
-			System.out.println("SESSION : " + SdaiSession.getSession());
 			
 			if(SdaiSession.getSession() != null){
 				

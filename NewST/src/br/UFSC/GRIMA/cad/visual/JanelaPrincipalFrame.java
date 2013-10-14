@@ -131,8 +131,11 @@ public class JanelaPrincipalFrame extends JFrame {
 		buttonEditarWS2 = new JButton();
 		buttonAlterarWorkplan2 = new JButton();
 		panel14 = new JPanel();
+		tabbedPane2 = new JTabbedPane();
 		scrollPaneTree2 = new JScrollPane();
 		tree3 = new JTree();
+		scrollPane1 = new JScrollPane();
+		tree1 = new JTree();
 		scrollPaneDesenho = new JScrollPane();
 		panel1 = new JPanel();
 		scrollPane3 = new JScrollPane();
@@ -898,11 +901,25 @@ public class JanelaPrincipalFrame extends JFrame {
 								((GridBagLayout)panel14.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
 								((GridBagLayout)panel14.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-								//======== scrollPaneTree2 ========
+								//======== tabbedPane2 ========
 								{
-									scrollPaneTree2.setViewportView(tree3);
+									tabbedPane2.setFont(tabbedPane2.getFont().deriveFont(tabbedPane2.getFont().getStyle() & ~Font.BOLD));
+
+									//======== scrollPaneTree2 ========
+									{
+										scrollPaneTree2.setViewportView(tree3);
+									}
+									tabbedPane2.addTab("From Features", scrollPaneTree2);
+
+
+									//======== scrollPane1 ========
+									{
+										scrollPane1.setViewportView(tree1);
+									}
+									tabbedPane2.addTab("From Workingsteps", scrollPane1);
+
 								}
-								panel14.add(scrollPaneTree2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								panel14.add(tabbedPane2, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
@@ -1132,8 +1149,11 @@ public class JanelaPrincipalFrame extends JFrame {
 	public JButton buttonEditarWS2;
 	public JButton buttonAlterarWorkplan2;
 	private JPanel panel14;
+	private JTabbedPane tabbedPane2;
 	public JScrollPane scrollPaneTree2;
 	public JTree tree3;
+	public JScrollPane scrollPane1;
+	public JTree tree1;
 	public JScrollPane scrollPaneDesenho;
 	public JPanel panel1;
 	private JScrollPane scrollPane3;

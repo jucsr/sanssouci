@@ -9,7 +9,7 @@ import br.UFSC.GRIMA.entidades.features.Degrau;
 
 public class DegrauReader {
 	
-	static double larguraDegrau;
+	static double larguraDegrau, comprimentoDegrau;
 	static int eixoDegrau;
 	static double x , y , z = 0;
 	
@@ -48,7 +48,7 @@ public class DegrauReader {
 		getEixoELarguraDegrau(xDir, yDir, zDir, block.getX(null), block.getY(null));
 				
 		Degrau degrau = new Degrau(id, eixoDegrau, x, y, z, larguraDegrau, profundidadeDegrau);
-		
+		degrau.setComprimento(comprimentoDegrau);
 //		double tolerancia = ((EPlus_minus_value)step.getWall_boundary(null).getProfile_radius(null).getImplicit_tolerance(null)).getUpper_limit(null);
 		
 		double tolerancia = ((EPlus_minus_value)((ELinear_path)step.getOpen_boundary(null)).getDistance(null).getImplicit_tolerance(null)).getUpper_limit(null);
@@ -65,6 +65,7 @@ public class DegrauReader {
 			
 			eixoDegrau = Degrau.VERTICAL;
 			larguraDegrau = x;
+			comprimentoDegrau = larguraBloco;
 			x=0.0;
 			y=0.0;
 				
@@ -72,17 +73,20 @@ public class DegrauReader {
 			
 			eixoDegrau = Degrau.VERTICAL;
 			larguraDegrau =  comprimentoBloco - x;
-				
+			comprimentoDegrau = larguraBloco;
 		}else if (refX ==0 && refY == -1 && refZ == 0 ){// degrau horizontal, lado inferior
 			
 			eixoDegrau = Degrau.HORIZONTAL;
 			larguraDegrau = y;
+			comprimentoDegrau = comprimentoBloco;
 			y= 0.0;
 				
 		}else if (refX ==0 && refY == 1 && refZ == 0 ){//degrau horizontal, lado superior
 			
 			eixoDegrau = Degrau.HORIZONTAL;
 			larguraDegrau = larguraBloco - y;
+			comprimentoDegrau = comprimentoBloco;
+
 			x= 0.0;
 				
 		}else{

@@ -1839,7 +1839,7 @@ public class Face implements Serializable{
 		if(verificaInterseccaoBoss(feature))
 		{
 			valido = false;
-			JOptionPane.showMessageDialog(null, "H� colis�o do boss com outra Feature");
+			JOptionPane.showMessageDialog(null, "Ha colisao do boss com outra Feature");
 		}
 		else
 		{
@@ -2235,164 +2235,171 @@ public class Face implements Serializable{
 			else
 				break;
 		}
-		System.out.println("dentro: "+dentro);
+		System.err.println("dentro: " + dentro);
 		return dentro;
 	}
 	public Feature getMae(Feature feature)
-	{
+ {
 		Feature mae = null;
 		ArrayList<Feature> maes = new ArrayList<Feature>();
-	
-		if(features.size() == 0)
+
+		for (int i = 0; i < this.features.size(); i++) 
 		{
-			return mae;
-		}
-		else
-		{
-			for(int i = 0; i < this.features.size(); i++)
+			Feature featureTmp = (Feature) this.features.elementAt(i);
+			Shape shapeTmp = this.getShape(featureTmp);
+			// Shape shapeNew = this.getShape(feature);
+			Point2D[] borda = this.getShapePontos(feature);
+			if(featureTmp.getClass() == Degrau.class)
 			{
-				Feature featureTmp = (Feature)this.features.elementAt(i);
-				Shape shapeTmp = this.getShape(featureTmp);
-	//			Shape shapeNew = this.getShape(feature);
-				Point2D [] borda = this.getShapePontos(feature);
-				
-	//			System.out.println("ShapeTmp: "+ shapeTmp);
-				if(estaDentroDaFeature(shapeTmp, borda))
-				{
-					maes.add(featureTmp);
-					feature.setFeaturePrecedente(featureTmp);
-//					System.out.println("precendente: "+ feature.getFeaturePrecedente());
-					if(featureTmp.getClass() == Cavidade.class)
-					{
-						Cavidade cav = (Cavidade)featureTmp;
-						
-						if(cav.getItsBoss().size() != 0)
-						{
-							for(int k=0; k < cav.getItsBoss().size(); k++)
-							{
-								Boss bossTmp = cav.getItsBoss().get(k);
-								Shape shapeBoss = null;
-								
-								if(cav.getItsBoss().get(k).getClass() == CircularBoss.class)
-								{
-									CircularBoss cb = (CircularBoss)bossTmp;
-								    shapeBoss = this.getShape(cb);
-								}else if(cav.getItsBoss().get(k).getClass() == RectangularBoss.class)
-								{
-									RectangularBoss rb = (RectangularBoss)bossTmp;
-									shapeBoss = this.getShape(rb);
-								}else if(cav.getItsBoss().get(k).getClass() == GeneralProfileBoss.class)
-								{
-									GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
-									shapeBoss = this.getShape(gpb);
-								}
-								if(estaDentroDaFeature(shapeBoss, borda))
-								   	maes.add(bossTmp);
-									feature.setFeaturePrecedente(bossTmp);
-							}
-						}
-					}else if(featureTmp.getClass() == CavidadeFundoArredondado.class)
-					{   /** Ainda nao tem itsBoss neste tipo de cavidade **/
-//						CavidadeFundoArredondado cavFarr = (CavidadeFundoArredondado)featureTmp;
-//						
-//						if(cavFarr.getItsBoss().size() != 0)
-//						{
-//							for(int k=0; k < cavFarr.getItsBoss().size(); k++)
-//							{
-//								Boss bossTmp = cavFarr.getItsBoss().get(k);
-//								Shape shapeBoss = null;
-//								
-//								if(cavFarr.getItsBoss().get(k).getClass() == CircularBoss.class)
-//								{
-//									CircularBoss cb = (CircularBoss)bossTmp;
-//								    shapeBoss = this.getShape(cb);
-//								}else if(cavFarr.getItsBoss().get(k).getClass() == RectangularBoss.class)
-//								{
-//									RectangularBoss rb = (RectangularBoss)bossTmp;
-//									shapeBoss = this.getShape(rb);
-//								}else if(cavFarr.getItsBoss().get(k).getClass() == GeneralProfileBoss.class)
-//								{
-//									GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
-//									shapeBoss = this.getShape(gpb);
-//								}
-//								if(estaDentroDaFeature(shapeBoss, borda))
-//							    	maes.add(bossTmp);
-//							}
-//						}
-					}else if(featureTmp.getClass() == GeneralClosedPocket.class)
-					{
-						GeneralClosedPocket gcp = (GeneralClosedPocket)featureTmp;
-						
-						if(gcp.getItsBoss().size() != 0)
-						{
-							for(int k=0; k < gcp.getItsBoss().size(); k++)
-							{
-								Boss bossTmp = gcp.getItsBoss().get(k);
-								Shape shapeBoss = null;
-								
-								if(gcp.getItsBoss().get(k).getClass() == CircularBoss.class)
-								{
-									CircularBoss cb = (CircularBoss)bossTmp;
-								    shapeBoss = this.getShape(cb);
-								}else if(gcp.getItsBoss().get(k).getClass() == RectangularBoss.class)
-								{
-									RectangularBoss rb = (RectangularBoss)bossTmp;
-									shapeBoss = this.getShape(rb);
-								}else if(gcp.getItsBoss().get(k).getClass() == GeneralProfileBoss.class)
-								{
-									GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
-									shapeBoss = this.getShape(gpb);
-								}
-								if(estaDentroDaFeature(shapeBoss, borda))
-							    	maes.add(bossTmp);
-									feature.setFeaturePrecedente(bossTmp);
+				Degrau degrau = (Degrau)featureTmp;
+				System.out.println("----> DEGRAU = " + degrau.getComprimento());
 
-							}
-						}
-					}else if(featureTmp.getClass() == Degrau.class)
-					{
-						Degrau degrau = (Degrau)featureTmp;
-						
-						if(degrau.getItsBoss().size() != 0)
-						{
-							for(int k=0; k < degrau.getItsBoss().size(); k++)
-							{
-								Boss bossTmp = degrau.getItsBoss().get(k);
-								Shape shapeBoss = null;
-								
-								if(degrau.getItsBoss().get(k).getClass() == CircularBoss.class)
-								{
-									CircularBoss cb = (CircularBoss)bossTmp;
-								    shapeBoss = this.getShape(cb);
-								}else if(degrau.getItsBoss().get(k).getClass() == RectangularBoss.class)
-								{
-									RectangularBoss rb = (RectangularBoss)bossTmp;
-									shapeBoss = this.getShape(rb);
-								}else if(degrau.getItsBoss().get(k).getClass() == GeneralProfileBoss.class)
-								{
-									GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
-									shapeBoss = this.getShape(gpb);
-								}
-								if(estaDentroDaFeature(shapeBoss, borda))
-							    	maes.add(bossTmp);
-									feature.setFeaturePrecedente(bossTmp);
-
-							}
-						}
-					}else if(featureTmp.getClass() == Ranhura.class)
-					{ /** Ainda nao tem itsBoss na ranhura **/
-//						Ranhura ranhura = (Ranhura)featureTmp;
-					}
-				}
-					//volta para o comeco para ler outra feature existente
 			}
-			
-			if(maes.size() > 0)
-				mae = maes.get(maes.size() - 1);
-				System.out.println("MAE: "+ mae);
+			// System.out.println("ShapeTmp: "+ shapeTmp);
+			System.out.println("----> Feature Tmp = " + featureTmp);
+			if (estaDentroDaFeature(shapeTmp, borda)) 
+			{
+				maes.add(featureTmp);
+				feature.setFeaturePrecedente(featureTmp);
+ 				// feature.getFeaturePrecedente());
+				if (featureTmp.getClass() == Cavidade.class)
+				{
+					Cavidade cav = (Cavidade) featureTmp;
+
+					if (cav.getItsBoss().size() != 0) 
+					{
+						for (int k = 0; k < cav.getItsBoss().size(); k++) 
+						{
+							Boss bossTmp = cav.getItsBoss().get(k);
+							Shape shapeBoss = null;
+
+							if (cav.getItsBoss().get(k).getClass() == CircularBoss.class) 
+							{
+								CircularBoss cb = (CircularBoss) bossTmp;
+								shapeBoss = this.getShape(cb);
+							} else if (cav.getItsBoss().get(k).getClass() == RectangularBoss.class) 
+							{
+								RectangularBoss rb = (RectangularBoss) bossTmp;
+								shapeBoss = this.getShape(rb);
+							} else if (cav.getItsBoss().get(k).getClass() == GeneralProfileBoss.class) 
+							{
+								GeneralProfileBoss gpb = (GeneralProfileBoss) bossTmp;
+								shapeBoss = this.getShape(gpb);
+							}
+							if (estaDentroDaFeature(shapeBoss, borda))
+								maes.add(bossTmp);
+							feature.setFeaturePrecedente(bossTmp);
+						}
+					}
+				} else if (featureTmp.getClass() == CavidadeFundoArredondado.class)
+				{
+					/** Ainda nao tem itsBoss neste tipo de cavidade **/
+					// CavidadeFundoArredondado cavFarr =
+					// (CavidadeFundoArredondado)featureTmp;
+					//
+					// if(cavFarr.getItsBoss().size() != 0)
+					// {
+					// for(int k=0; k < cavFarr.getItsBoss().size(); k++)
+					// {
+					// Boss bossTmp = cavFarr.getItsBoss().get(k);
+					// Shape shapeBoss = null;
+					//
+					// if(cavFarr.getItsBoss().get(k).getClass() ==
+					// CircularBoss.class)
+					// {
+					// CircularBoss cb = (CircularBoss)bossTmp;
+					// shapeBoss = this.getShape(cb);
+					// }else if(cavFarr.getItsBoss().get(k).getClass() ==
+					// RectangularBoss.class)
+					// {
+					// RectangularBoss rb = (RectangularBoss)bossTmp;
+					// shapeBoss = this.getShape(rb);
+					// }else if(cavFarr.getItsBoss().get(k).getClass() ==
+					// GeneralProfileBoss.class)
+					// {
+					// GeneralProfileBoss gpb = (GeneralProfileBoss)bossTmp;
+					// shapeBoss = this.getShape(gpb);
+					// }
+					// if(estaDentroDaFeature(shapeBoss, borda))
+					// maes.add(bossTmp);
+					// }
+					// }
+				} else if (featureTmp.getClass() == GeneralClosedPocket.class) 
+				{
+					GeneralClosedPocket gcp = (GeneralClosedPocket) featureTmp;
+
+					if (gcp.getItsBoss().size() != 0)
+					{
+						for (int k = 0; k < gcp.getItsBoss().size(); k++)
+						{
+							Boss bossTmp = gcp.getItsBoss().get(k);
+							Shape shapeBoss = null;
+
+							if (gcp.getItsBoss().get(k).getClass() == CircularBoss.class) 
+							{
+								CircularBoss cb = (CircularBoss) bossTmp;
+								shapeBoss = this.getShape(cb);
+							} else if (gcp.getItsBoss().get(k).getClass() == RectangularBoss.class) 
+							{
+								RectangularBoss rb = (RectangularBoss) bossTmp;
+								shapeBoss = this.getShape(rb);
+							} else if (gcp.getItsBoss().get(k).getClass() == GeneralProfileBoss.class) 
+							{
+								GeneralProfileBoss gpb = (GeneralProfileBoss) bossTmp;
+								shapeBoss = this.getShape(gpb);
+							}
+							if (estaDentroDaFeature(shapeBoss, borda))
+								maes.add(bossTmp);
+							feature.setFeaturePrecedente(bossTmp);
+
+						}
+					}
+				} else if (featureTmp.getClass() == Degrau.class)
+				{
+					Degrau degrau = (Degrau) featureTmp;
+//					System.out.println("----> DEGRAU = " + degrau.getComprimento());
+
+					if (degrau.getItsBoss().size() != 0) {
+						for (int k = 0; k < degrau.getItsBoss().size(); k++)
+						{
+							Boss bossTmp = degrau.getItsBoss().get(k);
+							Shape shapeBoss = null;
+
+							if (degrau.getItsBoss().get(k).getClass() == CircularBoss.class) 
+							{
+								CircularBoss cb = (CircularBoss) bossTmp;
+								shapeBoss = this.getShape(cb);
+							} else if (degrau.getItsBoss().get(k).getClass() == RectangularBoss.class)
+							{
+								RectangularBoss rb = (RectangularBoss) bossTmp;
+								shapeBoss = this.getShape(rb);
+							} else if (degrau.getItsBoss().get(k).getClass() == GeneralProfileBoss.class)
+							{
+								GeneralProfileBoss gpb = (GeneralProfileBoss) bossTmp;
+								shapeBoss = this.getShape(gpb);
+							}
+							if (estaDentroDaFeature(shapeBoss, borda))
+								maes.add(bossTmp);
+							feature.setFeaturePrecedente(bossTmp);
+
+						}
+					}
+				} else if (featureTmp.getClass() == Ranhura.class) 
+				{
+					/** Ainda nao tem itsBoss na ranhura **/
+					// Ranhura ranhura = (Ranhura)featureTmp;
+				}
+			}
+			// volta para o comeco para ler outra feature existente
 		}
-			
-//		System.out.println(maes);
+
+		if (maes.size() > 0) 
+		{
+			mae = maes.get(maes.size() - 1);
+		}
+		System.err.println("MAE: " + mae);
+
+		// System.out.println(maes);
 		return mae;
 	}
 	public Shape getShape(Feature feature)
@@ -2435,14 +2442,27 @@ public class Face implements Serializable{
 		} else if(feature.getClass() == Ranhura.class)
 		{
 			Ranhura ranhura = (Ranhura)feature;
-			shape = new Rectangle2D.Double(ranhura.X, ranhura.Y, ranhura.getComprimento(), ranhura.getLargura());
-		
+			if(ranhura.getEixo() == Ranhura.HORIZONTAL)
+			{
+				shape = new Rectangle2D.Double(ranhura.X, ranhura.Y, ranhura.getComprimento(), ranhura.getLargura());		
+			} else if(ranhura.getEixo() == Ranhura.VERTICAL)
+			{
+				shape = new Rectangle2D.Double(ranhura.X, ranhura.Y, ranhura.getLargura(), ranhura.getComprimento());
+			}		
 		} else if(feature.getClass() == Degrau.class)
 		{
 			Degrau degrau = (Degrau)feature;
-			shape = new Rectangle2D.Double(degrau.getPosicaoX(), degrau.getPosicaoY(), degrau.getComprimento(), degrau.getLargura());
-//			System.out.printf("shapeTmp: X: %f\nY: %f\nCompr: %f\nLarg: %f\n", degrau.getPosicaoX(),degrau.getPosicaoY(), degrau.getComprimento(), degrau.getLargura());
-		
+			System.out.println("EIXO =====> " + degrau.getEixo());
+//			System.out.println("comprimento " + degrau.getComprimento());
+			
+			if(degrau.getEixo() == Degrau.HORIZONTAL)
+			{
+				shape = new Rectangle2D.Double(degrau.X, degrau.Y, degrau.getComprimento(), degrau.getLargura());
+			} else if(degrau.getEixo() == Degrau.VERTICAL)
+			{
+				shape = new Rectangle2D.Double(degrau.X, degrau.Y, degrau.getLargura(), degrau.getComprimento());
+				System.out.println("shape degrau = " + shape);
+			}		
 		} else if(feature.getClass() == CircularBoss.class)
 		{
 			CircularBoss cb = (CircularBoss)feature;

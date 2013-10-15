@@ -92,7 +92,7 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		general.closePath();
 
-		//CRIAR MALHA DE PONTOS PARA COMPARA��O
+		//CRIAR MALHA DE PONTOS PARA COMPARAï¿½ï¿½O
 
 		vertexPoint = genClosed.getPoints();
 		for(int i=0;i<vertexPoint.size();i++){
@@ -173,7 +173,7 @@ public class MovimentacaoGeneralClosedPocket {
 */
 		
 		//int b=0;
-		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS N�O USINADOS
+		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
 		
 		/*
 		for(int i=0;i<malha.length;i++){
@@ -267,14 +267,15 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<Shape> listaDeBossesCriados = new ArrayList<Shape>();
 		
 		if(diametroFerramenta == diametroPrimeiroWs)
-		{//ESSES PONTOS S� PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
+		{//ESSES PONTOS SÓ PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
 			pontos = getPontos(variacao, diametroPrimeiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 		}
 	
 		//AQUI TERMINA O PRIMEIRO WS=====================================
 		
 		//FAZER ALGUMA COISA PRA VER SE VAI PRECISAR FAZER O SEGUNDO WS-----------------------
-		if(	this.genClosed.getWorkingsteps().size() >= 2 &&  !this.ws.equals(this.genClosed.getWorkingsteps().get(0)))
+		if(	this.genClosed.getWorkingsteps().size() >= 2 &&
+			!this.ws.equals(this.genClosed.getWorkingsteps().get(0)))
 		{
 			listaDeBossesCriados = createBosses(variacao, diametroPrimeiroWs/2, this.genClosed.getWorkingsteps().get(0).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 			
@@ -298,9 +299,10 @@ public class MovimentacaoGeneralClosedPocket {
 			}
 			
 			
-			if(	this.genClosed.getWorkingsteps().size() >= 3 && !this.ws.equals(this.genClosed.getWorkingsteps().get(1)))
+			if(	this.genClosed.getWorkingsteps().size() >= 3 &&
+				!this.ws.equals(this.genClosed.getWorkingsteps().get(1)))
 			{
-				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE J� FORAM USINADOS
+				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
 				listaDeBossesCriados = createBosses(variacao, diametroSegundoWs/2, this.genClosed.getWorkingsteps().get(1).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				
 				for(int i = 0; i < listaDeBossesCriados.size(); i++)
@@ -325,7 +327,7 @@ public class MovimentacaoGeneralClosedPocket {
 				if(	this.genClosed.getWorkingsteps().size() == 4 &&
 					!this.ws.equals(this.genClosed.getWorkingsteps().get(2)))
 				{
-					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE J� FORAM USINADOS
+					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
 					listaDeBossesCriados = createBosses(variacao, diametroTerceiroWs/2, this.genClosed.getWorkingsteps().get(2).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 					
 					for(int i = 0; i < listaDeBossesCriados.size(); i++)
@@ -444,7 +446,7 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		
 		*/
-//		System.out.println("PONTOS -----> " + pontos.get(0));
+		
 		pontoInicial = new Point3d(pontos.get(0).get(0).getX(),pontos.get(0).get(0).getY(), this.ws.getOperation().getRetractPlane());
 
 		
@@ -744,21 +746,26 @@ public class MovimentacaoGeneralClosedPocket {
 	public ArrayList<Point3d> getPontosPossiveis(double[][][] malha, GeneralPath general, double z, ArrayList<Shape> bossArray)
 	{
 		int b=0;
-		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS N�O USINADOS
+		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
 		ArrayList<Point3d> pontosPossiveis = new ArrayList<Point3d>();
 				
 		for(int i=0;i<malha.length;i++){
 			for(int k=0;k<malha[i].length;k++){
 				if(general.contains(malha[i][k][0], malha[i][k][1])){
-					for(int g=0;g<bossArray.size();g++){
-						if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
-							b++;
+					if(bossArray.size() == 0){
+						pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));						
+					}
+					else{
+						for(int g=0;g<bossArray.size();g++){
+							if(!bossArray.get(g).contains(malha[i][k][0], malha[i][k][1])){
+								b++;
+							}
 						}
+						if(b==bossArray.size()){
+							pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
+						}
+						b=0;
 					}
-					if(b==bossArray.size()){
-						pontosPossiveis.add(new Point3d(malha[i][k][0],malha[i][k][1],z));
-					}
-					b=0;
 				}
 			}
 		}
@@ -769,7 +776,7 @@ public class MovimentacaoGeneralClosedPocket {
 	public ArrayList<Point2d> getCoordenadas(double[][][] malha, GeneralPath general, ArrayList<Shape> bossArray)
 	{
 		int b=0;
-		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS N�O USINADOS
+		//CRIAR MALHA DE PONTOS DE USINAGEM (CONTAINS), E A MALHA DOS PONTOS Nï¿½O USINADOS
 		ArrayList<Point2d> coordenadas = new ArrayList<Point2d>();
 		
 		for(int i=0;i<malha.length;i++){
@@ -838,7 +845,7 @@ public class MovimentacaoGeneralClosedPocket {
 	
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 � por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){
@@ -892,7 +899,7 @@ public class MovimentacaoGeneralClosedPocket {
 		
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 � por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){

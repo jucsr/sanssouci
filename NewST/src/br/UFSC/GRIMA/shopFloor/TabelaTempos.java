@@ -19,7 +19,7 @@ public class TabelaTempos extends TabelaTemposFrame
 	public TabelaTempos(ProjetoSF projetoSF)
 	{
 		this.projetoSF = projetoSF;
-		workingsteps= new ArrayList<Workingstep>();
+		workingsteps = new ArrayList<Workingstep>();
 		for(int i = 0; i < this.projetoSF.getProjeto().getWorkingsteps().get(0).size(); i++)
 		{
 			workingsteps.add(this.projetoSF.getProjeto().getWorkingsteps().get(0).elementAt(i));
@@ -28,6 +28,11 @@ public class TabelaTempos extends TabelaTemposFrame
 		this.init();
 		this.calculateTempo();
 		this.setVisible(true); 
+		
+//		for(int i = 0; i < workingsteps.size(); i++)
+//		{
+//			System.err.println("Ap ====== "+workingsteps.get(i).getCondicoesUsinagem().getAp());
+//		}
 	}
 	private void init()
 	{
@@ -73,21 +78,21 @@ public class TabelaTempos extends TabelaTemposFrame
 	private void calculateTempo() 
 	{
 		double T = 0;
-		Workingstep wstTemp;
 		for(int i = 0; i < workingsteps.size(); i++){
 			ArrayList<Double> temposNasMaquinas = new ArrayList<Double>();
-			wstTemp = workingsteps.get(i);
 			
 			for(int j = 0; j < machines.size(); j++ ){
 			
-				CalculateMachiningTime calculateTime = new CalculateMachiningTime(wstTemp, machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
-				if(calculateTime.calculateTimes()== 0){
-				T = 1000;
-				}else T = calculateTime.calculateTimes();
-				
-				temposNasMaquinas.add(T);
+			Workingstep wstTemp;
+			wstTemp = workingsteps.get(i);
+			CalculateMachiningTime calculateTime = new CalculateMachiningTime(wstTemp, machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
+					
+				System.err.println("Ap ====== "+workingsteps.get(i).getCondicoesUsinagem().getAp());
+
+				//T = calculateTime.getTime();
+				temposNasMaquinas.add(calculateTime.getTime());
 				System.out.println("P = "+ ((machines.get(j).getItsSpindle()).size()));
-			this.table1.getModel().setValueAt(T, i, j + 3);
+			this.table1.getModel().setValueAt(calculateTime.getTime(), i, j + 3);
 
 			}    
 			workingsteps.get(i).setTemposNasMaquinas(temposNasMaquinas);

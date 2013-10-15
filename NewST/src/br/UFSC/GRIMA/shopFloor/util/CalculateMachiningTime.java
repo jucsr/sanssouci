@@ -79,8 +79,10 @@ public class CalculateMachiningTime
 	
 	private Workingstep workingstep;
 	private MachineTool machine;
-
+	private double time;
 	
+
+
 	public CalculateMachiningTime(Workingstep workingstep, MachineTool machine, Material material)
 	{
 		conexao.setConn("150.162.105.1", "webTools", "webcad", "julio123");
@@ -112,10 +114,10 @@ public class CalculateMachiningTime
 	
 	public double calculateTimes() 
 	{	
-		double P = 0,P_teste = 0,P_max = 0, fn = 0, Vc, D, n, Vf = 0, prof = 0, T = 0, fn_max = 0, larg = 0, raio = 0,ap = 0, ae = 0, Hm = 0, Kc2 = 0, ap_max = 0,
+		double P = 0,P_teste = 0,P_max = 0, fn = 0, Vc, D, n, Vf = 0, prof = 0, fn_max = 0, larg = 0, raio = 0,ap = 0, ae = 0, Hm = 0, Kc2 = 0, ap_max = 0,
 				comprimento = 0, VolumeR = 0, VolumePP = 0, Volume1P = 0, np = 0, nd,  Vfm = 0, Tm = 0, RPM = 0, Tc = 0, T_max = 0;
 		
-		
+	//	System.err.println("\t\t ---->>> vez");
 		for(int j = 0; j < machine.getItsSpindle().size(); j++){
 				
 				Spindle spindleTemp = machine.getItsSpindle().get(j);
@@ -201,7 +203,7 @@ public class CalculateMachiningTime
 		
 			if(P_teste <= P){
 				
-				T = prof/Vf;
+				time = prof/Vf;
 				
 			}else{
 				
@@ -209,7 +211,7 @@ public class CalculateMachiningTime
 				
 				Vf = n*fn_max;
 				
-				T = prof/Vf;
+				time = prof/Vf;
 			}
 					
 
@@ -238,7 +240,7 @@ public class CalculateMachiningTime
 					
 			    	if(Tc < T_max){
 			    		
-			    		System.out.println("Entrou 1");
+			    		System.err.println("Entrou 1");
 			    		double Vf_max = (T_max*2*Math.PI*n)/(ap*ae*Kc);
 			    		System.out.println("Vf max "+Vf_max+" Vf: "+Vf);
 			    		
@@ -295,20 +297,22 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				System.out.println("ap = "+ap+"\t L = "+comprimento+"\tVf "+Vf);
+				System.err.println("ap = "+ap+"\t L = "+comprimento+"\tVf "+Vf);
 				
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 			
 			
 		}else if(machine.getClass()== MillingMachine.class &&
-				(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
-				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
+				(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class) && 
 				(this.workingstep.getFeature().getClass() == Cavidade.class))
 		{
-				
+			
 			Cavidade cavidade = (Cavidade)this.workingstep.getFeature();
 		   	workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
+		   	ap =  workingstep.getCondicoesUsinagem().getAp();
     		workingstep.getCondicoesUsinagem().setAe(D*0.75);
+    		
+    		
     		
     				n = Vc * 1000 /(Math.PI * D);
 					P_max = (P/RPM)*n;
@@ -318,44 +322,56 @@ public class CalculateMachiningTime
 					Kc = Kc/100;
 			    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
 			 		T_max = ((-Tm/RPM)*n)+Tm; 
-			    	System.out.println("Torque "+Tc);
-			 		System.out.println("n "+n);
+			    
+					System.err.println("---------->> ENTRADA ");
+			 		System.out.println("ap wstp "+workingstep.getCondicoesUsinagem().getAp());
+					System.out.println("ap "+ap);
+					System.out.println("ae "+ae);
+			 		System.out.println("RPM "+RPM);
+					System.out.println("P consumida "+P_teste);
+					System.out.println("P maquina "+P);
+					System.out.println("P max "+P_max);
+					System.out.println("Kc "+Kc);
+					System.out.println("T consumido"+Tc);
+					System.out.println("T maquina "+Tm);
+					System.out.println("T max "+T_max);
+					System.out.println("n "+n);
+					System.out.println("Vc "+Vc);
+					System.out.println("Vf = "+Vf);
+					System.err.println("n "+n);
+		
 			 		
-			 	
-					if(Tc > T_max){
+			 		if(Tc > T_max){
 			    		
-			    		System.out.println("Entrou 1");
+			    		System.err.println("Entrou 1");
 			    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-			    		System.out.println("Vf max "+Vf_max+" Vf: "+Vf);
+			    		System.err.println("Entrou 1 Vf max "+Vf_max);
+			    		System.err.println("Entrou 1 Vf "+Vf);
 			    		
 			    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-			    			System.out.println("Entrou 2");
+			    			System.err.println("Entrou 2");
 			    			Vf = Vf_max; 
-			    			n = Vf/fn*nd;
-			    			System.out.println("n2 "+n);
-			    		
+			    		//	n = Vf/fn*nd;
+			    			
 			    		}else{
 			    			
-			    			System.out.println("Entrou 3");
+			    			System.err.println("Entrou 3");
 			    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
-			    			System.out.println("ap max "+ap_max);
-			    		
 			    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 			    		}
 			    	}
-					
 			    	if(n > RPM){
-			    		System.out.println("Entrou 4 ");
+			    		System.err.println("Entrou 4 ");
 			    		n = RPM;
-			    		P_max = (P/RPM)*n;
 			    		Vf = n * fn * nd;
 			    	}
 			    	
+			    	P_max = (P/RPM)*n;
 			    	P_teste = (ap*ae*Vf*Kc)/(60*102*9.81);
 			    	
-			    	if(P_teste > P){
+			    	if(P_teste > P_max){
 			    		
-			    		System.out.println("Entrou 5");
+			    		System.err.println("Entrou 5");
 			    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 			    		
 			    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -374,10 +390,25 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				double profundidade = cavidade.getProfundidade();
-				int nPassadas = (int) Math.ceil(profundidade / ap);
-				System.err.println("ap = "+ap+"\t L = "+comprimento*nPassadas+"\tVf "+Vf);
-				T = comprimento*nPassadas/Vf;
+				
+			
+				
+				time = comprimento/Vf;
+	
+				System.err.println("---------->> SAIDA");
+				System.out.println("ap wstp "+workingstep.getCondicoesUsinagem().getAp());
+				System.out.println("RPM "+RPM);
+				System.out.println("P consumida "+P_teste);
+				System.out.println("P maquina "+P);
+				System.out.println("P max "+P_max);
+				System.out.println("Kc "+Kc);
+				System.out.println("T "+Tm);
+				System.out.println("T max "+T_max);
+				System.out.println("n "+n);
+				System.out.println("Comprimento = "+comprimento);
+				System.out.println("Vf = "+Vf);
+				System.out.println("ap = "+ap);
+			
 	
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
@@ -395,8 +426,8 @@ public class CalculateMachiningTime
 				np = VolumeR/VolumePP; // Numero de passagens da fresa
 				np = Math.floor(np);
 			
-				T = comprimento/Vf;
-				T = np*T;
+				time = comprimento/Vf;
+				time = np*time;
 			}else{
 				
 				VolumeR = prof*larg*comprimento;  // Volume da ranhura
@@ -404,8 +435,8 @@ public class CalculateMachiningTime
 				np = VolumeR/VolumePP; // Numero de passagens da fresa
 				np = Math.floor(np);
 			
-				T = comprimento/Vf;
-				T = np*T;
+				time = comprimento/Vf;
+				time = np*time;
 			}
 			
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
@@ -479,7 +510,7 @@ public class CalculateMachiningTime
 				comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 			}
 		
-			T = comprimento/Vf;
+			time = comprimento/Vf;
 			
 		}else if(workingstep.getFerramenta().getClass()== BullnoseEndMill.class &&(this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
@@ -559,11 +590,13 @@ public class CalculateMachiningTime
 				comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 			}
 		
-			T = comprimento/Vf;
+			time = comprimento/Vf;
 			
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				this.workingstep.getFeature().getClass() == GeneralClosedPocket.class ){
+			
+			GeneralClosedPocket cavidade = (GeneralClosedPocket)this.workingstep.getFeature();
 			
 			workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
 			workingstep.getCondicoesUsinagem().setAe(D*0.75);
@@ -638,8 +671,11 @@ public class CalculateMachiningTime
 					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
+			 
+			 	double profundidade = cavidade.getProfundidade();
+				int nPassadas = (int) Math.ceil(profundidade / ap);
 			
-				T = comprimento/Vf;
+				time = comprimento*nPassadas/Vf;
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				this.workingstep.getFeature().getClass() == RanhuraPerfilQuadradoU.class && 
@@ -722,7 +758,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 			
 			
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
@@ -808,7 +844,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 			
 			
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
@@ -892,7 +928,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 			
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
@@ -974,7 +1010,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				this.workingstep.getFeature().getClass() == RanhuraPerfilVee.class && 
@@ -1056,7 +1092,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				this.workingstep.getFeature().getClass() == RanhuraPerfilVee.class && 
@@ -1138,7 +1174,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
 				this.workingstep.getFeature().getClass() == RanhuraPerfilRoundedU.class && 
@@ -1221,7 +1257,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 			
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
@@ -1305,7 +1341,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 			
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
@@ -1388,7 +1424,7 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 		
 		}else if((this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ||
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) && 
@@ -1471,12 +1507,18 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				T = comprimento/Vf;
+				time = comprimento/Vf;
 		}
 		
 		
 		
-		return T;
+		return time;
 	}
-	
+	public double getTime() {
+		return time;
+	}
+
+	public void setTime(double time) {
+		this.time = time;
+	}
 }

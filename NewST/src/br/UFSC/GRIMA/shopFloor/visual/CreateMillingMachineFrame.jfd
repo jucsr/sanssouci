@@ -22,7 +22,7 @@ new FormModel {
 					name: "contentPanel"
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 						"$columnSpecs": "0:1.0"
-						"$rowSpecs": "0"
+						"$rowSpecs": "0:1.0"
 						"$hGap": 5
 						"$vGap": 5
 						"$alignLeft": true
@@ -33,7 +33,7 @@ new FormModel {
 							name: "tabbedPane1"
 							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 								"$columnSpecs": "0, 0:1.0"
-								"$rowSpecs": "0, 0, 0"
+								"$rowSpecs": "0, 0:1.0"
 								"$hGap": 5
 								"$vGap": 5
 								"$alignLeft": true
@@ -214,11 +214,10 @@ new FormModel {
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 									"gridx": 1
-									"gridy": 1
 								} )
 								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 									"$columnSpecs": "0, 0:1.0"
-									"$rowSpecs": "0:1.0, 0, 0:1.0"
+									"$rowSpecs": "0:1.0"
 									"$hGap": 5
 									"$vGap": 5
 									"$alignLeft": true
@@ -227,8 +226,8 @@ new FormModel {
 									name: "panel10"
 									"border": new javax.swing.border.EtchedBorder( 1, null, null )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-										"$columnSpecs": "0:1.0, 0, 0:1.0"
-										"$rowSpecs": "0"
+										"$columnSpecs": "0, 0:1.0"
+										"$rowSpecs": "0:1.0"
 										"$hGap": 5
 										"$vGap": 5
 										"$alignLeft": true
@@ -239,16 +238,34 @@ new FormModel {
 										add( new FormComponent( "javax.swing.JLabel" ) {
 											name: "label12"
 											"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/millingMachine.png" )
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+										add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+											name: "scrollPane5"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 4
+											}
+											add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+												"$columnSpecs": "0:1.0"
+												"$rowSpecs": "0:1.0"
+												"$hGap": 5
+												"$vGap": 5
+												"$alignLeft": true
+												"$alignTop": true
+											} ) {
+												name: "panel23"
+												auxiliary() {
+													"JavaCodeGenerator.variableModifiers": 4
+												}
+											} )
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 											"gridx": 1
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridx": 1
-										"gridy": 1
 									} )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 									"gridx": 1
-									"gridy": 2
+									"gridy": 1
 								} )
 							}, new FormLayoutConstraints( null ) {
 								"title": "General data"

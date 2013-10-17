@@ -30,6 +30,7 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 	private double maxDiameter;
 	private String type;
 	private ArrayList<Spindle> arraySpindle;
+	public PowerTorquePanel powerTorquePanel;
 	
 	public CreateSpindle(CreateDrillingMachine janelaDrillingMachine, MachineTool drillingMachine){
 		super(janelaDrillingMachine);
@@ -38,6 +39,10 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
+		this.powerTorquePanel = new PowerTorquePanel(this);
+		this.scrollPane1.setViewportView(this.powerTorquePanel);
+		this.powerTorquePanel.revalidate();
+		this.scrollPane1.revalidate();
 	}
 	public CreateSpindle(CreateMillingMachine janelaMillingMachine, MachineTool millingMachine) {
 		super(janelaMillingMachine);
@@ -46,6 +51,10 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
+		this.powerTorquePanel = new PowerTorquePanel(this);
+		this.scrollPane1.setViewportView(this.powerTorquePanel);
+		this.powerTorquePanel.revalidate();
+		this.scrollPane1.revalidate();
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import br.UFSC.GRIMA.entidades.machiningResources.DrillingMachine;
@@ -15,9 +17,13 @@ import br.UFSC.GRIMA.entidades.machiningResources.MillingTypeSpindle;
 import br.UFSC.GRIMA.entidades.machiningResources.Spindle;
 import br.UFSC.GRIMA.entidades.machiningResources.TurningTypeSpindle;
 import br.UFSC.GRIMA.shopFloor.visual.CreateSpindleFrame;
-
-public class CreateSpindle extends CreateSpindleFrame implements ActionListener, ItemListener {
-
+/**
+ * 
+ * @author jc
+ *
+ */
+public class CreateSpindle extends CreateSpindleFrame implements ActionListener, ItemListener 
+{
 	private CreateMillingMachine janelaMillingMachine;
 	private CreateDrillingMachine janelaDrillingMachine;
 	private MachineTool millingMachine;
@@ -32,7 +38,8 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 	private ArrayList<Spindle> arraySpindle;
 	public PowerTorquePanel powerTorquePanel;
 	
-	public CreateSpindle(CreateDrillingMachine janelaDrillingMachine, MachineTool drillingMachine){
+	public CreateSpindle(CreateDrillingMachine janelaDrillingMachine, MachineTool drillingMachine)
+	{
 		super(janelaDrillingMachine);
 		this.millingMachine = drillingMachine;
 		this.janelaDrillingMachine = janelaDrillingMachine;
@@ -43,8 +50,33 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 		this.scrollPane1.setViewportView(this.powerTorquePanel);
 		this.powerTorquePanel.revalidate();
 		this.scrollPane1.revalidate();
+		this.spinner5.addChangeListener(new ChangeListener() 
+		{
+					@Override
+			public void stateChanged(ChangeEvent arg0) 
+			{
+				powerTorquePanel.repaint();
+			}
+		});
+		this.spinner6.addChangeListener(new ChangeListener() 
+		{
+			@Override
+			public void stateChanged(ChangeEvent e)
+			{
+				powerTorquePanel.repaint();
+			}
+		});
+		this.spinner7.addChangeListener(new ChangeListener() 
+		{
+			@Override
+			public void stateChanged(ChangeEvent e)
+			{
+				powerTorquePanel.repaint();
+			}
+		});
 	}
-	public CreateSpindle(CreateMillingMachine janelaMillingMachine, MachineTool millingMachine) {
+	public CreateSpindle(CreateMillingMachine janelaMillingMachine, MachineTool millingMachine)
+	{
 		super(janelaMillingMachine);
 		this.millingMachine = millingMachine;
 		this.janelaMillingMachine = janelaMillingMachine;
@@ -55,10 +87,35 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 		this.scrollPane1.setViewportView(this.powerTorquePanel);
 		this.powerTorquePanel.revalidate();
 		this.scrollPane1.revalidate();
+		this.spinner5.addChangeListener(new ChangeListener() 
+		{
+					@Override
+			public void stateChanged(ChangeEvent arg0) 
+			{
+				powerTorquePanel.repaint();
+			}
+		});
+		this.spinner6.addChangeListener(new ChangeListener() 
+		{
+			@Override
+			public void stateChanged(ChangeEvent e)
+			{
+				powerTorquePanel.repaint();
+			}
+		});
+		this.spinner7.addChangeListener(new ChangeListener() 
+		{
+			@Override
+			public void stateChanged(ChangeEvent e)
+			{
+				powerTorquePanel.repaint();
+			}
+		});
 	}
 
 	@Override
-	public void itemStateChanged(ItemEvent e) {
+	public void itemStateChanged(ItemEvent e) 
+	{
 		int index = this.comboBox1.getSelectedIndex();
 		
 		if(e.equals(comboBox1)){

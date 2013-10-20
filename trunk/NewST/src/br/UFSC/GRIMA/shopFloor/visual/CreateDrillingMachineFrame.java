@@ -47,6 +47,8 @@ public class CreateDrillingMachineFrame extends JDialog {
 		panel10 = new JPanel();
 		panel13 = new JPanel();
 		label12 = new JLabel();
+		scrollPane5 = new JScrollPane();
+		panel23 = new JPanel();
 		panel4 = new JPanel();
 		panel6 = new JPanel();
 		label2 = new JLabel();
@@ -309,9 +311,9 @@ public class CreateDrillingMachineFrame extends JDialog {
 							{
 								panel10.setBorder(new EtchedBorder());
 								panel10.setLayout(new GridBagLayout());
-								((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+								((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {0, 0, 0};
 								((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
 								((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
 
 								//======== panel13 ========
@@ -329,9 +331,26 @@ public class CreateDrillingMachineFrame extends JDialog {
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
-								panel10.add(panel13, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								panel10.add(panel13, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
+
+								//======== scrollPane5 ========
+								{
+
+									//======== panel23 ========
+									{
+										panel23.setLayout(new GridBagLayout());
+										((GridBagLayout)panel23.getLayout()).columnWidths = new int[] {0, 0};
+										((GridBagLayout)panel23.getLayout()).rowHeights = new int[] {0, 0};
+										((GridBagLayout)panel23.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+										((GridBagLayout)panel23.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+									}
+									scrollPane5.setViewportView(panel23);
+								}
+								panel10.add(scrollPane5, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 0), 0, 0));
 							}
 							panel2.add(panel10, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -792,7 +811,7 @@ public class CreateDrillingMachineFrame extends JDialog {
 			dialogPane.add(buttonBar, BorderLayout.SOUTH);
 		}
 		contentPane.add(dialogPane, BorderLayout.CENTER);
-		setSize(685, 515);
+		setSize(720, 580);
 		setLocationRelativeTo(getOwner());
 
 		//======== panel12 ========
@@ -872,6 +891,8 @@ public class CreateDrillingMachineFrame extends JDialog {
 	private JPanel panel10;
 	private JPanel panel13;
 	private JLabel label12;
+	public JScrollPane scrollPane5;
+	protected JPanel panel23;
 	private JPanel panel4;
 	private JPanel panel6;
 	private JLabel label2;

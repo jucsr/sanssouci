@@ -180,14 +180,19 @@ public class CreateSpindle extends CreateSpindleFrame implements ActionListener,
 			DefaultTableModel modelo = (DefaultTableModel)this.janelaMillingMachine.table4.getModel();
 		
 		this.janelaMillingMachine.table4.setModel(modelo);
-		
 		modelo.addRow(linha);
-		}else{
+		this.janelaMillingMachine.scrollPane5.setViewportView(this.powerTorquePanel);
+		this.powerTorquePanel.revalidate();
+		this.janelaMillingMachine.scrollPane5.revalidate();
+		}else
+		{
 			DefaultTableModel modelo = (DefaultTableModel)this.janelaDrillingMachine.table4.getModel();
 			
 			this.janelaDrillingMachine.table4.setModel(modelo);
-			
 			modelo.addRow(linha);
+			this.janelaDrillingMachine.scrollPane5.setViewportView(this.powerTorquePanel);
+			this.powerTorquePanel.revalidate();
+			this.janelaDrillingMachine.scrollPane5.revalidate();
 		}
 		arraySpindle.add(spindle);
 		millingMachine.setItsSpindle(arraySpindle);

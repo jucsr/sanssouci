@@ -190,7 +190,7 @@ public class CreateSpindleFrame extends JDialog {
 						//======== panel3 ========
 						{
 							panel3.setLayout(new GridBagLayout());
-							((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {300, 0};
+							((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {400, 0};
 							((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {300, 0};
 							((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
 							((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};

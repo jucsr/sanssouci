@@ -969,7 +969,7 @@ public class CreateMillingMachineFrame extends JDialog {
 	private JPanel panel10;
 	private JPanel panel13;
 	private JLabel label12;
-	protected JScrollPane scrollPane5;
+	public JScrollPane scrollPane5;
 	protected JPanel panel23;
 	private JPanel panel4;
 	private JPanel panel6;

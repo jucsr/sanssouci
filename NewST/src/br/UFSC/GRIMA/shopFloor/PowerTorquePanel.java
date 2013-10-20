@@ -37,6 +37,9 @@ public class PowerTorquePanel extends JPanel
 		spaceLength = ((Double)janelaSpindle.spinner5.getValue()).doubleValue() * xScale;
 		spaceHigth = ((Double)janelaSpindle.spinner7.getValue()).doubleValue() * yScale;
 	}
+	/**
+	 * Desenha as coisas no painel
+	 */
 	public void paintComponent(Graphics g)
 	{	
 		super.paintComponent(g);
@@ -55,7 +58,7 @@ public class PowerTorquePanel extends JPanel
 			spaceHigth = ((Double)janelaSpindle.spinner6.getValue()).doubleValue() * yScalePower;
 		}
 		
-		this.tamanho = new Dimension((int)(spaceLength + 4 * recuoX), (int)(spaceHigth + 2 * recuoY));
+		this.tamanho = new Dimension((int)(spaceLength + 6 * recuoX), (int)(spaceHigth + 2 * recuoY));
 		this.setPreferredSize(this.tamanho);
 		this.revalidate();
 		
@@ -80,7 +83,7 @@ public class PowerTorquePanel extends JPanel
 		g2d.setColor(new Color(35, 142, 35));
 		ArrayList<Double> xValues = new ArrayList<Double>();
 		ArrayList<Point2D> coordinates = new ArrayList<Point2D>();
-		double k = 50;
+
 		double rotTmp = 0;
 		for(int i = 0; rotTmp < rotacaoMax; i++)
 		{
@@ -89,17 +92,13 @@ public class PowerTorquePanel extends JPanel
 		}
 		double a = - 4 * powerMax / Math.pow(1.5 * rotacaoMax, 2);
 		double b = - a * 1.5 * rotacaoMax;
-		double ymax = 0;
+		
 		for(int i = 0; i < xValues.size(); i++)
 		{
 			double xCoordinateTmp = xValues.get(i);
 			double yCoordinateTmp = a * xCoordinateTmp * xCoordinateTmp + b * xCoordinateTmp;
 			Point2D coordinateTmp = new Point2D.Double(xCoordinateTmp * xScale, yCoordinateTmp * yScalePower);
 			coordinates.add(coordinateTmp);
-			if(ymax < yCoordinateTmp)
-			{
-				ymax = yCoordinateTmp;
-			}
 		}
 		for(int i = 0; i < coordinates.size() - 1; i++)
 		{
@@ -144,12 +143,12 @@ public class PowerTorquePanel extends JPanel
 	 */
 	public void drawGrid(Graphics2D g2d)
 	{
-		g2d.setColor(new Color(168, 168, 168));
+		
 		float dash1[] = {5.0f, 2.5f};
 		g2d.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f));
+		g2d.setColor(new Color(255, 0, 0));
 		double yTmp = 0;
-		
-		for(int i = 0; yTmp < spaceHigth; i++) // Cria as linhas horizontais da grade
+		for(int i = 0; yTmp < spaceHigth; i++) // Cria as linhas horizontais da grade (Torque)
 		{
 			yTmp = i * 10 * yScale;
 			Point2D initialPoint = new Point2D.Double(0, yTmp);
@@ -158,6 +157,7 @@ public class PowerTorquePanel extends JPanel
 			g2d.draw(line);
 
 		}
+		g2d.setColor(new Color(168, 168, 168));
 		double xTmp = 0;
 		for(int i = 0; xTmp < spaceLength; i++) // Cria as linhas verticais da grade
 		{
@@ -165,6 +165,18 @@ public class PowerTorquePanel extends JPanel
 			Line2D line = new Line2D.Double(xTmp, 0, xTmp, spaceHigth);
 			g2d.draw(line);
 		}
+		g2d.setColor(new Color(35, 142, 35));
+		yTmp = 0;
+		spaceHigth = ((Double)janelaSpindle.spinner6.getValue()).doubleValue() * yScalePower;
+		for(int i = 0; yTmp < spaceHigth; i++) // cria linhas horizontais da grade (Potencia)
+		{
+			yTmp = i * yScalePower;
+			Point2D initialPoint = new Point2D.Double(0, yTmp);
+			Point2D finalPoint = new Point2D.Double(spaceLength, yTmp);
+			Line2D line = new Line2D.Double(initialPoint, finalPoint);
+			g2d.draw(line);
+		}
+		
 	}
 	/**
 	 * desenha os eixos

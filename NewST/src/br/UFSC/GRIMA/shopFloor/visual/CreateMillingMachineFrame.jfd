@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_25" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_45" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -242,7 +242,7 @@ new FormModel {
 										add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 											name: "scrollPane5"
 											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 4
+												"JavaCodeGenerator.variableModifiers": 1
 											}
 											add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 												"$columnSpecs": "0:1.0"

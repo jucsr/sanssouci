@@ -199,7 +199,7 @@ new FormModel {
 								"JavaCodeGenerator.variableModifiers": 4
 							}
 							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-								"$columnSpecs": "300:1.0"
+								"$columnSpecs": "400:1.0"
 								"$rowSpecs": "300:1.0"
 								"$hGap": 5
 								"$vGap": 5

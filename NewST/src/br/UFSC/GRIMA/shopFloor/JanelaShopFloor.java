@@ -10,15 +10,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList; //New
-import java.util.Vector; //New
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTree; //New
+import javax.swing.JTree;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.tree.DefaultMutableTreeNode; //New
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import jsdai.lang.SdaiException;
@@ -31,7 +34,7 @@ import br.UFSC.GRIMA.cad.ProjectTools;
 import br.UFSC.GRIMA.cad.visual.Progress3D;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.ToolManager;
-import br.UFSC.GRIMA.capp.Workingstep; //New
+import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
@@ -51,13 +54,18 @@ import br.UFSC.GRIMA.integracao.ProjectReader;
 import br.UFSC.GRIMA.shopFloor.visual.ShopFloorFrame;
 import br.UFSC.GRIMA.util.ToolReader;
 import br.UFSC.GRIMA.util.projeto.Projeto;
+//New
+//New
+//New
+//New
+//New
 
 /**
  * 
  * @author jc
  *
  */
-public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
+public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, TreeSelectionListener
 {
 	public ShopFloorPanel shopPanel; // painel capable of drawing
 	private ShopFloor shopFloor;
@@ -109,6 +117,8 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 				shopPanel.repaint();
 			}
 		});
+		this.tree2.addTreeSelectionListener(this);
+		this.buttonRemoverWS.addActionListener(this);
 	}
 
 	@Override
@@ -160,6 +170,11 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 		{
 			new TabelaCustosETempos(this, projetoSF);
 		}
+		if(o.equals(buttonRemoverWS)){
+			
+			this.removeMachine();
+		}
+		
 	}
 	
 	public void importarPeca() 
@@ -911,5 +926,54 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener
 			this.textArea1.setText(this.textArea1.getText() + "\nErro ao abrir " + filePath);
 
 		}
+	}
+	private void removeMachine()
+	{
+		DefaultMutableTreeNode node = null;
+		node = (DefaultMutableTreeNode) tree2.getLastSelectedPathComponent();
+		int [] tsm = new int [1];
+		tsm = tree2.getSelectionRows();
+		System.out.println("pos "+tsm[0]);
+		if(node != null){
+			
+			int pos = node.getIndex(node);
+			System.out.println("indice "+pos );
+			
+			Object objMachine = node.getUserObject();
+			String stringMachine = (String) objMachine;
+			System.out.println("------------" + stringMachine);
+
+			StringTokenizer token = new StringTokenizer(stringMachine, " ");
+			String testeMachine = token.nextToken();
+			
+			if( testeMachine.equals("Machine")){
+				
+				System.out.println("Entrou");
+				projetoSF.getShopFloor().getMachines().remove(tsm[0]-1);
+			}
+			
+		}
+		
+	}
+	/*public int getPosicaoMachine(String input){
+	
+		int n = 0;
+		StringTokenizer token = new StringTokenizer(input, " ");
+		if(token.countTokens()== 2){
+			
+			String tipo = token.nextToken();
+			String num = token.nextToken();
+	
+			n = Integer.parseInt(num); 
+			
+		}
+	
+		return n-1;
+	}*/
+
+	@Override
+	public void valueChanged(TreeSelectionEvent arg0) 
+	{
+		
 	}
 }

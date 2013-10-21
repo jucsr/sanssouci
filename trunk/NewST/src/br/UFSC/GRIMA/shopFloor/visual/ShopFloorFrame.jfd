@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_25" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_45" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -157,7 +157,7 @@ new FormModel {
 								"tabLayoutPolicy": 1
 								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 									"$columnSpecs": "0:1.0"
-									"$rowSpecs": "0:1.0, 0"
+									"$rowSpecs": "0:1.0, 0, 0"
 									"$hGap": 5
 									"$vGap": 5
 									"$alignLeft": true
@@ -177,6 +177,44 @@ new FormModel {
 											}
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+										"$columnSpecs": "0:1.0, 0, 0, 0, 0:1.0"
+										"$rowSpecs": "0"
+										"$hGap": 5
+										"$vGap": 5
+										"$alignLeft": true
+										"$alignTop": true
+									} ) {
+										name: "panel11"
+										"toolTipText": "Selecione um machining workingstep"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+										add( new FormComponent( "javax.swing.JButton" ) {
+											name: "buttonRemoverWS"
+											"text": "Remove"
+											"font": &SwingDerivedFont0 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+											"toolTipText": "Remove o machining workingstep selecionado"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 1
+										} )
+										add( new FormComponent( "javax.swing.JButton" ) {
+											name: "buttonEditarWS"
+											"text": "Edit"
+											"font": #SwingDerivedFont0
+											"toolTipText": "Edita os parâmetros do machining workingstep selecionado"
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 1
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 2
+										} )
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridy": 1
+									} )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 										"$columnSpecs": "0:1.0, 0, 0, 0:1.0"
 										"$rowSpecs": "0"
@@ -210,7 +248,7 @@ new FormModel {
 												name: "buttonRemover"
 												"text": "Remover"
 												"toolTipText": "Remove a feature selecionada na árvore"
-												"font": &SwingDerivedFont0 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+												"font": &SwingDerivedFont1 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
 												auxiliary() {
 													"JavaCodeGenerator.variableModifiers": 1
 												}
@@ -220,7 +258,7 @@ new FormModel {
 												"text": "Editar"
 												"enabled": false
 												"toolTipText": "Edita a feature selecionada na árvore"
-												"font": #SwingDerivedFont0
+												"font": #SwingDerivedFont1
 												auxiliary() {
 													"JavaCodeGenerator.variableModifiers": 1
 												}
@@ -231,7 +269,7 @@ new FormModel {
 											"gridx": 2
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-										"gridy": 1
+										"gridy": 2
 									} )
 								}, new FormLayoutConstraints( null ) {
 									"title": "Machines"
@@ -407,7 +445,7 @@ new FormModel {
 						name: "menuItemNovoProjeto"
 						"text": "Novo Projeto"
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/document-new16.png" )
-						"font": &SwingDerivedFont1 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+						"font": &SwingDerivedFont2 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -422,7 +460,7 @@ new FormModel {
 						name: "menuItemAbrir"
 						"text": "Abrir projeto localmente"
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone abrir arquivo 21.png" )
-						"font": #SwingDerivedFont1
+						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -431,7 +469,7 @@ new FormModel {
 						name: "menuItemAbrirBD"
 						"text": "Abrir projeto salvo no servidor"
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone abrir arquivo do servidor.png" )
-						"font": #SwingDerivedFont1
+						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -446,7 +484,7 @@ new FormModel {
 						name: "menuItemSalvar"
 						"text": "Salvar projeto localmente"
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone salvar.png" )
-						"font": #SwingDerivedFont1
+						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -455,7 +493,7 @@ new FormModel {
 						name: "menuItemSalvarBD"
 						"text": "Salvar projeto no servidor"
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone salvar no Bd.png" )
-						"font": #SwingDerivedFont1
+						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -470,7 +508,7 @@ new FormModel {
 						name: "menuItemImprimir"
 						"text": "Imprimir"
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/document-print.png" )
-						"font": #SwingDerivedFont1
+						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -479,7 +517,7 @@ new FormModel {
 						name: "menuItemOrdemFabricacao"
 						"text": "Enviar uma ordem de fabricação"
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconOrdemFabricacao.png" )
-						"font": #SwingDerivedFont1
+						"font": #SwingDerivedFont2
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -493,7 +531,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemSair"
 						"text": "Sair"
-						"font": #SwingDerivedFont1
+						"font": #SwingDerivedFont2
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/process-stop.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -510,7 +548,7 @@ new FormModel {
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menuCriarFeatureEm"
 						"text": "Plano de Trabalho"
-						"font": &SwingDerivedFont2 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+						"font": &SwingDerivedFont3 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 						"visible": false
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -520,7 +558,7 @@ new FormModel {
 							"text": "XY"
 							"$buttonGroup": new FormReference( "buttonGroup1" )
 							"selected": true
-							"font": &SwingDerivedFont3 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+							"font": &SwingDerivedFont4 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -529,7 +567,7 @@ new FormModel {
 							name: "fixarFaceYZ"
 							"text": "YZ"
 							"$buttonGroup": new FormReference( "buttonGroup1" )
-							"font": #SwingDerivedFont3
+							"font": #SwingDerivedFont4
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -538,7 +576,7 @@ new FormModel {
 							name: "fixarFaceXZ"
 							"text": "XZ"
 							"$buttonGroup": new FormReference( "buttonGroup1" )
-							"font": #SwingDerivedFont3
+							"font": #SwingDerivedFont4
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -547,7 +585,7 @@ new FormModel {
 							name: "fixarFaceYX"
 							"text": "YX"
 							"$buttonGroup": new FormReference( "buttonGroup1" )
-							"font": #SwingDerivedFont3
+							"font": #SwingDerivedFont4
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -556,7 +594,7 @@ new FormModel {
 							name: "fixarFaceZY"
 							"text": "ZY"
 							"$buttonGroup": new FormReference( "buttonGroup1" )
-							"font": #SwingDerivedFont3
+							"font": #SwingDerivedFont4
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -565,7 +603,7 @@ new FormModel {
 							name: "fixarFaceZX"
 							"text": "ZX"
 							"$buttonGroup": new FormReference( "buttonGroup1" )
-							"font": #SwingDerivedFont3
+							"font": #SwingDerivedFont4
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -580,7 +618,7 @@ new FormModel {
 					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 						name: "menuCriarFeatures"
 						"text": "Adicionar feature"
-						"font": #SwingDerivedFont2
+						"font": #SwingDerivedFont3
 						"enabled": false
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -589,14 +627,14 @@ new FormModel {
 							name: "menu10"
 							"text": "Criar Furo"
 							"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeFuro1.png" )
-							"font": &SwingDerivedFont4 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+							"font": &SwingDerivedFont5 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarFuro"
 								"text": "Furo com base plana"
-								"font": &SwingDerivedFont5 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+								"font": &SwingDerivedFont6 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeFuroBasePlana.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -605,7 +643,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarFuroBaseConica"
 								"text": "Furo com base cônica"
-								"font": #SwingDerivedFont5
+								"font": #SwingDerivedFont6
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeFuroBaseConica.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -614,7 +652,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarFuroBaseEsferica"
 								"text": "Furo com base esférica"
-								"font": #SwingDerivedFont5
+								"font": #SwingDerivedFont6
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeFuroBaseEsferica.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -623,7 +661,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarFuroBaseArredondada"
 								"text": "Furo com base arredondada"
-								"font": #SwingDerivedFont5
+								"font": #SwingDerivedFont6
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeFuroBaseArredondada.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -632,7 +670,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarFuroConico"
 								"text": "Furo cônico"
-								"font": #SwingDerivedFont5
+								"font": #SwingDerivedFont6
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeFuroConico.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -643,14 +681,14 @@ new FormModel {
 							name: "menu11"
 							"text": "Criar Ranhura"
 							"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeRanhura1.png" )
-							"font": #SwingDerivedFont4
+							"font": #SwingDerivedFont5
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarRanhura"
 								"text": "Perfil retangular"
-								"font": &SwingDerivedFont6 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+								"font": &SwingDerivedFont7 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeRanhuraRetangular.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -659,7 +697,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarRanhuraUPerfil"
 								"text": "Perfil U quadrado"
-								"font": #SwingDerivedFont6
+								"font": #SwingDerivedFont7
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeRanhuraUQuadrado.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -668,7 +706,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarRanhuraCircularPerfil"
 								"text": "Perfil circular"
-								"font": #SwingDerivedFont6
+								"font": #SwingDerivedFont7
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeRanhuraPerfilCircular.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -677,7 +715,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarRanhuraPerfilRoundedU"
 								"text": "Perfil U circular"
-								"font": #SwingDerivedFont6
+								"font": #SwingDerivedFont7
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeRanhuraPerfilUCircular.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -686,7 +724,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarRanhuraPerfilVee"
 								"text": "Perfil Vee"
-								"font": #SwingDerivedFont6
+								"font": #SwingDerivedFont7
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeRanhuraV.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -695,7 +733,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarRanhuraPerfilBezier"
 								"text": "Perfil geral (Bezier)"
-								"font": #SwingDerivedFont6
+								"font": #SwingDerivedFont7
 								"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeRanhuraBezier.png" )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
@@ -706,7 +744,7 @@ new FormModel {
 							name: "menu12"
 							"text": "Criar Degrau"
 							"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeDegrau1.png" )
-							"font": #SwingDerivedFont4
+							"font": #SwingDerivedFont5
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -723,14 +761,14 @@ new FormModel {
 							name: "menu13"
 							"text": "Criar Cavidade"
 							"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeCavidade1.png" )
-							"font": #SwingDerivedFont4
+							"font": #SwingDerivedFont5
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarCavidade"
 								"text": "Retangular com fundo plano"
-								"font": &SwingDerivedFont7 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+								"font": &SwingDerivedFont8 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
 								}
@@ -738,7 +776,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarCavidadeFun"
 								"text": "Retangular com fundo arredondado"
-								"font": #SwingDerivedFont7
+								"font": #SwingDerivedFont8
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
 								}
@@ -746,7 +784,7 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JMenuItem" ) {
 								name: "menuItemCriarCavidadeGeneral"
 								"text": "General Closed Profile"
-								"font": #SwingDerivedFont7
+								"font": #SwingDerivedFont8
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
 								}
@@ -764,7 +802,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "importPiece"
 						"text": "Import piece (.p21)"
-						"font": #SwingDerivedFont2
+						"font": #SwingDerivedFont3
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -772,7 +810,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemAddNewWS"
 						"text": "Add new Workingstep"
-						"font": #SwingDerivedFont2
+						"font": #SwingDerivedFont3
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -786,7 +824,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuGirar"
 						"text": "Girar Peça"
-						"font": #SwingDerivedFont2
+						"font": #SwingDerivedFont3
 						"visible": false
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -804,7 +842,7 @@ new FormModel {
 						name: "menu9"
 						"text": "Visualizar face"
 						"toolTipText": "Selecione a face que deseja ver"
-						"font": &SwingDerivedFont8 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+						"font": &SwingDerivedFont9 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 						"visible": false
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -814,7 +852,7 @@ new FormModel {
 							"text": "XY"
 							"$buttonGroup": new FormReference( "buttonGroup2" )
 							"selected": true
-							"font": &SwingDerivedFont9 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+							"font": &SwingDerivedFont10 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -823,7 +861,7 @@ new FormModel {
 							name: "vistaPlanoYZ"
 							"text": "YZ"
 							"$buttonGroup": new FormReference( "buttonGroup2" )
-							"font": #SwingDerivedFont9
+							"font": #SwingDerivedFont10
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -832,7 +870,7 @@ new FormModel {
 							name: "vistaPlanoXZ"
 							"text": "XZ"
 							"$buttonGroup": new FormReference( "buttonGroup2" )
-							"font": #SwingDerivedFont9
+							"font": #SwingDerivedFont10
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -841,7 +879,7 @@ new FormModel {
 							name: "vistaPlanoYX"
 							"text": "YX"
 							"$buttonGroup": new FormReference( "buttonGroup2" )
-							"font": #SwingDerivedFont9
+							"font": #SwingDerivedFont10
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -850,7 +888,7 @@ new FormModel {
 							name: "vistaPlanoZY"
 							"text": "ZY"
 							"$buttonGroup": new FormReference( "buttonGroup2" )
-							"font": #SwingDerivedFont9
+							"font": #SwingDerivedFont10
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -859,7 +897,7 @@ new FormModel {
 							name: "vistaPlanoZX"
 							"text": "ZX"
 							"$buttonGroup": new FormReference( "buttonGroup2" )
-							"font": #SwingDerivedFont9
+							"font": #SwingDerivedFont10
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -867,7 +905,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 							name: "vistaPlanosPrincipais"
 							"text": "Todos os planos"
-							"font": #SwingDerivedFont9
+							"font": #SwingDerivedFont10
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -882,7 +920,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "mostrarFeaturesSecundarias"
 						"text": "Mostrar features das outras faces"
-						"font": #SwingDerivedFont8
+						"font": #SwingDerivedFont9
 						"selected": true
 						"visible": false
 						auxiliary() {
@@ -892,7 +930,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "mostrarPecaBruta"
 						"text": "Mostrar Peça Bruta"
-						"font": #SwingDerivedFont8
+						"font": #SwingDerivedFont9
 						"visible": false
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -901,7 +939,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "mostrarGrade"
 						"text": "show grid"
-						"font": #SwingDerivedFont8
+						"font": #SwingDerivedFont9
 						"selected": true
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeGrade.png" )
 						auxiliary() {
@@ -911,7 +949,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "verEixos"
 						"text": "Mostrar Eixos"
-						"font": #SwingDerivedFont8
+						"font": #SwingDerivedFont9
 						"selected": true
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeEixos.png" )
 						"selectedIcon": new com.jformdesigner.model.SwingIcon( 0, "/images/emblem-default.png" )
@@ -929,7 +967,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemVerPlanosReferencia"
 						"text": "Ver Planos de referência"
-						"font": #SwingDerivedFont8
+						"font": #SwingDerivedFont9
 						"visible": false
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -961,7 +999,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "gerar3D"
 						"text": "generate 3D piece model"
-						"font": #SwingDerivedFont8
+						"font": #SwingDerivedFont9
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone3D.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -997,7 +1035,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "menuItem2"
 							"text": "Calculate Time Matrix"
-							"font": &SwingDerivedFont10 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+							"font": &SwingDerivedFont11 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -1005,7 +1043,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "menuItem3"
 							"text": "Calculate Min Time"
-							"font": #SwingDerivedFont10
+							"font": #SwingDerivedFont11
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -1042,7 +1080,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemGerar"
 						"text": "Gerar Arquivo físico (.p21)"
-						"font": &SwingDerivedFont11 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+						"font": &SwingDerivedFont12 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeParte21.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1051,7 +1089,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemAbrirSTEP"
 						"text": "Abrir Arquivo físico (.p21)"
-						"font": #SwingDerivedFont11
+						"font": #SwingDerivedFont12
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/icone abrir arquivo 21.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1078,7 +1116,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemAbout"
 						"text": "About"
-						"font": &SwingDerivedFont12 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+						"font": &SwingDerivedFont13 new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/iconeAbout.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1087,7 +1125,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemHelp"
 						"text": "Help"
-						"font": #SwingDerivedFont12
+						"font": #SwingDerivedFont13
 						"icon": new com.jformdesigner.model.SwingIcon( 0, "/images/help-browser.png" )
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
@@ -1133,52 +1171,14 @@ new FormModel {
 					}
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-				"$columnSpecs": "0:1.0, 0, 0, 0, 0:1.0"
-				"$rowSpecs": "0"
-				"$hGap": 5
-				"$vGap": 5
-				"$alignLeft": true
-				"$alignTop": true
-			} ) {
-				name: "panel11"
-				"toolTipText": "Selecione um machining workingstep"
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonAlterarWorkplan"
+				"text": "Alterar Sequência"
+				"font": #SwingDerivedFont0
+				"toolTipText": "Altera a ordem de execução do machining workingstep selecionado"
 				auxiliary() {
 					"JavaCodeGenerator.variableModifiers": 1
 				}
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonRemoverWS"
-					"text": "Remover"
-					"font": &SwingDerivedFont13 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
-					"toolTipText": "Remove o machining workingstep selecionado"
-					auxiliary() {
-						"JavaCodeGenerator.variableModifiers": 1
-					}
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridx": 1
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonEditarWS"
-					"text": "Editar"
-					"font": #SwingDerivedFont13
-					"toolTipText": "Edita os parâmetros do machining workingstep selecionado"
-					auxiliary() {
-						"JavaCodeGenerator.variableModifiers": 1
-					}
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridx": 2
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonAlterarWorkplan"
-					"text": "Alterar Sequência"
-					"font": #SwingDerivedFont13
-					"toolTipText": "Altera a ordem de execução do machining workingstep selecionado"
-					auxiliary() {
-						"JavaCodeGenerator.variableModifiers": 1
-					}
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridx": 3
-				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 1
 			} )
@@ -1232,7 +1232,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonRemoverWS2"
 					"text": "Remover"
-					"font": #SwingDerivedFont13
+					"font": #SwingDerivedFont0
 					"toolTipText": "Remove o machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -1243,7 +1243,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonEditarWS2"
 					"text": "Editar"
-					"font": #SwingDerivedFont13
+					"font": #SwingDerivedFont0
 					"toolTipText": "Edita os parâmetros do machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -1254,7 +1254,7 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonAlterarWorkplan2"
 					"text": "Alterar Sequência"
-					"font": #SwingDerivedFont13
+					"font": #SwingDerivedFont0
 					"toolTipText": "Altera a ordem de execução do machining workingstep selecionado"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1

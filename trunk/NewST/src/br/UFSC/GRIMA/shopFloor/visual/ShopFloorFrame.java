@@ -113,6 +113,9 @@ public class ShopFloorFrame extends JFrame {
 		panel6 = new JPanel();
 		scrollPaneTree = new JScrollPane();
 		tree2 = new JTree();
+		panel11 = new JPanel();
+		buttonRemoverWS = new JButton();
+		buttonEditarWS = new JButton();
 		panel7 = new JPanel();
 		buttonBoss = new JButton();
 		panel8 = new JPanel();
@@ -137,9 +140,6 @@ public class ShopFloorFrame extends JFrame {
 		panel10 = new JPanel();
 		scrollPaneWsTree = new JScrollPane();
 		workingstepsTree = new JTree();
-		panel11 = new JPanel();
-		buttonRemoverWS = new JButton();
-		buttonEditarWS = new JButton();
 		buttonAlterarWorkplan = new JButton();
 		panel12 = new JPanel();
 		scrollPaneWsTree2 = new JScrollPane();
@@ -736,15 +736,44 @@ public class ShopFloorFrame extends JFrame {
 							{
 								panel6.setLayout(new GridBagLayout());
 								((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {0, 0};
-								((GridBagLayout)panel6.getLayout()).rowHeights = new int[] {0, 0, 0};
+								((GridBagLayout)panel6.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
 								((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
-								((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
 
 								//======== scrollPaneTree ========
 								{
 									scrollPaneTree.setViewportView(tree2);
 								}
 								panel6.add(scrollPaneTree, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 5, 0), 0, 0));
+
+								//======== panel11 ========
+								{
+									panel11.setToolTipText("Selecione um machining workingstep");
+									panel11.setLayout(new GridBagLayout());
+									((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
+									((GridBagLayout)panel11.getLayout()).rowHeights = new int[] {0, 0};
+									((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel11.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+									//---- buttonRemoverWS ----
+									buttonRemoverWS.setText("Remove");
+									buttonRemoverWS.setFont(buttonRemoverWS.getFont().deriveFont(buttonRemoverWS.getFont().getStyle() | Font.BOLD));
+									buttonRemoverWS.setToolTipText("Remove o machining workingstep selecionado");
+									panel11.add(buttonRemoverWS, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- buttonEditarWS ----
+									buttonEditarWS.setText("Edit");
+									buttonEditarWS.setFont(buttonEditarWS.getFont().deriveFont(buttonEditarWS.getFont().getStyle() | Font.BOLD));
+									buttonEditarWS.setToolTipText("Edita os par\u00e2metros do machining workingstep selecionado");
+									panel11.add(buttonEditarWS, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+								}
+								panel6.add(panel11, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 0), 0, 0));
 
@@ -792,7 +821,7 @@ public class ShopFloorFrame extends JFrame {
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 								}
-								panel6.add(panel7, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+								panel6.add(panel7, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
@@ -962,40 +991,11 @@ public class ShopFloorFrame extends JFrame {
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 5, 0), 0, 0));
 
-			//======== panel11 ========
-			{
-				panel11.setToolTipText("Selecione um machining workingstep");
-				panel11.setLayout(new GridBagLayout());
-				((GridBagLayout)panel11.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
-				((GridBagLayout)panel11.getLayout()).rowHeights = new int[] {0, 0};
-				((GridBagLayout)panel11.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
-				((GridBagLayout)panel11.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
-
-				//---- buttonRemoverWS ----
-				buttonRemoverWS.setText("Remover");
-				buttonRemoverWS.setFont(buttonRemoverWS.getFont().deriveFont(buttonRemoverWS.getFont().getStyle() | Font.BOLD));
-				buttonRemoverWS.setToolTipText("Remove o machining workingstep selecionado");
-				panel11.add(buttonRemoverWS, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 0, 5), 0, 0));
-
-				//---- buttonEditarWS ----
-				buttonEditarWS.setText("Editar");
-				buttonEditarWS.setFont(buttonEditarWS.getFont().deriveFont(buttonEditarWS.getFont().getStyle() | Font.BOLD));
-				buttonEditarWS.setToolTipText("Edita os par\u00e2metros do machining workingstep selecionado");
-				panel11.add(buttonEditarWS, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 0, 5), 0, 0));
-
-				//---- buttonAlterarWorkplan ----
-				buttonAlterarWorkplan.setText("Alterar Sequ\u00eancia");
-				buttonAlterarWorkplan.setFont(buttonAlterarWorkplan.getFont().deriveFont(buttonAlterarWorkplan.getFont().getStyle() | Font.BOLD));
-				buttonAlterarWorkplan.setToolTipText("Altera a ordem de execu\u00e7\u00e3o do machining workingstep selecionado");
-				panel11.add(buttonAlterarWorkplan, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 0, 5), 0, 0));
-			}
-			panel10.add(panel11, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+			//---- buttonAlterarWorkplan ----
+			buttonAlterarWorkplan.setText("Alterar Sequ\u00eancia");
+			buttonAlterarWorkplan.setFont(buttonAlterarWorkplan.getFont().deriveFont(buttonAlterarWorkplan.getFont().getStyle() | Font.BOLD));
+			buttonAlterarWorkplan.setToolTipText("Altera a ordem de execu\u00e7\u00e3o do machining workingstep selecionado");
+			panel10.add(buttonAlterarWorkplan, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
 		}
@@ -1183,6 +1183,9 @@ public class ShopFloorFrame extends JFrame {
 	private JPanel panel6;
 	public JScrollPane scrollPaneTree;
 	public JTree tree2;
+	public JPanel panel11;
+	public JButton buttonRemoverWS;
+	public JButton buttonEditarWS;
 	private JPanel panel7;
 	public JButton buttonBoss;
 	private JPanel panel8;
@@ -1207,9 +1210,6 @@ public class ShopFloorFrame extends JFrame {
 	private JPanel panel10;
 	public JScrollPane scrollPaneWsTree;
 	public JTree workingstepsTree;
-	public JPanel panel11;
-	public JButton buttonRemoverWS;
-	public JButton buttonEditarWS;
 	public JButton buttonAlterarWorkplan;
 	private JPanel panel12;
 	public JScrollPane scrollPaneWsTree2;

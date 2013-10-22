@@ -126,7 +126,14 @@ public class PowerTorquePanel extends JPanel
 		for(int i = 0; i < xValues.size(); i++)
 		{
 			double xCoordinateTmp = xValues.get(i);
-			double yCoordinateTmp = Math.exp(Math.log(torqueMax) - 1 / torqueMax / k * xCoordinateTmp);
+			double yCoordinateTmp;
+			if(xCoordinateTmp < 1500) // parte linear para baixas rotacoes
+			{
+				yCoordinateTmp = torqueMax;
+			} else // queda do torque devido ao incremento do numero das rotacoes
+			{
+				yCoordinateTmp = Math.exp(Math.log(torqueMax) - 1 / torqueMax / k * xCoordinateTmp);
+			}
 			Point2D coordinateTmp = new Point2D.Double(xCoordinateTmp * xScale, yCoordinateTmp * yScale);
 			coordinates.add(coordinateTmp);
 			

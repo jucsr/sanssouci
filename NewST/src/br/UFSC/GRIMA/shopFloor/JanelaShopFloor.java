@@ -933,27 +933,41 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		node = (DefaultMutableTreeNode) tree2.getLastSelectedPathComponent();
 		int [] tsm = new int [1];
 		tsm = tree2.getSelectionRows();
-		System.out.println("pos "+tsm[0]);
 		if(node != null){
 			
 			int pos = node.getIndex(node);
-			System.out.println("indice "+pos );
 			
 			Object objMachine = node.getUserObject();
 			String stringMachine = (String) objMachine;
-			System.out.println("------------" + stringMachine);
 
 			StringTokenizer token = new StringTokenizer(stringMachine, " ");
 			String testeMachine = token.nextToken();
-			
 			if( testeMachine.equals("Machine")){
+				String name = this.projetoSF.getShopFloor().getMachines().get(tsm[0]-1).getItsId();
 				
-				System.out.println("Entrou");
-				projetoSF.getShopFloor().getMachines().remove(tsm[0]-1);
+				int i = JOptionPane.showConfirmDialog(
+						this,
+						"          You clicked in remove a machine, "
+								+ "                      \n"
+								+ "           are you shure you want remove it? ",
+								"remove Machine",
+								JOptionPane.OK_CANCEL_OPTION);
+				if (i == 0) {
+					
+					this.projetoSF.getShopFloor().getMachines().remove(tsm[0]-1);
+					this.atualizarArvoreMaquinas1();
+					this.shopPanel.repaint();
+					this.textArea1.setText(this.textArea1.getText() + "\nThe machine: '" + name.toUpperCase() + "' was remove with success!");
+				}
+			} else
+			{
+				JOptionPane.showMessageDialog(
+						null,
+						"Invalid selection",
+						"this is not a machine",
+						JOptionPane.ERROR_MESSAGE);
 			}
-			
 		}
-		
 	}
 	/*public int getPosicaoMachine(String input){
 	

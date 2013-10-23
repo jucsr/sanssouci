@@ -127,12 +127,12 @@ public class PowerTorquePanel extends JPanel
 		{
 			double xCoordinateTmp = xValues.get(i);
 			double yCoordinateTmp;
-			if(xCoordinateTmp < 1500) // parte linear para baixas rotacoes
+			if(xCoordinateTmp < rotacaoMax / 6) // parte linear para baixas rotacoes
 			{
 				yCoordinateTmp = torqueMax;
 			} else // queda do torque devido ao incremento do numero das rotacoes
 			{
-				yCoordinateTmp = Math.exp(Math.log(torqueMax) - 1 / torqueMax / k * xCoordinateTmp);
+				yCoordinateTmp = torqueMax * 0.1 + Math.exp(Math.log(torqueMax * 0.9) - 0.0005 * (xCoordinateTmp - rotacaoMax / 6));
 			}
 			Point2D coordinateTmp = new Point2D.Double(xCoordinateTmp * xScale, yCoordinateTmp * yScale);
 			coordinates.add(coordinateTmp);
@@ -223,8 +223,10 @@ public class PowerTorquePanel extends JPanel
 		for(int i = 0; xTmp < spaceLength; i++)
 		{
 			xTmp = i * 1000 * xScale;
-			g2d.drawString("" + (xTmp / xScale), (int)(xTmp), 0);
+			g2d.drawString("" + (xTmp / xScale / 1000), (int)(xTmp), 0);
 		}
+		g2d.drawString("rpm x 1000", (int)spaceLength, 10);
+
 		g2d.scale(1, -1);
 	}
 }

@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 public class PowerTorquePanel extends JPanel
 {
 	private CreateSpindle janelaSpindle;
-	private double recuoX = 10;
+	private double recuoX = 20;
 	private double recuoY = 10;
 	public double yScale = 5;
 	public double yScalePower = 40;
@@ -58,7 +58,7 @@ public class PowerTorquePanel extends JPanel
 			spaceHigth = ((Double)janelaSpindle.spinner6.getValue()).doubleValue() * yScalePower;
 		}
 		
-		this.tamanho = new Dimension((int)(spaceLength + 6 * recuoX), (int)(spaceHigth + 2 * recuoY));
+		this.tamanho = new Dimension((int)(spaceLength + 4 * recuoX), (int)(spaceHigth + 3 * recuoY));
 		this.setPreferredSize(this.tamanho);
 		this.revalidate();
 		
@@ -194,7 +194,9 @@ public class PowerTorquePanel extends JPanel
 		g2d.scale(1, -1);
 		g2d.setStroke(new BasicStroke());
 		g2d.setColor(new Color(255, 0, 0));
-
+		Font axisScalesFont = new Font(Font.DIALOG, Font.PLAIN, 12);
+		Font labelScalesFont = new Font(Font.SERIF, Font.BOLD, 12);
+		g2d.setFont(axisScalesFont);
 		double yTmp = 0;
 		/*
 		 * Desenha escala Torque
@@ -204,9 +206,14 @@ public class PowerTorquePanel extends JPanel
 			yTmp = i * 10 * yScale;
 			g2d.drawString("" + yTmp / yScale, 0, (int)(-yTmp));
 		}
+		g2d.rotate(-Math.PI / 2);
+		g2d.setFont(labelScalesFont);
+		g2d.drawString("TORQUE [N-m]", (int)(spaceHigth / 2 - 50), (int)(-10));
+		g2d.rotate(Math.PI / 2);
 		/*
 		 * Desenha escala Potencia
 		 */
+		g2d.setFont(axisScalesFont);
 		spaceHigth = ((Double)janelaSpindle.spinner6.getValue()).doubleValue() * yScalePower;
 		yTmp = 0;
 		g2d.setColor(new Color(35, 142, 35));
@@ -215,17 +222,23 @@ public class PowerTorquePanel extends JPanel
 			yTmp = i * yScalePower;
 			g2d.drawString("" + (yTmp / yScalePower), (int)spaceLength, (int)(-yTmp));
 		}
+		g2d.rotate(-Math.PI / 2);
+		g2d.setFont(labelScalesFont);
+		g2d.drawString("POWER [KW]", (int)(spaceHigth / 2 - 40), (int)(spaceLength + 40));
+		g2d.rotate(Math.PI / 2);
 		/*
 		 * Desenha escala Rotacoes
 		 */
+		g2d.setFont(axisScalesFont);
 		g2d.setColor(new Color(79, 79, 47));
 		double xTmp = 0;
 		for(int i = 0; xTmp < spaceLength; i++)
 		{
 			xTmp = i * 1000 * xScale;
-			g2d.drawString("" + (xTmp / xScale / 1000), (int)(xTmp), 0);
+			g2d.drawString("" + (xTmp / xScale / 1000), (int)(xTmp), 10);
 		}
-		g2d.drawString("rpm x 1000", (int)spaceLength, 10);
+		g2d.setFont(labelScalesFont);
+		g2d.drawString("RPM x 1000", (int)(spaceLength / 2 - 20), 20);
 
 		g2d.scale(1, -1);
 	}

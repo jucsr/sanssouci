@@ -53,6 +53,7 @@ public class CreateMillingMachineFrame extends JDialog {
 		label25 = new JLabel();
 		panel10 = new JPanel();
 		panel13 = new JPanel();
+		panel24 = new JPanel();
 		label12 = new JLabel();
 		scrollPane5 = new JScrollPane();
 		panel23 = new JPanel();
@@ -343,9 +344,22 @@ public class CreateMillingMachineFrame extends JDialog {
 									((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
 									((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-									//---- label12 ----
-									label12.setIcon(new ImageIcon(getClass().getResource("/images/millingMachine.png")));
-									panel13.add(label12, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+									//======== panel24 ========
+									{
+										panel24.setBorder(new EtchedBorder());
+										panel24.setLayout(new GridBagLayout());
+										((GridBagLayout)panel24.getLayout()).columnWidths = new int[] {0, 0};
+										((GridBagLayout)panel24.getLayout()).rowHeights = new int[] {0, 0};
+										((GridBagLayout)panel24.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+										((GridBagLayout)panel24.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+										//---- label12 ----
+										label12.setIcon(new ImageIcon(getClass().getResource("/images/millingMachine.png")));
+										panel24.add(label12, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+											new Insets(0, 0, 0, 0), 0, 0));
+									}
+									panel13.add(panel24, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 5), 0, 0));
 
@@ -968,6 +982,7 @@ public class CreateMillingMachineFrame extends JDialog {
 	private JLabel label25;
 	private JPanel panel10;
 	private JPanel panel13;
+	private JPanel panel24;
 	private JLabel label12;
 	public JScrollPane scrollPane5;
 	protected JPanel panel23;

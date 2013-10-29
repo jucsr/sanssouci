@@ -1,5 +1,7 @@
 package br.UFSC.GRIMA.shopFloor;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -28,7 +30,22 @@ public class TabelaTempos extends TabelaTemposFrame
 		this.init();
 		this.calculateTempo();
 		this.setVisible(true); 
-		
+		this.cancelButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				dispose();
+			}
+		});
+		this.okButton.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
 //		for(int i = 0; i < workingsteps.size(); i++)
 //		{
 //			System.err.println("Ap ====== "+workingsteps.get(i).getCondicoesUsinagem().getAp());

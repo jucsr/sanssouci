@@ -282,6 +282,16 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		new MapeadoraDeWorkingsteps(this.projeto); //New
 		this.atualizarArvorePrecedenciasFeatures();
 //		atualizarArvorePrecendences(this.projeto);
+		
+		Workingstep ws = (Workingstep)this.projeto.getWorkingsteps().get(0).elementAt(0);
+		ArrayList<Workingstep> wsFace = new ArrayList<Workingstep>();
+		for(int i = 0; i < this.projeto.getWorkingsteps().get(0).size(); i++)
+		{
+			wsFace.add(this.projeto.getWorkingsteps().get(0).elementAt(i));
+		}
+		ArrayList<Workingstep> wsPoscedentes = ws.getWorkingstepsPoscedentesDiretos(wsFace);
+		System.err.println("WS POSCEDENTES = " + wsPoscedentes);
+		
 		this.atualizarArvorePrecendencesWorkingsteps();
 		this.gerar3D();
 	}

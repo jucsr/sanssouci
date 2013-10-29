@@ -1,6 +1,8 @@
 package br.UFSC.GRIMA.shopFloor;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -34,6 +36,22 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 //		this.fillTables();
 		this.fillTables1();
 		this.setVisible(true);
+		this.okButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
+		this.cancelButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
 	}
 	private void fillTables1()
 	{

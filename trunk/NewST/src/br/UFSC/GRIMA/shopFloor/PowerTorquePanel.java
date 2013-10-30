@@ -194,8 +194,8 @@ public class PowerTorquePanel extends JPanel
 		g2d.scale(1, -1);
 		g2d.setStroke(new BasicStroke());
 		g2d.setColor(new Color(255, 0, 0));
-		Font axisScalesFont = new Font(Font.DIALOG, Font.PLAIN, 12);
-		Font labelScalesFont = new Font(Font.SERIF, Font.BOLD, 12);
+		Font axisScalesFont = new Font("Consolas", Font.PLAIN, 12);
+		Font labelScalesFont = new Font("Tahoma", Font.BOLD, 12);
 		g2d.setFont(axisScalesFont);
 		double yTmp = 0;
 		/*

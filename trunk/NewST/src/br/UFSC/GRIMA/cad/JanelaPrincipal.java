@@ -574,6 +574,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 	}
 
 	public void removerFeature() {
+		
 		boolean ok = false;
 		DefaultMutableTreeNode node1 = null, node2 = null;
 		node1 = (DefaultMutableTreeNode) tree2.getLastSelectedPathComponent();
@@ -588,7 +589,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 
 			String stringPai = (String) objFilho;
 			String stringFilho = (String) objPai;
-			
+			System.out.println("pai = " + stringPai);
 			Face face = this.getFace(stringPai);
 			if (face != null) {
 				int pos = getPosicaoFeature(stringFilho, face);

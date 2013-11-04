@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_45" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.7.0_25" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -402,6 +402,28 @@ new FormModel {
 									} )
 								}, new FormLayoutConstraints( null ) {
 									"title": "piece"
+								} )
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+									"$columnSpecs": "0, 0:1.0"
+									"$rowSpecs": "0, 0:1.0, 0"
+									"$hGap": 5
+									"$vGap": 5
+									"$alignLeft": true
+									"$alignTop": true
+								} ) {
+									name: "panel17"
+									add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+										name: "scrollPane2"
+										auxiliary() {
+											"JavaCodeGenerator.variableModifiers": 1
+										}
+									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+										"gridx": 1
+										"gridy": 1
+										"gridheight": 2
+									} )
+								}, new FormLayoutConstraints( null ) {
+									"title": "WS Precedences"
 								} )
 							}, new FormLayoutConstraints( class java.lang.String ) {
 								"value": "right"

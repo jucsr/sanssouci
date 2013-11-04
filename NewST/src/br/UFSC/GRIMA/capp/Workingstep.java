@@ -39,6 +39,9 @@ public class Workingstep implements Serializable{
 	private double custo;
 	private Workingstep workingstepPrecedente;
 	
+	private int NivelXWSPrecedente;
+	private int NivelYWSPrecedente;
+	
 	public Workingstep(){
 
 	}
@@ -277,5 +280,17 @@ public class Workingstep implements Serializable{
 	}
 	public void setCustosNasMaquinas(ArrayList<Double> custosNasMaquinas) {
 		this.custosNasMaquinas = custosNasMaquinas;
+	}
+	public int getNivelXWSPrecedente() {
+		return NivelXWSPrecedente;
+	}
+	public void setNivelXWSPrecedente(int nivelXWSPrecedente) {
+		NivelXWSPrecedente = nivelXWSPrecedente;
+	}
+	public int getNivelYWSPrecedente() {
+		return NivelYWSPrecedente;
+	}
+	public void setNivelYWSPrecedente(int nivelYWSPrecedente) {
+		NivelYWSPrecedente = nivelYWSPrecedente;
 	}
 }

@@ -76,6 +76,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 	private Face faceVisualizada = null; //New
 	private Face faceTrabalho = null; //New
 	public DesenhadorDeFaces desenhador;
+	public WSPrecedencesPanel desenhadorPrecedencias;
 	
 	public JanelaShopFloor(ShopFloor shopFloorNew, ProjetoSF projetoSFNew)
 	{
@@ -260,6 +261,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		this.projeto.setStatement(new ToolReader().getStatement());
 		
 		
+		
 		//setDoneCAPP(false);
 
 		ProjectTools.setProjectToolsDone(true);
@@ -279,20 +281,20 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		
 		//this.atualizarArvorePrecedencias(); //New
 		
+		
+		
 		new MapeadoraDeWorkingsteps(this.projeto); //New
 		this.atualizarArvorePrecedenciasFeatures();
 //		atualizarArvorePrecendences(this.projeto);
-		
-		Workingstep ws = (Workingstep)this.projeto.getWorkingsteps().get(0).elementAt(0);
-		ArrayList<Workingstep> wsFace = new ArrayList<Workingstep>();
-		for(int i = 0; i < this.projeto.getWorkingsteps().get(0).size(); i++)
-		{
-			wsFace.add(this.projeto.getWorkingsteps().get(0).elementAt(i));
-		}
-		ArrayList<Workingstep> wsPoscedentes = ws.getWorkingstepsPoscedentesDiretos(wsFace);
-		System.err.println("WS POSCEDENTES = " + wsPoscedentes);
-		
 		this.atualizarArvorePrecendencesWorkingsteps();
+		
+		// inicializa desehador de precedencias
+		
+		this.desenhadorPrecedencias = new WSPrecedencesPanel(projetoSF);
+		scrollPane2.setViewportView(desenhadorPrecedencias);
+		desenhadorPrecedencias.revalidate();
+		scrollPane2.revalidate();
+		
 		this.gerar3D();
 	}
 	public void gerar3D() 

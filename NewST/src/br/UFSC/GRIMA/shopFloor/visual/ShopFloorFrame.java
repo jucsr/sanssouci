@@ -135,6 +135,8 @@ public class ShopFloorFrame extends JFrame {
 		panel2 = new JPanel();
 		internalFrame1 = new JInternalFrame();
 		panel15 = new JPanel();
+		panel17 = new JPanel();
+		scrollPane2 = new JScrollPane();
 		scrollPane3 = new JScrollPane();
 		textArea1 = new JTextArea();
 		panel10 = new JPanel();
@@ -934,6 +936,20 @@ public class ShopFloorFrame extends JFrame {
 							}
 							tabbedPane2.addTab("piece", splitPane3);
 
+
+							//======== panel17 ========
+							{
+								panel17.setLayout(new GridBagLayout());
+								((GridBagLayout)panel17.getLayout()).columnWidths = new int[] {0, 0, 0};
+								((GridBagLayout)panel17.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+								((GridBagLayout)panel17.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel17.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+								panel17.add(scrollPane2, new GridBagConstraints(1, 1, 1, 2, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 0), 0, 0));
+							}
+							tabbedPane2.addTab("WS Precedences", panel17);
+
 						}
 						splitPane2.setRightComponent(tabbedPane2);
 					}
@@ -1205,6 +1221,8 @@ public class ShopFloorFrame extends JFrame {
 	public JPanel panel2;
 	private JInternalFrame internalFrame1;
 	public JPanel panel15;
+	private JPanel panel17;
+	public JScrollPane scrollPane2;
 	private JScrollPane scrollPane3;
 	public JTextArea textArea1;
 	private JPanel panel10;

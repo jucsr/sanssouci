@@ -36,10 +36,11 @@ public class WSPrecedencesPanel extends JPanel
 		setPreferredSize(dimension);
 		this.revalidate();
 
-		int x = 0, y = 0, contWsTemp = 0, contY = 0;
+		int x = 0, y = 0, nivelArvore = 0, contY = 0;
 		Workingstep wstTemp = null;
 		ArrayList<Ellipse2D> bolinhas = new ArrayList<Ellipse2D>();
-		Ellipse2D bolinha = null, bolinhaTeste = null;
+		Ellipse2D bolinha = null;
+		ArrayList<ArrayList<Workingstep>> novoWorkingsteps = new ArrayList<ArrayList<Workingstep>>();
 		
 		
 		super.paintComponent(g);
@@ -47,13 +48,45 @@ public class WSPrecedencesPanel extends JPanel
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
 		
+		// Enchendo Array de Array
 		
 		for(int i = 0; i < workingsteps.size(); i++){
 
 			wstTemp = workingsteps.get(i);
-			
+			ArrayList<Workingstep> nivelTmp = new ArrayList<Workingstep>();
 			if(workingsteps.get(i).getWorkingstepPrecedente() == null){
 		
+				nivelTmp.add(workingsteps.get(i));
+				novoWorkingsteps.add(nivelTmp);
+				workingsteps.get(i).setIndiceArvore(nivelArvore);
+				nivelArvore++;
+				
+			}
+			
+			for(int j = 0; j < workingsteps.size(); j++){
+				
+				if(workingsteps.get(j).getWorkingstepPrecedente() == wstTemp){
+					
+					novoWorkingsteps.get(wstTemp.getIndiceArvore()).add(workingsteps.get(j));
+					
+					workingsteps.get(j).setIndiceArvore(wstTemp.getIndiceArvore());
+				
+				}
+			}
+		}
+		
+		// Imprimindo Ws Precendetes
+		
+		for(int w = 0; w < nivelArvore; w++){
+			
+		
+		for(int i = 0; i < novoWorkingsteps.get(w).size(); i++){
+
+			wstTemp = novoWorkingsteps.get(w).get(i);
+			
+			if(novoWorkingsteps.get(w).get(i).getWorkingstepPrecedente() == null){
+		
+				
 				x = 0;
 				y = contY;
 				g2d.setColor(Color.BLUE);
@@ -69,8 +102,8 @@ public class WSPrecedencesPanel extends JPanel
 				g2d.setFont(new Font("Consolas", Font.BOLD, 16));
 				g2d.drawString(strID, x*80 + 40, (contY)*60 + 43);
 				
-				workingsteps.get(i).setNivelXWSPrecedente(x);
-				workingsteps.get(i).setNivelYWSPrecedente(y);
+				novoWorkingsteps.get(w).get(i).setNivelXWSPrecedente(x);
+				novoWorkingsteps.get(w).get(i).setNivelYWSPrecedente(y);
 				
 			}
 			
@@ -79,9 +112,10 @@ public class WSPrecedencesPanel extends JPanel
 			x++;	
 	
 			
-			for(int j = 0; j < workingsteps.size(); j++){
+			for(int j = 0; j < novoWorkingsteps.get(w).size(); j++){
 				
-				if(workingsteps.get(j).getWorkingstepPrecedente() == wstTemp){
+				if(novoWorkingsteps.get(w).get(j).getWorkingstepPrecedente() == wstTemp){
+					
 					
 					g2d.setColor(Color.BLUE);
 					bolinha = new Ellipse2D.Double(x*80 + 30, y*60 + 20, 40, 40);
@@ -108,8 +142,9 @@ public class WSPrecedencesPanel extends JPanel
 					g2d.setColor(new Color(255, 255, 255));
 					g2d.drawString(strID, x*80 + 40, y*60 + 43);
 					
-					workingsteps.get(j).setNivelXWSPrecedente(x);
-					workingsteps.get(j).setNivelYWSPrecedente(y);
+					novoWorkingsteps.get(w).get(j).setNivelXWSPrecedente(x);
+					novoWorkingsteps.get(w).get(j).setNivelYWSPrecedente(y);
+			
 					y++;
 				
 				}
@@ -117,5 +152,6 @@ public class WSPrecedencesPanel extends JPanel
 			if(contY < y) contY = y;
 			y = 0;
 		}
+	}
 	}
 }

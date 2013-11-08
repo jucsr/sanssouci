@@ -41,6 +41,7 @@ public class Workingstep implements Serializable{
 	
 	private int NivelXWSPrecedente;
 	private int NivelYWSPrecedente;
+	private int IndiceArvore;
 	
 	public Workingstep(){
 
@@ -292,5 +293,11 @@ public class Workingstep implements Serializable{
 	}
 	public void setNivelYWSPrecedente(int nivelYWSPrecedente) {
 		NivelYWSPrecedente = nivelYWSPrecedente;
+	}
+	public int getIndiceArvore() {
+		return IndiceArvore;
+	}
+	public void setIndiceArvore(int indiceArvore) {
+		IndiceArvore = indiceArvore;
 	}
 }

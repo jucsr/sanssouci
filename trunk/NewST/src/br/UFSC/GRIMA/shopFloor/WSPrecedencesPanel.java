@@ -26,9 +26,8 @@ public class WSPrecedencesPanel extends JPanel
 		{
 			workingsteps.add(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(i));
 		}
+				
 	}
-
-
 	public void paintComponent(Graphics g)
 	{ 
 		int xDimension, yDimension;
@@ -59,6 +58,7 @@ public class WSPrecedencesPanel extends JPanel
 				nivelTmp.add(workingsteps.get(i));
 				novoWorkingsteps.add(nivelTmp);
 				workingsteps.get(i).setIndiceArvore(nivelArvore);
+				workingsteps.get(i).setWSPrecedenteID(i*10 + 10);
 				nivelArvore++;
 				
 			}
@@ -68,11 +68,11 @@ public class WSPrecedencesPanel extends JPanel
 				if(workingsteps.get(j).getWorkingstepPrecedente() == wstTemp){
 					
 					novoWorkingsteps.get(wstTemp.getIndiceArvore()).add(workingsteps.get(j));
-					
+					workingsteps.get(j).setWSPrecedenteID(j*10+10);
 					workingsteps.get(j).setIndiceArvore(wstTemp.getIndiceArvore());
-				
 				}
 			}
+			
 		}
 		
 		// Imprimindo Ws Precendetes
@@ -94,7 +94,7 @@ public class WSPrecedencesPanel extends JPanel
 				bolinhas.add(bolinha);
 				g2d.fill(bolinha);
 
-				int id = 10 + i*10;
+				int id = novoWorkingsteps.get(w).get(i).getWSPrecedenteID();
 
 				System.err.println("------------->> ID 1 = "+id);				
 				String strID = "" + id;
@@ -136,7 +136,7 @@ public class WSPrecedencesPanel extends JPanel
 					g2d.setStroke(new BasicStroke(2f));
 					g2d.drawLine(x*80 + 40, y*60 + 43, wstTemp.getNivelXWSPrecedente()*80 + 40, wstTemp.getNivelYWSPrecedente()*60 + 43);
 			
-					int id = 10 + j*10;
+					int id = novoWorkingsteps.get(w).get(j).getWSPrecedenteID();
 					System.err.println("------------->> ID 2 = "+id);		
 					String strID = "" + id;
 					g2d.setColor(new Color(255, 255, 255));

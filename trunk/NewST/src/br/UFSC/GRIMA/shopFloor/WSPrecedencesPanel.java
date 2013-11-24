@@ -17,8 +17,10 @@ import br.UFSC.GRIMA.capp.Workingstep;
 public class WSPrecedencesPanel extends JPanel
 {
 	public ProjetoSF projetoSF;
-	public ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
 	Graphics2D g2d;
+	public ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
+	public ArrayList<Ellipse2D> clickWst;
+	public ArrayList<Integer> IdBolinha ;
 	
 	public WSPrecedencesPanel(ProjetoSF projetoSF){
 	
@@ -26,20 +28,41 @@ public class WSPrecedencesPanel extends JPanel
 		{
 			workingsteps.add(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(i));
 		}
-				
+
 	}
+	void ClickBolinhas(ArrayList<Ellipse2D> clickBolinhas){
+		
+		clickWst = clickBolinhas;
+	}
+	ArrayList<Ellipse2D> ClickWorkingsteps(){
+		
+		return clickWst;
+	}
+	void setIdClickBolinha (ArrayList<Integer> click) {
+		
+		IdBolinha = click;
+	}
+	ArrayList<Integer> getIdClickBolinha (){
+		
+		return IdBolinha;
+	}
+	
+	
 	public void paintComponent(Graphics g)
 	{ 
-		int xDimension, yDimension;
+	
+	//	int xDimension, yDimension;
 		Dimension dimension = new Dimension(1000, 1000);
 		setPreferredSize(dimension);
 		this.revalidate();
 
-		int x = 0, y = 0, nivelArvore = 0, contY = 0;
+		int x = 0, y = 0, nivelArvore = 0, contY = 0, q = 0;
+		
 		Workingstep wstTemp = null;
-		ArrayList<Ellipse2D> bolinhas = new ArrayList<Ellipse2D>();
 		Ellipse2D bolinha = null;
 		ArrayList<ArrayList<Workingstep>> novoWorkingsteps = new ArrayList<ArrayList<Workingstep>>();
+		ArrayList<Ellipse2D> bolinhas = new ArrayList<Ellipse2D>();
+		ArrayList<Integer> IdBolinhaTemp = new ArrayList<Integer>();
 		
 		
 		super.paintComponent(g);
@@ -59,6 +82,7 @@ public class WSPrecedencesPanel extends JPanel
 				novoWorkingsteps.add(nivelTmp);
 				workingsteps.get(i).setIndiceArvore(nivelArvore);
 				workingsteps.get(i).setWSPrecedenteID(i*10 + 10);
+				//IdBolinha.add(i*10+10);
 				nivelArvore++;
 				
 			}
@@ -70,6 +94,7 @@ public class WSPrecedencesPanel extends JPanel
 					novoWorkingsteps.get(wstTemp.getIndiceArvore()).add(workingsteps.get(j));
 					workingsteps.get(j).setWSPrecedenteID(j*10+10);
 					workingsteps.get(j).setIndiceArvore(wstTemp.getIndiceArvore());
+					//IdBolinha.add(j*10+10);
 				}
 			}
 			
@@ -86,17 +111,17 @@ public class WSPrecedencesPanel extends JPanel
 			
 			if(novoWorkingsteps.get(w).get(i).getWorkingstepPrecedente() == null){
 		
-				
 				x = 0;
 				y = contY;
 				g2d.setColor(Color.BLUE);
 		    	bolinha = new Ellipse2D.Double(x*80 + 30,(contY)*60 + 20 , 40, 40);
 				bolinhas.add(bolinha);
+				q++;
 				g2d.fill(bolinha);
 
 				int id = novoWorkingsteps.get(w).get(i).getWSPrecedenteID();
-
-				System.err.println("------------->> ID 1 = "+id);				
+				IdBolinhaTemp.add(id);
+							
 				String strID = "" + id;
 				g2d.setColor(new Color(255, 255, 255));
 				g2d.setFont(new Font("Consolas", Font.BOLD, 16));
@@ -110,8 +135,7 @@ public class WSPrecedencesPanel extends JPanel
 			y = wstTemp.getNivelYWSPrecedente();
 			x = wstTemp.getNivelXWSPrecedente();
 			x++;	
-	
-			
+		
 			for(int j = 0; j < novoWorkingsteps.get(w).size(); j++){
 				
 				if(novoWorkingsteps.get(w).get(j).getWorkingstepPrecedente() == wstTemp){
@@ -131,12 +155,14 @@ public class WSPrecedencesPanel extends JPanel
 						}
 					}
 					bolinhas.add(bolinha);
-						
+					
 					g2d.fill(bolinha);
 					g2d.setStroke(new BasicStroke(2f));
 					g2d.drawLine(x*80 + 40, y*60 + 43, wstTemp.getNivelXWSPrecedente()*80 + 40, wstTemp.getNivelYWSPrecedente()*60 + 43);
 			
 					int id = novoWorkingsteps.get(w).get(j).getWSPrecedenteID();
+					
+					IdBolinhaTemp.add(id);
 					System.err.println("------------->> ID 2 = "+id);		
 					String strID = "" + id;
 					g2d.setColor(new Color(255, 255, 255));
@@ -146,12 +172,16 @@ public class WSPrecedencesPanel extends JPanel
 					novoWorkingsteps.get(w).get(j).setNivelYWSPrecedente(y);
 			
 					y++;
-				
 				}
 			}
 			if(contY < y) contY = y;
 			y = 0;
+			}
+			
 		}
-	}
-	}
+		ClickBolinhas(bolinhas);
+		setIdClickBolinha(IdBolinhaTemp);
+		
+	}	
+	
 }

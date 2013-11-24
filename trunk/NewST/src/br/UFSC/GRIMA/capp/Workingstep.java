@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.capp;
 
+import java.awt.geom.Ellipse2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -43,6 +44,7 @@ public class Workingstep implements Serializable{
 	private int NivelYWSPrecedente;
 	private int IndiceArvore;
 	private int WSPrecedenteID;
+
 	
 	public Workingstep(){
 

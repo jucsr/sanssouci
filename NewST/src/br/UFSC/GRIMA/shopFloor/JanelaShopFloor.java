@@ -4,6 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +28,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import sun.reflect.generics.tree.BottomSignature;
+
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiSession;
 import br.UFSC.GRIMA.acceptance.STEP_NCReader;
@@ -36,17 +42,29 @@ import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
+import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.entidades.features.Cavidade;
+import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.Ranhura;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
+import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
+import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
@@ -72,6 +90,8 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 	private ProjetoSF projetoSF;
 	private double zooming =0;
 	
+	JanelaShopFloor janelaShopFloor;
+
 	private Projeto projeto = null; //New
 	private Face faceVisualizada = null; //New
 	private Face faceTrabalho = null; //New
@@ -91,6 +111,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		this.atualizarArvorePrecendences(); //New
 //		this.atualizarArvoreMaquinas();
 		this.atualizarArvoreMaquinas1();
+		
 	}
 
 	private void addicionarOuvidores() 
@@ -120,6 +141,8 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		});
 		this.tree2.addTreeSelectionListener(this);
 		this.buttonRemoverWS.addActionListener(this);
+	
+		
 	}
 
 	@Override
@@ -180,6 +203,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 	
 	public void importarPeca() 
 	{
+		
 		FileDialog fd = new FileDialog(this, "Abrir", FileDialog.LOAD);
 
 		fd.setVisible(true);
@@ -294,9 +318,70 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		scrollPane2.setViewportView(desenhadorPrecedencias);
 		desenhadorPrecedencias.revalidate();
 		scrollPane2.revalidate();
+		janelaShopFloor = new JanelaShopFloor(shopFloor, projetoSF);
+		
+		
+		 scrollPane2.addMouseListener(new MouseListener() {  
+             public void mouseClicked(MouseEvent e) {  
+                
+            	 double x = e.getX();  
+            	 double y= e.getY(); 
+            	 
+            	 for(int i = 0; i < desenhadorPrecedencias.ClickWorkingsteps().size(); i++){
+            		 
+			     	if(desenhadorPrecedencias.ClickWorkingsteps().get(i).contains(x,y)){
+			     		
+			     		System.err.println("clique");
+			     	
+			     	int id = (desenhadorPrecedencias.getIdClickBolinha().get(i));	
+			     	if(id == 10){
+			     		id = 0;
+			     	}else{
+			     		
+			     		id = (id -10)/10;
+			     	}
+			     	System.err.println("--------------->> id = "+ id);
+			     	
+			     		if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == FaceMill.class ){
+			     				
+			     			System.out.println("-------------------------->> Entrou");
+			     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editFacemillWS.revalidate();
+			     			
+			     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() ==  BottomAndSideFinishMilling.class ){
+			     		
+			     			System.out.println("-------------------------->> Entrou2");
+			     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editFacemillWS.revalidate();
+			     			
+			     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == Drilling.class || projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == CenterDrilling.class ){
+			     			
+			     			EditCenterDrillWS editCenterDrillWS = new EditCenterDrillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editCenterDrillWS.revalidate();
+			     		}
+			     	}
+			      }
+			  
+             }  
+
+             public void mousePressed(MouseEvent e) {  
+             }  
+
+             public void mouseReleased(MouseEvent e) {  
+             }  
+
+             public void mouseEntered(MouseEvent e) {  
+             }  
+
+             public void mouseExited(MouseEvent e) {  
+             }  
+         }); 
+		
 		
 		this.gerar3D();
 	}
+	
+	
 	public void gerar3D() 
 	{
 		final Progress3D p3D = new Progress3D(this);

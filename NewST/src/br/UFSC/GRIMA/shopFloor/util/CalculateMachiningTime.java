@@ -231,7 +231,21 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
+	    	
 	    
 	 		
 	 		if(Tc > T_max){
@@ -270,7 +284,7 @@ public class CalculateMachiningTime
     			else workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
 	    	}
 			    	
-		    //	}
+		
 			    	System.out.println("Face "+workingstep.getFace().getComprimento());
 			    	
 			    	workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
@@ -308,18 +322,27 @@ public class CalculateMachiningTime
 					Kc = Kc1*Math.pow(Hm, -Z);
 					Kc = Kc/100;
 			    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-			 		T_max = ((-Tm/RPM)*n)+Tm; 
+			    	ArrayList<Double> xValues = new ArrayList<Double>();
+			    	double rotTmp = 0;
+					for(int i = 0; rotTmp < RPM; i++)
+					{
+						rotTmp = rotTmp + 10;
+						xValues.add(rotTmp);
+					}
+					for(int i = 0; i < xValues.size(); i++){
+						
+						double xCoordinateTmp = xValues.get(i);
+						T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+						
+					} 
 			    
 			 		
 			 		if(Tc > T_max){
 			    		
-			    		System.err.println("Entrou 1");
+			   
 			    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-			    		System.err.println("Entrou 1 Vf max "+Vf_max);
-			    		System.err.println("Entrou 1 Vf "+Vf);
-			    		
 			    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-			    			System.err.println("Entrou 2");
+			    			
 			    			Vf = Vf_max; 
 			    		
 			    	}else{
@@ -399,7 +422,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -462,7 +497,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -534,7 +581,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -609,8 +668,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
-	    
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	 		
 	 		if(Tc > T_max){
 	    		
@@ -685,7 +755,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -759,7 +841,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -832,7 +926,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -903,7 +1009,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -975,7 +1093,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -1047,7 +1177,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -1121,7 +1263,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){
@@ -1194,8 +1348,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
-	    
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	 		
 	 		if(Tc > T_max){
 	    		
@@ -1267,7 +1432,19 @@ public class CalculateMachiningTime
 			Kc = Kc1*Math.pow(Hm, -Z);
 			Kc = Kc/100;
 	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
-	 		T_max = ((-Tm/RPM)*n)+Tm; 
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
 	    
 	 		
 	 		if(Tc > T_max){

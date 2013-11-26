@@ -1,13 +1,13 @@
 package br.UFSC.GRIMA.shopFloor;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Ellipse2D;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,8 +28,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import sun.reflect.generics.tree.BottomSignature;
-
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiSession;
 import br.UFSC.GRIMA.acceptance.STEP_NCReader;
@@ -41,9 +39,7 @@ import br.UFSC.GRIMA.cad.visual.Progress3D;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
-import br.UFSC.GRIMA.capp.machiningOperations.Boring;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
-import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
@@ -52,16 +48,8 @@ import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
-import br.UFSC.GRIMA.entidades.features.Cavidade;
-import br.UFSC.GRIMA.entidades.features.Degrau;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.Feature;
-import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
-import br.UFSC.GRIMA.entidades.features.Ranhura;
-import br.UFSC.GRIMA.entidades.features.RanhuraPerfilBezier;
-import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
-import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
-import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
@@ -324,6 +312,34 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		scrollPane2.revalidate();
 		janelaShopFloor = new JanelaShopFloor(shopFloor, projetoSF);
 		
+		desenhadorPrecedencias.addMouseMotionListener(new MouseMotionListener() 
+		 {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) 
+			{
+				double x = e.getX();
+				double y = e.getY();
+				for (int i = 0; i < desenhadorPrecedencias.ClickWorkingsteps().size(); i++) 
+				{
+					if (desenhadorPrecedencias.ClickWorkingsteps().get(i).contains(x, y)) 
+					{
+						desenhadorPrecedencias.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+						break;
+						
+					} else if(!desenhadorPrecedencias.ClickWorkingsteps().get(i).contains(x, y))
+					{
+						desenhadorPrecedencias.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+					}
+				}
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) 
+			{
+			
+			}
+		});
 		
 		desenhadorPrecedencias.addMouseListener(new MouseListener() {  
              public void mouseClicked(MouseEvent e) {  

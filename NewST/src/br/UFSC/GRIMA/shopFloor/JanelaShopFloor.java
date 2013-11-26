@@ -367,6 +367,11 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 			     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
 			     			editFacemillWS.setVisible(true);
 			     			editFacemillWS.okButton.setVisible(false);
+			     			editFacemillWS.spinner10.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getN());
+			     			editFacemillWS.spinner9.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getVf());
+			     			editFacemillWS.spinner11.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getAp());
+			     			editFacemillWS.spinner12.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getAe());
+			     			editFacemillWS.spinner7.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getVc());
 			     			
 			     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == CenterDrilling.class ){
 			     			

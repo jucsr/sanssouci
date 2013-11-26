@@ -82,7 +82,6 @@ public class WSPrecedencesPanel extends JPanel
 				novoWorkingsteps.add(nivelTmp);
 				workingsteps.get(i).setIndiceArvore(nivelArvore);
 				workingsteps.get(i).setWSPrecedenteID(i*10 + 10);
-				//IdBolinha.add(i*10+10);
 				nivelArvore++;
 				
 			}
@@ -94,7 +93,7 @@ public class WSPrecedencesPanel extends JPanel
 					novoWorkingsteps.get(wstTemp.getIndiceArvore()).add(workingsteps.get(j));
 					workingsteps.get(j).setWSPrecedenteID(j*10+10);
 					workingsteps.get(j).setIndiceArvore(wstTemp.getIndiceArvore());
-					//IdBolinha.add(j*10+10);
+				
 				}
 			}
 			
@@ -120,6 +119,7 @@ public class WSPrecedencesPanel extends JPanel
 				g2d.fill(bolinha);
 
 				int id = novoWorkingsteps.get(w).get(i).getWSPrecedenteID();
+				//System.out.println("-------------------->> id teste = "+id);
 				IdBolinhaTemp.add(id);
 							
 				String strID = "" + id;
@@ -163,7 +163,6 @@ public class WSPrecedencesPanel extends JPanel
 					int id = novoWorkingsteps.get(w).get(j).getWSPrecedenteID();
 					
 					IdBolinhaTemp.add(id);
-					System.err.println("------------->> ID 2 = "+id);		
 					String strID = "" + id;
 					g2d.setColor(new Color(255, 255, 255));
 					g2d.drawString(strID, x*80 + 40, y*60 + 43);

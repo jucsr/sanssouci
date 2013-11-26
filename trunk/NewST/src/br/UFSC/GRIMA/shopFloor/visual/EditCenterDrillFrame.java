@@ -1,18 +1,11 @@
-/*
- * Created by JFormDesigner on Tue Aug 30 13:50:42 BRT 2011
- */
-
 package br.UFSC.GRIMA.shopFloor.visual;
-
+ 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 import com.jgoodies.forms.factories.*;
 
-/**
- * @author ssiaum
- */
 public class EditCenterDrillFrame extends JDialog {
 	public EditCenterDrillFrame(Frame owner) {
 		super(owner);
@@ -724,7 +717,7 @@ public class EditCenterDrillFrame extends JDialog {
 	private JScrollPane scrollPane3;
 	protected JTable table1;
 	private JPanel buttonBar;
-	protected JButton okButton;
+	public JButton okButton;
 	protected JButton cancelButton;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -1764,7 +1764,7 @@
                   <void method="auxiliary"> 
                    <void method="setProperty"> 
                     <string>JavaCodeGenerator.variableModifiers</string> 
-                    <int>4</int> 
+                    <int>1</int> 
                    </void> 
                   </void> 
                  </object> 
@@ -1834,7 +1834,7 @@
                   <void method="auxiliary"> 
                    <void method="setProperty"> 
                     <string>JavaCodeGenerator.variableModifiers</string> 
-                    <int>4</int> 
+                    <int>1</int> 
                    </void> 
                   </void> 
                  </object> 
@@ -1898,7 +1898,7 @@
                   <void method="auxiliary"> 
                    <void method="setProperty"> 
                     <string>JavaCodeGenerator.variableModifiers</string> 
-                    <int>4</int> 
+                    <int>1</int> 
                    </void> 
                   </void> 
                  </object> 
@@ -1985,7 +1985,7 @@
                   <void method="auxiliary"> 
                    <void method="setProperty"> 
                     <string>JavaCodeGenerator.variableModifiers</string> 
-                    <int>4</int> 
+                    <int>1</int> 
                    </void> 
                   </void> 
                  </object> 
@@ -2032,7 +2032,7 @@
                   <void method="auxiliary"> 
                    <void method="setProperty"> 
                     <string>JavaCodeGenerator.variableModifiers</string> 
-                    <int>4</int> 
+                    <int>1</int> 
                    </void> 
                   </void> 
                  </object> 

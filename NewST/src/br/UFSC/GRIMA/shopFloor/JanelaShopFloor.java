@@ -41,6 +41,7 @@ import br.UFSC.GRIMA.cad.visual.Progress3D;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.Boring;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
@@ -62,10 +63,13 @@ import br.UFSC.GRIMA.entidades.features.RanhuraPerfilCircularParcial;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.entidades.features.RanhuraPerfilVee;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
+import br.UFSC.GRIMA.entidades.ferramentas.BoringTool;
 import br.UFSC.GRIMA.entidades.ferramentas.BullnoseEndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.CenterDrill;
+import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.entidades.ferramentas.Reamer;
 import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.integracao.ProjectReader;
@@ -321,7 +325,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		janelaShopFloor = new JanelaShopFloor(shopFloor, projetoSF);
 		
 		
-		 scrollPane2.addMouseListener(new MouseListener() {  
+		desenhadorPrecedencias.addMouseListener(new MouseListener() {  
              public void mouseClicked(MouseEvent e) {  
                 
             	 double x = e.getX();  
@@ -342,22 +346,48 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 			     	}
 			     	System.err.println("--------------->> id = "+ id);
 			     	
-			     		if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == FaceMill.class ){
+			     		if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == FaceMill.class || projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == BottomAndSideRoughMilling.class ){
 			     				
-			     			System.out.println("-------------------------->> Entrou");
 			     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
-			     			editFacemillWS.revalidate();
+			     			editFacemillWS.setVisible(true);
+			     			editFacemillWS.okButton.setVisible(false);
 			     			
-			     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() ==  BottomAndSideFinishMilling.class ){
-			     		
-			     			System.out.println("-------------------------->> Entrou2");
-			     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
-			     			editFacemillWS.revalidate();
-			     			
-			     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == Drilling.class || projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == CenterDrilling.class ){
+			     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == CenterDrilling.class ){
 			     			
 			     			EditCenterDrillWS editCenterDrillWS = new EditCenterDrillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
-			     			editCenterDrillWS.revalidate();
+			     			editCenterDrillWS.setVisible(true);
+			     			editCenterDrillWS.okButton.setVisible(false);
+			     		
+			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == Drilling.class){
+			     			
+			     			EditTwistDrillWS editTwistDrillWS = new EditTwistDrillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editTwistDrillWS.setVisible(true);
+			     			editTwistDrillWS.okButton.setVisible(false);
+			     			
+			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == BallEndMill.class){
+			     			
+			     			EditBallEndMillWS editBallEndMillWS = new EditBallEndMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editBallEndMillWS.setVisible(true);
+			     			editBallEndMillWS.okButton.setVisible(false);
+			     			
+			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == BoringTool.class){
+			     			
+			     			EditBoringToolWS editBoringToolWS = new EditBoringToolWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editBoringToolWS.setVisible(true);
+			     			editBoringToolWS.okButton.setVisible(false);
+			     			
+			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == EndMill.class || projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == BottomAndSideFinishMilling.class ){
+			     				
+			     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editFacemillWS.setVisible(true);
+			     			editFacemillWS.okButton.setVisible(false);
+			     			
+			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == Reamer.class){
+			     			
+			     			EditReamerWS editReamerWS = new EditReamerWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editReamerWS.setVisible(true);
+			     			editReamerWS.okButton.setVisible(false);
+			     			
 			     		}
 			     	}
 			      }

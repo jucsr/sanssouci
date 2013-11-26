@@ -710,7 +710,7 @@ public class EditTwistDrillFrame extends JDialog {
 	private JScrollPane scrollPane1;
 	protected JTable table1;
 	private JPanel buttonBar;
-	protected JButton okButton;
+	public JButton okButton;
 	protected JButton cancelButton;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

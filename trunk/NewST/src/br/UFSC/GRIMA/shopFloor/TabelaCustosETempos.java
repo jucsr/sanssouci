@@ -19,6 +19,8 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	private JanelaShopFloor janelaShopFloor;
 	private ArrayList<Workingstep> workingsteps;
 	private ArrayList<MachineTool> machines;
+	private ArrayList<ArrayList<Double>> custoMatrix;
+	private ArrayList<ArrayList<Integer>> pMatrix = new ArrayList<ArrayList<Integer>>();
 	
 	public TabelaCustosETempos(Frame owner, ProjetoSF projetoSF) 
 	{
@@ -35,6 +37,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		this.calculateTempo();
 //		this.fillTables();
 		this.fillTables1();
+		this.fillTablesRouthing();
 		this.setVisible(true);
 		this.okButton.addActionListener(new ActionListener()
 		{
@@ -56,8 +59,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	private void fillTables1()
 	{
 		Halevi halevi = new Halevi(projetoSF.getShopFloor(), workingsteps);
-		halevi.getUniversalCostMatrix();
+		custoMatrix = halevi.getUniversalCostMatrix();
 		halevi.solveZMatrix();
+		pMatrix = halevi.getpMatrix();
 		
 		Vector<String> cabecalho = new Vector<String>();
 		cabecalho.add("M. Workingsteps");
@@ -192,5 +196,52 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			}
 		}
 	}
+	private void fillTablesRouthing(){
+		
+		DefaultTableModel model = (DefaultTableModel) table5.getModel();
+		double menorCusto = custoMatrix.get(0).get(0);
+		int indiceMaquina = 0;
+		int operation = 0;
+		int machine;
+		//double cost , time;
+
+		
+		for(int i = 0; i < custoMatrix.get(0).size(); i++){
+			
+			if(custoMatrix.get(0).get(i) < menorCusto){
+				
+				menorCusto = custoMatrix.get(0).get(i);
+				indiceMaquina = i;
+				System.out.println("menor custo "+menorCusto);
+			}
+		}
+		
+		machine = indiceMaquina + 1;
+		operation = 10;
+		
+		Object[] linha2 = { operation, machine };
+		model.addRow(linha2);
 	
+		System.out.println("tamanho "+pMatrix.size());
+		for (int i = 0; i < pMatrix.size(); i++) {
+			
+			machine = pMatrix.get(i).get(indiceMaquina);
+			indiceMaquina = pMatrix.get(i).get(indiceMaquina);
+				
+			// Object [] linha = {operation, machine, cost, time};
+			Object[] linha = { operation, machine };
+			model.addRow(linha);
+
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+

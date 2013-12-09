@@ -90,7 +90,7 @@ public class TabelaTempos extends TabelaTemposFrame
 			this.table1.setModel(modelo);
 			modelo.addRow(linha);
 		}
-//		modelo.setValueAt(23, 5, 5);
+
 	}
 	private void calculateTempo() 
 	{
@@ -103,12 +103,8 @@ public class TabelaTempos extends TabelaTemposFrame
 			Workingstep wstTemp;
 			wstTemp = workingsteps.get(i);
 			CalculateMachiningTime calculateTime = new CalculateMachiningTime(wstTemp, machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
-					
-				System.err.println("Ap ====== "+workingsteps.get(i).getCondicoesUsinagem().getAp());
-
-				//T = calculateTime.getTime();
-				temposNasMaquinas.add(calculateTime.getTime());
-				System.out.println("P = "+ ((machines.get(j).getItsSpindle()).size()));
+			temposNasMaquinas.add(calculateTime.getTime());
+				
 			this.table1.getModel().setValueAt(calculateTime.getTime(), i, j + 3);
 
 			}    

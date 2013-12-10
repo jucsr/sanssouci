@@ -17,7 +17,8 @@ public class Halevi
 	private ArrayList<Integer> bestSequence; // apenas os indices do array workingstep sao apresentados na ordem de execucao
 	private ArrayList<ArrayList<Double>> zMatrix = new ArrayList<ArrayList<Double>>() ; // n operacoes em m maquinas
 	private ArrayList<ArrayList<Double>>cMatrix = new ArrayList<ArrayList<Double>>();
-	private ArrayList<ArrayList<Integer>> pMatrix=new ArrayList<ArrayList<Integer>>(); ; 
+	private ArrayList<ArrayList<Integer>> pMatrix=new ArrayList<ArrayList<Integer>>(); 
+	private ArrayList<ArrayList<Double>> tMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Double>>pauxMatrix;
 	private int LotSize = 1000; // em unidades
 	private double machineSetupTime = 30; //em minutos
@@ -46,10 +47,17 @@ public class Halevi
 		}
 		return cMatrix;
 	}
-	private ArrayList<ArrayList<Double>> getUniversalTimeMatrix()
+	public ArrayList<ArrayList<Double>> getUniversalTimeMatrix()
 	{
-		
-		return null;
+		for(int i = 0; i < opmatrix.size(); i++){
+			ArrayList<Double> aux = new ArrayList<Double>();
+			for(int f = 0; f < machineTools.size();f++){
+				aux.add((opmatrix.get(i).getTemposNasMaquinas().get(f)));
+			}
+			tMatrix.add(aux);
+			
+		}
+		return tMatrix;
 	}
 	/**
 	 * 	metodo que calcula a matriz Z (de Tempos/Custos)
@@ -145,5 +153,11 @@ public class Halevi
 	}
 	public void setpMatrix(ArrayList<ArrayList<Integer>> pMatrix) {
 		this.pMatrix = pMatrix;
+	}
+	public ArrayList<ArrayList<Double>> gettMatrix() {
+		return tMatrix;
+	}
+	public void settMatrix(ArrayList<ArrayList<Double>> tMatrix) {
+		this.tMatrix = tMatrix;
 	}
 }

@@ -222,17 +222,23 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		Object[] linha2 = { operation, machine };
 		model.addRow(linha2);
 	
-		System.out.println("tamanho "+pMatrix.size());
-		for (int i = 0; i < pMatrix.size(); i++) {
+		for(int i = 0; i <pMatrix.size() - 1; i++ ){
 			
-			machine = pMatrix.get(i).get(indiceMaquina);
-			indiceMaquina = pMatrix.get(i).get(indiceMaquina);
+			for(int j = 0; j < pMatrix.get(0).size(); j++){
 				
-			// Object [] linha = {operation, machine, cost, time};
-			Object[] linha = { operation, machine };
-			model.addRow(linha);
-
-		}
+				System.out.print("  "+pMatrix.get(i).get(j)+" ("+i+j+") ");
+				if(j == indiceMaquina){
+					
+					machine = pMatrix.get(i).get(j);
+					indiceMaquina = machine -1;
+					
+					// Object [] linha = {operation, machine, cost, time};
+					Object[] linha = { operation, machine };
+					model.addRow(linha);
+				}
+			}
+			System.out.println(" ");
+		}		
 	}
 }
 

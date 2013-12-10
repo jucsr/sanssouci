@@ -39,7 +39,7 @@ public class Halevi
 		for(int i = 0; i < opmatrix.size(); i++){
 			ArrayList<Double> aux = new ArrayList<Double>();
 			for(int f = 0; f < machineTools.size();f++){
-				aux.add((opmatrix.get(i).getTemposNasMaquinas().get(f) * machineTools.get(f).getRelativeCost()));
+				aux.add((opmatrix.get(i).getTemposNasMaquinas().get(f) / 60 * machineTools.get(f).getRelativeCost()));
 			}
 			cMatrix.add(aux);
 			

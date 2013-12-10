@@ -20,8 +20,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	private ArrayList<Workingstep> workingsteps;
 	private ArrayList<MachineTool> machines;
 	private ArrayList<ArrayList<Double>> custoMatrix;
+	private ArrayList<ArrayList<Double>> timesMatrix;
 	private ArrayList<ArrayList<Integer>> pMatrix = new ArrayList<ArrayList<Integer>>();
-	
+	private Halevi halevi;
 	public TabelaCustosETempos(Frame owner, ProjetoSF projetoSF) 
 	{
 		super(owner);
@@ -38,6 +39,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 //		this.fillTables();
 		this.fillTables1();
 		this.fillTablesRouthing();
+		this.fillTimesTable();
 		this.setVisible(true);
 		this.okButton.addActionListener(new ActionListener()
 		{
@@ -58,7 +60,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	}
 	private void fillTables1()
 	{
-		Halevi halevi = new Halevi(projetoSF.getShopFloor(), workingsteps);
+		halevi = new Halevi(projetoSF.getShopFloor(), workingsteps);
 		custoMatrix = halevi.getUniversalCostMatrix();
 		halevi.solveZMatrix();
 		pMatrix = halevi.getpMatrix();
@@ -114,6 +116,65 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			for(int j = 0; j < halevi.getpMatrix().get(i).size(); j++)
 			{
 				this.table2.setValueAt(halevi.getpMatrix().get(i).get(j), i, j + 3);
+			}
+		}
+	}
+	private void fillTimesTable()
+	{
+		timesMatrix = halevi.getUniversalTimeMatrix();
+//		halevi.solveZMatrix();
+		
+		Vector<String> cabecalho = new Vector<String>();
+		cabecalho.add("M. Workingsteps");
+		cabecalho.add("ID");
+		cabecalho.add("Priorities");
+		for(int i = 0; i < machines.size(); i++)
+		{
+			cabecalho.add(machines.get(i).getItsId());
+		}
+		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
+		DefaultTableModel modelo1 = new DefaultTableModel(cabecalho, 0);
+		for(int i = 0; i < workingsteps.size(); i++)
+		{
+			Workingstep wsTmp = workingsteps.get(i);
+//			System.out.println("tempo nas maquinas = " + wsTmp.getTemposNasMaquinas().get(0));
+			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
+			int idPrecedente = 0;
+			if(wsPrecedente == null)
+			{
+				idPrecedente = 0;
+			} else
+			{
+				for(int j = 0; j < workingsteps.size(); j++)
+				{
+					if(wsPrecedente == workingsteps.get(j))
+					{
+						idPrecedente = 10 + j * 10;
+					}
+				}
+			}
+			
+			String nome = wsTmp.getId();
+			int id = 10 + i * 10;
+			Object[] linha = {nome, id, idPrecedente};
+			this.table3.setModel(modelo);
+			this.table4.setModel(modelo1);
+			modelo.addRow(linha);
+			modelo1.addRow(linha);
+		}
+		
+		for(int i = 0; i < halevi.gettMatrix().size(); i++)
+		{
+			for(int j = 0; j < halevi.gettMatrix().get(i).size(); j++)
+			{
+				this.table3.setValueAt(halevi.gettMatrix().get(i).get(j), i, j + 3);
+			}
+		}
+		for(int i = 0; i < halevi.getpMatrix().size(); i++)
+		{
+			for(int j = 0; j < halevi.getpMatrix().get(i).size(); j++)
+			{
+				this.table4.setValueAt(halevi.getpMatrix().get(i).get(j), i, j + 3);
 			}
 		}
 	}
@@ -196,6 +257,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			}
 		}
 	}
+	
 	private void fillTablesRouthing(){
 		
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();

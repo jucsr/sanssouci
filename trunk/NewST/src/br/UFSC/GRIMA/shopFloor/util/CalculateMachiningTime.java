@@ -1396,7 +1396,7 @@ public class CalculateMachiningTime
 				}
 			
 				time = comprimento/Vf;
-		}/*else if(this.workingstep.getOperation().getClass() == Boring.class){
+		}else if(this.workingstep.getOperation().getClass() == Boring.class && this.workingstep.getFeature().getClass() == FuroBaseArredondada.class){
 			
 			n = Vc * 1000 /(Math.PI * D);
 			P_max = (P/RPM)*n;
@@ -1470,7 +1470,9 @@ public class CalculateMachiningTime
 			
 				time = comprimento/Vf;
 			
-		}*/
+		}else if(this.workingstep.getOperation().getClass() == Boring.class && (workingstep.getFeature().getClass() == FuroBasePlana.class|| workingstep.getFeature().getClass() == FuroBaseConica.class || workingstep.getFeature().getClass() == Ranhura.class || workingstep.getFeature().getClass() == Degrau.class || workingstep.getFeature().getClass() == Cavidade.class) ){
+			
+		}
 		
 		
 		

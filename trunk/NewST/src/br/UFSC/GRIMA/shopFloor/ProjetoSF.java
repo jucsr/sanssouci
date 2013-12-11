@@ -10,6 +10,7 @@ public class ProjetoSF implements Serializable
 {
 	private ShopFloor shopFloor;
 	private ArrayList<Workingstep> workingsteps = new ArrayList<Workingstep>();
+	private ArrayList<ArrayList<Workingstep>> wstMachines = new ArrayList<ArrayList<Workingstep>>();
 	private int lotSize=1000;
 	private Projeto projeto;
 
@@ -40,5 +41,11 @@ public class ProjetoSF implements Serializable
 	}
 	public void setProjeto(Projeto projeto) {
 		this.projeto = projeto;
+	}
+	public ArrayList<ArrayList<Workingstep>> getWstMachines() {
+		return wstMachines;
+	}
+	public void setWstMachines(ArrayList<ArrayList<Workingstep>> wstMachines) {
+		this.wstMachines = wstMachines;
 	}
 }

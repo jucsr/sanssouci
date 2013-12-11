@@ -97,7 +97,7 @@ public class TabelaTempos extends TabelaTemposFrame
 		double T = 0;
 		for(int i = 0; i < workingsteps.size(); i++){
 			ArrayList<Double> temposNasMaquinas = new ArrayList<Double>();
-			
+//			ArrayList<Workingstep> arrayWspTmp = new ArrayList<Workingstep>();
 			for(int j = 0; j < machines.size(); j++ ){
 			
 			Workingstep wstTemp;

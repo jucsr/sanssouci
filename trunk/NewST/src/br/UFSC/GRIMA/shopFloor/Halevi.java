@@ -59,6 +59,42 @@ public class Halevi
 		}
 		return tMatrix;
 	}
+	public void solveZTempoMatrix()
+	{	
+		
+		fillMatrix();
+		for(int i = (zMatrix.size()-2); i>=0;i--){
+			//System.out.println("vez" +i);
+			int aux =zMatrix.get(i).size();
+			for(int f = 0 ; f < aux ; f++){
+				double indice =zMatrix.get(i).get(f); 
+				//System.out.println("coluna" +f);
+				Linha line = new Linha();
+				for(int j = 0; j< aux;j++){
+					//System.out.println("elemento" +j);
+					
+					if(f==j){
+						line.add((indice+zMatrix.get((i+1)).get(j)));
+						
+					}else {
+						line.add((indice+0.2+zMatrix.get((i+1)).get(j)));	
+					}
+					//System.out.println("line "+line);
+				}
+				zMatrix.get(i).set(f,line.min());
+				if(line.min() >= opimpossible){
+					pMatrix.get(i).set(f, -1);
+					
+				}else{
+				pMatrix.get(i).set(f,line.indexmin());
+				//System.out.println(""+pMatrix);
+				
+				}
+			}//termino de coluna
+			
+			
+		}//termino de linha
+	}//termino da funï¿½ï¿
 	/**
 	 * 	metodo que calcula a matriz Z (de Tempos/Custos)
 	 */
@@ -106,7 +142,6 @@ public class Halevi
 		for(int i = 0; i < cMatrix.size();i++){
 			zMatrix.add(cMatrix.get(i));
 		}
-		
 		
 		for(int i = 0; i< cMatrix.size();i++) {
 			int j = cMatrix.get(0).size();

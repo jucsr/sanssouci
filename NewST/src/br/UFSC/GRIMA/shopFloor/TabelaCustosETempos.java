@@ -317,7 +317,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 				}
 			}
 		}	
-		PenaltiesCust = trocou * 0.02;
+		PenaltiesCust = trocou * 0.2;
 		PenalitiesTime = trocou * 0.03;
 		
 		Object[] linha3 = {"Total"," ", totalCost, totalTime};

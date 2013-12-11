@@ -13,6 +13,7 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.bancoDeDados.Conexao;
 import br.UFSC.GRIMA.capp.DeterminarMovimentacao;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.Boring;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
@@ -117,7 +118,6 @@ public class CalculateMachiningTime
 		double P = 0,P_teste = 0,P_max = 0, fn = 0, Vc, D, n, Vf = 0, prof = 0, fn_max = 0, larg = 0, raio = 0,ap = 0, ae = 0, Hm = 0, Kc2 = 0, ap_max = 0,
 				comprimento = 0, VolumeR = 0, VolumePP = 0, Volume1P = 0, np = 0, nd,  Vfm = 0, Tm = 0, RPM = 0, Tc = 0, T_max = 0;
 		
-	//	System.err.println("\t\t ---->>> vez");
 		for(int j = 0; j < machine.getItsSpindle().size(); j++){
 				
 				Spindle spindleTemp = machine.getItsSpindle().get(j);
@@ -136,7 +136,6 @@ public class CalculateMachiningTime
 		nd = workingstep.getFerramenta().getNumberOfTeeth();
 	
 	  
-		
 		workingstep.getFeature().getClass();
 		
 		Feature feature = workingstep.getFeature();
@@ -221,9 +220,7 @@ public class CalculateMachiningTime
 				this.workingstep.getOperation().getClass() == BottomAndSideFinishMilling.class) &&
 				(this.workingstep.getFeature().getClass() == Ranhura.class))
 		{
-			 //	if(workingstep.getFeature().getRugosidade() >= machine.getAccuracy()&& this.workingstep.getOperation().getClass() == BottomAndSideRoughMilling.class ){
-    		
-	 		
+			    		
 			n = Vc * 1000 /(Math.PI * D);
 			P_max = (P/RPM)*n;
 			Vf = n * fn * nd;
@@ -245,21 +242,13 @@ public class CalculateMachiningTime
 				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
 				
 			}
-	    	
-	    
-	 		
-	 		if(Tc > T_max){
+	    	if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
-	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
 	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
-	    		
-	    	}else{
+	    		}else{
 	    			
 	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
@@ -284,18 +273,12 @@ public class CalculateMachiningTime
     			else workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
 	    	}
 			    	
-		
-			    	System.out.println("Face "+workingstep.getFace().getComprimento());
-			    	
 			    	workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
-					System.out.println("PONTO INICIAL : " + workingstep.getPontos()[0]);
 					Vector movimentacoes = DeterminarMovimentacao.getPontosMovimentacao(workingstep);
-					System.out.println("PONTOS MOVIMENTAÇAOOOOOOOOOOOOOOOOOOOO2: " + movimentacoes);
-
+					
 					Vector movimentacao = (Vector)movimentacoes.get(0);
 					workingstep.setPontosMovimentacao(movimentacao);
-			    System.out.println("mov: "+movimentacao);
-					
+			   
 					for(int i = 0; i < movimentacao.size()-1; i++){
 					
 					Ponto p1 = (Ponto)movimentacao.elementAt(i);
@@ -303,8 +286,6 @@ public class CalculateMachiningTime
 					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
 				}
 			
-				System.err.println("ap = "+ap+"\t L = "+comprimento+"\tVf "+Vf);
-				
 				time = comprimento/Vf;
 			
 			
@@ -436,27 +417,21 @@ public class CalculateMachiningTime
 				
 			}
 	    
-	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
-	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
 	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
+	    		
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -466,9 +441,7 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
-	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
     			else workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
 	    	}
@@ -514,24 +487,18 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
-	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
 	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
-	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
+	    		
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -541,7 +508,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -556,9 +522,7 @@ public class CalculateMachiningTime
 				Ponto ponto = new Ponto(pointTmp.x, pointTmp.y, -pointTmp.z);
 				movimentacao.add(ponto);
 			}
-			System.out.println("SIZE = "+movimentacao);
-		
-		
+			
 			for(int i = 0; i < movimentacao.size()-1; i++){
 				
 				Ponto p1 = (Ponto)movimentacao.elementAt(i);
@@ -594,28 +558,20 @@ public class CalculateMachiningTime
 				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
 				
 			}
-	    
-	 		
-	 		if(Tc > T_max){
+			if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
-	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
-	    			Vf = Vf_max; 
-	    		
-	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
+	    			Vf = Vf_max; 
+	    		}else{
+	    			
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
+	    		
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -625,7 +581,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -684,34 +639,27 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
-	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
+	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
 	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
-	    		
-	    	}else{
+	    		}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
+	    		
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
-	    	
 	    	P_max = (P/RPM)*n;
 	    	P_teste = (ap*ae*Vf*Kc)/(60*102*9.81);
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -772,18 +720,14 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
+	    
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
@@ -799,7 +743,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -854,28 +797,22 @@ public class CalculateMachiningTime
 				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
 				
 			}
-	    
-	 		
-	 		if(Tc > T_max){
+			if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
+	    		
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
+	 
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -885,7 +822,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -943,24 +879,18 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -970,7 +900,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -1026,13 +955,9 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
@@ -1043,7 +968,6 @@ public class CalculateMachiningTime
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -1053,7 +977,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -1110,24 +1033,18 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -1194,24 +1111,18 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -1221,7 +1132,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -1280,24 +1190,18 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -1307,7 +1211,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -1364,10 +1267,7 @@ public class CalculateMachiningTime
 	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
 	    			System.err.println("Entrou 2");
@@ -1446,27 +1346,20 @@ public class CalculateMachiningTime
 				
 			}
 	    
-	 		
 	 		if(Tc > T_max){
 	    		
-	    		System.err.println("Entrou 1");
 	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
-	    		System.err.println("Entrou 1 Vf max "+Vf_max);
-	    		System.err.println("Entrou 1 Vf "+Vf);
 	    		
 	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
-	    			System.err.println("Entrou 2");
 	    			Vf = Vf_max; 
 	    		
 	    	}else{
 	    			
-	    			System.err.println("Entrou 3");
 	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
 	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
 	    		}
 	    	}
 	    	if(n > RPM){
-	    		System.err.println("Entrou 4 ");
 	    		n = RPM;
 	    		Vf = n * fn * nd;
 	    	}
@@ -1476,7 +1369,6 @@ public class CalculateMachiningTime
 	    	
 	    	if(P_teste > P_max){
 	    		
-	    		System.err.println("Entrou 5");
 	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
 	    		
 	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
@@ -1504,7 +1396,81 @@ public class CalculateMachiningTime
 				}
 			
 				time = comprimento/Vf;
-		}
+		}/*else if(this.workingstep.getOperation().getClass() == Boring.class){
+			
+			n = Vc * 1000 /(Math.PI * D);
+			P_max = (P/RPM)*n;
+			Vf = n * fn * nd;
+			Hm = (fn*ae*360)/(D*Math.PI*180 / Math.PI * Math.acos(1-(2*ae/D)));
+			Kc = Kc1*Math.pow(Hm, -Z);
+			Kc = Kc/100;
+	    	Tc = (ap*ae*Vf*Kc)/(2*Math.PI*n);
+	    	ArrayList<Double> xValues = new ArrayList<Double>();
+	    	double rotTmp = 0;
+			for(int i = 0; rotTmp < RPM; i++)
+			{
+				rotTmp = rotTmp + 10;
+				xValues.add(rotTmp);
+			}
+			for(int i = 0; i < xValues.size(); i++){
+				
+				double xCoordinateTmp = xValues.get(i);
+				T_max = Tm * 0.1 + Math.exp(Math.log(Tm * 0.9) - 0.0005 * (xCoordinateTmp - RPM / 6));
+				
+			}
+	    
+	 		if(Tc > T_max){
+	    		
+	    		double Vf_max = (Tm*2*Math.PI*n)/(ap*ae*Kc);
+	    		
+	    		if(Vf_max >= Vf*0.42 && Vf_max <= Vf*1.57){
+	    			Vf = Vf_max; 
+	    		
+	    	}else{
+	    			
+	    			ap_max = (Tm*2*Math.PI*n)/(ae*Vf*Kc);
+	    			workingstep.getCondicoesUsinagem().setAp(ap_max);
+	    		}
+	    	}
+	    	if(n > RPM){
+	    		n = RPM;
+	    		Vf = n * fn * nd;
+	    	}
+	    	
+	    	P_max = (P/RPM)*n;
+	    	P_teste = (ap*ae*Vf*Kc)/(60*102*9.81);
+	    	
+	    	if(P_teste > P_max){
+	    		
+	    		ap = (P*60*102*9.81)/(ae*Kc*Vf);
+	    		
+	    		if(ap <= workingstep.getFerramenta().getCuttingEdgeLength()*0.75) workingstep.getCondicoesUsinagem().setAp(ap);
+    			else workingstep.getCondicoesUsinagem().setAp(workingstep.getFerramenta().getCuttingEdgeLength()*0.75);
+	    	}
+	    	
+	    	workingstep.setPontos(MapeadoraDeWorkingsteps.determinadorDePontos(workingstep));
+			Vector movimentacao = new Vector();
+			MovimentacaoFuroBaseArredondada detMov = new MovimentacaoFuroBaseArredondada(workingstep);
+			ArrayList<Path> path = detMov.movimentacaoBoring();
+			
+			 for(int j = 0; j < path.size(); j++)
+				{
+					double xAux = path.get(j).getFinalPoint().getX();
+					double yAux = path.get(j).getFinalPoint().getY();
+					double zAux = -path.get(j).getFinalPoint().getZ();
+					
+					movimentacao.add(new Ponto(xAux, yAux, zAux));
+				}
+			 for(int i = 0; i < movimentacao.size()-1; i++){
+					
+					Ponto p1 = (Ponto)movimentacao.elementAt(i);
+					Ponto p2 = (Ponto)movimentacao.elementAt(i+1);
+					comprimento += Math.sqrt(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2) + Math.pow(p2.getZ()-p1.getZ(), 2));
+				}
+			
+				time = comprimento/Vf;
+			
+		}*/
 		
 		
 		

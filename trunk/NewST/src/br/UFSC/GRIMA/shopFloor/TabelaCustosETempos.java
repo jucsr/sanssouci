@@ -263,9 +263,8 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();
 		double menorCusto = custoMatrix.get(0).get(0);
 		int indiceMaquina = 0;
-		int operation = 0;
-		int machine;
-		//double cost , time;
+		int operation = 0, machine, trocou = 0, machineTest;
+		double cost = 0, time, PenaltiesCust = 0, PenalitiesTime = 0, totalCost = 0, totalTime = 0;
 
 		
 		for(int i = 0; i < custoMatrix.get(0).size(); i++){
@@ -279,28 +278,59 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		}
 		
 		machine = indiceMaquina + 1;
+		machineTest = machine;
 		operation = 10;
+		time = workingsteps.get(0).getTemposNasMaquinas().get(indiceMaquina);
+		cost = custoMatrix.get(0).get(indiceMaquina);
 		
-		Object[] linha2 = { operation, machine };
+		totalCost = cost;
+		totalTime = time;
+		
+		Object [] linha2 = {operation, machine, cost, time};
 		model.addRow(linha2);
 	
 		for(int i = 0; i <pMatrix.size() - 1; i++ ){
 			
 			for(int j = 0; j < pMatrix.get(0).size(); j++){
 				
-				System.out.print("  "+pMatrix.get(i).get(j)+" ("+i+j+") ");
 				if(j == indiceMaquina){
 					
 					machine = pMatrix.get(i).get(j);
+					if(machineTest != machine){
+						
+						trocou++;
+					}
+						
 					indiceMaquina = machine -1;
 					
-					// Object [] linha = {operation, machine, cost, time};
-					Object[] linha = { operation, machine };
+					time = workingsteps.get(i+1).getTemposNasMaquinas().get(indiceMaquina);
+					cost = custoMatrix.get(i+1).get(indiceMaquina);
+					
+					totalCost = totalCost + cost;
+					totalTime = totalTime + time;
+					operation = operation + 10;
+					
+					
+					
+					Object [] linha = {operation, machine, cost, time};
 					model.addRow(linha);
 				}
 			}
-			System.out.println(" ");
-		}		
+		}	
+		PenaltiesCust = trocou * 0.02;
+		PenalitiesTime = trocou * 0.03;
+		
+		Object[] linha3 = {"Total"," ", totalCost, totalTime};
+		model.addRow(linha3);
+		
+		Object[] linha4 = {"Penalties "," ", PenaltiesCust, PenaltiesCust};
+		model.addRow(linha4);
+		
+		totalCost = totalCost + PenaltiesCust;
+		totalTime = totalTime + PenalitiesTime;
+		
+		Object [] linha5 = {"Total"," ", totalCost, totalTime};
+		model.addRow(linha5);
 	}
 }
 

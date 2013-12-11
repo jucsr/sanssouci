@@ -346,6 +346,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
                 
             	 double x = e.getX();  
             	 double y= e.getY(); 
+            	             	 
             	 
             	 for(int i = 0; i < desenhadorPrecedencias.ClickWorkingsteps().size(); i++){
             		 
@@ -1049,6 +1050,131 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 			this.desenhador.alterarProjeto(this.projeto);
 			this.atualizarArvoreMaquinas();
 			this.atualizarArvorePrecendencesWorkingsteps();
+			
+			this.desenhadorPrecedencias = new WSPrecedencesPanel(projetoSF);
+			scrollPane2.setViewportView(desenhadorPrecedencias);
+			desenhadorPrecedencias.revalidate();
+			scrollPane2.revalidate();
+			janelaShopFloor = new JanelaShopFloor(shopFloor, projetoSF);
+			
+			desenhadorPrecedencias.addMouseMotionListener(new MouseMotionListener() 
+			 {
+				
+				@Override
+				public void mouseMoved(MouseEvent e) 
+				{
+					double x = e.getX();
+					double y = e.getY();
+					for (int i = 0; i < desenhadorPrecedencias.ClickWorkingsteps().size(); i++) 
+					{
+						if (desenhadorPrecedencias.ClickWorkingsteps().get(i).contains(x, y)) 
+						{
+							desenhadorPrecedencias.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+							break;
+							
+						} else if(!desenhadorPrecedencias.ClickWorkingsteps().get(i).contains(x, y))
+						{
+							desenhadorPrecedencias.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+						}
+					}
+				}
+				
+				@Override
+				public void mouseDragged(MouseEvent e) 
+				{
+				
+				}
+			});
+			
+			desenhadorPrecedencias.addMouseListener(new MouseListener() {  
+	             public void mouseClicked(MouseEvent e) {  
+	                
+	            	 double x = e.getX();  
+	            	 double y= e.getY(); 
+	            	 
+	            	 for(int i = 0; i < desenhadorPrecedencias.ClickWorkingsteps().size(); i++){
+	            		 
+				     	if(desenhadorPrecedencias.ClickWorkingsteps().get(i).contains(x,y)){
+				     		
+				     		System.err.println("clique");
+				     	
+				     	int id = (desenhadorPrecedencias.getIdClickBolinha().get(i));	
+				     	if(id == 10){
+				     		id = 0;
+				     	}else{
+				     		
+				     		id = (id -10)/10;
+				     	}
+				     	System.err.println("--------------->> id = "+ id);
+				     	
+				     		if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == FaceMill.class || projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == BottomAndSideRoughMilling.class ){
+				     				
+				     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+				     			editFacemillWS.setVisible(true);
+				     			editFacemillWS.okButton.setVisible(false);
+				     			editFacemillWS.spinner10.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getN());
+				     			editFacemillWS.spinner9.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getVf());
+				     			editFacemillWS.spinner11.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getAp());
+				     			editFacemillWS.spinner12.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getAe());
+				     			editFacemillWS.spinner7.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getVc());
+				     			
+				     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == CenterDrilling.class ){
+				     			
+				     			EditCenterDrillWS editCenterDrillWS = new EditCenterDrillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+				     			editCenterDrillWS.setVisible(true);
+				     			editCenterDrillWS.okButton.setVisible(false);
+				     		
+				     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == Drilling.class){
+				     			
+				     			EditTwistDrillWS editTwistDrillWS = new EditTwistDrillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+				     			editTwistDrillWS.setVisible(true);
+				     			editTwistDrillWS.okButton.setVisible(false);
+				     			
+				     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == BallEndMill.class){
+				     			
+				     			EditBallEndMillWS editBallEndMillWS = new EditBallEndMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+				     			editBallEndMillWS.setVisible(true);
+				     			editBallEndMillWS.okButton.setVisible(false);
+				     			
+				     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == BoringTool.class){
+				     			
+				     			EditBoringToolWS editBoringToolWS = new EditBoringToolWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+				     			editBoringToolWS.setVisible(true);
+				     			editBoringToolWS.okButton.setVisible(false);
+				     			
+				     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == EndMill.class || projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == BottomAndSideFinishMilling.class ){
+				     				
+				     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+				     			editFacemillWS.setVisible(true);
+				     			editFacemillWS.okButton.setVisible(false);
+				     			
+				     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == Reamer.class){
+				     			
+				     			EditReamerWS editReamerWS = new EditReamerWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+				     			editReamerWS.setVisible(true);
+				     			editReamerWS.okButton.setVisible(false);
+				     			
+				     		}
+				     	}
+				      }
+				  
+	             }  
+
+	             public void mousePressed(MouseEvent e) {  
+	             }  
+
+	             public void mouseReleased(MouseEvent e) {  
+	             }  
+
+	             public void mouseEntered(MouseEvent e) {  
+	             }  
+
+	             public void mouseExited(MouseEvent e) {  
+	             }  
+	         }); 
+			
+			
+			
 			this.gerar3D();
 //			this.atualizarArvore();
 //			this.atualizarArvoreCAPP();

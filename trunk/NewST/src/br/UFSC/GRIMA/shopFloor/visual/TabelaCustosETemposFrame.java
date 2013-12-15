@@ -94,8 +94,8 @@ public class TabelaCustosETemposFrame extends JDialog {
 							panel6.setLayout(new GridBagLayout());
 							((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {0, 0, 0};
 							((GridBagLayout)panel6.getLayout()).rowHeights = new int[] {0, 0, 0};
-							((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
-							((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
 
 							//======== splitPane1 ========
 							{
@@ -119,7 +119,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 										((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 										//---- label1 ----
-										label1.setText("CUST MATRIX");
+										label1.setText("COST MATRIX");
 										panel3.add(label1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 											new Insets(0, 0, 5, 5), 0, 0));
@@ -200,7 +200,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 5), 0, 0));
 						}
-						tabbedPane1.addTab("Cust", panel6);
+						tabbedPane1.addTab("Cost", panel6);
 
 
 						//======== panel7 ========
@@ -208,8 +208,8 @@ public class TabelaCustosETemposFrame extends JDialog {
 							panel7.setLayout(new GridBagLayout());
 							((GridBagLayout)panel7.getLayout()).columnWidths = new int[] {0, 0, 0};
 							((GridBagLayout)panel7.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-							((GridBagLayout)panel7.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
-							((GridBagLayout)panel7.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel7.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+							((GridBagLayout)panel7.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
 
 							//======== panel10 ========
 							{

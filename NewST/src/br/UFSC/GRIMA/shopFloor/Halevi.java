@@ -12,12 +12,14 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 public class Halevi 
 {
 	private ShopFloor shopFloor; // dado de entrada necessário
-	private ArrayList<Workingstep> opmatrix; // dado de entrada necessario
+	private ArrayList<Workingstep> opmatrix; // array de workingsteps -- dado de entrada necessario
 	private ArrayList<MachineTool> machineTools; // vetor de maquinas
 	private ArrayList<Integer> bestSequence; // apenas os indices do array workingstep sao apresentados na ordem de execucao
 	private ArrayList<ArrayList<Double>> zMatrix = new ArrayList<ArrayList<Double>>() ; // n operacoes em m maquinas
+	private ArrayList<ArrayList<Double>> zTMatrix = new ArrayList<ArrayList<Double>>(); // matriz de menores tempos
 	private ArrayList<ArrayList<Double>>cMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Integer>> pMatrix=new ArrayList<ArrayList<Integer>>(); 
+	private ArrayList<ArrayList<Integer>> pTMatrix=new ArrayList<ArrayList<Integer>>(); // matriz de trajetórias das máquinas para o menor tempo
 	private ArrayList<ArrayList<Double>> tMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Double>>pauxMatrix;
 	private int LotSize = 1000; // em unidades
@@ -59,34 +61,36 @@ public class Halevi
 		}
 		return tMatrix;
 	}
+	/**
+	 * 	metodo que calcula a matriz Z (de Tempos)
+	 */
 	public void solveZTempoMatrix()
 	{	
-		
-		fillMatrix();
-		for(int i = (zMatrix.size()-2); i>=0;i--){
+//		fillMatrix();
+		for(int i = (zTMatrix.size()-2); i>=0;i--){
 			//System.out.println("vez" +i);
-			int aux =zMatrix.get(i).size();
+			int aux =zTMatrix.get(i).size();
 			for(int f = 0 ; f < aux ; f++){
-				double indice =zMatrix.get(i).get(f); 
+				double indice =zTMatrix.get(i).get(f); 
 				//System.out.println("coluna" +f);
 				Linha line = new Linha();
 				for(int j = 0; j< aux;j++){
 					//System.out.println("elemento" +j);
 					
 					if(f==j){
-						line.add((indice+zMatrix.get((i+1)).get(j)));
+						line.add((indice+zTMatrix.get((i+1)).get(j)));
 						
 					}else {
-						line.add((indice+0.2+zMatrix.get((i+1)).get(j)));	
+						line.add((indice+0.2+zTMatrix.get((i+1)).get(j)));	
 					}
 					//System.out.println("line "+line);
 				}
-				zMatrix.get(i).set(f,line.min());
+				zTMatrix.get(i).set(f,line.min());
 				if(line.min() >= opimpossible){
-					pMatrix.get(i).set(f, -1);
+					pTMatrix.get(i).set(f, -1);
 					
 				}else{
-				pMatrix.get(i).set(f,line.indexmin());
+				pTMatrix.get(i).set(f,line.indexmin());
 				//System.out.println(""+pMatrix);
 				
 				}
@@ -94,7 +98,7 @@ public class Halevi
 			
 			
 		}//termino de linha
-	}//termino da fun��
+	}//termino da fun��
 	/**
 	 * 	metodo que calcula a matriz Z (de Tempos/Custos)
 	 */
@@ -194,5 +198,11 @@ public class Halevi
 	}
 	public void settMatrix(ArrayList<ArrayList<Double>> tMatrix) {
 		this.tMatrix = tMatrix;
+	}
+	public ArrayList<ArrayList<Integer>> getpTMatrix() {
+		return pTMatrix;
+	}
+	public void setpTMatrix(ArrayList<ArrayList<Integer>> pTMatrix) {
+		this.pTMatrix = pTMatrix;
 	}
 }

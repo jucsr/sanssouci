@@ -44,7 +44,7 @@ public class Workingstep implements Serializable{
 	private int NivelYWSPrecedente;
 	private int IndiceArvore;
 	private int WSPrecedenteID;
-
+	private Workingstep wsClone;
 	
 	public Workingstep(){
 
@@ -308,5 +308,30 @@ public class Workingstep implements Serializable{
 	}
 	public void setWSPrecedenteID(int wSPrecedenteID) {
 		WSPrecedenteID = wSPrecedenteID;
+	}
+	/**
+	 * 	Alguns atributos do workingstep apontam para o do original 
+	 */
+	public Workingstep cloneWorkingstep()
+	{
+		Workingstep wsClone = new Workingstep();
+		
+		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
+		cond.setVc(condicoesUsinagem.getVc());
+		cond.setVf(condicoesUsinagem.getVf());
+		cond.setAe(condicoesUsinagem.getAe());
+		cond.setAp(condicoesUsinagem.getAp());
+		cond.setN((int)condicoesUsinagem.getN()); // arrumar!
+		cond.setF(condicoesUsinagem.getF());
+		
+		wsClone.setFeature(feature);
+		wsClone.setFerramenta(ferramenta);
+		wsClone.setOperation(operation);
+
+		wsClone.setCondicoesUsinagem(cond);
+		
+		wsClone.setPontos(this.getPontos());
+		
+		return wsClone;
 	}
 }

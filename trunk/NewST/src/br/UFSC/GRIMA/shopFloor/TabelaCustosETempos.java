@@ -123,6 +123,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	{
 		timesMatrix = halevi.getUniversalTimeMatrix();
 //		halevi.solveZMatrix();
+		halevi.solveZTempoMatrix();
 		
 		Vector<String> cabecalho = new Vector<String>();
 		cabecalho.add("M. Workingsteps");
@@ -170,11 +171,11 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 				this.table3.setValueAt(halevi.gettMatrix().get(i).get(j), i, j + 3);
 			}
 		}
-		for(int i = 0; i < halevi.getpMatrix().size(); i++)
+		for(int i = 0; i < halevi.getpTMatrix().size(); i++)
 		{
-			for(int j = 0; j < halevi.getpMatrix().get(i).size(); j++)
+			for(int j = 0; j < halevi.getpTMatrix().get(i).size(); j++)
 			{
-				this.table4.setValueAt(halevi.getpMatrix().get(i).get(j), i, j + 3);
+				this.table4.setValueAt(halevi.getpTMatrix().get(i).get(j), i, j + 3);
 			}
 		}
 	}
@@ -199,6 +200,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			workingsteps.get(i).setTemposNasMaquinas(temposNasMaquinas);
 		}
 	}
+	/**
+	 * metodo util somente para testar com os dados do livro.
+	 */
 	private void fillTables()
 	{
 		HaleviTest halevi = new HaleviTest();

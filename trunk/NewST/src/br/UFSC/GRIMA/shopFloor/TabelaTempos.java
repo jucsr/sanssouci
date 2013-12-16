@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
+import br.UFSC.GRIMA.shopFloor.util.AdjustMachiningWorkingstep;
 import br.UFSC.GRIMA.shopFloor.util.CalculateMachiningTime;
 import br.UFSC.GRIMA.shopFloor.visual.TabelaTemposFrame;
 
@@ -28,7 +29,8 @@ public class TabelaTempos extends TabelaTemposFrame
 		}
 		machines = projetoSF.getShopFloor().getMachines();
 		this.init();
-		this.calculateTempo();
+//		this.calculateTempo();
+		fillTimeTable();
 		this.setVisible(true); 
 		this.cancelButton.addActionListener(new ActionListener()
 		{
@@ -92,6 +94,9 @@ public class TabelaTempos extends TabelaTemposFrame
 		}
 
 	}
+	/**
+	 *  método que preenche a tabela te tempo (Um double em cada caixa)
+	 */
 	private void calculateTempo() 
 	{
 		double T = 0;
@@ -110,6 +115,23 @@ public class TabelaTempos extends TabelaTemposFrame
 			}    
 			workingsteps.get(i).setTemposNasMaquinas(temposNasMaquinas);
 		}
-		
+	}
+	/**
+	 * metodo para preenche a tabela de tempo (Um WS em cada caixa)
+	 */
+	private void fillTimeTable()
+	{
+		for(int i = 0; i < workingsteps.size(); i++){
+			ArrayList<Double> temposNasMaquinas = new ArrayList<Double>();
+			for(int j = 0; j < machines.size(); j++ ){
+			
+			Workingstep wstTemp = workingsteps.get(i);
+			
+			AdjustMachiningWorkingstep adjust = new AdjustMachiningWorkingstep(wstTemp, machines.get(j), projetoSF.getProjeto().getBloco().getMaterial());
+				Workingstep wsAdjustedTmp = adjust.adjustWorkingstep();
+			this.table1.getModel().setValueAt(wsAdjustedTmp.getTempo(), i, j + 3);
+			}    
+			workingsteps.get(i).setTemposNasMaquinas(temposNasMaquinas);
+		}
 	}
 }

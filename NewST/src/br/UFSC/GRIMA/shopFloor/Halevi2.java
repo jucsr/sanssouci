@@ -14,7 +14,7 @@ public class Halevi2
 	private Penalties penal;
 	
 	private ArrayList<ArrayList<Integer>> pathMatrix = new ArrayList<ArrayList<Integer>>();   
-	private ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
+
 	
 
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
@@ -106,17 +106,11 @@ public class Halevi2
 	}
 	
 	
-	private void  getTotalMatrix(ArrayList<ArrayList<Workingstep>> pricesTable)
+	private ArrayList<ArrayList<Double>> getTotalMatrix(ArrayList<ArrayList<Workingstep>> pricesTable)
 	{
-		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 		
-		for (int rowIndex=0;rowIndex<this.workingsteps.size();rowIndex++)
-		{
-			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
-			{
-				
-			}
-		}
+		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
 
 		tempTotalMatrix.add(this.totalMatrixRow(pricesTable.get(pricesTable.size()-2),pricesTable.get(pricesTable.size()-1)));
 		for (int i=pricesTable.size()-3;i>1;i--)
@@ -124,6 +118,17 @@ public class Halevi2
 			
 			tempTotalMatrix.add(this.totalMatrixRowDouble(pricesTable.get(i),tempTotalMatrix.get(tempTotalMatrix.size()-1)));
 		}
+
+		
+		for (int rowIndex=this.workingsteps.size()-2;rowIndex>1;rowIndex--)
+		{
+			totalMatrix.add(new ArrayList<Double>());
+			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
+			{
+				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(rowIndex).get(colIndex));
+			}
+		}
+		return totalMatrix;
 	}
 	
 	public ArrayList<ArrayList<Workingstep>>  getTimeMatrix()

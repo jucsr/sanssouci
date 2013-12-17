@@ -15,7 +15,8 @@ public class Halevi2
 	private ArrayList<MachineTool> machineTools; // vetor de maquinas
 	private Penalties penal;
 	
-	private ArrayList<ArrayList<Integer>> pathMatrix = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<ArrayList<Integer>> pathTimeMatrix = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<ArrayList<Integer>> pathCostMatrix = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Double>> universalTimeMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Double>> universalCostMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Double>> totalTimeMatrix = new ArrayList<ArrayList<Double>>();
@@ -34,6 +35,7 @@ public class Halevi2
 		this.universalCostMatrix = this.getUniversalCostMatrix();
 		this.totalTimeMatrix=this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.totalCostMatrix=this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
+		System.out.println("Constructor Done!");
 	}
 	
 	private double low(ArrayList<Double> list)
@@ -50,32 +52,6 @@ public class Halevi2
 		return low;		
 	}
 
-
-	private ArrayList<Double> totalMatrixRow(ArrayList<Workingstep> row1, ArrayList<Workingstep> row2)
-	{
-		ArrayList<Double> newRow = new ArrayList<Double>();
-		ArrayList<Double> sumList = new ArrayList<Double>();
-		
-		for (int j1 = 0;j1<row1.size();j1++)
-		{
-			pathMatrix.add(new ArrayList<Integer>());
-			for (int j2 = 0;j2<row2.size();j2++)
-			{
-				if (j1==j2)
-				{
-					sumList.add(row1.get(j1).getCusto() + row2.get(j1).getCusto());
-				}
-				else
-				{
-					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),row1.get(j1));
-					sumList.add(row1.get(j1).getCusto() + row2.get(j1).getCusto()+tempPenalty.getTotalPenalty());
-				}
-			}
-			newRow.add(this.low(sumList));
-		}
-		
-		return newRow;
-	}
 
 	private ArrayList<Double> totalMatrixTimeRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
@@ -98,8 +74,7 @@ public class Halevi2
 				}
 			}
 			newRow.add(this.low(sumList));
-		}
-		
+		}		
 		return newRow;
 	}
 
@@ -107,7 +82,6 @@ public class Halevi2
 	{
 		ArrayList<Double> newRow = new ArrayList<Double>();
 		ArrayList<Double> sumList = new ArrayList<Double>();
-		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 		
 		for (int j1 = 0;j1<row1.size();j1++)
 		{			
@@ -136,20 +110,30 @@ public class Halevi2
 		
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
 
-		tempTotalMatrix.add(this.totalMatrixTimeRow(valuesTable.get(valuesTable.size()-2),valuesTable.get(valuesTable.size()-1),valuesTable.size()-2));
+		System.out.println("WorkingSteps: " + this.workingsteps.size());
 		
-		for (int i=valuesTable.size()-3;i>1;i--)
+		System.out.println("RowsValuesTable: " + valuesTable.size());
+		System.out.println("ColsValuesTable: " + valuesTable.get(0).size());
+		
+		
+		for (int i=valuesTable.size()-1;i>0;i--)
 		{
 			tempTotalMatrix.add(this.totalMatrixTimeRow(valuesTable.get(i-1),valuesTable.get(i),i-1));
-
+			System.out.println("i: " + i);
 		}
+				
 		
-		for (int rowIndex=this.workingsteps.size()-2;rowIndex>1;rowIndex--)
+		System.out.println("RowsTempTotal: " + tempTotalMatrix.size());
+		System.out.println("ColsTempTotal: " + tempTotalMatrix.get(0).size());
+		
+		for (int rowIndex=0;rowIndex<tempTotalMatrix.size();rowIndex++)
 		{
 			totalMatrix.add(new ArrayList<Double>());
-			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
+			
+			for (int colIndex=0;colIndex<this.machineTools.size()-1;colIndex++)
 			{
-				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(rowIndex).get(colIndex));
+				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
+
 			}
 		}
 		return totalMatrix;
@@ -160,21 +144,24 @@ public class Halevi2
 		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 		
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
-
-		tempTotalMatrix.add(this.totalMatrixCostRow(valuesTable.get(valuesTable.size()-2),valuesTable.get(valuesTable.size()-1),valuesTable.size()-2));
-		
-		for (int i=valuesTable.size()-3;i>1;i--)
+	
+		for (int i=valuesTable.size()-1;i>0;i--)
 		{
 			tempTotalMatrix.add(this.totalMatrixCostRow(valuesTable.get(i-1),valuesTable.get(i),i-1));
 
 		}
 		
-		for (int rowIndex=this.workingsteps.size()-2;rowIndex>1;rowIndex--)
+		for (int rowIndex=0;rowIndex<tempTotalMatrix.size();rowIndex++)
 		{
 			totalMatrix.add(new ArrayList<Double>());
-			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
+			for (int colIndex=0;colIndex<this.machineTools.size()-1;colIndex++)
 			{
-				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(rowIndex).get(colIndex));
+		//		System.out.println("RowIndex: " + rowIndex);
+//				System.out.println("ColIndex: " + colIndex);
+	//			System.out.println("tempValue: " + tempTotalMatrix.get(rowIndex).get(colIndex));				
+		//		totalMatrix.get(rowIndex).add(tempTotalMatrix.get(this.workingsteps.size()-rowIndex-1).get(colIndex));
+				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
+//				System.out.println("SizeCol: " + totalMatrix.get(rowIndex).size());				
 			}
 		}
 		return totalMatrix;
@@ -224,7 +211,7 @@ public class Halevi2
 	public ArrayList<ArrayList<Double>> getUniversalCostMatrix() 
 	{
 
-		return universalCostMatrix;
+		return this.universalCostMatrix;
 	}
 
 	public ArrayList<ArrayList<Double>> getTotalTimeMatrix()

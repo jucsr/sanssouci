@@ -15,7 +15,8 @@ public class Halevi2
 	private ArrayList<MachineTool> machineTools; // vetor de maquinas
 	private Penalties penal;
 	
-	private ArrayList<ArrayList<Integer>> pathMatrix = new ArrayList<ArrayList<Integer>>();   
+	private ArrayList<ArrayList<Integer>> pathMatrix = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<ArrayList<Double>> timeMatrix = new ArrayList<ArrayList<Double>>(); 
 
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
@@ -23,6 +24,7 @@ public class Halevi2
 		this.shopFloor = this.projetoSF.getShopFloor();
 		this.workingsteps = workingsteps;
 		this.machineTools = shopFloor.getMachines();
+		this.timeMatrix = this.getTimeMatrix();
 	}
 	
 	private double low(ArrayList<Double> list)

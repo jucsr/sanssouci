@@ -135,14 +135,13 @@ public class Halevi2
 	
 	public ArrayList<ArrayList<Double>>  getTimeMatrix()
 	{
-		ArrayList<ArrayList<Double>> timeMatrix = new ArrayList<ArrayList<Double>>(); // array de workingsteps -- dado de saida		
+		//ArrayList<ArrayList<Double>> timeMatrix = new ArrayList<ArrayList<Double>>(); // array de workingsteps -- dado de saida		
 
 		int iWorkStep=0;
 		
 		for (Workingstep workingStep : workingsteps)			
 		{
-			int iMachTool=0;
-			
+			int iMachTool=0;			
 			timeMatrix.add(new ArrayList<Double>());			
 			for (MachineTool machineTool : machineTools)
 			{	

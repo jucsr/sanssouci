@@ -36,8 +36,6 @@ public class Halevi2
 		this.totalCostMatrix=this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 	}
 	
-
-
 	private double low(ArrayList<Double> list)
 	{		
 		double low=list.get(0);
@@ -243,5 +241,14 @@ public class Halevi2
 
 		return universalCostMatrix;
 	}
+
+	private ArrayList<ArrayList<Double>> getTotalTimeMatrix()
+	{
+		return this.totalTimeMatrix;
+	}
 	
+	private ArrayList<ArrayList<Double>> getTotalCostMatrix()
+	{
+		return this.totalCostMatrix;
+	}	
 }

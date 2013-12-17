@@ -136,12 +136,10 @@ public class Halevi2
 		ArrayList<ArrayList<Double>> timeMatrix = new ArrayList<ArrayList<Double>>(); // array de workingsteps -- dado de saida		
 
 		int iWorkStep=0;
-		ArrayList<Integer> indexLowCosts = new ArrayList<Integer>();
 		
 		for (Workingstep workingStep : workingsteps)			
 		{
 			int iMachTool=0;
-			int indexLowCost=0;
 			
 			timeMatrix.add(new ArrayList<Double>());			
 			for (MachineTool machineTool : machineTools)

@@ -50,22 +50,7 @@ public class Halevi2
 		return low;		
 	}
 
-	private double lowIndex(ArrayList<Double> list)
-	{		
-		double low=list.get(0);
-		int lowPosition=0;
-		
-		for (int index=1; index<list.size(); index++)
-		{
-			if (low < list.get(index))
-			{
-				low = list.get(index);
-				lowPosition=index;
-			}
-		}		
-		return lowPosition;		
-	}
-	
+
 	private ArrayList<Double> totalMatrixRow(ArrayList<Workingstep> row1, ArrayList<Workingstep> row2)
 	{
 		ArrayList<Double> newRow = new ArrayList<Double>();
@@ -242,12 +227,12 @@ public class Halevi2
 		return universalCostMatrix;
 	}
 
-	private ArrayList<ArrayList<Double>> getTotalTimeMatrix()
+	public ArrayList<ArrayList<Double>> getTotalTimeMatrix()
 	{
 		return this.totalTimeMatrix;
 	}
 	
-	private ArrayList<ArrayList<Double>> getTotalCostMatrix()
+	public ArrayList<ArrayList<Double>> getTotalCostMatrix()
 	{
 		return this.totalCostMatrix;
 	}	

@@ -8,6 +8,7 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 public class Halevi2 
 {
 	private ShopFloor shopFloor; // dado de entrada necessário
+	private ProjetoSF projetoSF;
 	private ArrayList<Workingstep> workingsteps; // array de workingsteps -- dado de entrada necessario
 	private ArrayList<MachineTool> machineTools; // vetor de maquinas
 	private Penalties penal;
@@ -16,9 +17,10 @@ public class Halevi2
 	private ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 	
 
-	public Halevi2(ShopFloor shopFloor, ArrayList<Workingstep> workingsteps)
+	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
-		this.shopFloor = shopFloor;
+		this.projetoSF = projetoSF;
+		this.shopFloor = this.projetoSF.getShopFloor();
 		this.workingsteps = workingsteps;
 		this.machineTools = shopFloor.getMachines();
 	}
@@ -69,8 +71,8 @@ public class Halevi2
 				else
 				{
 					sumList.add(row1.get(j1).getCusto() + row2.get(j1).getCusto());
-							//+ new Penalties(ProjetoSF projetoSF, MachineTool currentMachine, MachineTool nextMachine,  Workingstep workingstep)
-//							new Penalties(machineTools.get(j1),machineTools.get(j2),row1.get(j1)).getTotalPenalty());
+//							new Penalties(projetoSF, currentMachine, nextMachine,  workingstep)
+							new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),row1.get(j1));
 				}
 			}
 			newRow.add(this.low(sumList));

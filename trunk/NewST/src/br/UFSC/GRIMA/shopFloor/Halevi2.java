@@ -3,7 +3,9 @@ package br.UFSC.GRIMA.shopFloor;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
+import br.UFSC.GRIMA.shopFloor.util.CalculateMachiningTime;
 
 public class Halevi2 
 {
@@ -14,8 +16,6 @@ public class Halevi2
 	private Penalties penal;
 	
 	private ArrayList<ArrayList<Integer>> pathMatrix = new ArrayList<ArrayList<Integer>>();   
-
-	
 
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
@@ -61,7 +61,8 @@ public class Halevi2
 		ArrayList<Double> sumList = new ArrayList<Double>();
 		
 		for (int j1 = 0;j1<row1.size();j1++)
-		{			
+		{
+			pathMatrix.add(new ArrayList<Integer>());
 			for (int j2 = 0;j2<row2.size();j2++)
 			{
 				if (j1==j2)
@@ -118,7 +119,6 @@ public class Halevi2
 			
 			tempTotalMatrix.add(this.totalMatrixRowDouble(pricesTable.get(i),tempTotalMatrix.get(tempTotalMatrix.size()-1)));
 		}
-
 		
 		for (int rowIndex=this.workingsteps.size()-2;rowIndex>1;rowIndex--)
 		{
@@ -131,10 +131,9 @@ public class Halevi2
 		return totalMatrix;
 	}
 	
-	public ArrayList<ArrayList<Workingstep>>  getTimeMatrix()
+	public ArrayList<ArrayList<Double>>  getTimeMatrix()
 	{
-		ArrayList<ArrayList<Workingstep>> timeMatrix = new ArrayList<ArrayList<Workingstep>>(); // array de workingsteps -- dado de saida		
-		ArrayList<ArrayList<Double>> doubleTimeMatrix = new ArrayList<ArrayList<Double>>(); 
+		ArrayList<ArrayList<Double>> timeMatrix = new ArrayList<ArrayList<Double>>(); // array de workingsteps -- dado de saida		
 
 		int iWorkStep=0;
 		ArrayList<Integer> indexLowCosts = new ArrayList<Integer>();
@@ -144,13 +143,14 @@ public class Halevi2
 			int iMachTool=0;
 			int indexLowCost=0;
 			
-			ArrayList<Double> costByMachine = new ArrayList<Double>();			
+			timeMatrix.add(new ArrayList<Double>());			
 			for (MachineTool machineTool : machineTools)
 			{	
-
-				costByMachine.add(machineTool.getRelativeCost()*workingStep.getTempo());				
+				CalculateMachiningTime calcTime = new CalculateMachiningTime(workingStep, machineTool, projetoSF.getProjeto().getBloco().getMaterial());
+				timeMatrix.get(iWorkStep).add(calcTime.getTime());
+				iMachTool++;
 			}
-						
+			iWorkStep++;
 		}
 		
 		return timeMatrix;

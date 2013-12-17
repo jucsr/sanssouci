@@ -115,6 +115,7 @@ public class Halevi2
 		//System.out.println("RowsValuesTable: " + valuesTable.size());
 		//System.out.println("ColsValuesTable: " + valuesTable.get(0).size());
 		
+		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
 		
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{
@@ -144,6 +145,8 @@ public class Halevi2
 		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 		
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
+		
+		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
 	
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{

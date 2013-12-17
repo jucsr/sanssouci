@@ -70,9 +70,8 @@ public class Halevi2
 				}
 				else
 				{
-					sumList.add(row1.get(j1).getCusto() + row2.get(j1).getCusto());
-//							new Penalties(projetoSF, currentMachine, nextMachine,  workingstep)
-							new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),row1.get(j1));
+					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),row1.get(j1));
+					sumList.add(row1.get(j1).getCusto() + row2.get(j1).getCusto()+tempPenalty.getTotalPenalty());
 				}
 			}
 			newRow.add(this.low(sumList));

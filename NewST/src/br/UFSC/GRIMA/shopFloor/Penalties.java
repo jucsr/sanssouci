@@ -19,18 +19,21 @@ import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
  */
 public class Penalties 
 {
-	private MachineTool machine;
+	private MachineTool currentMachine;
+	private MachineTool nextMachine;
 	private Workingstep workingstep;
 	private double totalPenalty = 0;
 	private int lotSize = 1000;
+	private double distance;
 	/**
 	 * Construtor
 	 * @param machine --> maquina
 	 * @param workingstep --> workingstep
 	 */
-	public Penalties(MachineTool machine,  Workingstep workingstep)
+	public Penalties(MachineTool currentMachine, MachineTool nextMachine,  Workingstep workingstep)
 	{
-		this.machine = machine;
+		this.currentMachine = currentMachine;
+		this.nextMachine = nextMachine;
 		this.workingstep = workingstep;
 	}
 	public double getTotalPenalty() 
@@ -49,19 +52,20 @@ public class Penalties
 	{
 		try 
 		{
-			for(int i = 0; i < this.machine.getToolHandlingDevice().get(0).getToolList().size(); i++)
+			for(int i = 0; i < this.currentMachine.getToolHandlingDevice().get(0).getToolList().size(); i++)
 			{
-				Ferramenta ferramentaTmp = this.machine.getToolHandlingDevice().get(0).getToolList().get(i);
+				Ferramenta ferramentaTmp = this.currentMachine.getToolHandlingDevice().get(0).getToolList().get(i);
 				Ferramenta ferramentaWs = workingstep.getFerramenta();
 				
 				if(haveToolToMachinig(ferramentaWs, ferramentaTmp))
 				{
-					totalPenalty = totalPenalty / 3;
+					totalPenalty = totalPenalty - totalPenalty / 3;
 				}
 				if(haveWorkpieceHandlingDevice())
 				{
-					
+					totalPenalty = totalPenalty - totalPenalty / 3;
 				}
+//				if(currentMachine.getItsOrigin())
 			}
 		} catch (Exception e)
 		{
@@ -73,7 +77,7 @@ public class Penalties
 	public boolean haveWorkpieceHandlingDevice()
 	{
 		boolean haveWorkpieceHandlingDevice = false;
-		if(machine.getWorkpieceHandlingDevice().size() > 0)
+		if(currentMachine.getWorkpieceHandlingDevice().size() > 0)
 		{
 			haveWorkpieceHandlingDevice = true;
 		}

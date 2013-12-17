@@ -34,6 +34,8 @@ public class CreateDrillingMachineFrame extends JDialog {
 		spinner4 = new JSpinner();
 		label21 = new JLabel();
 		spinnerCost = new JSpinner();
+		label27 = new JLabel();
+		spinnerSetupTime = new JSpinner();
 		label8 = new JLabel();
 		panel21 = new JPanel();
 		comboBox1 = new JComboBox();
@@ -193,9 +195,9 @@ public class CreateDrillingMachineFrame extends JDialog {
 								//======== panel22 ========
 								{
 									panel22.setLayout(new GridBagLayout());
-									((GridBagLayout)panel22.getLayout()).columnWidths = new int[] {55, 0, 0, 50, 0};
+									((GridBagLayout)panel22.getLayout()).columnWidths = new int[] {55, 0, 0, 55, 0, 0, 50, 0};
 									((GridBagLayout)panel22.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel22.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel22.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 									((GridBagLayout)panel22.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 									//---- spinner4 ----
@@ -213,6 +215,18 @@ public class CreateDrillingMachineFrame extends JDialog {
 									//---- spinnerCost ----
 									spinnerCost.setModel(new SpinnerNumberModel(5.0, 0.0, null, 0.2));
 									panel22.add(spinnerCost, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label27 ----
+									label27.setText("setup time (min)");
+									panel22.add(label27, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinnerSetupTime ----
+									spinnerSetupTime.setModel(new SpinnerNumberModel(30.0, 0.0, null, 5.0));
+									panel22.add(spinnerSetupTime, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
@@ -878,6 +892,8 @@ public class CreateDrillingMachineFrame extends JDialog {
 	protected JSpinner spinner4;
 	private JLabel label21;
 	protected JSpinner spinnerCost;
+	private JLabel label27;
+	protected JSpinner spinnerSetupTime;
 	private JLabel label8;
 	private JPanel panel21;
 	protected JComboBox comboBox1;

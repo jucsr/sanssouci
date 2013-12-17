@@ -40,6 +40,8 @@ public class CreateMillingMachineFrame extends JDialog {
 		spinner4 = new JSpinner();
 		label26 = new JLabel();
 		spinnerCost = new JSpinner();
+		label27 = new JLabel();
+		spinnerSetupTime = new JSpinner();
 		label8 = new JLabel();
 		panel22 = new JPanel();
 		comboBox1 = new JComboBox();
@@ -212,9 +214,9 @@ public class CreateMillingMachineFrame extends JDialog {
 								//======== panel21 ========
 								{
 									panel21.setLayout(new GridBagLayout());
-									((GridBagLayout)panel21.getLayout()).columnWidths = new int[] {55, 0, 0, 50, 0};
+									((GridBagLayout)panel21.getLayout()).columnWidths = new int[] {55, 0, 0, 55, 0, 0, 50, 0};
 									((GridBagLayout)panel21.getLayout()).rowHeights = new int[] {0, 0};
-									((GridBagLayout)panel21.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
+									((GridBagLayout)panel21.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 									((GridBagLayout)panel21.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 									//---- spinner4 ----
@@ -232,6 +234,18 @@ public class CreateMillingMachineFrame extends JDialog {
 									//---- spinnerCost ----
 									spinnerCost.setModel(new SpinnerNumberModel(5.0, 0.0, null, 0.2));
 									panel21.add(spinnerCost, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- label27 ----
+									label27.setText("setup time (min)");
+									panel21.add(label27, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 0, 5), 0, 0));
+
+									//---- spinnerSetupTime ----
+									spinnerSetupTime.setModel(new SpinnerNumberModel(30.0, 0.0, null, 5.0));
+									panel21.add(spinnerSetupTime, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
 										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 										new Insets(0, 0, 0, 0), 0, 0));
 								}
@@ -969,6 +983,8 @@ public class CreateMillingMachineFrame extends JDialog {
 	protected JSpinner spinner4;
 	private JLabel label26;
 	protected JSpinner spinnerCost;
+	private JLabel label27;
+	protected JSpinner spinnerSetupTime;
 	private JLabel label8;
 	private JPanel panel22;
 	protected JComboBox comboBox1;

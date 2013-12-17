@@ -16,7 +16,7 @@ public class Halevi2
 	private Penalties penal;
 	
 	private ArrayList<ArrayList<Integer>> pathMatrix = new ArrayList<ArrayList<Integer>>();
-	private ArrayList<ArrayList<Double>> timeMatrix = new ArrayList<ArrayList<Double>>(); 
+	private ArrayList<ArrayList<Double>> universalTimeMatrix = new ArrayList<ArrayList<Double>>(); 
 
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
@@ -24,7 +24,8 @@ public class Halevi2
 		this.shopFloor = this.projetoSF.getShopFloor();
 		this.workingsteps = workingsteps;
 		this.machineTools = shopFloor.getMachines();
-		this.timeMatrix = this.getTimeMatrix();
+		this.calculateUniversalTimeMatrix();
+		this.universalTimeMatrix = getUniversalTimeMatrix();
 	}
 	
 	private double low(ArrayList<Double> list)
@@ -133,26 +134,27 @@ public class Halevi2
 		return totalMatrix;
 	}
 	
-	public ArrayList<ArrayList<Double>>  getTimeMatrix()
+	public void  calculateUniversalTimeMatrix()
 	{
-		//ArrayList<ArrayList<Double>> timeMatrix = new ArrayList<ArrayList<Double>>(); // array de workingsteps -- dado de saida		
-
 		int iWorkStep=0;
 		
 		for (Workingstep workingStep : workingsteps)			
 		{
 			int iMachTool=0;			
-			timeMatrix.add(new ArrayList<Double>());			
+			universalTimeMatrix.add(new ArrayList<Double>());			
 			for (MachineTool machineTool : machineTools)
 			{	
 				CalculateMachiningTime calcTime = new CalculateMachiningTime(workingStep, machineTool, projetoSF.getProjeto().getBloco().getMaterial());
-				timeMatrix.get(iWorkStep).add(calcTime.getTime());
+				universalTimeMatrix.get(iWorkStep).add(calcTime.getTime());
 				iMachTool++;
 			}
 			iWorkStep++;
-		}
-		
-		return timeMatrix;
+		}		
+	}
+	
+	public ArrayList<ArrayList<Double>> getUniversalTimeMatrix()
+	{
+		return universalTimeMatrix;
 	}
 	
 }

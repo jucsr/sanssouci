@@ -110,16 +110,16 @@ public class Halevi2
 		
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
 
-		System.out.println("WorkingSteps: " + this.workingsteps.size());
+		//System.out.println("WorkingSteps: " + this.workingsteps.size());
 		
-		System.out.println("RowsValuesTable: " + valuesTable.size());
-		System.out.println("ColsValuesTable: " + valuesTable.get(0).size());
+		//System.out.println("RowsValuesTable: " + valuesTable.size());
+		//System.out.println("ColsValuesTable: " + valuesTable.get(0).size());
 		
 		
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{
 			tempTotalMatrix.add(this.totalMatrixTimeRow(valuesTable.get(i-1),valuesTable.get(i),i-1));
-			System.out.println("i: " + i);
+			//System.out.println("i: " + i);
 		}
 				
 		
@@ -130,10 +130,10 @@ public class Halevi2
 		{
 			totalMatrix.add(new ArrayList<Double>());
 			
-			for (int colIndex=0;colIndex<this.machineTools.size()-1;colIndex++)
+			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
 			{
 				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
-
+				System.out.println("Row " + rowIndex + " Col " + colIndex + " " + totalMatrix.get(rowIndex).get(colIndex));
 			}
 		}
 		return totalMatrix;
@@ -154,13 +154,14 @@ public class Halevi2
 		for (int rowIndex=0;rowIndex<tempTotalMatrix.size();rowIndex++)
 		{
 			totalMatrix.add(new ArrayList<Double>());
-			for (int colIndex=0;colIndex<this.machineTools.size()-1;colIndex++)
+			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
 			{
 		//		System.out.println("RowIndex: " + rowIndex);
 //				System.out.println("ColIndex: " + colIndex);
 	//			System.out.println("tempValue: " + tempTotalMatrix.get(rowIndex).get(colIndex));				
 		//		totalMatrix.get(rowIndex).add(tempTotalMatrix.get(this.workingsteps.size()-rowIndex-1).get(colIndex));
 				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
+				System.out.println("Row " + rowIndex + " Col " + colIndex + " " + totalMatrix.get(rowIndex).get(colIndex));
 //				System.out.println("SizeCol: " + totalMatrix.get(rowIndex).size());				
 			}
 		}

@@ -40,6 +40,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 //		this.fillTables();
 //		this.fillTables1();
 		this.fillCostsTable1();
+		this.fillTimesTable1();
 //		this.fillTablesRouthing();
 //		this.fillTimesTable();
 		this.setVisible(true);
@@ -339,12 +340,12 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		model.addRow(linha5);
 	}
 	/**
-	 * preenche a tabela dos costs 
+	 * preenche a tabela dos costos (acumulados)
 	 */
 	private void fillCostsTable1()
 	{
 		halevi2 = new Halevi2(projetoSF, workingsteps);
-		ArrayList<ArrayList<Double>>custoMatrix = halevi2.getTotalTimeMatrix();
+		ArrayList<ArrayList<Double>>custoMatrix = halevi2.getTotalCostMatrix();
 		
 		Vector<String> cabecalho = new Vector<String>();
 		cabecalho.add("M. Workingsteps");
@@ -359,7 +360,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		for(int i = 0; i < workingsteps.size(); i++)
 		{
 			Workingstep wsTmp = workingsteps.get(i);
-//			System.out.println("tempo nas maquinas = " + wsTmp.getTemposNasMaquinas().get(0));
 			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
 			int idPrecedente = 0;
 			if(wsPrecedente == null)
@@ -397,6 +397,65 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			for(int j = 0; j < custoMatrix.get(i).size(); j++)
 			{
 				this.table2.setValueAt(custoMatrix.get(i).get(j), i, j + 3);
+			}
+		}
+	}
+	/**
+	 * preenche a tabela de tempos (acumulados)
+	 */
+	private void fillTimesTable1()
+	{
+		ArrayList<ArrayList<Double>> timeMatrix = halevi2.getTotalTimeMatrix();
+		
+		Vector<String> cabecalho = new Vector<String>();
+		cabecalho.add("M. Workingsteps");
+		cabecalho.add("ID");
+		cabecalho.add("Priorities");
+		for(int i = 0; i < machines.size(); i++)
+		{
+			cabecalho.add(machines.get(i).getItsId());
+		}
+		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
+		DefaultTableModel modelo1 = new DefaultTableModel(cabecalho, 0);
+		for(int i = 0; i < workingsteps.size(); i++)
+		{
+			Workingstep wsTmp = workingsteps.get(i);
+			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
+			int idPrecedente = 0;
+			if(wsPrecedente == null)
+			{
+				idPrecedente = 0;
+			} else
+			{
+				for(int j = 0; j < workingsteps.size(); j++)
+				{
+					if(wsPrecedente == workingsteps.get(j))
+					{
+						idPrecedente = 10 + j * 10;
+					}
+				}
+			}
+			
+			String nome = wsTmp.getId();
+			int id = 10 + i * 10;
+			Object[] linha = {nome, id, idPrecedente};
+			this.table3.setModel(modelo);
+			this.table4.setModel(modelo1);
+			modelo.addRow(linha);
+			modelo1.addRow(linha);
+		}
+		for(int i = 0; i < timeMatrix.size(); i++)
+		{
+			for(int j = 0; j < timeMatrix.get(i).size(); j++)
+			{
+				this.table3.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
+			}
+		}
+		for(int i = 0; i < timeMatrix.size(); i++)
+		{
+			for(int j = 0; j < timeMatrix.get(i).size(); j++)
+			{
+				this.table4.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
 			}
 		}
 	}

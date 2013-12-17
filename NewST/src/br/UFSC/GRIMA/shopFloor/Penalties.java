@@ -22,7 +22,8 @@ public class Penalties
 	private MachineTool currentMachine;
 	private MachineTool nextMachine;
 	private Workingstep workingstep;
-	private double totalPenalty = 0;
+	private ProjetoSF projetoSF;
+	private double totalPenalty = 0; // em tempo
 	private int lotSize = 1000;
 	private double distance;
 	/**
@@ -30,12 +31,18 @@ public class Penalties
 	 * @param machine --> maquina
 	 * @param workingstep --> workingstep
 	 */
-	public Penalties(MachineTool currentMachine, MachineTool nextMachine,  Workingstep workingstep)
+	public Penalties(ProjetoSF projetoSF, MachineTool currentMachine, MachineTool nextMachine,  Workingstep workingstep)
 	{
 		this.currentMachine = currentMachine;
 		this.nextMachine = nextMachine;
 		this.workingstep = workingstep;
+		this.projetoSF = projetoSF;
+		this.totalPenalty = this.nextMachine.getSetUpTime() / this.projetoSF.getLotSize();
 	}
+	/**
+	 *  penalidade total em minutos
+	 * @return
+	 */
 	public double getTotalPenalty() 
 	{
 		return totalPenalty;
@@ -56,16 +63,16 @@ public class Penalties
 			{
 				Ferramenta ferramentaTmp = this.currentMachine.getToolHandlingDevice().get(0).getToolList().get(i);
 				Ferramenta ferramentaWs = workingstep.getFerramenta();
-				
+				double penaltyTmp = totalPenalty;
 				if(haveToolToMachinig(ferramentaWs, ferramentaTmp))
 				{
-					totalPenalty = totalPenalty - totalPenalty / 3;
+					totalPenalty = totalPenalty - penaltyTmp / 3;
 				}
 				if(haveWorkpieceHandlingDevice())
 				{
-					totalPenalty = totalPenalty - totalPenalty / 3;
+					totalPenalty = totalPenalty - penaltyTmp / 3;
 				}
-//				if(currentMachine.getItsOrigin())
+				totalPenalty = totalPenalty + 2 / currentMachine.getItsOrigin().distance(nextMachine.getItsOrigin()) * 1 / 60;
 			}
 		} catch (Exception e)
 		{

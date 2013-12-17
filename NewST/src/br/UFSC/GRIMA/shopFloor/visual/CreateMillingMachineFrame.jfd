@@ -72,7 +72,7 @@ new FormModel {
 										"gridy": 2
 									} )
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-										"$columnSpecs": "50, 0, 0, 50"
+										"$columnSpecs": "50, 0, 0, 50, 0, 0, 50"
 										"$rowSpecs": "0"
 										"$hGap": 5
 										"$vGap": 5
@@ -110,6 +110,26 @@ new FormModel {
 											}
 										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 											"gridx": 3
+										} )
+										add( new FormComponent( "javax.swing.JLabel" ) {
+											name: "label27"
+											"text": "setup time (min)"
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 5
+										} )
+										add( new FormComponent( "javax.swing.JSpinner" ) {
+											name: "spinnerSetupTime"
+											"model": new javax.swing.SpinnerNumberModel {
+												minimum: 0.0
+												stepSize: 5.0
+												value: 30.0
+											}
+											auxiliary() {
+												"JavaCodeGenerator.variableModifiers": 4
+												"JavaCodeGenerator.variableName": "spinnerSetupTime"
+											}
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 6
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 										"gridx": 1

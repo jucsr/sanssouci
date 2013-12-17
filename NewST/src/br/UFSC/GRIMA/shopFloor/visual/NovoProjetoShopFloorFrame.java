@@ -38,6 +38,9 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 		panel1 = new JPanel();
 		scrollPane1 = new JScrollPane();
 		textPane1 = new JTextPane();
+		label6 = new JLabel();
+		panel3 = new JPanel();
+		spinnerLotSize = new JSpinner();
 		panel6 = new JPanel();
 		panel9 = new JPanel();
 		label8 = new JLabel();
@@ -91,12 +94,12 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 							panel5.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 							panel5.setLayout(new GridBagLayout());
 							((GridBagLayout)panel5.getLayout()).columnWidths = new int[] {15, 0, 205, 10, 0};
-							((GridBagLayout)panel5.getLayout()).rowHeights = new int[] {15, 0, 0, 0, 0, 10, 0};
+							((GridBagLayout)panel5.getLayout()).rowHeights = new int[] {15, 0, 0, 0, 0, 0, 10, 0};
 							((GridBagLayout)panel5.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 0.0, 1.0E-4};
-							((GridBagLayout)panel5.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+							((GridBagLayout)panel5.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
 
 							//---- label1 ----
-							label1.setText("Project Name");
+							label1.setText("Project Name:");
 							label1.setFont(new Font("Courier New", Font.BOLD, 12));
 							panel5.add(label1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -110,7 +113,7 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 								new Insets(0, 0, 5, 5), 0, 0));
 
 							//---- label2 ----
-							label2.setText("Designer");
+							label2.setText("Designer:");
 							label2.setFont(new Font("Courier New", Font.BOLD, 11));
 							panel5.add(label2, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -125,7 +128,7 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 								new Insets(0, 0, 5, 5), 0, 0));
 
 							//---- label15 ----
-							label15.setText("Organization");
+							label15.setText("Organization:");
 							label15.setFont(new Font("Courier New", Font.BOLD, 11));
 							panel5.add(label15, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -139,7 +142,7 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 								new Insets(0, 0, 5, 5), 0, 0));
 
 							//---- label14 ----
-							label14.setText("Description");
+							label14.setText("Description:");
 							label14.setFont(new Font("Courier New", Font.BOLD, 11));
 							label14.setVerticalAlignment(SwingConstants.TOP);
 							panel5.add(label14, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
@@ -167,6 +170,30 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 									new Insets(0, 0, 0, 0), 0, 0));
 							}
 							panel5.add(panel1, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 5), 0, 0));
+
+							//---- label6 ----
+							label6.setText("Lot Size:");
+							panel5.add(label6, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 5), 0, 0));
+
+							//======== panel3 ========
+							{
+								panel3.setLayout(new GridBagLayout());
+								((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {65, 0, 0};
+								((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {0, 0};
+								((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+								//---- spinnerLotSize ----
+								spinnerLotSize.setModel(new SpinnerNumberModel(1000, 0, null, 1));
+								panel3.add(spinnerLotSize, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+									new Insets(0, 0, 0, 5), 0, 0));
+							}
+							panel5.add(panel3, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 5), 0, 0));
 						}
@@ -341,6 +368,9 @@ public class NovoProjetoShopFloorFrame extends JFrame {
 	private JPanel panel1;
 	private JScrollPane scrollPane1;
 	protected JTextPane textPane1;
+	private JLabel label6;
+	private JPanel panel3;
+	protected JSpinner spinnerLotSize;
 	protected JPanel panel6;
 	private JPanel panel9;
 	private JLabel label8;

@@ -287,6 +287,7 @@ public class CreateDrillingMachine extends CreateDrillingMachineFrame implements
 			drillingMachine.setAccuracy(((Double)spinner4.getValue()).doubleValue());
 			drillingMachine.setItsId(textField1.getText());
 			drillingMachine.setRelativeCost(((Double)spinnerCost.getValue()).doubleValue());
+			drillingMachine.setSetUpTime(((Double)spinnerSetupTime.getValue()).doubleValue());
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);
 //			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);

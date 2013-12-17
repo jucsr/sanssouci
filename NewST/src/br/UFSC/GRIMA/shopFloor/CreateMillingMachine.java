@@ -266,6 +266,8 @@ public class CreateMillingMachine extends CreateMillingMachineFrame implements A
 			millingMachine.setAccuracy(((Double)spinner4.getValue()).doubleValue());
 			millingMachine.setItsId(textField1.getText());
 			millingMachine.setRelativeCost(((Double)spinnerCost.getValue()).doubleValue());
+			millingMachine.setSetUpTime(((Double)spinnerSetupTime.getValue()).doubleValue());
+
 //			machineTool.setItsSpindle(itsSpindle);
 //			machineTool.setToolHandlingDevice(toolHandlingDevice);
 //			machineTool.setWorkpieceHandlingDevice(workpieceHandlingDevice);

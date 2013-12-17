@@ -36,12 +36,12 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		{
 			workingsteps.add(this.projetoSF.getProjeto().getWorkingsteps().get(0).elementAt(i));
 		}
-		this.calculateTempo();
+//		this.calculateTempo();
 //		this.fillTables();
 //		this.fillTables1();
 		this.fillCostsTable1();
-		this.fillTablesRouthing();
-		this.fillTimesTable();
+//		this.fillTablesRouthing();
+//		this.fillTimesTable();
 		this.setVisible(true);
 		this.okButton.addActionListener(new ActionListener()
 		{

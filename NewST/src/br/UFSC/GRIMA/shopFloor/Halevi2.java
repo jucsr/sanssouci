@@ -119,7 +119,7 @@ public class Halevi2
 		
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{
-			tempTotalMatrix.add(this.totalMatrixTimeRow(valuesTable.get(i-1),valuesTable.get(i),i-1));
+			tempTotalMatrix.add(this.totalMatrixTimeRow(valuesTable.get(i-1),tempTotalMatrix.get(tempTotalMatrix.size()-1),i-1));
 			//System.out.println("i: " + i);
 		}
 				
@@ -150,7 +150,7 @@ public class Halevi2
 	
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{
-			tempTotalMatrix.add(this.totalMatrixCostRow(valuesTable.get(i-1),valuesTable.get(i),i-1));
+			tempTotalMatrix.add(this.totalMatrixCostRow(valuesTable.get(i-1),tempTotalMatrix.get(tempTotalMatrix.size()-1),i-1));
 
 		}
 		

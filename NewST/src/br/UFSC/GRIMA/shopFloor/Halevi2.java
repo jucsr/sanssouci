@@ -56,7 +56,8 @@ public class Halevi2
 				lowIndex=index;
 			}
 		}		
-		
+		System.out.println("SizeList: " + list.size());
+		System.out.println("Low: " + low + " LowIndex: " + lowIndex);
 		dyadLow.setIndex(lowIndex);
 		dyadLow.setValue(low);
 		return dyadLow;		
@@ -65,11 +66,11 @@ public class Halevi2
 	private ArrayList<Dyad> totalMatrixTimeRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
 		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();
-		ArrayList<Double> sumList = new ArrayList<Double>();
 		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 		
 		for (int j1 = 0;j1<row1.size();j1++)
 		{	
+			ArrayList<Double> sumList = new ArrayList<Double>();			
 			for (int j2 = 0;j2<row2.size();j2++)
 			{				
 				if (j1==j2)
@@ -91,10 +92,10 @@ public class Halevi2
 	private ArrayList<Dyad> totalMatrixCostRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
 		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();	
-		ArrayList<Double> sumList = new ArrayList<Double>();
 		
 		for (int j1 = 0;j1<row1.size();j1++)
-		{			
+		{
+			ArrayList<Double> sumList = new ArrayList<Double>();			
 			for (int j2 = 0;j2<row2.size();j2++)
 			{
 				if (j1==j2)

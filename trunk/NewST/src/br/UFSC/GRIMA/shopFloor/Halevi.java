@@ -103,8 +103,7 @@ public class Halevi
 	 * 	metodo que calcula a matriz Z (de Tempos/Custos)
 	 */
 	public void solveZMatrix()
-	{	
-		
+	{			
 		fillMatrix();
 		for(int i = (zMatrix.size()-2); i>=0;i--){
 			//System.out.println("vez" +i);

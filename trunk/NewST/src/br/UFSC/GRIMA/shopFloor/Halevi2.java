@@ -34,6 +34,7 @@ public class Halevi2
 		this.calculateUniversalTimeMatrix();
 		this.universalTimeMatrix = this.getUniversalTimeMatrix();
 		this.calculateUniversalCostMatrix();
+		this.showUniversalTimeMatrix();
 		this.universalCostMatrix = this.getUniversalCostMatrix();
 		System.out.println("Constructor First Step!");
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
@@ -130,9 +131,14 @@ public class Halevi2
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
 		ArrayList<ArrayList<Integer>> tempTotalPathMatrix=new ArrayList<ArrayList<Integer>>();
 
-		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
+		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));		
 		tempTotalPathMatrix.add(new ArrayList<Integer>());
-				
+		
+		for (ArrayList<Double> row:valuesTable)
+		{
+			//System.out.println(row);
+		}
+		
 		for (int k = 0;k< valuesTable.get(0).size();k++)
 		{
 			tempTotalPathMatrix.get(0).add(0);	
@@ -142,7 +148,7 @@ public class Halevi2
 		{
 			ArrayList<Dyad> tempDyad = new ArrayList<Dyad>();
 			ArrayList<Double> rowTime = new ArrayList<Double>();
-			ArrayList<Integer> rowIndex = new ArrayList<Integer>();
+			ArrayList<Integer> rowIndex = new ArrayList<Integer>();		
 
 			tempDyad = this.totalMatrixTimeRow(valuesTable.get(i-1),tempTotalMatrix.get(tempTotalMatrix.size()-1),i-1);
 			for (Dyad dyadCurrent:tempDyad)
@@ -236,15 +242,30 @@ public class Halevi2
 			iWorkStep++;
 		}		
 	}
-	
+
 	public ArrayList<ArrayList<Double>> getUniversalTimeMatrix()
 	{
 		return universalTimeMatrix;
+	}
+	
+	
+	public void showUniversalTimeMatrix()
+	{
+		System.out.println("Begin UniversalTimeMatrix");
+		for (ArrayList<Double> row:universalTimeMatrix)
+		{
+			System.out.println(row);
+		}
+		System.out.println("End UniversalTimeMatrix\n***************");
 	}
 
 	public void  calculateUniversalCostMatrix()
 	{
 		int iWorkStep=0;
+		
+		ArrayList<ArrayList<Double>> tempUniversalTimeMatrix= new ArrayList<ArrayList<Double>>();
+		
+		tempUniversalTimeMatrix = this.getUniversalTimeMatrix();
 		
 		for (Workingstep workingStep : workingsteps)			
 		{
@@ -252,7 +273,7 @@ public class Halevi2
 			universalCostMatrix.add(new ArrayList<Double>());			
 			for (MachineTool machineTool : machineTools)
 			{	
-				universalCostMatrix.get(iWorkStep).add(this.getUniversalTimeMatrix().get(iWorkStep).get(iMachTool)*machineTools.get(iMachTool).getRelativeCost()/60);
+				universalCostMatrix.get(iWorkStep).add(tempUniversalTimeMatrix.get(iWorkStep).get(iMachTool)*machineTools.get(iMachTool).getRelativeCost()/60);
 				iMachTool++;
 			}
 			iWorkStep++;

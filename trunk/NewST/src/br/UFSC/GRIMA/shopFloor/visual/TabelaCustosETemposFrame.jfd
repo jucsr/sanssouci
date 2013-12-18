@@ -26,7 +26,7 @@ new FormModel {
 						add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
 							name: "tabbedPane1"
 							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-								"$columnSpecs": "0:1.0, 0"
+								"$columnSpecs": "0:1.0"
 								"$rowSpecs": "0:1.0, 0"
 								"$hGap": 5
 								"$vGap": 5
@@ -194,8 +194,8 @@ new FormModel {
 							} ) {
 								name: "panel7"
 								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-									"$columnSpecs": "0, 0"
-									"$rowSpecs": "0, 0, 0"
+									"$columnSpecs": "0:1.0, 0"
+									"$rowSpecs": "0:1.0, 0"
 									"$hGap": 5
 									"$vGap": 5
 									"$alignLeft": true

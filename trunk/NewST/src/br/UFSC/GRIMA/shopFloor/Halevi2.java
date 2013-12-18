@@ -6,6 +6,7 @@ import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.shopFloor.util.CalculateMachiningTime;
+import br.UFSC.GRIMA.shopFloor.Dyad;
 
 public class Halevi2 
 {
@@ -20,6 +21,7 @@ public class Halevi2
 	private ArrayList<ArrayList<Double>> universalTimeMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Double>> universalCostMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Double>> totalTimeMatrix = new ArrayList<ArrayList<Double>>();
+	private ArrayList<ArrayList<Integer>> totalTimePathMatrix = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Double>> totalCostMatrix = new ArrayList<ArrayList<Double>>();
 
 	
@@ -33,36 +35,42 @@ public class Halevi2
 		this.universalTimeMatrix = this.getUniversalTimeMatrix();
 		this.calculateUniversalCostMatrix();
 		this.universalCostMatrix = this.getUniversalCostMatrix();
-		this.totalTimeMatrix=this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
+		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.totalCostMatrix=this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		System.out.println("Constructor Done!");
 	}
 	
-	private double low(ArrayList<Double> list)
-	{		
+	private Dyad lowDyad(ArrayList<Double> list)
+	{	
+		Dyad dyadLow=new Dyad(0,0);
+		
 		double low=list.get(0);
+		int lowIndex=0;
 		
 		for (int index=1; index<list.size(); index++)
 		{
 			if (low < list.get(index))
 			{
 				low =list.get(index);
+				lowIndex=index;
 			}
 		}		
-		return low;		
+		
+		dyadLow.setIndex(lowIndex);
+		dyadLow.setValue(low);
+		return dyadLow;		
 	}
 
-
-	private ArrayList<Double> totalMatrixTimeRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
+	private ArrayList<Dyad> totalMatrixTimeRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
-		ArrayList<Double> newRow = new ArrayList<Double>();
+		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();
 		ArrayList<Double> sumList = new ArrayList<Double>();
 		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 		
 		for (int j1 = 0;j1<row1.size();j1++)
-		{			
+		{	
 			for (int j2 = 0;j2<row2.size();j2++)
-			{
+			{				
 				if (j1==j2)
 				{
 					sumList.add(row1.get(j1) + row2.get(j1));
@@ -73,14 +81,15 @@ public class Halevi2
 					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty());
 				}
 			}
-			newRow.add(this.low(sumList));
+			rowDyad.add(this.lowDyad(sumList));
+			
 		}		
-		return newRow;
+		return rowDyad;
 	}
 
-	private ArrayList<Double> totalMatrixCostRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
+	private ArrayList<Dyad> totalMatrixCostRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
-		ArrayList<Double> newRow = new ArrayList<Double>();
+		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();	
 		ArrayList<Double> sumList = new ArrayList<Double>();
 		
 		for (int j1 = 0;j1<row1.size();j1++)
@@ -97,30 +106,37 @@ public class Halevi2
 					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty()*machineTools.get(j2).getRelativeCost());
 				}
 			}
-			newRow.add(this.low(sumList));
+			rowDyad.add(this.lowDyad(sumList));
 		}
 		
-		return newRow;
+		return rowDyad;
 	}
 	
 	
-	private ArrayList<ArrayList<Double>> calculateTotalMatrixTime(ArrayList<ArrayList<Double>> valuesTable)
+	private void calculateTotalMatrixTime(ArrayList<ArrayList<Double>> valuesTable)
 	{
-		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<Double>> totalMatrixTime = new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<Integer>> totalMatrixPathTime = new ArrayList<ArrayList<Integer>>();
 		
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<Integer>> tempTotalPathMatrix=new ArrayList<ArrayList<Integer>>();
 
-		//System.out.println("WorkingSteps: " + this.workingsteps.size());
-		
-		//System.out.println("RowsValuesTable: " + valuesTable.size());
-		//System.out.println("ColsValuesTable: " + valuesTable.get(0).size());
-		
 		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
 		
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{
-			tempTotalMatrix.add(this.totalMatrixTimeRow(valuesTable.get(i-1),tempTotalMatrix.get(tempTotalMatrix.size()-1),i-1));
-			//System.out.println("i: " + i);
+			ArrayList<Dyad> tempDyad = new ArrayList<Dyad>();
+			ArrayList<Double> rowTime = new ArrayList<Double>();
+			ArrayList<Integer> rowIndex = new ArrayList<Integer>();
+
+			tempDyad = this.totalMatrixTimeRow(valuesTable.get(i-1),tempTotalMatrix.get(tempTotalMatrix.size()-1),i-1);
+			for (Dyad dyadCurrent:tempDyad)
+			{
+				rowTime.add(dyadCurrent.getValue());
+				rowIndex.add(dyadCurrent.getIndex());
+			}
+			tempTotalMatrix.add(rowTime);
+			tempTotalPathMatrix.add(rowIndex);
 		}
 				
 		
@@ -129,15 +145,19 @@ public class Halevi2
 		
 		for (int rowIndex=0;rowIndex<tempTotalMatrix.size();rowIndex++)
 		{
-			totalMatrix.add(new ArrayList<Double>());
+			totalMatrixTime.add(new ArrayList<Double>());
+			totalMatrixPathTime.add(new ArrayList<Integer>());
 			
 			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
 			{
-				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
-				System.out.println("Row " + rowIndex + " Col " + colIndex + " " + totalMatrix.get(rowIndex).get(colIndex));
+				totalMatrixTime.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
+				totalMatrixPathTime.get(rowIndex).add(tempTotalPathMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
+				System.out.println("Row " + rowIndex + " Col " + colIndex + " " + totalMatrixTime.get(rowIndex).get(colIndex));
 			}
 		}
-		return totalMatrix;
+		this.totalTimeMatrix=totalMatrixTime;
+		this.totalTimePathMatrix=totalMatrixPathTime;
+		
 	}
 
 	private ArrayList<ArrayList<Double>> calculateTotalMatrixCost(ArrayList<ArrayList<Double>> valuesTable)
@@ -145,13 +165,26 @@ public class Halevi2
 		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
 		
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<Integer>> tempTotalPath=new ArrayList<ArrayList<Integer>>();
 		
 		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
+		
 	
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{
-			tempTotalMatrix.add(this.totalMatrixCostRow(valuesTable.get(i-1),tempTotalMatrix.get(tempTotalMatrix.size()-1),i-1));
+			ArrayList<Dyad> tempDyad = new ArrayList<Dyad>();
+			ArrayList<Double> rowCost = new ArrayList<Double>();
+			ArrayList<Integer> rowIndex = new ArrayList<Integer>();
 
+			tempDyad = this.totalMatrixCostRow(valuesTable.get(i-1),tempTotalMatrix.get(tempTotalMatrix.size()-1),i-1);
+
+			for (Dyad dyadCurrent:tempDyad)
+			{
+				rowCost.add(dyadCurrent.getValue());
+				rowIndex.add(dyadCurrent.getIndex());
+			}
+			tempTotalMatrix.add(rowCost);
+			tempTotalPath.add(rowIndex);
 		}
 		
 		for (int rowIndex=0;rowIndex<tempTotalMatrix.size();rowIndex++)

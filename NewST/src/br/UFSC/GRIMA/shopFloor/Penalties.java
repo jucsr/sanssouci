@@ -87,7 +87,7 @@ public class Penalties
 			e.printStackTrace();
 			System.out.println("There is not a Handling Device in machine");			
 		}
-		totalPenalty = totalPenalty + currentMachine.getItsOrigin().distance(nextMachine.getItsOrigin())/(60);		
+//		totalPenalty = totalPenalty + currentMachine.getItsOrigin().distance(nextMachine.getItsOrigin())/(120);		
 		return this.totalPenalty;
 	}
 	public boolean haveWorkpieceHandlingDevice()

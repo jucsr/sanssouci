@@ -123,7 +123,7 @@ public class Halevi2
 		ArrayList<ArrayList<Integer>> tempTotalPathMatrix=new ArrayList<ArrayList<Integer>>();
 
 		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
-		tempTotalPathMatrix.add(null);
+		tempTotalPathMatrix.add(new ArrayList<Integer>());
 				
 		for (int k = 0;k< valuesTable.get(0).size();k++)
 		{
@@ -171,7 +171,7 @@ public class Halevi2
 		ArrayList<ArrayList<Integer>> tempTotalPathMatrix=new ArrayList<ArrayList<Integer>>();
 		
 		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
-		tempTotalPathMatrix.add(null);
+		tempTotalPathMatrix.add(new ArrayList<Integer>());
 		
 		for (int k = 0;k< valuesTable.get(0).size();k++)
 		{

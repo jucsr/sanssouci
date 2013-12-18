@@ -91,7 +91,8 @@ public class CalculateMachiningTime
 		conn = conexao.getConn();
 		int materialType = material.getCategory();
 		Query = "SELECT * FROM Specific_Cutting_Force_Kc_Value WHERE Material_bloco = " + materialType;
-		
+//		System.out.println("conexao --->" + conexao);
+//		System.out.println("con --->" + conn);
 		try 
 		{
 			this.statement = conn.createStatement();
@@ -111,6 +112,7 @@ public class CalculateMachiningTime
 		this.workingstep = workingstep;
 		this.machine = machine;
 		this.calculateTimes();
+		conexao.Desconectar(); // Desconectar? as vezes da erro, acho que eh por causa das muitas conexoes abertas, entao, vou desconectar toda vez
 	}
 	
 	public double calculateTimes() 

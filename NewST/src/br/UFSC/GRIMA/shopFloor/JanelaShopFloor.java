@@ -200,7 +200,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 				protected void done()
 				{
 					p3D.dispose();
-					textArea1.setText(textArea1.getText() + "\n Modelo 3D criado com sucesso!");
+					textArea1.setText(textArea1.getText() + "\n  Times and Costs matrices done!");
 				}
 			};
 			worker.execute();

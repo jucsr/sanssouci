@@ -61,8 +61,6 @@ public class Halevi2
 		}		
 		dyadLow.setIndex(lowIndex+1);
 		dyadLow.setValue(low);
-
-		System.out.println("--------------------");
 		System.out.println(list);
 		System.out.println("Low: " + dyadLow.getValue() + " LowIndex: " + dyadLow.getIndex());
 		
@@ -72,11 +70,12 @@ public class Halevi2
 	private ArrayList<Dyad> totalMatrixTimeRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
 		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();
-		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
-		
+		System.out.println("*********************************");
+		System.out.println("Workingstep " + indexWorkingStep);
 		for (int j1 = 0;j1<row1.size();j1++)
 		{	
 			ArrayList<Double> sumList = new ArrayList<Double>();
+			System.out.println("------------------");
 			System.out.println("Pivot Mach" + j1);
 			for (int j2 = 0;j2<row2.size();j2++)
 			{				

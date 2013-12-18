@@ -82,7 +82,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 	private ProjetoSF projetoSF;
 	private double zooming =0;
 	
-	JanelaShopFloor janelaShopFloor;
+	JanelaShopFloor janelaShopFloor; /** ----> nunca ganha valor??? */
 
 	private Projeto projeto = null; //New
 	private Face faceVisualizada = null; //New
@@ -184,7 +184,26 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 			this.abrir();
 		} else if(o == this.menuItem3)
 		{
-			new TabelaCustosETempos(this, projetoSF);
+			final Progress3D p3D = new Progress3D(this);
+			p3D.setTitle("Calculating Times and Costs");
+			p3D.setVisible(true);
+			final JanelaShopFloor janelaShopFloor = this;
+			SwingWorker worker = new SwingWorker() 
+			{
+				@Override
+				protected Object doInBackground() throws Exception 
+				{
+					TabelaCustosETempos tabela = new TabelaCustosETempos(janelaShopFloor, projetoSF);
+					return null;
+				}
+				@Override
+				protected void done()
+				{
+					p3D.dispose();
+					textArea1.setText(textArea1.getText() + "\n Modelo 3D criado com sucesso!");
+				}
+			};
+			worker.execute();
 		}
 		if(o.equals(buttonRemoverWS)){
 			

@@ -92,9 +92,9 @@ public class TabelaCustosETemposFrame extends JDialog {
 						//======== panel6 ========
 						{
 							panel6.setLayout(new GridBagLayout());
-							((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {0, 0, 0};
+							((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {0, 0};
 							((GridBagLayout)panel6.getLayout()).rowHeights = new int[] {0, 0, 0};
-							((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
 							((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
 
 							//======== splitPane1 ========
@@ -198,7 +198,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 							}
 							panel6.add(splitPane1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-								new Insets(0, 0, 5, 5), 0, 0));
+								new Insets(0, 0, 5, 0), 0, 0));
 						}
 						tabbedPane1.addTab("Cost", panel6);
 
@@ -215,9 +215,9 @@ public class TabelaCustosETemposFrame extends JDialog {
 							{
 								panel10.setLayout(new GridBagLayout());
 								((GridBagLayout)panel10.getLayout()).columnWidths = new int[] {0, 0, 0};
-								((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
-								((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel10.getLayout()).rowHeights = new int[] {0, 0, 0};
+								((GridBagLayout)panel10.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0E-4};
+								((GridBagLayout)panel10.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
 
 								//======== splitPane2 ========
 								{

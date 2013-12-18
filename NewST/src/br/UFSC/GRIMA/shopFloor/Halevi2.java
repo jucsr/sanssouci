@@ -23,7 +23,7 @@ public class Halevi2
 	private ArrayList<ArrayList<Double>> totalTimeMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Integer>> totalTimePathMatrix = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Double>> totalCostMatrix = new ArrayList<ArrayList<Double>>();
-
+	private ArrayList<ArrayList<Integer>> totalCostPathMatrix = new ArrayList<ArrayList<Integer>>();
 	
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
@@ -36,7 +36,7 @@ public class Halevi2
 		this.calculateUniversalCostMatrix();
 		this.universalCostMatrix = this.getUniversalCostMatrix();
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
-		this.totalCostMatrix=this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
+		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		System.out.println("Constructor Done!");
 	}
 	
@@ -139,10 +139,6 @@ public class Halevi2
 			tempTotalPathMatrix.add(rowIndex);
 		}
 				
-		
-		System.out.println("RowsTempTotal: " + tempTotalMatrix.size());
-		System.out.println("ColsTempTotal: " + tempTotalMatrix.get(0).size());
-		
 		for (int rowIndex=0;rowIndex<tempTotalMatrix.size();rowIndex++)
 		{
 			totalMatrixTime.add(new ArrayList<Double>());
@@ -151,8 +147,7 @@ public class Halevi2
 			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
 			{
 				totalMatrixTime.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
-				totalMatrixPathTime.get(rowIndex).add(tempTotalPathMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
-				System.out.println("Row " + rowIndex + " Col " + colIndex + " " + totalMatrixTime.get(rowIndex).get(colIndex));
+				totalMatrixPathTime.get(rowIndex).add(tempTotalPathMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));				
 			}
 		}
 		this.totalTimeMatrix=totalMatrixTime;
@@ -160,12 +155,13 @@ public class Halevi2
 		
 	}
 
-	private ArrayList<ArrayList<Double>> calculateTotalMatrixCost(ArrayList<ArrayList<Double>> valuesTable)
+	private void calculateTotalMatrixCost(ArrayList<ArrayList<Double>> valuesTable)
 	{
-		ArrayList<ArrayList<Double>> totalMatrix = new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<Double>> totalMatrixCost = new ArrayList<ArrayList<Double>>();
+		ArrayList<ArrayList<Integer>> totalMatrixPathCost = new ArrayList<ArrayList<Integer>>();
 		
 		ArrayList<ArrayList<Double>> tempTotalMatrix=new ArrayList<ArrayList<Double>>();
-		ArrayList<ArrayList<Integer>> tempTotalPath=new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> tempTotalPathMatrix=new ArrayList<ArrayList<Integer>>();
 		
 		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
 		
@@ -184,24 +180,21 @@ public class Halevi2
 				rowIndex.add(dyadCurrent.getIndex());
 			}
 			tempTotalMatrix.add(rowCost);
-			tempTotalPath.add(rowIndex);
+			tempTotalPathMatrix.add(rowIndex);
 		}
 		
 		for (int rowIndex=0;rowIndex<tempTotalMatrix.size();rowIndex++)
 		{
-			totalMatrix.add(new ArrayList<Double>());
+			totalMatrixCost.add(new ArrayList<Double>());
+			totalMatrixPathCost.add(new ArrayList<Integer>());
 			for (int colIndex=0;colIndex<this.machineTools.size();colIndex++)
 			{
-		//		System.out.println("RowIndex: " + rowIndex);
-//				System.out.println("ColIndex: " + colIndex);
-	//			System.out.println("tempValue: " + tempTotalMatrix.get(rowIndex).get(colIndex));				
-		//		totalMatrix.get(rowIndex).add(tempTotalMatrix.get(this.workingsteps.size()-rowIndex-1).get(colIndex));
-				totalMatrix.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
-				System.out.println("Row " + rowIndex + " Col " + colIndex + " " + totalMatrix.get(rowIndex).get(colIndex));
-//				System.out.println("SizeCol: " + totalMatrix.get(rowIndex).size());				
+				totalMatrixCost.get(rowIndex).add(tempTotalMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));
+				totalMatrixPathCost.get(rowIndex).add(tempTotalPathMatrix.get(tempTotalMatrix.size()-rowIndex-1).get(colIndex));				
 			}
 		}
-		return totalMatrix;
+		this.totalCostMatrix=totalMatrixCost;
+		this.totalCostPathMatrix=totalMatrixPathCost;
 	}
 	
 	
@@ -267,5 +260,9 @@ public class Halevi2
 		return this.totalCostMatrix;
 	}
 	
+	public ArrayList<ArrayList<Integer>> getTotalCostPathMatrix()
+	{
+		return this.totalCostPathMatrix;
+	}
 	
 }

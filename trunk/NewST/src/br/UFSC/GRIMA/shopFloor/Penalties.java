@@ -58,29 +58,37 @@ public class Penalties
 	 */
 	private double calculatePenalty()
 	{
+		double penaltyTmp = totalPenalty;		
 		try 
 		{
 			for(int i = 0; i < this.currentMachine.getToolHandlingDevice().get(0).getToolList().size(); i++)
 			{
 				Ferramenta ferramentaTmp = this.currentMachine.getToolHandlingDevice().get(0).getToolList().get(i);
 				Ferramenta ferramentaWs = workingstep.getFerramenta();
-				double penaltyTmp = totalPenalty;
 				if(haveToolToMachinig(ferramentaWs, ferramentaTmp))
 				{
 					totalPenalty = totalPenalty - penaltyTmp / 3;
+					break;
 				}
-				if(haveWorkpieceHandlingDevice())
-				{
-					totalPenalty = totalPenalty - penaltyTmp / 3;
-				}
-				totalPenalty = totalPenalty + 2 / currentMachine.getItsOrigin().distance(nextMachine.getItsOrigin()) * 1 / 60;
+				
 			}
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 			System.out.println("There is not a tool list in machine");
 		}
-			return this.totalPenalty;
+		try {		
+			if(haveWorkpieceHandlingDevice())
+			{
+				totalPenalty = totalPenalty - penaltyTmp / 3;
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("There is not a Handling Device in machine");			
+		}
+		totalPenalty = totalPenalty + currentMachine.getItsOrigin().distance(nextMachine.getItsOrigin())/(60);		
+		return this.totalPenalty;
 	}
 	public boolean haveWorkpieceHandlingDevice()
 	{

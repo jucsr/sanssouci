@@ -76,7 +76,8 @@ public class Halevi2
 		
 		for (int j1 = 0;j1<row1.size();j1++)
 		{	
-			ArrayList<Double> sumList = new ArrayList<Double>();			
+			ArrayList<Double> sumList = new ArrayList<Double>();
+			System.out.println("Pivot Mach1: " + j1);
 			for (int j2 = 0;j2<row2.size();j2++)
 			{				
 				if (j1==j2)
@@ -86,6 +87,7 @@ public class Halevi2
 				else
 				{
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
+					System.out.println("Mach1: " + j1 + "-> Mach2: " + j2  + "Penalty: " + tempPenalty.getTotalPenalty());
 					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty());
 				}
 			}

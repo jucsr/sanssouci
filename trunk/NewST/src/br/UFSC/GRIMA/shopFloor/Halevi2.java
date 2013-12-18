@@ -104,7 +104,7 @@ public class Halevi2
 				else
 				{
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
-					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty()*machineTools.get(j2).getRelativeCost());
+					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty()*machineTools.get(j2).getRelativeCost()/60);
 				}
 			}
 			rowDyad.add(this.lowDyad(sumList));
@@ -244,7 +244,7 @@ public class Halevi2
 			universalCostMatrix.add(new ArrayList<Double>());			
 			for (MachineTool machineTool : machineTools)
 			{	
-				universalCostMatrix.get(iWorkStep).add(this.getUniversalTimeMatrix().get(iWorkStep).get(iMachTool)*machineTools.get(iMachTool).getRelativeCost());
+				universalCostMatrix.get(iWorkStep).add(this.getUniversalTimeMatrix().get(iWorkStep).get(iMachTool)*machineTools.get(iMachTool).getRelativeCost()/60);
 				iMachTool++;
 			}
 			iWorkStep++;

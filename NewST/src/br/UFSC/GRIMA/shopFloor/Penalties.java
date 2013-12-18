@@ -38,6 +38,7 @@ public class Penalties
 		this.workingstep = workingstep;
 		this.projetoSF = projetoSF;
 		this.totalPenalty = this.nextMachine.getSetUpTime() / this.projetoSF.getLotSize();
+		this.calculatePenalty();
 	}
 	/**
 	 *  penalidade total em minutos

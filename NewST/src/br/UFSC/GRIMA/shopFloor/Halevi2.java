@@ -46,20 +46,26 @@ public class Halevi2
 		Dyad dyadLow=new Dyad(0,0);
 		
 		double low=list.get(0);
+		
 		int lowIndex=0;
 		
-		for (int index=1; index<list.size(); index++)
+		int index=0;
+		for (Double currentValue:list)
 		{
-			if (low < list.get(index))
+			if (low > currentValue)
 			{
-				low =list.get(index);
+				low = currentValue;
 				lowIndex=index;
 			}
+			index=index+1;
 		}		
-//		System.out.println("SizeList: " + list.size());
-//		System.out.println("Low: " + low + " LowIndex: " + lowIndex);
 		dyadLow.setIndex(lowIndex+1);
 		dyadLow.setValue(low);
+
+		System.out.println("--------------------");
+		System.out.println(list);
+		System.out.println("Low: " + dyadLow.getValue() + " LowIndex: " + dyadLow.getIndex());
+		
 		return dyadLow;		
 	}
 

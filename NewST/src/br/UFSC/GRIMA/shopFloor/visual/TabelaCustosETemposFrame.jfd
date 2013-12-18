@@ -58,7 +58,7 @@ new FormModel {
 											name: "panel3"
 											add( new FormComponent( "javax.swing.JLabel" ) {
 												name: "label1"
-												"text": "COST MATRIX"
+												"text": "COST MATRIX [$]"
 											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 												"gridx": 1
 												"gridy": 1
@@ -226,7 +226,7 @@ new FormModel {
 												name: "panel12"
 												add( new FormComponent( "javax.swing.JLabel" ) {
 													name: "label3"
-													"text": "TIME MATRIX"
+													"text": "TIME MATRIX [minutes]"
 												}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 													"gridx": 1
 													"gridy": 1

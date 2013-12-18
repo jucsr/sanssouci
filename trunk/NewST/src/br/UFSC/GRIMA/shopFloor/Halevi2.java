@@ -35,6 +35,7 @@ public class Halevi2
 		this.universalTimeMatrix = this.getUniversalTimeMatrix();
 		this.calculateUniversalCostMatrix();
 		this.universalCostMatrix = this.getUniversalCostMatrix();
+		System.out.println("Constructor First Step!");
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		System.out.println("Constructor Done!");
@@ -122,6 +123,12 @@ public class Halevi2
 		ArrayList<ArrayList<Integer>> tempTotalPathMatrix=new ArrayList<ArrayList<Integer>>();
 
 		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
+		tempTotalPathMatrix.add(null);
+				
+		for (int k = 0;k< valuesTable.get(0).size();k++)
+		{
+			tempTotalPathMatrix.get(0).add(0);	
+		}
 		
 		for (int i=valuesTable.size()-1;i>0;i--)
 		{
@@ -164,6 +171,12 @@ public class Halevi2
 		ArrayList<ArrayList<Integer>> tempTotalPathMatrix=new ArrayList<ArrayList<Integer>>();
 		
 		tempTotalMatrix.add(valuesTable.get(valuesTable.size()-1));
+		tempTotalPathMatrix.add(null);
+		
+		for (int k = 0;k< valuesTable.get(0).size();k++)
+		{
+			tempTotalPathMatrix.get(0).add(0);	
+		}
 		
 	
 		for (int i=valuesTable.size()-1;i>0;i--)

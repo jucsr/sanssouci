@@ -88,7 +88,7 @@ public class Halevi2
 				{
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
 					System.out.println("Mach" + j1 + "-> Mach" + j2  + " Penalty: " + tempPenalty.getTotalPenalty());
-					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty());
+					sumList.add(row1.get(j1) + row2.get(j2) + tempPenalty.getTotalPenalty());
 				}
 			}
 			rowDyad.add(this.lowDyad(sumList));
@@ -113,7 +113,7 @@ public class Halevi2
 				else
 				{
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
-					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty()*machineTools.get(j2).getRelativeCost()/60);
+					sumList.add(row1.get(j1) + row2.get(j2) + tempPenalty.getTotalPenalty()*machineTools.get(j2).getRelativeCost()/60);
 				}
 			}
 			rowDyad.add(this.lowDyad(sumList));

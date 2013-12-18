@@ -255,9 +255,17 @@ public class Halevi2
 	{
 		return this.totalTimeMatrix;
 	}
+
+	public ArrayList<ArrayList<Integer>> getTotalTimePathMatrix()
+	{
+		return this.totalTimePathMatrix;
+	}
+
 	
 	public ArrayList<ArrayList<Double>> getTotalCostMatrix()
 	{
 		return this.totalCostMatrix;
-	}	
+	}
+	
+	
 }

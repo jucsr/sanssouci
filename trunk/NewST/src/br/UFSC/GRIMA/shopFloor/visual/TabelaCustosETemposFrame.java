@@ -119,7 +119,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 										((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 										//---- label1 ----
-										label1.setText("COST MATRIX");
+										label1.setText("COST MATRIX [$]");
 										panel3.add(label1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 											new Insets(0, 0, 5, 5), 0, 0));
@@ -241,7 +241,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 											((GridBagLayout)panel12.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 											//---- label3 ----
-											label3.setText("TIME MATRIX");
+											label3.setText("TIME MATRIX [minutes]");
 											panel12.add(label3, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 												GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 												new Insets(0, 0, 5, 5), 0, 0));

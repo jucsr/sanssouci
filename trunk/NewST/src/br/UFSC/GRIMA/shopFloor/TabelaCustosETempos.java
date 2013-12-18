@@ -41,6 +41,8 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 //		this.fillTables1();
 		this.fillCostsTable1();
 		this.fillTimesTable1();
+		this.fillPathTimeTable();
+		this.fillPathCostTable();
 //		this.fillTablesRouthing();
 //		this.fillTimesTable();
 		this.setVisible(true);
@@ -61,6 +63,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			}
 		});
 	}
+	
 	private void fillTables1()
 	{
 		halevi = new Halevi(projetoSF.getShopFloor(), workingsteps);
@@ -456,6 +459,108 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			for(int j = 0; j < timeMatrix.get(i).size(); j++)
 			{
 				this.table4.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
+			}
+		}
+	}
+	/**
+	 *  enche a tabela de roteamento de tempos
+	 */
+	private void fillPathTimeTable()
+	{
+		ArrayList<ArrayList<Integer>>pathMatrix = halevi2.getTotalTimePathMatrix();
+		
+		Vector<String> cabecalho = new Vector<String>();
+		cabecalho.add("M. Workingsteps");
+		cabecalho.add("ID");
+		cabecalho.add("Priorities");
+		for(int i = 0; i < machines.size(); i++)
+		{
+			cabecalho.add(machines.get(i).getItsId());
+		}
+		DefaultTableModel modelo1 = new DefaultTableModel(cabecalho, 0);
+		for(int i = 0; i < workingsteps.size(); i++)
+		{
+			Workingstep wsTmp = workingsteps.get(i);
+			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
+			int idPrecedente = 0;
+			if(wsPrecedente == null)
+			{
+				idPrecedente = 0;
+			} else
+			{
+				for(int j = 0; j < workingsteps.size(); j++)
+				{
+					if(wsPrecedente == workingsteps.get(j))
+					{
+						idPrecedente = 10 + j * 10;
+					}
+				}
+			}
+			
+			String nome = wsTmp.getId();
+			int id = 10 + i * 10;
+			Object[] linha = {nome, id, idPrecedente};
+	
+			this.table2.setModel(modelo1);
+			modelo1.addRow(linha);
+		}
+		
+		for(int i = 0; i < pathMatrix.size(); i++)
+		{
+			for(int j = 0; j < pathMatrix.get(i).size(); j++)
+			{
+				this.table2.setValueAt(pathMatrix.get(i).get(j), i, j + 3);
+			}
+		}
+	}
+	/**
+	 *  enche a tabela de roteamento de custos
+	 */
+	private void fillPathCostTable()
+	{
+		ArrayList<ArrayList<Integer>>pathMatrix = halevi2.getTotalCostPathMatrix();
+		
+		Vector<String> cabecalho = new Vector<String>();
+		cabecalho.add("M. Workingsteps");
+		cabecalho.add("ID");
+		cabecalho.add("Priorities");
+		for(int i = 0; i < machines.size(); i++)
+		{
+			cabecalho.add(machines.get(i).getItsId());
+		}
+		DefaultTableModel modelo1 = new DefaultTableModel(cabecalho, 0);
+		for(int i = 0; i < workingsteps.size(); i++)
+		{
+			Workingstep wsTmp = workingsteps.get(i);
+			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
+			int idPrecedente = 0;
+			if(wsPrecedente == null)
+			{
+				idPrecedente = 0;
+			} else
+			{
+				for(int j = 0; j < workingsteps.size(); j++)
+				{
+					if(wsPrecedente == workingsteps.get(j))
+					{
+						idPrecedente = 10 + j * 10;
+					}
+				}
+			}
+			
+			String nome = wsTmp.getId();
+			int id = 10 + i * 10;
+			Object[] linha = {nome, id, idPrecedente};
+	
+			this.table4.setModel(modelo1);
+			modelo1.addRow(linha);
+		}
+		
+		for(int i = 0; i < pathMatrix.size(); i++)
+		{
+			for(int j = 0; j < pathMatrix.get(i).size(); j++)
+			{
+				this.table4.setValueAt(pathMatrix.get(i).get(j), i, j + 3);
 			}
 		}
 	}

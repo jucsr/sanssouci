@@ -46,7 +46,7 @@ public class Penalties
 	 */
 	public double getTotalPenalty() 
 	{
-		totalPenalty = 0.03;
+//		totalPenalty = 0.03;
 		return totalPenalty;
 	}
 	public void setTotalPenalty(double totalPenalty) 
@@ -88,7 +88,7 @@ public class Penalties
 			e.printStackTrace();
 			System.out.println("There is not a Handling Device in machine");			
 		}
-//		totalPenalty = totalPenalty + currentMachine.getItsOrigin().distance(nextMachine.getItsOrigin())/(120);		
+		totalPenalty = totalPenalty + currentMachine.getItsOrigin().distance(nextMachine.getItsOrigin())/(120);		
 		return this.totalPenalty;
 	}
 	public boolean haveWorkpieceHandlingDevice()

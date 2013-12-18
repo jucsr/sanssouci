@@ -76,7 +76,7 @@ public class Conexao {
     public void Desconectar() { 
         try { 
             conn.close(); 
-			JOptionPane.showMessageDialog(null, "Desconectado!", "Conexão", 0);
+//			JOptionPane.showMessageDialog(null, "Desconectado!", "Conexão", 0);
         } 
         catch (Exception e) { 
             JOptionPane.showMessageDialog(null, "Ocorreram erros ao fechar conexão.\n\nMensagem: "+ e.getMessage(), "Erro", 0); 

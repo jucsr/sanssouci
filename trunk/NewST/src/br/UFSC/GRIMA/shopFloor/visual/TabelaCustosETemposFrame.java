@@ -28,6 +28,18 @@ public class TabelaCustosETemposFrame extends JDialog {
 		contentPanel = new JPanel();
 		panel5 = new JPanel();
 		tabbedPane1 = new JTabbedPane();
+		panel15 = new JPanel();
+		splitPane3 = new JSplitPane();
+		panel16 = new JPanel();
+		panel17 = new JPanel();
+		label5 = new JLabel();
+		scrollPane6 = new JScrollPane();
+		table6 = new JTable();
+		panel18 = new JPanel();
+		panel19 = new JPanel();
+		label6 = new JLabel();
+		scrollPane7 = new JScrollPane();
+		table7 = new JTable();
 		panel6 = new JPanel();
 		splitPane1 = new JSplitPane();
 		panel1 = new JPanel();
@@ -88,6 +100,120 @@ public class TabelaCustosETemposFrame extends JDialog {
 
 					//======== tabbedPane1 ========
 					{
+
+						//======== panel15 ========
+						{
+							panel15.setLayout(new GridBagLayout());
+							((GridBagLayout)panel15.getLayout()).columnWidths = new int[] {0, 0, 0};
+							((GridBagLayout)panel15.getLayout()).rowHeights = new int[] {0, 0};
+							((GridBagLayout)panel15.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel15.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+							//======== splitPane3 ========
+							{
+								splitPane3.setResizeWeight(0.5);
+								splitPane3.setOneTouchExpandable(true);
+
+								//======== panel16 ========
+								{
+									panel16.setLayout(new GridBagLayout());
+									((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0};
+									((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+									//======== panel17 ========
+									{
+										panel17.setLayout(new GridBagLayout());
+										((GridBagLayout)panel17.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel17.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel17.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+										((GridBagLayout)panel17.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+										//---- label5 ----
+										label5.setText("UNIVERSAL TIMES MATRIX");
+										panel17.add(label5, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+											new Insets(0, 0, 5, 5), 0, 0));
+									}
+									panel16.add(panel17, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+
+									//======== scrollPane6 ========
+									{
+
+										//---- table6 ----
+										table6.setModel(new DefaultTableModel(
+											new Object[][] {
+												{null, null, null},
+												{null, null, null},
+											},
+											new String[] {
+												"OPERATION", "ID", "PRIORITY"
+											}
+										));
+										scrollPane6.setViewportView(table6);
+									}
+									panel16.add(scrollPane6, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+								}
+								splitPane3.setLeftComponent(panel16);
+
+								//======== panel18 ========
+								{
+									panel18.setLayout(new GridBagLayout());
+									((GridBagLayout)panel18.getLayout()).columnWidths = new int[] {0, 0, 0};
+									((GridBagLayout)panel18.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+									((GridBagLayout)panel18.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+									((GridBagLayout)panel18.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+									//======== panel19 ========
+									{
+										panel19.setLayout(new GridBagLayout());
+										((GridBagLayout)panel19.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel19.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel19.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+										((GridBagLayout)panel19.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+										//---- label6 ----
+										label6.setText("UNIVERSAL COST MATRIX");
+										panel19.add(label6, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+											new Insets(0, 0, 5, 5), 0, 0));
+									}
+									panel18.add(panel19, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+
+									//======== scrollPane7 ========
+									{
+
+										//---- table7 ----
+										table7.setModel(new DefaultTableModel(
+											new Object[][] {
+												{null, null, null},
+												{null, null, null},
+											},
+											new String[] {
+												"OPERATIONS", "ID", "PRIORITY"
+											}
+										));
+										scrollPane7.setViewportView(table7);
+									}
+									panel18.add(scrollPane7, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+										GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+										new Insets(0, 0, 5, 0), 0, 0));
+								}
+								splitPane3.setRightComponent(panel18);
+							}
+							panel15.add(splitPane3, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 0, 5), 0, 0));
+						}
+						tabbedPane1.addTab("Universal Matrices", panel15);
+
 
 						//======== panel6 ========
 						{
@@ -409,6 +535,18 @@ public class TabelaCustosETemposFrame extends JDialog {
 	private JPanel contentPanel;
 	private JPanel panel5;
 	private JTabbedPane tabbedPane1;
+	private JPanel panel15;
+	private JSplitPane splitPane3;
+	private JPanel panel16;
+	private JPanel panel17;
+	private JLabel label5;
+	private JScrollPane scrollPane6;
+	protected JTable table6;
+	private JPanel panel18;
+	private JPanel panel19;
+	private JLabel label6;
+	private JScrollPane scrollPane7;
+	protected JTable table7;
 	private JPanel panel6;
 	private JSplitPane splitPane1;
 	private JPanel panel1;

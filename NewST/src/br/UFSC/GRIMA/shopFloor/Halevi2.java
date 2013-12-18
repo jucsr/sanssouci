@@ -56,9 +56,9 @@ public class Halevi2
 				lowIndex=index;
 			}
 		}		
-		System.out.println("SizeList: " + list.size());
-		System.out.println("Low: " + low + " LowIndex: " + lowIndex);
-		dyadLow.setIndex(lowIndex);
+//		System.out.println("SizeList: " + list.size());
+//		System.out.println("Low: " + low + " LowIndex: " + lowIndex);
+		dyadLow.setIndex(lowIndex+1);
 		dyadLow.setValue(low);
 		return dyadLow;		
 	}

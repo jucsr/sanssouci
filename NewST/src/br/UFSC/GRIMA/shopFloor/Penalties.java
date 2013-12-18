@@ -46,7 +46,7 @@ public class Penalties
 	 */
 	public double getTotalPenalty() 
 	{
-		totalPenalty = 0;
+		totalPenalty = 0.03;
 		return totalPenalty;
 	}
 	public void setTotalPenalty(double totalPenalty) 

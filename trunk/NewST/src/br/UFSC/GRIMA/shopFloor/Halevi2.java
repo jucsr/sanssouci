@@ -87,7 +87,7 @@ public class Halevi2
 				else
 				{
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
-					System.out.println("Mach1: " + j1 + "-> Mach2: " + j2  + " Penalty: " + tempPenalty.getTotalPenalty());
+					System.out.println("Mach" + j1 + "-> Mach" + j2  + " Penalty: " + tempPenalty.getTotalPenalty());
 					sumList.add(row1.get(j1) + row2.get(j1) + tempPenalty.getTotalPenalty());
 				}
 			}

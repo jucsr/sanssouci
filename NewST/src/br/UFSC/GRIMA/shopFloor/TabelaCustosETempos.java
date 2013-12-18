@@ -43,6 +43,8 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		this.fillTimesTable1();
 		this.fillPathTimeTable();
 		this.fillPathCostTable();
+		this.fillUniversalTimesTable();
+		this.fillUniversalCostTable();
 //		this.fillTablesRouthing();
 //		this.fillTimesTable();
 		this.setVisible(true);
@@ -561,6 +563,108 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			for(int j = 0; j < pathMatrix.get(i).size(); j++)
 			{
 				this.table4.setValueAt(pathMatrix.get(i).get(j), i, j + 3);
+			}
+		}
+	}
+	/**
+	 *  metodo que preenche a tabela de tempos para cada WS segundo cada maquina
+	 */
+	private void fillUniversalTimesTable()
+	{
+		ArrayList<ArrayList<Double>> timeMatrix = halevi2.getUniversalTimeMatrix();
+		Vector<String> cabecalho = new Vector<String>();
+		cabecalho.add("M. Workingsteps");
+		cabecalho.add("ID");
+		cabecalho.add("Priorities");
+		
+		for(int i = 0; i < machines.size(); i++)
+		{
+			cabecalho.add(machines.get(i).getItsId());
+		}
+		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
+		
+		for(int i = 0; i < workingsteps.size(); i++)
+		{
+			Workingstep wsTmp = workingsteps.get(i);
+			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
+			int idPrecedente = 0;
+			if(wsPrecedente == null)
+			{
+				idPrecedente = 0;
+			} else
+			{
+				for(int j = 0; j < workingsteps.size(); j++)
+				{
+					if(wsPrecedente == workingsteps.get(j))
+					{
+						idPrecedente = 10 + j * 10;
+					}
+				}
+			}
+			
+			String nome = wsTmp.getId();
+			int id = 10 + i * 10;
+			Object[] linha = {nome, id, idPrecedente};
+			this.table6.setModel(modelo);
+			modelo.addRow(linha);
+		}
+		
+		for(int i = 0; i < timeMatrix.size(); i++)
+		{
+			for(int j = 0; j < timeMatrix.get(i).size(); j++)
+			{
+				this.table6.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
+			}
+		}
+	}
+	/**
+	 *  metodo que preenche a tabela de tempos para cada WS segundo cada maquina
+	 */
+	private void fillUniversalCostTable()
+	{
+		ArrayList<ArrayList<Double>> costMatrix = halevi2.getUniversalCostMatrix();
+		Vector<String> cabecalho = new Vector<String>();
+		cabecalho.add("M. Workingsteps");
+		cabecalho.add("ID");
+		cabecalho.add("Priorities");
+		
+		for(int i = 0; i < machines.size(); i++)
+		{
+			cabecalho.add(machines.get(i).getItsId());
+		}
+		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
+		
+		for(int i = 0; i < workingsteps.size(); i++)
+		{
+			Workingstep wsTmp = workingsteps.get(i);
+			Workingstep wsPrecedente = wsTmp.getWorkingstepPrecedente();
+			int idPrecedente = 0;
+			if(wsPrecedente == null)
+			{
+				idPrecedente = 0;
+			} else
+			{
+				for(int j = 0; j < workingsteps.size(); j++)
+				{
+					if(wsPrecedente == workingsteps.get(j))
+					{
+						idPrecedente = 10 + j * 10;
+					}
+				}
+			}
+			
+			String nome = wsTmp.getId();
+			int id = 10 + i * 10;
+			Object[] linha = {nome, id, idPrecedente};
+			this.table7.setModel(modelo);
+			modelo.addRow(linha);
+		}
+		
+		for(int i = 0; i < costMatrix.size(); i++)
+		{
+			for(int j = 0; j < costMatrix.get(i).size(); j++)
+			{
+				this.table7.setValueAt(costMatrix.get(i).get(j), i, j + 3);
 			}
 		}
 	}

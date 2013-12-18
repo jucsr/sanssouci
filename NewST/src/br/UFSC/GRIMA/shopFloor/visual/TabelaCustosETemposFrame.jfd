@@ -26,16 +26,16 @@ new FormModel {
 						add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
 							name: "tabbedPane1"
 							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-								"$columnSpecs": "0:1.0"
-								"$rowSpecs": "0:1.0, 0"
+								"$columnSpecs": "0, 0"
+								"$rowSpecs": "0"
 								"$hGap": 5
 								"$vGap": 5
 								"$alignLeft": true
 								"$alignTop": true
 							} ) {
-								name: "panel6"
+								name: "panel15"
 								add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
-									name: "splitPane1"
+									name: "splitPane3"
 									"resizeWeight": 0.5
 									"oneTouchExpandable": true
 									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
@@ -46,7 +46,7 @@ new FormModel {
 										"$alignLeft": true
 										"$alignTop": true
 									} ) {
-										name: "panel1"
+										name: "panel16"
 										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 											"$columnSpecs": "0:1.0, 0, 0:1.0"
 											"$rowSpecs": "0, 0, 0"
@@ -55,10 +55,10 @@ new FormModel {
 											"$alignLeft": true
 											"$alignTop": true
 										} ) {
-											name: "panel3"
+											name: "panel17"
 											add( new FormComponent( "javax.swing.JLabel" ) {
-												name: "label1"
-												"text": "COST MATRIX [$]"
+												name: "label5"
+												"text": "UNIVERSAL TIMES MATRIX"
 											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 												"gridx": 1
 												"gridy": 1
@@ -67,9 +67,9 @@ new FormModel {
 											"gridx": 1
 										} )
 										add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-											name: "scrollPane1"
+											name: "scrollPane6"
 											add( new FormComponent( "javax.swing.JTable" ) {
-												name: "table1"
+												name: "table6"
 												"model": &SwingTableModel0 new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
 													add( new java.util.Vector {
 														add( null )
@@ -117,7 +117,7 @@ new FormModel {
 										"$alignLeft": true
 										"$alignTop": true
 									} ) {
-										name: "panel2"
+										name: "panel18"
 										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 											"$columnSpecs": "0:1.0, 0, 0:1.0"
 											"$rowSpecs": "0, 0, 0"
@@ -126,10 +126,10 @@ new FormModel {
 											"$alignLeft": true
 											"$alignTop": true
 										} ) {
-											name: "panel4"
+											name: "panel19"
 											add( new FormComponent( "javax.swing.JLabel" ) {
-												name: "label2"
-												"text": "PATH MATRIX"
+												name: "label6"
+												"text": "UNIVERSAL COST MATRIX"
 											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 												"gridx": 1
 												"gridy": 1
@@ -138,9 +138,9 @@ new FormModel {
 											"gridx": 1
 										} )
 										add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-											name: "scrollPane2"
+											name: "scrollPane7"
 											add( new FormComponent( "javax.swing.JTable" ) {
-												name: "table2"
+												name: "table7"
 												"model": &SwingTableModel1 new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
 													add( new java.util.Vector {
 														add( null )
@@ -169,6 +169,111 @@ new FormModel {
 													add( null )
 													add( null )
 												} )
+												auxiliary() {
+													"JavaCodeGenerator.variableModifiers": 4
+												}
+											} )
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 1
+											"gridy": 1
+										} )
+									}, new FormLayoutConstraints( class java.lang.String ) {
+										"value": "right"
+									} )
+								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+							}, new FormLayoutConstraints( null ) {
+								"title": "Universal Matrices"
+							} )
+							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+								"$columnSpecs": "0:1.0"
+								"$rowSpecs": "0:1.0, 0"
+								"$hGap": 5
+								"$vGap": 5
+								"$alignLeft": true
+								"$alignTop": true
+							} ) {
+								name: "panel6"
+								add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
+									name: "splitPane1"
+									"resizeWeight": 0.5
+									"oneTouchExpandable": true
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+										"$columnSpecs": "0, 0:1.0"
+										"$rowSpecs": "0, 0:1.0, 0"
+										"$hGap": 5
+										"$vGap": 5
+										"$alignLeft": true
+										"$alignTop": true
+									} ) {
+										name: "panel1"
+										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+											"$columnSpecs": "0:1.0, 0, 0:1.0"
+											"$rowSpecs": "0, 0, 0"
+											"$hGap": 5
+											"$vGap": 5
+											"$alignLeft": true
+											"$alignTop": true
+										} ) {
+											name: "panel3"
+											add( new FormComponent( "javax.swing.JLabel" ) {
+												name: "label1"
+												"text": "COST MATRIX [$]"
+											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+												"gridx": 1
+												"gridy": 1
+											} )
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 1
+										} )
+										add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+											name: "scrollPane1"
+											add( new FormComponent( "javax.swing.JTable" ) {
+												name: "table1"
+												"model": #SwingTableModel0
+												auxiliary() {
+													"JavaCodeGenerator.variableModifiers": 4
+												}
+											} )
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 1
+											"gridy": 1
+										} )
+									}, new FormLayoutConstraints( class java.lang.String ) {
+										"value": "left"
+									} )
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+										"$columnSpecs": "0, 0:1.0"
+										"$rowSpecs": "0, 0:1.0, 0"
+										"$hGap": 5
+										"$vGap": 5
+										"$alignLeft": true
+										"$alignTop": true
+									} ) {
+										name: "panel2"
+										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+											"$columnSpecs": "0:1.0, 0, 0:1.0"
+											"$rowSpecs": "0, 0, 0"
+											"$hGap": 5
+											"$vGap": 5
+											"$alignLeft": true
+											"$alignTop": true
+										} ) {
+											name: "panel4"
+											add( new FormComponent( "javax.swing.JLabel" ) {
+												name: "label2"
+												"text": "PATH MATRIX"
+											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+												"gridx": 1
+												"gridy": 1
+											} )
+										}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+											"gridx": 1
+										} )
+										add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+											name: "scrollPane2"
+											add( new FormComponent( "javax.swing.JTable" ) {
+												name: "table2"
+												"model": #SwingTableModel1
 												auxiliary() {
 													"JavaCodeGenerator.variableModifiers": 4
 												}

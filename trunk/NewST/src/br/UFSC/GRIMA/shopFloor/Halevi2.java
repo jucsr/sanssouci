@@ -41,8 +41,9 @@ public class Halevi2
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
 		this.choosePathFromTotal(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
-		System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
-		System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
+		this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
+		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
+		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
 	}
 	
@@ -254,10 +255,10 @@ public class Halevi2
 		
 		lowFirst = this.lowDyad(total.get(0));
 		
-		System.out.println("IdealPath: "+idealPath);
+		System.out.println("IdealPath: " + idealPath);
 		
 		System.out.println("First Row Total: " + total.get(0));
-		System.out.println("Choosed from first row: " +lowFirst.getIndex());
+		System.out.println("Choosed from first row: " + lowFirst.getIndex());
 		System.out.println("Path from here (total): " + this.pathFromHere(0, lowFirst.getIndex(), path));
 	}
 	

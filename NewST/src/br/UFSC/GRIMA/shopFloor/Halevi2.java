@@ -228,7 +228,7 @@ public class Halevi2
 		this.totalCostPathMatrix=totalMatrixPathCost;
 	}
 	
-	public ArrayList<Integer> pathFromHere(Integer indexWorkingStep, Integer indexMachine, ArrayList<ArrayList<Integer>> matrixPath)
+	public ArrayList<Integer> pathFromHere(Integer indexWorkingStep, Integer machineNumber, ArrayList<ArrayList<Integer>> matrixPath)
 	{
 		ArrayList<Integer> pathChoosed = new ArrayList<Integer>();
 		
@@ -237,7 +237,7 @@ public class Halevi2
 			System.out.println(row);
 		}
 		
-		pathChoosed.add(matrixPath.get(indexWorkingStep).get(indexMachine));
+		pathChoosed.add(matrixPath.get(indexWorkingStep).get(machineNumber-1));
 		for (int i=indexWorkingStep+1; i < matrixPath.size();i++)
 		{
 			pathChoosed.add(matrixPath.get(i).get(pathChoosed.get(i-indexWorkingStep-1)-1));
@@ -247,10 +247,19 @@ public class Halevi2
 	
 	public void choosePathFromLow()
 	{
-		System.out.println(this.pathFromHere(0, 0, this.getTotalTimePathMatrix()));
-		System.out.println(this.pathFromHere(0, 0, this.getTotalCostPathMatrix()));
+		Dyad lowFirstTime = new Dyad();
+		Dyad lowFirstCost = new Dyad();
 		
-		System.out.println();
+		lowFirstTime = this.lowDyad(this.universalTimeMatrix.get(0));
+		lowFirstCost = this.lowDyad(this.universalCostMatrix.get(0));
+		
+		System.out.println(this.universalTimeMatrix.get(0));
+		System.out.println(lowFirstTime.getIndex());
+		System.out.println(this.pathFromHere(0, lowFirstTime.getIndex(), this.getTotalTimePathMatrix()));
+		
+		System.out.println(this.universalCostMatrix.get(0));
+		System.out.println(lowFirstCost.getIndex());
+		System.out.println(this.pathFromHere(0, lowFirstCost.getIndex(), this.getTotalCostPathMatrix()));				
 	}
 	
 	public void  calculateUniversalTimeMatrix()

@@ -40,9 +40,9 @@ public class Halevi2
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
-		this.choosePathFromLow();
-		//System.out.println("Constructor First part!");
-
+		this.choosePathFromTotal();
+		System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
+		System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
 	}
 	
@@ -245,7 +245,7 @@ public class Halevi2
 		return pathChoosed;
 	}
 	
-	public void choosePathFromLow()
+	public void choosePathFromTotal()
 	{
 		Dyad lowFirstTime = new Dyad();
 		Dyad lowFirstCost = new Dyad();
@@ -261,6 +261,21 @@ public class Halevi2
 		System.out.println(lowFirstCost.getIndex());
 		System.out.println(this.pathFromHere(0, lowFirstCost.getIndex(), this.getTotalCostPathMatrix()));				
 	}
+	
+	public ArrayList<Integer> choosePathFromUniversal(ArrayList<ArrayList<Double>> universal)
+	{
+		ArrayList<Integer> idealPath= new ArrayList<Integer>();
+		
+		for (ArrayList<Double> row:universal)
+		{
+			Dyad tempLow = new Dyad();
+			
+			tempLow = this.lowDyad(row);
+			
+			idealPath.add(tempLow.getIndex());
+		}		
+		return idealPath;
+	}	
 	
 	public void  calculateUniversalTimeMatrix()
 	{

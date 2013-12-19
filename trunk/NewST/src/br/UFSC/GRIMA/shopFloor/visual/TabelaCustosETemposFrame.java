@@ -67,8 +67,17 @@ public class TabelaCustosETemposFrame extends JDialog {
 		table4 = new JTable();
 		panel8 = new JPanel();
 		panel9 = new JPanel();
+		splitPane4 = new JSplitPane();
+		panel20 = new JPanel();
+		panel22 = new JPanel();
+		label7 = new JLabel();
 		scrollPane5 = new JScrollPane();
 		table5 = new JTable();
+		panel21 = new JPanel();
+		panel23 = new JPanel();
+		label8 = new JLabel();
+		scrollPane8 = new JScrollPane();
+		table8 = new JTable();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -471,20 +480,101 @@ public class TabelaCustosETemposFrame extends JDialog {
 								((GridBagLayout)panel9.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0E-4};
 								((GridBagLayout)panel9.getLayout()).rowWeights = new double[] {1.0, 1.0, 1.0E-4};
 
-								//======== scrollPane5 ========
+								//======== splitPane4 ========
 								{
+									splitPane4.setResizeWeight(0.5);
 
-									//---- table5 ----
-									table5.setModel(new DefaultTableModel(
-										new Object[][] {
-										},
-										new String[] {
-											"Workingstep", "Machine", "Cost", "Time"
+									//======== panel20 ========
+									{
+										panel20.setLayout(new GridBagLayout());
+										((GridBagLayout)panel20.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel20.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel20.getLayout()).columnWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+										((GridBagLayout)panel20.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+										//======== panel22 ========
+										{
+											panel22.setLayout(new GridBagLayout());
+											((GridBagLayout)panel22.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+											((GridBagLayout)panel22.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+											((GridBagLayout)panel22.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+											((GridBagLayout)panel22.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+											//---- label7 ----
+											label7.setText("MINIMAL COST");
+											panel22.add(label7, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+												GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+												new Insets(0, 0, 5, 5), 0, 0));
 										}
-									));
-									scrollPane5.setViewportView(table5);
+										panel20.add(panel22, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+											new Insets(0, 0, 5, 5), 0, 0));
+
+										//======== scrollPane5 ========
+										{
+
+											//---- table5 ----
+											table5.setModel(new DefaultTableModel(
+												new Object[][] {
+												},
+												new String[] {
+													"Workingstep", "Machine", "Cost", "Time"
+												}
+											));
+											scrollPane5.setViewportView(table5);
+										}
+										panel20.add(scrollPane5, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+											new Insets(0, 0, 5, 5), 0, 0));
+									}
+									splitPane4.setLeftComponent(panel20);
+
+									//======== panel21 ========
+									{
+										panel21.setLayout(new GridBagLayout());
+										((GridBagLayout)panel21.getLayout()).columnWidths = new int[] {0, 0, 0};
+										((GridBagLayout)panel21.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel21.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
+										((GridBagLayout)panel21.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+										//======== panel23 ========
+										{
+											panel23.setLayout(new GridBagLayout());
+											((GridBagLayout)panel23.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+											((GridBagLayout)panel23.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+											((GridBagLayout)panel23.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+											((GridBagLayout)panel23.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+											//---- label8 ----
+											label8.setText("MINIMAL TIME");
+											panel23.add(label8, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+												GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+												new Insets(0, 0, 5, 5), 0, 0));
+										}
+										panel21.add(panel23, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+											new Insets(0, 0, 5, 0), 0, 0));
+
+										//======== scrollPane8 ========
+										{
+
+											//---- table8 ----
+											table8.setModel(new DefaultTableModel(
+												new Object[][] {
+												},
+												new String[] {
+													"Workingstep", "Machine", "Cost", "Time"
+												}
+											));
+											scrollPane8.setViewportView(table8);
+										}
+										panel21.add(scrollPane8, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+											new Insets(0, 0, 5, 0), 0, 0));
+									}
+									splitPane4.setRightComponent(panel21);
 								}
-								panel9.add(scrollPane5, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								panel9.add(splitPane4, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 									GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 									new Insets(0, 0, 5, 5), 0, 0));
 							}
@@ -492,7 +582,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 0), 0, 0));
 						}
-						tabbedPane1.addTab("Routing", panel8);
+						tabbedPane1.addTab("Time & Cost Routing", panel8);
 
 					}
 					panel5.add(tabbedPane1, cc.xy(3, 3));
@@ -574,8 +664,17 @@ public class TabelaCustosETemposFrame extends JDialog {
 	protected JTable table4;
 	private JPanel panel8;
 	private JPanel panel9;
+	private JSplitPane splitPane4;
+	private JPanel panel20;
+	private JPanel panel22;
+	private JLabel label7;
 	private JScrollPane scrollPane5;
 	public JTable table5;
+	private JPanel panel21;
+	private JPanel panel23;
+	private JLabel label8;
+	private JScrollPane scrollPane8;
+	public JTable table8;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

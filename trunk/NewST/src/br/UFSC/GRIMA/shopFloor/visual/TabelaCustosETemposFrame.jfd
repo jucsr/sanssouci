@@ -425,34 +425,116 @@ new FormModel {
 									"$alignTop": true
 								} ) {
 									name: "panel9"
-									add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-										name: "scrollPane5"
-										add( new FormComponent( "javax.swing.JTable" ) {
-											name: "table5"
-											"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
-												add( "Workingstep" )
-												add( "Machine" )
-												add( "Cost" )
-												add( "Time" )
-											}, new java.util.Vector {
-												add( null )
-												add( null )
-												add( null )
-												add( null )
-											}, new java.util.Vector {
-												add( null )
-												add( null )
-												add( null )
-												add( null )
-											}, new java.util.Vector {
-												add( null )
-												add( null )
-												add( null )
-												add( null )
+									add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
+										name: "splitPane4"
+										"resizeWeight": 0.5
+										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+											"$columnSpecs": "0, 0:1.0, 0"
+											"$rowSpecs": "0, 0:1.0, 0"
+											"$hGap": 5
+											"$vGap": 5
+											"$alignLeft": true
+											"$alignTop": true
+										} ) {
+											name: "panel20"
+											add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+												"$columnSpecs": "0:1.0, 0, 0:1.0"
+												"$rowSpecs": "0, 0, 0"
+												"$hGap": 5
+												"$vGap": 5
+												"$alignLeft": true
+												"$alignTop": true
+											} ) {
+												name: "panel22"
+												add( new FormComponent( "javax.swing.JLabel" ) {
+													name: "label7"
+													"text": "MINIMAL COST"
+												}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+													"gridx": 1
+													"gridy": 1
+												} )
+											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+												"gridx": 1
 											} )
-											auxiliary() {
-												"JavaCodeGenerator.variableModifiers": 1
-											}
+											add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+												name: "scrollPane5"
+												add( new FormComponent( "javax.swing.JTable" ) {
+													name: "table5"
+													"model": &SwingTableModel2 new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
+														add( "Workingstep" )
+														add( "Machine" )
+														add( "Cost" )
+														add( "Time" )
+													}, new java.util.Vector {
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+													}, new java.util.Vector {
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+													}, new java.util.Vector {
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+													} )
+													auxiliary() {
+														"JavaCodeGenerator.variableModifiers": 1
+													}
+												} )
+											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+												"gridx": 1
+												"gridy": 1
+											} )
+										}, new FormLayoutConstraints( class java.lang.String ) {
+											"value": "left"
+										} )
+										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+											"$columnSpecs": "0, 0:1.0"
+											"$rowSpecs": "0, 0:1.0, 0"
+											"$hGap": 5
+											"$vGap": 5
+											"$alignLeft": true
+											"$alignTop": true
+										} ) {
+											name: "panel21"
+											add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+												"$columnSpecs": "0:1.0, 0, 0:1.0"
+												"$rowSpecs": "0, 0, 0"
+												"$hGap": 5
+												"$vGap": 5
+												"$alignLeft": true
+												"$alignTop": true
+											} ) {
+												name: "panel23"
+												add( new FormComponent( "javax.swing.JLabel" ) {
+													name: "label8"
+													"text": "MINIMAL TIME"
+												}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+													"gridx": 1
+													"gridy": 1
+												} )
+											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+												"gridx": 1
+											} )
+											add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+												name: "scrollPane8"
+												add( new FormComponent( "javax.swing.JTable" ) {
+													name: "table8"
+													"model": #SwingTableModel2
+													auxiliary() {
+														"JavaCodeGenerator.variableModifiers": 1
+													}
+												} )
+											}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+												"gridx": 1
+												"gridy": 1
+											} )
+										}, new FormLayoutConstraints( class java.lang.String ) {
+											"value": "right"
 										} )
 									}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 								}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
@@ -460,7 +542,7 @@ new FormModel {
 									"gridy": 1
 								} )
 							}, new FormLayoutConstraints( null ) {
-								"title": "Routing"
+								"title": "Time & Cost Routing"
 							} )
 						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 							"gridX": 3

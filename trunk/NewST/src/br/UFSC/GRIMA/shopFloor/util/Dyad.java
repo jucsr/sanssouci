@@ -5,6 +5,12 @@ public class Dyad
 	private int index;
 	private double value;
 	
+	public Dyad()
+	{
+		this.setIndex(0);
+		this.setValue(0);
+	}
+	
 	public Dyad(int ind, double val)
 	{
 		this.setIndex(ind);

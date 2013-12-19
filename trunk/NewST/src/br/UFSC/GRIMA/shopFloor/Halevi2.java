@@ -250,14 +250,14 @@ public class Halevi2
 		Dyad lowFirstTime = new Dyad();
 		Dyad lowFirstCost = new Dyad();
 		
-		lowFirstTime = this.lowDyad(this.universalTimeMatrix.get(0));
-		lowFirstCost = this.lowDyad(this.universalCostMatrix.get(0));
+		lowFirstTime = this.lowDyad(this.totalTimeMatrix.get(0));
+		lowFirstCost = this.lowDyad(this.totalCostMatrix.get(0));
 		
-		System.out.println(this.universalTimeMatrix.get(0));
+		System.out.println(this.totalTimeMatrix.get(0));
 		System.out.println(lowFirstTime.getIndex());
 		System.out.println(this.pathFromHere(0, lowFirstTime.getIndex(), this.getTotalTimePathMatrix()));
 		
-		System.out.println(this.universalCostMatrix.get(0));
+		System.out.println(this.totalCostMatrix.get(0));
 		System.out.println(lowFirstCost.getIndex());
 		System.out.println(this.pathFromHere(0, lowFirstCost.getIndex(), this.getTotalCostPathMatrix()));				
 	}

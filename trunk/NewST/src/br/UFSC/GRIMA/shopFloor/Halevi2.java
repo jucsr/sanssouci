@@ -6,7 +6,7 @@ import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.shopFloor.util.CalculateMachiningTime;
-import br.UFSC.GRIMA.shopFloor.Dyad;
+import br.UFSC.GRIMA.shopFloor.util.Dyad;
 
 public class Halevi2 
 {

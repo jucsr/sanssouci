@@ -47,6 +47,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		this.fillUniversalTimesTable();
 		this.fillUniversalCostTable();
 		this.fillTablesRouthingMinTime();
+		this.fillTablesRouthingMinCost();
 //		this.fillTablesRouthing();
 //		this.fillTimesTable();
 		this.setVisible(true);
@@ -363,7 +364,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			cabecalho.add(machines.get(i).getItsId());
 		}
 		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
-		DefaultTableModel modelo1 = new DefaultTableModel(cabecalho, 0);
 		for(int i = 0; i < workingsteps.size(); i++)
 		{
 			Workingstep wsTmp = workingsteps.get(i);
@@ -387,9 +387,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			int id = 10 + i * 10;
 			Object[] linha = {nome, id, idPrecedente};
 			this.table1.setModel(modelo);
-			this.table2.setModel(modelo1);
 			modelo.addRow(linha);
-			modelo1.addRow(linha);
 		}
 		
 		for(int i = 0; i < custoMatrix.size(); i++)
@@ -397,13 +395,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			for(int j = 0; j < custoMatrix.get(i).size(); j++)
 			{
 				this.table1.setValueAt(custoMatrix.get(i).get(j), i, j + 3);
-			}
-		}
-		for(int i = 0; i < custoMatrix.size(); i++)
-		{
-			for(int j = 0; j < custoMatrix.get(i).size(); j++)
-			{
-				this.table2.setValueAt(custoMatrix.get(i).get(j), i, j + 3);
 			}
 		}
 	}
@@ -423,7 +414,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			cabecalho.add(machines.get(i).getItsId());
 		}
 		DefaultTableModel modelo = new DefaultTableModel(cabecalho, 0);
-		DefaultTableModel modelo1 = new DefaultTableModel(cabecalho, 0);
 		for(int i = 0; i < workingsteps.size(); i++)
 		{
 			Workingstep wsTmp = workingsteps.get(i);
@@ -447,9 +437,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			int id = 10 + i * 10;
 			Object[] linha = {nome, id, idPrecedente};
 			this.table3.setModel(modelo);
-			this.table4.setModel(modelo1);
 			modelo.addRow(linha);
-			modelo1.addRow(linha);
 		}
 		for(int i = 0; i < timeMatrix.size(); i++)
 		{
@@ -458,16 +446,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 				this.table3.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
 			}
 		}
-		for(int i = 0; i < timeMatrix.size(); i++)
-		{
-			for(int j = 0; j < timeMatrix.get(i).size(); j++)
-			{
-				this.table4.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
-			}
-		}
 	}
 	/**
-	 *  enche a tabela de roteamento de tempos
+	 *  enche a tabela de roteamento de TEMPOS
 	 */
 	private void fillPathTimeTable()
 	{
@@ -505,7 +486,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			int id = 10 + i * 10;
 			Object[] linha = {nome, id, idPrecedente};
 	
-			this.table2.setModel(modelo1);
+			this.table4.setModel(modelo1);
 			modelo1.addRow(linha);
 		}
 		
@@ -513,7 +494,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		{
 			for(int j = 0; j < pathTimeMatrix.get(i).size(); j++)
 			{
-				this.table2.setValueAt(pathTimeMatrix.get(i).get(j), i, j + 3);
+				this.table4.setValueAt(pathTimeMatrix.get(i).get(j), i, j + 3);
 			}
 		}
 	}
@@ -556,7 +537,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			int id = 10 + i * 10;
 			Object[] linha = {nome, id, idPrecedente};
 	
-			this.table4.setModel(modelo1);
+			this.table2.setModel(modelo1);
 			modelo1.addRow(linha);
 		}
 		
@@ -564,7 +545,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		{
 			for(int j = 0; j < pathCostMatrix.get(i).size(); j++)
 			{
-				this.table4.setValueAt(pathCostMatrix.get(i).get(j), i, j + 3);
+				this.table2.setValueAt(pathCostMatrix.get(i).get(j), i, j + 3);
 			}
 		}
 	}
@@ -678,6 +659,80 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();
 		double menorCusto = pathTimeMatrix.get(0).get(0);
+		int indiceMaquina = 0;
+		int operation = 0, machine, trocou = 0, machineTest;
+		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
+		
+		for(int i = 0; i < timeMatrix.get(0).size(); i++)
+		{
+			if(timeMatrix.get(0).get(i) < menorCusto)
+			{
+				menorCusto = timeMatrix.get(0).get(i);
+				indiceMaquina = i;
+			}
+		}
+		
+		machine = indiceMaquina + 1;
+		machineTest = machine;
+		operation = 10;
+//		time = workingsteps.get(0).getTemposNasMaquinas().get(indiceMaquina);
+		time = timeMatrix.get(0).get(indiceMaquina);
+		cost = costMatrix.get(0).get(indiceMaquina);
+		
+		totalCost = cost;
+		totalTime = time;
+		
+		Object [] linha2 = {operation, machine, cost, time};
+		model.addRow(linha2);
+	
+		for(int i = 0; i <pathTimeMatrix.size() - 1; i++ ){
+			
+			for(int j = 0; j < pathTimeMatrix.get(0).size(); j++){
+				
+				if(j == indiceMaquina){
+					
+					machine = pathTimeMatrix.get(i).get(j);
+					if(machineTest != machine){
+						
+						trocou++;
+					}
+						
+					indiceMaquina = machine -1;
+					
+					time = timeMatrix.get(i+1).get(indiceMaquina);
+					cost = costMatrix.get(i+1).get(indiceMaquina);
+					
+					totalCost = totalCost + cost;
+					totalTime = totalTime + time;
+					operation = operation + 10;
+					
+					
+					
+					Object [] linha = {operation, machine, cost, time};
+					model.addRow(linha);
+				}
+			}
+		}	
+		penaltiesCost = trocou * 0.2;
+		penalitiesTime = trocou * 0.03;
+		
+		Object[] linha3 = {"Total"," ", totalCost, totalTime};
+		model.addRow(linha3);
+		
+		Object[] linha4 = {"Penalties "," ", penaltiesCost, penaltiesCost};
+		model.addRow(linha4);
+		
+		totalCost = totalCost + penaltiesCost;
+		totalTime = totalTime + penalitiesTime;
+		
+		Object [] linha5 = {"Total"," ", totalCost, totalTime};
+		model.addRow(linha5);
+	}
+	
+	private void fillTablesRouthingMinCost()
+	{
+		DefaultTableModel model = (DefaultTableModel) table8.getModel();
+		double menorCusto = pathCostMatrix.get(0).get(0);
 		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
 		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;

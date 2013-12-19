@@ -430,7 +430,7 @@ new FormModel {
 										"resizeWeight": 0.5
 										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 											"$columnSpecs": "0, 0:1.0, 0"
-											"$rowSpecs": "0, 0:1.0, 0"
+											"$rowSpecs": "0, 0:1.0"
 											"$hGap": 5
 											"$vGap": 5
 											"$alignLeft": true
@@ -494,7 +494,7 @@ new FormModel {
 										} )
 										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 											"$columnSpecs": "0, 0:1.0"
-											"$rowSpecs": "0, 0:1.0, 0"
+											"$rowSpecs": "0, 0:1.0"
 											"$hGap": 5
 											"$vGap": 5
 											"$alignLeft": true

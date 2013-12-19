@@ -253,13 +253,20 @@ public class Halevi2
 
 		Dyad lowFirst = new Dyad();
 		
-		lowFirst = this.lowDyad(total.get(0));
+		
 		
 		System.out.println("IdealPath: " + idealPath);
 		
-		System.out.println("First Row Total: " + total.get(0));
-		System.out.println("Choosed from first row: " + lowFirst.getIndex());
-		System.out.println("Path from here (total): " + this.pathFromHere(0, lowFirst.getIndex(), path));
+		int iWStep=0;
+
+		for (Workingstep wStep:this.workingsteps)
+		{
+			lowFirst = this.lowDyad(total.get(iWStep));
+			System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
+			System.out.println("Choosed from row: " + iWStep + " " + lowFirst.getIndex());
+			System.out.println("Path from here (total): " + this.pathFromHere(iWStep, lowFirst.getIndex(), path));
+			iWStep++;
+		}
 	}
 	
 	public ArrayList<Integer> choosePathFromUniversal(ArrayList<ArrayList<Double>> universal)

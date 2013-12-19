@@ -273,12 +273,12 @@ public class Halevi2
 		{			
 			if (nextPath==newPath.get(i-1))
 			{
-				System.out.println("Iguales");
+				System.out.println(i + " Iguales");
 				nextPath = newPath.get(i+1);
 			}
 			else
 			{
-				System.out.println("Diferentes");
+				System.out.println(i + " Diferentes");
 				nextPath = newPath.get(i+1);
 			}
 		}

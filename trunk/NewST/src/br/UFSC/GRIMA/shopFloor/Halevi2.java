@@ -253,19 +253,34 @@ public class Halevi2
 
 		Dyad lowFirst = new Dyad();
 		
-		
-		
 		System.out.println("IdealPath: " + idealPath);
 		
 		int iWStep=0;
+		int nextPath=0;
 
-		for (Workingstep wStep:this.workingsteps)
-		{
-			lowFirst = this.lowDyad(total.get(iWStep));
-			System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
-			System.out.println("Choosed from row: " + iWStep + " " + lowFirst.getIndex());
-			System.out.println("Path from here (total): " + this.pathFromHere(iWStep, lowFirst.getIndex(), path));
-			iWStep++;
+		ArrayList<Integer> newPath = new ArrayList<Integer>();
+		lowFirst = this.lowDyad(total.get(iWStep));
+		
+		newPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
+		System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
+		System.out.println("Choosed from row " + iWStep + ": " + lowFirst.getIndex());			
+		System.out.println("Path from here (total): " + newPath);
+		nextPath=newPath.get(1);
+		
+		iWStep++;
+		
+		for (int i = iWStep; i< this.workingsteps.size()-1; i++)
+		{			
+			if (nextPath==newPath.get(i-1))
+			{
+				System.out.println("Iguales");
+				nextPath = newPath.get(i+1);
+			}
+			else
+			{
+				System.out.println("Diferentes");
+				nextPath = newPath.get(i+1);
+			}
 		}
 	}
 	

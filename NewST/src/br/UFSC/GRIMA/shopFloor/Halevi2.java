@@ -34,11 +34,13 @@ public class Halevi2
 		this.calculateUniversalTimeMatrix();
 		this.universalTimeMatrix = this.getUniversalTimeMatrix();
 		this.calculateUniversalCostMatrix();
-		this.showUniversalTimeMatrix();
+		//this.showUniversalTimeMatrix();
 		this.universalCostMatrix = this.getUniversalCostMatrix();
-		System.out.println("Constructor First Step!");
+		//System.out.println("Constructor First Step!");
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
+		System.out.println(this.pathFromHere(0, 2, this.getTotalTimePathMatrix()));
+		System.out.println(this.pathFromHere(0, 2, this.getTotalCostPathMatrix()));
 		System.out.println("Constructor Done!");
 	}
 	
@@ -62,8 +64,8 @@ public class Halevi2
 		}		
 		dyadLow.setIndex(lowIndex+1);
 		dyadLow.setValue(low);
-		System.out.println(list);
-		System.out.println("Low: " + dyadLow.getValue() + " LowIndex: " + dyadLow.getIndex());
+//		System.out.println(list);
+//		System.out.println("Low: " + dyadLow.getValue() + " LowIndex: " + dyadLow.getIndex());
 		
 		return dyadLow;		
 	}
@@ -71,13 +73,13 @@ public class Halevi2
 	private ArrayList<Dyad> totalMatrixTimeRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
 		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();
-		System.out.println("*********************************");
-		System.out.println("Workingstep " + indexWorkingStep);
+	//	System.out.println("*********************************");
+	//	System.out.println("Workingstep " + indexWorkingStep);
 		for (int j1 = 0;j1<row1.size();j1++)
 		{	
 			ArrayList<Double> sumList = new ArrayList<Double>();
-			System.out.println("------------------");
-			System.out.println("Pivot Mach" + j1);
+	//		System.out.println("------------------");
+	//		System.out.println("Pivot Mach" + j1);
 			for (int j2 = 0;j2<row2.size();j2++)
 			{				
 				if (j1==j2)
@@ -87,7 +89,7 @@ public class Halevi2
 				else
 				{
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
-					System.out.println("Mach" + j1 + "-> Mach" + j2  + " Penalty: " + tempPenalty.getTotalPenalty());
+	//				System.out.println("Mach" + j1 + "-> Mach" + j2  + " Penalty: " + tempPenalty.getTotalPenalty());
 					sumList.add(row1.get(j1) + row2.get(j2) + tempPenalty.getTotalPenalty());
 				}
 			}
@@ -224,6 +226,18 @@ public class Halevi2
 		this.totalCostPathMatrix=totalMatrixPathCost;
 	}
 	
+	public ArrayList<Integer> pathFromHere(Integer indexWorkingStep, Integer indexMachine, ArrayList<ArrayList<Integer>> matrixPath)
+	{
+		ArrayList<Integer> pathChoosed = new ArrayList<Integer>();
+		
+		pathChoosed.add(indexMachine);
+				
+		for (int i=indexWorkingStep+1; i < matrixPath.size();i++)
+		{
+			pathChoosed.add(matrixPath.get(i).get(pathChoosed.get(i-indexMachine-1)));
+		}
+		return pathChoosed;
+	}
 	
 	public void  calculateUniversalTimeMatrix()
 	{
@@ -279,6 +293,7 @@ public class Halevi2
 			iWorkStep++;
 		}		
 	}
+		
 	
 	public ArrayList<ArrayList<Double>> getUniversalCostMatrix() 
 	{

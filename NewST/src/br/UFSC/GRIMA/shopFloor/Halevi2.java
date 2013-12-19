@@ -40,7 +40,7 @@ public class Halevi2
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
-		this.choosePathFromTotal();
+		this.choosePathFromTotal(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
 		System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
@@ -245,21 +245,18 @@ public class Halevi2
 		return pathChoosed;
 	}
 	
-	public void choosePathFromTotal()
+	public void choosePathFromTotal(ArrayList<ArrayList<Double>> universal, ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)
 	{
-		Dyad lowFirstTime = new Dyad();
-		Dyad lowFirstCost = new Dyad();
+		ArrayList<Integer> idealPath = new ArrayList<Integer>();
+		idealPath = this.choosePathFromUniversal(universal);
+
+		Dyad lowFirst = new Dyad();
 		
-		lowFirstTime = this.lowDyad(this.totalTimeMatrix.get(0));
-		lowFirstCost = this.lowDyad(this.totalCostMatrix.get(0));
+		lowFirst = this.lowDyad(total.get(0));
 		
-		System.out.println(this.totalTimeMatrix.get(0));
-		System.out.println(lowFirstTime.getIndex());
-		System.out.println(this.pathFromHere(0, lowFirstTime.getIndex(), this.getTotalTimePathMatrix()));
-		
-		System.out.println(this.totalCostMatrix.get(0));
-		System.out.println(lowFirstCost.getIndex());
-		System.out.println(this.pathFromHere(0, lowFirstCost.getIndex(), this.getTotalCostPathMatrix()));				
+		System.out.println(total.get(0));
+		System.out.println(lowFirst.getIndex());
+		System.out.println(this.pathFromHere(0, lowFirst.getIndex(), path));
 	}
 	
 	public ArrayList<Integer> choosePathFromUniversal(ArrayList<ArrayList<Double>> universal)
@@ -276,6 +273,11 @@ public class Halevi2
 		}		
 		return idealPath;
 	}	
+	
+	public void orderByPrecedence(ArrayList<Integer> idealPath)
+	{
+		
+	}
 	
 	public void  calculateUniversalTimeMatrix()
 	{

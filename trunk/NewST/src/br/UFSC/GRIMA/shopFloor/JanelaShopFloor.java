@@ -184,26 +184,26 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 			this.abrir();
 		} else if(o == this.menuItem3)
 		{
-			final Progress3D p3D = new Progress3D(this);
-			p3D.setTitle("Calculating Times and Costs");
-			p3D.setVisible(true);
-			final JanelaShopFloor janelaShopFloor = this;
-			SwingWorker worker = new SwingWorker() 
-			{
-				@Override
-				protected Object doInBackground() throws Exception 
-				{
+//			final Progress3D p3D = new Progress3D(this);
+//			p3D.setTitle("Calculating Times and Costs");
+//			p3D.setVisible(true);
+//			final JanelaShopFloor janelaShopFloor = this;
+//			SwingWorker worker = new SwingWorker() 
+//			{
+//				@Override
+//				protected Object doInBackground() throws Exception 
+//				{
 					new TabelaCustosETempos(janelaShopFloor, projetoSF);
-					return null;
-				}
-				@Override
-				protected void done()
-				{
-					p3D.dispose();
-					textArea1.setText(textArea1.getText() + "\n  Times and Costs matrices done!");
-				}
-			};
-			worker.execute();
+//					return null;
+//				}
+//				@Override
+//				protected void done()
+//				{
+//					p3D.dispose();
+//					textArea1.setText(textArea1.getText() + "\n  Times and Costs matrices done!");
+//				}
+//			};
+//			worker.execute();
 		}
 		if(o.equals(buttonRemoverWS)){
 			

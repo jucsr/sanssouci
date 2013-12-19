@@ -39,6 +39,7 @@ public class Halevi2
 		//System.out.println("Constructor First Step!");
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
+		System.out.println("Constructor First part!");
 		System.out.println(this.pathFromHere(0, 2, this.getTotalTimePathMatrix()));
 		System.out.println(this.pathFromHere(0, 2, this.getTotalCostPathMatrix()));
 		System.out.println("Constructor Done!");

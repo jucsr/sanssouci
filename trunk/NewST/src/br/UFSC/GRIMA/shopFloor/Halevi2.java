@@ -254,9 +254,11 @@ public class Halevi2
 		
 		lowFirst = this.lowDyad(total.get(0));
 		
-		System.out.println(total.get(0));
-		System.out.println(lowFirst.getIndex());
-		System.out.println(this.pathFromHere(0, lowFirst.getIndex(), path));
+		System.out.println("IdealPath: "+idealPath);
+		
+		System.out.println("First Row Total: " + total.get(0));
+		System.out.println("Choosed from first row: " +lowFirst.getIndex());
+		System.out.println("Path from here (total): " + this.pathFromHere(0, lowFirst.getIndex(), path));
 	}
 	
 	public ArrayList<Integer> choosePathFromUniversal(ArrayList<ArrayList<Double>> universal)

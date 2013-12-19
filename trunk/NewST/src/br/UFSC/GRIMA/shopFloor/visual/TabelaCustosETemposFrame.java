@@ -488,9 +488,9 @@ public class TabelaCustosETemposFrame extends JDialog {
 									{
 										panel20.setLayout(new GridBagLayout());
 										((GridBagLayout)panel20.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-										((GridBagLayout)panel20.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel20.getLayout()).rowHeights = new int[] {0, 0, 0};
 										((GridBagLayout)panel20.getLayout()).columnWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
-										((GridBagLayout)panel20.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+										((GridBagLayout)panel20.getLayout()).rowWeights = new double[] {0.0, 1.0, 1.0E-4};
 
 										//======== panel22 ========
 										{
@@ -525,7 +525,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 										}
 										panel20.add(scrollPane5, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 5, 5), 0, 0));
+											new Insets(0, 0, 0, 5), 0, 0));
 									}
 									splitPane4.setLeftComponent(panel20);
 
@@ -533,9 +533,9 @@ public class TabelaCustosETemposFrame extends JDialog {
 									{
 										panel21.setLayout(new GridBagLayout());
 										((GridBagLayout)panel21.getLayout()).columnWidths = new int[] {0, 0, 0};
-										((GridBagLayout)panel21.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+										((GridBagLayout)panel21.getLayout()).rowHeights = new int[] {0, 0, 0};
 										((GridBagLayout)panel21.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
-										((GridBagLayout)panel21.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+										((GridBagLayout)panel21.getLayout()).rowWeights = new double[] {0.0, 1.0, 1.0E-4};
 
 										//======== panel23 ========
 										{
@@ -570,7 +570,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 										}
 										panel21.add(scrollPane8, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 											GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-											new Insets(0, 0, 5, 0), 0, 0));
+											new Insets(0, 0, 0, 0), 0, 0));
 									}
 									splitPane4.setRightComponent(panel21);
 								}

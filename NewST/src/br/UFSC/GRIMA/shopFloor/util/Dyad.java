@@ -1,4 +1,4 @@
-package br.UFSC.GRIMA.shopFloor;
+package br.UFSC.GRIMA.shopFloor.util;
 
 public class Dyad 
 {

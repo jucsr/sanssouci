@@ -193,7 +193,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 				@Override
 				protected Object doInBackground() throws Exception 
 				{
-					TabelaCustosETempos tabela = new TabelaCustosETempos(janelaShopFloor, projetoSF);
+					new TabelaCustosETempos(janelaShopFloor, projetoSF);
 					return null;
 				}
 				@Override

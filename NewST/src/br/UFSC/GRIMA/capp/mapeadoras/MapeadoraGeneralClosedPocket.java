@@ -81,17 +81,18 @@ public class MapeadoraGeneralClosedPocket {
 
 		if(genClosed.getFeaturePrecedente()!= null){
 			
-//			if(		genClosed.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 
-//					genClosed.getFeaturePrecedente().getClass().equals(RectangularBoss.class) ||
-//					genClosed.getFeaturePrecedente().getClass().equals(CircularBoss.class))
-//			{
-//				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getFeaturePrecedente().getWorkingsteps().lastElement();
-//			}
-//			else{
-//				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
-//			}			
-			wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
-
+			if(		genClosed.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 
+					genClosed.getFeaturePrecedente().getClass().equals(RectangularBoss.class) ||
+					genClosed.getFeaturePrecedente().getClass().equals(CircularBoss.class))
+			{
+				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getFeaturePrecedente().getWorkingsteps().lastElement();
+			}
+			else{
+				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
+			}			
+			System.out.println("wsp = " + genClosed.getFeaturePrecedente().getWorkingsteps().size());
+			System.out.println("feature Pre = " + genClosed.getFeaturePrecedente());
+//			wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
 		}else{
 			//Nao tem ws precedente
 			wsPrecedenteTmp = null;

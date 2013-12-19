@@ -39,9 +39,10 @@ public class Halevi2
 		//System.out.println("Constructor First Step!");
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
-		System.out.println("Constructor First part!");
-		System.out.println(this.pathFromHere(0, 0, this.getTotalTimePathMatrix()));
-		System.out.println(this.pathFromHere(0, 0, this.getTotalCostPathMatrix()));
+		
+		this.choosePathFromLow();
+		//System.out.println("Constructor First part!");
+
 		System.out.println("Constructor Done!");
 	}
 	
@@ -237,18 +238,19 @@ public class Halevi2
 		}
 		
 		pathChoosed.add(matrixPath.get(indexWorkingStep).get(indexMachine));
-		//System.out.println("Rows From Path Matrix: " + matrixPath.size());
-		//System.out.println("Cols From Path Matrix: " + matrixPath.get(0).size());
-		//System.out.println("WorkingStep" + indexWorkingStep);
-		//System.out.println("Machine" + (indexMachine+1));
-		//System.out.println("NextMachine" + pathChoosed.get(0));
 		for (int i=indexWorkingStep+1; i < matrixPath.size();i++)
 		{
-			//System.out.println("WorkingStep" + i);
-			//System.out.println("Machine" + (i-indexWorkingStep-1));			
 			pathChoosed.add(matrixPath.get(i).get(pathChoosed.get(i-indexWorkingStep-1)-1));
 		}
 		return pathChoosed;
+	}
+	
+	public void choosePathFromLow()
+	{
+		System.out.println(this.pathFromHere(0, 0, this.getTotalTimePathMatrix()));
+		System.out.println(this.pathFromHere(0, 0, this.getTotalCostPathMatrix()));
+		
+		System.out.println();
 	}
 	
 	public void  calculateUniversalTimeMatrix()

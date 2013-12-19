@@ -554,7 +554,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	 */
 	private void fillUniversalTimesTable()
 	{
-		timeMatrix = halevi2.getUniversalTimeMatrix();
+		this.timeMatrix = halevi2.getUniversalTimeMatrix();
 		Vector<String> cabecalho = new Vector<String>();
 		cabecalho.add("M. Workingsteps");
 		cabecalho.add("ID");
@@ -657,17 +657,17 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	private void fillTablesRouthingMinTime()
 	{
 		
-		DefaultTableModel model = (DefaultTableModel) table5.getModel();
-		double menorCusto = pathTimeMatrix.get(0).get(0);
+		DefaultTableModel model = (DefaultTableModel) table8.getModel();
+		double menorTempo = pathTimeMatrix.get(0).get(0);
 		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
 		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
 		
 		for(int i = 0; i < timeMatrix.get(0).size(); i++)
 		{
-			if(timeMatrix.get(0).get(i) < menorCusto)
+			if(timeMatrix.get(0).get(i) < menorTempo)
 			{
-				menorCusto = timeMatrix.get(0).get(i);
+				menorTempo = timeMatrix.get(0).get(i);
 				indiceMaquina = i;
 			}
 		}
@@ -675,7 +675,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		machine = indiceMaquina + 1;
 		machineTest = machine;
 		operation = 10;
-//		time = workingsteps.get(0).getTemposNasMaquinas().get(indiceMaquina);
 		time = timeMatrix.get(0).get(indiceMaquina);
 		cost = costMatrix.get(0).get(indiceMaquina);
 		
@@ -685,18 +684,17 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		Object [] linha2 = {operation, machine, cost, time};
 		model.addRow(linha2);
 	
-		for(int i = 0; i <pathTimeMatrix.size() - 1; i++ ){
-			
-			for(int j = 0; j < pathTimeMatrix.get(0).size(); j++){
-				
-				if(j == indiceMaquina){
-					
+		for(int i = 0; i <pathTimeMatrix.size() - 1; i++ )
+		{
+			for(int j = 0; j < pathTimeMatrix.get(0).size(); j++)
+			{
+				if(j == indiceMaquina)
+				{
 					machine = pathTimeMatrix.get(i).get(j);
 					if(machineTest != machine){
 						
 						trocou++;
 					}
-						
 					indiceMaquina = machine -1;
 					
 					time = timeMatrix.get(i+1).get(indiceMaquina);
@@ -705,8 +703,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 					totalCost = totalCost + cost;
 					totalTime = totalTime + time;
 					operation = operation + 10;
-					
-					
 					
 					Object [] linha = {operation, machine, cost, time};
 					model.addRow(linha);
@@ -731,7 +727,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	
 	private void fillTablesRouthingMinCost()
 	{
-		DefaultTableModel model = (DefaultTableModel) table8.getModel();
+		DefaultTableModel model = (DefaultTableModel) table5.getModel();
 		double menorCusto = pathCostMatrix.get(0).get(0);
 		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
@@ -749,7 +745,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		machine = indiceMaquina + 1;
 		machineTest = machine;
 		operation = 10;
-//		time = workingsteps.get(0).getTemposNasMaquinas().get(indiceMaquina);
 		time = timeMatrix.get(0).get(indiceMaquina);
 		cost = costMatrix.get(0).get(indiceMaquina);
 		
@@ -759,18 +754,18 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		Object [] linha2 = {operation, machine, cost, time};
 		model.addRow(linha2);
 	
-		for(int i = 0; i <pathTimeMatrix.size() - 1; i++ ){
-			
-			for(int j = 0; j < pathTimeMatrix.get(0).size(); j++){
-				
-				if(j == indiceMaquina){
-					
-					machine = pathTimeMatrix.get(i).get(j);
-					if(machineTest != machine){
-						
+		for(int i = 0; i <pathCostMatrix.size() - 1; i++ )
+		{
+			for(int j = 0; j < pathCostMatrix.get(0).size(); j++)
+			{
+				if(j == indiceMaquina)
+				{
+					machine = pathCostMatrix.get(i).get(j);
+					if(machineTest != machine)
+					{
 						trocou++;
 					}
-						
+
 					indiceMaquina = machine -1;
 					
 					time = timeMatrix.get(i+1).get(indiceMaquina);

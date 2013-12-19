@@ -478,7 +478,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 								((GridBagLayout)panel9.getLayout()).columnWidths = new int[] {0, 0, 0};
 								((GridBagLayout)panel9.getLayout()).rowHeights = new int[] {0, 0, 0};
 								((GridBagLayout)panel9.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0E-4};
-								((GridBagLayout)panel9.getLayout()).rowWeights = new double[] {1.0, 1.0, 1.0E-4};
+								((GridBagLayout)panel9.getLayout()).rowWeights = new double[] {1.0, 0.0, 1.0E-4};
 
 								//======== splitPane4 ========
 								{

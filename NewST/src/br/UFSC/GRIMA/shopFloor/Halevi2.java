@@ -291,14 +291,28 @@ public class Halevi2
 						boolean existPrecedence=false;
 						for (int k = 0;k<doneWorkingSteps.size();k++)
 						{
+
+							ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
+							ArrayList<Integer> tempPathNew = new ArrayList<Integer>();
+							
 							System.out.println(this.workingsteps.get(doneWorkingSteps.get(k)));
+							
+							if (this.workingsteps.get(j).getWorkingstepPrecedente()==null)
+							{
+								doneWorkingSteps.add(k);
+								System.out.println("WorkingStep executed:" + doneWorkingSteps);
+								existPrecedence=true;								
+							}
 							
 							if (this.workingsteps.get(j).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
 							{
 								doneWorkingSteps.add(k);
 								System.out.println("WorkingStep executed:" + doneWorkingSteps);
-								ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
-								ArrayList<Integer> tempPathNew = new ArrayList<Integer>();
+								existPrecedence=true;				
+							}
+							
+							if (existPrecedence)
+							{
 								tempPathIdeal.add(idealPath.get(k));
 								tempPathNew.add(idealPath.get(k));
 								
@@ -329,8 +343,6 @@ public class Halevi2
 								{
 									newPath.set(idPath, tempPathNew.get(idPath-j-1));
 								}
-								existPrecedence=true;
-								break;
 							}
 						}
 						if(!existPrecedence)
@@ -338,7 +350,7 @@ public class Halevi2
 							doneWorkingSteps.add(j);
 						}
 					}
-			}
+				}
 				nextPath = newPath.get(i+1);
 			}
 		}

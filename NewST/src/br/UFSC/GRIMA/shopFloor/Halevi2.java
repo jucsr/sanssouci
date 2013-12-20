@@ -284,7 +284,7 @@ public class Halevi2
 				System.out.println(i + " Diferentes");				
 				for (int j=i;j<idealPath.size();j++)
 				{
-					System.out.println("Comp " + j + " from ideal " + idealPath.get(j) + " with " + (i-1) + " from Path " + newPath.get(i-1));
+					System.out.println("Comp " + (j+1) + "th from ideal " + idealPath.get(j) + " with " + (i) + "th from Path " + newPath.get(i-1));
 					if (idealPath.get(j)==newPath.get(i-1))
 					{		
 						System.out.println("Comp " + this.workingsteps.get(j).getWorkingstepPrecedente() + " with ");
@@ -299,14 +299,16 @@ public class Halevi2
 							
 							if (this.workingsteps.get(j).getWorkingstepPrecedente()==null)
 							{
-								doneWorkingSteps.add(k);
+								doneWorkingSteps.add(j);
+								System.out.println("Precedence null");
 								System.out.println("WorkingStep executed:" + doneWorkingSteps);
 								existPrecedence=true;								
 							}
-							
-							if (this.workingsteps.get(j).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
+
+							else if (this.workingsteps.get(j).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
 							{
-								doneWorkingSteps.add(k);
+								doneWorkingSteps.add(j);
+								System.out.println("Precedence not null");
 								System.out.println("WorkingStep executed:" + doneWorkingSteps);
 								existPrecedence=true;				
 							}
@@ -344,10 +346,13 @@ public class Halevi2
 									newPath.set(idPath, tempPathNew.get(idPath-j-1));
 								}
 							}
+							break;
 						}
 						if(!existPrecedence)
 						{
 							doneWorkingSteps.add(j);
+							System.out.println("Not Precedence");
+							System.out.println("WorkingStep executed:" + doneWorkingSteps);							
 						}
 					}
 				}

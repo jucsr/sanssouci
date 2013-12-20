@@ -24,6 +24,8 @@ public class Halevi2
 	private ArrayList<ArrayList<Integer>> totalTimePathMatrix = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Double>> totalCostMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Integer>> totalCostPathMatrix = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<Integer> idealPathTime = new ArrayList<Integer>();
+	private ArrayList<Integer> idealPathCost = new ArrayList<Integer>();
 	
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
@@ -391,6 +393,36 @@ public class Halevi2
 	{
 		ArrayList<Integer> idealPath = new ArrayList<Integer>();
 		
+		
 		return idealPath;
 	}
+	
+	public ArrayList<Integer> getIdealPathTime()
+	{
+		ArrayList<Integer> newPath = new ArrayList<Integer>(); 
+		newPath=this.calculateIdealPathTotal(this.getTotalTimeMatrix(),this.getTotalTimePathMatrix());
+		this.idealPathTime=newPath;
+		return this.idealPathTime;
+	}
+	
+	public ArrayList<Integer> getIdealPathCost()
+	{
+		ArrayList<Integer> newPath = new ArrayList<Integer>(); 
+		newPath=this.calculateIdealPathTotal(this.getTotalCostMatrix(),this.getTotalCostPathMatrix());
+		this.idealPathCost=newPath;
+		return this.idealPathCost;
+	}
+	
+	public ArrayList<Integer> calculateIdealPathTotal(ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)
+	{
+		Dyad lowFirst=new Dyad();
+		int iWStep=0;	
+
+		ArrayList<Integer> newPath = new ArrayList<Integer>();
+		lowFirst = this.lowDyad(total.get(iWStep));
+		
+		newPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
+		return newPath;
+	}	
+	
 }

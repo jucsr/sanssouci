@@ -43,7 +43,8 @@ public class Halevi2
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
 		this.choosePathFromTotal(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
-		//this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
+		this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
+		
 		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
@@ -289,15 +290,14 @@ public class Halevi2
 				System.out.println(i + " Diferentes");				
 				for (int j=i;j<idealPath.size();j++)
 				{
+					boolean existPrecedence=false;
 					System.out.println("Comp " + (j+1) + "th from ideal " + idealPath.get(j) + " with " + (i) + "th from Path " + newPath.get(i-1));
 					if (idealPath.get(j)==newPath.get(i-1))
-					{		
-						System.out.println("Comp " + this.workingsteps.get(j).getWorkingstepPrecedente() + " with ");
-						boolean existPrecedence=false;
+					{						
+						System.out.println("Comp " + this.workingsteps.get(j).getWorkingstepPrecedente() + " with ");					
+
 						for (int k = 0;k<doneWorkingSteps.size();k++)
 						{
-
-							
 							System.out.println(this.workingsteps.get(doneWorkingSteps.get(k)));
 							
 							if (this.workingsteps.get(j).getWorkingstepPrecedente()==null)
@@ -305,7 +305,8 @@ public class Halevi2
 								doneWorkingSteps.add(j);
 								System.out.println("Precedence null");
 								System.out.println("WorkingStep executed:" + doneWorkingSteps);
-								existPrecedence=true;								
+								existPrecedence=true;		
+								break;
 							}
 
 							else if (this.workingsteps.get(j).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
@@ -313,53 +314,55 @@ public class Halevi2
 								doneWorkingSteps.add(j);
 								System.out.println("Precedence not null");
 								System.out.println("WorkingStep executed:" + doneWorkingSteps);
-								existPrecedence=true;				
+								existPrecedence=true;
+								break;
+							}
+						}
+						
+						if (existPrecedence)
+						{
+							ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
+							ArrayList<Integer> tempPathNew = new ArrayList<Integer>();								
+	
+							tempPathIdeal.add(idealPath.get(j));
+							tempPathNew.add(idealPath.get(j));
+							
+							//Updating idealPath
+							for (int idPath=j;idPath<idealPath.size();idPath++)
+							{
+								if(idPath!=i)
+								{
+									tempPathIdeal.add(idealPath.get(idPath));
+								}
+							}
+	
+							for (int idPath=j;idPath<idealPath.size();idPath++)
+							{
+								idealPath.set(idPath, tempPathIdeal.get(idPath-j));
 							}
 							
-							if (existPrecedence)
+							//Updating newPath
+							for (int idPath=j;idPath<newPath.size()-1;idPath++)
 							{
-								ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
-								ArrayList<Integer> tempPathNew = new ArrayList<Integer>();								
-
-								tempPathIdeal.add(idealPath.get(k));
-								tempPathNew.add(idealPath.get(k));
-								
-								//Updating idealPath
-								for (int idPath=j+1;idPath<idealPath.size();idPath++)
+								if(idPath!=i)
 								{
-									if(idPath!=k)
-									{
-										tempPathIdeal.add(idealPath.get(idPath));
-									}
+									tempPathNew.add(newPath.get(idPath));
 								}
-
-								for (int idPath=j+1;idPath<idealPath.size();idPath++)
-								{
-									idealPath.set(idPath, tempPathIdeal.get(idPath-j-1));
-								}
-								
-								//Updating newPath
-								for (int idPath=j;idPath<newPath.size()-1;idPath++)
-								{
-									if(idPath!=k)
-									{
-										tempPathNew.add(newPath.get(idPath));
-									}
-								}
-								
-								for (int idPath=j;idPath<newPath.size()-1;idPath++)
-								{
-									newPath.set(idPath, tempPathNew.get(idPath-j));
-								}
-								
-								System.out.println("Ideal Path Updated:" + idealPath);
-								System.out.println("Path Updated:" + newPath);
 							}
+							
+							for (int idPath=j;idPath<newPath.size()-1;idPath++)
+							{
+								newPath.set(idPath, tempPathNew.get(idPath-j));
+							}
+							
+							System.out.println("Ideal Path Updated:" + idealPath);
+							System.out.println("Path Updated:" + newPath);
 							break;
 						}
+						
 						if(!existPrecedence)
 						{
-							doneWorkingSteps.add(j);
+							doneWorkingSteps.add(i);
 							System.out.println("Not Precedence");
 							System.out.println("WorkingStep executed:" + doneWorkingSteps);
 							break;

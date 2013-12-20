@@ -385,10 +385,12 @@ public class Halevi2
 			}
 		}
 		System.out.println("WorkingStep executed:" + doneWorkingSteps);
+		System.out.println();
 		System.out.println("Old Ideal Path:" + oldIdealPath);
 		System.out.println("Opt Ideal Path:" + newIdealPath);
-		System.out.println("Old Path:" + oldPath);
-		System.out.println("Opt Path:" + newPath);
+		System.out.println();
+		System.out.println("Old Total Path:" + oldPath);
+		System.out.println("Opt Total Path:" + newPath);
 		
 		return newPath;
 	}

@@ -252,6 +252,7 @@ public class Halevi2
 	{
 		ArrayList<Integer> idealPath = new ArrayList<Integer>();
 		idealPath = this.choosePathFromUniversal(universal);
+		ArrayList<Integer> doneWorkingSteps = new ArrayList<Integer>();
 
 		Dyad lowFirst = new Dyad();
 		
@@ -269,6 +270,8 @@ public class Halevi2
 		System.out.println("Path from here (total): " + newPath);
 		nextPath=newPath.get(1);
 		
+		doneWorkingSteps.add(0);
+		
 		iWStep++;
 		
 		for (int i = iWStep; i< this.workingsteps.size()-1; i++)
@@ -277,6 +280,8 @@ public class Halevi2
 			{
 				System.out.println(i + " Iguales");
 				nextPath = newPath.get(i+1);
+				doneWorkingSteps.add(i);
+				System.out.println("WorkingStep executed:" + doneWorkingSteps);
 			}
 			else
 			{

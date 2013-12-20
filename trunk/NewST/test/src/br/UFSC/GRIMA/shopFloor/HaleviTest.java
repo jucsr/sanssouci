@@ -217,7 +217,13 @@ public class HaleviTest
 		this.halevi.getUniversalCostMatrix();
 		//System.out.println(this.halevi.getUniversalCostMatrix());
 		this.halevi.solveZMatrix();
+		this.halevi.MakeRankedList();
+		System.out.println(this.halevi.getZnormalMatrix());
+		System.out.println(this.halevi.getzMatrix());
+		System.out.println(this.halevi.getpMatrix());
 		
-		//System.out.println(this.halevi.getzMatrix());
+		System.out.println(this.halevi.getRankedList().get(0).getTime());
+		System.out.println(this.halevi.getRankedList().get(0).getList());
+		System.out.println(this.halevi.getRankedList().get(0).getWorkingstep());
 	}
 }

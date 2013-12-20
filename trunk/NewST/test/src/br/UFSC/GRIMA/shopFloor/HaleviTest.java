@@ -25,7 +25,7 @@ public class HaleviTest
 	public Halevi halevi;
 	public HaleviTest()
 	{
-		initComponents();
+		//initComponents();
 	}
 	
 	@Before
@@ -156,7 +156,7 @@ public class HaleviTest
 		this.workingsteps.add(ws80);
 		this.workingsteps.add(ws90);
 		
-		
+		System.out.println("ok");
 		Bloco bloco = new Bloco(200, 150, 50);
 		Projeto p = new Projeto();
 		
@@ -212,10 +212,12 @@ public class HaleviTest
 	public void solveZMatrixTest()
 	{
 		this.halevi = new Halevi(this.shopFloor, this.workingsteps);
+		System.out.println(""+this.workingsteps.size());
+		System.out.println(""+this.shopFloor.getMachines().size());
 		this.halevi.getUniversalCostMatrix();
 		//System.out.println(this.halevi.getUniversalCostMatrix());
 		this.halevi.solveZMatrix();
-		System.out.println(this.halevi.getpMatrix());
+		
 		//System.out.println(this.halevi.getzMatrix());
 	}
 }

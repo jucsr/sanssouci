@@ -23,7 +23,7 @@ public class Halevi2
 	private ArrayList<ArrayList<Double>> totalTimeMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Integer>> totalTimePathMatrix = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Double>> totalCostMatrix = new ArrayList<ArrayList<Double>>();
-	private ArrayList<ArrayList<Integer>> totalCostPathMatrix = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<ArrayList<Integer>> totalCostPathMatrix = new ArrayList<ArrayList<Integer>>();	
 	private ArrayList<Integer> idealPathTime = new ArrayList<Integer>();
 	private ArrayList<Integer> idealPathCost = new ArrayList<Integer>();
 	
@@ -388,13 +388,6 @@ public class Halevi2
 	public ArrayList<ArrayList<Integer>> getTotalCostPathMatrix()
 	{
 		return this.totalCostPathMatrix;
-	}
-	public ArrayList<Integer> getIdealPath()
-	{
-		ArrayList<Integer> idealPath = new ArrayList<Integer>();
-		
-		
-		return idealPath;
 	}
 	
 	public ArrayList<Integer> getIdealPathTime()

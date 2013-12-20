@@ -387,5 +387,10 @@ public class Halevi2
 	{
 		return this.totalCostPathMatrix;
 	}
-	
+	public ArrayList<Integer> getIdealPath()
+	{
+		ArrayList<Integer> idealPath = new ArrayList<Integer>();
+		
+		return idealPath;
+	}
 }

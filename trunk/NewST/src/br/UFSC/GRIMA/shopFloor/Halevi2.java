@@ -26,6 +26,10 @@ public class Halevi2
 	private ArrayList<ArrayList<Integer>> totalCostPathMatrix = new ArrayList<ArrayList<Integer>>();	
 	private ArrayList<Integer> idealPathTime = new ArrayList<Integer>();
 	private ArrayList<Integer> idealPathCost = new ArrayList<Integer>();
+	private ArrayList<Integer> optimizedPathTime = new ArrayList<Integer>();
+	private ArrayList<Integer> optimizedPathCost = new ArrayList<Integer>();
+		
+	
 	
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
@@ -42,8 +46,8 @@ public class Halevi2
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
-		this.choosePathFromTotal(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
-		this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
+		this.optimizedPathTime = this.choosePathFromTotal(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
+		this.optimizedPathCost = this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix); 
 		
 		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
@@ -251,11 +255,16 @@ public class Halevi2
 		return pathChoosed;
 	}
 	
-	public void choosePathFromTotal(ArrayList<ArrayList<Double>> universal, ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)
+	public ArrayList<Integer> choosePathFromTotal(ArrayList<ArrayList<Double>> universal, ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)
 	{
-		ArrayList<Integer> idealPath = new ArrayList<Integer>();
+		ArrayList<Integer> newIdealPath = new ArrayList<Integer>();
+		ArrayList<Integer> oldIdealPath = new ArrayList<Integer>();
 		
-		idealPath = this.choosePathFromUniversal(universal);
+		ArrayList<Integer> newPath = new ArrayList<Integer>();
+		ArrayList<Integer> oldPath = new ArrayList<Integer>();
+		
+		newIdealPath = this.choosePathFromUniversal(universal);
+		oldIdealPath = this.choosePathFromUniversal(universal);
 		
 		ArrayList<Integer> doneWorkingSteps = new ArrayList<Integer>();
 
@@ -263,14 +272,16 @@ public class Halevi2
 		
 		int iWStep=0;
 
-		ArrayList<Integer> newPath = new ArrayList<Integer>();
+		
 		lowFirst = this.lowDyad(total.get(iWStep));
 		
+		oldPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
 		newPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
+		
 		System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
 		System.out.println("Choosed from row " + iWStep + ": " + lowFirst.getIndex());			
 		System.out.println("Path from here (total): " + newPath);
-		System.out.println("IdealPath From Universal: " + idealPath);
+		System.out.println("IdealPath From Universal: " + newIdealPath);
 
 		doneWorkingSteps.add(0);
 		
@@ -290,11 +301,11 @@ public class Halevi2
 			else
 			{
 				System.out.println(i + " Diferentes");				
-				for (int j=i;j<idealPath.size();j++)
+				for (int j=i;j<newIdealPath.size();j++)
 				{
 					boolean existPrecedence=false;
-					System.out.println("Comp " + (j+1) + "th from ideal " + idealPath.get(j) + " with " + (i) + "th from Path " + newPath.get(i-1));
-					if (idealPath.get(j)==newPath.get(i-1))
+					System.out.println("Comp " + (j+1) + "th from ideal " + newIdealPath.get(j) + " with " + (i) + "th from Path " + newPath.get(i-1));
+					if (newIdealPath.get(j)==newPath.get(i-1))
 					{						
 						System.out.println("Comp " + this.workingsteps.get(j).getWorkingstepPrecedente() + " with ");					
 
@@ -326,21 +337,21 @@ public class Halevi2
 							ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
 							ArrayList<Integer> tempPathNew = new ArrayList<Integer>();								
 	
-							tempPathIdeal.add(idealPath.get(j));
-							tempPathNew.add(idealPath.get(j));
+							tempPathIdeal.add(newIdealPath.get(j));
+							tempPathNew.add(newIdealPath.get(j));
 							
 							//Updating idealPath
-							for (int idPath=j;idPath<idealPath.size();idPath++)
+							for (int idPath=j;idPath<newIdealPath.size();idPath++)
 							{
 								if(idPath!=i)
 								{
-									tempPathIdeal.add(idealPath.get(idPath));
+									tempPathIdeal.add(newIdealPath.get(idPath));
 								}
 							}
 	
-							for (int idPath=j;idPath<idealPath.size();idPath++)
+							for (int idPath=j;idPath<newIdealPath.size();idPath++)
 							{
-								idealPath.set(idPath, tempPathIdeal.get(idPath-j));
+								newIdealPath.set(idPath, tempPathIdeal.get(idPath-j));
 							}
 							
 							//Updating newPath
@@ -357,7 +368,7 @@ public class Halevi2
 								newPath.set(idPath, tempPathNew.get(idPath-j));
 							}
 							
-							System.out.println("Ideal Path Updated:" + idealPath);
+							System.out.println("Ideal Path Updated:" + newIdealPath);
 							System.out.println("Path Updated:" + newPath);
 							break;
 						}
@@ -373,6 +384,13 @@ public class Halevi2
 				}
 			}
 		}
+		System.out.println("WorkingStep executed:" + doneWorkingSteps);
+		System.out.println("Old Ideal Path:" + oldIdealPath);
+		System.out.println("Opt Ideal Path:" + newIdealPath);
+		System.out.println("Old Path:" + oldPath);
+		System.out.println("Opt Path:" + newPath);
+		
+		return newPath;
 	}
 	
 	public ArrayList<Integer> choosePathFromUniversal(ArrayList<ArrayList<Double>> universal)
@@ -492,6 +510,17 @@ public class Halevi2
 		newPath=this.calculateIdealPathTotal(this.getTotalCostMatrix(),this.getTotalCostPathMatrix());
 		this.idealPathCost=newPath;
 		return this.idealPathCost;
+	}
+	
+	public ArrayList<Integer> getOptimizedPathTime()
+	{
+		return this.optimizedPathTime;
+	}
+
+	
+	public ArrayList<Integer> getOptimizedPathCost()
+	{
+		return this.optimizedPathCost;
 	}
 	
 	public ArrayList<Integer> calculateIdealPathTotal(ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)

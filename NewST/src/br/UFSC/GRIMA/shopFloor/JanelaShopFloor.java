@@ -392,40 +392,55 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 			     			editFacemillWS.spinner11.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getAp());
 			     			editFacemillWS.spinner12.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getAe());
 			     			editFacemillWS.spinner7.setValue(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getCondicoesUsinagem().getVc());
-			     			
+			     			editFacemillWS.formattedTextField1.setText(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getId());
 			     		}else if (projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == CenterDrilling.class ){
 			     			
 			     			EditCenterDrillWS editCenterDrillWS = new EditCenterDrillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
 			     			editCenterDrillWS.setVisible(true);
+			     			editCenterDrillWS.formattedTextField1.setText(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getId());
+
 			     			editCenterDrillWS.okButton.setVisible(false);
 			     		
 			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == Drilling.class){
 			     			
 			     			EditTwistDrillWS editTwistDrillWS = new EditTwistDrillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			
+			     			editTwistDrillWS.formattedTextField1.setText(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getId());
+
 			     			editTwistDrillWS.setVisible(true);
 			     			editTwistDrillWS.okButton.setVisible(false);
 			     			
 			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == BallEndMill.class){
 			     			
 			     			EditBallEndMillWS editBallEndMillWS = new EditBallEndMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editBallEndMillWS.formattedTextField1.setText(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getId());
+
 			     			editBallEndMillWS.setVisible(true);
 			     			editBallEndMillWS.okButton.setVisible(false);
 			     			
 			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == BoringTool.class){
 			     			
 			     			EditBoringToolWS editBoringToolWS = new EditBoringToolWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			editBoringToolWS.formattedTextField1.setText(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getId());
+
 			     			editBoringToolWS.setVisible(true);
 			     			editBoringToolWS.okButton.setVisible(false);
 			     			
 			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == EndMill.class || projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getOperation().getClass() == BottomAndSideFinishMilling.class ){
 			     				
 			     			EditFaceMillWS editFacemillWS = new EditFaceMillWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     			
+			     			editFacemillWS.formattedTextField1.setText(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getId());
+
 			     			editFacemillWS.setVisible(true);
 			     			editFacemillWS.okButton.setVisible(false);
 			     			
 			     		}else if(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getFerramenta().getClass() == Reamer.class){
 			     			
 			     			EditReamerWS editReamerWS = new EditReamerWS(janelaShopFloor, projetoSF, projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id));
+			     		
+			     			editReamerWS.formattedTextField1.setText(projetoSF.getProjeto().getWorkingsteps().elementAt(0).get(id).getId());
+
 			     			editReamerWS.setVisible(true);
 			     			editReamerWS.okButton.setVisible(false);
 			     			

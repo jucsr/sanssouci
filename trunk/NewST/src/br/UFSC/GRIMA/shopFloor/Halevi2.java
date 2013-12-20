@@ -268,26 +268,78 @@ public class Halevi2
 		System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
 		System.out.println("Choosed from row " + iWStep + ": " + lowFirst.getIndex());			
 		System.out.println("Path from here (total): " + newPath);
-		nextPath=newPath.get(1);
-		
+
 		doneWorkingSteps.add(0);
 		
-		iWStep++;
-		
-		for (int i = iWStep; i< this.workingsteps.size()-1; i++)
+		for (int i = 1; i< this.workingsteps.size()-1; i++)
 		{			
-			if (nextPath==newPath.get(i-1))
+			if (newPath.get(i)==newPath.get(i-1))
 			{
 				System.out.println(i + " Iguales");
-				nextPath = newPath.get(i+1);
 				doneWorkingSteps.add(i);
 				System.out.println("WorkingStep executed:" + doneWorkingSteps);
 			}
 			else
 			{
-				System.out.println(i + " Diferentes");
+				System.out.println(i + " Diferentes");				
+				for (int j=i;j<idealPath.size();j++)
+				{
+					System.out.println("Comp " + j + " from ideal " + idealPath.get(j) + " with " + (i-1) + " from Path " + newPath.get(i-1));
+					if (idealPath.get(j)==newPath.get(i-1))
+					{		
+						System.out.println("Comp " + this.workingsteps.get(j) + " with ");
+						boolean existPrecedence=false;
+						for (int k = 0;k<doneWorkingSteps.size();k++)
+						{
+							System.out.println(this.workingsteps.get(doneWorkingSteps.get(k)));
+							
+							if (this.workingsteps.get(j).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
+							{
+								doneWorkingSteps.add(k);
+								System.out.println("WorkingStep executed:" + doneWorkingSteps);
+								ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
+								ArrayList<Integer> tempPathNew = new ArrayList<Integer>();
+								tempPathIdeal.add(idealPath.get(k));
+								tempPathNew.add(idealPath.get(k));
+								
+								//Updating idealPath
+								for (int idPath=j+1;idPath<idealPath.size();idPath++)
+								{
+									if(idPath!=k)
+									{
+										tempPathIdeal.add(idealPath.get(idPath));
+									}
+								}
+
+								for (int idPath=j+1;idPath<idealPath.size();idPath++)
+								{
+									idealPath.set(idPath, tempPathIdeal.get(idPath-j-1));
+								}
+								
+								//Updating newPath
+								for (int idPath=j+1;idPath<newPath.size();idPath++)
+								{
+									if(idPath!=k)
+									{
+										tempPathNew.add(newPath.get(idPath));
+									}
+								}
+								
+								for (int idPath=j+1;idPath<newPath.size();idPath++)
+								{
+									newPath.set(idPath, tempPathNew.get(idPath-j-1));
+								}
+								existPrecedence=true;
+								break;
+							}
+						}
+						if(!existPrecedence)
+						{
+							doneWorkingSteps.add(j);
+						}
+					}
+			}
 				nextPath = newPath.get(i+1);
-				
 			}
 		}
 	}

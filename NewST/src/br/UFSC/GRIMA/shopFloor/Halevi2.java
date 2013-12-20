@@ -259,7 +259,6 @@ public class Halevi2
 		Dyad lowFirst = new Dyad();
 		
 		int iWStep=0;
-		int nextPath=0;
 
 		ArrayList<Integer> newPath = new ArrayList<Integer>();
 		lowFirst = this.lowDyad(total.get(iWStep));
@@ -351,6 +350,9 @@ public class Halevi2
 								{
 									newPath.set(idPath, tempPathNew.get(idPath-j-1));
 								}
+								
+								System.out.println("Ideal Path Updated:" + idealPath);
+								System.out.println("Path Updated:" + newPath);
 							}
 							break;
 						}
@@ -363,7 +365,6 @@ public class Halevi2
 						}
 					}
 				}
-				nextPath = newPath.get(i+1);
 			}
 		}
 	}

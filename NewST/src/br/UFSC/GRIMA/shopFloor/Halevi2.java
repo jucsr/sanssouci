@@ -236,10 +236,12 @@ public class Halevi2
 	{
 		ArrayList<Integer> pathChoosed = new ArrayList<Integer>();
 		
+		/*
 		for (ArrayList<Integer> row:matrixPath)
 		{
 			System.out.println(row);
 		}
+		*/
 		
 		pathChoosed.add(matrixPath.get(indexWorkingStep).get(machineNumber-1));
 		for (int i=indexWorkingStep+1; i < matrixPath.size();i++)

@@ -331,6 +331,7 @@ public class Workingstep implements Serializable{
 		wsClone.setCondicoesUsinagem(cond);
 		
 		wsClone.setPontos(this.getPontos());
+		wsClone.setWorkingstepPrecedente(this.getWorkingstepPrecedente());
 		
 		return wsClone;
 	}

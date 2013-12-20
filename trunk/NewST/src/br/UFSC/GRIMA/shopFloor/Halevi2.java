@@ -43,7 +43,7 @@ public class Halevi2
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
 		this.choosePathFromTotal(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
-		this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
+		//this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
 		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
@@ -297,8 +297,6 @@ public class Halevi2
 						for (int k = 0;k<doneWorkingSteps.size();k++)
 						{
 
-							ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
-							ArrayList<Integer> tempPathNew = new ArrayList<Integer>();
 							
 							System.out.println(this.workingsteps.get(doneWorkingSteps.get(k)));
 							
@@ -320,6 +318,9 @@ public class Halevi2
 							
 							if (existPrecedence)
 							{
+								ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
+								ArrayList<Integer> tempPathNew = new ArrayList<Integer>();								
+
 								tempPathIdeal.add(idealPath.get(k));
 								tempPathNew.add(idealPath.get(k));
 								
@@ -338,7 +339,7 @@ public class Halevi2
 								}
 								
 								//Updating newPath
-								for (int idPath=j+1;idPath<newPath.size();idPath++)
+								for (int idPath=j;idPath<newPath.size()-1;idPath++)
 								{
 									if(idPath!=k)
 									{
@@ -346,9 +347,9 @@ public class Halevi2
 									}
 								}
 								
-								for (int idPath=j+1;idPath<newPath.size();idPath++)
+								for (int idPath=j;idPath<newPath.size()-1;idPath++)
 								{
-									newPath.set(idPath, tempPathNew.get(idPath-j-1));
+									newPath.set(idPath, tempPathNew.get(idPath-j));
 								}
 								
 								System.out.println("Ideal Path Updated:" + idealPath);

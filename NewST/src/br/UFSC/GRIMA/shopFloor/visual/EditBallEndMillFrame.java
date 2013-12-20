@@ -699,7 +699,7 @@ public class EditBallEndMillFrame extends JDialog {
 	private JLayeredPane layeredPane1;
 	public JSpinner spinner1;
 	public JSpinner spinner2;
-	protected JSpinner spinner4;
+	public JSpinner spinner4;
 	public JSpinner spinner5;
 	public JSpinner spinner3;
 	protected JLabel label6;

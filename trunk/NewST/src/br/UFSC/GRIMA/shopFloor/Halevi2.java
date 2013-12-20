@@ -258,8 +258,6 @@ public class Halevi2
 
 		Dyad lowFirst = new Dyad();
 		
-		
-		
 		int iWStep=0;
 		int nextPath=0;
 
@@ -273,6 +271,11 @@ public class Halevi2
 		System.out.println("IdealPath From Universal: " + idealPath);
 
 		doneWorkingSteps.add(0);
+		
+		for (Workingstep ws:this.workingsteps )
+		{
+			System.out.println("Prec: " + ws.getWorkingstepPrecedente());
+		}
 		
 		for (int i = 1; i< this.workingsteps.size()-1; i++)
 		{			
@@ -355,7 +358,8 @@ public class Halevi2
 						{
 							doneWorkingSteps.add(j);
 							System.out.println("Not Precedence");
-							System.out.println("WorkingStep executed:" + doneWorkingSteps);							
+							System.out.println("WorkingStep executed:" + doneWorkingSteps);
+							break;
 						}
 					}
 				}

@@ -280,6 +280,7 @@ public class Halevi2
 			{
 				System.out.println(i + " Diferentes");
 				nextPath = newPath.get(i+1);
+				
 			}
 		}
 	}

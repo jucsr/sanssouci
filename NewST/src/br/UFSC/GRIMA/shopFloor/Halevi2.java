@@ -287,7 +287,7 @@ public class Halevi2
 					System.out.println("Comp " + j + " from ideal " + idealPath.get(j) + " with " + (i-1) + " from Path " + newPath.get(i-1));
 					if (idealPath.get(j)==newPath.get(i-1))
 					{		
-						System.out.println("Comp " + this.workingsteps.get(j) + " with ");
+						System.out.println("Comp " + this.workingsteps.get(j).getWorkingstepPrecedente() + " with ");
 						boolean existPrecedence=false;
 						for (int k = 0;k<doneWorkingSteps.size();k++)
 						{

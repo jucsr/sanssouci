@@ -332,7 +332,8 @@ public class Workingstep implements Serializable{
 		
 		wsClone.setPontos(this.getPontos());
 		wsClone.setWorkingstepPrecedente(this.getWorkingstepPrecedente());
-		
+		wsClone.setId(this.getId());
+		wsClone.setIndiceArvore(this.getIndiceArvore());
 		return wsClone;
 	}
 }

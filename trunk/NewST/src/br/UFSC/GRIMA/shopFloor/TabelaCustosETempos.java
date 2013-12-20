@@ -132,9 +132,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	}
 	private void fillTimesTable()
 	{
-		timeMatrix = halevi.getUniversalTimeMatrix();
+//		timeMatrix = halevi.getUniversalTimeMatrix();
 //		halevi.solveZMatrix();
-		halevi.solveZTempoMatrix();
+//		halevi.solveZTempoMatrix();
 		
 		Vector<String> cabecalho = new Vector<String>();
 		cabecalho.add("M. Workingsteps");
@@ -175,20 +175,20 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			modelo1.addRow(linha);
 		}
 		
-		for(int i = 0; i < halevi.gettMatrix().size(); i++)
-		{
-			for(int j = 0; j < halevi.gettMatrix().get(i).size(); j++)
-			{
-				this.table3.setValueAt(halevi.gettMatrix().get(i).get(j), i, j + 3);
-			}
-		}
-		for(int i = 0; i < halevi.getpTMatrix().size(); i++)
-		{
-			for(int j = 0; j < halevi.getpTMatrix().get(i).size(); j++)
-			{
-				this.table4.setValueAt(halevi.getpTMatrix().get(i).get(j), i, j + 3);
-			}
-		}
+//		for(int i = 0; i < halevi.gettMatrix().size(); i++)
+//		{
+//			for(int j = 0; j < halevi.gettMatrix().get(i).size(); j++)
+//			{
+//				this.table3.setValueAt(halevi.gettMatrix().get(i).get(j), i, j + 3);
+//			}
+//		}
+//		for(int i = 0; i < halevi.getpTMatrix().size(); i++)
+//		{
+//			for(int j = 0; j < halevi.getpTMatrix().get(i).size(); j++)
+//			{
+//				this.table4.setValueAt(halevi.getpTMatrix().get(i).get(j), i, j + 3);
+//			}
+//		}
 	}
 	private void calculateTempo() 
 	{
@@ -394,7 +394,8 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		{
 			for(int j = 0; j < custoMatrix.get(i).size(); j++)
 			{
-				this.table1.setValueAt(custoMatrix.get(i).get(j), i, j + 3);
+				String value = ((""+custoMatrix.get(i).get(j)).concat("000000")).substring(0,6);
+				this.table1.setValueAt(value, i, j + 3);
 			}
 		}
 	}
@@ -443,7 +444,8 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		{
 			for(int j = 0; j < timeMatrix.get(i).size(); j++)
 			{
-				this.table3.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
+				String value = ((""+timeMatrix.get(i).get(j)).concat("000000")).substring(0,6);
+				this.table3.setValueAt(value, i, j + 3);
 			}
 		}
 	}
@@ -596,7 +598,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		{
 			for(int j = 0; j < timeMatrix.get(i).size(); j++)
 			{
-				this.table6.setValueAt(timeMatrix.get(i).get(j), i, j + 3);
+				String value = ((""+timeMatrix.get(i).get(j)).concat("000000")).substring(0,6);
+
+				this.table6.setValueAt(value, i, j + 3);
 			}
 		}
 	}
@@ -647,7 +651,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		{
 			for(int j = 0; j < costMatrix.get(i).size(); j++)
 			{
-				this.table7.setValueAt(costMatrix.get(i).get(j), i, j + 3);
+				String value = ((""+costMatrix.get(i).get(j)).concat("000000")).substring(0,6);
+
+				this.table7.setValueAt(value, i, j + 3);
 			}
 		}
 	}
@@ -658,7 +664,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	{
 		ArrayList<Integer> idealPath = halevi2.getIdealPathTime();
 		DefaultTableModel model = (DefaultTableModel) table8.getModel();
-		double menorTempo = pathTimeMatrix.get(0).get(0);
+		double menorTempo = timeMatrix.get(0).get(0);
 		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
 		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
@@ -681,7 +687,10 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		totalCost = cost;
 		totalTime = time;
 		
-		Object [] linha2 = {operation, machine, cost, time};
+		String value = ((""+cost).concat("000000")).substring(0,6);
+		String value1 = ((""+time).concat("000000")).substring(0,6);
+		
+		Object [] linha2 = {operation, machine, value, value1};
 		model.addRow(linha2);
 	
 		for(int i = 0; i < idealPath.size() - 1; i++)
@@ -693,7 +702,11 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			totalTime = totalTime + time;
 			operation = operation + 10;
 			machine = idealPath.get(i);
-			Object [] linha = {operation, machine, cost, time};
+			
+			value = ((""+cost).concat("000000")).substring(0,6);
+			value1 = ((""+time).concat("000000")).substring(0,6);
+
+			Object [] linha = {operation, machine, value, value1};
 			model.addRow(linha);
 		}
 		
@@ -718,7 +731,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	private void fillTablesRouthingMinCost()
 	{
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();
-		double menorCusto = pathCostMatrix.get(0).get(0);
+		double menorCusto = costMatrix.get(0).get(0);
 		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
 		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
@@ -741,7 +754,10 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		totalCost = cost;
 		totalTime = time;
 		
-		Object [] linha2 = {operation, machine, cost, time};
+		String value = ((""+cost).concat("000000")).substring(0,6);
+		String value1 = ((""+time).concat("000000")).substring(0,6);
+
+		Object [] linha2 = {operation, machine, value, value1};
 		model.addRow(linha2);
 		
 		
@@ -755,7 +771,11 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			totalTime = totalTime + time;
 			operation = operation + 10;
 			machine = idealPath.get(i);
-			Object [] linha = {operation, machine, cost, time};
+			
+			value = ((""+cost).concat("000000")).substring(0,6);
+			value1 = ((""+time).concat("000000")).substring(0,6);
+			
+			Object [] linha = {operation, machine, value, value1};
 			model.addRow(linha);
 		}
 		

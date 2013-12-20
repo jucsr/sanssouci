@@ -501,7 +501,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 											((GridBagLayout)panel22.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 											//---- label7 ----
-											label7.setText("MINIMAL COST");
+											label7.setText("MINIMAL COST [$]");
 											panel22.add(label7, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 												GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 												new Insets(0, 0, 5, 5), 0, 0));
@@ -546,7 +546,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 											((GridBagLayout)panel23.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 											//---- label8 ----
-											label8.setText("MINIMAL TIME");
+											label8.setText("MINIMAL TIME [minutes]");
 											panel23.add(label8, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 												GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 												new Insets(0, 0, 5, 5), 0, 0));

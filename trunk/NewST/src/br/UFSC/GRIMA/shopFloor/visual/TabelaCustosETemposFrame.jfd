@@ -448,7 +448,7 @@ new FormModel {
 												name: "panel22"
 												add( new FormComponent( "javax.swing.JLabel" ) {
 													name: "label7"
-													"text": "MINIMAL COST"
+													"text": "MINIMAL COST [$]"
 												}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 													"gridx": 1
 													"gridy": 1
@@ -512,7 +512,7 @@ new FormModel {
 												name: "panel23"
 												add( new FormComponent( "javax.swing.JLabel" ) {
 													name: "label8"
-													"text": "MINIMAL TIME"
+													"text": "MINIMAL TIME [minutes]"
 												}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 													"gridx": 1
 													"gridy": 1

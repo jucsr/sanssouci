@@ -672,7 +672,7 @@ public class EditBoringToolFrame extends JDialog {
 	private JPanel contentPanel;
 	private JPanel panel4;
 	private JLabel label3;
-	protected JFormattedTextField formattedTextField1;
+	public JFormattedTextField formattedTextField1;
 	private JLabel label4;
 	protected JLabel label5;
 	private JTabbedPane tabbedPane1;

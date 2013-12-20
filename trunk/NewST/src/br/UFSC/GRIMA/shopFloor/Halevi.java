@@ -18,9 +18,28 @@ public class Halevi
 	private ArrayList<MachineTool> machineTools; // vetor de maquinas
 	private ArrayList<Integer> bestSequence; // apenas os indices do array workingstep sao apresentados na ordem de execucao
 	
-	private ArrayList<ArrayList<Double>> zMatrix = new ArrayList<ArrayList<Double>>() ; // n operacoes em m maquinas
-	
+	private ArrayList<ArrayList<Double>> zMatrix = new ArrayList<ArrayList<Double>>() ; // n operacoes em m maquinas, zmatrix otimizado
+	private ArrayList<ArrayList<Double>> znormalMatrix = new ArrayList<ArrayList<Double>>() ; // n operacoes em m maquinas, zmatrix antes da otimizacao
+	public ArrayList<ArrayList<Double>> getcMatrix() {
+		return cMatrix;
+	}
+	public void setcMatrix(ArrayList<ArrayList<Double>> cMatrix) {
+		this.cMatrix = cMatrix;
+	}
+	public ArrayList<ArrayList<Double>> getZnormalMatrix() {
+		return znormalMatrix;
+	}
+	public void setZnormalMatrix(ArrayList<ArrayList<Double>> znormalMatrix) {
+		this.znormalMatrix = znormalMatrix;
+	}
+	public ArrayList<vectorWorkingPath> getRankedList() {
+		return RankedList;
+	}
+	public void setRankedList(ArrayList<vectorWorkingPath> rankedList) {
+		RankedList = rankedList;
+	}
 	private ArrayList<ArrayList<Integer>> pMatrix=new ArrayList<ArrayList<Integer>>(); ; 
+	private ArrayList<ArrayList<Integer>> pnormalMatrix=new ArrayList<ArrayList<Integer>>(); ; 
 	
 	private ArrayList<vectorWorkingPath> RankedList = new  ArrayList<vectorWorkingPath>() ;
 	
@@ -78,7 +97,7 @@ public class Halevi
 						line.add((indice+zMatrix.get((i+1)).get(j)));
 						
 					}else {
-						line.add((indice+0.2+zMatrix.get((i+1)).get(j)));	
+						line.add((indice+0.2+zMatrix.get((i+1)).get(j)));// Penalidade padrao 0.2!!	
 					}
 					//System.out.println("line "+line);
 				}
@@ -144,8 +163,8 @@ public class Halevi
 				
 				lista.add(pMatrix.get(j).get(aux));
 				//System.out.println(""+lista);
-				aux = (pMatrix.get(j+1).get(aux)-1);
-				
+				aux = (pMatrix.get(j).get(aux)-1);
+				//System.out.println("aux"+aux);
 				
 			}//System.out.println("ok");
 			
@@ -158,8 +177,16 @@ public class Halevi
 		aux =0;
 			// listou todos da primeira otimização
 		//
+		for(int w =0; w< zMatrix.size();w++){
+			 ArrayList<Double> t = new ArrayList<Double>();
+			 ArrayList<Integer>x = new ArrayList<Integer>();
+			 t.addAll(zMatrix.get(w));
+			 x.addAll(pMatrix.get(w));
+			 znormalMatrix.add(t);
+			 pnormalMatrix.add(x);
+			}	// copia o zmatrix e o pmatrix nao otimizado.
 		
-		
+			
 			aux = Matrixmin(zMatrix.get(0));
 			aux= pMatrix.get(0).get(aux);
 		
@@ -180,7 +207,7 @@ public class Halevi
 					for(int j = 0; j < (pMatrix.size()-1);j++){ // listar os metodos da segunda otimização.
 						
 						lista.add(pMatrix.get(j).get(aux));
-						aux = (pMatrix.get(j+1).get(aux)-1);
+						aux = (pMatrix.get(j).get(aux)-1);
 					
 					}
 					vwp.setList(lista);
@@ -194,8 +221,7 @@ public class Halevi
 			
 			}// final da segunda otimização
 		//Ranking
-		
-		
+	
 		
 		for (int j = 0; j < RankedList.size() ;j++){
 			for(int i = 1; i < RankedList.size();i++){
@@ -211,11 +237,44 @@ public class Halevi
 				
 			}
 		}
-		/*for(int k = 0; k< RankedList.size();k++){
-		System.out.println(""+RankedList.get(k).getList());
-		System.out.println(""+RankedList.get(k).getTime());
-		}*/
 		
+		
+	}
+	public ArrayList<Workingstep> getOpmatrix() {
+		return opmatrix;
+	}
+	public void setOpmatrix(ArrayList<Workingstep> opmatrix) {
+		this.opmatrix = opmatrix;
+	}
+	public ArrayList<MachineTool> getMachineTools() {
+		return machineTools;
+	}
+	public void setMachineTools(ArrayList<MachineTool> machineTools) {
+		this.machineTools = machineTools;
+	}
+	public ArrayList<ArrayList<Integer>> getPnormalMatrix() {
+		return pnormalMatrix;
+	}
+	public void setPnormalMatrix(ArrayList<ArrayList<Integer>> pnormalMatrix) {
+		this.pnormalMatrix = pnormalMatrix;
+	}
+	public int getLotSize() {
+		return LotSize;
+	}
+	public void setLotSize(int lotSize) {
+		LotSize = lotSize;
+	}
+	public double getMachineSetupTime() {
+		return machineSetupTime;
+	}
+	public void setMachineSetupTime(double machineSetupTime) {
+		this.machineSetupTime = machineSetupTime;
+	}
+	public double getOpimpossible() {
+		return opimpossible;
+	}
+	public void setOpimpossible(double opimpossible) {
+		this.opimpossible = opimpossible;
 	}
 	private boolean CMatrixReform(int k, int aux){
 		

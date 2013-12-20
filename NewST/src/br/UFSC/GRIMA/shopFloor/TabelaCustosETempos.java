@@ -656,7 +656,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	 */
 	private void fillTablesRouthingMinTime()
 	{
-		
+		ArrayList<Integer> idealPath = halevi2.getIdealPathTime();
 		DefaultTableModel model = (DefaultTableModel) table8.getModel();
 		double menorTempo = pathTimeMatrix.get(0).get(0);
 		int indiceMaquina = 0;
@@ -684,35 +684,25 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		Object [] linha2 = {operation, machine, cost, time};
 		model.addRow(linha2);
 	
-		for(int i = 0; i <pathTimeMatrix.size() - 1; i++ )
+		for(int i = 0; i < idealPath.size() - 1; i++)
 		{
-			for(int j = 0; j < pathTimeMatrix.get(0).size(); j++)
-			{
-				if(j == indiceMaquina)
-				{
-					machine = pathTimeMatrix.get(i).get(j);
-					if(machineTest != machine){
-						
-						trocou++;
-					}
-					indiceMaquina = machine -1;
-					
-					time = timeMatrix.get(i+1).get(indiceMaquina);
-					cost = costMatrix.get(i+1).get(indiceMaquina);
-					
-					totalCost = totalCost + cost;
-					totalTime = totalTime + time;
-					operation = operation + 10;
-					
-					Object [] linha = {operation, machine, cost, time};
-					model.addRow(linha);
-				}
-			}
-		}	
+			cost = this.costMatrix.get(i + 1).get(idealPath.get(i) - 1);
+			time = this.timeMatrix.get(i + 1).get(idealPath.get(i) - 1);
+			
+			totalCost = totalCost + cost;
+			totalTime = totalTime + time;
+			operation = operation + 10;
+			machine = idealPath.get(i);
+			Object [] linha = {operation, machine, cost, time};
+			model.addRow(linha);
+		}
+		
+		
+
 		penaltiesCost = trocou * 0.2;
 		penalitiesTime = trocou * 0.03;
 		
-		Object[] linha3 = {"Total"," ", totalCost, totalTime};
+		Object[] linha3 = {"Total in machines"," ", totalCost, totalTime};
 		model.addRow(linha3);
 		
 		Object[] linha4 = {"Penalties "," ", penaltiesCost, penaltiesCost};
@@ -764,13 +754,13 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
 			operation = operation + 10;
-			
+			machine = idealPath.get(i);
 			Object [] linha = {operation, machine, cost, time};
 			model.addRow(linha);
 		}
 		
 		
-		Object[] linha3 = {"Total"," ", totalCost, totalTime};
+		Object[] linha3 = {"Total in machines"," ", totalCost, totalTime};
 		model.addRow(linha3);
 		
 		Object[] linha4 = {"Penalties "," ", penaltiesCost, penaltiesCost};

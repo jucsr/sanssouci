@@ -753,37 +753,22 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		
 		Object [] linha2 = {operation, machine, cost, time};
 		model.addRow(linha2);
-	
-		for(int i = 0; i <pathCostMatrix.size() - 1; i++ )
+		
+		
+		ArrayList<Integer> idealPath = halevi2.getIdealPathCost();
+		for(int i = 0; i < idealPath.size() - 1; i++)
 		{
-			for(int j = 0; j < pathCostMatrix.get(0).size(); j++)
-			{
-				if(j == indiceMaquina)
-				{
-					machine = pathCostMatrix.get(i).get(j);
-					if(machineTest != machine)
-					{
-						trocou++;
-					}
-
-					indiceMaquina = machine -1;
-					
-					time = timeMatrix.get(i+1).get(indiceMaquina);
-					cost = costMatrix.get(i+1).get(indiceMaquina);
-					
-					totalCost = totalCost + cost;
-					totalTime = totalTime + time;
-					operation = operation + 10;
-					
-					
-					
-					Object [] linha = {operation, machine, cost, time};
-					model.addRow(linha);
-				}
-			}
-		}	
-		penaltiesCost = trocou * 0.2;
-		penalitiesTime = trocou * 0.03;
+			cost = this.costMatrix.get(i + 1).get(idealPath.get(i) - 1);
+			time = this.timeMatrix.get(i + 1).get(idealPath.get(i) - 1);
+			
+			totalCost = totalCost + cost;
+			totalTime = totalTime + time;
+			operation = operation + 10;
+			
+			Object [] linha = {operation, machine, cost, time};
+			model.addRow(linha);
+		}
+		
 		
 		Object[] linha3 = {"Total"," ", totalCost, totalTime};
 		model.addRow(linha3);

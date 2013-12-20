@@ -251,12 +251,14 @@ public class Halevi2
 	public void choosePathFromTotal(ArrayList<ArrayList<Double>> universal, ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)
 	{
 		ArrayList<Integer> idealPath = new ArrayList<Integer>();
+		
 		idealPath = this.choosePathFromUniversal(universal);
+		
 		ArrayList<Integer> doneWorkingSteps = new ArrayList<Integer>();
 
 		Dyad lowFirst = new Dyad();
 		
-		System.out.println("IdealPath: " + idealPath);
+		
 		
 		int iWStep=0;
 		int nextPath=0;
@@ -268,6 +270,7 @@ public class Halevi2
 		System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
 		System.out.println("Choosed from row " + iWStep + ": " + lowFirst.getIndex());			
 		System.out.println("Path from here (total): " + newPath);
+		System.out.println("IdealPath From Universal: " + idealPath);
 
 		doneWorkingSteps.add(0);
 		

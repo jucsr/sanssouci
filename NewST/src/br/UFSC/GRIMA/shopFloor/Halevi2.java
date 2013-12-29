@@ -14,18 +14,25 @@ public class Halevi2
 	private ProjetoSF projetoSF;
 	private ArrayList<Workingstep> workingsteps; // array de workingsteps -- dado de entrada necessario
 	private ArrayList<MachineTool> machineTools; // vetor de maquinas
-	private Penalties penal;
 	
 	private ArrayList<ArrayList<Integer>> pathTimeMatrix = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Integer>> pathCostMatrix = new ArrayList<ArrayList<Integer>>();
+	
 	private ArrayList<ArrayList<Double>> universalTimeMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Double>> universalCostMatrix = new ArrayList<ArrayList<Double>>();
+	
 	private ArrayList<ArrayList<Double>> totalTimeMatrix = new ArrayList<ArrayList<Double>>();
 	private ArrayList<ArrayList<Integer>> totalTimePathMatrix = new ArrayList<ArrayList<Integer>>();
+	
+	private ArrayList<ArrayList<ArrayList<Double>>> penaltiesTimeMatrix = new ArrayList<ArrayList<ArrayList<Double>>>();
+	private ArrayList<ArrayList<ArrayList<Double>>> penaltiesCostMatrix = new ArrayList<ArrayList<ArrayList<Double>>>();
+	
 	private ArrayList<ArrayList<Double>> totalCostMatrix = new ArrayList<ArrayList<Double>>();
-	private ArrayList<ArrayList<Integer>> totalCostPathMatrix = new ArrayList<ArrayList<Integer>>();	
+	private ArrayList<ArrayList<Integer>> totalCostPathMatrix = new ArrayList<ArrayList<Integer>>();
+	
 	private ArrayList<Integer> idealPathTime = new ArrayList<Integer>();
 	private ArrayList<Integer> idealPathCost = new ArrayList<Integer>();
+	
 	private ArrayList<Integer> optimizedPathTime = new ArrayList<Integer>();
 	private ArrayList<Integer> optimizedPathCost = new ArrayList<Integer>();
 		
@@ -37,6 +44,8 @@ public class Halevi2
 		this.shopFloor = this.projetoSF.getShopFloor();
 		this.workingsteps = workingsteps;
 		this.machineTools = shopFloor.getMachines();
+		this.initPenaltiesMatrix();
+	
 		this.calculateUniversalTimeMatrix();
 		this.universalTimeMatrix = this.getUniversalTimeMatrix();
 		this.calculateUniversalCostMatrix();
@@ -52,6 +61,27 @@ public class Halevi2
 		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
+	}
+	
+	private void initPenaltiesMatrix()
+	{
+		
+		for (int ws = 0;ws < this.workingsteps.size();ws++)
+		{
+			ArrayList<ArrayList<Double>> tmpSquare = new ArrayList<ArrayList<Double>>(); 
+			for (int mi = 0; mi < this.machineTools.size();mi++)
+			{
+				ArrayList<Double> tmpRow = new ArrayList<Double>(); 
+				for (int mj = 0; mj < this.machineTools.size();mj++)
+				{
+					
+					tmpRow.add(0.0);
+				}
+				tmpSquare.add(tmpRow);
+			}
+			this.penaltiesTimeMatrix.add(tmpSquare);
+			this.penaltiesCostMatrix.add(tmpSquare);
+		}		
 	}
 	
 	private Dyad lowDyad(ArrayList<Double> list)
@@ -83,6 +113,8 @@ public class Halevi2
 	private ArrayList<Dyad> totalMatrixTimeRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
 		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();
+		
+		ArrayList<ArrayList<Double>> squarePenalties = new ArrayList<ArrayList<Double>>(); 
 	//	System.out.println("*********************************");
 	//	System.out.println("Workingstep " + indexWorkingStep);
 		for (int j1 = 0;j1<row1.size();j1++)
@@ -90,47 +122,63 @@ public class Halevi2
 			ArrayList<Double> sumList = new ArrayList<Double>();
 	//		System.out.println("------------------");
 	//		System.out.println("Pivot Mach" + j1);
+			ArrayList<Double> rowPenalties = new ArrayList<Double>();			
 			for (int j2 = 0;j2<row2.size();j2++)
-			{				
+			{	
+				double penalty = 0;
+				 
 				if (j1==j2)
 				{
 					sumList.add(row1.get(j1) + row2.get(j1));
+					penalty = 0;
 				}
 				else
 				{
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
+					penalty = tempPenalty.getTotalPenalty();
 	//				System.out.println("Mach" + j1 + "-> Mach" + j2  + " Penalty: " + tempPenalty.getTotalPenalty());
-					sumList.add(row1.get(j1) + row2.get(j2) + tempPenalty.getTotalPenalty());
+					sumList.add(row1.get(j1) + row2.get(j2) + penalty );
 				}
+				rowPenalties.add(penalty);
 			}
 			rowDyad.add(this.lowDyad(sumList));
-			
+			squarePenalties.add(rowPenalties);			
 		}		
+		this.penaltiesTimeMatrix.set(indexWorkingStep, squarePenalties);
 		return rowDyad;
 	}
 
 	private ArrayList<Dyad> totalMatrixCostRow(ArrayList<Double> row1, ArrayList<Double> row2, int indexWorkingStep)
 	{
 		ArrayList<Dyad> rowDyad = new ArrayList<Dyad>();	
+		ArrayList<ArrayList<Double>> squarePenalties = new ArrayList<ArrayList<Double>>(); 
+
 		
 		for (int j1 = 0;j1<row1.size();j1++)
 		{
-			ArrayList<Double> sumList = new ArrayList<Double>();			
+			
+			ArrayList<Double> sumList = new ArrayList<Double>();	
+			ArrayList<Double> rowPenalties = new ArrayList<Double>();
 			for (int j2 = 0;j2<row2.size();j2++)
 			{
+				double penalty = 0;
 				if (j1==j2)
 				{
 					sumList.add(row1.get(j1) + row2.get(j1));
+					penalty=0;
 				}
 				else
-				{
+				{					
 					Penalties tempPenalty = new Penalties(this.projetoSF, machineTools.get(j1), machineTools.get(j2),this.workingsteps.get(indexWorkingStep));
-					sumList.add(row1.get(j1) + row2.get(j2) + tempPenalty.getTotalPenalty()*machineTools.get(j2).getRelativeCost()/60);
+					penalty = tempPenalty.getTotalPenalty()*machineTools.get(j2).getRelativeCost()/60;
+					sumList.add(row1.get(j1) + row2.get(j2) + penalty);
 				}
+				rowPenalties.add(penalty);
 			}
 			rowDyad.add(this.lowDyad(sumList));
+			squarePenalties.add(rowPenalties);
 		}
-		
+		this.penaltiesCostMatrix.set(indexWorkingStep, squarePenalties);		
 		return rowDyad;
 	}
 	
@@ -263,6 +311,8 @@ public class Halevi2
 		ArrayList<Integer> newPath = new ArrayList<Integer>();
 		ArrayList<Integer> oldPath = new ArrayList<Integer>();
 		
+		ArrayList<Integer> optPath = new ArrayList<Integer>();
+		
 		newIdealPath = this.choosePathFromUniversal(universal);
 		oldIdealPath = this.choosePathFromUniversal(universal);
 		
@@ -277,6 +327,7 @@ public class Halevi2
 		
 		oldPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
 		newPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
+		optPath.add(lowFirst.getIndex());
 		
 		System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
 		System.out.println("Choosed from row " + iWStep + ": " + lowFirst.getIndex());			
@@ -384,15 +435,20 @@ public class Halevi2
 				}
 			}
 		}
+		
+		for (int i=0;i<newPath.size()-1;i++)
+		{
+			optPath.add(newPath.get(i));
+		}
 		System.out.println("WorkingStep executed:" + doneWorkingSteps);
 		System.out.println();
 		System.out.println("Old Ideal Path:" + oldIdealPath);
 		System.out.println("Opt Ideal Path:" + newIdealPath);
 		System.out.println();
 		System.out.println("Old Total Path:" + oldPath);
-		System.out.println("Opt Total Path:" + newPath);
+		System.out.println("Opt Total Path:" + optPath);
 		
-		return newPath;
+		return optPath;
 	}
 	
 	public ArrayList<Integer> choosePathFromUniversal(ArrayList<ArrayList<Double>> universal)
@@ -535,6 +591,22 @@ public class Halevi2
 		
 		newPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
 		return newPath;
+	}
+
+	public ArrayList<ArrayList<ArrayList<Double>>> getPenaltiesTimeMatrix() {
+		return penaltiesTimeMatrix;
+	}
+
+	public ArrayList<ArrayList<ArrayList<Double>>> getPenaltiesCostMatrix() {
+		return penaltiesCostMatrix;
+	}
+
+	public ArrayList<ArrayList<Integer>> getPathTimeMatrix() {
+		return pathTimeMatrix;
+	}
+
+	public ArrayList<ArrayList<Integer>> getPathCostMatrix() {
+		return pathCostMatrix;
 	}	
 	
 }

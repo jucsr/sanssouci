@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.shopFloor.util.CalculateMachiningTime;
+import br.UFSC.GRIMA.shopFloor.util.DyadIndexWorkingStepMachine;
 import br.UFSC.GRIMA.shopFloor.visual.TabelaCustosETemposFrame;
 
 public class TabelaCustosETempos extends TabelaCustosETemposFrame
@@ -669,13 +670,20 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		int operation = 0, machine, trocou = 0, machineTest;
 		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
 		
+//		for(int i = 0; i < timeMatrix.get(0).size(); i++)
+//		{
+//			if(timeMatrix.get(0).get(i) < menorTempo)
+//			{
+//				menorTempo = timeMatrix.get(0).get(i);
+//				indiceMaquina = i;
+//			}
+//		}
+		  
+		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathTime();
 		for(int i = 0; i < timeMatrix.get(0).size(); i++)
 		{
-			if(timeMatrix.get(0).get(i) < menorTempo)
-			{
-				menorTempo = timeMatrix.get(0).get(i);
-				indiceMaquina = i;
-			}
+			indiceMaquina=optimizedPath.get(i).getIndexMachine() - 1;
+			timeMatrix.get(i).get(indiceMaquina);
 		}
 		
 		machine = indiceMaquina + 1;
@@ -700,7 +708,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
-			operation = operation + 10;
+			operation = this.workingsteps.get(optimizedPath.get(i).getIndexWorkingStep()).getIndiceArvore();
 			machine = idealPath.get(i);
 			
 			value = ((""+cost).concat("000000")).substring(0,6);
@@ -736,16 +744,22 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		int operation = 0, machine, trocou = 0, machineTest;
 		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
 		
+//		for(int i = 0; i < costMatrix.get(0).size(); i++)
+//		{
+//			if(costMatrix.get(0).get(i) < menorCusto)
+//			{
+//				menorCusto = costMatrix.get(0).get(i);
+//				indiceMaquina = i;
+//			}
+//		}
+		
+		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathCost();
 		for(int i = 0; i < costMatrix.get(0).size(); i++)
 		{
-			if(costMatrix.get(0).get(i) < menorCusto)
-			{
-				menorCusto = costMatrix.get(0).get(i);
-				indiceMaquina = i;
-			}
+			indiceMaquina=optimizedPath.get(i).getIndexMachine() - 1;
+			costMatrix.get(i).get(indiceMaquina);
 		}
-		
-		machine = indiceMaquina + 1;
+		machine = indiceMaquina;
 		machineTest = machine;
 		operation = 10;
 		time = timeMatrix.get(0).get(indiceMaquina);
@@ -769,7 +783,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
-			operation = operation + 10;
+			operation = this.workingsteps.get(optimizedPath.get(i).getIndexWorkingStep()).getIndiceArvore();
 			machine = idealPath.get(i);
 			
 			value = ((""+cost).concat("000000")).substring(0,6);

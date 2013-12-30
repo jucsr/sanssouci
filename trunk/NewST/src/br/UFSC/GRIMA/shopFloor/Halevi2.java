@@ -7,6 +7,7 @@ import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.machiningResources.MachineTool;
 import br.UFSC.GRIMA.shopFloor.util.CalculateMachiningTime;
 import br.UFSC.GRIMA.shopFloor.util.Dyad;
+import br.UFSC.GRIMA.shopFloor.util.DyadIndexWorkingStepMachine;
 
 public class Halevi2 
 {
@@ -33,8 +34,8 @@ public class Halevi2
 	private ArrayList<Integer> idealPathTime = new ArrayList<Integer>();
 	private ArrayList<Integer> idealPathCost = new ArrayList<Integer>();
 	
-	private ArrayList<Integer> optimizedPathTime = new ArrayList<Integer>();
-	private ArrayList<Integer> optimizedPathCost = new ArrayList<Integer>();
+	private ArrayList<DyadIndexWorkingStepMachine> optimizedPathTime = new ArrayList<DyadIndexWorkingStepMachine>();
+	private ArrayList<DyadIndexWorkingStepMachine> optimizedPathCost = new ArrayList<DyadIndexWorkingStepMachine>();
 		
 	
 	
@@ -55,8 +56,8 @@ public class Halevi2
 		this.calculateTotalMatrixTime(this.getUniversalTimeMatrix());
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
-		this.optimizedPathTime = this.choosePathFromTotal(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
-		this.optimizedPathCost = this.choosePathFromTotal(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix); 
+		this.optimizedPathTime = this.choosePathFromTotalDyad(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
+		this.optimizedPathCost = this.choosePathFromTotalDyad(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix); 
 		
 		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
@@ -303,18 +304,21 @@ public class Halevi2
 		return pathChoosed;
 	}
 	
-	public ArrayList<Integer> choosePathFromTotal(ArrayList<ArrayList<Double>> universal, ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)
+
+	public ArrayList<DyadIndexWorkingStepMachine> choosePathFromTotalDyad(ArrayList<ArrayList<Double>> universal, ArrayList<ArrayList<Double>> total, ArrayList<ArrayList<Integer>> path)
 	{
-		ArrayList<Integer> newIdealPath = new ArrayList<Integer>();
-		ArrayList<Integer> oldIdealPath = new ArrayList<Integer>();
+		ArrayList<DyadIndexWorkingStepMachine> oldPath = new ArrayList<DyadIndexWorkingStepMachine>();
+		ArrayList<DyadIndexWorkingStepMachine> newPath = new ArrayList<DyadIndexWorkingStepMachine>();
 		
-		ArrayList<Integer> newPath = new ArrayList<Integer>();
-		ArrayList<Integer> oldPath = new ArrayList<Integer>();
+		ArrayList<DyadIndexWorkingStepMachine> newIdealPath = new ArrayList<DyadIndexWorkingStepMachine>();
+		ArrayList<DyadIndexWorkingStepMachine> oldIdealPath = new ArrayList<DyadIndexWorkingStepMachine>();
+				
+		ArrayList<DyadIndexWorkingStepMachine> optPath = new ArrayList<DyadIndexWorkingStepMachine>();
 		
-		ArrayList<Integer> optPath = new ArrayList<Integer>();
 		
-		newIdealPath = this.choosePathFromUniversal(universal);
-		oldIdealPath = this.choosePathFromUniversal(universal);
+		ArrayList<Integer> tempIdealPath = this.choosePathFromUniversal(universal);
+		ArrayList<Integer> tempOldIdealPath = this.choosePathFromUniversal(universal);
+
 		
 		ArrayList<Integer> doneWorkingSteps = new ArrayList<Integer>();
 
@@ -325,28 +329,57 @@ public class Halevi2
 		
 		lowFirst = this.lowDyad(total.get(iWStep));
 		
-		oldPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
-		newPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
-		optPath.add(lowFirst.getIndex());
+		ArrayList<Integer> tempOldPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
+		ArrayList<Integer> tempNewPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
+		
+		
+		
+		for(int i = 0; i<this.workingsteps.size();i++)
+		{
+			oldIdealPath.add(new DyadIndexWorkingStepMachine(i,tempIdealPath.get(i)));
+			newIdealPath.add(new DyadIndexWorkingStepMachine(i,tempOldIdealPath.get(i)));
+			
+			oldPath.add(new DyadIndexWorkingStepMachine(i,tempOldPath.get(i)));
+			newPath.add(new DyadIndexWorkingStepMachine(i,tempNewPath.get(i)));
+		}
+		
+		
+		optPath.add(new DyadIndexWorkingStepMachine(0,lowFirst.getIndex()));
 		
 		System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
 		System.out.println("Choosed from row " + iWStep + ": " + lowFirst.getIndex());			
-		System.out.println("Path from here (total): " + newPath);
-		System.out.println("IdealPath From Universal: " + newIdealPath);
-
-		doneWorkingSteps.add(0);
+		System.out.println("Path from here (total): ");
+		for (DyadIndexWorkingStepMachine d: newPath)
+		{
+			System.out.print(" " + d.getIndexMachine());
+		}
+		System.out.println();
+		System.out.println("IdealPath From Universal: ");
+		for (DyadIndexWorkingStepMachine d: newIdealPath)
+		{
+			System.out.print(" " + d.getIndexMachine());
+		}
+		System.out.println();
+		doneWorkingSteps.add(optPath.get(0).getIndexWorkingStep());
+		
+		int iWS=0;
+		
+		System.out.println("List of workingsteps");
 		
 		for (Workingstep ws:this.workingsteps )
 		{
-			System.out.println("Prec: " + ws.getWorkingstepPrecedente());
+			System.out.println(iWS + " Prec: " + ws.getWSPrecedenteID() + " IndArv " + ws.getIndiceArvore());
+			iWS++;
 		}
+		
+		System.out.println("****************************");
 		
 		for (int i = 1; i< this.workingsteps.size()-1; i++)
 		{			
-			if (newPath.get(i)==newPath.get(i-1))
+			if (newPath.get(i).getIndexMachine()==newPath.get(i-1).getIndexMachine())
 			{
 				System.out.println(i + " Iguales");
-				doneWorkingSteps.add(i);
+				doneWorkingSteps.add(newPath.get(i).getIndexWorkingStep());
 				System.out.println("WorkingStep executed:" + doneWorkingSteps);
 			}
 			else
@@ -355,27 +388,27 @@ public class Halevi2
 				for (int j=i;j<newIdealPath.size();j++)
 				{
 					boolean existPrecedence=false;
-					System.out.println("Comp " + (j+1) + "th from ideal " + newIdealPath.get(j) + " with " + (i) + "th from Path " + newPath.get(i-1));
-					if (newIdealPath.get(j)==newPath.get(i-1))
+					System.out.println("Comp " + (j+1) + "th from ideal " + newIdealPath.get(j).getIndexMachine() + " with " + (i) + "th from Path " + newPath.get(i-1).getIndexMachine());
+					if (newIdealPath.get(j).getIndexMachine()==newPath.get(i-1).getIndexMachine())
 					{						
-						System.out.println("Comp " + this.workingsteps.get(j).getWorkingstepPrecedente() + " with ");					
+						System.out.println("Comp " + this.workingsteps.get(newIdealPath.get(j).getIndexWorkingStep()).getWSPrecedenteID() + " with ");					
 
 						for (int k = 0;k<doneWorkingSteps.size();k++)
 						{
-							System.out.println(this.workingsteps.get(doneWorkingSteps.get(k)));
+							System.out.println(this.workingsteps.get(doneWorkingSteps.get(k)).getIndiceArvore());
 							
-							if (this.workingsteps.get(j).getWorkingstepPrecedente()==null)
+							if (this.workingsteps.get(newIdealPath.get(j).getIndexWorkingStep()).getWorkingstepPrecedente()==null)
 							{
-								doneWorkingSteps.add(j);
+								doneWorkingSteps.add(newIdealPath.get(j).getIndexWorkingStep());
 								System.out.println("Precedence null");
 								System.out.println("WorkingStep executed:" + doneWorkingSteps);
 								existPrecedence=true;		
 								break;
 							}
 
-							else if (this.workingsteps.get(j).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
+							else if (this.workingsteps.get(newIdealPath.get(j).getIndexWorkingStep()).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
 							{
-								doneWorkingSteps.add(j);
+								doneWorkingSteps.add(newIdealPath.get(j).getIndexWorkingStep());
 								System.out.println("Precedence not null");
 								System.out.println("WorkingStep executed:" + doneWorkingSteps);
 								existPrecedence=true;
@@ -385,8 +418,8 @@ public class Halevi2
 						
 						if (existPrecedence)
 						{
-							ArrayList<Integer> tempPathIdeal = new ArrayList<Integer>();
-							ArrayList<Integer> tempPathNew = new ArrayList<Integer>();								
+							ArrayList<DyadIndexWorkingStepMachine> tempPathIdeal = new ArrayList<DyadIndexWorkingStepMachine>();
+							ArrayList<DyadIndexWorkingStepMachine> tempPathNew = new ArrayList<DyadIndexWorkingStepMachine>();								
 	
 							tempPathIdeal.add(newIdealPath.get(j));
 							tempPathNew.add(newIdealPath.get(j));
@@ -419,14 +452,26 @@ public class Halevi2
 								newPath.set(idPath, tempPathNew.get(idPath-j));
 							}
 							
-							System.out.println("Ideal Path Updated:" + newIdealPath);
-							System.out.println("Path Updated:" + newPath);
+							System.out.println("Ideal Path Updated:");
+							for (DyadIndexWorkingStepMachine d: newIdealPath)
+							{
+								System.out.print(" " + d.getIndexMachine());
+							}
+							System.out.println();
+
+							System.out.println("Path Updated:");
+							for (DyadIndexWorkingStepMachine d: newPath)
+							{
+								System.out.print(" " + d.getIndexMachine());
+							}
+							System.out.println();
+
 							break;
 						}
 						
 						if(!existPrecedence)
 						{
-							doneWorkingSteps.add(i);
+							doneWorkingSteps.add(newPath.get(i).getIndexWorkingStep());
 							System.out.println("Not Precedence");
 							System.out.println("WorkingStep executed:" + doneWorkingSteps);
 							break;
@@ -442,14 +487,34 @@ public class Halevi2
 		}
 		System.out.println("WorkingStep executed:" + doneWorkingSteps);
 		System.out.println();
-		System.out.println("Old Ideal Path:" + oldIdealPath);
-		System.out.println("Opt Ideal Path:" + newIdealPath);
+		System.out.println("Old Ideal Path:");
+		for (DyadIndexWorkingStepMachine d: oldIdealPath)
+		{
+			System.out.print(" " + d.getIndexMachine());
+		}
 		System.out.println();
-		System.out.println("Old Total Path:" + oldPath);
-		System.out.println("Opt Total Path:" + optPath);
-		
+		System.out.println("Opt Ideal Path:");
+		for (DyadIndexWorkingStepMachine d: newIdealPath)
+		{
+			System.out.print(" " + d.getIndexMachine());
+		}
+
+		System.out.println();
+		System.out.println("Old Total Path:");
+		for (DyadIndexWorkingStepMachine d: oldPath)
+		{
+			System.out.print(" " + d.getIndexMachine());
+		}
+		System.out.println();
+		System.out.println("Opt Total Path:");
+		for (DyadIndexWorkingStepMachine d: optPath)
+		{
+			System.out.print(" " + d.getIndexMachine());
+		}
+		System.out.println();
 		return optPath;
 	}
+	
 	
 	public ArrayList<Integer> choosePathFromUniversal(ArrayList<ArrayList<Double>> universal)
 	{
@@ -570,13 +635,13 @@ public class Halevi2
 		return this.idealPathCost;
 	}
 	
-	public ArrayList<Integer> getOptimizedPathTime()
+	public ArrayList<DyadIndexWorkingStepMachine> getOptimizedPathTime()
 	{
 		return this.optimizedPathTime;
 	}
 
 	
-	public ArrayList<Integer> getOptimizedPathCost()
+	public ArrayList<DyadIndexWorkingStepMachine> getOptimizedPathCost()
 	{
 		return this.optimizedPathCost;
 	}

@@ -82,6 +82,9 @@ public class WSPrecedencesPanel extends JPanel
 				novoWorkingsteps.add(nivelTmp);
 				workingsteps.get(i).setIndiceArvore(nivelArvore);
 				workingsteps.get(i).setWSPrecedenteID(i*10 + 10);
+				
+				System.out.println("IndArv: " + workingsteps.get(i).getIndiceArvore());
+				
 				nivelArvore++;
 				
 			}
@@ -93,6 +96,7 @@ public class WSPrecedencesPanel extends JPanel
 					novoWorkingsteps.get(wstTemp.getIndiceArvore()).add(workingsteps.get(j));
 					workingsteps.get(j).setWSPrecedenteID(j*10+10);
 					workingsteps.get(j).setIndiceArvore(wstTemp.getIndiceArvore());
+					System.out.println("IndArv: " + workingsteps.get(j).getIndiceArvore());
 				
 				}
 			}
@@ -126,6 +130,7 @@ public class WSPrecedencesPanel extends JPanel
 				g2d.setColor(new Color(255, 255, 255));
 				g2d.setFont(new Font("Consolas", Font.BOLD, 16));
 				g2d.drawString(strID, x*80 + 40, (contY)*60 + 43);
+				System.out.println("id " + novoWorkingsteps.get(w).get(i).getWSPrecedenteID() +" StringID " + strID);
 				
 				novoWorkingsteps.get(w).get(i).setNivelXWSPrecedente(x);
 				novoWorkingsteps.get(w).get(i).setNivelYWSPrecedente(y);
@@ -164,6 +169,7 @@ public class WSPrecedencesPanel extends JPanel
 					
 					IdBolinhaTemp.add(id);
 					String strID = "" + id;
+					System.out.println("StringID " + id);
 					g2d.setColor(new Color(255, 255, 255));
 					g2d.drawString(strID, x*80 + 40, y*60 + 43);
 					

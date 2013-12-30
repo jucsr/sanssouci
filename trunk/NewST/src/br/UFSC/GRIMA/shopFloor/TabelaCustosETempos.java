@@ -668,62 +668,28 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		double menorTempo = timeMatrix.get(0).get(0);
 		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
-		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
 		
-//		for(int i = 0; i < timeMatrix.get(0).size(); i++)
-//		{
-//			if(timeMatrix.get(0).get(i) < menorTempo)
-//			{
-//				menorTempo = timeMatrix.get(0).get(i);
-//				indiceMaquina = i;
-//			}
-//		}
 		  
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathTime();
-		for(int i = 0; i < timeMatrix.get(0).size(); i++)
-		{
-			
-			indiceMaquina=optimizedPath.get(i).getIndexMachine() - 1;
-			operation=optimizedPath.get(i).getIndexWorkingStep();
-			timeMatrix.get(i).get(indiceMaquina);
-		}
-		
-		machine = indiceMaquina + 1;
-		machineTest = machine;
-		//operation = 10;
-		time = timeMatrix.get(0).get(indiceMaquina);
-		cost = costMatrix.get(0).get(indiceMaquina);
-		
-		totalCost = cost;
-		totalTime = time;
-		
-		String value = ((""+cost).concat("000000")).substring(0,6);
-		String value1 = ((""+time).concat("000000")).substring(0,6);
-		
-		Object [] linha2 = {operation, machine, value, value1};
-		model.addRow(linha2);
 	
-		for(int i = 0; i < idealPath.size() - 1; i++)
+		for(int i = 0; i < optimizedPath.size(); i++)
 		{
-			cost = this.costMatrix.get(i + 1).get(idealPath.get(i) - 1);
-			time = this.timeMatrix.get(i + 1).get(idealPath.get(i) - 1);
+			cost = this.costMatrix.get(i).get(optimizedPath.get(i).getIndexMachine() - 1);
+			time = this.timeMatrix.get(i).get(optimizedPath.get(i).getIndexMachine() - 1);
 			
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
 			operation = optimizedPath.get(i).getIndexWorkingStep();
 			machine = idealPath.get(i);
 			
-			value = ((""+cost).concat("000000")).substring(0,6);
-			value1 = ((""+time).concat("000000")).substring(0,6);
+			String value = ((""+cost).concat("000000")).substring(0,6);
+			String value1 = ((""+time).concat("000000")).substring(0,6);
 
 			Object [] linha = {operation, machine, value, value1};
 			model.addRow(linha);
 		}
 		
-		
-
-		penaltiesCost = trocou * 0.2;
-		penalitiesTime = trocou * 0.03;
 		
 		Object[] linha3 = {"Total in machines"," ", totalCost, totalTime};
 		model.addRow(linha3);
@@ -742,52 +708,24 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	{
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();
 		double menorCusto = costMatrix.get(0).get(0);
-		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
-		double cost = 0, time, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
-		
-//		for(int i = 0; i < costMatrix.get(0).size(); i++)
-//		{
-//			if(costMatrix.get(0).get(i) < menorCusto)
-//			{
-//				menorCusto = costMatrix.get(0).get(i);
-//				indiceMaquina = i;
-//			}
-//		}
-		
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
+			
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathCost();
-		for(int i = 0; i < costMatrix.get(0).size(); i++)
-		{
-			indiceMaquina=optimizedPath.get(i).getIndexMachine() - 1;
-			operation = optimizedPath.get(i).getIndexWorkingStep();
-			costMatrix.get(i).get(indiceMaquina);
-		}
-		machine = indiceMaquina;
-		machineTest = machine;
-		//operation = 10;
-		time = timeMatrix.get(0).get(indiceMaquina);
-		cost = costMatrix.get(0).get(indiceMaquina);
-		
-		totalCost = cost;
-		totalTime = time;
 		
 		String value = ((""+cost).concat("000000")).substring(0,6);
 		String value1 = ((""+time).concat("000000")).substring(0,6);
-
-		Object [] linha2 = {operation, machine, value, value1};
-		model.addRow(linha2);
 		
 		
-		ArrayList<Integer> idealPath = halevi2.getIdealPathCost();
-		for(int i = 0; i < idealPath.size() - 1; i++)
+		for(int i = 0; i < optimizedPath.size(); i++)
 		{
-			cost = this.costMatrix.get(i + 1).get(idealPath.get(i) - 1);
-			time = this.timeMatrix.get(i + 1).get(idealPath.get(i) - 1);
+			cost = this.costMatrix.get(i).get(optimizedPath.get(i).getIndexMachine() - 1);
+			time = this.timeMatrix.get(i).get(optimizedPath.get(i).getIndexMachine() - 1);
 			
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
 			operation = optimizedPath.get(i).getIndexWorkingStep();
-			machine = idealPath.get(i);
+			machine = optimizedPath.get(i).getIndexMachine();
 			
 			value = ((""+cost).concat("000000")).substring(0,6);
 			value1 = ((""+time).concat("000000")).substring(0,6);

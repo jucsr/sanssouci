@@ -288,14 +288,7 @@ public class Halevi2
 	public ArrayList<Integer> pathFromHere(Integer indexWorkingStep, Integer machineNumber, ArrayList<ArrayList<Integer>> matrixPath)
 	{
 		ArrayList<Integer> pathChoosed = new ArrayList<Integer>();
-		
-		/*
-		for (ArrayList<Integer> row:matrixPath)
-		{
-			System.out.println(row);
-		}
-		*/
-		
+				
 		pathChoosed.add(matrixPath.get(indexWorkingStep).get(machineNumber-1));
 		for (int i=indexWorkingStep+1; i < matrixPath.size();i++)
 		{
@@ -325,39 +318,42 @@ public class Halevi2
 		Dyad lowFirst = new Dyad();
 		
 		int iWStep=0;
-
 		
 		lowFirst = this.lowDyad(total.get(iWStep));
 		
 		ArrayList<Integer> tempOldPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
 		ArrayList<Integer> tempNewPath=this.pathFromHere(iWStep, lowFirst.getIndex(), path);
 		
-		
+		oldPath.add(new DyadIndexWorkingStepMachine(this.workingsteps.get(0).getIndiceArvore(),lowFirst.getIndex()));
+		newPath.add(new DyadIndexWorkingStepMachine(this.workingsteps.get(0).getIndiceArvore(),lowFirst.getIndex()));
 		
 		for(int i = 0; i<this.workingsteps.size();i++)
 		{
-			oldIdealPath.add(new DyadIndexWorkingStepMachine(i,tempIdealPath.get(i)));
-			newIdealPath.add(new DyadIndexWorkingStepMachine(i,tempOldIdealPath.get(i)));
+			oldIdealPath.add(new DyadIndexWorkingStepMachine(this.workingsteps.get(i).getIndiceArvore(),tempIdealPath.get(i)));
+			newIdealPath.add(new DyadIndexWorkingStepMachine(this.workingsteps.get(i).getIndiceArvore(),tempOldIdealPath.get(i)));
 			
-			oldPath.add(new DyadIndexWorkingStepMachine(i,tempOldPath.get(i)));
-			newPath.add(new DyadIndexWorkingStepMachine(i,tempNewPath.get(i)));
+			if(i!=this.workingsteps.size()-1)
+			{
+				oldPath.add(new DyadIndexWorkingStepMachine(this.workingsteps.get(i+1).getIndiceArvore(),tempOldPath.get(i)));
+				newPath.add(new DyadIndexWorkingStepMachine(this.workingsteps.get(i+1).getIndiceArvore(),tempNewPath.get(i)));
+			}
 		}
 		
 		
-		optPath.add(new DyadIndexWorkingStepMachine(0,lowFirst.getIndex()));
+		optPath.add(new DyadIndexWorkingStepMachine(oldPath.get(0).getIndexWorkingStep(),lowFirst.getIndex()));
 		
 		System.out.println("Row " + iWStep + " Total: " + total.get(iWStep));
 		System.out.println("Choosed from row " + iWStep + ": " + lowFirst.getIndex());			
 		System.out.println("Path from here (total): ");
 		for (DyadIndexWorkingStepMachine d: newPath)
 		{
-			System.out.print(" " + d.getIndexMachine());
+			System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 		}
 		System.out.println();
 		System.out.println("IdealPath From Universal: ");
 		for (DyadIndexWorkingStepMachine d: newIdealPath)
 		{
-			System.out.print(" " + d.getIndexMachine());
+			System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 		}
 		System.out.println();
 		doneWorkingSteps.add(optPath.get(0).getIndexWorkingStep());
@@ -368,7 +364,7 @@ public class Halevi2
 		
 		for (Workingstep ws:this.workingsteps )
 		{
-			System.out.println(iWS + " Prec: " + ws.getWSPrecedenteID() + " IndArv " + ws.getIndiceArvore());
+			System.out.println(iWS + 1 + " IndArv " + ws.getIndiceArvore() + " Prec: " + ws.getWSPrecedenteID());
 			iWS++;
 		}
 		
@@ -378,110 +374,156 @@ public class Halevi2
 		{			
 			if (newPath.get(i).getIndexMachine()==newPath.get(i-1).getIndexMachine())
 			{
-				System.out.println(i + " Iguales");
+				System.out.println(i+1 + " Iguales");
 				doneWorkingSteps.add(newPath.get(i).getIndexWorkingStep());
+				for (DyadIndexWorkingStepMachine d: newPath)
+				{
+					System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
+				}
+				System.out.println();
 				System.out.println("WorkingStep executed:" + doneWorkingSteps);
 			}
 			else
 			{
-				System.out.println(i + " Diferentes");				
+				System.out.println(i+1 + " Diferentes");
+				boolean existEqualMachine=false;
 				for (int j=i;j<newIdealPath.size();j++)
 				{
 					boolean existPrecedence=false;
+					
 					System.out.println("Comp " + (j+1) + "th from ideal " + newIdealPath.get(j).getIndexMachine() + " with " + (i) + "th from Path " + newPath.get(i-1).getIndexMachine());
-					if (newIdealPath.get(j).getIndexMachine()==newPath.get(i-1).getIndexMachine())
+					if (newIdealPath.get(j).getIndexMachine()!=newPath.get(i-1).getIndexMachine())
+					{
+						System.out.println("Different machines");
+						
+					}
+					else 
 					{						
-						System.out.println("Comp " + this.workingsteps.get(newIdealPath.get(j).getIndexWorkingStep()).getWSPrecedenteID() + " with ");					
-
-						for (int k = 0;k<doneWorkingSteps.size();k++)
+						System.out.println("Equal machines, comparing precedents ");
+						Workingstep wsIdeal = new Workingstep();
+						for(Workingstep tempWS:this.workingsteps)
 						{
-							System.out.println(this.workingsteps.get(doneWorkingSteps.get(k)).getIndiceArvore());
-							
-							if (this.workingsteps.get(newIdealPath.get(j).getIndexWorkingStep()).getWorkingstepPrecedente()==null)
+							if(tempWS.getIndiceArvore()==newIdealPath.get(j).getIndexWorkingStep())
 							{
-								doneWorkingSteps.add(newIdealPath.get(j).getIndexWorkingStep());
-								System.out.println("Precedence null");
-								System.out.println("WorkingStep executed:" + doneWorkingSteps);
-								existPrecedence=true;		
-								break;
-							}
-
-							else if (this.workingsteps.get(newIdealPath.get(j).getIndexWorkingStep()).getWorkingstepPrecedente().equals(this.workingsteps.get(doneWorkingSteps.get(k))))
-							{
-								doneWorkingSteps.add(newIdealPath.get(j).getIndexWorkingStep());
-								System.out.println("Precedence not null");
-								System.out.println("WorkingStep executed:" + doneWorkingSteps);
-								existPrecedence=true;
+								wsIdeal = tempWS;
 								break;
 							}
 						}
+						//System.out.println("Comp " + this.workingsteps.get(newIdealPath.get(j).getIndexWorkingStep()).getWSPrecedenteID() + " with ");
 						
+						
+						existEqualMachine=true;
+						
+						if (wsIdeal.getWSPrecedenteID()==0)
+						{
+							doneWorkingSteps.add(newIdealPath.get(j).getIndexWorkingStep());
+							System.out.println("Precedence 0");
+							System.out.println("WorkingStep executed:" + doneWorkingSteps);
+							existPrecedence=true;
+							System.out.println(doneWorkingSteps);							
+						}
+						
+						else
+						{
+							System.out.println("Comp " + wsIdeal.getWSPrecedenteID() + " With ");
+							for (int k = 0;k<doneWorkingSteps.size();k++)
+							{
+	
+								if (wsIdeal.getWSPrecedenteID()==doneWorkingSteps.get(k))
+								{
+									doneWorkingSteps.add(newIdealPath.get(j).getIndexWorkingStep());
+									System.out.println("Precedence not null");
+									System.out.println("WorkingStep executed:" + doneWorkingSteps);
+									System.out.println(doneWorkingSteps);						
+									existPrecedence=true;
+									break;
+								}									
+							}
+						}
 						if (existPrecedence)
 						{
 							ArrayList<DyadIndexWorkingStepMachine> tempPathIdeal = new ArrayList<DyadIndexWorkingStepMachine>();
-							ArrayList<DyadIndexWorkingStepMachine> tempPathNew = new ArrayList<DyadIndexWorkingStepMachine>();								
-	
-							tempPathIdeal.add(newIdealPath.get(j));
-							tempPathNew.add(newIdealPath.get(j));
+							ArrayList<DyadIndexWorkingStepMachine> tempPathNew = new ArrayList<DyadIndexWorkingStepMachine>();
+							
+							DyadIndexWorkingStepMachine swapTerm = new DyadIndexWorkingStepMachine(newIdealPath.get(j).getIndexWorkingStep(), newIdealPath.get(j).getIndexMachine());
+							
+							System.out.println("Swap term  WS " + swapTerm.getIndexWorkingStep() + " Mach " + swapTerm.getIndexMachine() );
+							System.out.println("");
 							
 							//Updating idealPath
-							for (int idPath=j;idPath<newIdealPath.size();idPath++)
+							for (int idPath=0;idPath<newIdealPath.size();idPath++)
 							{
-								if(idPath!=i)
+								if(idPath==i)
+								{
+									tempPathIdeal.add(swapTerm);	
+									System.out.println("Adding WS " + swapTerm.getIndexWorkingStep() + " Mach " + swapTerm.getIndexMachine() + " swap");
+									tempPathIdeal.add(newIdealPath.get(idPath));
+									System.out.println("Adding WS " + newIdealPath.get(idPath).getIndexWorkingStep() + " Mach " + newIdealPath.get(idPath).getIndexMachine());
+								}
+								else if (idPath!=j)
 								{
 									tempPathIdeal.add(newIdealPath.get(idPath));
+									System.out.println("Adding WS " + newIdealPath.get(idPath).getIndexWorkingStep() + " Mach " + newIdealPath.get(idPath).getIndexMachine());
 								}
 							}
 	
-							for (int idPath=j;idPath<newIdealPath.size();idPath++)
+							for (int idPath=0;idPath<tempPathIdeal.size();idPath++)
 							{
-								newIdealPath.set(idPath, tempPathIdeal.get(idPath-j));
+								newIdealPath.set(idPath, tempPathIdeal.get(idPath));
 							}
 							
 							//Updating newPath
-							for (int idPath=j;idPath<newPath.size()-1;idPath++)
+							for (int idPath=0;idPath<newPath.size();idPath++)
 							{
-								if(idPath!=i)
+								if (idPath==i)
 								{
+									tempPathNew.add(swapTerm);
 									tempPathNew.add(newPath.get(idPath));
+								}
+								else if (idPath!=j)
+								{
+									tempPathNew.add(newPath.get(idPath));									
 								}
 							}
 							
-							for (int idPath=j;idPath<newPath.size()-1;idPath++)
+							for (int idPath=0;idPath<tempPathNew.size();idPath++)
 							{
-								newPath.set(idPath, tempPathNew.get(idPath-j));
+								newPath.set(idPath, tempPathNew.get(idPath));
 							}
 							
 							System.out.println("Ideal Path Updated:");
 							for (DyadIndexWorkingStepMachine d: newIdealPath)
 							{
-								System.out.print(" " + d.getIndexMachine());
+								System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 							}
 							System.out.println();
 
 							System.out.println("Path Updated:");
 							for (DyadIndexWorkingStepMachine d: newPath)
 							{
-								System.out.print(" " + d.getIndexMachine());
+								System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 							}
 							System.out.println();
-
 							break;
 						}
 						
 						if(!existPrecedence)
 						{
 							doneWorkingSteps.add(newPath.get(i).getIndexWorkingStep());
-							System.out.println("Not Precedence");
+							System.out.println("Have Not Precedence");
 							System.out.println("WorkingStep executed:" + doneWorkingSteps);
 							break;
 						}
 					}
 				}
+				if (!existEqualMachine)
+				{
+					System.out.println("There was no equal machines");
+				}
 			}
 		}
 		
-		for (int i=0;i<newPath.size()-1;i++)
+		for (int i=1;i<newPath.size();i++)
 		{
 			optPath.add(newPath.get(i));
 		}
@@ -490,28 +532,30 @@ public class Halevi2
 		System.out.println("Old Ideal Path:");
 		for (DyadIndexWorkingStepMachine d: oldIdealPath)
 		{
-			System.out.print(" " + d.getIndexMachine());
+			System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 		}
 		System.out.println();
 		System.out.println("Opt Ideal Path:");
 		for (DyadIndexWorkingStepMachine d: newIdealPath)
 		{
-			System.out.print(" " + d.getIndexMachine());
+			System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 		}
 
 		System.out.println();
 		System.out.println("Old Total Path:");
 		for (DyadIndexWorkingStepMachine d: oldPath)
 		{
-			System.out.print(" " + d.getIndexMachine());
+			System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 		}
 		System.out.println();
 		System.out.println("Opt Total Path:");
 		for (DyadIndexWorkingStepMachine d: optPath)
 		{
-			System.out.print(" " + d.getIndexMachine());
+			System.out.println(d.getIndexWorkingStep() + " " + d.getIndexMachine());
 		}
 		System.out.println();
+		
+		System.out.println("**************************************");
 		return optPath;
 	}
 	

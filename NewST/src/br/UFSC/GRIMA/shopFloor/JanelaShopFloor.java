@@ -94,6 +94,7 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 	{
 		this.shopFloor = shopFloorNew;
 		this.projetoSF = projetoSFNew;
+	
 		this.addicionarOuvidores();
 		this.shopPanel = new ShopFloorPanel (this.projetoSF, this.shopFloor);
 		this.panel1.setLayout(new BorderLayout());
@@ -1065,7 +1066,42 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 //			this.setTitle("Shop Floor - " + this.projeto.getDadosDeProjeto().getProjectName());
 			this.setTitle("Shop Floor - " + this.projetoSF.getShopFloor().getName());
 			in.close();
-		
+			///
+			System.out.println("After -- Abrir");
+			
+			System.out.println("Size Original " + projeto.getWorkingsteps().size());
+			for(int i = 0; i < projeto.getWorkingsteps().get(0).size(); i++)
+			{
+				Workingstep wsTmp = (Workingstep)projeto.getWorkingsteps().get(0).get(i);
+				projetoSF.getWorkingsteps().add(wsTmp);
+			}
+			
+			int id=10;
+			for (Workingstep ws:projetoSF.getWorkingsteps())
+			{		
+				ws.setIndiceArvore(id);
+				System.out.println("WS " + ws + " IndArv " + ws.getIndiceArvore());
+				id=id+10;
+			}
+			
+			for (Workingstep ws:projetoSF.getWorkingsteps())
+			{
+				for (Workingstep wsp:projetoSF.getWorkingsteps())
+				{
+					if(ws.getWorkingstepPrecedente()==wsp)
+					{
+						ws.setWSPrecedenteID(wsp.getIndiceArvore());
+					}
+				}
+			}
+
+			
+			for (Workingstep ws:projetoSF.getWorkingsteps())
+			{		
+				System.out.println("WS " + ws + " IndArv " + ws.getIndiceArvore() + " ID " + ws.getId() + " ID Prec " + ws.getWSPrecedenteID());
+			}			
+			System.out.println("All ID setup");
+			
 			this.shopPanel = new ShopFloorPanel (this.projetoSF, this.shopFloor);
 			this.panel1.setLayout(new BorderLayout());
 			this.panel1.add(shopPanel);

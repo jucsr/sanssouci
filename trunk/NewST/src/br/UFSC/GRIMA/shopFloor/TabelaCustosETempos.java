@@ -682,13 +682,15 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathTime();
 		for(int i = 0; i < timeMatrix.get(0).size(); i++)
 		{
+			
 			indiceMaquina=optimizedPath.get(i).getIndexMachine() - 1;
+			operation=optimizedPath.get(i).getIndexWorkingStep();
 			timeMatrix.get(i).get(indiceMaquina);
 		}
 		
 		machine = indiceMaquina + 1;
 		machineTest = machine;
-		operation = 10;
+		//operation = 10;
 		time = timeMatrix.get(0).get(indiceMaquina);
 		cost = costMatrix.get(0).get(indiceMaquina);
 		
@@ -708,7 +710,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
-			operation = this.workingsteps.get(optimizedPath.get(i).getIndexWorkingStep()).getIndiceArvore();
+			operation = optimizedPath.get(i).getIndexWorkingStep();
 			machine = idealPath.get(i);
 			
 			value = ((""+cost).concat("000000")).substring(0,6);
@@ -757,11 +759,12 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		for(int i = 0; i < costMatrix.get(0).size(); i++)
 		{
 			indiceMaquina=optimizedPath.get(i).getIndexMachine() - 1;
+			operation = optimizedPath.get(i).getIndexWorkingStep();
 			costMatrix.get(i).get(indiceMaquina);
 		}
 		machine = indiceMaquina;
 		machineTest = machine;
-		operation = 10;
+		//operation = 10;
 		time = timeMatrix.get(0).get(indiceMaquina);
 		cost = costMatrix.get(0).get(indiceMaquina);
 		
@@ -783,7 +786,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
-			operation = this.workingsteps.get(optimizedPath.get(i).getIndexWorkingStep()).getIndiceArvore();
+			operation = optimizedPath.get(i).getIndexWorkingStep();
 			machine = idealPath.get(i);
 			
 			value = ((""+cost).concat("000000")).substring(0,6);

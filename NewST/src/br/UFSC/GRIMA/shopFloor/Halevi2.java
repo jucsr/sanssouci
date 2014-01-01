@@ -72,13 +72,27 @@ public class Halevi2
 	{
 		ArrayList<Double> penalties = new ArrayList<Double>();
 		
+		System.out.println();
 		
-		penalties.add(0.0);
-		for (int i = 1; i < pathDyad.size(); i++)
+		
+		for (DyadIndexWorkingStepMachine d: pathDyad)
 		{
+			System.out.println(d.getIndexWorkingStep() + "  " + d.getIndexMachine());
+		}
+		
+		for (int i = 0; i < pathDyad.size(); i++)
+		{
+			if (i!=0)
+			{
+				penalties.add(penaltiesMatrix.get(pathDyad.get(i).getIndexWorkingStep()/10 - 1).get(pathDyad.get(i-1).getIndexMachine()-1).get(pathDyad.get(i).getIndexMachine()-1));
+				System.out.println("WS " + pathDyad.get(i).getIndexWorkingStep() + " From Mach " + pathDyad.get(i-1).getIndexMachine() + " To Mach " + pathDyad.get(i).getIndexMachine() + " Pen " + penalties.get(i));
+			}
+			else
+			{
+				penalties.add(0.0);
+				System.out.println("WS " + pathDyad.get(i).getIndexWorkingStep() + " From Mach " + pathDyad.get(i).getIndexMachine() + " To Mach " + pathDyad.get(i).getIndexMachine() + " Pen " + penalties.get(i));
+			}
 			
-			System.out.println("WS " + pathDyad.get(i).getIndexWorkingStep() + " From Mach " + pathDyad.get(i-1).getIndexMachine() + " To Mach " + pathDyad.get(i).getIndexMachine());
-			penalties.add(penaltiesMatrix.get(pathDyad.get(i).getIndexWorkingStep()/10 - 1).get(pathDyad.get(i-1).getIndexMachine()-1).get(pathDyad.get(i).getIndexMachine()-1));
 		}
 		return penalties;	
 	}

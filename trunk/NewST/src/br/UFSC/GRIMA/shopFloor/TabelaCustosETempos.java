@@ -663,7 +663,6 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	 */
 	private void fillTablesRouthingMinTime()
 	{
-		ArrayList<Integer> idealPath = halevi2.getIdealPathTime();
 		DefaultTableModel model = (DefaultTableModel) table8.getModel();
 		double menorTempo = timeMatrix.get(0).get(0);
 		int indiceMaquina = 0;
@@ -682,7 +681,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			totalCost = totalCost + cost;
 			totalTime = totalTime + time;
 			operation = optimizedPath.get(i).getIndexWorkingStep();
-			machine = idealPath.get(i);
+			machine = optimizedPath.get(i).getIndexMachine();
 			
 			String value = ((""+cost).concat("000000")).substring(0,6);
 			String value1 = ((""+time).concat("000000")).substring(0,6);

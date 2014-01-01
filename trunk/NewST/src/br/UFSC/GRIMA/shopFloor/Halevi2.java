@@ -40,6 +40,8 @@ public class Halevi2
 	private ArrayList<Double> totalPenaltiesTime= new ArrayList<Double>();
 	private ArrayList<Double> totalPenaltiesCost= new ArrayList<Double>();	
 	
+	private PenaltiesPath penaltiesPathTime = new PenaltiesPath(); 
+	private PenaltiesPath penaltiesPathCost = new PenaltiesPath();
 	
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
 	{
@@ -61,14 +63,26 @@ public class Halevi2
 		this.optimizedPathTime = this.choosePathFromTotalDyad(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
 		this.optimizedPathCost = this.choosePathFromTotalDyad(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
 		//this.showPenaltiesMatrix();
-		this.totalPenaltiesTime = this.penaltiesPath(this.optimizedPathTime,this.penaltiesTimeMatrix);
-		this.totalPenaltiesCost = this.penaltiesPath(this.optimizedPathCost,this.penaltiesCostMatrix);
+		this.calculatePenaltiesPath();
+		this.totalPenaltiesTime = this.penaltiesFromPath(this.optimizedPathTime,this.penaltiesTimeMatrix);
+		this.totalPenaltiesCost = this.penaltiesFromPath(this.optimizedPathCost,this.penaltiesCostMatrix);
 		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
 	}
 	
-	private ArrayList<Double> penaltiesPath(ArrayList<DyadIndexWorkingStepMachine> pathDyad, ArrayList<ArrayList<ArrayList<Double>>> penaltiesMatrix)
+	private void calculatePenaltiesPath()
+	{
+		this.penaltiesPathCost.setPenaltiesTime(this.penaltiesFromPath(this.getOptimizedPathCost(), this.getPenaltiesTimeMatrix()));
+		this.penaltiesPathCost.setPenaltiesCost(this.penaltiesFromPath(this.getOptimizedPathCost(), this.getPenaltiesCostMatrix()));
+		
+		this.penaltiesPathTime.setPenaltiesTime(this.penaltiesFromPath(this.getOptimizedPathTime(), this.getPenaltiesTimeMatrix()));
+		this.penaltiesPathTime.setPenaltiesCost(this.penaltiesFromPath(this.getOptimizedPathTime(), this.getPenaltiesCostMatrix()));
+		
+
+	}
+	
+	private ArrayList<Double> penaltiesFromPath(ArrayList<DyadIndexWorkingStepMachine> pathDyad, ArrayList<ArrayList<ArrayList<Double>>> penaltiesMatrix)
 	{
 		ArrayList<Double> penalties = new ArrayList<Double>();
 		
@@ -775,6 +789,14 @@ public class Halevi2
 
 	public ArrayList<Double> getTotalPenaltiesCost() {
 		return totalPenaltiesCost;
+	}
+
+	public PenaltiesPath getPenaltiesPathTime() {
+		return penaltiesPathTime;
+	}
+
+	public PenaltiesPath getPenaltiesPathCost() {
+		return penaltiesPathCost;
 	}	
 	
 }

@@ -664,10 +664,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 	private void fillTablesRouthingMinTime()
 	{
 		DefaultTableModel model = (DefaultTableModel) table8.getModel();
-		double menorTempo = timeMatrix.get(0).get(0);
-		int indiceMaquina = 0;
-		int operation = 0, machine, trocou = 0, machineTest;
-		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0;
+		
+		int operation = 0, machine;
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0, totalPenalties = 0;
 		
 		  
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathTime();
@@ -685,18 +684,17 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			
 			String value = ((""+cost).concat("000000")).substring(0,6);
 			String value1 = ((""+time).concat("000000")).substring(0,6);
-
-			penaltie = penalties.get(i);
 			
+			penaltie = penalties.get(i);
+			totalPenalties = totalPenalties + penaltie;
 			Object [] linha = {operation, machine, value, value1, penaltie};
 			model.addRow(linha);
 		}
-		
-		
-		Object[] linha3 = {"Total in machines"," ", totalCost, totalTime};
+		System.out.println("totalpenalties = " + totalPenalties);
+		Object[] linha3 = {"Total"," ", totalCost, totalTime, totalPenalties};
 		model.addRow(linha3);
 		
-		Object[] linha4 = {"Penalties "," ", penaltiesCost, penaltiesCost};
+		Object[] linha4 = {"Total Penalties "," ", penaltiesCost, penaltiesCost};
 		model.addRow(linha4);
 		
 		totalCost = totalCost + penaltiesCost;
@@ -711,7 +709,7 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();
 		double menorCusto = costMatrix.get(0).get(0);
 		int operation = 0, machine, trocou = 0, machineTest;
-		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0;
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0, totalPenalties = 0;
 			
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathCost();
 		ArrayList<Double> penalties = this.halevi2.getTotalPenaltiesCost();
@@ -734,16 +732,14 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			value1 = ((""+time).concat("000000")).substring(0,6);
 			
 			penaltie = penalties.get(i);
-			
+			totalPenalties = totalPenalties + penaltie;
+
 			Object [] linha = {operation, machine, value, value1, penaltie};
 			model.addRow(linha);
 		}
 		
 		
-		
-		
-		
-		Object[] linha3 = {"Total in machines"," ", totalCost, totalTime};
+		Object[] linha3 = {"Total"," ", totalCost, totalTime, totalPenalties};
 		model.addRow(linha3);
 		
 		Object[] linha4 = {"Penalties "," ", penaltiesCost, penaltiesCost};

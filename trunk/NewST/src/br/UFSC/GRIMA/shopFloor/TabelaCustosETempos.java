@@ -666,11 +666,18 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		DefaultTableModel model = (DefaultTableModel) table8.getModel();
 		
 		int operation = 0, machine;
-		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0, totalPenalties = 0;
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltieCost = 0, penaltieTime = 0, totalPenaltiesCost = 0, totalPenaltiesTime = 0;
 		
 		  
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathTime();
-		ArrayList<Double> penalties = this.halevi2.getTotalPenaltiesTime();
+		ArrayList<ArrayList<Double>> penalties = new ArrayList<ArrayList<Double>>();
+		
+		penalties.add(this.halevi2.getPenaltiesPathTime().getPenaltiesCost());
+		penalties.add(this.halevi2.getPenaltiesPathTime().getPenaltiesTime());
+		
+		
+		
+		this.halevi2.getPenaltiesPathTime().getPenaltiesTime();
 		
 		for(int i = 0; i < optimizedPath.size(); i++)
 		{
@@ -685,23 +692,20 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			String value = ((""+cost).concat("000000")).substring(0,6);
 			String value1 = ((""+time).concat("000000")).substring(0,6);
 			
-			penaltie = penalties.get(i);
-			totalPenalties = totalPenalties + penaltie;
-			Object [] linha = {operation, machine, value, value1, penaltie};
+			penaltieCost = penalties.get(0).get(i);
+			penaltieTime = penalties.get(1).get(i);
+			
+			totalPenaltiesCost = totalPenaltiesCost + penaltieCost;
+			totalPenaltiesTime = totalPenaltiesTime + penaltieTime;
+			
+			Object [] linha = {operation, machine, value, penaltieCost,  value1, penaltieTime};
 			model.addRow(linha);
 		}
-		System.out.println("totalpenalties = " + totalPenalties);
-		Object[] linha3 = {"Total"," ", totalCost, totalTime, totalPenalties};
-		model.addRow(linha3);
+		Object[] linha1 = {"Total"," ", totalCost, totalPenaltiesCost, totalTime, totalPenaltiesTime};
+		model.addRow(linha1);
 		
-		Object[] linha4 = {"Total Penalties "," ", penaltiesCost, penaltiesCost};
-		model.addRow(linha4);
-		
-		totalCost = totalCost + penaltiesCost;
-		totalTime = totalTime + penalitiesTime;
-		
-		Object [] linha5 = {"Total"," ", totalCost, totalTime};
-		model.addRow(linha5);
+		Object [] linha2 = {"Total + penalties"," ", totalCost + totalPenaltiesCost, "", totalTime + totalPenaltiesTime};
+		model.addRow(linha2);
 	}
 	
 	private void fillTablesRouthingMinCost()
@@ -709,10 +713,13 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();
 		double menorCusto = costMatrix.get(0).get(0);
 		int operation = 0, machine, trocou = 0, machineTest;
-		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0, totalPenalties = 0;
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltieCost = 0, penaltieTime = 0, totalPenaltiesCost = 0, totalPenaltiesTime = 0;
 			
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathCost();
-		ArrayList<Double> penalties = this.halevi2.getTotalPenaltiesCost();
+		ArrayList<ArrayList<Double>> penalties = new ArrayList<ArrayList<Double>>();
+		
+		penalties.add(this.halevi2.getPenaltiesPathCost().getPenaltiesCost());
+		penalties.add(this.halevi2.getPenaltiesPathCost().getPenaltiesTime());
 		
 		String value = ((""+cost).concat("000000")).substring(0,6);
 		String value1 = ((""+time).concat("000000")).substring(0,6);
@@ -731,24 +738,21 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			value = ((""+cost).concat("000000")).substring(0,6);
 			value1 = ((""+time).concat("000000")).substring(0,6);
 			
-			penaltie = penalties.get(i);
-			totalPenalties = totalPenalties + penaltie;
-
-			Object [] linha = {operation, machine, value, value1, penaltie};
+			penaltieCost = penalties.get(0).get(i);
+			penaltieTime = penalties.get(1).get(i);
+			
+			totalPenaltiesCost = totalPenaltiesCost + penaltieCost;
+			totalPenaltiesTime = totalPenaltiesTime + penaltieTime;
+			
+			Object [] linha = {operation, machine, value, penaltieCost, value1, penaltieTime};
 			model.addRow(linha);
 		}
 		
+		Object[] linha1 = {"Total"," ", totalCost, totalPenaltiesCost, totalTime, totalPenaltiesTime};
+		model.addRow(linha1);
 		
-		Object[] linha3 = {"Total"," ", totalCost, totalTime, totalPenalties};
-		model.addRow(linha3);
 		
-		Object[] linha4 = {"Penalties "," ", penaltiesCost, penaltiesCost};
-		model.addRow(linha4);
-		
-		totalCost = totalCost + penaltiesCost;
-		totalTime = totalTime + penalitiesTime;
-		
-		Object [] linha5 = {"Total"," ", totalCost, totalTime};
-		model.addRow(linha5);
+		Object [] linha2 = {"Total + penalties"," ", totalCost + totalPenaltiesCost, "", totalTime + totalPenaltiesTime};
+		model.addRow(linha2);
 	}
 }

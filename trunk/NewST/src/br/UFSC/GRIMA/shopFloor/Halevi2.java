@@ -72,9 +72,13 @@ public class Halevi2
 	{
 		ArrayList<Double> penalties = new ArrayList<Double>();
 		
+		
+		penalties.add(0.0);
 		for (int i = 1; i < pathDyad.size(); i++)
 		{
-			penalties.add(penaltiesMatrix.get(pathDyad.get(i).getIndexWorkingStep()/10).get(pathDyad.get(i-1).getIndexMachine()).get(pathDyad.get(i).getIndexMachine()));
+			
+			System.out.println("WS " + pathDyad.get(i).getIndexWorkingStep() + " From Mach " + pathDyad.get(i-1).getIndexMachine() + " To Mach " + pathDyad.get(i).getIndexMachine());
+			penalties.add(penaltiesMatrix.get(pathDyad.get(i).getIndexWorkingStep()/10 - 1).get(pathDyad.get(i-1).getIndexMachine()-1).get(pathDyad.get(i).getIndexMachine()-1));
 		}
 		return penalties;	
 	}

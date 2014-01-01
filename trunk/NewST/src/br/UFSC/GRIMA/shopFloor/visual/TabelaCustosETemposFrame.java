@@ -223,7 +223,6 @@ public class TabelaCustosETemposFrame extends JDialog {
 						}
 						tabbedPane1.addTab("Universal Matrices", panel15);
 
-
 						//======== panel6 ========
 						{
 							panel6.setLayout(new GridBagLayout());
@@ -336,7 +335,6 @@ public class TabelaCustosETemposFrame extends JDialog {
 								new Insets(0, 0, 5, 0), 0, 0));
 						}
 						tabbedPane1.addTab("Cost", panel6);
-
 
 						//======== panel7 ========
 						{
@@ -463,7 +461,6 @@ public class TabelaCustosETemposFrame extends JDialog {
 						}
 						tabbedPane1.addTab("Time", panel7);
 
-
 						//======== panel8 ========
 						{
 							panel8.setLayout(new GridBagLayout());
@@ -518,7 +515,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 												new Object[][] {
 												},
 												new String[] {
-													"Workingstep", "Machine", "Cost [$]", "Time [min]"
+													"Workingstep", "Machine", "Cost [$]", "Time [min]", "Penalties"
 												}
 											));
 											scrollPane5.setViewportView(table5);
@@ -563,7 +560,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 												new Object[][] {
 												},
 												new String[] {
-													"Workingstep", "Machine", "Cost [$]", "Time [min]"
+													"Workingstep", "Machine", "Cost [$]", "Time [min]", "Penalties"
 												}
 											));
 											scrollPane8.setViewportView(table8);
@@ -583,7 +580,6 @@ public class TabelaCustosETemposFrame extends JDialog {
 								new Insets(0, 0, 5, 0), 0, 0));
 						}
 						tabbedPane1.addTab("Time & Cost Routing", panel8);
-
 					}
 					panel5.add(tabbedPane1, cc.xy(3, 3));
 				}

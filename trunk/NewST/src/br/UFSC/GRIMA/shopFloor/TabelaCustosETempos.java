@@ -668,11 +668,12 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		double menorTempo = timeMatrix.get(0).get(0);
 		int indiceMaquina = 0;
 		int operation = 0, machine, trocou = 0, machineTest;
-		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0;
 		
 		  
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathTime();
-	
+		ArrayList<Double> penalties = this.halevi2.getTotalPenaltiesTime();
+		
 		for(int i = 0; i < optimizedPath.size(); i++)
 		{
 			cost = this.costMatrix.get(i).get(optimizedPath.get(i).getIndexMachine() - 1);
@@ -686,7 +687,9 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			String value = ((""+cost).concat("000000")).substring(0,6);
 			String value1 = ((""+time).concat("000000")).substring(0,6);
 
-			Object [] linha = {operation, machine, value, value1};
+			penaltie = penalties.get(i);
+			
+			Object [] linha = {operation, machine, value, value1, penaltie};
 			model.addRow(linha);
 		}
 		
@@ -709,9 +712,10 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 		DefaultTableModel model = (DefaultTableModel) table5.getModel();
 		double menorCusto = costMatrix.get(0).get(0);
 		int operation = 0, machine, trocou = 0, machineTest;
-		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0;
+		double cost = 0, time = 0, penaltiesCost = 0, penalitiesTime = 0, totalCost = 0, totalTime = 0, penaltie = 0;
 			
 		ArrayList<DyadIndexWorkingStepMachine> optimizedPath = halevi2.getOptimizedPathCost();
+		ArrayList<Double> penalties = this.halevi2.getTotalPenaltiesCost();
 		
 		String value = ((""+cost).concat("000000")).substring(0,6);
 		String value1 = ((""+time).concat("000000")).substring(0,6);
@@ -730,9 +734,14 @@ public class TabelaCustosETempos extends TabelaCustosETemposFrame
 			value = ((""+cost).concat("000000")).substring(0,6);
 			value1 = ((""+time).concat("000000")).substring(0,6);
 			
-			Object [] linha = {operation, machine, value, value1};
+			penaltie = penalties.get(i);
+			
+			Object [] linha = {operation, machine, value, value1, penaltie};
 			model.addRow(linha);
 		}
+		
+		
+		
 		
 		
 		Object[] linha3 = {"Total in machines"," ", totalCost, totalTime};

@@ -428,6 +428,7 @@ new FormModel {
 									add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
 										name: "splitPane4"
 										"resizeWeight": 0.5
+										"oneTouchExpandable": true
 										add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 											"$columnSpecs": "0, 0:1.0, 0"
 											"$rowSpecs": "0, 0:1.0"
@@ -464,21 +465,25 @@ new FormModel {
 														add( "Workingstep" )
 														add( "Machine" )
 														add( "Cost [$]" )
+														add( "Cost penalties" )
 														add( "Time [min]" )
-														add( "Penalties" )
+														add( "Time penalties" )
 													}, new java.util.Vector {
 														add( null )
 														add( null )
 														add( null )
 														add( null )
 														add( null )
-													}, new java.util.Vector {
-														add( null )
-														add( null )
-														add( null )
-														add( null )
 														add( null )
 													}, new java.util.Vector {
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+													}, new java.util.Vector {
+														add( null )
 														add( null )
 														add( null )
 														add( null )
@@ -532,21 +537,25 @@ new FormModel {
 														add( "Workingstep" )
 														add( "Machine" )
 														add( "Cost [$]" )
+														add( "Cost penalties" )
 														add( "Time [min]" )
-														add( "Penalties" )
+														add( "Time penalties" )
 													}, new java.util.Vector {
 														add( null )
 														add( null )
 														add( null )
 														add( null )
 														add( null )
-													}, new java.util.Vector {
-														add( null )
-														add( null )
-														add( null )
-														add( null )
 														add( null )
 													}, new java.util.Vector {
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+														add( null )
+													}, new java.util.Vector {
+														add( null )
 														add( null )
 														add( null )
 														add( null )

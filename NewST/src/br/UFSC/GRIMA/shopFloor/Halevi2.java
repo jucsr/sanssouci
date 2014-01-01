@@ -36,7 +36,9 @@ public class Halevi2
 	
 	private ArrayList<DyadIndexWorkingStepMachine> optimizedPathTime = new ArrayList<DyadIndexWorkingStepMachine>();
 	private ArrayList<DyadIndexWorkingStepMachine> optimizedPathCost = new ArrayList<DyadIndexWorkingStepMachine>();
-		
+	
+	private ArrayList<Double> totalPenaltiesTime= new ArrayList<Double>();
+	private ArrayList<Double> totalPenaltiesCost= new ArrayList<Double>();	
 	
 	
 	public Halevi2(ProjetoSF projetoSF, ArrayList<Workingstep> workingsteps)
@@ -57,11 +59,42 @@ public class Halevi2
 		this.calculateTotalMatrixCost(this.getUniversalCostMatrix());
 		
 		this.optimizedPathTime = this.choosePathFromTotalDyad(this.universalTimeMatrix,this.totalTimeMatrix,this.totalTimePathMatrix);
-		this.optimizedPathCost = this.choosePathFromTotalDyad(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix); 
-		
+		this.optimizedPathCost = this.choosePathFromTotalDyad(this.universalCostMatrix,this.totalCostMatrix,this.totalCostPathMatrix);
+		//this.showPenaltiesMatrix();
+		this.totalPenaltiesTime = this.penaltiesPath(this.optimizedPathTime,this.penaltiesTimeMatrix);
+		this.totalPenaltiesCost = this.penaltiesPath(this.optimizedPathCost,this.penaltiesCostMatrix);
 		//System.out.println(this.choosePathFromUniversal(this.universalTimeMatrix));
 		//System.out.println(this.choosePathFromUniversal(this.universalCostMatrix));
 		System.out.println("Constructor Done!");
+	}
+	
+	private ArrayList<Double> penaltiesPath(ArrayList<DyadIndexWorkingStepMachine> pathDyad, ArrayList<ArrayList<ArrayList<Double>>> penaltiesMatrix)
+	{
+		ArrayList<Double> penalties = new ArrayList<Double>();
+		
+		for (int i = 1; i < pathDyad.size(); i++)
+		{
+			penalties.add(penaltiesMatrix.get(pathDyad.get(i).getIndexWorkingStep()/10).get(pathDyad.get(i-1).getIndexMachine()).get(pathDyad.get(i).getIndexMachine()));
+		}
+		return penalties;	
+	}
+	
+	private void showPenaltiesMatrix()
+	{
+		int iWS=0;
+		for (Workingstep ws: this.workingsteps)
+		{
+			System.out.println("WS" + this.workingsteps.get(iWS).getIndiceArvore());
+			for (int i = 0; i < this.penaltiesTimeMatrix.get(0).size();i++)				
+			{
+				System.out.println("From Mach " + (i +1) ); 
+				for (int j = 0; j < this.penaltiesTimeMatrix.get(0).get(0).size();j++)
+				{
+					System.out.println("To Mach " + (j +1) + "  " + this.penaltiesTimeMatrix.get(iWS).get(i).get(j));
+				}
+			}
+			iWS++;
+		}
 	}
 	
 	private void initPenaltiesMatrix()
@@ -716,6 +749,14 @@ public class Halevi2
 
 	public ArrayList<ArrayList<Integer>> getPathCostMatrix() {
 		return pathCostMatrix;
+	}
+
+	public ArrayList<Double> getTotalPenaltiesTime() {
+		return totalPenaltiesTime;
+	}
+
+	public ArrayList<Double> getTotalPenaltiesCost() {
+		return totalPenaltiesCost;
 	}	
 	
 }

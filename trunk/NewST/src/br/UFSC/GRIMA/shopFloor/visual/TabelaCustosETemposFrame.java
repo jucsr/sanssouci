@@ -480,6 +480,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 								//======== splitPane4 ========
 								{
 									splitPane4.setResizeWeight(0.5);
+									splitPane4.setOneTouchExpandable(true);
 
 									//======== panel20 ========
 									{
@@ -515,7 +516,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 												new Object[][] {
 												},
 												new String[] {
-													"Workingstep", "Machine", "Cost [$]", "Time [min]", "Penalties"
+													"Workingstep", "Machine", "Cost [$]", "Cost penalties", "Time [min]", "Time penalties"
 												}
 											));
 											scrollPane5.setViewportView(table5);
@@ -560,7 +561,7 @@ public class TabelaCustosETemposFrame extends JDialog {
 												new Object[][] {
 												},
 												new String[] {
-													"Workingstep", "Machine", "Cost [$]", "Time [min]", "Penalties"
+													"Workingstep", "Machine", "Cost [$]", "Cost penalties", "Time [min]", "Time penalties"
 												}
 											));
 											scrollPane8.setViewportView(table8);

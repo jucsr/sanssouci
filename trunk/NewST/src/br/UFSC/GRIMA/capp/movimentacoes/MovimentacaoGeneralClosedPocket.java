@@ -62,6 +62,7 @@ public class MovimentacaoGeneralClosedPocket {
 		//First point acabamento index 0 on contour
 		for (int i = 0; i < contour.size(); i ++)
 		{
+			LinearPath pathTmpLinearPath;
 			if (i!=0 || i!=contour.size()-1)
 			{
 				acabamento.add(innerPoint(radio, contour.get(i-1), contour.get(i), contour.get(i+1), forma));
@@ -78,7 +79,24 @@ public class MovimentacaoGeneralClosedPocket {
 		}		
 		return acabamento;
 	}
-
+	public ArrayList<LinearPath> getAcabamento(Workingstep ws)
+	{
+		ArrayList<LinearPath> saida = new ArrayList<LinearPath>();
+		ArrayList<Point2D> pontosTrajetoria = this.getAcabamento();
+		for(int i = 0; i < pontosTrajetoria.size(); i++)
+		{
+			LinearPath pathTmp;
+			if(i == 0)
+			{
+				pathTmp = new LinearPath(new Point3d(ws.getFeature().getPosicaoX(), ws.getFeature().getPosicaoY(), ws.getFeature().getPosicaoZ()), new Point3d(pontosTrajetoria.get(0).getX(), pontosTrajetoria.get(0).getY(), 0));
+				saida.add(pathTmp);
+			} else
+			{
+				pathTmp = new LinearPath(new Point3d(pontosTrajetoria.get(i - 1).getX(), pontosTrajetoria.get(i - 1).getY(), ws.getCondicoesUsinagem().getAp()), new Point3d(pontosTrajetoria.get(i).getX(), pontosTrajetoria.get(i).getY(), ws.getCondicoesUsinagem().getAp()));
+			}
+		}
+		return saida;
+	}
 	public static Point2D outterPoint (double radio, Point2D p1, Point2D p2, Point2D p3, GeneralPath forma)
 	{
 		Point2D outPoint =  new Point2D.Double();

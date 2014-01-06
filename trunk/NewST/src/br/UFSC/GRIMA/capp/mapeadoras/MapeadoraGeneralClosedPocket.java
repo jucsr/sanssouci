@@ -1660,6 +1660,11 @@ public class MapeadoraGeneralClosedPocket {
 		return bossArray;
 	}
 
-	
+	public Workingstep getAcabamento()
+	{
+		Workingstep acabamento = new Workingstep();
+		
+		return acabamento;
+	}
 	
 }

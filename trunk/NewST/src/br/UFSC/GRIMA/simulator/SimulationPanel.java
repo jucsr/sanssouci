@@ -18,7 +18,6 @@ import javax.swing.event.ChangeListener;
 
 import br.UFSC.GRIMA.cad.visual.SimulationFrame;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
-import br.UFSC.GRIMA.entidades.features.Furo;
 
 /////////////////////////////////////////////////////////////////// SimulationPanel
 public class SimulationPanel extends SimulationFrame implements ActionListener {

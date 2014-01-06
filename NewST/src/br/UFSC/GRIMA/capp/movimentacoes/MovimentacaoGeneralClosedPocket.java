@@ -38,6 +38,140 @@ public class MovimentacaoGeneralClosedPocket {
 		this.ferramenta = this.ws.getFerramenta();
 	}
 	
+	public ArrayList<Point2D> getAcabamento()
+	{
+		ArrayList<Point2D> acabamento = new ArrayList<Point2D>();
+		Double radio = this.ferramenta.getDiametroFerramenta()/2;
+		GeneralPath forma = new GeneralPath(); 
+		ArrayList<Point2D> contour = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(((GeneralClosedPocket)this.ws.getFeature()).getVertexPoints()),radio);
+		
+		System.out.println("Contour Points");
+		
+		int iT = 0;
+		for (Point2D p:contour)
+		{
+			boolean inside = false;
+			System.out.println(p.getX() + "\t" + p.getY());
+			if (iT==0)
+				forma.moveTo(p.getX(), p.getY());
+			else 
+				forma.lineTo(p.getX(), p.getY());			
+		}
+		forma.closePath();
+		
+		//First point acabamento index 0 on contour
+		for (int i = 0; i < contour.size(); i ++)
+		{
+			if (i!=0 || i!=contour.size()-1)
+			{
+				acabamento.add(innerPoint(radio, contour.get(i-1), contour.get(i), contour.get(i+1), forma));
+			}			
+			else if (i==0)
+			{
+				acabamento.add(innerPoint(radio, contour.get(contour.size()-1), contour.get(i), contour.get(i+1), forma));
+			}
+			else if (i==contour.size()-1)
+			{
+				acabamento.add(innerPoint(radio, contour.get(i-1), contour.get(i), contour.get(0), forma));
+			}
+			
+		}		
+		return acabamento;
+	}
+
+	public static Point2D outterPoint (double radio, Point2D p1, Point2D p2, Point2D p3, GeneralPath forma)
+	{
+		Point2D outPoint =  new Point2D.Double();
+		Point2D before = new Point2D.Double();
+		Point2D after = new Point2D.Double();
+		Point2D center = new Point2D.Double();
+		
+		Point2D centerUnit = new Point2D.Double();
+		
+		before = unitPointer(p2,p1);
+		after = unitPointer(p2,p3);
+		
+		before.setLocation(before.getX() + p2.getX(), before.getY() + p2.getY());
+		after.setLocation(after.getX()+p2.getX(), after.getY()+p2.getY());
+		
+		System.out.println("Before " + before.getX() + "," + before.getY());
+		System.out.println("After " + after.getX() + "," + after.getY());
+		
+		center.setLocation((after.getX()+before.getX())/2, (after.getY()+before.getY())/2);
+		
+		System.out.println("Center " + center.getX() + "," + center.getY());
+		
+		centerUnit = unitPointer(p2,center);
+				
+		outPoint.setLocation(p2.getX()-centerUnit.getX()*radio, p2.getY()-centerUnit.getY()*radio);
+		
+		System.out.println("Adding R " + outPoint.getX() + "," + outPoint.getY());
+		if (!forma.contains(outPoint))
+		{
+			System.out.println("inPoint");
+			return outPoint;
+		}
+		
+		else
+		{
+			System.out.println("Is not possible to put the point out from the form");
+			return p2;
+		}
+	}
+
+	
+	
+	public static Point2D innerPoint (double radio, Point2D p1, Point2D p2, Point2D p3, GeneralPath forma)
+	{
+		Point2D inPoint =  new Point2D.Double();
+		Point2D before = new Point2D.Double();
+		Point2D after = new Point2D.Double();
+		Point2D center = new Point2D.Double();
+		
+		Point2D centerUnit = new Point2D.Double();
+		
+		before = unitPointer(p2,p1);
+		after = unitPointer(p2,p3);
+		
+		before.setLocation(before.getX() + p2.getX(), before.getY() + p2.getY());
+		after.setLocation(after.getX()+p2.getX(), after.getY()+p2.getY());
+		
+		System.out.println("Before " + before.getX() + "," + before.getY());
+		System.out.println("After " + after.getX() + "," + after.getY());
+		
+		center.setLocation((after.getX()+before.getX())/2, (after.getY()+before.getY())/2);
+		
+		System.out.println("Center " + center.getX() + "," + center.getY());
+		
+		centerUnit = unitPointer(p2,center);
+				
+		inPoint.setLocation(p2.getX()+centerUnit.getX()*radio, p2.getY()+centerUnit.getY()*radio);
+		
+		System.out.println("Adding R " + inPoint.getX() + "," + inPoint.getY());
+		if (forma.contains(inPoint))
+		{
+			System.out.println("inPoint");
+			return inPoint;
+		}
+		
+		else
+		{
+			System.out.println("Is not possible to put the point within the form");
+			return p2;
+		}
+	}
+	
+	private static Point2D unitPointer (Point2D p1, Point2D p2)
+	{
+		Point2D unitPointer = new Point2D.Double();
+		
+		double distance = Math.pow(Math.pow(p2.getX()-p1.getX(), 2) + Math.pow(p2.getY()-p1.getY(), 2), 0.5); 
+		
+		unitPointer.setLocation((p2.getX()-p1.getX())/distance, (p2.getY()-p1.getY())/distance);
+		
+		return unitPointer;
+	}
+	
 	
 	public ArrayList<LinearPath> getDesbaste(){
 
@@ -269,7 +403,7 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<Shape> listaDeBossesCriados = new ArrayList<Shape>();
 		
 		if(diametroFerramenta == diametroPrimeiroWs)
-		{//ESSES PONTOS SÓ PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
+		{//ESSES PONTOS Sï¿½ PODEM SER USADOS SE ESTIVER NO PRIMEIRO WS ---- FAZER ISSO COMPARANDO OS DIAMETROS DO PRIMEIRO WS COM O ATUAL
 			pontos = getPontos(variacao, diametroPrimeiroWs/2, ae, maiorMenorDistancia, pontosPossiveis, menorDistancia);
 		}
 	
@@ -307,7 +441,7 @@ public class MovimentacaoGeneralClosedPocket {
 			if(	this.genClosed.getWorkingsteps().size() >= 3 &&
 				!this.ws.equals(this.genClosed.getWorkingsteps().get(1)))
 			{
-				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
+				//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE Jï¿½ FORAM USINADOS
 				listaDeBossesCriados = createBosses(variacao, diametroSegundoWs/2, this.genClosed.getWorkingsteps().get(1).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 				
 				for(int i = 0; i < listaDeBossesCriados.size(); i++)
@@ -335,7 +469,7 @@ public class MovimentacaoGeneralClosedPocket {
 				if(	this.genClosed.getWorkingsteps().size() == 4 &&
 					!this.ws.equals(this.genClosed.getWorkingsteps().get(2)))
 				{
-					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE JÁ FORAM USINADOS
+					//CRIA NOVOS BOSSES PARA QUE OS NOVOS PONTOS POSSIVEIS NAO PEGUEM OS PONTOS QUE Jï¿½ FORAM USINADOS
 					listaDeBossesCriados = createBosses(variacao, diametroTerceiroWs/2, this.genClosed.getWorkingsteps().get(2).getCondicoesUsinagem().getAe(), maiorMenorDistancia, pontosPossiveis, menorDistancia);
 					
 					for(int i = 0; i < listaDeBossesCriados.size(); i++)
@@ -858,7 +992,7 @@ public class MovimentacaoGeneralClosedPocket {
 	
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){
@@ -912,7 +1046,7 @@ public class MovimentacaoGeneralClosedPocket {
 		
 		diametro = 2*raioFerramenta;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){

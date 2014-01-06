@@ -14,6 +14,7 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.capp.DeterminarMovimentacao;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.Boring;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
@@ -650,10 +651,32 @@ public class VisualTool {
 					setNextX(point3d.getX());
 					setNextY(point3d.getY());
 					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
-				}else if(featClass.equals(GeneralClosedPocket.class))
+				}else if(featClass.equals(GeneralClosedPocket.class) && wsTmp.getOperation().getClass().equals(BottomAndSideRoughMilling.class))
 				{
 					MovimentacaoGeneralClosedPocket detMov = new MovimentacaoGeneralClosedPocket(wsTmp);
 					ArrayList<LinearPath> path = detMov.getDesbaste();
+					Vector movimentacao = new Vector();
+					 for(int j = 0; j < path.size(); j++)
+						{
+							double xAux = path.get(j).getFinalPoint().getX();
+							double yAux = path.get(j).getFinalPoint().getY();
+							double zAux = -path.get(j).getFinalPoint().getZ();
+							
+							movimentacao.add(new Ponto(xAux, yAux, zAux));
+						}
+					 
+					wsTmp.setPontosMovimentacao(movimentacao);
+					
+					Ponto point3d = (Ponto)wsTmp.getPontosMovimentacao().get(0);
+					iterator = wsTmp.getPontosMovimentacao().iterator();
+					trajetoriaAtualIndex = 0;
+					setNextX(point3d.getX());
+					setNextY(point3d.getY());
+					setNextZ(ProjetoDeSimulacao.PLANODEMOVIMENTO); //z = 50
+				}else if(featClass.equals(GeneralClosedPocket.class) && wsTmp.getOperation().getClass().equals(BottomAndSideFinishMilling.class))
+				{
+					MovimentacaoGeneralClosedPocket detMov = new MovimentacaoGeneralClosedPocket(wsTmp);
+					ArrayList<LinearPath> path = detMov.getAcabamento(wsTmp);
 					Vector movimentacao = new Vector();
 					 for(int j = 0; j < path.size(); j++)
 						{

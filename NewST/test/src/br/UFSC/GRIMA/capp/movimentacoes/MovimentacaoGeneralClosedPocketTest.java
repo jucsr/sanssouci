@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
+	import java.awt.geom.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,7 +22,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
+import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
 import br.UFSC.GRIMA.entidades.features.Bloco;
@@ -36,7 +39,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
-public class MovimentacaoGeneralClosedPocketTest {
+public class MovimentacaoGeneralClosedPocketTest {	
 	private Workingstep ws;
 	private Ferramenta ferramenta;
 	private GeneralClosedPocket genClosed;
@@ -65,6 +68,9 @@ public class MovimentacaoGeneralClosedPocketTest {
 	private GeneralPath general;
 	double distMax;
 	ArrayList<Point3d> testeTempo = new ArrayList<Point3d>();
+	private MovimentacaoGeneralClosedPocket mov;
+	
+	
 	@Before
 	public void createProject()
 	{
@@ -80,14 +86,157 @@ public class MovimentacaoGeneralClosedPocketTest {
 		DadosDeProjeto dados = new DadosDeProjeto(123, "fulano da silva", "novo projeto", material);
 
 		projeto = new Projeto(bloco, dados);
+		
+		//============
+		
+		this.genClosed = new GeneralClosedPocket();
+		this.genClosed.setNome("Name");
+		this.genClosed.setPosicao(79, 22, 0);
+		this.genClosed.setProfundidade(10);
+		this.genClosed.setRadius(10);
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
+		
+		points.add(new Point2D.Double(10,40));
+		points.add(new Point2D.Double(10,80));
+		points.add(new Point2D.Double(120,80));
+		points.add(new Point2D.Double(120,10));
+		points.add(new Point2D.Double(50,10));
+		points.add(new Point2D.Double(50,40));
+				
+//		points.add(new Point2D.Double(79,22));
+//		points.add(new Point2D.Double(47,60));
+//		points.add(new Point2D.Double(81,104));
+//		points.add(new Point2D.Double(131,107));
+//		points.add(new Point2D.Double(150,68));
+//		points.add(new Point2D.Double(129,32));
+//		points.add(new Point2D.Double(161,8));
+//		points.add(new Point2D.Double(194,55));
+//		points.add(new Point2D.Double(167,134));
+//		points.add(new Point2D.Double(60,132));
+//		points.add(new Point2D.Double(19,61));
+//		points.add(new Point2D.Double(40,12));
+		
+//		points.add(new Point2D.Double(5.0, 35.0));
+//		points.add(new Point2D.Double(20.0, 35.0));
+//		points.add(new Point2D.Double(20.0, 5.0));
+//		points.add(new Point2D.Double(60.0, 5.0));
+//		points.add(new Point2D.Double(60.0, 35.0));
+//		points.add(new Point2D.Double(95.0, 35.0));
+//		points.add(new Point2D.Double(95.0, 65.0));
+//		points.add(new Point2D.Double(125.0, 65.0));
+//		points.add(new Point2D.Double(125.0, 35.0));
+//		points.add(new Point2D.Double(180.0, 35.0));
+//		points.add(new Point2D.Double(180.0, 75.0));
+//		points.add(new Point2D.Double(155.0, 75.0));
+//		points.add(new Point2D.Double(155.0, 100.0));
+//		points.add(new Point2D.Double(195.0, 100.0));
+//		points.add(new Point2D.Double(195.0, 145.0));
+//		points.add(new Point2D.Double(75.0, 145.0));
+//		points.add(new Point2D.Double(75.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 95.0));
+//		points.add(new Point2D.Double(5.0, 95.0));
+		
+//		points.add(new Point2D.Double(40.0, 120.0));
+//		points.add(new Point2D.Double(40.0, 20.0));
+//		points.add(new Point2D.Double(160.0, 20.0));
+//		points.add(new Point2D.Double(160.0, 120.0));
+		
+		this.genClosed.setPoints(points);
+		//		this.genClosed.setComprimento(80);
+		//		this.genClosed.setLargura(60);
+		//		this.genClosed.createGeometricalElements();
+
+		faceXY.addFeature(this.genClosed);
+
+		this.boss = new CircularBoss();
+		this.boss.setCentre(new Point3d(30,30,0));
+		this.boss.setDiametro1(10);
+		this.boss.setDiametro2(10);
+		this.boss.setAltura(10);
+		this.boss.setPosicao(20, 35, 0);
+		this.boss.setNome("lucas");
+		this.boss.createGeometricalElements();
+
+//		this.boss1 = new RectangularBoss(20, 10, 10, 5);
+//		this.boss1.setPosicao(40, 30, 0);
+		
+		this.boss1 = new RectangularBoss(30, 25, 10, 0);
+		this.boss1.setPosicao(80, 35, 0);
+
+		this.boss2 = new RectangularBoss(20, 20, 10, 7);
+		this.boss2.setPosicao(50, 45, 0);
+
+		ArrayList<Point2D> vertices = new ArrayList<Point2D>();
+		vertices.add(new Point2D.Double(40,15));
+		vertices.add(new Point2D.Double(45,30));
+		vertices.add(new Point2D.Double(60,35));
+		vertices.add(new Point2D.Double(65,25));
+
+		this.boss3 = new GeneralProfileBoss(1,vertices);
+		this.boss3.setAltura(10);
+
+
+		this.itsBoss = genClosed.getItsBoss();
+
+		
+		//		this.ferramenta = this.ws.getFerramenta();
+		//		this.cavidade = (Cavidade) this.ws.getFeature();
+
+		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+//				this.itsBoss.add(this.boss);
+				this.itsBoss.add(this.boss1);
+//				this.itsBoss.add(this.boss2);
+//				this.itsBoss.add(this.boss3);
+		this.genClosed.setItsBoss(this.itsBoss);
+//		this.faceXY.addFeature(this.boss);
+//				Generate3Dview Janela3D = new Generate3Dview(this.projeto);
+//				Janela3D.setVisible(true);
+		
+		this.ferramenta = new Ferramenta(10, 70);
+		
+		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
+		cond.setAp(3);
+		cond.setAe(7.5);
+		cond.setN(2000);
+		cond.setVc(100);
+		
+		BottomAndSideRoughMilling operation = new BottomAndSideRoughMilling("operation", 5);
+		
+		this.ws = new Workingstep(genClosed, faceXY, ferramenta, cond, operation);
+		System.err.println("done!!!");
+
+	}
+	
+	@Test
+	public void testMovimentacao()
+	{
+		mov = new MovimentacaoGeneralClosedPocket(this.ws); 
+		Point2D p1 = new Point2D.Double(1.0,1.0);
+		Point2D p2 = new Point2D.Double(2.0,4.0);
+		Point2D p3 = new Point2D.Double(11.0,6.0);
+		
+		Point2D c = new Point2D.Double();
+		
+		Double radio = 2.0;
+		
+		GeneralPath forma = new GeneralPath(); 
+		forma.moveTo(p1.getX(), p1.getY());
+		forma.lineTo(p2.getX(), p2.getY());
+		forma.lineTo(p3.getX(), p3.getY());
+		forma.closePath();		
+		
+		c = MovimentacaoGeneralClosedPocket.innerPoint(radio, p1, p2, p3, forma);
+		
+		System.out.println("Point " + c.getX()  + "," + c.getY());
 	}
 
-	@Test
+	
 	public void createBossTest(){
 
 
 		this.genClosed=new GeneralClosedPocket();
-		this.genClosed.setNome("Lucas");
+		this.genClosed.setNome("Name");
 		this.genClosed.setPosicao(79, 22, 0);
 		this.genClosed.setProfundidade(10);
 		this.genClosed.setRadius(10);
@@ -523,7 +672,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		ae = 0.75*diametroFerramenta;
 		
 		double diferenca;
-		diferenca = 1 + (2*maiorMenorDistancia-diametroFerramenta)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametroFerramenta)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){
@@ -636,7 +785,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		final double diametro = 2*raioMenor;
 		ae = 0.75*diametro;
 		
-		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 é por causa do diametro
+		diferenca = 1 + (2*maiorMenorDistancia-diametro)/ae; // 1 ï¿½ por causa do diametro
 		numeroDeCortes = (int) Math.round(diferenca);
 		
 		if(diferenca>numeroDeCortes){
@@ -651,7 +800,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			diferenca = raioTmp - maiorMenorDistancia;
 			
 			System.out.println("RaioTmp : " + raioTmp);
-			System.out.println("Diferença : " + (raioTmp - maiorMenorDistancia));
+			System.out.println("Diferenï¿½a : " + (raioTmp - maiorMenorDistancia));
 			
 			for(int k=0;k<menorDistancia.size();k++){
 

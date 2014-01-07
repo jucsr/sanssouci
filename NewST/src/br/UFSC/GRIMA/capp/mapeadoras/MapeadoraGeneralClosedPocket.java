@@ -3,11 +3,13 @@ package br.UFSC.GRIMA.capp.mapeadoras;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.media.j3d.Geometry;
 import javax.swing.JOptionPane;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -1663,7 +1665,14 @@ public class MapeadoraGeneralClosedPocket {
 	public Workingstep getAcabamento()
 	{
 		Workingstep acabamento = new Workingstep();
+
+		Workingstep wsPrecedenteTmp = genClosed.getWorkingsteps().lastElement();
+		acabamento.setWorkingstepPrecedente(wsPrecedenteTmp);
 		
+		/*
+		 *  ========= creating tool =======
+		 */
+//		EndMill tool = new EndMill(genClosed, profundidadeMaxima);
 		return acabamento;
 	}
 	

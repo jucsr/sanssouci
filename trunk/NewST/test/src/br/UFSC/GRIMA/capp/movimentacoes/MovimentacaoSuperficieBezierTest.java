@@ -30,8 +30,8 @@ import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 public class MovimentacaoSuperficieBezierTest {
 	int numeroPontos = 200;
 	ArrayList<Point3d> poligono = new ArrayList<Point3d>();
-	int a=0;
-	double plano=20;
+	int a = 0;
+	double plano = 20;
 	ArrayList<Point3d> subArrayPossivelX = new ArrayList<Point3d>();
 	ArrayList<Point3d> subArrayPossivelY = new ArrayList<Point3d>();
 	double[][][] control_points = {

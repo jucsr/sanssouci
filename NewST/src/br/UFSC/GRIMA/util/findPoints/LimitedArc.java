@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 /**
  * 
  * @author Jc
@@ -29,6 +30,44 @@ public class LimitedArc extends LimitedElement
 		this.n = n;
 		this.radius = OperationsVector.distanceVector(this.initialPoint, this.center);
 	}
+	
+	/**
+	 * 
+	 * @param center
+	 * @param initialPoint
+	 * @param deltaAngle --> in radians
+	 * @param sense 0 clockwise 1 counter clockwise
+	 */
+	public LimitedArc(Point3d center, Point3d initialPoint, double deltaAngle, int sense)
+	{
+		this.center = center;
+		this.initialPoint = initialPoint;
+		this.deltaAngle = deltaAngle;
+//		Point3d axisX = new Point3d(1.0, 0, 0);
+		Point3d vectorInitial = GeometricOperations.minus(this.initialPoint, this.center);
+		double initialAngle = GeometricOperations.angle(vectorInitial);
+		
+//		initialAngle = Math.acos(GeometricOperations.escalar(axisX, vectorInitial)/GeometricOperations.norm(axisX)/GeometricOperations.norm(vectorInitial));
+//		if (vectorInitial.getY() < 0)
+//			initialAngle = -initialAngle;
+		this.sense = sense;
+		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
+		
+		this.finalPoint = new Point3d();
+		this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
+		this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
+		this.finalPoint.setZ(0);
+		
+//		System.out.println("-------------------");
+//		System.out.println("Constructing arc ");
+//		System.out.println("center " + this.center);
+//		System.out.println("initialPoint " + this.initialPoint);
+//		System.out.println("initialVector " + vectorInitial);
+//		System.out.println("initialAngle " + initialAngle*180/Math.PI);
+//		System.out.println("deltaAngle " + deltaAngle*180/Math.PI);
+//		System.out.println("finalPoint " + finalPoint);
+	}
+	
 	/**
 	 * 
 	 * @param center
@@ -71,7 +110,8 @@ public class LimitedArc extends LimitedElement
 		}
 //		System.out.println("SAIDA = " + pointsInArc);
 		return pointsInArc;
-	}
+	}	
+	
 	public Point3d getCenter() {
 		return center;
 	}

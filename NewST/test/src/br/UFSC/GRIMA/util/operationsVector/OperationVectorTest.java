@@ -3,7 +3,7 @@ package br.UFSC.GRIMA.util.operationsVector;
 import javax.vecmath.Point3d;
 
 import org.junit.Test;
-
+	
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;

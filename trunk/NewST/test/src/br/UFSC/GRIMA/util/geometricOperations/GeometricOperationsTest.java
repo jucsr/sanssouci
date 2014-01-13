@@ -24,8 +24,11 @@ public class GeometricOperationsTest
 //	Point3d fp3_3D = new Point3d(80.0, 140.0, 0.0);
 //	Point3d sp3_3D = new Point3d(120.0, 140.0, 0.0);
 	
-	Point3d fp3_3D = new Point3d(105.860, 35.860, 0.0);
-	Point3d sp3_3D = new Point3d(134.14, 64.140, 0.0);
+//	Point3d fp3_3D = new Point3d(105.860, 35.860, 0.0);
+//	Point3d sp3_3D = new Point3d(134.14, 64.140, 0.0);
+
+	Point3d fp3_3D = new Point3d(134.61, 81.65, 0.0);
+	Point3d sp3_3D = new Point3d(107.05, 102.32, 0.0);
 
 	
 	Point3d initialPoint1_3D = new Point3d(1.0, 0.0, 0.0);

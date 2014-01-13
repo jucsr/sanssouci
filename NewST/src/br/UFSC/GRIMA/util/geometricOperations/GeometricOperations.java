@@ -222,6 +222,13 @@ public class GeometricOperations
 		//System.out.println("Center of arc " + arc.getCenter());
 		Point3d nearestFromLine = nearestPoint(arc.getCenter(), line);
 		//System.out.println("Nearest calculated*****" + nearestFromLine);
+		
+		if(chooseMinimum(distance(arc.getCenter(), line.getFp()), distance(arc.getCenter(), line.getSp())) <= arc.getRadius())
+		{
+			distance = chooseMinimum(minimumDistance(arc.getInitialPoint(), line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getFp(), arc), minimumDistance(line.getSp(), arc));
+			return distance;
+		}
+		
 		Point3d v = new Point3d(nearestFromLine.getX()-arc.getCenter().getX(), nearestFromLine.getY()-arc.getCenter().getY(), nearestFromLine.getZ()-arc.getCenter().getZ());
 		Point3d normalPoint = plus(arc.getCenter(),multiply(arc.getRadius()/norm(v),v));
 		if (!contentsPoint(normalPoint, arc))

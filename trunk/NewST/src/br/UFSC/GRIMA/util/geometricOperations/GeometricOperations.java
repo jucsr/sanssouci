@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.util.geometricOperations;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -11,6 +12,22 @@ import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 public class GeometricOperations 
 {
 	private static double SMALL_NUM  =  0.00000001;
+
+	private static double chooseMinimum(ArrayList<Double> distances)
+	{
+		double minimum=10E49;
+		int i = 0;
+		for (double d:distances)
+		{
+			if (i==0)
+				minimum = d;
+			else if (minimum > d)
+				minimum = d;
+			i++;
+		}
+		return minimum;
+	}
+	
 	
 	private static double chooseMinimum(double ...distances)
 	{
@@ -26,6 +43,29 @@ public class GeometricOperations
 		}
 		return minimum;
 	}
+
+	private static int chooseMinimumIndex(ArrayList<Double> distances)
+	{
+		double minimum=10E49;
+		int minimumIndex=0;
+		int i = 0;
+		for (double d:distances)
+		{
+			if (i==0)
+			{
+				minimum = d;
+				minimumIndex = i;
+			}
+			else if (minimum > d)
+			{
+				minimum = d;
+				minimumIndex = i;
+			}
+			i++;
+		}
+		return minimumIndex;
+	}
+	
 	
 	public static double distance2D(Point2D p1, Point2D p2)
 	{
@@ -200,6 +240,36 @@ public class GeometricOperations
 	    return norm(dP);   // return the closestdistance
 	}
 	
+	public static Point3d nearestPoint(Point3d p, LimitedArc arc)
+	{
+		Point3d v = new Point3d(p.getX()-arc.getCenter().getX(), p.getY()-arc.getCenter().getY(), p.getZ()-arc.getCenter().getZ());
+		Point3d normalPoint = plus(arc.getCenter(),multiply(arc.getRadius()/norm(v),v));
+		
+		if (!contentsPoint(normalPoint, arc))
+		{
+			normalPoint = plus(arc.getCenter(),multiply(-arc.getRadius()/norm(v),v));
+			//System.out.println("New normal point " + normalPoint);
+			ArrayList<Double> distances = new ArrayList<Double>();
+			ArrayList<Point3d> points = new ArrayList<Point3d>();
+			
+			distances.add(distance(p, arc.getInitialPoint()));
+			points.add(arc.getInitialPoint());
+			
+			distances.add(distance(p,arc.getFinalPoint()));
+			points.add(arc.getFinalPoint());
+			
+			distances.add(distance(p, normalPoint));
+			points.add(normalPoint);
+			
+			int indexMinimum = chooseMinimumIndex(distances);
+			
+			return points.get(indexMinimum);
+		}
+		//System.out.println("Normal point " + normalPoint);
+		return normalPoint;
+
+	}
+	
 	public static double minimumDistance(Point3d p, LimitedArc arc)
 	{		
 		Point3d v = new Point3d(p.getX()-arc.getCenter().getX(), p.getY()-arc.getCenter().getY(), p.getZ()-arc.getCenter().getZ());
@@ -208,10 +278,10 @@ public class GeometricOperations
 		if (!contentsPoint(normalPoint, arc))
 		{
 			normalPoint = plus(arc.getCenter(),multiply(-arc.getRadius()/norm(v),v));
-			System.out.println("New normal point " + normalPoint);
+			//System.out.println("New normal point " + normalPoint);
 			return chooseMinimum(distance(p, arc.getInitialPoint()), distance(p,arc.getFinalPoint()), distance(p, normalPoint));			
 		}
-		System.out.println("Normal point " + normalPoint);
+		//System.out.println("Normal point " + normalPoint);
 		return distance(p, normalPoint);
 	}	
 	
@@ -225,6 +295,8 @@ public class GeometricOperations
 		
 		if(chooseMinimum(distance(arc.getCenter(), line.getFp()), distance(arc.getCenter(), line.getSp())) <= arc.getRadius())
 		{
+			//System.out.println("Line within the arc ");
+			//System.out.println("Arc Initial to line" + minimumDistance(arc.getInitialPoint(), line));
 			distance = chooseMinimum(minimumDistance(arc.getInitialPoint(), line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getFp(), arc), minimumDistance(line.getSp(), arc));
 			return distance;
 		}
@@ -233,12 +305,90 @@ public class GeometricOperations
 		Point3d normalPoint = plus(arc.getCenter(),multiply(arc.getRadius()/norm(v),v));
 		if (!contentsPoint(normalPoint, arc))
 		{
-			System.out.println("normalPoint is not within the arc");
+			//System.out.println("normalPoint is not within the arc");
 			return chooseMinimum(minimumDistance(arc.getInitialPoint(),line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getFp(),arc), minimumDistance(line.getSp(), arc));
 		}
 
 		distance = distance(normalPoint,nearestFromLine);
 		return distance;
+	}
+
+	public static Point3d nearestPoint(LimitedArc arc1, LimitedArc arc2)
+	{
+		ArrayList<Double> distances = new ArrayList<Double>();
+		ArrayList<Point3d> pointsArc2 = new ArrayList<Point3d>();
+		ArrayList<Point3d> pointsArc1 = new ArrayList<Point3d>();
+		
+		Point3d point1Near2 = new Point3d();
+		Point3d point2Near1 = new Point3d();
+		
+		point1Near2 = nearestPoint(arc1.getCenter(), arc2);
+		point2Near1 = nearestPoint(arc2.getCenter(), arc1);
+		
+		Point3d v1 = new Point3d();
+		Point3d v2 = new Point3d();
+		
+		v1 = multiply(1.0/distance(point1Near2, arc1.getCenter()),minus(point1Near2, arc1.getCenter()));
+		v2 = multiply(1.0/distance(point2Near1, arc2.getCenter()),minus(point2Near1, arc2.getCenter()));
+		
+		Point3d n1 = new Point3d();
+		Point3d n2 = new Point3d();
+		
+		n1 = plus(arc1.getCenter(), multiply(arc1.getRadius(),v1));
+		n2 = plus(arc2.getCenter(), multiply(arc2.getRadius(),v2));
+		
+//		System.out.println("-----------------------------");
+//		System.out.println("Nearest Point from center 1 " + arc1.getCenter() + " to arc 2"  + point1Near2);		
+//		System.out.println("Nearest Point from center 2 " + arc2.getCenter() + " to arc 1"  + point2Near1);
+//		System.out.println("Within arc " +  arc1.getInitialPoint() +  " to " + arc1.getFinalPoint()) ;
+//		System.out.println("Nearest Point " + point1Near2);
+		pointsArc1.add(n1);
+		pointsArc2.add(point1Near2);
+		distances.add(distance(n1, point1Near2));
+//		System.out.println("Within arc " +  arc2.getInitialPoint() +  " to " + arc2.getFinalPoint()) ;
+//		System.out.println("Nearest Point " + point2Near1);
+		pointsArc1.add(point1Near2);
+		pointsArc2.add(n2);		
+		distances.add(distance(n2, point2Near1));
+
+		distances.add(minimumDistance(arc1.getInitialPoint(), arc2));
+		pointsArc1.add(arc1.getInitialPoint());
+		pointsArc2.add(nearestPoint(arc1.getInitialPoint(), arc2));
+//		System.out.println("--------------");
+//		System.out.println("From " + arc1.getInitialPoint() + " to arc  from " + arc2.getInitialPoint() + " to " + arc2.getFinalPoint());
+//		System.out.println(minimumDistance(arc1.getInitialPoint(), arc2));
+		
+		distances.add(minimumDistance(arc1.getFinalPoint(), arc2));
+		pointsArc1.add(arc1.getFinalPoint());
+		pointsArc2.add(nearestPoint(arc1.getFinalPoint(), arc2));
+//		System.out.println("--------------");
+//		System.out.println("From " + arc1.getFinalPoint() + " to arc  from " + arc2.getInitialPoint() + " to " + arc2.getFinalPoint());
+//		System.out.println(minimumDistance(arc1.getFinalPoint(), arc2));
+		
+		distances.add(minimumDistance(arc2.getInitialPoint(), arc1));
+		pointsArc1.add(nearestPoint(arc2.getInitialPoint(),arc1));
+		pointsArc2.add(arc2.getInitialPoint());
+//		System.out.println("--------------");
+//		System.out.println("From " + arc2.getInitialPoint() + " to arc  from " + arc1.getInitialPoint() + " to " + arc1.getFinalPoint());
+//		System.out.println(minimumDistance(arc2.getInitialPoint(), arc1));
+		
+		distances.add(minimumDistance(arc2.getFinalPoint(), arc1));
+		pointsArc1.add(nearestPoint(arc2.getFinalPoint(),arc1));
+		pointsArc2.add(arc2.getFinalPoint());
+//		System.out.println("--------------");
+//		System.out.println("From " + arc2.getFinalPoint() + " to arc  from " + arc1.getInitialPoint() + " to " + arc1.getFinalPoint());
+//		System.out.println(minimumDistance(arc2.getFinalPoint(), arc1));
+
+		int indexMinimum = chooseMinimumIndex(distances);
+		System.out.println("Nearest point in Arc1 is " + pointsArc1.get(indexMinimum));
+		System.out.println("Nearest point in Arc2 is " + pointsArc2.get(indexMinimum));
+		return pointsArc2.get(chooseMinimumIndex(distances));
+		
+	}
+	
+	public static double minimumDistance(LimitedArc arc1, LimitedArc arc2)
+	{
+		return minimumDistance(nearestPoint(arc1,arc2),arc1);
 	}
 	
 	
@@ -263,18 +413,22 @@ public class GeometricOperations
 		double beta = angle(v);
 		double alpha = angle(minus(arc.getInitialPoint(), arc.getCenter()));
 		double omega = angle(minus(arc.getFinalPoint(), arc.getCenter()));
-		System.out.println("Point p " + p);
-		System.out.println("angle between p and axisX " + beta*180/Math.PI);
-		System.out.println("angle between axisX and initialPoint " + alpha*180/Math.PI);
-		System.out.println("angle between axisX and finalPoint " + omega*180/Math.PI);
+//		System.out.println("Point p " + p);
+		if (alpha > omega)
+		{
+			alpha = alpha - 2*Math.PI;
+		}
+//		System.out.println("angle between p and axisX " + beta*180/Math.PI);
+//		System.out.println("angle between axisX and initialPoint " + alpha*180/Math.PI);
+//		System.out.println("angle between axisX and finalPoint " + omega*180/Math.PI);
 		if (alpha <= beta && beta <= omega)
 		{
 			contents = true;
-			System.out.println("The point p " + p + " is within " + arc.getInitialPoint() + " and " + arc.getFinalPoint());
+//			System.out.println("The point p " + p + " is within " + arc.getInitialPoint() + " and " + arc.getFinalPoint());
 		}
 		else
 		{
-			System.out.println("The point p " + p + " is not within " + arc.getInitialPoint() + " and " + arc.getFinalPoint());			
+//			System.out.println("The point p " + p + " is not within " + arc.getInitialPoint() + " and " + arc.getFinalPoint());			
 		}
 		return contents;
 	}

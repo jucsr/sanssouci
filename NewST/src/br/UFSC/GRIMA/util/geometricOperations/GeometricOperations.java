@@ -342,14 +342,20 @@ public class GeometricOperations
 //		System.out.println("Nearest Point from center 2 " + arc2.getCenter() + " to arc 1"  + point2Near1);
 //		System.out.println("Within arc " +  arc1.getInitialPoint() +  " to " + arc1.getFinalPoint()) ;
 //		System.out.println("Nearest Point " + point1Near2);
-		pointsArc1.add(n1);
-		pointsArc2.add(point1Near2);
-		distances.add(distance(n1, point1Near2));
+		if (contentsPoint(n1, arc1))
+		{
+			pointsArc1.add(n1);
+			pointsArc2.add(point1Near2);
+			distances.add(distance(n1, point1Near2));
+		}
 //		System.out.println("Within arc " +  arc2.getInitialPoint() +  " to " + arc2.getFinalPoint()) ;
 //		System.out.println("Nearest Point " + point2Near1);
-		pointsArc1.add(point1Near2);
-		pointsArc2.add(n2);		
-		distances.add(distance(n2, point2Near1));
+		if (contentsPoint(n2, arc2))
+		{
+			pointsArc1.add(point1Near2);
+			pointsArc2.add(n2);		
+			distances.add(distance(n2, point2Near1));
+		}
 
 		distances.add(minimumDistance(arc1.getInitialPoint(), arc2));
 		pointsArc1.add(arc1.getInitialPoint());

@@ -27,7 +27,7 @@ public class GeometricOperationsTest
 //	Point3d fp3_3D = new Point3d(105.860, 35.860, 0.0);
 //	Point3d sp3_3D = new Point3d(134.14, 64.140, 0.0);
 
-	Point3d fp3_3D = new Point3d(134.61, 81.65, 0.0);
+	Point3d fp3_3D = new Point3d(134.61, 85.61, 0.0);
 	Point3d sp3_3D = new Point3d(107.05, 102.32, 0.0);
 
 	
@@ -36,10 +36,12 @@ public class GeometricOperationsTest
 	Point3d initialPoint3_3D = new Point3d(4.0, 13.0, 0.0);
 	
 	Point3d initialPoint4_3D = new Point3d(125.0, 100.0, 0.0);
+	Point3d initialPoint5_3D = new Point3d(105.10, 101.76, 0.0);
 	
 	Point3d center1 = new Point3d(0.0, 0.0, 0.0);
 	Point3d center2 = new Point3d(2.0, 15.0, 0.0);
-	Point3d center3 = new Point3d(110.0, 100.0, 0.0);
+	Point3d center3 = new Point3d(110.0, 100.0, 0.0);	
+	Point3d center4 = new Point3d(113.760, 96.770, 0.0);
 	
 	LimitedLine line1 = new LimitedLine(fp1_3D, sp1_3D);
 	LimitedLine line2 = new LimitedLine(fp2_3D, sp2_3D);
@@ -51,6 +53,7 @@ public class GeometricOperationsTest
 	LimitedArc arc3 = new LimitedArc(center2, initialPoint3_3D, Math.PI, 1);
 	
 	LimitedArc arc4 = new LimitedArc(center3, initialPoint4_3D, 3*Math.PI/2, 1);
+	LimitedArc arc5 = new LimitedArc(center4, initialPoint5_3D, 244*Math.PI/180.0, 1);
 	
 	Point3d testPoint = new Point3d(-0.5, -0.5, 0);
 	Point3d testPoint2 = new Point3d(1.0, 13.0, 0);
@@ -108,7 +111,17 @@ public class GeometricOperationsTest
 		System.out.println("From " + line3.getFp());
 		System.out.println("To " + line3.getSp());
 		System.out.println("Distance " + GeometricOperations.minimumDistance(line3, arc4));
-
+		System.out.println("*********************************************************");
+		System.out.println("Circle segment limited ");
+		System.out.println("From " + arc4.getInitialPoint());
+		System.out.println("To " + arc4.getFinalPoint());
+		System.out.println("with Radius " + arc4.getRadius());
+		System.out.println("and center " + arc4.getCenter());
+		System.out.println("to another Circle segment limited ");
+		System.out.println("From " + arc5.getInitialPoint());
+		System.out.println("To " + arc5.getFinalPoint());
+		System.out.println("with Radius " + arc5.getRadius());
+		System.out.println("and center " + arc5.getCenter());
+		System.out.println("Distance " + GeometricOperations.minimumDistance(arc4, arc5));
 	}
-
 }

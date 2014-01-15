@@ -154,27 +154,27 @@ public class MovimentacaoGeneralClosedPocket {
 		before.setLocation(before.getX() + p2.getX(), before.getY() + p2.getY());
 		after.setLocation(after.getX()+p2.getX(), after.getY()+p2.getY());
 		
-		System.out.println("Before " + before.getX() + "," + before.getY());
-		System.out.println("After " + after.getX() + "," + after.getY());
+//		System.out.println("Before " + before.getX() + "," + before.getY());
+//		System.out.println("After " + after.getX() + "," + after.getY());
 		
 		center.setLocation((after.getX()+before.getX())/2, (after.getY()+before.getY())/2);
 		
-		System.out.println("Center " + center.getX() + "," + center.getY());
+//		System.out.println("Center " + center.getX() + "," + center.getY());
 		
 		centerUnit = unitPointer(p2,center);
 				
 		inPoint.setLocation(p2.getX()+centerUnit.getX()*radio, p2.getY()+centerUnit.getY()*radio);
 		
-		System.out.println("Adding R " + inPoint.getX() + "," + inPoint.getY());
+//		System.out.println("Adding R " + inPoint.getX() + "," + inPoint.getY());
 		if (forma.contains(inPoint))
 		{
-			System.out.println("inPoint");
+//			System.out.println("inPoint");
 			return inPoint;
 		}
 		
 		else
 		{
-			System.out.println("Is not possible to put the point within the form");
+//			System.out.println("Is not possible to put the point within the form");
 			return p2;
 		}
 	}

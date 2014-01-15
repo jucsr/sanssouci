@@ -36,6 +36,11 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
+import br.UFSC.GRIMA.util.findPoints.LimitedLine;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
@@ -204,31 +209,39 @@ public class MovimentacaoGeneralClosedPocketTest {
 		BottomAndSideRoughMilling operation = new BottomAndSideRoughMilling("operation", 5);
 		
 		this.ws = new Workingstep(genClosed, faceXY, ferramenta, cond, operation);
-		System.err.println("done!!!");
+		//System.err.println("done!!!");
 
 	}
 	
 	@Test
 	public void testMovimentacao()
 	{
-		mov = new MovimentacaoGeneralClosedPocket(this.ws); 
-		Point2D p1 = new Point2D.Double(1.0,1.0);
-		Point2D p2 = new Point2D.Double(2.0,4.0);
-		Point2D p3 = new Point2D.Double(11.0,6.0);
+		GeneralClosedPocket pocket = (GeneralClosedPocket)this.ws.getFeature();
+		double radius = this.ws.getFerramenta().getDiametroFerramenta()/2;
+		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd(pocket, radius);
+		System.out.println("Vertices " +  addPocket.getVertex().size());
+		int j=0;
+		for (Point3d v:addPocket.getVertex())
+		{
+			System.out.println(j + "\t" + v);
+			j++;
+		}
 		
-		Point2D c = new Point2D.Double();
-		
-		Double radio = 2.0;
-		
-		GeneralPath forma = new GeneralPath(); 
-		forma.moveTo(p1.getX(), p1.getY());
-		forma.lineTo(p2.getX(), p2.getY());
-		forma.lineTo(p3.getX(), p3.getY());
-		forma.closePath();		
-		
-		c = MovimentacaoGeneralClosedPocket.innerPoint(radio, p1, p2, p3, forma);
-		
-		System.out.println("Point " + c.getX()  + "," + c.getY());
+		System.out.println("Elementos " + addPocket.getElements().size());
+		int i = 0;
+		for(LimitedElement e:addPocket.getElements())
+		{
+			if(e.getClass().equals(LimitedArc.class))
+			{
+				System.out.println(i + "\t Arc from " + ((LimitedArc)e).getInitialPoint() + " to " + ((LimitedArc)e).getFinalPoint()); 
+			}
+			else if (e.getClass().equals(LimitedLine.class))
+			{
+				System.out.println(i + "\t Line from " + ((LimitedLine)e).getFp() + " to " + ((LimitedLine)e).getSp());
+			}
+			
+			i++;
+		}
 	}
 
 	

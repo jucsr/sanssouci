@@ -21,6 +21,23 @@ public class LimitedArc extends LimitedElement
 	public static final int CCW = 1;
 	private int sense = 0, n = 50; // n = number of points in arc
 	
+	public LimitedArc()
+	{
+		this.center = new Point3d(0.0, 0.0, 0.0);
+		this.initialPoint = new Point3d(1.0, 0.0, 0.0);
+		double deltaAngle = Math.PI/2;
+		this.sense = 1;
+		Point3d vectorInitial = GeometricOperations.minus(this.initialPoint, this.center);
+		double initialAngle = GeometricOperations.angle(vectorInitial);
+
+		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
+		
+		this.finalPoint = new Point3d();
+		this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
+		this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
+		this.finalPoint.setZ(0);
+	}
+	
 	public LimitedArc(Point3d center, Point3d initialPoint, Point3d finalPoint, int sense, int n)
 	{
 		this.center = center;
@@ -43,6 +60,8 @@ public class LimitedArc extends LimitedElement
 		this.center = center;
 		this.initialPoint = initialPoint;
 		this.deltaAngle = deltaAngle;
+		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
+		
 //		Point3d axisX = new Point3d(1.0, 0, 0);
 		Point3d vectorInitial = GeometricOperations.minus(this.initialPoint, this.center);
 		double initialAngle = GeometricOperations.angle(vectorInitial);
@@ -51,13 +70,18 @@ public class LimitedArc extends LimitedElement
 //		if (vectorInitial.getY() < 0)
 //			initialAngle = -initialAngle;
 		this.sense = sense;
-		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
-		
-		this.finalPoint = new Point3d();
-		this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
-		this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
-		this.finalPoint.setZ(0);
-		
+
+		if (this.radius!=0)
+		{
+			this.finalPoint = new Point3d();
+			this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
+			this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
+			this.finalPoint.setZ(this.getCenter().getZ());
+		}
+		else
+		{
+			this.finalPoint = this.center;
+		}
 //		System.out.println("-------------------");
 //		System.out.println("Constructing arc ");
 //		System.out.println("center " + this.center);

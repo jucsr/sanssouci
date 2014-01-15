@@ -438,4 +438,50 @@ public class GeometricOperations
 		}
 		return contents;
 	}
+	
+	public static Point3d unitVector(Point3d p1, Point3d p2)
+	{
+		System.out.println("Unit vector from " + p1 + " to " + p2 + " " + multiply(1/norm(minus(p2,p1)),minus(p2,p1)));
+		return multiply(1/norm(minus(p2,p1)),minus(p2,p1));
+	}
+	
+	public static LimitedArc roundVertex(Point3d p1, Point3d p2, Point3d p3, double radius)
+	{
+		double initialAngle = angle(minus(p3,p2));
+		double finalAngle = angle(minus(p1,p2));
+		
+		if (initialAngle > finalAngle)
+			initialAngle = initialAngle - 2*Math.PI;
+		
+		double teta = finalAngle-initialAngle;
+
+		System.out.println("InitialAngle " + initialAngle*180/Math.PI);
+		System.out.println("FinalAngle " + finalAngle*180/Math.PI);
+		System.out.println("Teta " + teta*180/Math.PI);
+		
+		double alfa = Math.PI-teta;
+		double centerAngle = initialAngle + teta/2;
+		if (teta >= Math.PI)
+		{
+			alfa = teta-Math.PI;
+			double alfaPrima = 2*Math.PI-teta;
+			centerAngle = initialAngle - alfaPrima/2;
+		}		
+		System.out.println("Alpha " + alfa*180/Math.PI);
+		
+		double distanceToCenterFromP2 = Math.sqrt(1+Math.tan(alfa/2)*Math.tan(alfa/2))*radius;
+		System.out.println("Angle to center point " + centerAngle*180/Math.PI);
+
+		Point3d center = new Point3d(p2.getX()+distanceToCenterFromP2*Math.cos(centerAngle), p2.getY()+distanceToCenterFromP2*Math.sin(centerAngle),p2.getZ());
+		
+		Point3d initialPoint = plus(p2,multiply(Math.tan(alfa/2)*radius, unitVector(p2,p1)));
+		
+		LimitedArc arc = new LimitedArc();
+		if (teta >= Math.PI)
+			arc = new LimitedArc(center, initialPoint, -alfa, 1);
+		else
+			arc = new LimitedArc(center, initialPoint, alfa, 1);
+		
+		return arc;
+	}
 }

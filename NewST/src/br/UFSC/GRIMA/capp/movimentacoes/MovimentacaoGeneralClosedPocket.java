@@ -125,6 +125,14 @@ public class MovimentacaoGeneralClosedPocket {
 				}
 			}
 		}
+		LinearPath line = new LinearPath(linearSaida.get(linearSaida.size()-1).getFinalPoint(), linearSaida.get(0).getInitialPoint());
+		linearSaida.add(line);
+		
+		System.out.println("LinearPath for acabamento");
+		for (LinearPath l:linearSaida)
+		{
+			System.out.println(l.getInitialPoint() + " to " + l.getFinalPoint());
+		}
 		return linearSaida;
 	}
 	

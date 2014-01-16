@@ -124,8 +124,8 @@ public class GeometricOperations
 		
 	public static Point3d nearestPoint(Point3d p,  LimitedLine line)
 	{
-		Point3d p1 = line.getSp();
-		Point3d p0 = line.getFp();
+		Point3d p1 = line.getFinalPoint();
+		Point3d p0 = line.getInitialPoint();
 		
 		Point3d v = new Point3d(p1.getX() - p0.getX(), p1.getY()-p0.getY(), p1.getZ()-p0.getZ());
 		Point3d w = new Point3d(p.getX() - p0.getX(), p.getY()-p0.getY(), p.getZ()-p0.getZ());
@@ -171,9 +171,9 @@ public class GeometricOperations
 	
 	public static double minimumDistance(LimitedLine S1, LimitedLine S2)
 	{
-	    Point3d   u = new Point3d(S1.getSp().getX() - S1.getFp().getX(), S1.getSp().getY() - S1.getFp().getY(), S1.getSp().getZ() - S1.getFp().getZ());
-	    Point3d   v = new Point3d(S2.getSp().getX() - S2.getFp().getX(), S2.getSp().getY() - S2.getFp().getY(), S2.getSp().getZ() - S2.getFp().getZ());
-	    Point3d   w = new Point3d(S1.getFp().getX() - S2.getFp().getX(), S1.getFp().getY() - S2.getFp().getY(), S1.getFp().getZ() - S2.getFp().getZ());
+	    Point3d   u = new Point3d(S1.getFinalPoint().getX() - S1.getInitialPoint().getX(), S1.getFinalPoint().getY() - S1.getInitialPoint().getY(), S1.getFinalPoint().getZ() - S1.getInitialPoint().getZ());
+	    Point3d   v = new Point3d(S2.getFinalPoint().getX() - S2.getInitialPoint().getX(), S2.getFinalPoint().getY() - S2.getInitialPoint().getY(), S2.getFinalPoint().getZ() - S2.getInitialPoint().getZ());
+	    Point3d   w = new Point3d(S1.getInitialPoint().getX() - S2.getInitialPoint().getX(), S1.getInitialPoint().getY() - S2.getInitialPoint().getY(), S1.getInitialPoint().getZ() - S2.getInitialPoint().getZ());
 	    
 	    double    a = escalar(u,u);         // always >= 0
 	    double    b = escalar(u,v);
@@ -298,11 +298,11 @@ public class GeometricOperations
 		Point3d nearestFromLine = nearestPoint(arc.getCenter(), line);
 		//System.out.println("Nearest calculated*****" + nearestFromLine);
 		
-		if(chooseMinimum(distance(arc.getCenter(), line.getFp()), distance(arc.getCenter(), line.getSp())) <= arc.getRadius())
+		if(chooseMinimum(distance(arc.getCenter(), line.getInitialPoint()), distance(arc.getCenter(), line.getFinalPoint())) <= arc.getRadius())
 		{
 			//System.out.println("Line within the arc ");
 			//System.out.println("Arc Initial to line" + minimumDistance(arc.getInitialPoint(), line));
-			distance = chooseMinimum(minimumDistance(arc.getInitialPoint(), line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getFp(), arc), minimumDistance(line.getSp(), arc));
+			distance = chooseMinimum(minimumDistance(arc.getInitialPoint(), line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getInitialPoint(), arc), minimumDistance(line.getFinalPoint(), arc));
 			return distance;
 		}
 		
@@ -311,7 +311,7 @@ public class GeometricOperations
 		if (!contentsPoint(normalPoint, arc))
 		{
 			//System.out.println("normalPoint is not within the arc");
-			return chooseMinimum(minimumDistance(arc.getInitialPoint(),line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getFp(),arc), minimumDistance(line.getSp(), arc));
+			return chooseMinimum(minimumDistance(arc.getInitialPoint(),line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getInitialPoint(),arc), minimumDistance(line.getFinalPoint(), arc));
 		}
 
 		distance = distance(normalPoint,nearestFromLine);

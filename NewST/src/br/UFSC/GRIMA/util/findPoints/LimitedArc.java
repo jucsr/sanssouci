@@ -62,6 +62,7 @@ public class LimitedArc extends LimitedElement
 		this.initialPoint = initialPoint;
 		this.deltaAngle = deltaAngle;
 		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
+		this.sense = sense;
 		
 //		Point3d axisX = new Point3d(1.0, 0, 0);
 		Point3d vectorInitial = GeometricOperations.minus(this.initialPoint, this.center);
@@ -83,14 +84,14 @@ public class LimitedArc extends LimitedElement
 		{
 			this.finalPoint = this.center;
 		}
-//		System.out.println("-------------------");
-//		System.out.println("Constructing arc ");
-//		System.out.println("center " + this.center);
-//		System.out.println("initialPoint " + this.initialPoint);
-//		System.out.println("initialVector " + vectorInitial);
-//		System.out.println("initialAngle " + initialAngle*180/Math.PI);
-//		System.out.println("deltaAngle " + deltaAngle*180/Math.PI);
-//		System.out.println("finalPoint " + finalPoint);
+		System.out.println("-------------------");
+		System.out.println("Constructing arc ");
+		System.out.println("center " + this.center);
+		System.out.println("initialPoint " + this.initialPoint);
+		System.out.println("initialVector " + vectorInitial);
+		System.out.println("initialAngle " + initialAngle*180/Math.PI);
+		System.out.println("deltaAngle " + deltaAngle*180/Math.PI);
+		System.out.println("finalPoint " + finalPoint);
 	}
 	
 	/**

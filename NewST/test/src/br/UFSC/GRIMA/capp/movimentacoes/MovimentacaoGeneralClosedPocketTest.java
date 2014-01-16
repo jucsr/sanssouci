@@ -228,6 +228,8 @@ public class MovimentacaoGeneralClosedPocketTest {
 	public void testMovimentacao()
 	{
 		GeneralClosedPocket pocket = (GeneralClosedPocket)this.ws.getFeature();
+		
+		double ae = this.ws.getCondicoesUsinagem().getAe();
 		double radius = this.ws.getFerramenta().getDiametroFerramenta()/2;
 		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd(pocket, radius);
 		System.out.println("Vertices " +  addPocket.getVertex().size());

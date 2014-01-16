@@ -250,7 +250,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			else if (e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
-				System.out.println(i + "\t Line from " + line.getFp() + " to " + line.getSp());
+				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
 			}
 			
 			i++;
@@ -268,7 +268,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			else if (e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
-				System.out.println(i + "\t Line from " + line.getFp() + " to " + line.getSp());
+				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
 			}			
 			i++;			
 		}

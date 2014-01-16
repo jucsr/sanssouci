@@ -123,7 +123,7 @@ public class GeneralClosedPocketAdd
 				{
 					if (tempElements.getClass().equals(LimitedLine.class))
 					{
-						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getSp();
+						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
 						tempElements.add(new LimitedLine(lastPoint, p2));
 					}
 				}
@@ -136,7 +136,7 @@ public class GeneralClosedPocketAdd
 					System.out.println("Size  elements " + tempElements.size());
 					if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedLine.class))
 					{
-						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getSp();
+						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
 						tempElements.add(new LimitedLine(lastPoint, arcNew.getInitialPoint()));
 					}
 					else if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedArc.class))
@@ -154,7 +154,7 @@ public class GeneralClosedPocketAdd
 		Point3d firstPoint = new Point3d();
 		if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedLine.class))
 		{
-			lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getSp();
+			lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
 		}
 		else if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedArc.class))
 		{
@@ -163,7 +163,7 @@ public class GeneralClosedPocketAdd
 		
 		if (tempElements.get(0).getClass().equals(LimitedLine.class))
 		{
-			firstPoint = ((LimitedLine)tempElements.get(0)).getFp();
+			firstPoint = ((LimitedLine)tempElements.get(0)).getInitialPoint();
 		}
 		else if (tempElements.get(0).getClass().equals(LimitedArc.class))
 		{

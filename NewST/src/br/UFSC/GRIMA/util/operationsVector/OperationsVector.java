@@ -115,8 +115,8 @@ public class OperationsVector
 	public static Point3d nearestPoint(Point3d p0, LimitedLine line)
 	{
 		Point3d n = new Point3d();
-		Point3d p1 = line.getFp();
-		Point3d p2 = line.getSp();
+		Point3d p1 = line.getInitialPoint();
+		Point3d p2 = line.getFinalPoint();
 		
 		double u = ((p0.x - p1.x) * (p2.x - p1.x) + (p0.y - p1.y) * (p2.y - p1.y)) / 
 				(distanceVector(p1, p2) * distanceVector(p1, p2));
@@ -154,8 +154,8 @@ public class OperationsVector
 	{
 		double d = 0;
 		Point3d v0 = point;
-		Point3d v1 = line.getFp();
-		Point3d v2 = line.getSp();
+		Point3d v1 = line.getInitialPoint();
+		Point3d v2 = line.getFinalPoint();
 
 		d = moduleVector(crossVector(plusVector(v0, negativeVector(v1)), plusVector(v0, negativeVector(v2)))) / moduleVector(plusVector(v2, negativeVector(v1)));
 
@@ -309,10 +309,10 @@ public class OperationsVector
 			//System.out.println("d1="+d1);
 			dTemp=d1;
 		}
-		double dl1=distanceVector(l1.getFp(),l2.getFp());
-		double dl2=distanceVector(l1.getFp(),l2.getSp());
-		double dl3=distanceVector(l1.getSp(),l2.getFp());
-		double dl4=distanceVector(l1.getSp(),l2.getSp());
+		double dl1=distanceVector(l1.getInitialPoint(),l2.getInitialPoint());
+		double dl2=distanceVector(l1.getInitialPoint(),l2.getFinalPoint());
+		double dl3=distanceVector(l1.getFinalPoint(),l2.getInitialPoint());
+		double dl4=distanceVector(l1.getFinalPoint(),l2.getFinalPoint());
 		
 		/*
 		System.out.println("dl1="+dl1);
@@ -497,8 +497,8 @@ public class OperationsVector
 	 */
 	public static Point3d pointInDistanceToSegment(LimitedLine line, Point3d ponto)
 	{
-		Point3d p1 = line.getFp();
-		Point3d p2 = line.getSp();
+		Point3d p1 = line.getInitialPoint();
+		Point3d p2 = line.getFinalPoint();
 		
 		final double xDelta = p2.getX() - p1.getX();
 		final double yDelta = p2.getY() - p1.getY();

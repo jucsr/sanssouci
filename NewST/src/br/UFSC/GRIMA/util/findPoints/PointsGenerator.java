@@ -71,18 +71,18 @@ public class PointsGenerator {
 		double xTmp = 0, yTmp = 0, zTmp = 0;
 		if(!this.limitedLine.vertical)
 		{
-			this.h = (limitedLine.getSp().x - limitedLine.getFp().x) / (this.N - 1);
-			System.out.println("point FP = " + limitedLine.getFp());
-			System.out.println("point SP = " + limitedLine.getSp());
+			this.h = (limitedLine.getFinalPoint().x - limitedLine.getInitialPoint().x) / (this.N - 1);
+			System.out.println("point FP = " + limitedLine.getInitialPoint());
+			System.out.println("point SP = " + limitedLine.getFinalPoint());
 			
 			System.out.println("h = " + h);
 			
 			
 			for(int i = 0; i< N; i++)
 			{
-				xTmp = this.limitedLine.getFp().x + i * this.h;
-				yTmp = this.limitedLine.getFp().y + this.limitedLine.getM() * (xTmp - this.limitedLine.getFp().x);
-				zTmp = this.limitedLine.getFp().z;
+				xTmp = this.limitedLine.getInitialPoint().x + i * this.h;
+				yTmp = this.limitedLine.getInitialPoint().y + this.limitedLine.getM() * (xTmp - this.limitedLine.getInitialPoint().x);
+				zTmp = this.limitedLine.getInitialPoint().z;
 				this.points.add(new Point3d(xTmp, yTmp, zTmp));
 			}
 		} else

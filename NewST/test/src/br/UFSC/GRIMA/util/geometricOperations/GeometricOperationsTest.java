@@ -67,13 +67,13 @@ public class GeometricOperationsTest
 	public void testeMinimumDistance()
 	{
 		System.out.println("*********************************************************");
-		System.out.println("Nearest Point to Line limited by " + " " + line3.getFp() + " " + line3.getSp());
+		System.out.println("Nearest Point to Line limited by " + " " + line3.getInitialPoint() + " " + line3.getFinalPoint());
 		System.out.println("from point " + p3_3D);
 		System.out.println(GeometricOperations.minimumDistance(p3_3D, line3));
 		System.out.println("*********************************************************");
 		System.out.println("Minimum distance between Limited lines");
-		System.out.println("Line1 from " + line1.getFp() + " to " + line1.getSp());
-		System.out.println("Line2 from " + line2.getFp() + " to " + line2.getSp());
+		System.out.println("Line1 from " + line1.getInitialPoint() + " to " + line1.getFinalPoint());
+		System.out.println("Line2 from " + line2.getInitialPoint() + " to " + line2.getFinalPoint());
 		System.out.println(GeometricOperations.minimumDistance(line1,line2));
 		System.out.println("*********************************************************");
 		System.out.println("Circle segment limited ");
@@ -106,8 +106,8 @@ public class GeometricOperationsTest
 		System.out.println("with Radius " + arc4.getRadius());
 		System.out.println("and center " + arc4.getCenter());
 		System.out.println("To Line ");
-		System.out.println("From " + line3.getFp());
-		System.out.println("To " + line3.getSp());
+		System.out.println("From " + line3.getInitialPoint());
+		System.out.println("To " + line3.getFinalPoint());
 		System.out.println("Distance " + GeometricOperations.minimumDistance(line3, arc4));
 		System.out.println("*********************************************************");
 		System.out.println("Circle segment limited ");

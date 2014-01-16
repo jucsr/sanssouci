@@ -94,7 +94,7 @@ public class MovimentacaoGeneralClosedPocket {
 			if (e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
-				saida.add(new LinearPath(line.getFp(), line.getSp(), LinearPath.SLOW_MOV));
+				saida.add(new LinearPath(line.getInitialPoint(), line.getFinalPoint(), LinearPath.SLOW_MOV));
 			}
 			else if(e.isLimitedArc())
 			{

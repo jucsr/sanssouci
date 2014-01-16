@@ -258,7 +258,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 			i++;
 		}
 		
-		ArrayList<LimitedElement> elements = GeometricOperations.acabamentoPath(addPocket);
+		ArrayList<LimitedElement> elements = GeometricOperations.acabamentoPath(addPocket, ws.getFerramenta().getDiametroFerramenta()/2);
 		i = 0;
 		for (LimitedElement e:elements)
 		{

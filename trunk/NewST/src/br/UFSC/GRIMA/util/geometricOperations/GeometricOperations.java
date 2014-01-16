@@ -494,7 +494,7 @@ public class GeometricOperations
 	 * @param addPocket
 	 * @return -- o array de elementos do path de acabamento
 	 */
-	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketAdd addPocket)	
+	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketAdd addPocket, double radius)	
 	{		
 		ArrayList<LimitedElement> elements = addPocket.getElements();
 		ArrayList<LimitedArc> arcElements = new ArrayList<LimitedArc>();
@@ -508,12 +508,21 @@ public class GeometricOperations
 				
 				if (arc.getDeltaAngle()<0)
 				{
-					Point3d newInitialPoint = plus(arc.getCenter(),multiply(2*arc.getRadius(),unitVector(arc.getCenter(),arc.getInitialPoint())));
+					Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+radius),unitVector(arc.getCenter(),arc.getInitialPoint())));
 					System.out.println("Modifying");
 					System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
 					System.out.println("To");
 					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
 				}
+				else
+				{
+					Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-radius),unitVector(arc.getCenter(),arc.getInitialPoint())));
+					System.out.println("Modifying");
+					System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+					System.out.println("To");
+					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
+				}
+				
 				arcElements.add(arc);
 				System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
 			}
@@ -535,34 +544,10 @@ public class GeometricOperations
 				arc2 = arcElements.get(0);				
 			}
 			
-			if(arc1.getDeltaAngle()<0)
-			{
-				LimitedLine line = new LimitedLine();
-				if(arc2.getDeltaAngle()<0)
-				{
-					line = new LimitedLine(arc1.getFinalPoint(), arc2.getInitialPoint());
-				}				
-				else
-				{
-					line = new LimitedLine(arc1.getFinalPoint(), arc2.getCenter());
-				}
-				acabamentoElements.add(arc1);
-				acabamentoElements.add(line);
-				
-			}
-			else
-			{
-				LimitedLine line = new LimitedLine();
-				if(arc2.getDeltaAngle()<0)
-				{
-					line = new LimitedLine(arc1.getCenter(), arc2.getInitialPoint());
-				}				
-				else
-				{
-					line = new LimitedLine(arc1.getCenter(), arc2.getCenter());
-				}
-				acabamentoElements.add(line);
-			}
+			LimitedLine line = new LimitedLine();
+			line = new LimitedLine(arc1.getFinalPoint(), arc2.getInitialPoint());
+			acabamentoElements.add(arc1);
+			acabamentoElements.add(line);
 		}
 		
 		return acabamentoElements;
@@ -611,7 +596,7 @@ public class GeometricOperations
 	public static ArrayList<LimitedElement> firstPathDesbaste (GeneralClosedPocket pocket, double allowance)
 	{
 		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd(pocket, allowance);
-		return acabamentoPath(addPocket);
+		return acabamentoPath(addPocket, allowance);
 	}
 	
 	public static ArrayList<LimitedElement> parallelPath (GeneralClosedPocketAdd addPocket, double distance)	

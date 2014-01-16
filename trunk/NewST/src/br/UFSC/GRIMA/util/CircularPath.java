@@ -18,6 +18,14 @@ public class CircularPath extends Path
 	public double angulo;
 	double initialAngle;
 	double finalAngle;
+	
+	public CircularPath(Point3d center, Point3d initialPoint, Point3d finalPoint, double angulo, int sense)
+	{
+		super(initialPoint, finalPoint);
+		this.angulo = angulo;
+		this.sense = sense;
+	}
+	
 	public CircularPath(Point3d initialPoint, Point3d finalPoint,  Point3d center) 
 	{
 		super(initialPoint, finalPoint);

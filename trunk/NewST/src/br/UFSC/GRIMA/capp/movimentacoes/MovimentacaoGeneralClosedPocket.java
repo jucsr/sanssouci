@@ -13,8 +13,6 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
-import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraCavidade;
-import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -22,7 +20,14 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
+import br.UFSC.GRIMA.util.Path;
+import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
+import br.UFSC.GRIMA.util.findPoints.LimitedLine;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 
 public class MovimentacaoGeneralClosedPocket {
@@ -38,61 +43,63 @@ public class MovimentacaoGeneralClosedPocket {
 		this.ferramenta = this.ws.getFerramenta();
 	}
 	
-	public ArrayList<Point2D> getAcabamento()
+//	public ArrayList<Point2D> getAcabamento()
+//	{
+//		ArrayList<Point2D> acabamento = new ArrayList<Point2D>();
+//		Double radio = this.ferramenta.getDiametroFerramenta()/2;
+//		GeneralPath forma = new GeneralPath(); 
+//		ArrayList<Point2D> contour = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(((GeneralClosedPocket)this.ws.getFeature()).getVertexPoints()),radio);
+//		
+//		System.out.println("Contour Points");
+//		
+//		int iT = 0;
+//		for (Point2D p:contour)
+//		{
+//			boolean inside = false;
+//			System.out.println(p.getX() + "\t" + p.getY());
+//			if (iT==0)
+//				forma.moveTo(p.getX(), p.getY());
+//			else 
+//				forma.lineTo(p.getX(), p.getY());			
+//		}
+//		forma.closePath();
+//		
+//		//First point acabamento index 0 on contour
+//		for (int i = 0; i < contour.size(); i ++)
+//		{
+//			LinearPath pathTmpLinearPath;
+//			if (i!=0 || i!=contour.size()-1)
+//			{
+//				acabamento.add(innerPoint(radio, contour.get(i-1), contour.get(i), contour.get(i+1), forma));
+//			}			
+//			else if (i==0)
+//			{
+//				acabamento.add(innerPoint(radio, contour.get(contour.size()-1), contour.get(i), contour.get(i+1), forma));
+//			}
+//			else if (i==contour.size()-1)
+//			{
+//				acabamento.add(innerPoint(radio, contour.get(i-1), contour.get(i), contour.get(0), forma));
+//			}
+//			
+//		}		
+//		return acabamento;
+//	}
+	public ArrayList<Path> getAcabamento(Workingstep ws)
 	{
-		ArrayList<Point2D> acabamento = new ArrayList<Point2D>();
-		Double radio = this.ferramenta.getDiametroFerramenta()/2;
-		GeneralPath forma = new GeneralPath(); 
-		ArrayList<Point2D> contour = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(((GeneralClosedPocket)this.ws.getFeature()).getVertexPoints()),radio);
-		
-		System.out.println("Contour Points");
-		
-		int iT = 0;
-		for (Point2D p:contour)
+		ArrayList<Path> saida = new ArrayList<Path>();
+		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd(ws, ws.getFerramenta().getDiametroFerramenta()/2);
+		ArrayList<LimitedElement> acabamentoPath = GeometricOperations.acabamentoPath(addPocket);
+		for (LimitedElement e:acabamentoPath)
 		{
-			boolean inside = false;
-			System.out.println(p.getX() + "\t" + p.getY());
-			if (iT==0)
-				forma.moveTo(p.getX(), p.getY());
-			else 
-				forma.lineTo(p.getX(), p.getY());			
-		}
-		forma.closePath();
-		
-		//First point acabamento index 0 on contour
-		for (int i = 0; i < contour.size(); i ++)
-		{
-			LinearPath pathTmpLinearPath;
-			if (i!=0 || i!=contour.size()-1)
+			if (e.isLimitedLine())
 			{
-				acabamento.add(innerPoint(radio, contour.get(i-1), contour.get(i), contour.get(i+1), forma));
-			}			
-			else if (i==0)
-			{
-				acabamento.add(innerPoint(radio, contour.get(contour.size()-1), contour.get(i), contour.get(i+1), forma));
+				LimitedLine line = (LimitedLine)e;
+				saida.add(new LinearPath(line.getFp(), line.getSp(), LinearPath.SLOW_MOV));
 			}
-			else if (i==contour.size()-1)
+			else if(e.isLimitedArc())
 			{
-				acabamento.add(innerPoint(radio, contour.get(i-1), contour.get(i), contour.get(0), forma));
-			}
-			
-		}		
-		return acabamento;
-	}
-	public ArrayList<LinearPath> getAcabamento(Workingstep ws)
-	{
-		ArrayList<LinearPath> saida = new ArrayList<LinearPath>();
-		ArrayList<Point2D> pontosTrajetoria = this.getAcabamento();
-		for(int i = 0; i < pontosTrajetoria.size(); i++)
-		{
-			LinearPath pathTmp;
-			if(i == 0)
-			{
-				pathTmp = new LinearPath(new Point3d(ws.getFeature().getPosicaoX(), ws.getFeature().getPosicaoY(), ws.getFeature().getPosicaoZ()), new Point3d(pontosTrajetoria.get(0).getX(), pontosTrajetoria.get(0).getY(), 0));
-				saida.add(pathTmp);
-			} else
-			{
-				pathTmp = new LinearPath(new Point3d(pontosTrajetoria.get(i - 1).getX(), pontosTrajetoria.get(i - 1).getY(), ws.getCondicoesUsinagem().getAp()), new Point3d(pontosTrajetoria.get(i).getX(), pontosTrajetoria.get(i).getY(), ws.getCondicoesUsinagem().getAp()));
+				LimitedArc arc = (LimitedArc)e;
+				saida.add(new CircularPath(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter()));
 			}
 		}
 		return saida;

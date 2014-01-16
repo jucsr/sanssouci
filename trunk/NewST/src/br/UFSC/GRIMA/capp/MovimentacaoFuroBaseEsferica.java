@@ -99,7 +99,7 @@ public class MovimentacaoFuroBaseEsferica
 	private Path determinarPathCircular(Point3d center, double raio)
 	{
 		Point3d initialPoint = new Point3d(center.x + raio, center.y, center.z), finalPoint = new Point3d(initialPoint);
-		CircularPath saida = new CircularPath(initialPoint, finalPoint, raio, center);
+		CircularPath saida = new CircularPath(initialPoint, finalPoint, center);
 		saida.setSense(CircularPath.CCW);
 		return saida;
 	}

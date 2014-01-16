@@ -107,8 +107,7 @@ public class MovimentacaoFuroBaseArredondadaTest
 		Point3d finalPoint = new Point3d(0, 10, 0);
 		Point3d center = new Point3d(0, 0, 0);
 		
-		double radius = 10;
-		CircularPath path = new CircularPath(initialPoint, finalPoint, radius, center);
+		CircularPath path = new CircularPath(initialPoint, finalPoint, center);
 		path.setSense(CircularPath.CCW);
 		System.out.println("angulo = " + path.angulo * 180 / Math.PI);
 		System.out.println("angulo IN = " + path.getinicialAngle() * 180 / Math.PI);

@@ -23,7 +23,11 @@ public class GeneralClosedPocketAdd
 	private GeneralPath forma = new GeneralPath();
 	private ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	private double radius;
-	
+	/**
+	 * 
+	 * @param pocket -- general closed pocket qualquer
+	 * @param radius -- raio da ferramenta
+	 */
 	public GeneralClosedPocketAdd(GeneralClosedPocket pocket, double radius)
 	{
 		this.pocket = pocket;

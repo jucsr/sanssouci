@@ -10,8 +10,8 @@ import javax.vecmath.Point3d;
  */
 
 public class LimitedLine extends LimitedElement {
-	private Point3d fp;
-	private Point3d sp;
+	private Point3d initialPoint;
+	private Point3d finalPoint;
 
 	private double a;
 	private double b;
@@ -37,8 +37,8 @@ public class LimitedLine extends LimitedElement {
 		double bp;
 		double cp;
 
-		this.fp = fp;
-		this.sp = sp;
+		this.initialPoint = fp;
+		this.finalPoint = sp;
 
 		ap = (sp.y - fp.y) * (sp.z - fp.z);
 		bp = (sp.x - fp.x) * (sp.z - fp.z);
@@ -56,38 +56,38 @@ public class LimitedLine extends LimitedElement {
 			this.vertical = true;
 		}
 
-		if (this.getFp().x <= this.getSp().x) {
-			this.xminl = this.getFp().x;
-			this.xmaxl = this.getSp().x;
+		if (this.getInitialPoint().x <= this.getFinalPoint().x) {
+			this.xminl = this.getInitialPoint().x;
+			this.xmaxl = this.getFinalPoint().x;
 		} else {
-			this.xminl = this.getSp().x;
-			this.xmaxl = this.getFp().x;
+			this.xminl = this.getFinalPoint().x;
+			this.xmaxl = this.getInitialPoint().x;
 		}
 
-		if (this.getFp().y <= this.getSp().y) {
-			this.yminl = this.getFp().y;
-			this.ymaxl = this.getSp().y;
+		if (this.getInitialPoint().y <= this.getFinalPoint().y) {
+			this.yminl = this.getInitialPoint().y;
+			this.ymaxl = this.getFinalPoint().y;
 		} else {
-			this.yminl = this.getSp().y;
-			this.ymaxl = this.getFp().y;
+			this.yminl = this.getFinalPoint().y;
+			this.ymaxl = this.getInitialPoint().y;
 		}
 
 	}
 
-	public Point3d getFp() {
-		return fp;
+	public Point3d getInitialPoint() {
+		return initialPoint;
 	}
 
-	public void setFp(Point3d fp) {
-		this.fp = fp;
+	public void setInitialPoint(Point3d fp) {
+		this.initialPoint = fp;
 	}
 
-	public Point3d getSp() {
-		return sp;
+	public Point3d getFinalPoint() {
+		return finalPoint;
 	}
 
-	public void setSp(Point3d sp) {
-		this.sp = sp;
+	public void setFinalPoint(Point3d sp) {
+		this.finalPoint = sp;
 	}
 
 	public double getA() {

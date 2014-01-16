@@ -56,6 +56,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.Ponto;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 public class VisualTool {
 
@@ -677,13 +678,13 @@ public class VisualTool {
 				{
 					MovimentacaoGeneralClosedPocket detMov = new MovimentacaoGeneralClosedPocket(wsTmp);
 					ArrayList<LinearPath> path = detMov.getAcabamentoLinear(wsTmp);
+					ArrayList<Point3d> points  = GeometricOperations.linearPathToPoints(path);
 					Vector movimentacao = new Vector();
-					 for(int j = 0; j < path.size(); j++)
+					 for(Point3d p:points)
 						{
-							double xAux = path.get(j).getFinalPoint().getX();
-							double yAux = path.get(j).getFinalPoint().getY();
-							double zAux = -path.get(j).getFinalPoint().getZ();
-							
+							double xAux = p.getX();
+							double yAux = p.getY();
+							double zAux = p.getZ();							
 							movimentacao.add(new Ponto(xAux, yAux, zAux));
 						}
 					 

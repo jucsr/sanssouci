@@ -100,14 +100,25 @@ public class MovimentacaoGeneralClosedPocketTest {
 		this.genClosed.setProfundidade(10);
 		this.genClosed.setRadius(10);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
-		
-		points.add(new Point2D.Double(10,40));
-		points.add(new Point2D.Double(10,80));
+
+		//      First Test		
+//		points.add(new Point2D.Double(10,40));
+//		points.add(new Point2D.Double(10,80));
+//		points.add(new Point2D.Double(120,80));
+//		points.add(new Point2D.Double(120,10));
+//		points.add(new Point2D.Double(50,10));
+//		points.add(new Point2D.Double(50,40));
+
+		points.add(new Point2D.Double(10,10));
+		points.add(new Point2D.Double(50,80));
 		points.add(new Point2D.Double(120,80));
+		points.add(new Point2D.Double(160,10));
 		points.add(new Point2D.Double(120,10));
-		points.add(new Point2D.Double(50,10));
-		points.add(new Point2D.Double(50,40));
-				
+		points.add(new Point2D.Double(85,40));
+		points.add(new Point2D.Double(50,10));		
+		
+		
+		
 //		points.add(new Point2D.Double(79,22));
 //		points.add(new Point2D.Double(47,60));
 //		points.add(new Point2D.Double(81,104));
@@ -231,16 +242,35 @@ public class MovimentacaoGeneralClosedPocketTest {
 		int i = 0;
 		for(LimitedElement e:addPocket.getElements())
 		{
-			if(e.getClass().equals(LimitedArc.class))
+			if(e.isLimitedArc())
 			{
-				System.out.println(i + "\t Arc from " + ((LimitedArc)e).getInitialPoint() + " to " + ((LimitedArc)e).getFinalPoint()); 
+				LimitedArc arc = (LimitedArc)e;
+				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius()); 
 			}
-			else if (e.getClass().equals(LimitedLine.class))
+			else if (e.isLimitedLine())
 			{
-				System.out.println(i + "\t Line from " + ((LimitedLine)e).getFp() + " to " + ((LimitedLine)e).getSp());
+				LimitedLine line = (LimitedLine)e;
+				System.out.println(i + "\t Line from " + line.getFp() + " to " + line.getSp());
 			}
 			
 			i++;
+		}
+		
+		ArrayList<LimitedElement> elements = GeometricOperations.acabamentoPath(addPocket);
+		i = 0;
+		for (LimitedElement e:elements)
+		{
+			if(e.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)e;
+				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
+			}
+			else if (e.isLimitedLine())
+			{
+				LimitedLine line = (LimitedLine)e;
+				System.out.println(i + "\t Line from " + line.getFp() + " to " + line.getSp());
+			}			
+			i++;			
 		}
 	}
 

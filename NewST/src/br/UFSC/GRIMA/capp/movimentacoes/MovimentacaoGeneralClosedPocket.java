@@ -87,7 +87,7 @@ public class MovimentacaoGeneralClosedPocket {
 	public ArrayList<Path> getAcabamento(Workingstep ws)
 	{
 		ArrayList<Path> saida = new ArrayList<Path>();
-		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd(ws, ws.getFerramenta().getDiametroFerramenta()/2);
+		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd((GeneralClosedPocket)ws.getFeature(), ws.getFerramenta().getDiametroFerramenta()/2);
 		ArrayList<LimitedElement> acabamentoPath = GeometricOperations.acabamentoPath(addPocket);
 		for (LimitedElement e:acabamentoPath)
 		{

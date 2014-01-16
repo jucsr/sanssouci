@@ -46,6 +46,7 @@ public class LimitedArc extends LimitedElement
 		this.sense = sense;
 		this.n = n;
 		this.radius = OperationsVector.distanceVector(this.initialPoint, this.center);
+		
 	}
 	
 	/**

@@ -100,7 +100,7 @@ public class MovimentacaoGeneralClosedPocket {
 			else if(e.isLimitedArc())
 			{
 				LimitedArc arc = (LimitedArc)e;
-				saida.add(new CircularPath(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter()));
+				saida.add(new CircularPath(arc.getCenter(), arc.getInitialPoint(), arc.getFinalPoint(), arc.getDeltaAngle(), CircularPath.CCW));
 			}
 		}
 		return saida;

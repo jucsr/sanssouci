@@ -296,7 +296,10 @@ public class CreateGeneralPocket extends CreateGeneralPocketFrame implements Act
 			generalPocket.setForma(forma);
 			generalPocket.setPassante(checkBox1.isSelected());
 			generalPocket.setRugosidade((Double)spinnerRugosidade.getValue());
-			
+			if((Double)spinnerRugosidade.getValue() <=10)
+			{
+				generalPocket.setAcabamento(true);
+			}
 			if(face.validarFeature(generalPocket))
 			{
 				Point3d coordinates = null;

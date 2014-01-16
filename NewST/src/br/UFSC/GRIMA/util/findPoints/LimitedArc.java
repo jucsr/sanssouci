@@ -36,7 +36,7 @@ public class LimitedArc extends LimitedElement
 		this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
 		this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
 		this.finalPoint.setZ(0);
-	}
+	}	
 	
 	public LimitedArc(Point3d center, Point3d initialPoint, Point3d finalPoint, int sense, int n)
 	{
@@ -171,5 +171,13 @@ public class LimitedArc extends LimitedElement
 	}
 	public void setSense(int sense) {
 		this.sense = sense;
+	}
+
+	public double getDeltaAngle() {
+		return deltaAngle;
+	}
+
+	public void setDeltaAngle(double deltaAngle) {
+		this.deltaAngle = deltaAngle;
 	}
 }

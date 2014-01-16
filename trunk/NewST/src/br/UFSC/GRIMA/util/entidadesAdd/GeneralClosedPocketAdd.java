@@ -17,12 +17,11 @@ import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 public class GeneralClosedPocketAdd 
 {
-	private Workingstep ws;
 	private GeneralClosedPocket pocket;
+	
 	private ArrayList<Point3d> vertex = new ArrayList<Point3d>();
 	private GeneralPath forma = new GeneralPath();
 	private ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	private double radius;
 	/**
 	 * 
 	 * @param pocket -- general closed pocket qualquer
@@ -31,26 +30,10 @@ public class GeneralClosedPocketAdd
 	public GeneralClosedPocketAdd(GeneralClosedPocket pocket, double radius)
 	{
 		this.pocket = pocket;
-		this.radius = radius;
-		this.makeMembers();
-	}	
-
-	public GeneralClosedPocketAdd(Feature feature, double radius)
-	{
-		this.pocket = (GeneralClosedPocket)this.ws.getFeature();
-		this.radius = radius;		
-		this.makeMembers();
+		this.makeMembers(radius);
 	}	
 	
-	public GeneralClosedPocketAdd(Workingstep ws, double radius)
-	{
-		this.ws = ws;
-		this.pocket = (GeneralClosedPocket)this.ws.getFeature();
-		this.radius = radius;
-		this.makeMembers();
-	}
-	
-	private void makeMembers()
+	private void makeMembers(double radius)
 	{
 		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(this.pocket.getVertexPoints()))
 		{
@@ -73,7 +56,7 @@ public class GeneralClosedPocketAdd
 				this.forma.closePath();
 			i++;
 		}				
-		this.elements = this.roundElements(this.radius);
+		this.elements = this.roundElements(radius);
 	}
 
 	private ArrayList<LimitedElement> roundElements(double radius)
@@ -175,15 +158,6 @@ public class GeneralClosedPocketAdd
 		return tempElements;
 	}
 	
-	
-	public Workingstep getWs() {
-		return ws;
-	}
-
-	public void setWs(Workingstep ws) {
-		this.ws = ws;
-	}
-
 	public GeneralClosedPocket getPocket() {
 		return pocket;
 	}
@@ -214,13 +188,5 @@ public class GeneralClosedPocketAdd
 
 	public void setElements(ArrayList<LimitedElement> elements) {
 		this.elements = elements;
-	}
-
-	public double getRadius() {
-		return radius;
-	}
-
-	public void setRadius(double radius) {
-		this.radius = radius;
 	}
 }

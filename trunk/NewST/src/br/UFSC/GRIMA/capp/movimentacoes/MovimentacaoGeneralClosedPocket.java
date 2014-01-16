@@ -104,6 +104,30 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		return saida;
 	}
+	
+	public ArrayList<LinearPath> getAcabamentoLinear(Workingstep ws)
+	{
+		ArrayList<Path> saida = getAcabamento(ws);
+		ArrayList<LinearPath> linearSaida = new ArrayList<LinearPath>();		
+		for(Path s:saida)
+		{
+			if (s.isLine())
+			{
+				LinearPath line = (LinearPath)s;
+				linearSaida.add(line);
+			}
+			if (s.isCircular())
+			{
+				CircularPath circ = (CircularPath)s;
+				for(LinearPath line:GeometricOperations.arcToLinear(circ, 10))
+				{
+					linearSaida.add(line);
+				}
+			}
+		}
+		return linearSaida;
+	}
+	
 	public static Point2D outterPoint (double radio, Point2D p1, Point2D p2, Point2D p3, GeneralPath forma)
 	{
 		Point2D outPoint =  new Point2D.Double();

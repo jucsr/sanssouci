@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -563,5 +565,34 @@ public class GeometricOperations
 		}
 		
 		return acabamentoElements;
+	}
+	/**
+	 * 
+	 * @param arcPath 
+	 * @param n : number of lines to make the arc
+	 * @return : ArrayList of LinearPath
+	 */
+	public static ArrayList<LinearPath> arcToLinear(CircularPath arcPath, int n)
+	{
+		ArrayList<LinearPath> linearPath = new ArrayList<LinearPath>();
+		LimitedArc arc = new LimitedArc(arcPath.getCenter(), arcPath.getInitialPoint(), arcPath.getAngulo(),1);
+		double varAngle = arc.getDeltaAngle()/n;
+		double initialAngle = angle(unitVector(arc.getCenter(),arc.getInitialPoint()));
+		for(int i = 0; i < n; i++)
+		{
+			double x1 = arc.getRadius()*Math.cos(initialAngle+i*varAngle);
+			double y1 = arc.getRadius()*Math.sin(initialAngle+i*varAngle);
+			
+			double x2 = arc.getRadius()*Math.cos(initialAngle+(i+1)*varAngle);
+			double y2 = arc.getRadius()*Math.sin(initialAngle+(i+1)*varAngle);
+			
+			
+			Point3d p1 = new Point3d(x1, y1, arc.getCenter().getZ());
+			Point3d p2 = new Point3d(x2, y2, arc.getCenter().getZ());
+			LinearPath linear = new LinearPath(p1, p2);
+			
+			linearPath.add(linear);
+		}
+		return linearPath;
 	}
 }

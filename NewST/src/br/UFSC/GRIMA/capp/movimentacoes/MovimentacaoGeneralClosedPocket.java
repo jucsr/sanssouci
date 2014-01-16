@@ -86,6 +86,7 @@ public class MovimentacaoGeneralClosedPocket {
 //	}
 	public ArrayList<Path> getAcabamento(Workingstep ws)
 	{
+		System.out.println("Entered here");
 		ArrayList<Path> saida = new ArrayList<Path>();
 		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd((GeneralClosedPocket)ws.getFeature(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		
@@ -100,6 +101,10 @@ public class MovimentacaoGeneralClosedPocket {
 			else if(e.isLimitedArc())
 			{
 				LimitedArc arc = (LimitedArc)e;
+				System.out.println("center " + arc.getCenter());
+				System.out.println("initial " + arc.getInitialPoint());
+				System.out.println("final " + arc.getFinalPoint());
+				System.out.println("deltaAngle " + arc.getDeltaAngle());
 				saida.add(new CircularPath(arc.getCenter(), arc.getInitialPoint(), arc.getFinalPoint(), arc.getDeltaAngle(), CircularPath.CCW));
 			}
 		}
@@ -108,7 +113,10 @@ public class MovimentacaoGeneralClosedPocket {
 	
 	public ArrayList<LinearPath> getAcabamentoLinear(Workingstep ws)
 	{
-		ArrayList<Path> saida = getAcabamento(ws);
+		System.out.println("WS received");
+		ArrayList<Path> saida = new ArrayList<Path>(); 
+		saida = getAcabamento(ws);
+		System.out.println("saida generated");
 		ArrayList<LinearPath> linearSaida = new ArrayList<LinearPath>();		
 		for(Path s:saida)
 		{
@@ -126,8 +134,6 @@ public class MovimentacaoGeneralClosedPocket {
 				}
 			}
 		}
-//		LinearPath line = new LinearPath(linearSaida.get(linearSaida.size()-1).getFinalPoint(), linearSaida.get(0).getInitialPoint());
-//		linearSaida.add(line);
 		
 		System.out.println("LinearPath for acabamento");
 		for (LinearPath l:linearSaida)

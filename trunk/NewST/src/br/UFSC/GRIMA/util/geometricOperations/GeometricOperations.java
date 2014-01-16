@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
 public class GeometricOperations 
@@ -441,7 +443,7 @@ public class GeometricOperations
 	
 	public static Point3d unitVector(Point3d p1, Point3d p2)
 	{
-		System.out.println("Unit vector from " + p1 + " to " + p2 + " " + multiply(1/norm(minus(p2,p1)),minus(p2,p1)));
+		//System.out.println("Unit vector from " + p1 + " to " + p2 + " " + multiply(1/norm(minus(p2,p1)),minus(p2,p1)));
 		return multiply(1/norm(minus(p2,p1)),minus(p2,p1));
 	}
 	
@@ -483,5 +485,79 @@ public class GeometricOperations
 			arc = new LimitedArc(center, initialPoint, alfa, 1);
 		
 		return arc;
+	}
+	
+	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketAdd addPocket)	
+	{		
+		ArrayList<LimitedElement> elements = addPocket.getElements();
+		ArrayList<LimitedArc> arcElements = new ArrayList<LimitedArc>();
+		ArrayList<LimitedElement> acabamentoElements = new ArrayList<LimitedElement>();
+		
+		for (LimitedElement e:elements)
+		{
+			if (e.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)e;
+				
+				if (arc.getDeltaAngle()<0)
+				{
+					Point3d newInitialPoint = plus(arc.getCenter(),multiply(2*arc.getRadius(),unitVector(arc.getCenter(),arc.getInitialPoint())));
+					System.out.println("Modifying");
+					System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+					System.out.println("To");
+					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
+				}
+				arcElements.add(arc);
+				System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+			}
+		}
+		
+		for (int i = 0; i < arcElements.size(); i++)
+		{
+			LimitedArc arc1 = new LimitedArc();
+			LimitedArc arc2 = new LimitedArc();
+			
+			if(i!=arcElements.size()-1)
+			{
+				arc1 = arcElements.get(i);
+				arc2 = arcElements.get(i+1);
+			}
+			else
+			{
+				arc1 = arcElements.get(i);
+				arc2 = arcElements.get(0);				
+			}
+			
+			if(arc1.getDeltaAngle()<0)
+			{
+				LimitedLine line = new LimitedLine();
+				if(arc2.getDeltaAngle()<0)
+				{
+					line = new LimitedLine(arc1.getFinalPoint(), arc2.getInitialPoint());
+				}				
+				else
+				{
+					line = new LimitedLine(arc1.getFinalPoint(), arc2.getCenter());
+				}
+				acabamentoElements.add(arc1);
+				acabamentoElements.add(line);
+				
+			}
+			else
+			{
+				LimitedLine line = new LimitedLine();
+				if(arc2.getDeltaAngle()<0)
+				{
+					line = new LimitedLine(arc1.getCenter(), arc2.getInitialPoint());
+				}				
+				else
+				{
+					line = new LimitedLine(arc1.getCenter(), arc2.getCenter());
+				}
+				acabamentoElements.add(line);
+			}
+		}
+		
+		return acabamentoElements;
 	}
 }

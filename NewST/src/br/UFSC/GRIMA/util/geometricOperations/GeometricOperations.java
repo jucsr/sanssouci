@@ -595,4 +595,15 @@ public class GeometricOperations
 		}
 		return linearPath;
 	}
+	
+	public static ArrayList<Point3d> linearPathToPoints(ArrayList<LinearPath> linearPath)
+	{
+		ArrayList<Point3d> points = new ArrayList<Point3d>();
+		for (LinearPath l:linearPath)
+		{
+			points.add(l.getInitialPoint());
+			points.add(l.getFinalPoint());
+		}
+		return points;
+	}
 }

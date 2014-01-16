@@ -51,7 +51,7 @@ public class GeometricOperationsTest
 	LimitedArc arc3 = new LimitedArc(center2, initialPoint3_3D, Math.PI, 1);
 	
 	LimitedArc arc4 = new LimitedArc(center3, initialPoint4_3D, 3*Math.PI/2, 1);
-	LimitedArc arc5 = new LimitedArc(center4, initialPoint5_3D, 180*Math.PI/180.0, 1);
+	LimitedArc arc5 = new LimitedArc(center4, initialPoint5_3D, 240*Math.PI/180.0, 1);
 	
 	Point3d testPoint = new Point3d(-0.5, -0.5, 0);
 	Point3d testPoint2 = new Point3d(1.0, 13.0, 0);

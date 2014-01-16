@@ -676,7 +676,7 @@ public class VisualTool {
 				}else if(featClass.equals(GeneralClosedPocket.class) && wsTmp.getOperation().getClass().equals(BottomAndSideFinishMilling.class))
 				{
 					MovimentacaoGeneralClosedPocket detMov = new MovimentacaoGeneralClosedPocket(wsTmp);
-					ArrayList<LinearPath> path = detMov.getAcabamento(wsTmp);
+					ArrayList<Path> path = detMov.getAcabamento(wsTmp);
 					Vector movimentacao = new Vector();
 					 for(int j = 0; j < path.size(); j++)
 						{

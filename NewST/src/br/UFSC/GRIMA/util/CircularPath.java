@@ -1,6 +1,8 @@
 package br.UFSC.GRIMA.util;
 
 import javax.vecmath.Point3d;
+
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 /**
  * 
  * @author Jc
@@ -16,10 +18,10 @@ public class CircularPath extends Path
 	public double angulo;
 	double initialAngle;
 	double finalAngle;
-	public CircularPath(Point3d initialPoint, Point3d finalPoint, double radius, Point3d center) 
+	public CircularPath(Point3d initialPoint, Point3d finalPoint,  Point3d center) 
 	{
 		super(initialPoint, finalPoint);
-		this.radius = radius;
+		this.radius = GeometricOperations.distance(initialPoint, center);
 		this.center = center;
 		this.calculateAngle(initialPoint, finalPoint);
 	}

@@ -486,7 +486,11 @@ public class GeometricOperations
 		
 		return arc;
 	}
-	
+	/**
+	 * 
+	 * @param addPocket
+	 * @return -- o array de elementos do path de acabamento
+	 */
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketAdd addPocket)	
 	{		
 		ArrayList<LimitedElement> elements = addPocket.getElements();

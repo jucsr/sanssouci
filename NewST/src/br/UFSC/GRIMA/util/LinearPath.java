@@ -8,6 +8,16 @@ public class LinearPath extends Path
 	public static final int SLOW_MOV = 0;
 	private int tipoDeMovimento = 0;
 	
+	public LinearPath(Point3d initialPoint, Point3d finalPoint) 
+	{
+		super(initialPoint, finalPoint);
+	}
+	
+	public LinearPath(Point3d initialPoint, Point3d finalPoint, int tipoDeMovimento) 
+	{
+		super(initialPoint, finalPoint);
+		this.tipoDeMovimento = tipoDeMovimento;
+	}
 	public int getTipoDeMovimento() {
 		return tipoDeMovimento;
 	}
@@ -16,10 +26,4 @@ public class LinearPath extends Path
 		this.tipoDeMovimento = tipoDeMovimento;
 	}
 
-	public LinearPath(Point3d initialPoint, Point3d finalPoint) 
-	{
-		super(initialPoint, finalPoint);
-	}
-	
-	
 }

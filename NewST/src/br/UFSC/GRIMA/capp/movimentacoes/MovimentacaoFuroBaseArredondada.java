@@ -110,7 +110,7 @@ public class MovimentacaoFuroBaseArredondada
 				horiz.setTipoDeMovimento(LinearPath.SLOW_MOV);
 				this.movimentacaoDesbaste.add(horiz);
 				
-				CircularPath anelTmp = new CircularPath(horiz.getFinalPoint(), horiz.getFinalPoint(), raioAtual, (new Point3d(furo.X, furo.Y, zAtual)));
+				CircularPath anelTmp = new CircularPath(horiz.getFinalPoint(), horiz.getFinalPoint(), (new Point3d(furo.X, furo.Y, zAtual)));
 				anelTmp.setAngulo(2 * Math.PI);
 				anelTmp.setSense(CircularPath.CCW);
 				this.movimentacaoDesbaste.add(anelTmp);
@@ -268,7 +268,7 @@ public class MovimentacaoFuroBaseArredondada
 			mov.add(vert);
 			
 //			System.out.println("ZAtual = " + zAtual);
-			CircularPath anel = new CircularPath(mov.get(mov.size() - 1).getFinalPoint(), mov.get(mov.size() - 1).getFinalPoint(), radiusTmp, new Point3d(furo.X, furo.Y, zAtual));
+			CircularPath anel = new CircularPath(mov.get(mov.size() - 1).getFinalPoint(), mov.get(mov.size() - 1).getFinalPoint(), new Point3d(furo.X, furo.Y, zAtual));
 			anel.setSense(CircularPath.CCW);
 			anel.setAngulo(2 * Math.PI);
 			mov.add(anel);

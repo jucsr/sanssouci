@@ -173,7 +173,7 @@ public class DeterminarMovimentacao
 								Point3d centerCanto = new Point3d(cavidade.X + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, cavidade.Y + cavidade.getLargura() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, zAtual);
 
 
-								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, (raioCavidadeSemAllowance - avancoLateral), centerCanto);
+								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, centerCanto);
 								CircularPathCantoA.setSense(CircularPath.CW);
 								trajetoriasCantos.add(CircularPathCantoA);
 
@@ -307,7 +307,7 @@ public class DeterminarMovimentacao
 
 								Point3d centerCanto = new Point3d(cavidade.X + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, cavidade.Y + cavidade.getLargura() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, zAtual);
 
-								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint, raioCavidadeSemAllowance - avancoLateral, centerCanto);
+								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint,  centerCanto);
 								CircularPathCantoB.setSense(CircularPath.CCW);
 								trajetoriasCantos.add(CircularPathCantoB);
 
@@ -519,7 +519,7 @@ public class DeterminarMovimentacao
 								Point3d centerCanto = new Point3d(cavidade.X + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, cavidade.Y + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, zAtual);
 
 
-								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, (raioCavidadeSemAllowance - avancoLateral), centerCanto);
+								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, centerCanto);
 								CircularPathCantoA.setSense(CircularPath.CCW);
 								trajetoriasCantos.add(CircularPathCantoA);
 
@@ -651,7 +651,7 @@ public class DeterminarMovimentacao
 
 								Point3d centerCanto = new Point3d(cavidade.X + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, cavidade.Y + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, zAtual);
 
-								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint, (raioCavidadeSemAllowance - avancoLateral), centerCanto);
+								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint, centerCanto);
 								CircularPathCantoB.setSense(CircularPath.CW);
 								trajetoriasCantos.add(CircularPathCantoB);
 
@@ -861,7 +861,7 @@ public class DeterminarMovimentacao
 								Point3d centerCanto = new Point3d(cavidade.X + cavidade.getComprimento() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, cavidade.Y + cavidade.getLargura() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, zAtual);
 
 
-								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, (raioCavidadeSemAllowance - avancoLateral), centerCanto);
+								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, centerCanto);
 								CircularPathCantoA.setSense(CircularPath.CCW);
 								trajetoriasCantos.add(CircularPathCantoA);
 
@@ -995,7 +995,7 @@ public class DeterminarMovimentacao
 
 								Point3d centerCanto = new Point3d(cavidade.X + cavidade.getComprimento() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, cavidade.Y + cavidade.getLargura() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, zAtual);
 
-								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint, raioCavidadeSemAllowance - avancoLateral, centerCanto);
+								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint, centerCanto);
 								CircularPathCantoB.setSense(CircularPath.CW);
 								trajetoriasCantos.add(CircularPathCantoB);
 
@@ -1208,7 +1208,7 @@ public class DeterminarMovimentacao
 								Point3d centerCanto = new Point3d(cavidade.X + cavidade.getComprimento() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, cavidade.Y + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, zAtual);
 
 
-								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, (raioCavidadeSemAllowance - avancoLateral), centerCanto);
+								CircularPath CircularPathCantoA = new CircularPath(initialPoint, finalPoint, centerCanto);
 								CircularPathCantoA.setSense(CircularPath.CW);
 								trajetoriasCantos.add(CircularPathCantoA);
 
@@ -1344,7 +1344,7 @@ public class DeterminarMovimentacao
 
 								Point3d centerCanto = new Point3d(cavidade.X + cavidade.getComprimento() - ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() - raioCavidadeSemAllowance, cavidade.Y + ((BottomAndSideRoughMilling)ws.getOperation()).getAllowanceSide() + raioCavidadeSemAllowance, zAtual);
 
-								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint, raioCavidadeSemAllowance - avancoLateral, centerCanto);
+								CircularPath CircularPathCantoB = new CircularPath(initialPoint, finalPoint, centerCanto);
 								CircularPathCantoB.setSense(CircularPath.CCW);
 								trajetoriasCantos.add(CircularPathCantoB);
 
@@ -1591,7 +1591,7 @@ public class DeterminarMovimentacao
 
 					Point3d centroCurva = new Point3d(initialPoint.getX(),((limiteInferior + ((Math.tan(Math.toRadians(90 - anguloRanhuraPQU)))*(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio()))) + ranhuraPQU.getRaio()) ,-(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio())); 
 
-					CircularPath circularPath = new CircularPath(initialPoint,finalPoint, ranhuraPQU.getRaio(), centroCurva);
+					CircularPath circularPath = new CircularPath(initialPoint,finalPoint, centroCurva);
 
 					trajetoriasAcabamentoRPQUHorizontalEsqInf.add(circularPath);
 
@@ -1610,7 +1610,7 @@ public class DeterminarMovimentacao
 
 					centroCurva = new Point3d(initialPoint.getX(),((limiteSuperior + ((Math.tan(Math.toRadians(90 - anguloRanhuraPQU)))*(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio()))) + ranhuraPQU.getRaio()) ,-(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio()));
 
-					circularPath = new CircularPath(initialPoint, finalPoint, ranhuraPQU.getRaio(), centroCurva);
+					circularPath = new CircularPath(initialPoint, finalPoint, centroCurva);
 
 					trajetoriasAcabamentoRPQUHorizontalEsqInf.add(circularPath);
 
@@ -1645,7 +1645,7 @@ public class DeterminarMovimentacao
 
 					Point3d centroCurva = new Point3d(initialPoint.getX(),((limiteSuperior + ((Math.tan(Math.toRadians(90 - anguloRanhuraPQU)))*(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio()))) + ranhuraPQU.getRaio()) ,-(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio()));
 
-					CircularPath circularPath = new CircularPath(initialPoint, finalPoint, ranhuraPQU.getRaio(), centroCurva);
+					CircularPath circularPath = new CircularPath(initialPoint, finalPoint, centroCurva);
 
 					trajetoriasAcabamentoRPQUHorizontalEsqInf.add(circularPath);
 
@@ -1664,7 +1664,7 @@ public class DeterminarMovimentacao
 
 					centroCurva = new Point3d(initialPoint.getX(),((limiteInferior + ((Math.tan(Math.toRadians(90 - anguloRanhuraPQU)))*(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio()))) + ranhuraPQU.getRaio()) ,-(ranhuraPQU.getProfundidade() - ranhuraPQU.getRaio())); 
 
-					circularPath = new CircularPath(initialPoint,finalPoint, ranhuraPQU.getRaio(), centroCurva);
+					circularPath = new CircularPath(initialPoint,finalPoint, centroCurva);
 
 					trajetoriasAcabamentoRPQUHorizontalEsqInf.add(circularPath);
 
@@ -2078,7 +2078,7 @@ public class DeterminarMovimentacao
 			//			finalPoint.setX(cavidade.X + cavidade.getComprimento() - f.getDiametroFerramenta()/2);
 			//			finalPoint.setY(cavidade.Y + cavidade.getRaio());
 			Point3d center = new Point3d(cavidade.X + cavidade.getComprimento() - cavidade.getRaio(), cavidade.Y + cavidade.getRaio(),zAtual);//coordenadas abs?
-			CircularPath c1 = new CircularPath(initialPoint, finalPoint,(cavidade.getRaio() - (f.getDiametroFerramenta()/2)), center);//coord abs?
+			CircularPath c1 = new CircularPath(initialPoint, finalPoint, center);//coord abs?
 			trajetoriaCavidade.add(c1);
 
 			//linear path l2
@@ -2096,7 +2096,7 @@ public class DeterminarMovimentacao
 			center = new Point3d(cavidade.X + cavidade.getComprimento() - cavidade.getRaio(), cavidade.Y + cavidade.getLargura() - cavidade.getRaio(), zAtual);
 			//			center.setX(cavidade.X + cavidade.getComprimento() - cavidade.getRaio());
 			//			center.setY(cavidade.Y + cavidade.getLargura() - cavidade.getRaio());
-			CircularPath c2 = new CircularPath(initialPoint, finalPoint, (cavidade.getRaio() - (f.getDiametroFerramenta()/2)), center);
+			CircularPath c2 = new CircularPath(initialPoint, finalPoint, center);
 			trajetoriaCavidade.add(c2);
 
 			//linear l3
@@ -2113,7 +2113,7 @@ public class DeterminarMovimentacao
 			//			finalPoint.setY(cavidade.Y + cavidade.getLargura() - cavidade.getRaio());
 			center = new Point3d(cavidade.X + cavidade.getRaio(), cavidade.Y + cavidade.getLargura() - cavidade.getRaio(), zAtual);
 			//			center.setX(cavidade.X + cavidade.getRaio());
-			CircularPath c3 = new CircularPath(initialPoint, finalPoint, (cavidade.getRaio() - (f.getDiametroFerramenta()/2)), center);
+			CircularPath c3 = new CircularPath(initialPoint, finalPoint, center);
 			trajetoriaCavidade.add(c3);
 
 			//linear path l4
@@ -2130,7 +2130,7 @@ public class DeterminarMovimentacao
 			//			finalPoint.setY(cavidade.Y + f.getDiametroFerramenta()/2);
 			center = new Point3d(cavidade.X + cavidade.getRaio(), cavidade.Y + cavidade.getRaio(), zAtual);
 			//			center.setY(cavidade.Y + cavidade.getRaio());
-			CircularPath c4 = new CircularPath(initialPoint, finalPoint, (cavidade.getRaio() - (f.getDiametroFerramenta()/2)), center);
+			CircularPath c4 = new CircularPath(initialPoint, finalPoint, center);
 			trajetoriaCavidade.add(c4);
 
 			//			 System.out.println("ap atual = " +apUtilizada);

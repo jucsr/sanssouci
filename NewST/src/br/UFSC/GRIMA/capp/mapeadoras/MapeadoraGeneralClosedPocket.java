@@ -124,7 +124,7 @@ public class MapeadoraGeneralClosedPocket {
 
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
-					genClosed, Feature.LIMITE_DESBASTE, 0);//TROCAR 0 POR L
+					genClosed, Feature.LIMITE_DESBASTE, 10);//TROCAR 0 POR L
 
 			// CONDIÇÕES DE USINAGEM
 			condicoesDeUsinagem = MapeadoraDeWorkingsteps

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
@@ -580,11 +581,11 @@ public class GeometricOperations
 		double initialAngle = angle(unitVector(arc.getCenter(),arc.getInitialPoint()));
 		for(int i = 0; i < n; i++)
 		{
-			double x1 = arc.getRadius()*Math.cos(initialAngle+i*varAngle);
-			double y1 = arc.getRadius()*Math.sin(initialAngle+i*varAngle);
+			double x1 = arc.getCenter().getX()+arc.getRadius()*Math.cos(initialAngle+i*varAngle);
+			double y1 = arc.getCenter().getY()+arc.getRadius()*Math.sin(initialAngle+i*varAngle);
 			
-			double x2 = arc.getRadius()*Math.cos(initialAngle+(i+1)*varAngle);
-			double y2 = arc.getRadius()*Math.sin(initialAngle+(i+1)*varAngle);
+			double x2 = arc.getCenter().getX()+arc.getRadius()*Math.cos(initialAngle+(i+1)*varAngle);
+			double y2 = arc.getCenter().getY()+arc.getRadius()*Math.sin(initialAngle+(i+1)*varAngle);
 			
 			
 			Point3d p1 = new Point3d(x1, y1, arc.getCenter().getZ());
@@ -606,4 +607,85 @@ public class GeometricOperations
 		}
 		return points;
 	}
+	
+	public static ArrayList<LimitedElement> firstPathDesbaste (GeneralClosedPocket pocket, double allowance)
+	{
+		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd(pocket, allowance);
+		return acabamentoPath(addPocket);
+	}
+	
+	public static ArrayList<LimitedElement> parallelPath (GeneralClosedPocketAdd addPocket, double distance)	
+	{		
+		ArrayList<LimitedElement> elements = addPocket.getElements();
+		
+		ArrayList<LimitedArc> arcElements = new ArrayList<LimitedArc>();
+		ArrayList<LimitedElement> parallelElements = new ArrayList<LimitedElement>();
+		
+		for (LimitedElement e:elements)
+		{
+			if (e.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)e;
+				
+				if (arc.getDeltaAngle()<0)
+				{
+					Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
+					System.out.println("Modifying");
+					System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+					System.out.println("To");
+					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
+				}
+				arcElements.add(arc);
+				System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+			}
+		}
+		
+		for (int i = 0; i < arcElements.size(); i++)
+		{
+			LimitedArc arc1 = new LimitedArc();
+			LimitedArc arc2 = new LimitedArc();
+			
+			if(i!=arcElements.size()-1)
+			{
+				arc1 = arcElements.get(i);
+				arc2 = arcElements.get(i+1);
+			}
+			else
+			{
+				arc1 = arcElements.get(i);
+				arc2 = arcElements.get(0);				
+			}
+			
+			if(arc1.getDeltaAngle()<0)
+			{
+				LimitedLine line = new LimitedLine();
+				if(arc2.getDeltaAngle()<0)
+				{
+					line = new LimitedLine(arc1.getFinalPoint(), arc2.getInitialPoint());
+				}				
+				else
+				{
+					line = new LimitedLine(arc1.getFinalPoint(), arc2.getCenter());
+				}
+				parallelElements.add(arc1);
+				parallelElements.add(line);
+				
+			}
+			else
+			{
+				LimitedLine line = new LimitedLine();
+				if(arc2.getDeltaAngle()<0)
+				{
+					line = new LimitedLine(arc1.getCenter(), arc2.getInitialPoint());
+				}				
+				else
+				{
+					line = new LimitedLine(arc1.getCenter(), arc2.getCenter());
+				}
+				parallelElements.add(line);
+			}
+		}		
+		return parallelElements;
+	}
+	
 }

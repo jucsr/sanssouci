@@ -562,7 +562,12 @@ public class GeometricOperations
 	{
 		ArrayList<LinearPath> linearPath = new ArrayList<LinearPath>();
 		System.out.println("Circular path " + arcPath);
+		System.out.println("center " + arcPath.getCenter());
+		System.out.println("initialPoint " + arcPath.getInitialPoint());
+		System.out.println("finalPoint " + arcPath.getFinalPoint());
+		System.out.println("angulo " + arcPath.getAngulo());
 		System.out.println("Error here");
+		
 		LimitedArc arc = new LimitedArc(arcPath.getCenter(), arcPath.getInitialPoint(), arcPath.getAngulo(), LimitedArc.CCW);
 		
 		double varAngle = arc.getDeltaAngle()/n;

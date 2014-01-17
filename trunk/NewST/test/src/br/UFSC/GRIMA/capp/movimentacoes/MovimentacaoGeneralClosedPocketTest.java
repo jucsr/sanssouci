@@ -1,7 +1,6 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
-	import java.awt.geom.*;
-import java.awt.Color;
+	import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -9,7 +8,6 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
@@ -36,6 +34,8 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.util.LinearPath;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -228,6 +228,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 	public void testMovimentacao()
 	{
 		GeneralClosedPocket pocket = (GeneralClosedPocket)this.ws.getFeature();
+		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(this.ws); 
 		
 		double ae = this.ws.getCondicoesUsinagem().getAe();
 		double radius = this.ws.getFerramenta().getDiametroFerramenta()/2;
@@ -274,6 +275,16 @@ public class MovimentacaoGeneralClosedPocketTest {
 			}			
 			i++;			
 		}
+		
+		ArrayList<Path> saida = new ArrayList<Path>();
+		System.out.println("ws" + this.ws);
+		saida = mov.getAcabamento(this.ws);
+		for (Path line:saida)
+		{
+			System.out.println("Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+		}
+				
+
 	}
 
 	

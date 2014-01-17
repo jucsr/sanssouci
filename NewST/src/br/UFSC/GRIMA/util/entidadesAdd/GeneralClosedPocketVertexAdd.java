@@ -7,39 +7,50 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
-import br.UFSC.GRIMA.capp.Workingstep;
-import br.UFSC.GRIMA.entidades.features.Feature;
-import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
-public class GeneralClosedPocketAdd 
+public class GeneralClosedPocketVertexAdd 
 {
-	private GeneralClosedPocket pocket;
-	
 	private ArrayList<Point3d> vertex = new ArrayList<Point3d>();
 	private GeneralPath forma = new GeneralPath();
 	private ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	/**
-	 * 
-	 * @param pocket -- general closed pocket qualquer
-	 * @param radius -- raio da ferramenta
-	 */
-	public GeneralClosedPocketAdd(GeneralClosedPocket pocket, double radius)
+	
+	public GeneralClosedPocketVertexAdd(ArrayList<Point3d> vertex3d,double radius)
 	{
-		this.pocket = pocket;
+		double zCoordinate = vertex3d.get(0).getZ();
+		ArrayList<Point2D> vertex2D = new ArrayList<Point2D>();
+		
+		for (Point3d p:vertex3d)
+		{
+			vertex2D.add(new Point2D.Double(p.getX(), p.getY()));
+		}
+		
+		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex2D))
+		{
+			this.vertex.add(new Point3d(p.getX(), p.getY(), zCoordinate));
+			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
+		}
+		
+		this.makeMembers(radius);
+	}
+	
+	
+	public GeneralClosedPocketVertexAdd(ArrayList<Point2D> vertex2D, double zCoordinate, double radius)
+	{
+		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex2D))
+		{
+			this.vertex.add(new Point3d(p.getX(), p.getY(), zCoordinate));
+			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
+		}
 		this.makeMembers(radius);
 	}	
+
 	
 	private void makeMembers(double radius)
 	{
-		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(this.pocket.getVertexPoints()))
-		{
-			this.vertex.add(new Point3d(p.getX(), p.getY(), this.pocket.getPosicaoZ()));
-			System.out.println(p.getX() + " " + p.getY() + " " + this.pocket.getPosicaoZ());
-		}
 		int i=0;
 		for (Point3d v:this.vertex)
 		{
@@ -71,7 +82,7 @@ public class GeneralClosedPocketAdd
 			
 			LimitedArc arcNew = new LimitedArc();
 			
-			System.out.println("----------------------------------------------");
+//			System.out.println("----------------------------------------------");
 			if (i==0)
 			{
 				p1 = this.vertex.get(this.vertex.size()-1);
@@ -92,13 +103,13 @@ public class GeneralClosedPocketAdd
 			}
 			arcNew = GeometricOperations.roundVertex(p1, p2, p3, radius);
 			
-			System.out.println("First point " + p1);
-			System.out.println("Second point " + p2);
-			System.out.println("Third point " + p3);
-			
-			System.out.println("Center Point of arc " + arcNew.getCenter());
-			System.out.println("Initial Point of arc " + arcNew.getInitialPoint());
-			System.out.println("Final Point of arc " + arcNew.getFinalPoint());
+//			System.out.println("First point " + p1);
+//			System.out.println("Second point " + p2);
+//			System.out.println("Third point " + p3);
+//			
+//			System.out.println("Center Point of arc " + arcNew.getCenter());
+//			System.out.println("Initial Point of arc " + arcNew.getInitialPoint());
+//			System.out.println("Final Point of arc " + arcNew.getFinalPoint());
 
 			if (arcNew.getRadius()==0)
 			{
@@ -116,7 +127,7 @@ public class GeneralClosedPocketAdd
 			{
 				if (tempElements.size()!=0)
 				{
-					System.out.println("Size  elements " + tempElements.size());
+//					System.out.println("Size  elements " + tempElements.size());
 					if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedLine.class))
 					{
 						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
@@ -158,14 +169,6 @@ public class GeneralClosedPocketAdd
 		return tempElements;
 	}
 	
-	public GeneralClosedPocket getPocket() {
-		return pocket;
-	}
-
-	public void setPocket(GeneralClosedPocket pocket) {
-		this.pocket = pocket;
-	}
-
 	public ArrayList<Point3d> getVertex() {
 		return vertex;
 	}

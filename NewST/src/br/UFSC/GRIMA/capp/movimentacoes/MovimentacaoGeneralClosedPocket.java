@@ -113,10 +113,8 @@ public class MovimentacaoGeneralClosedPocket {
 	
 	public ArrayList<LinearPath> getAcabamentoLinear(Workingstep ws)
 	{
-		System.out.println("WS received");
 		ArrayList<Path> saida = new ArrayList<Path>(); 
 		saida = getAcabamento(ws);
-		System.out.println("saida generated");
 		ArrayList<LinearPath> linearSaida = new ArrayList<LinearPath>();		
 		for(Path s:saida)
 		{
@@ -128,6 +126,7 @@ public class MovimentacaoGeneralClosedPocket {
 			if (s.isCircular())
 			{
 				CircularPath circ = (CircularPath)s;
+				
 				for(LinearPath line:GeometricOperations.arcToLinear(circ, 10))
 				{
 					linearSaida.add(line);

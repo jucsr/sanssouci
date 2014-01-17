@@ -23,7 +23,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
-import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
+import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -86,9 +86,9 @@ public class MovimentacaoGeneralClosedPocket {
 //	}
 	public ArrayList<Path> getAcabamento(Workingstep ws)
 	{
-		System.out.println("Entered here");
+//		System.out.println("Entered here");
 		ArrayList<Path> saida = new ArrayList<Path>();
-		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd((GeneralClosedPocket)ws.getFeature(),((GeneralClosedPocket)ws.getFeature()).getRadius());
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		
 		ArrayList<LimitedElement> acabamentoPath = GeometricOperations.acabamentoPath(addPocket,  ws.getFerramenta().getDiametroFerramenta()/2);
 		for (LimitedElement e:acabamentoPath)
@@ -101,10 +101,10 @@ public class MovimentacaoGeneralClosedPocket {
 			else if(e.isLimitedArc())
 			{
 				LimitedArc arc = (LimitedArc)e;
-				System.out.println("center " + arc.getCenter());
-				System.out.println("initial " + arc.getInitialPoint());
-				System.out.println("final " + arc.getFinalPoint());
-				System.out.println("deltaAngle " + arc.getDeltaAngle());
+//				System.out.println("center " + arc.getCenter());
+//				System.out.println("initial " + arc.getInitialPoint());
+//				System.out.println("final " + arc.getFinalPoint());
+//				System.out.println("deltaAngle " + arc.getDeltaAngle());
 				saida.add(new CircularPath(arc.getCenter(), arc.getInitialPoint(), arc.getFinalPoint(), arc.getDeltaAngle(), CircularPath.CCW));
 			}
 		}
@@ -134,11 +134,11 @@ public class MovimentacaoGeneralClosedPocket {
 			}
 		}
 		
-		System.out.println("LinearPath for acabamento");
-		for (LinearPath l:linearSaida)
-		{
-			System.out.println(l.getInitialPoint() + " to " + l.getFinalPoint());
-		}
+//		System.out.println("LinearPath for acabamento");
+//		for (LinearPath l:linearSaida)
+//		{
+//			System.out.println(l.getInitialPoint() + " to " + l.getFinalPoint());
+//		}
 		return linearSaida;
 	}
 	

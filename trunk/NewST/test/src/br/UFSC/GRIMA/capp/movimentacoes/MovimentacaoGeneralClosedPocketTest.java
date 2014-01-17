@@ -34,9 +34,7 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
-import br.UFSC.GRIMA.util.LinearPath;
-import br.UFSC.GRIMA.util.Path;
-import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketAdd;
+import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -232,7 +230,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		
 		double ae = this.ws.getCondicoesUsinagem().getAe();
 		double radius = this.ws.getFerramenta().getDiametroFerramenta()/2;
-		GeneralClosedPocketAdd addPocket = new GeneralClosedPocketAdd(pocket, radius);
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.getPosicaoZ(),radius);
 		System.out.println("Vertices " +  addPocket.getVertex().size());
 		int j=0;
 		for (Point3d v:addPocket.getVertex())
@@ -260,7 +258,9 @@ public class MovimentacaoGeneralClosedPocketTest {
 		}
 		
 		ArrayList<LimitedElement> elements = GeometricOperations.acabamentoPath(addPocket, ws.getFerramenta().getDiametroFerramenta()/2);
+		ArrayList<LimitedElement> elementsFirstDesbaste = GeometricOperations.firstPathDesbaste(pocket, ws.getFerramenta().getDiametroFerramenta()/4);
 		i = 0;
+		System.out.println("Elements for acabamento: ");
 		for (LimitedElement e:elements)
 		{
 			if(e.isLimitedArc())
@@ -275,16 +275,24 @@ public class MovimentacaoGeneralClosedPocketTest {
 			}			
 			i++;			
 		}
-		
-		ArrayList<Path> saida = new ArrayList<Path>();
-		System.out.println("ws" + this.ws);
-		saida = mov.getAcabamento(this.ws);
-		for (Path line:saida)
-		{
-			System.out.println("Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
-		}
-				
 
+		System.out.println("Elements for desbaste: ");
+		for (LimitedElement e:elementsFirstDesbaste)
+		{
+			if(e.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)e;
+				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
+			}
+			else if (e.isLimitedLine())
+			{
+				LimitedLine line = (LimitedLine)e;
+				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+			}			
+			i++;			
+		}
+
+	
 	}
 
 	

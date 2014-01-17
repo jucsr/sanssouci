@@ -561,7 +561,10 @@ public class GeometricOperations
 	public static ArrayList<LinearPath> arcToLinear(CircularPath arcPath, int n)
 	{
 		ArrayList<LinearPath> linearPath = new ArrayList<LinearPath>();
-		LimitedArc arc = new LimitedArc(arcPath.getCenter(), arcPath.getInitialPoint(), arcPath.getAngulo(),1);
+		System.out.println("Circular path " + arcPath);
+		System.out.println("Error here");
+		LimitedArc arc = new LimitedArc(arcPath.getCenter(), arcPath.getInitialPoint(), arcPath.getAngulo(), LimitedArc.CCW);
+		
 		double varAngle = arc.getDeltaAngle()/n;
 		double initialAngle = angle(unitVector(arc.getCenter(),arc.getInitialPoint()));
 		for(int i = 0; i < n; i++)

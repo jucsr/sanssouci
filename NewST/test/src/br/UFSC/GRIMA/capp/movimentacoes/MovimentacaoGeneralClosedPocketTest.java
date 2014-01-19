@@ -229,70 +229,17 @@ public class MovimentacaoGeneralClosedPocketTest {
 		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(this.ws); 
 		
 		double ae = this.ws.getCondicoesUsinagem().getAe();
-		double radius = this.ws.getFerramenta().getDiametroFerramenta()/2;
-		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.getPosicaoZ(),radius);
-		System.out.println("Vertices " +  addPocket.getVertex().size());
-		int j=0;
-		for (Point3d v:addPocket.getVertex())
-		{
-			System.out.println(j + "\t" + v);
-			j++;
-		}
 		
-		System.out.println("Elementos " + addPocket.getElements().size());
-		int i = 0;
-		for(LimitedElement e:addPocket.getElements())
-		{
-			if(e.isLimitedArc())
-			{
-				LimitedArc arc = (LimitedArc)e;
-				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius()); 
-			}
-			else if (e.isLimitedLine())
-			{
-				LimitedLine line = (LimitedLine)e;
-				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
-			}
-			
-			i++;
-		}
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.getPosicaoZ(),ws.getFerramenta().getDiametroFerramenta());
+//		ArrayList<LimitedElement> elements = GeometricOperations.acabamentoPath(addPocket, ws.getFerramenta().getDiametroFerramenta());
+//		
+		ArrayList<LimitedElement> elementsFirstDesbaste = GeometricOperations.elementsToDesbaste(pocket, ws.getFerramenta().getDiametroFerramenta()/16);
 		
-		ArrayList<LimitedElement> elements = GeometricOperations.acabamentoPath(addPocket, ws.getFerramenta().getDiametroFerramenta()/2);
-		ArrayList<LimitedElement> elementsFirstDesbaste = GeometricOperations.firstPathDesbaste(pocket, ws.getFerramenta().getDiametroFerramenta()/4);
-		i = 0;
-		System.out.println("Elements for acabamento: ");
-		for (LimitedElement e:elements)
-		{
-			if(e.isLimitedArc())
-			{
-				LimitedArc arc = (LimitedArc)e;
-				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
-			}
-			else if (e.isLimitedLine())
-			{
-				LimitedLine line = (LimitedLine)e;
-				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
-			}			
-			i++;			
-		}
-
-		System.out.println("Elements for desbaste: ");
-		for (LimitedElement e:elementsFirstDesbaste)
-		{
-			if(e.isLimitedArc())
-			{
-				LimitedArc arc = (LimitedArc)e;
-				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
-			}
-			else if (e.isLimitedLine())
-			{
-				LimitedLine line = (LimitedLine)e;
-				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
-			}			
-			i++;			
-		}
-
-	
+		System.out.println("Minimum distance " + GeometricOperations.minimumDistance(addPocket.getElements()));
+		System.out.println("Minimum distance " + GeometricOperations.minimumDistance(elementsFirstDesbaste));
+		
+//		GeneralClosedPocketVertexAdd newAddPocket = new GeneralClosedPocketVertexAdd(elementsFirstDesbaste);
+//		ArrayList<LimitedElement> newElements = GeometricOperations.acabamentoPath(newAddPocket, ws.getFerramenta().getDiametroFerramenta()/4);
 	}
 
 	

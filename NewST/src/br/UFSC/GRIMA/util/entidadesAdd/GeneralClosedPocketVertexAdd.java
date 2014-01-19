@@ -17,10 +17,12 @@ public class GeneralClosedPocketVertexAdd
 	private ArrayList<Point3d> vertex = new ArrayList<Point3d>();
 	private GeneralPath forma = new GeneralPath();
 	private ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+	private double radius;
 	
-	public GeneralClosedPocketVertexAdd(ArrayList<Point3d> vertex3d,double radius)
+	public GeneralClosedPocketVertexAdd(ArrayList<Point3d> vertex3d, double radius)
 	{
 		double zCoordinate = vertex3d.get(0).getZ();
+		this.radius = radius;
 		ArrayList<Point2D> vertex2D = new ArrayList<Point2D>();
 		
 		for (Point3d p:vertex3d)
@@ -34,22 +36,58 @@ public class GeneralClosedPocketVertexAdd
 			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
 		}
 		
-		this.makeMembers(radius);
+		this.makeForma();
+		this.makeElements();
+		this.showElements();
 	}
 	
+	public GeneralClosedPocketVertexAdd(ArrayList<LimitedElement> elementsIn)
+	{		
+		this.makeVertex(elementsIn);
+		this.makeForma();
+		this.makeElements();
+		this.showElements();
+	}
 	
 	public GeneralClosedPocketVertexAdd(ArrayList<Point2D> vertex2D, double zCoordinate, double radius)
 	{
+		this.radius = radius;
 		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex2D))
 		{
 			this.vertex.add(new Point3d(p.getX(), p.getY(), zCoordinate));
 			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
 		}
-		this.makeMembers(radius);
+		this.makeForma();
+		this.makeElements();
+		this.showElements();
 	}	
 
-	
-	private void makeMembers(double radius)
+	private void makeVertex(ArrayList<LimitedElement> elements)
+	{
+		ArrayList<LimitedArc> arcElements = new ArrayList<LimitedArc>();
+		boolean existRadius=false;
+		for (LimitedElement e: elements)
+		{
+			if (e.isLimitedArc())
+			{
+				arcElements.add((LimitedArc)e);
+				if (!existRadius)
+				{
+					if (((LimitedArc)e).getRadius()!=0)
+						radius = ((LimitedArc)e).getRadius();
+				}
+			}
+		}
+		
+		System.out.println("Vertex generated ");
+		for (LimitedArc arc:arcElements)
+		{			
+			Point3d vertArc = GeometricOperations.arcToVertec(arc);
+			this.vertex.add(vertArc);
+			System.out.println(vertArc);
+		}
+	}
+	private void makeForma()
 	{
 		int i=0;
 		for (Point3d v:this.vertex)
@@ -66,11 +104,10 @@ public class GeneralClosedPocketVertexAdd
 			if(i==this.vertex.size()-1)
 				this.forma.closePath();
 			i++;
-		}				
-		this.elements = this.roundElements(radius);
+		}						
 	}
 
-	private ArrayList<LimitedElement> roundElements(double radius)
+	private void makeElements()
 	{
 		ArrayList<LimitedElement> tempElements = new ArrayList<LimitedElement>(); 
 		
@@ -101,7 +138,7 @@ public class GeneralClosedPocketVertexAdd
 				p2 = this.vertex.get(i);
 				p3 = this.vertex.get(0);
 			}
-			arcNew = GeometricOperations.roundVertex(p1, p2, p3, radius);
+			arcNew = GeometricOperations.roundVertex(p1, p2, p3, this.radius);
 			
 //			System.out.println("First point " + p1);
 //			System.out.println("Second point " + p2);
@@ -166,7 +203,28 @@ public class GeneralClosedPocketVertexAdd
 		
 		tempElements.add(new LimitedLine (lastPoint, firstPoint));
 		
-		return tempElements;
+		this.elements = tempElements;
+	}
+	
+	public void showElements()
+	{
+		int i = 0;
+		System.out.println("Elements after rounding with radius " + this.radius);
+		for (LimitedElement e:this.elements)
+		{
+			if(e.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)e;
+				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
+			}
+			else if (e.isLimitedLine())
+			{
+				LimitedLine line = (LimitedLine)e;
+				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+			}			
+			i++;			
+		}
+
 	}
 	
 	public ArrayList<Point3d> getVertex() {

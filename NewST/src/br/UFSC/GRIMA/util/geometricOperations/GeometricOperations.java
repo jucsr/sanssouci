@@ -151,7 +151,7 @@ public class GeometricOperations
        return Pb;
 	}
 	
-	public static double minimumDistance(Point3d p,  LimitedLine line)
+	public static double minimumDistancePointToLine(Point3d p,  LimitedLine line)
 	{
 		Point3d near = nearestPoint(p,line);
 		return distance(p, near);
@@ -169,7 +169,7 @@ public class GeometricOperations
 		return vectorial;
 	}
 	
-	public static double minimumDistance(LimitedLine S1, LimitedLine S2)
+	public static double minimumDistanceLineToLine(LimitedLine S1, LimitedLine S2)
 	{
 	    Point3d   u = new Point3d(S1.getFinalPoint().getX() - S1.getInitialPoint().getX(), S1.getFinalPoint().getY() - S1.getInitialPoint().getY(), S1.getFinalPoint().getZ() - S1.getInitialPoint().getZ());
 	    Point3d   v = new Point3d(S2.getFinalPoint().getX() - S2.getInitialPoint().getX(), S2.getFinalPoint().getY() - S2.getInitialPoint().getY(), S2.getFinalPoint().getZ() - S2.getInitialPoint().getZ());
@@ -275,7 +275,7 @@ public class GeometricOperations
 
 	}
 	
-	public static double minimumDistance(Point3d p, LimitedArc arc)
+	public static double minimumDistancePointToArc(Point3d p, LimitedArc arc)
 	{		
 		Point3d v = new Point3d(p.getX()-arc.getCenter().getX(), p.getY()-arc.getCenter().getY(), p.getZ()-arc.getCenter().getZ());
 		Point3d normalPoint = plus(arc.getCenter(),multiply(arc.getRadius()/norm(v),v));
@@ -289,8 +289,13 @@ public class GeometricOperations
 		//System.out.println("Normal point " + normalPoint);
 		return distance(p, normalPoint);
 	}	
+
+	public static double minimumDistanceArcToLine(LimitedArc arc, LimitedLine line)
+	{
+		return minimumDistanceLineToArc(line, arc);
+	}
 	
-	public static double minimumDistance(LimitedLine line, LimitedArc arc)
+	public static double minimumDistanceLineToArc(LimitedLine line, LimitedArc arc)
 	{
 		double distance=0.0;
 		
@@ -302,7 +307,7 @@ public class GeometricOperations
 		{
 			//System.out.println("Line within the arc ");
 			//System.out.println("Arc Initial to line" + minimumDistance(arc.getInitialPoint(), line));
-			distance = chooseMinimum(minimumDistance(arc.getInitialPoint(), line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getInitialPoint(), arc), minimumDistance(line.getFinalPoint(), arc));
+			distance = chooseMinimum(minimumDistancePointToLine(arc.getInitialPoint(), line), minimumDistancePointToLine(arc.getFinalPoint(), line), minimumDistancePointToArc(line.getInitialPoint(), arc), minimumDistancePointToArc(line.getFinalPoint(), arc));
 			return distance;
 		}
 		
@@ -311,7 +316,7 @@ public class GeometricOperations
 		if (!contentsPoint(normalPoint, arc))
 		{
 			//System.out.println("normalPoint is not within the arc");
-			return chooseMinimum(minimumDistance(arc.getInitialPoint(),line), minimumDistance(arc.getFinalPoint(), line), minimumDistance(line.getInitialPoint(),arc), minimumDistance(line.getFinalPoint(), arc));
+			return chooseMinimum(minimumDistancePointToLine(arc.getInitialPoint(),line), minimumDistancePointToLine(arc.getFinalPoint(), line), minimumDistancePointToArc(line.getInitialPoint(),arc), minimumDistancePointToArc(line.getFinalPoint(), arc));
 		}
 
 		distance = distance(normalPoint,nearestFromLine);
@@ -362,28 +367,28 @@ public class GeometricOperations
 			distances.add(distance(n2, point2Near1));
 		}
 
-		distances.add(minimumDistance(arc1.getInitialPoint(), arc2));
+		distances.add(minimumDistancePointToArc(arc1.getInitialPoint(), arc2));
 		pointsArc1.add(arc1.getInitialPoint());
 		pointsArc2.add(nearestPoint(arc1.getInitialPoint(), arc2));
 //		System.out.println("--------------");
 //		System.out.println("From " + arc1.getInitialPoint() + " to arc  from " + arc2.getInitialPoint() + " to " + arc2.getFinalPoint());
 //		System.out.println(minimumDistance(arc1.getInitialPoint(), arc2));
 		
-		distances.add(minimumDistance(arc1.getFinalPoint(), arc2));
+		distances.add(minimumDistancePointToArc(arc1.getFinalPoint(), arc2));
 		pointsArc1.add(arc1.getFinalPoint());
 		pointsArc2.add(nearestPoint(arc1.getFinalPoint(), arc2));
 //		System.out.println("--------------");
 //		System.out.println("From " + arc1.getFinalPoint() + " to arc  from " + arc2.getInitialPoint() + " to " + arc2.getFinalPoint());
 //		System.out.println(minimumDistance(arc1.getFinalPoint(), arc2));
 		
-		distances.add(minimumDistance(arc2.getInitialPoint(), arc1));
+		distances.add(minimumDistancePointToArc(arc2.getInitialPoint(), arc1));
 		pointsArc1.add(nearestPoint(arc2.getInitialPoint(),arc1));
 		pointsArc2.add(arc2.getInitialPoint());
 //		System.out.println("--------------");
 //		System.out.println("From " + arc2.getInitialPoint() + " to arc  from " + arc1.getInitialPoint() + " to " + arc1.getFinalPoint());
 //		System.out.println(minimumDistance(arc2.getInitialPoint(), arc1));
 		
-		distances.add(minimumDistance(arc2.getFinalPoint(), arc1));
+		distances.add(minimumDistancePointToArc(arc2.getFinalPoint(), arc1));
 		pointsArc1.add(nearestPoint(arc2.getFinalPoint(),arc1));
 		pointsArc2.add(arc2.getFinalPoint());
 //		System.out.println("--------------");
@@ -391,15 +396,15 @@ public class GeometricOperations
 //		System.out.println(minimumDistance(arc2.getFinalPoint(), arc1));
 
 		int indexMinimum = chooseMinimumIndex(distances);
-		System.out.println("Nearest point in Arc1 is " + pointsArc1.get(indexMinimum));
-		System.out.println("Nearest point in Arc2 is " + pointsArc2.get(indexMinimum));
+		//System.out.println("Nearest point in Arc1 is " + pointsArc1.get(indexMinimum));
+		//System.out.println("Nearest point in Arc2 is " + pointsArc2.get(indexMinimum));
 		return pointsArc2.get(chooseMinimumIndex(distances));
 		
 	}
 	
-	public static double minimumDistance(LimitedArc arc1, LimitedArc arc2)
+	public static double minimumDistanceArcToArc(LimitedArc arc1, LimitedArc arc2)
 	{
-		return minimumDistance(nearestPoint(arc1,arc2),arc1);
+		return minimumDistancePointToArc(nearestPoint(arc1,arc2),arc1);
 	}
 	
 	
@@ -524,7 +529,7 @@ public class GeometricOperations
 				}
 				
 				arcElements.add(arc);
-//				System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+				//System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
 			}
 		}
 		
@@ -602,10 +607,74 @@ public class GeometricOperations
 		return points;
 	}
 	
-	public static ArrayList<LimitedElement> firstPathDesbaste (GeneralClosedPocket pocket, double allowance)
+	public static ArrayList<LimitedElement> elementsToDesbaste (GeneralClosedPocket pocket, double allowance)
 	{
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.getPosicaoZ(), allowance);
 		return acabamentoPath(addPocket, allowance);
+	}
+	
+	public static double minimumDistance(ArrayList<LimitedElement> elements)
+	{
+		double distance=0.0;
+		
+		for (int i = 0; i < elements.size() - 1; i++)
+		{
+			LimitedElement e1 = elements.get(i);
+			for (int j = i+2; j < elements.size(); j++)
+			{
+				LimitedElement e2 = elements.get(j);
+				if (i==0 && j == 2)
+				{
+					distance = minimumDistance(e1,e2);
+					System.out.println("First distance " + distance + " i " + i + " j " + j);
+				}
+				else if(i != 0 && j != elements.size()-1)
+				{
+					double distanceTemp = minimumDistance(e1,e2);
+					if (distance > distanceTemp)
+					{
+						distance = distanceTemp;
+						System.out.println("New distance " + distance + " i " + i + " j " + j);
+					}
+				}
+			}
+		}
+		
+		return distance;
+	}
+	
+	public static double minimumDistance(LimitedElement e1, LimitedElement e2)
+	{
+		double distance=0.0;
+		if (e1.isLimitedLine())
+		{
+			LimitedLine line1 = (LimitedLine)e1;
+			if (e2.isLimitedLine())
+			{
+				LimitedLine line2 = (LimitedLine)e2;
+				distance = minimumDistanceLineToLine(line1, line2);
+			}
+			if (e2.isLimitedArc())
+			{
+				LimitedArc arc2 = (LimitedArc)e2;
+				distance = minimumDistanceLineToArc(line1, arc2);
+			}
+		}
+		else if (e1.isLimitedArc())
+		{
+			LimitedArc arc1 = (LimitedArc)e1;
+			if (e2.isLimitedLine())
+			{
+				LimitedLine line2 = (LimitedLine)e2;
+				distance = minimumDistanceArcToLine(arc1,line2);
+			}
+			if (e2.isLimitedArc())
+			{
+				LimitedArc arc2 = (LimitedArc)e2;
+				distance = minimumDistanceArcToArc(arc1, arc2);
+			}			
+		}		
+		return distance;
 	}
 	
 	public static ArrayList<LimitedElement> parallelPath (GeneralClosedPocketVertexAdd addPocket, double distance)	
@@ -681,5 +750,18 @@ public class GeometricOperations
 		}		
 		return parallelElements;
 	}
-	
+
+	public static Point3d arcToVertec(LimitedArc arc)	
+	{
+		double radius = arc.getRadius();
+		double angle = arc.getDeltaAngle();
+		Point3d centerToInitial = minus(arc.getInitialPoint(), arc.getCenter());
+		Point3d initialToFinalHalf = multiply(0.5,minus(arc.getFinalPoint(), arc.getInitialPoint()));
+		
+		Point3d unitarialFromCenterToVertex = unitVector(arc.getCenter(), initialToFinalHalf);
+		double distanceCenterToVertex = radius/Math.cos(Math.abs(angle/2));
+		
+		Point3d vertex3d = plus(arc.getCenter(), multiply(distanceCenterToVertex,unitarialFromCenterToVertex));
+		return vertex3d;
+	}
 }

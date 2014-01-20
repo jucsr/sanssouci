@@ -780,4 +780,14 @@ public class GeometricOperations
 		}		
 		return multipleParallel;
 	}
+	
+	public static ArrayList<Point2D> scalePoints(ArrayList<Point2D> points, double multiple)
+	{
+		ArrayList<Point2D> out = new ArrayList<Point2D> ();
+		for (Point2D p:points)
+		{
+			out.add(new Point2D.Double(p.getX()*multiple,p.getY()*multiple));
+		}
+		return out;
+	}
 }

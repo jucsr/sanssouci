@@ -98,7 +98,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 	@Test
 	public void createBossTest(){
 		this.cavidade=new Cavidade();
-		this.cavidade.setNome("Lucas");
+		this.cavidade.setNome("Ninguem");
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(10);
 		this.cavidade.setRaio(10);

@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.util.geometricOperations;
 
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -557,6 +558,79 @@ public class GeometricOperations
 		
 		return acabamentoElements;
 	}
+	
+	public static GeneralPath linearPathToGeneralPath(ArrayList<LinearPath> lineas)
+	{
+		GeneralPath shape = new GeneralPath();
+		for (int i = 0; i < lineas.size(); i++)
+		{
+			if(i==0)
+			{
+				shape.moveTo(lineas.get(i).getInitialPoint().getX(), lineas.get(i).getInitialPoint().getY());
+			}
+			else
+			{
+				shape.lineTo(lineas.get(i).getInitialPoint().getX(), lineas.get(i).getInitialPoint().getY());
+			}
+		}
+		shape.closePath();
+		return shape;
+	}
+	
+	public static ArrayList<LinearPath> acabamentoLinearPath(GeneralClosedPocketVertexAdd addPocket, double radius)
+	{
+		ArrayList<LimitedElement> saida = new ArrayList<LimitedElement>(); 
+		saida = acabamentoPath(addPocket, radius);
+		ArrayList<LinearPath> linearSaida = new ArrayList<LinearPath>();		
+		for(LimitedElement s:saida)
+		{
+			if (s.isLimitedLine())
+			{
+				LimitedLine line = (LimitedLine)s;
+				LinearPath linearPath = new LinearPath(line.getInitialPoint(), line.getFinalPoint(),LinearPath.SLOW_MOV);
+				linearSaida.add(linearPath);
+			}
+			if (s.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)s;
+			
+				CircularPath circ = new CircularPath(arc.getCenter(), arc.getInitialPoint(), arc.getFinalPoint(), arc.getDeltaAngle(),CircularPath.CCW);
+				
+				for(LinearPath line:GeometricOperations.arcToLinear(circ, 100))
+				{
+					linearSaida.add(line);
+				}
+			}
+		}
+		return linearSaida;
+	}
+	
+	public static ArrayList<LinearPath> elementsLinearPath(ArrayList<LimitedElement> saida)
+	{
+		ArrayList<LinearPath> linearSaida = new ArrayList<LinearPath>();		
+		for(LimitedElement s:saida)
+		{
+			if (s.isLimitedLine())
+			{
+				LimitedLine line = (LimitedLine)s;
+				LinearPath linearPath = new LinearPath(line.getInitialPoint(), line.getFinalPoint(),LinearPath.SLOW_MOV);
+				linearSaida.add(linearPath);
+			}
+			if (s.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)s;
+			
+				CircularPath circ = new CircularPath(arc.getCenter(), arc.getInitialPoint(), arc.getFinalPoint(), arc.getDeltaAngle(),CircularPath.CCW);
+				
+				for(LinearPath line:GeometricOperations.arcToLinear(circ, 100))
+				{
+					linearSaida.add(line);
+				}
+			}
+		}
+		return linearSaida;
+	}
+	
 	/**
 	 * 
 	 * @param arcPath 
@@ -677,10 +751,8 @@ public class GeometricOperations
 		return distance;
 	}
 	
-	public static ArrayList<LimitedElement> parallelPath (GeneralClosedPocketVertexAdd addPocket, double distance)	
+	public static ArrayList<LimitedElement> parallelPath (ArrayList<LimitedElement> elements, double distance)	
 	{		
-		ArrayList<LimitedElement> elements = addPocket.getElements();
-		
 		ArrayList<LimitedArc> arcElements = new ArrayList<LimitedArc>();
 		ArrayList<LimitedElement> parallelElements = new ArrayList<LimitedElement>();
 		
@@ -698,11 +770,18 @@ public class GeometricOperations
 //					System.out.println("To");
 					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
 				}
+				else
+				{
+					Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
+//					System.out.println("Modifying");
+//					System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+//					System.out.println("To");
+					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
+				}
 				arcElements.add(arc);
 				System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
 			}
 		}
-		
 		for (int i = 0; i < arcElements.size(); i++)
 		{
 			LimitedArc arc1 = new LimitedArc();
@@ -719,36 +798,12 @@ public class GeometricOperations
 				arc2 = arcElements.get(0);				
 			}
 			
-			if(arc1.getDeltaAngle()<0)
-			{
-				LimitedLine line = new LimitedLine();
-				if(arc2.getDeltaAngle()<0)
-				{
-					line = new LimitedLine(arc1.getFinalPoint(), arc2.getInitialPoint());
-				}				
-				else
-				{
-					line = new LimitedLine(arc1.getFinalPoint(), arc2.getCenter());
-				}
-				parallelElements.add(arc1);
-				parallelElements.add(line);
-				
-			}
-			else
-			{
-				LimitedLine line = new LimitedLine();
-				if(arc2.getDeltaAngle()<0)
-				{
-					line = new LimitedLine(arc1.getCenter(), arc2.getInitialPoint());
-				}				
-				else
-				{
-					line = new LimitedLine(arc1.getCenter(), arc2.getCenter());
-				}
-				parallelElements.add(line);
-			}
-		}		
-		return parallelElements;
+			LimitedLine line = new LimitedLine();
+			line = new LimitedLine(arc1.getFinalPoint(), arc2.getInitialPoint());
+			parallelElements.add(arc1);
+			parallelElements.add(line);
+		}
+				return parallelElements;
 	}
 
 	public static Point3d arcToVertec(LimitedArc arc)	

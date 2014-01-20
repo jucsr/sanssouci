@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -15,7 +17,8 @@ import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 public class GeneralClosedPocketVertexAdd 
 {
 	private ArrayList<Point3d> vertex = new ArrayList<Point3d>();
-	private GeneralPath forma = new GeneralPath();
+	private GeneralPath formaVertex = new GeneralPath();
+	private GeneralPath formaRound = new GeneralPath();
 	private ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	private double radius;
 	
@@ -39,6 +42,7 @@ public class GeneralClosedPocketVertexAdd
 		this.makeForma();
 		this.makeElements();
 		this.showElements();
+		this.elementsToLinearPath();
 	}
 	
 	public GeneralClosedPocketVertexAdd(ArrayList<LimitedElement> elementsIn)
@@ -47,6 +51,7 @@ public class GeneralClosedPocketVertexAdd
 		this.makeForma();
 		this.makeElements();
 		this.showElements();
+		this.elementsToLinearPath();
 	}
 	
 	public GeneralClosedPocketVertexAdd(ArrayList<Point2D> vertex2D, double zCoordinate, double radius)
@@ -60,6 +65,7 @@ public class GeneralClosedPocketVertexAdd
 		this.makeForma();
 		this.makeElements();
 		this.showElements();
+		this.elementsToLinearPath();
 	}	
 
 	private void makeVertex(ArrayList<LimitedElement> elements)
@@ -87,6 +93,7 @@ public class GeneralClosedPocketVertexAdd
 			System.out.println(vertArc);
 		}
 	}
+	
 	private void makeForma()
 	{
 		int i=0;
@@ -94,15 +101,15 @@ public class GeneralClosedPocketVertexAdd
 		{
 			if (i==0)
 			{
-				this.forma.moveTo(this.vertex.get(0).getX(), this.vertex.get(0).getY());
+				this.formaVertex.moveTo(this.vertex.get(0).getX(), this.vertex.get(0).getY());
 			}
 			else
 			{
-				this.forma.lineTo(v.getX(), v.getY());
+				this.formaVertex.lineTo(v.getX(), v.getY());
 			}
 			
 			if(i==this.vertex.size()-1)
-				this.forma.closePath();
+				this.formaVertex.closePath();
 			i++;
 		}						
 	}
@@ -206,6 +213,32 @@ public class GeneralClosedPocketVertexAdd
 		this.elements = tempElements;
 	}
 	
+	
+	private void elementsToLinearPath()
+	{
+		ArrayList<LinearPath> linearSaida = new ArrayList<LinearPath>();		
+		for(LimitedElement s:this.elements)
+		{
+			if (s.isLimitedLine())
+			{
+				LimitedLine line = (LimitedLine)s;
+				LinearPath linearPath = new LinearPath(line.getInitialPoint(), line.getFinalPoint(),LinearPath.SLOW_MOV);
+				linearSaida.add(linearPath);
+			}
+			if (s.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)s;
+			
+				CircularPath circ = new CircularPath(arc.getCenter(), arc.getInitialPoint(), arc.getFinalPoint(), arc.getDeltaAngle(),CircularPath.CCW);
+				
+				for(LinearPath line:GeometricOperations.arcToLinear(circ, 10))
+				{
+					linearSaida.add(line);
+				}
+			}
+		}
+		this.formaRound = GeometricOperations.linearPathToGeneralPath(linearSaida);
+	}
 	public void showElements()
 	{
 		int i = 0;
@@ -235,12 +268,12 @@ public class GeneralClosedPocketVertexAdd
 		this.vertex = vertex;
 	}
 
-	public GeneralPath getForma() {
-		return forma;
+	public GeneralPath getFormaVertex() {
+		return formaVertex;
 	}
 
-	public void setForma(GeneralPath forma) {
-		this.forma = forma;
+	public void setFormaVertex(GeneralPath forma) {
+		this.formaVertex = forma;
 	}
 
 	public ArrayList<LimitedElement> getElements() {
@@ -250,4 +283,14 @@ public class GeneralClosedPocketVertexAdd
 	public void setElements(ArrayList<LimitedElement> elements) {
 		this.elements = elements;
 	}
+
+	public GeneralPath getFormaRound() {
+		return formaRound;
+	}
+
+	public void setFormaRound(GeneralPath forma) {
+		this.formaRound = forma;
+	}
+
+
 }

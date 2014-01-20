@@ -502,59 +502,7 @@ public class GeometricOperations
 	 */
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
 	{		
-		ArrayList<LimitedElement> elements = addPocket.getElements();
-		ArrayList<LimitedArc> arcElements = new ArrayList<LimitedArc>();
-		ArrayList<LimitedElement> acabamentoElements = new ArrayList<LimitedElement>();
-		
-		for (LimitedElement e:elements)
-		{
-			if (e.isLimitedArc())
-			{
-				LimitedArc arc = (LimitedArc)e;
-				
-				if (arc.getDeltaAngle()<0)
-				{
-					Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+radius),unitVector(arc.getCenter(),arc.getInitialPoint())));
-//					System.out.println("Modifying");
-//					System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
-//					System.out.println("To");
-					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
-				}
-				else
-				{
-					Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-radius),unitVector(arc.getCenter(),arc.getInitialPoint())));
-//					System.out.println("Modifying");
-//					System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
-//					System.out.println("To");
-					arc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
-				}
-				
-				arcElements.add(arc);
-				//System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
-			}
-		}
-		
-		for (int i = 0; i < arcElements.size(); i++)
-		{
-			LimitedArc arc1 = new LimitedArc();
-			LimitedArc arc2 = new LimitedArc();
-			
-			if(i!=arcElements.size()-1)
-			{
-				arc1 = arcElements.get(i);
-				arc2 = arcElements.get(i+1);
-			}
-			else
-			{
-				arc1 = arcElements.get(i);
-				arc2 = arcElements.get(0);				
-			}
-			
-			LimitedLine line = new LimitedLine();
-			line = new LimitedLine(arc1.getFinalPoint(), arc2.getInitialPoint());
-			acabamentoElements.add(arc1);
-			acabamentoElements.add(line);
-		}
+		ArrayList<LimitedElement> acabamentoElements = parallelPath(addPocket.getElements(), radius);
 		
 		return acabamentoElements;
 	}

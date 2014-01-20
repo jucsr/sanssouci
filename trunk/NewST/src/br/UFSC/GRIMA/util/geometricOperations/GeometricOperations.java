@@ -767,4 +767,17 @@ public class GeometricOperations
 		Point3d vertex3d = plus(arc.getCenter(), multiply(distanceCenterToVertex,unitarialFromCenterToVertex));
 		return vertex3d;
 	}
+	
+	public static ArrayList<ArrayList<LimitedElement>> multipleParallelPath(ArrayList<LimitedElement> elements, double distance)
+	{
+		ArrayList<ArrayList<LimitedElement>> multipleParallel = new ArrayList<ArrayList<LimitedElement>>();
+		
+		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
+		while (minimumDistance(parallelPath) >= 0)
+		{
+			multipleParallel.add(parallelPath);
+			parallelPath = parallelPath(parallelPath,distance);
+		}		
+		return multipleParallel;
+	}
 }

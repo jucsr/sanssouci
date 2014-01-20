@@ -158,15 +158,31 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				GeneralPath shape2 = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsParallel));
 				
 				GeneralClosedPocketVertexAdd addPocketVertexNew = new GeneralClosedPocketVertexAdd(elementsAcabamento);
-				addPocketVertex.showElements();
-				addPocketVertexNew.showElements();
-				g2d.draw(addPocketVertex.getFormaVertex());
-				g2d.draw(addPocketVertex.getFormaRound());
-				g2d.setColor(new Color(254, 0, 0));
-				g2d.draw(shape);
-				g2d.setColor(new Color(0, 254, 0));
-				g2d.draw(shape2);
 				
+				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ferramenta.getDiametroFerramenta() / 4);
+				
+//				addPocketVertex.showElements();
+//				addPocketVertexNew.showElements();
+				
+				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
+
+//				g2d.draw(addPocketVertex.getFormaVertex());
+//				g2d.draw(addPocketVertex.getFormaRound());
+//				g2d.setColor(new Color(254, 0, 0));
+//				g2d.draw(shape);
+//				g2d.setColor(new Color(0, 254, 0));
+//				g2d.draw(shape2);
+				
+				for(ArrayList<LimitedElement> elements:multipleParallel)
+				{
+					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
+				}
+				
+				for (GeneralPath s:shapes)
+				{
+					g2d.setColor(new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
+					g2d.draw(s);
+				}
 			}
 		}
 		JFrame frame = new JFrame("Poligono");

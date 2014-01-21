@@ -2,6 +2,8 @@ package br.UFSC.GRIMA.util.findPoints;
 
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
+
 /**
  * 
  * @author moises
@@ -26,12 +28,15 @@ public class LimitedLine extends LimitedElement {
 	public double yminl;
 	public double ymaxl;
 
+	public double lenght;
 	public boolean vertical = false;
 
-	public LimitedLine() {
+	public LimitedLine() 
+	{
 
 	}
 
+	
 	public LimitedLine(Point3d fp, Point3d sp) {
 		double ap;
 		double bp;
@@ -71,9 +76,19 @@ public class LimitedLine extends LimitedElement {
 			this.yminl = this.getFinalPoint().y;
 			this.ymaxl = this.getInitialPoint().y;
 		}
-
+		this.setLenght();
+	}
+	
+	private void setLenght()
+	{
+		this.lenght = GeometricOperations.distance(this.getInitialPoint(), this.getFinalPoint());
 	}
 
+	public double getLenght()
+	{
+		this.setLenght();
+		return this.lenght;
+	}	
 	public Point3d getInitialPoint() {
 		return initialPoint;
 	}

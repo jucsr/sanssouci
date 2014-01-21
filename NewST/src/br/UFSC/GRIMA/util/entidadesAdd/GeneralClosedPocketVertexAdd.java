@@ -239,6 +239,7 @@ public class GeneralClosedPocketVertexAdd
 		}
 		this.formaRound = GeometricOperations.linearPathToGeneralPath(linearSaida);
 	}
+	
 	public void showElements()
 	{
 		int i = 0;

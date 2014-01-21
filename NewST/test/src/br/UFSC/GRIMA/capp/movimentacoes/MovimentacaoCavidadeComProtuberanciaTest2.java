@@ -75,13 +75,14 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		this.cavidadeGeral.setRadius(10 *2.5);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-		points.add(new Point2D.Double(10,40 * 2));
-		points.add(new Point2D.Double(10,80 * 2));
-		points.add(new Point2D.Double(120 * 2,80 * 2));
-		points.add(new Point2D.Double(120 * 2,10));
-		points.add(new Point2D.Double(50 * 2,10));
-		points.add(new Point2D.Double(50 * 2,40 * 2));
+		points.add(new Point2D.Double(2,40));
+		points.add(new Point2D.Double(2,80));
+		points.add(new Point2D.Double(120,80));
+		points.add(new Point2D.Double(120,10));
+		points.add(new Point2D.Double(50,10));
+		points.add(new Point2D.Double(50,40));
 		
+		points = GeometricOperations.scalePoints(points, 4);
 		this.cavidadeGeral.setPoints(points);
 		
 		// --- Criando Machining workingstep ----
@@ -97,7 +98,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(2);
+		cond.setAp(11);
 		cond.setAe(8);
 		cond.setF(.0123);
 		cond.setN(1500);
@@ -150,28 +151,13 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				
 				ArrayList<LimitedElement> elementsAcabamento = GeometricOperations.acabamentoPath(addPocketVertex, ferramenta.getDiametroFerramenta() / 2);
 				
-				ArrayList<LimitedElement> elementsParallel = GeometricOperations.parallelPath(addPocketVertex.getElements(), ferramenta.getDiametroFerramenta() / 4);
+				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsAcabamento));
 				
-				ArrayList<LinearPath> elementsAcabamentoLinear = GeometricOperations.acabamentoLinearPath(addPocketVertex, ferramenta.getDiametroFerramenta() / 2);
-				
-				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(elementsAcabamentoLinear);
-				GeneralPath shape2 = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsParallel));
-				
-				GeneralClosedPocketVertexAdd addPocketVertexNew = new GeneralClosedPocketVertexAdd(elementsAcabamento);
-				
-				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ferramenta.getDiametroFerramenta() / 4);
-				
-//				addPocketVertex.showElements();
-//				addPocketVertexNew.showElements();
+				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ferramenta.getDiametroFerramenta() / 8);
 				
 				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
 
-//				g2d.draw(addPocketVertex.getFormaVertex());
-//				g2d.draw(addPocketVertex.getFormaRound());
-//				g2d.setColor(new Color(254, 0, 0));
-//				g2d.draw(shape);
-//				g2d.setColor(new Color(0, 254, 0));
-//				g2d.draw(shape2);
+				g2d.draw(shape);
 				
 				for(ArrayList<LimitedElement> elements:multipleParallel)
 				{

@@ -317,12 +317,37 @@ public class JanelaShopFloor extends ShopFloorFrame implements ActionListener, T
 		
 		//this.atualizarArvorePrecedencias(); //New
 		
-		
-		
 		new MapeadoraDeWorkingsteps(this.projeto); //New
 		this.atualizarArvorePrecedenciasFeatures();
 //		atualizarArvorePrecendences(this.projeto);
 		this.atualizarArvorePrecendencesWorkingsteps();
+		
+		// --- ID Precedences ---
+		for(int i = 0; i < projeto.getWorkingsteps().get(0).size(); i++)
+		{
+			Workingstep wsTmp = (Workingstep)projeto.getWorkingsteps().get(0).get(i);
+			projetoSF.getWorkingsteps().add(wsTmp);
+		}
+		
+		int id=10;
+		for (Workingstep ws:projetoSF.getWorkingsteps())
+		{		
+			ws.setIndiceArvore(id);
+			System.out.println("WS " + ws + " IndArv " + ws.getIndiceArvore());
+			id=id+10;
+		}
+		
+		for (Workingstep ws:projetoSF.getWorkingsteps())
+		{
+			for (Workingstep wsp:projetoSF.getWorkingsteps())
+			{
+				if(ws.getWorkingstepPrecedente()==wsp)
+				{
+					ws.setWSPrecedenteID(wsp.getIndiceArvore());
+				}
+			}
+		}
+		// ---- END ID Precedences ---
 		
 		// inicializa desehador de precedencias
 		

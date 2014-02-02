@@ -72,16 +72,25 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		this.cavidadeGeral.setNome("Name");
 		this.cavidadeGeral.setPosicao(79, 22, 0);
 		this.cavidadeGeral.setProfundidade(10);
-		this.cavidadeGeral.setRadius(10 *2.5);
+		this.cavidadeGeral.setRadius(10 * 2.5);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-		points.add(new Point2D.Double(2,2));
-		points.add(new Point2D.Double(2,80));
-		points.add(new Point2D.Double(120,80));
-		points.add(new Point2D.Double(110,40));
-		points.add(new Point2D.Double(120,10));
-		points.add(new Point2D.Double(50,10));
-		points.add(new Point2D.Double(50,40));
+//		 points.add(new Point2D.Double(2,40));
+//         points.add(new Point2D.Double(2,80));
+//         points.add(new Point2D.Double(120,80));
+//         points.add(new Point2D.Double(120,10));
+//         points.add(new Point2D.Double(50,10));
+//         points.add(new Point2D.Double(50,40));
+         
+//		points.add(new Point2D.Double(2,40));
+		points.add(new Point2D.Double(2, 80));
+		points.add(new Point2D.Double(150, 80));
+		points.add(new Point2D.Double(120, 10));
+		points.add(new Point2D.Double(80, 10));
+		points.add(new Point2D.Double(70, 40));
+		points.add(new Point2D.Double(50, 40));
+		points.add(new Point2D.Double(40, 10));
+		points.add(new Point2D.Double(2, 10));
 		
 		points = GeometricOperations.scalePoints(points, 4);
 		this.cavidadeGeral.setPoints(points);
@@ -94,13 +103,13 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		
 		// ---- criando Ferramenta ----
 		this.ferramenta = new FaceMill();
-		this.ferramenta.setDiametroFerramenta(20);
+		this.ferramenta.setDiametroFerramenta(50);
 		this.ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 		
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(11);
-		cond.setAe(8);
+		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
@@ -154,7 +163,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				
 				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsAcabamento));
 				
-				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ferramenta.getDiametroFerramenta() / 8);
+				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
 				
 				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
 

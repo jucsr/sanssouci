@@ -640,20 +640,6 @@ public class GeometricOperations
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 		elements = elementsToAssess;
 		
-//		for (LimitedElement e:elementsToAssess)
-//		{
-//			if (e.isLimitedArc())
-//			{
-//				LimitedArc arc = (LimitedArc)e;
-//				if (arc.getRadius()!=0)
-//					elements.add(e);
-//			}
-//			if (e.isLimitedLine())
-//			{
-//				elements.add(e);
-//			}
-//		}
-		
 		double distance;		
 		System.out.println("Elements " + elements.size());
 		if (elements.size()<=3)
@@ -695,7 +681,10 @@ public class GeometricOperations
 			}
 			
 			if (distanceT<distance)
+			{
 				distance = distanceT;
+				System.out.println("Distance changed " + distanceT + " i = " +i);
+			}
 		}	
 		System.out.println("Minimum distance " + distance);
 		return distance;

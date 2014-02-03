@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,6 +16,9 @@ import javax.swing.JPanel;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.cad.CreateGeneralClosedPocketTest;
+import br.UFSC.GRIMA.cad.CreateGeneralPocket;
+import br.UFSC.GRIMA.cad.CreateGeneralProfileBoss;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
@@ -26,10 +30,12 @@ import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.LinearPath;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
@@ -72,17 +78,16 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		this.cavidadeGeral.setNome("Name");
 		this.cavidadeGeral.setPosicao(79, 22, 0);
 		this.cavidadeGeral.setProfundidade(10);
-		this.cavidadeGeral.setRadius(10 * 2.5);
+		this.cavidadeGeral.setRadius(25);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-//		 points.add(new Point2D.Double(2,40));
-//         points.add(new Point2D.Double(2,80));
-//         points.add(new Point2D.Double(120,80));
-//         points.add(new Point2D.Double(120,10));
-//         points.add(new Point2D.Double(50,10));
-//         points.add(new Point2D.Double(50,40));
-         
 //		points.add(new Point2D.Double(2,40));
+//      points.add(new Point2D.Double(2,80));
+//      points.add(new Point2D.Double(120,80));
+//      points.add(new Point2D.Double(120,10));
+//      points.add(new Point2D.Double(50,10));
+//      points.add(new Point2D.Double(50,40));
+//         
 		points.add(new Point2D.Double(2, 80));
 		points.add(new Point2D.Double(150, 80));
 		points.add(new Point2D.Double(120, 10));
@@ -103,12 +108,12 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		
 		// ---- criando Ferramenta ----
 		this.ferramenta = new FaceMill();
-		this.ferramenta.setDiametroFerramenta(50);
+		this.ferramenta.setDiametroFerramenta(10);
 		this.ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 		
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(11);
+		cond.setAp(2);
 		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
@@ -128,6 +133,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{
+		
 		class painelTest extends JPanel{
 
 			GeneralPath formaFeature = new GeneralPath();
@@ -142,9 +148,9 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				}
 				
 				formaFeature.closePath();
+
 			}
-
-
+			
 			@Override
 			public void paintComponent(Graphics g)
 			{
@@ -155,7 +161,15 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				g2d.scale(1, -1);
 				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
+		
+				//--- forma original ---
+				desenharFormaOriginal(g2d);
+				//---- End ---
+				
+				g2d.setStroke(new BasicStroke());
+				
 				g2d.setColor(Color.black);
+				
 				
 				GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(cavidadeGeral.getVertexPoints(), cavidadeGeral.Z,cavidadeGeral.getRadius());
 				
@@ -180,10 +194,27 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 					g2d.draw(s);
 				}
 			}
+			
+			private void desenharFormaOriginal(Graphics2D g2d)
+			{
+				g2d.setStroke(new BasicStroke(3));
+				g2d.setColor(new Color(215, 0, 15));
+				GeneralPath forma = new GeneralPath();
+				ArrayList<Point2D> vertices = CreateGeneralPocket.transformPolygonInCounterClockPolygon(cavidadeGeral.getVertexPoints());
+				ArrayList<Point2D> formaInterpolada = CreateGeneralPocket.transformPolygonInRoundPolygon(vertices, cavidadeGeral.getRadius());
+				forma.moveTo(formaInterpolada.get(0).getX(), formaInterpolada.get(0).getY());
+				
+				for(int i = 0; i < formaInterpolada.size(); i++)
+				{
+					forma.lineTo(formaInterpolada.get(i).getX(), formaInterpolada.get(i).getY());
+				}
+				forma.closePath();
+				g2d.draw(forma);
+			}
 		}
-		JFrame frame = new JFrame("Poligono");
+		JFrame frame = new JFrame("Path");
 		painelTest painel = new painelTest();
-		frame.setSize(510, 535);
+		frame.setSize(700, 400);
 		frame.getContentPane().add(painel);
 		frame.setVisible(true);
 		painel.repaint();

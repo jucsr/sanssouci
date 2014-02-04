@@ -756,8 +756,7 @@ public class GeometricOperations
 			if (e.isLimitedArc() && eBefore.isLimitedLine() && eAfter.isLimitedLine())
 			{
 				LimitedArc arc = (LimitedArc)e;
-				if (arc.getRadius() != 0)
-					parallelElements.add(parallelArc(((LimitedArc)e), distance));
+				parallelElements.add(parallelArc(((LimitedArc)e), distance));
 			}
 
 			if (e.isLimitedLine() && eBefore.isLimitedLine() && eAfter.isLimitedLine())
@@ -839,24 +838,68 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> tempElements = new ArrayList<LimitedElement>();
 		
+		int i=0;
 		for(LimitedElement e:parallelElements)
 		{
 			if(e.isLimitedArc())
 			{
 				LimitedArc arc = (LimitedArc)e;
+				LimitedLine line1;
+				LimitedLine line2;
+
+				boolean haveLinesInterception = false;
+				if (i==0)
+				{
+					if(parallelElements.get(parallelElements.size()-1).isLimitedLine())
+					{
+						line1 = (LimitedLine)parallelElements.get(parallelElements.size()-1);						
+					}
+					line2 = (LimitedLine)parallelElements.get(i+1);
+				}
+				else if(i==parallelElements.size()-1)
+				{
+					line1 = (LimitedLine)parallelElements.get(i-1);
+					if(parallelElements.get(0).isLimitedLine())
+					{
+						line2 = (LimitedLine)parallelElements.get(0);
+					}					
+				}
+				else
+				{
+					if (parallelElements.get(i-1).isLimitedLine() && parallelElements.get(i+1).isLimitedLine())
+					{
+						line1 = (LimitedLine)parallelElements.get(i-1);
+						line2 = (LimitedLine)parallelElements.get(i+1);
+						haveLinesInterception = intersects(line1, line2);
+					}
+				}
 				if (arc.getRadius()!=0)
-					tempElements.add(e);
+				{
+					if(!haveLinesInterception)
+					{
+						tempElements.add(e);
+					}					
+				}
+				else				
+				{
+					System.out.println("Arc eliminated From " + arc.getInitialPoint() + " to " + arc.getFinalPoint());
+				}
 			}
 			else if(e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
-				System.out.println("Line lenght " + line.getLenght());
-				System.out.println("from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+//				System.out.println("Line lenght " + line.getLenght());
+//				System.out.println("from " + line.getInitialPoint() + " to " + line.getFinalPoint());
 				if (line.getLenght()!=0)
 				{						
 					tempElements.add(e);
 				}
+				else
+				{
+					System.out.println("Line eliminated From " + line.getInitialPoint() + " To " + line.getFinalPoint());
+				}
 			}
+			i++;
 		}
 		parallelElements = tempElements;
 		return parallelElements;
@@ -882,7 +925,7 @@ public class GeometricOperations
 	
 	public static LimitedArc parallelArc(LimitedArc arc, double distance)
 	{
-		LimitedArc newArc = new LimitedArc();
+		LimitedArc newArc = new LimitedArc();		
 		if (arc.getDeltaAngle()<0)
 		{
 			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
@@ -890,8 +933,18 @@ public class GeometricOperations
 		}
 		else
 		{
-			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
+			if(arc.getRadius()>=distance)
+			{
+				Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
+				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);
+			}
+			else
+			{
+				LimitedArc tempArc = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle()/2,1);
+				Point3d unitToNewPoint = unitVector(tempArc.getFinalPoint(), arc.getCenter());
+				Point3d newCenter = plus(tempArc.getFinalPoint(),multiply(distance,unitToNewPoint));
+				newArc = new LimitedArc(newCenter, newCenter, arc.getDeltaAngle(),1);
+			}
 		}				
 //		System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
 		return newArc;
@@ -959,5 +1012,54 @@ public class GeometricOperations
 			out.add(new Point2D.Double(p.getX()*multiple,p.getY()*multiple));
 		}
 		return out;
+	}
+	
+	public static boolean intersects(LimitedLine line1, LimitedLine line2)
+	{
+		Point3d intersect = intersectionPoint(line1, line2);
+		if (intersect==null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	
+	public static Point3d intersectionPoint(LimitedLine line1, LimitedLine line2)
+	{
+		double x0=0;
+		double y0=0;
+		
+		if(line1.getInitialPoint().getZ()==line2.getInitialPoint().getZ())
+		{
+			//Equation y = a + b*x
+			Point3d pi1 = line1.getInitialPoint();
+			Point3d pf1 = line1.getFinalPoint();
+			
+			Point3d pi2 = line1.getInitialPoint();
+			Point3d pf2 = line1.getFinalPoint();
+			
+			double b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
+			double a1 = pi1.getY() - b1*pi1.getX(); 
+			
+			double b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
+			double a2 = pi2.getY() - b2*pi2.getX();
+
+	
+			if (b1==b2)
+			{
+				return null;
+			}
+			else
+			{
+				x0 = -(a1-a2)/(b1-b2);
+				y0 = a1 + b1*x0;
+			}
+		}
+		Point3d intersect = new Point3d(x0,y0,line1.getInitialPoint().getZ());		
+		return intersect;
 	}
 }

@@ -94,19 +94,25 @@ public class Halevi2
 			System.out.println(d.getIndexWorkingStep() + "  " + d.getIndexMachine());
 		}
 		
+		System.out.println("PenaltiesMatrix  Tables " + penaltiesMatrix.size() + " Rows " + penaltiesMatrix.get(0).size() + " Cols " + penaltiesMatrix.get(0).get(0).size());
+		System.out.println("Size PathDyad " + pathDyad.size());
+		
 		for (int i = 0; i < pathDyad.size(); i++)
 		{
 			if (i!=0)
 			{
+				System.out.println("i!=0");
+				System.out.println("WorkingStep" + (pathDyad.get(i).getIndexWorkingStep()/10 - 1));
 				penalties.add(penaltiesMatrix.get(pathDyad.get(i).getIndexWorkingStep()/10 - 1).get(pathDyad.get(i-1).getIndexMachine()-1).get(pathDyad.get(i).getIndexMachine()-1));
 				System.out.println("WS " + pathDyad.get(i).getIndexWorkingStep() + " From Mach " + pathDyad.get(i-1).getIndexMachine() + " To Mach " + pathDyad.get(i).getIndexMachine() + " Pen " + penalties.get(i));
 			}
 			else
 			{
+				System.out.println("i==0");
+				System.out.println("WorkingStep" + (pathDyad.get(i).getIndexWorkingStep()));
 				penalties.add(0.0);
 				System.out.println("WS " + pathDyad.get(i).getIndexWorkingStep() + " From Mach " + pathDyad.get(i).getIndexMachine() + " To Mach " + pathDyad.get(i).getIndexMachine() + " Pen " + penalties.get(i));
-			}
-			
+			}			
 		}
 		return penalties;	
 	}

@@ -911,7 +911,8 @@ public class GeometricOperations
 					{
 						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
 					}
-				}				
+				}			
+				
 				if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())
 				{
 					LimitedArc arcBefore = (LimitedArc)eBefore;
@@ -940,8 +941,20 @@ public class GeometricOperations
 						newFinalPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
 					}
 					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
-				}				
-				
+				}								
+			}
+			if(eCurrent.isLimitedArc())
+			{
+				if(eBefore.isLimitedLine() && eAfter.isLimitedLine())
+				{
+					LimitedLine lineBefore = (LimitedLine)eBefore;
+					LimitedLine lineAfter = (LimitedLine)eAfter;
+					
+					if(angle(lineBefore, lineAfter) > )
+					{
+						
+					}
+				}
 			}
 		}
 		return parallel;		
@@ -951,7 +964,7 @@ public class GeometricOperations
 	public static double angle(LimitedLine lineBefore, LimitedLine lineCurrent)
 	{
 		Point3d beginPoint = minus(lineCurrent.getFinalPoint(), lineCurrent.getInitialPoint());
-		Point3d endPoint = minus(lineBefore.getInitialPoint(), lineCurrent.getInitialPoint());
+		Point3d endPoint = minus(lineBefore.getInitialPoint(), lineBefore.getFinalPoint());
 		
 		double initialAngle = angle(beginPoint);
 		double finalAngle = angle(endPoint);
@@ -1253,7 +1266,7 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
 		int i = 0;
-		while (minimumDistance(parallelPath) >= distance)
+		while (parallelPath.size() > 0)
 		{
 			System.out.println(i+1 + "th Parallel Path");
 			multipleParallel.add(parallelPath);

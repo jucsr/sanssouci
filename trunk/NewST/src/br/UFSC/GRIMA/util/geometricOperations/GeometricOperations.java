@@ -822,7 +822,7 @@ public class GeometricOperations
 						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
 				}
 								
-				if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
+				else if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
 				{
 					LimitedLine lineBefore = (LimitedLine)eBefore;
 					LimitedArc arcAfter = (LimitedArc)eAfter;
@@ -867,7 +867,7 @@ public class GeometricOperations
 					}
 				}
 				
-				if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
+				else if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
 				{
 					LimitedArc arcBefore = (LimitedArc)eBefore;
 					LimitedLine lineAfter = (LimitedLine)eAfter;
@@ -913,7 +913,7 @@ public class GeometricOperations
 					}
 				}			
 				
-				if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())
+				else if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())
 				{
 					LimitedArc arcBefore = (LimitedArc)eBefore;
 					LimitedArc arcAfter = (LimitedArc)eAfter;
@@ -969,9 +969,12 @@ public class GeometricOperations
 						}
 						else
 						{
+							double angleDiagonal = angle(unitVector(middlePoint(arcBefore),arcBefore.getCenter()));
+							double deltaDiagonal = (distance-arcBefore.getRadius())/Math.sin(angleDiagonal); 
 							double translate = norm(minus(intersection,middlePoint(arcBefore))) - (norm(minus(intersection,lineCurrent.getFinalPoint())) - distance)*Math.cos(arcBefore.getDeltaAngle()/2);
 							Point3d unitVector = unitVector(middlePoint(arcBefore), arcBefore.getCenter());
-							newInitialPoint = plus(middlePoint(arcBefore),multiply(translate,unitVector));
+							
+							newInitialPoint = plus(arcBefore.getCenter(),multiply(deltaDiagonal,unitVector));
 						}
 					}
 					else
@@ -981,16 +984,18 @@ public class GeometricOperations
 					
 					if(arcAfter.getDeltaAngle() > 0)
 					{
-						if(distance < arcAfter.getRadius())						
+						if(distance < arcBefore.getRadius())						
 						{						
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
 							newFinalPoint = parallelCurrent.getFinalPoint();
 						}
 						else
 						{
-							double translate = norm(minus(intersection,middlePoint(arcAfter))) - (norm(minus(intersection,lineCurrent.getFinalPoint())) - distance)*Math.cos(arcAfter.getDeltaAngle()/2);
-							Point3d unitVector = unitVector(middlePoint(arcAfter), arcAfter.getCenter());
-							newFinalPoint = minus(middlePoint(arcAfter),multiply(translate,unitVector));
+							double angleDiagonal = angle(unitVector(middlePoint(arcAfter),arcBefore.getCenter()));
+							double deltaDiagonal = (distance-arcBefore.getRadius())/Math.sin(angleDiagonal); 
+							double translate = norm(minus(intersection,middlePoint(arcBefore))) - (norm(minus(intersection,lineCurrent.getFinalPoint())) - distance)*Math.cos(arcBefore.getDeltaAngle()/2);
+							Point3d unitVector = unitVector(middlePoint(arcBefore), arcBefore.getCenter());							
+							newFinalPoint = plus(arcAfter.getCenter(),multiply(deltaDiagonal,unitVector));
 						}
 					}
 					else

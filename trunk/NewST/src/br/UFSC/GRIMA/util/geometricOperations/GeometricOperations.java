@@ -448,6 +448,12 @@ public class GeometricOperations
 		return contents;
 	}
 	
+	/**
+	 * 
+	 * @param p1 initialPoint
+	 * @param p2 finalPoint
+	 * @return
+	 */
 	public static Point3d unitVector(Point3d p1, Point3d p2)
 	{
 		//System.out.println("Unit vector from " + p1 + " to " + p2 + " " + multiply(1/norm(minus(p2,p1)),minus(p2,p1)));
@@ -819,6 +825,8 @@ public class GeometricOperations
 				if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
 				{
 					LimitedLine lineBefore = (LimitedLine)eBefore;
+					LimitedArc arcAfter = (LimitedArc)eAfter;
+					
 					Point3d newInitialPoint = new Point3d();	
 					Point3d newFinalPoint = new Point3d();	
 					
@@ -837,12 +845,103 @@ public class GeometricOperations
 					{
 						LimitedLine parallelLineBefore = absoluteParallel(lineBefore, distance);
 						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
-						LimitedArc arc2 = new LimitedArc(parallelLineBefore.getFinalPoint(), parallelLineCurrent.getInitialPoint(), lineCurrent.getInitialPoint());
-						parallel.add(arc2);
-						newInitialPoint = arc2.getFinalPoint();
+						LimitedArc arc = new LimitedArc(parallelLineBefore.getFinalPoint(), parallelLineCurrent.getInitialPoint(), lineCurrent.getInitialPoint());
+						parallel.add(arc);
+						newInitialPoint = arc.getFinalPoint();
 						validLine = true;
-					}					
+					}
+					
+					if(distance > arcAfter.getRadius())
+					{						
+						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
+						newFinalPoint = minus(absoluteParallel(lineCurrent,distance).getFinalPoint(), multiply(distance-arcAfter.getRadius(),unitVectorLine));
+					}
+					else
+					{
+						newFinalPoint = absoluteParallel(lineCurrent,distance).getFinalPoint();
+					}
+					
+					if (validLine)
+					{
+						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					}
+				}
+				
+				if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
+				{
+					LimitedArc arcBefore = (LimitedArc)eBefore;
+					LimitedLine lineAfter = (LimitedLine)eAfter;
+					
+					
+					Point3d newInitialPoint = new Point3d();	
+					Point3d newFinalPoint = new Point3d();	
+					
+					if(distance > arcBefore.getRadius())
+					{						
+						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
+						newInitialPoint = plus(absoluteParallel(lineCurrent,distance).getInitialPoint(), multiply(distance-arcBefore.getRadius(),unitVectorLine));
+					}
+					else
+					{
+						newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
+					}
+					
+					boolean validLine = false;				
+					
+					double angleAfterCurrent = angle(lineCurrent, lineAfter);
+					
+					if(angleAfterCurrent <= Math.PI)
+					{
+						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineCurrent, lineAfter, distance);
+						newFinalPoint = arc1.getCenter();
+						if(belongs(lineCurrent,newFinalPoint))
+							validLine = true; 
+					}
+					else
+					{						
+						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
+						LimitedLine parallelLineAfter = absoluteParallel(lineAfter, distance);
+						LimitedArc arc = new LimitedArc(parallelLineCurrent.getFinalPoint(), parallelLineAfter.getInitialPoint(), lineAfter.getInitialPoint());
+						parallel.add(arc);
+						newFinalPoint = arc.getInitialPoint();
+						validLine = true;
+					}
+
+					if (validLine)
+					{
+						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					}
 				}				
+				if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())
+				{
+					LimitedArc arcBefore = (LimitedArc)eBefore;
+					LimitedArc arcAfter = (LimitedArc)eAfter;
+					
+					Point3d newInitialPoint = new Point3d();	
+					Point3d newFinalPoint = new Point3d();	
+					
+					if(distance > arcBefore.getRadius())
+					{						
+						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
+						newInitialPoint = plus(absoluteParallel(lineCurrent,distance).getInitialPoint(), multiply(distance-arcBefore.getRadius(),unitVectorLine));
+					}
+					else
+					{
+						newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
+					}
+					
+					if(distance > arcAfter.getRadius())
+					{						
+						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
+						newFinalPoint = minus(absoluteParallel(lineCurrent,distance).getInitialPoint(), multiply(distance-arcAfter.getRadius(),unitVectorLine));
+					}
+					else
+					{
+						newFinalPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
+					}
+					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+				}				
+				
 			}
 		}
 		return parallel;		

@@ -943,16 +943,20 @@ public class GeometricOperations
 					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
 				}								
 			}
-			if(eCurrent.isLimitedArc())
+			if(eCurrent.isLimitedArc())				
 			{
+				LimitedArc arcCurrent = (LimitedArc)eCurrent;
 				if(eBefore.isLimitedLine() && eAfter.isLimitedLine())
 				{
 					LimitedLine lineBefore = (LimitedLine)eBefore;
 					LimitedLine lineAfter = (LimitedLine)eAfter;
-					
-					if(angle(lineBefore, lineAfter) > )
+
+					Point3d newInitialPoint = new Point3d();
+					if(angle(lineBefore, lineAfter) > Math.PI)
 					{
-						
+						Point3d vectorInitial = multiply(arcCurrent.getRadius() + distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
+						newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
+						LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
 					}
 				}
 			}

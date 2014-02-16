@@ -764,29 +764,59 @@ public class GeometricOperations
 			if(eCurrent.isLimitedLine())
 			{
 				LimitedLine lineCurrent = (LimitedLine)eCurrent;
-				if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
+				if(eBefore.isLimitedLine()&&eAfter.isLimitedLine())
 				{
 					LimitedLine lineBefore = (LimitedLine)eBefore;
 					LimitedLine lineAfter = (LimitedLine)eAfter;
 					
-					Point3d initialPoint3d;
+					Point3d newInitialPoint = new Point3d();	
+					Point3d newFinalPoint = new Point3d();	
+					
 					boolean validLine = false;				
-
-					Point3d beginPoint = minus(lineCurrent.getFinalPoint(), lineCurrent.getInitialPoint());
-					Point3d endPoint = minus(lineBefore.getInitialPoint(), lineCurrent.getInitialPoint());
-					double initialAngle = angle(beginPoint);
-					double finalAngle = angle(endPoint);
-					double angleCurrentBefore = finalAngle-initialAngle;
+					
+					double angleCurrentBefore = angle(lineBefore, lineCurrent);
+					
 					if(angleCurrentBefore <= Math.PI)
 					{
 						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineBefore, lineCurrent, distance);
-						initialPoint3d = arc1.getCenter();
+						newInitialPoint = arc1.getCenter();
+						if(belongs(lineCurrent,newInitialPoint))
+							validLine = true; 
 					}
 					else
 					{
-						//Point3d initialPointArc = ; 
-						LimitedArc arc2 = new LimitedArc();
+						LimitedLine parallelLineBefore = absoluteParallel(lineBefore, distance);
+						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
+						LimitedArc arc2 = new LimitedArc(parallelLineBefore.getFinalPoint(), parallelLineCurrent.getInitialPoint(), lineCurrent.getInitialPoint());
+						parallel.add(arc2);
+						newInitialPoint = arc2.getFinalPoint();
+						validLine = true;
 					}
+					
+					double angleCurrentAfter = angle(lineCurrent, lineAfter);
+					
+					if(angleCurrentAfter <= Math.PI)
+					{
+						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineCurrent, lineAfter, distance);
+						newFinalPoint = arc1.getCenter();
+						if(belongs(lineCurrent,newFinalPoint))
+							validLine = true;
+					}
+					else
+					{
+						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
+						LimitedLine parallelLineAfter = absoluteParallel(lineAfter, distance);
+						LimitedArc arc2 = new LimitedArc(parallelLineCurrent.getFinalPoint(), parallelLineAfter.getInitialPoint(), lineAfter.getInitialPoint());
+						//parallel.add(arc2);
+						newFinalPoint = arc2.getInitialPoint();
+							validLine = true;
+					}
+					
+					if(validLine)
+						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					
+							
+					
 				}
 				
 			}
@@ -794,7 +824,19 @@ public class GeometricOperations
 		return parallel;		
 	}
 	
-	public static LimitedLine AbsoluteParallel(LimitedLine line, double distance)
+	public static double angle(LimitedLine lineBefore, LimitedLine lineCurrent)
+	{
+		Point3d beginPoint = minus(lineCurrent.getFinalPoint(), lineCurrent.getInitialPoint());
+		Point3d endPoint = minus(lineBefore.getInitialPoint(), lineCurrent.getInitialPoint());
+		
+		double initialAngle = angle(beginPoint);
+		double finalAngle = angle(endPoint);
+		
+		double angleCurrentBefore = finalAngle-initialAngle;
+		return angleCurrentBefore;
+	}
+	
+	public static LimitedLine absoluteParallel(LimitedLine line, double distance)
 	{
 		
 		double angleLine = angle(minus(line.getFinalPoint(), line.getInitialPoint()));

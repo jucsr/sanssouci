@@ -919,12 +919,60 @@ public class GeometricOperations
 					LimitedArc arcAfter = (LimitedArc)eAfter;
 					
 					Point3d newInitialPoint = new Point3d();	
-					Point3d newFinalPoint = new Point3d();	
+					Point3d newFinalPoint = new Point3d();
 					
-					if(distance > arcBefore.getRadius())
-					{						
-						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
-						newInitialPoint = plus(absoluteParallel(lineCurrent,distance).getInitialPoint(), multiply(distance-arcBefore.getRadius(),unitVectorLine));
+					boolean validity=false;
+					
+					Point3d intersection = new Point3d();
+					
+					if(arcBefore.getDeltaAngle() > 0 && arcAfter.getDeltaAngle() < 0)
+					{
+						LimitedLine line1 = new LimitedLine(middlePoint(arcBefore), arcBefore.getCenter());
+						LimitedLine line2 = new LimitedLine(arcAfter.getCenter(), arcAfter.getInitialPoint());
+						intersection = intersect(line1, line2);
+						if(minimumDistancePointToLine(intersection, lineCurrent) > distance)
+						{
+							validity = true;
+						}
+					}
+					else if(arcBefore.getDeltaAngle() < 0 && arcAfter.getDeltaAngle() > 0)
+					{
+						LimitedLine line1 = new LimitedLine(arcBefore.getFinalPoint(), arcBefore.getCenter());
+						LimitedLine line2 = new LimitedLine(middlePoint(arcAfter), arcAfter.getCenter());
+						intersection = intersect(line1, line2);
+						if(minimumDistancePointToLine(intersection, lineCurrent) > distance)
+						{
+							validity = true;
+						}
+					}
+					else if(arcBefore.getDeltaAngle() > 0 && arcAfter.getDeltaAngle() > 0)
+					{
+						LimitedLine line1 = new LimitedLine(middlePoint(arcBefore), arcBefore.getCenter());
+						LimitedLine line2 = new LimitedLine(middlePoint(arcAfter), arcAfter.getCenter());
+						intersection = intersect(line1, line2);
+						if(minimumDistancePointToLine(intersection, lineCurrent) > distance)
+						{
+							validity = true;
+						}
+					}					
+					else if (arcBefore.getDeltaAngle() < 0 && arcAfter.getDeltaAngle()< 0)
+					{
+						validity = true;
+					}
+
+					if(arcBefore.getDeltaAngle() > 0)
+					{
+						if(distance < arcBefore.getRadius())						
+						{						
+							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							newInitialPoint = parallelCurrent.getInitialPoint();
+						}
+						else
+						{
+							double translate = norm(minus(intersection,middlePoint(arcBefore))) - (norm(minus(intersection,lineCurrent.getFinalPoint())) - distance)*Math.cos(arcBefore.getDeltaAngle()/2);
+							Point3d unitVector = unitVector(middlePoint(arcBefore), arcBefore.getCenter());
+							newInitialPoint = plus(middlePoint(arcBefore),multiply(translate,unitVector));
+						}
 					}
 					else
 					{
@@ -976,6 +1024,12 @@ public class GeometricOperations
 		return parallel;		
 	}
 	
+	public static Point3d middlePoint(LimitedArc arc)
+	{
+		double x = arc.getRadius()*Math.cos(arc.getDeltaAngle()/2);
+		double y = arc.getRadius()*Math.sin(arc.getDeltaAngle()/2);
+		return new Point3d(arc.getCenter().getX()+x, arc.getCenter().getY() + y, arc.getCenter().getZ());
+	}
 
 	public static double angle(LimitedLine lineBefore, LimitedLine lineCurrent)
 	{
@@ -1282,7 +1336,7 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
 		int i = 0;
-		while (parallelPath.size() > 0)
+		while (parallelPath.size() > 3)
 		{
 			System.out.println(i+1 + "th Parallel Path");
 			multipleParallel.add(parallelPath);

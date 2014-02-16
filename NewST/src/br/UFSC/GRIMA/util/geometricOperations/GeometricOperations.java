@@ -958,6 +958,17 @@ public class GeometricOperations
 						Point3d vectorInitial = multiply(arcCurrent.getRadius() + distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
 						newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
 						LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
+						parallel.add(arc);
+					}					
+					else
+					{
+						if (distance < arcCurrent.getRadius())
+						{
+							Point3d vectorInitial = multiply(arcCurrent.getRadius() - distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
+							newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
+							LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
+							parallel.add(arc);							
+						}
 					}
 				}
 			}

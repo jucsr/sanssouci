@@ -979,14 +979,23 @@ public class GeometricOperations
 						newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
 					}
 					
-					if(distance > arcAfter.getRadius())
-					{						
-						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
-						newFinalPoint = minus(absoluteParallel(lineCurrent,distance).getInitialPoint(), multiply(distance-arcAfter.getRadius(),unitVectorLine));
+					if(arcAfter.getDeltaAngle() > 0)
+					{
+						if(distance < arcAfter.getRadius())						
+						{						
+							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							newFinalPoint = parallelCurrent.getFinalPoint();
+						}
+						else
+						{
+							double translate = norm(minus(intersection,middlePoint(arcAfter))) - (norm(minus(intersection,lineCurrent.getFinalPoint())) - distance)*Math.cos(arcAfter.getDeltaAngle()/2);
+							Point3d unitVector = unitVector(middlePoint(arcAfter), arcAfter.getCenter());
+							newFinalPoint = minus(middlePoint(arcAfter),multiply(translate,unitVector));
+						}
 					}
 					else
 					{
-						newFinalPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
+						newFinalPoint = absoluteParallel(lineCurrent,distance).getFinalPoint();
 					}
 					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
 				}								

@@ -943,6 +943,7 @@ public class GeometricOperations
 					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
 				}								
 			}
+			
 			if(eCurrent.isLimitedArc())				
 			{
 				LimitedArc arcCurrent = (LimitedArc)eCurrent;

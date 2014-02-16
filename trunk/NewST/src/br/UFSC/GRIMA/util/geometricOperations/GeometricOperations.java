@@ -763,7 +763,7 @@ public class GeometricOperations
 			
 			if(eCurrent.isLimitedLine())
 			{
-				LimitedLine lineCurrent = (LimitedLine)eCurrent;
+				LimitedLine lineCurrent = (LimitedLine)eCurrent;				
 				if(eBefore.isLimitedLine()&&eAfter.isLimitedLine())
 				{
 					LimitedLine lineBefore = (LimitedLine)eBefore;
@@ -814,16 +814,41 @@ public class GeometricOperations
 					
 					if(validLine)
 						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
-					
-							
-					
 				}
-				
+								
+				if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
+				{
+					LimitedLine lineBefore = (LimitedLine)eBefore;
+					Point3d newInitialPoint = new Point3d();	
+					Point3d newFinalPoint = new Point3d();	
+					
+					boolean validLine = false;				
+					
+					double angleCurrentBefore = angle(lineBefore, lineCurrent);
+					
+					if(angleCurrentBefore <= Math.PI)
+					{
+						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineBefore, lineCurrent, distance);
+						newInitialPoint = arc1.getCenter();
+						if(belongs(lineCurrent,newInitialPoint))
+							validLine = true; 
+					}
+					else
+					{
+						LimitedLine parallelLineBefore = absoluteParallel(lineBefore, distance);
+						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
+						LimitedArc arc2 = new LimitedArc(parallelLineBefore.getFinalPoint(), parallelLineCurrent.getInitialPoint(), lineCurrent.getInitialPoint());
+						parallel.add(arc2);
+						newInitialPoint = arc2.getFinalPoint();
+						validLine = true;
+					}					
+				}				
 			}
 		}
 		return parallel;		
 	}
 	
+
 	public static double angle(LimitedLine lineBefore, LimitedLine lineCurrent)
 	{
 		Point3d beginPoint = minus(lineCurrent.getFinalPoint(), lineCurrent.getInitialPoint());
@@ -867,6 +892,19 @@ public class GeometricOperations
 		{
 			return false;
 		}
+	}
+	
+	public static Point3d intersect(LimitedLine line1, LimitedLine line2)
+	{
+		double a = (line1.getFinalPoint().getY()-line1.getInitialPoint().getY())/(line1.getFinalPoint().getX()-line1.getInitialPoint().getX());
+		double c = line1.getFinalPoint().getY()-a*line1.getFinalPoint().getX();
+		
+		double b = (line2.getFinalPoint().getY()-line2.getInitialPoint().getY())/(line2.getFinalPoint().getX()-line2.getInitialPoint().getX());
+		double d = line2.getFinalPoint().getY()-b*line2.getFinalPoint().getX();
+		double x = (d-c)/(a-b);
+		double y = a*(d-c)/(a-b)+c;
+		
+		return new Point3d(x,y,line1.getInitialPoint().getZ());
 	}
 	
 //	public static ArrayList<LimitedElement> parallelPath (ArrayList<LimitedElement> elements, double distance)	

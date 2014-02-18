@@ -851,10 +851,14 @@ public class GeometricOperations
 						validLine = true;
 					}
 					
-					if(distance > arcAfter.getRadius())
-					{						
-						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
-						newFinalPoint = minus(absoluteParallel(lineCurrent,distance).getFinalPoint(), multiply(distance-arcAfter.getRadius(),unitVectorLine));
+					if (arcAfter.getDeltaAngle() > 0)
+					{
+						if(distance >= arcAfter.getRadius())
+						{
+							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcAfter),arcAfter.getCenter());
+							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							newFinalPoint = intersect(lineDiagonal, parallelCurrent);		
+						}
 					}
 					else
 					{
@@ -874,12 +878,16 @@ public class GeometricOperations
 					
 					
 					Point3d newInitialPoint = new Point3d();	
-					Point3d newFinalPoint = new Point3d();	
+					Point3d newFinalPoint = new Point3d();
 					
-					if(distance > arcBefore.getRadius())
-					{						
-						Point3d unitVectorLine = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
-						newInitialPoint = plus(absoluteParallel(lineCurrent,distance).getInitialPoint(), multiply(distance-arcBefore.getRadius(),unitVectorLine));
+					if (arcBefore.getDeltaAngle() > 0)
+					{
+						if(distance > arcBefore.getRadius())
+						{						
+							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());
+							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							newFinalPoint = intersect(lineDiagonal, parallelCurrent);		
+						}
 					}
 					else
 					{
@@ -960,21 +968,18 @@ public class GeometricOperations
 						validity = true;
 					}
 
-					if(arcBefore.getDeltaAngle() > 0)
+					if(arcBefore.getDeltaAngle() >= 0)
 					{
 						if(distance < arcBefore.getRadius())						
-						{						
+						{			
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
 							newInitialPoint = parallelCurrent.getInitialPoint();
 						}
 						else
 						{
-							double angleDiagonal = angle(unitVector(middlePoint(arcBefore),arcBefore.getCenter()));
-							double deltaDiagonal = (distance-arcBefore.getRadius())/Math.sin(angleDiagonal); 
-							double translate = norm(minus(intersection,middlePoint(arcBefore))) - (norm(minus(intersection,lineCurrent.getFinalPoint())) - distance)*Math.cos(arcBefore.getDeltaAngle()/2);
-							Point3d unitVector = unitVector(middlePoint(arcBefore), arcBefore.getCenter());
-							
-							newInitialPoint = plus(arcBefore.getCenter(),multiply(deltaDiagonal,unitVector));
+							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());
+							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							newInitialPoint = intersect(lineDiagonal, parallelCurrent);		
 						}
 					}
 					else
@@ -982,20 +987,18 @@ public class GeometricOperations
 						newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
 					}
 					
-					if(arcAfter.getDeltaAngle() > 0)
+					if(arcAfter.getDeltaAngle() >= 0)
 					{
-						if(distance < arcBefore.getRadius())						
-						{						
+						if(distance < arcAfter.getRadius())						
+						{	
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
 							newFinalPoint = parallelCurrent.getFinalPoint();
 						}
 						else
 						{
-							double angleDiagonal = angle(unitVector(middlePoint(arcAfter),arcBefore.getCenter()));
-							double deltaDiagonal = (distance-arcBefore.getRadius())/Math.sin(angleDiagonal); 
-							double translate = norm(minus(intersection,middlePoint(arcBefore))) - (norm(minus(intersection,lineCurrent.getFinalPoint())) - distance)*Math.cos(arcBefore.getDeltaAngle()/2);
-							Point3d unitVector = unitVector(middlePoint(arcBefore), arcBefore.getCenter());							
-							newFinalPoint = plus(arcAfter.getCenter(),multiply(deltaDiagonal,unitVector));
+							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcAfter),arcAfter.getCenter());
+							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							newFinalPoint = intersect(lineDiagonal, parallelCurrent);		
 						}
 					}
 					else
@@ -1015,7 +1018,7 @@ public class GeometricOperations
 					LimitedLine lineAfter = (LimitedLine)eAfter;
 
 					Point3d newInitialPoint = new Point3d();
-					if(angle(lineBefore, lineAfter) > Math.PI)
+					if(arcCurrent.getDeltaAngle() < 0)
 					{
 						Point3d vectorInitial = multiply(arcCurrent.getRadius() + distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
 						newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
@@ -1091,15 +1094,15 @@ public class GeometricOperations
 	}
 	
 	public static Point3d intersect(LimitedLine line1, LimitedLine line2)
-	{
-		double a = (line1.getFinalPoint().getY()-line1.getInitialPoint().getY())/(line1.getFinalPoint().getX()-line1.getInitialPoint().getX());
-		double c = line1.getFinalPoint().getY()-a*line1.getFinalPoint().getX();
+	{		
+		double a1 = (line1.getFinalPoint().getY()-line1.getInitialPoint().getY())/(line1.getFinalPoint().getX()-line1.getInitialPoint().getX());
+		double b1 = line1.getFinalPoint().getY()-a1*line1.getFinalPoint().getX();
 		
-		double b = (line2.getFinalPoint().getY()-line2.getInitialPoint().getY())/(line2.getFinalPoint().getX()-line2.getInitialPoint().getX());
-		double d = line2.getFinalPoint().getY()-b*line2.getFinalPoint().getX();
-		double x = (d-c)/(a-b);
-		double y = a*(d-c)/(a-b)+c;
+		double a2 = (line2.getFinalPoint().getY()-line2.getInitialPoint().getY())/(line2.getFinalPoint().getX()-line2.getInitialPoint().getX());
+		double b2 = line2.getFinalPoint().getY()-a2*line2.getFinalPoint().getX();
 		
+		double x = (b2-b1)/(a1-a2);
+		double y = a1*x+b1;			
 		return new Point3d(x,y,line1.getInitialPoint().getZ());
 	}
 	
@@ -1350,12 +1353,12 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
 		int i = 0;
-		while (parallelPath.size() > 3)
+		while (i < 5)
 		{
 			System.out.println(i+1 + "th Parallel Path");
 			multipleParallel.add(parallelPath);
 			parallelPath = parallelPath(parallelPath,distance);
-			showElements(parallelPath);
+			//showElements(parallelPath);
 			i++;
 		}		
 		showElements(parallelPath);

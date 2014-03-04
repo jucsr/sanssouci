@@ -1075,12 +1075,12 @@ public class GeometricOperations
 			if(e.isLimitedArc())
 			{
 				LimitedArc arc = (LimitedArc)e;
-				System.out.println("Arc From " + arc.getInitialPoint() + " to " + arc.getFinalPoint());
+				System.out.println("Arc From " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " Radius " + arc.getRadius());
 			}
 			else if(e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
-				System.out.println("Line From " + line.getInitialPoint() + " to " + line.getFinalPoint());
+				System.out.println("Line From " + line.getInitialPoint() + " to " + line.getFinalPoint() + " Norm " + norm(line));
 			}
 		}
 		System.out.println("************************************************");
@@ -1428,7 +1428,7 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
 		int i = 0;
-		while (i < 15)
+		while (i < 9)
 		{
 			System.out.println("*****************************************************");
 			System.out.println("*****************************************************");

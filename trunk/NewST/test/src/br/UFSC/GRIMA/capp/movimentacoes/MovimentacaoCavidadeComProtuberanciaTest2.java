@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -16,9 +17,7 @@ import javax.swing.JPanel;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.UFSC.GRIMA.cad.CreateGeneralClosedPocketTest;
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
-import br.UFSC.GRIMA.cad.CreateGeneralProfileBoss;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
@@ -30,12 +29,9 @@ import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
-import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
-import br.UFSC.GRIMA.util.LinearPath;
-import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
@@ -88,14 +84,19 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //      points.add(new Point2D.Double(50,10));
 //      points.add(new Point2D.Double(50,40));
 //         
-		points.add(new Point2D.Double(2, 80));
-		points.add(new Point2D.Double(150, 80));
-		points.add(new Point2D.Double(120, 10));
-		points.add(new Point2D.Double(80, 10));
-		points.add(new Point2D.Double(70, 40));
-		points.add(new Point2D.Double(50, 40));
-		points.add(new Point2D.Double(40, 10));
-		points.add(new Point2D.Double(2, 10));
+//		points.add(new Point2D.Double(2, 80));
+//		points.add(new Point2D.Double(150, 80));
+//		points.add(new Point2D.Double(120, 10));
+//		points.add(new Point2D.Double(80, 10));
+//		points.add(new Point2D.Double(70, 40));
+//		points.add(new Point2D.Double(50, 40));
+//		points.add(new Point2D.Double(40, 10));
+//		points.add(new Point2D.Double(2, 10));
+		
+		points.add(new Point2D.Double(2, 2));
+		points.add(new Point2D.Double(100, 2));
+		points.add(new Point2D.Double(100, 80));
+//		points.add(new Point2D.Double(80, 10));
 		
 		points = GeometricOperations.scalePoints(points, 4);
 		this.cavidadeGeral.setPoints(points);
@@ -108,13 +109,15 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		
 		// ---- criando Ferramenta ----
 		this.ferramenta = new FaceMill();
-		this.ferramenta.setDiametroFerramenta(60);
+
+		this.ferramenta.setDiametroFerramenta(40);
+
 		this.ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 		
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(2);
-		cond.setAe(10);
+		cond.setAe(20);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
@@ -133,9 +136,9 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{
-		
-		class painelTest extends JPanel{
 
+		class painelTest extends JPanel{
+			
 			GeneralPath formaFeature = new GeneralPath();
 			
 			painelTest()
@@ -177,16 +180,16 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				
 				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsAcabamento));
 				
-				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
+//				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
 				
 				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
 
 				g2d.draw(shape);
 				
-				for(ArrayList<LimitedElement> elements:multipleParallel)
-				{
-					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
-				}
+//				for(ArrayList<LimitedElement> elements:multipleParallel)
+//				{
+//					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
+//				}
 				
 				for (GeneralPath s:shapes)
 				{

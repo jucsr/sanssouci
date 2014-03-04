@@ -110,7 +110,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		// ---- criando Ferramenta ----
 		this.ferramenta = new FaceMill();
 
-		this.ferramenta.setDiametroFerramenta(40);
+		this.ferramenta.setDiametroFerramenta(100);
 
 		this.ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 		

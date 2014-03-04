@@ -1086,6 +1086,8 @@ public class GeometricOperations
 		
 		LimitedLine lineParallel = new LimitedLine(newInitialPoint, newFinalPoint);
 		
+		System.out.println("Parallel from " + lineParallel.getInitialPoint() + " to " + lineParallel.getFinalPoint());
+		
 		return lineParallel;
 	}
 	

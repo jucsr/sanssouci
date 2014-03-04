@@ -1051,8 +1051,9 @@ public class GeometricOperations
 	
 	public static Point3d middlePoint(LimitedArc arc)
 	{
-		double x = arc.getRadius()*Math.cos(arc.getDeltaAngle()/2);
-		double y = arc.getRadius()*Math.sin(arc.getDeltaAngle()/2);
+		double initialAngle = angle(minus(arc.getInitialPoint(), arc.getCenter()));
+		double x = arc.getRadius()*Math.cos(arc.getDeltaAngle()/2 + initialAngle);
+		double y = arc.getRadius()*Math.sin(arc.getDeltaAngle()/2 + initialAngle);
 		return new Point3d(arc.getCenter().getX()+x, arc.getCenter().getY() + y, arc.getCenter().getZ());
 	}
 

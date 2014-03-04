@@ -790,7 +790,8 @@ public class GeometricOperations
 					
 					newFinalPoint = intersect(parallelAfter, parallelCurrent);
 					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
-					parallel.add(newLine);
+					if (norm(newLine)>0)
+						parallel.add(newLine);
 //					
 //					boolean validLine = false;				
 //					
@@ -888,8 +889,9 @@ public class GeometricOperations
 						newFinalPoint = parallelCurrent.getFinalPoint();
 					}
 					
-
-					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint); 
+					if (norm(newLine)>0)
+						parallel.add(newLine);
 				}
 				
 				else if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
@@ -926,7 +928,10 @@ public class GeometricOperations
 					//System.out.println("Line Current from " + lineCurrent.getInitialPoint() + " to " + lineCurrent.getFinalPoint());
 					System.out.println("New Line from " + newInitialPoint + " to " + newFinalPoint);
 					
-					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
+
+					if (norm(newLine) > 0)
+						parallel.add(newLine);
 				}			
 				
 				else if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())
@@ -1025,7 +1030,8 @@ public class GeometricOperations
 					System.out.println("New final point " + newFinalPoint);
 					LimitedLine newParallelLine = new LimitedLine(newInitialPoint, newFinalPoint);
 					System.out.println("Line from " + newParallelLine.getInitialPoint() + " to " + newParallelLine.getFinalPoint());
-					parallel.add(newParallelLine);
+					if(norm(newParallelLine)>0)
+						parallel.add(newParallelLine);
 				}								
 			}
 			
@@ -1136,6 +1142,11 @@ public class GeometricOperations
 		{
 			return false;
 		}
+	}
+	
+	public static double norm(LimitedLine line)
+	{		
+		return distance(line.getInitialPoint(),line.getFinalPoint()); 
 	}
 	
 	public static Point3d intersect(LimitedLine line1, LimitedLine line2)

@@ -1013,6 +1013,7 @@ public class GeometricOperations
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
 							System.out.println("Distance > Radius");
 							newFinalPoint = intersect(lineDiagonal, parallelCurrent);
+							System.out.println("Radius arc " + arcAfter.getRadius());
 							System.out.println("Newfinalpoint for intersection " + newFinalPoint);
 						}
 					}
@@ -1044,7 +1045,8 @@ public class GeometricOperations
 						newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
 						LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
 						System.out.println(arcCurrent.getInitialPoint() + " to " + arcCurrent.getFinalPoint());
-						parallel.add(arc);
+						if (arc.getRadius()>0)
+							parallel.add(arc);
 					}					
 					else
 					{
@@ -1053,7 +1055,8 @@ public class GeometricOperations
 							Point3d vectorInitial = multiply(arcCurrent.getRadius() - distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
 							newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
 							LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
-							parallel.add(arc);							
+							if (arc.getRadius()>0)
+								parallel.add(arc);							
 						}
 					}
 				}

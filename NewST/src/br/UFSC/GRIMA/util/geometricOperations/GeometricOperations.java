@@ -1417,7 +1417,7 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
 		int i = 0;
-		while (i < 5)
+		while (i < 15)
 		{
 			System.out.println("*****************************************************");
 			System.out.println("*****************************************************");

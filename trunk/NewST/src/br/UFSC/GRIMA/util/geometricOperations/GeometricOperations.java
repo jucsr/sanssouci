@@ -933,6 +933,8 @@ public class GeometricOperations
 					
 					Point3d intersection = new Point3d();
 					
+					System.out.println("Arco - Linea - Arco");
+					
 					if(arcBefore.getDeltaAngle() > 0 && arcAfter.getDeltaAngle() < 0)
 					{
 						LimitedLine line1 = new LimitedLine(middlePoint(arcBefore), arcBefore.getCenter());
@@ -968,8 +970,9 @@ public class GeometricOperations
 						validity = true;
 					}
 
-					if(arcBefore.getDeltaAngle() >= 0)
+					if(arcBefore.getDeltaAngle() >= 0)						
 					{
+						System.out.println("Arc before");
 						if(distance < arcBefore.getRadius())						
 						{			
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
@@ -979,6 +982,7 @@ public class GeometricOperations
 						{
 							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							System.out.println("Distance > Radius");
 							newInitialPoint = intersect(lineDiagonal, parallelCurrent);		
 						}
 					}
@@ -989,6 +993,7 @@ public class GeometricOperations
 					
 					if(arcAfter.getDeltaAngle() >= 0)
 					{
+						System.out.println("Arc after");
 						if(distance < arcAfter.getRadius())						
 						{	
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
@@ -998,6 +1003,7 @@ public class GeometricOperations
 						{
 							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcAfter),arcAfter.getCenter());
 							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+							System.out.println("Distance > Radius");
 							newFinalPoint = intersect(lineDiagonal, parallelCurrent);		
 						}
 					}
@@ -1005,7 +1011,9 @@ public class GeometricOperations
 					{
 						newFinalPoint = absoluteParallel(lineCurrent,distance).getFinalPoint();
 					}
-					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					LimitedLine newParallelLine = new LimitedLine(newInitialPoint, newFinalPoint);
+					System.out.println("Line from " + newParallelLine.getInitialPoint() + " to " + newParallelLine.getFinalPoint());
+					parallel.add(newParallelLine);
 				}								
 			}
 			
@@ -1094,15 +1102,34 @@ public class GeometricOperations
 	}
 	
 	public static Point3d intersect(LimitedLine line1, LimitedLine line2)
-	{		
+	{				
 		double a1 = (line1.getFinalPoint().getY()-line1.getInitialPoint().getY())/(line1.getFinalPoint().getX()-line1.getInitialPoint().getX());
 		double b1 = line1.getFinalPoint().getY()-a1*line1.getFinalPoint().getX();
-		
+				
 		double a2 = (line2.getFinalPoint().getY()-line2.getInitialPoint().getY())/(line2.getFinalPoint().getX()-line2.getInitialPoint().getX());
 		double b2 = line2.getFinalPoint().getY()-a2*line2.getFinalPoint().getX();
 		
 		double x = (b2-b1)/(a1-a2);
 		double y = a1*x+b1;			
+		
+		if(line1.getInitialPoint().getX()==line1.getFinalPoint().getX())
+		{
+			if(line2.getInitialPoint().getX()!=line2.getFinalPoint().getX())
+			{
+				double xSpecial = line1.getInitialPoint().getX();
+				double ySpecial = a2*xSpecial + b2;
+				return new Point3d(xSpecial,ySpecial,line1.getInitialPoint().getZ());
+			}
+		}
+		if(line2.getInitialPoint().getX()==line2.getFinalPoint().getX())
+		{
+			if(line1.getInitialPoint().getX()!=line1.getFinalPoint().getX())
+			{
+				double xSpecial = line2.getInitialPoint().getX();
+				double ySpecial = a1*xSpecial + b1;
+				return new Point3d(xSpecial,ySpecial,line1.getInitialPoint().getZ());
+			}
+		}		
 		return new Point3d(x,y,line1.getInitialPoint().getZ());
 	}
 	

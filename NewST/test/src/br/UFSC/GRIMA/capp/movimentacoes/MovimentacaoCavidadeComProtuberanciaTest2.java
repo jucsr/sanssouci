@@ -93,9 +93,22 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //		points.add(new Point2D.Double(40, 10));
 //		points.add(new Point2D.Double(2, 10));
 		
-		points.add(new Point2D.Double(2, 2));
-		points.add(new Point2D.Double(100, 2));
-		points.add(new Point2D.Double(100, 80));
+		points.add(new Point2D.Double(2, 80));
+		points.add(new Point2D.Double(150, 80));
+		points.add(new Point2D.Double(150, 10));
+		points.add(new Point2D.Double(130, 10));
+		points.add(new Point2D.Double(110, 50));
+		points.add(new Point2D.Double(90, 10));
+		points.add(new Point2D.Double(80, 10));
+		points.add(new Point2D.Double(70, 40));
+		points.add(new Point2D.Double(50, 40));
+		points.add(new Point2D.Double(40, 10));
+		points.add(new Point2D.Double(2, 10));
+		
+		
+//		points.add(new Point2D.Double(2, 2));
+//		points.add(new Point2D.Double(100, 2));
+//		points.add(new Point2D.Double(100, 80));
 //		points.add(new Point2D.Double(80, 10));
 		
 		points = GeometricOperations.scalePoints(points, 4);
@@ -110,14 +123,14 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		// ---- criando Ferramenta ----
 		this.ferramenta = new FaceMill();
 
-		this.ferramenta.setDiametroFerramenta(100);
+		this.ferramenta.setDiametroFerramenta(10);
 
 		this.ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 		
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(2);
-		cond.setAe(20);
+		cond.setAe(5);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
@@ -180,16 +193,16 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				
 				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsAcabamento));
 				
-//				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
+				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
 				
 				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
 
 				g2d.draw(shape);
 				
-//				for(ArrayList<LimitedElement> elements:multipleParallel)
-//				{
-//					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
-//				}
+				for(ArrayList<LimitedElement> elements:multipleParallel)
+				{
+					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
+				}
 				
 				for (GeneralPath s:shapes)
 				{

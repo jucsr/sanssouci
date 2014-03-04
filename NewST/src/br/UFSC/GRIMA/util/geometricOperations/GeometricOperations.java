@@ -770,9 +770,12 @@ public class GeometricOperations
 			if(eCurrent.isLimitedLine())
 			{
 				LimitedLine lineCurrent = (LimitedLine)eCurrent;
+				System.out.println("*******************************");
+				System.out.println("Current element is a line");
 				
 				if(eBefore.isLimitedLine()&&eAfter.isLimitedLine())
 				{
+					System.out.println("Line before and Line after");
 					LimitedLine lineBefore = (LimitedLine)eBefore;
 					LimitedLine lineAfter = (LimitedLine)eAfter;
 					
@@ -786,7 +789,8 @@ public class GeometricOperations
 					Point3d newFinalPoint = new Point3d();
 					
 					newFinalPoint = intersect(parallelAfter, parallelCurrent);
-					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
+					parallel.add(newLine);
 //					
 //					boolean validLine = false;				
 //					
@@ -834,6 +838,7 @@ public class GeometricOperations
 								
 				else if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
 				{
+					System.out.println("Line before and Arc after");
 					LimitedLine lineBefore = (LimitedLine)eBefore;
 					LimitedArc arcAfter = (LimitedArc)eAfter;
 					
@@ -889,6 +894,7 @@ public class GeometricOperations
 				
 				else if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
 				{
+					System.out.println("Arc before and line after");
 					LimitedArc arcBefore = (LimitedArc)eBefore;
 					LimitedLine lineAfter = (LimitedLine)eAfter;
 					
@@ -917,8 +923,8 @@ public class GeometricOperations
 					}
 					
 					newFinalPoint = intersect(parallelCurrent, parallelAfter);
-					System.out.println("Line Current from " + lineCurrent.getInitialPoint() + " to " + lineCurrent.getFinalPoint());
-					System.out.println("Line from " + newInitialPoint + " to " + newFinalPoint);
+					//System.out.println("Line Current from " + lineCurrent.getInitialPoint() + " to " + lineCurrent.getFinalPoint());
+					System.out.println("New Line from " + newInitialPoint + " to " + newFinalPoint);
 					
 					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
 				}			
@@ -1030,9 +1036,11 @@ public class GeometricOperations
 					Point3d newInitialPoint = new Point3d();
 					if(arcCurrent.getDeltaAngle() < 0)
 					{
+						System.out.println("************************************************");
 						Point3d vectorInitial = multiply(arcCurrent.getRadius() + distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
 						newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
 						LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
+						System.out.println(arcCurrent.getInitialPoint() + " to " + arcCurrent.getFinalPoint());
 						parallel.add(arc);
 					}					
 					else
@@ -1048,6 +1056,22 @@ public class GeometricOperations
 				}
 			}
 		}
+		System.out.println("************************************************");
+		System.out.println("Lista de elementos antes de retornar el parallel");
+		for(LimitedElement e:parallel)
+		{
+			if(e.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)e;
+				System.out.println("Arc From " + arc.getInitialPoint() + " to " + arc.getFinalPoint());
+			}
+			else if(e.isLimitedLine())
+			{
+				LimitedLine line = (LimitedLine)e;
+				System.out.println("Line From " + line.getInitialPoint() + " to " + line.getFinalPoint());
+			}
+		}
+		System.out.println("************************************************");
 		return parallel;		
 	}
 	
@@ -1080,10 +1104,12 @@ public class GeometricOperations
 		double y = Math.sin(newDistanceAngle);
 		Point3d unitDistance = new Point3d(x,y,line.getInitialPoint().getZ());
 		Point3d distanceVector = multiply(distance, unitDistance);		
-		
+
 		Point3d newInitialPoint = plus(line.getInitialPoint(),distanceVector);
 		Point3d newFinalPoint = plus(line.getFinalPoint(),distanceVector);
-		
+		System.out.println("Distance Vector " + distanceVector);
+		System.out.println("New Initial Point " + newInitialPoint);
+		System.out.println("New Final Point " + newFinalPoint);
 		LimitedLine lineParallel = new LimitedLine(newInitialPoint, newFinalPoint);
 		
 		System.out.println("Parallel from " + lineParallel.getInitialPoint() + " to " + lineParallel.getFinalPoint());

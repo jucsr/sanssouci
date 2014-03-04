@@ -1416,7 +1416,15 @@ public class GeometricOperations
 		int i = 0;
 		while (i < 5)
 		{
-			System.out.println(i+1 + "th Parallel Path");
+			System.out.println("*****************************************************");
+			System.out.println("*****************************************************");
+			System.out.println("*****************************************************");
+			System.out.println("*****************************************************");
+			System.out.println(i+1 + " th Parallel Path");
+			System.out.println("*****************************************************");
+			System.out.println("*****************************************************");
+			System.out.println("*****************************************************");
+			System.out.println("*****************************************************");
 			multipleParallel.add(parallelPath);
 			parallelPath = parallelPath(parallelPath,distance);
 			//showElements(parallelPath);

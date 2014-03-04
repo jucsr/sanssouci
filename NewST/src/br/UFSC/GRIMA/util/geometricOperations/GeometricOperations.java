@@ -890,18 +890,22 @@ public class GeometricOperations
 				{
 					LimitedArc arcBefore = (LimitedArc)eBefore;
 					LimitedLine lineAfter = (LimitedLine)eAfter;
-					
+					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+					LimitedLine parallelAfter = absoluteParallel(lineAfter, distance);
 					
 					Point3d newInitialPoint = new Point3d();	
 					Point3d newFinalPoint = new Point3d();
 					
-					if (arcBefore.getDeltaAngle() > 0)
+					if (arcBefore.getDeltaAngle() >= 0)
 					{
-						if(distance > arcBefore.getRadius())
+						if(distance < arcBefore.getRadius())
 						{						
-							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());
-							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-							newFinalPoint = intersect(lineDiagonal, parallelCurrent);		
+							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());							
+							newInitialPoint = intersect(lineDiagonal, parallelCurrent);		
+						}
+						else
+						{
+							newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
 						}
 					}
 					else
@@ -909,31 +913,9 @@ public class GeometricOperations
 						newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
 					}
 					
-					boolean validLine = false;				
+					newFinalPoint = intersect(parallelCurrent, parallelAfter);
 					
-					double angleAfterCurrent = angle(lineCurrent, lineAfter);
-					
-					if(angleAfterCurrent <= Math.PI)
-					{
-						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineCurrent, lineAfter, distance);
-						newFinalPoint = arc1.getCenter();
-						if(belongs(lineCurrent,newFinalPoint))
-							validLine = true; 
-					}
-					else
-					{						
-						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
-						LimitedLine parallelLineAfter = absoluteParallel(lineAfter, distance);
-						LimitedArc arc = new LimitedArc(parallelLineCurrent.getFinalPoint(), parallelLineAfter.getInitialPoint(), lineAfter.getInitialPoint());
-						parallel.add(arc);
-						newFinalPoint = arc.getInitialPoint();
-						validLine = true;
-					}
-
-					if (validLine)
-					{
-						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
-					}
+					parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
 				}			
 				
 				else if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())

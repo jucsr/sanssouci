@@ -37,7 +37,8 @@ public class LimitedLine extends LimitedElement {
 	}
 
 	
-	public LimitedLine(Point3d fp, Point3d sp) {
+	public LimitedLine(Point3d fp, Point3d sp) 
+	{
 		double ap;
 		double bp;
 		double cp;

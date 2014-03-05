@@ -776,9 +776,10 @@ public class GeometricOperations
 				if(eBefore.isLimitedLine()&&eAfter.isLimitedLine())
 				{
 					System.out.println("Line before and Line after");
+					
 					LimitedLine lineBefore = (LimitedLine)eBefore;
 					LimitedLine lineAfter = (LimitedLine)eAfter;
-					
+
 					Point3d newInitialPoint = new Point3d();
 					
 					LimitedLine parallelBefore = absoluteParallel(lineBefore, distance);
@@ -790,51 +791,16 @@ public class GeometricOperations
 					
 					newFinalPoint = intersect(parallelAfter, parallelCurrent);
 					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
+					
+					Point3d unitCurrent = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
+					Point3d unitNew = unitVector(newLine.getInitialPoint(), newLine.getFinalPoint());
+					
+					double test = escalar(unitNew, unitCurrent);
 					if (norm(newLine)>0)
-						parallel.add(newLine);
-//					
-//					boolean validLine = false;				
-//					
-//					double angleCurrentBefore = angle(lineBefore, lineCurrent);
-//					
-//					if(angleCurrentBefore <= Math.PI)
-//					{
-//						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineBefore, lineCurrent, distance);
-//						newInitialPoint = arc1.getCenter();
-//						if(belongs(lineCurrent,newInitialPoint))
-//							validLine = true; 
-//					}
-//					else
-//					{
-//						LimitedLine parallelLineBefore = absoluteParallel(lineBefore, distance);
-//						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
-//						LimitedArc arc2 = new LimitedArc(parallelLineBefore.getFinalPoint(), parallelLineCurrent.getInitialPoint(), lineCurrent.getInitialPoint());
-//						parallel.add(arc2);
-//						newInitialPoint = arc2.getFinalPoint();
-//						validLine = true;
-//					}
-//					
-//					double angleCurrentAfter = angle(lineCurrent, lineAfter);
-//					
-//					if(angleCurrentAfter <= Math.PI)
-//					{
-//						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineCurrent, lineAfter, distance);
-//						newFinalPoint = arc1.getCenter();
-//						if(belongs(lineCurrent,newFinalPoint))
-//							validLine = true;
-//					}
-//					else
-//					{
-//						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
-//						LimitedLine parallelLineAfter = absoluteParallel(lineAfter, distance);
-//						LimitedArc arc2 = new LimitedArc(parallelLineCurrent.getFinalPoint(), parallelLineAfter.getInitialPoint(), lineAfter.getInitialPoint());
-//						//parallel.add(arc2);
-//						newFinalPoint = arc2.getInitialPoint();
-//							validLine = true;
-//					}
-//					
-//					if(validLine)
-//						parallel.add(new LimitedLine(newInitialPoint, newFinalPoint));
+					{
+						if (test>0)
+							parallel.add(newLine);						
+					}
 				}
 								
 				else if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
@@ -852,26 +818,7 @@ public class GeometricOperations
 					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
 					
 					newInitialPoint = intersect(parallelBefore, parallelCurrent);
-					
-//					double angleCurrentBefore = angle(lineBefore, lineCurrent);
-//					
-//					if(angleCurrentBefore <= Math.PI)
-//					{
-//						LimitedArc arc1 = roundVertexBetweenAdjacentLines(lineBefore, lineCurrent, distance);
-//						newInitialPoint = arc1.getCenter();
-//						if(belongs(lineCurrent,newInitialPoint))
-//							validLine = true; 
-//					}
-//					else
-//					{
-//						LimitedLine parallelLineBefore = absoluteParallel(lineBefore, distance);
-//						LimitedLine parallelLineCurrent = absoluteParallel(lineCurrent, distance);
-//						LimitedArc arc = new LimitedArc(parallelLineBefore.getFinalPoint(), parallelLineCurrent.getInitialPoint(), lineCurrent.getInitialPoint());
-//						parallel.add(arc);
-//						newInitialPoint = arc.getFinalPoint();
-//						validLine = true;
-//					}
-					
+										
 					if (arcAfter.getDeltaAngle() > 0)
 					{
 						if(distance >= arcAfter.getRadius())
@@ -947,41 +894,6 @@ public class GeometricOperations
 					Point3d intersection = new Point3d();
 					
 					System.out.println("Arco - Linea - Arco");
-					
-//					if(arcBefore.getDeltaAngle() > 0 && arcAfter.getDeltaAngle() < 0)
-//					{
-//						LimitedLine line1 = new LimitedLine(middlePoint(arcBefore), arcBefore.getCenter());
-//						LimitedLine line2 = new LimitedLine(arcAfter.getCenter(), arcAfter.getInitialPoint());
-//						intersection = intersect(line1, line2);
-//						if(minimumDistancePointToLine(intersection, lineCurrent) > distance)
-//						{
-//							validity = true;
-//						}
-//					}
-//					else if(arcBefore.getDeltaAngle() < 0 && arcAfter.getDeltaAngle() > 0)
-//					{
-//						LimitedLine line1 = new LimitedLine(arcBefore.getFinalPoint(), arcBefore.getCenter());
-//						LimitedLine line2 = new LimitedLine(middlePoint(arcAfter), arcAfter.getCenter());
-//						intersection = intersect(line1, line2);
-//						if(minimumDistancePointToLine(intersection, lineCurrent) > distance)
-//						{
-//							validity = true;
-//						}
-//					}
-//					else if(arcBefore.getDeltaAngle() > 0 && arcAfter.getDeltaAngle() > 0)
-//					{
-//						LimitedLine line1 = new LimitedLine(middlePoint(arcBefore), arcBefore.getCenter());
-//						LimitedLine line2 = new LimitedLine(middlePoint(arcAfter), arcAfter.getCenter());
-//						intersection = intersect(line1, line2);
-//						if(minimumDistancePointToLine(intersection, lineCurrent) > distance)
-//						{
-//							validity = true;
-//						}
-//					}					
-//					else if (arcBefore.getDeltaAngle() < 0 && arcAfter.getDeltaAngle()< 0)
-//					{
-//						validity = true;
-//					}
 
 					if(arcBefore.getDeltaAngle() > 0)						
 					{
@@ -1428,7 +1340,7 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
 		int i = 0;
-		while (i < 9)
+		while (i < 15)
 		{
 			System.out.println("*****************************************************");
 			System.out.println("*****************************************************");

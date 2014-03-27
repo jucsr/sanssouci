@@ -90,7 +90,7 @@ public class LimitedArc extends LimitedElement
 	{
 		this.center = center;
 		this.initialPoint = initialPoint;
-		this.finalPoint = initialPoint;
+		this.finalPoint = finalPoint;
 		Point3d vInitial = GeometricOperations.minus(this.initialPoint,this.center);
 		Point3d vFinal = GeometricOperations.minus(this.finalPoint,this.center);
 		

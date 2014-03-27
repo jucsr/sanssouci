@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.vecmath.Point3d;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,9 @@ import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
+import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -77,12 +80,12 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		this.cavidadeGeral.setRadius(25);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-//		points.add(new Point2D.Double(2,40));
-//      points.add(new Point2D.Double(2,80));
-//      points.add(new Point2D.Double(120,80));
-//      points.add(new Point2D.Double(120,10));
-//      points.add(new Point2D.Double(50,10));
-//      points.add(new Point2D.Double(50,40));
+		points.add(new Point2D.Double(2,40));
+      points.add(new Point2D.Double(2,80));
+      points.add(new Point2D.Double(120,80));
+      points.add(new Point2D.Double(120,10));
+      points.add(new Point2D.Double(50,10));
+      points.add(new Point2D.Double(50,40));
 //         
 //		points.add(new Point2D.Double(2, 80));
 //		points.add(new Point2D.Double(150, 80));
@@ -93,23 +96,24 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //		points.add(new Point2D.Double(40, 10));
 //		points.add(new Point2D.Double(2, 10));
 		
-		points.add(new Point2D.Double(2, 80));
-		points.add(new Point2D.Double(150, 80));
-		points.add(new Point2D.Double(150, 10));
-		points.add(new Point2D.Double(130, 10));
-		points.add(new Point2D.Double(110, 50));
-		points.add(new Point2D.Double(90, 10));
-		points.add(new Point2D.Double(80, 10));
-		points.add(new Point2D.Double(70, 40));
-		points.add(new Point2D.Double(50, 40));
-		points.add(new Point2D.Double(40, 10));
-		points.add(new Point2D.Double(2, 10));
+//		points.add(new Point2D.Double(2, 80));
+//		points.add(new Point2D.Double(150, 80));
+//		points.add(new Point2D.Double(150, 10));
+//		points.add(new Point2D.Double(130, 10));
+//		points.add(new Point2D.Double(110, 50));
+//		points.add(new Point2D.Double(90, 10));
+//		points.add(new Point2D.Double(80, 10));
+//		points.add(new Point2D.Double(70, 40));
+//		points.add(new Point2D.Double(50, 40));
+//		points.add(new Point2D.Double(40, 10));
+//		points.add(new Point2D.Double(2, 10));
 		
 		
 //		points.add(new Point2D.Double(2, 2));
 //		points.add(new Point2D.Double(100, 2));
 //		points.add(new Point2D.Double(100, 80));
-//		points.add(new Point2D.Double(80, 10));
+//		
+//		points.add(new Point2D.Double(20, 80));
 		
 		points = GeometricOperations.scalePoints(points, 4);
 		this.cavidadeGeral.setPoints(points);
@@ -123,14 +127,14 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		// ---- criando Ferramenta ----
 		this.ferramenta = new FaceMill();
 
-		this.ferramenta.setDiametroFerramenta(10);
+		this.ferramenta.setDiametroFerramenta(20);
 
 		this.ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 		
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(2);
-		cond.setAe(5);
+		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
@@ -143,7 +147,16 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		workingsteps.add(this.ws);
 		cavidadeGeral.setWorkingsteps(workingsteps);
 		this.faceXY.addFeature(this.cavidadeGeral);
-	
+		
+//		LimitedArc arc = new LimitedArc(new Point3d(101.86, 224.49, 0), new Point3d(119.74, 206.61, 0), new Point3d(101.86, 206.61, 0));
+//		LimitedLine line = new LimitedLine(new Point3d(105.592, 216.064, 0), new Point3d(131.310, 209.291, 0));
+//		LimitedArc arc = new LimitedArc(new Point3d(25, 40, 0), new Point3d(50, 15, 0), new Point3d(50, 40, 0));
+//		LimitedArc arc = new LimitedArc(new Point3d(50, 15, 0), new Point3d(75, 40, 0), new Point3d(50, 40, 0));
+		LimitedArc arc = new LimitedArc(new Point3d(50, 65, 0), new Point3d(25, 40, 0), new Point3d(50, 40, 0));
+		LimitedLine line = new LimitedLine(new Point3d(30, 0, 0), new Point3d(30, 60, 0));
+		
+		Point3d intersection = GeometricOperations.intersectionPoint(arc, line);
+//		System.err.println("INTERSECTION POINT = " + intersection);
 	}
 	
 	@Test
@@ -191,14 +204,31 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				
 				ArrayList<LimitedElement> elementsAcabamento = GeometricOperations.acabamentoPath(addPocketVertex, ferramenta.getDiametroFerramenta() / 2);
 				
-				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsAcabamento));
+				ArrayList<LimitedElement> elementsArrumados  = arrumarElementos(elementsAcabamento, ferramenta.getDiametroFerramenta() / 2);
 				
+//				System.err.println("ELEMENTOS" + elementsAcabamento.size());
+//				
+//				for(int i = 0; i < elementsAcabamento.size(); i++)
+//				{
+//					if (elementsAcabamento.get(i).getClass() == LimitedLine.class) 
+//					{
+//						LimitedLine lineTmp = (LimitedLine)elementsAcabamento.get(i);
+//						System.err.println("Line ----> ponto inicial = " + lineTmp.getInitialPoint() + " \t ponto final = " + lineTmp.getFinalPoint());
+//					} else if(elementsAcabamento.get(i).getClass() == LimitedArc.class)
+//					{
+//						LimitedArc arcTmp = (LimitedArc)elementsAcabamento.get(i);
+//						System.err.println("Arc ----> ponto inicial = " + arcTmp.getInitialPoint() + " \t ponto final = " + arcTmp.getFinalPoint());
+//					}
+//				}
+				
+				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsAcabamento));
+//				
 				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
 				
 				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
-
+//
 				g2d.draw(shape);
-				
+//				
 				for(ArrayList<LimitedElement> elements:multipleParallel)
 				{
 					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
@@ -211,6 +241,22 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				}
 			}
 			
+			private ArrayList<LimitedElement> arrumarElementos(ArrayList<LimitedElement> elementsAcabamento, double distance)
+			{
+				ArrayList<LimitedElement> saida = new ArrayList<LimitedElement>();
+				for(int i = 0; i < elementsAcabamento.size(); i++)
+				{
+					if(elementsAcabamento.get(i).getClass() == LimitedArc.class)
+					{
+						
+					} else if(elementsAcabamento.get(i).getClass() == LimitedLine.class)
+					{
+						
+					}
+				}
+				return saida;
+			}
+
 			private void desenharFormaOriginal(Graphics2D g2d)
 			{
 				g2d.setStroke(new BasicStroke(3));

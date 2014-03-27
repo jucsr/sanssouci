@@ -1340,7 +1340,7 @@ public class GeometricOperations
 		
 		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
 		int i = 0;
-		while (i < 15)
+		while (i < 7)
 		{
 			System.out.println("*****************************************************");
 			System.out.println("*****************************************************");
@@ -1439,5 +1439,84 @@ public class GeometricOperations
 		}
 		Point3d intersect = new Point3d(x0,y0,line1.getInitialPoint().getZ());		
 		return intersect;
+	}
+	public static Point3d intersectionPoint(LimitedArc arc, LimitedLine line)
+	{
+		Point3d intersection = null;
+		/**
+		 *  line --> y = m * x + b
+		 *  circle --> (cx - p)^2 + (cy - q)^2 = r^2
+		 */
+		double x = 0;
+		double y = 0;
+		double m = (line.getFinalPoint().getY() - line.getInitialPoint().getY()) / (line.getFinalPoint().getX() - line.getInitialPoint().getX());
+		double b = line.getInitialPoint().getY() - m * line.getInitialPoint().getX();
+		double r = Math.sqrt(Math.pow(arc.getInitialPoint().getX() - arc.getCenter().getX(), 2) + Math.pow(arc.getInitialPoint().getY() - arc.getCenter().getY(), 2));
+		double x1 = (2 * arc.getCenter().x - 2 * m * b + 2 * m *  arc.getCenter().y + Math.sqrt(Math.pow(-2 * arc.getCenter().x + 2 * m * b - 2 * m * arc.getCenter().y, 2) - 4 * (1 + Math.pow(m, 2)) * (Math.pow(arc.getCenter().x, 2) + Math.pow(b, 2) - 2 * b * arc.getCenter().y + Math.pow(arc.getCenter().y, 2) - Math.pow(r, 2)))) / (2 + 2 * Math.pow(m, 2));
+		double x2 = (2 * arc.getCenter().x - 2 * m * b + 2 * m *  arc.getCenter().y - Math.sqrt(Math.pow(-2 * arc.getCenter().x + 2 * m * b - 2 * m * arc.getCenter().y, 2) - 4 * (1 + Math.pow(m, 2)) * (Math.pow(arc.getCenter().x, 2) + Math.pow(b, 2) - 2 * b * arc.getCenter().y + Math.pow(arc.getCenter().y, 2) - Math.pow(r, 2)))) / (2 + 2 * Math.pow(m, 2));
+		double y1 = m * x1 + b;
+		double y2 = m * x2 + b;
+		
+		/**
+		 *  caso a linha for vertical -- Se houver intersecao, o x da intersecao sera no x da linha
+		 */
+		if(line.getInitialPoint().x == line.getFinalPoint().x)
+		{
+			x1 = line.getInitialPoint().x;
+			x2 = line.getInitialPoint().x;
+			y1 = arc.getCenter().y + Math.sqrt(Math.pow(r, 2) - Math.pow(line.getInitialPoint().x - arc.getCenter().x, 2));
+			y2 = arc.getCenter().y - Math.sqrt(Math.pow(r, 2) - Math.pow(line.getInitialPoint().x - arc.getCenter().x, 2));
+		}
+		
+		double anguloInicial = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x);
+		double anguloFinal = Math.atan2(arc.getFinalPoint().y - arc.getCenter().y, arc.getFinalPoint().x - arc.getCenter().x);
+		double anguloNaIntersecao1 = Math.atan2(y1 - arc.getCenter().y, x1 - arc.getCenter().x);
+		double anguloNaIntersecao2 = Math.atan2(y2 - arc.getCenter().y, x2 - arc.getCenter().x);
+		
+		
+		
+		if(anguloInicial < 0)
+		{
+			anguloInicial = 2 * Math.PI + anguloInicial;
+		}
+		if(anguloFinal <= 0)
+		{
+			anguloFinal = 2 * Math.PI + anguloFinal;
+		}
+		if(anguloNaIntersecao1 < 0)
+		{
+			anguloNaIntersecao1 = 2 * Math.PI + anguloNaIntersecao1;
+		}
+		if(anguloNaIntersecao2 < 0)
+		{
+			anguloNaIntersecao2 = 2* Math.PI + anguloNaIntersecao2;
+		}
+		System.err.println("x1 = " + x1 + "\ty1 = " + y1);
+		System.err.println("x2 = " + x2 + "\ty2 = " + y2);
+		System.err.println("ARC center = " + arc.getCenter());
+		System.err.println("anguloIntersecao1 (DEG) = " + (anguloNaIntersecao1 * 180 / Math.PI));
+		System.err.println("anguloIntersecao1 (RAD) = " + (anguloNaIntersecao1));
+		System.err.println("anguloIntersecao2 (DEG) = " + (anguloNaIntersecao2 * 180 / Math.PI));
+		System.err.println("anguloIntersecao2 (RAD) = " + (anguloNaIntersecao2));
+		System.err.println("anguloInicial (DEG) = " + (anguloInicial * 180 / Math.PI));
+		System.err.println("anguloInicial (RAD) = " + anguloInicial);
+		System.err.println("anguloFinal (DEG) = " + (anguloFinal * 180 / Math.PI));
+		System.err.println("anguloFinal (RAD) = " + anguloFinal);
+		
+		if((anguloNaIntersecao1 <= anguloFinal && anguloNaIntersecao1 >= anguloInicial) || (anguloNaIntersecao1 >= anguloFinal && anguloNaIntersecao1 <= anguloInicial))
+		{
+			x = x1;
+			y = y1;
+			System.out.println("X1");
+		} else if((anguloNaIntersecao2 <= anguloFinal && anguloNaIntersecao2 >= anguloInicial) || (anguloNaIntersecao2 >= anguloFinal && anguloNaIntersecao2 <=anguloInicial))
+		{
+			x = x2;
+			y = y2;
+			System.out.println("X2");
+		}
+		intersection = new Point3d(x, y, 0);
+		System.err.println("INTERSECTION POINT = " + intersection);
+
+		return intersection;
 	}
 }

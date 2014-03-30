@@ -999,6 +999,65 @@ public class GeometricOperations
 		return parallel;		
 	}
 	
+	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)
+	{
+		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
+		
+		for (int i=0; i < elements.size(); i++)
+		{
+			LimitedElement ei = elements.get(i);
+			for (int j=i+1; i < elements.size(); j++)
+			{
+				LimitedElement ej = elements.get(j);
+				if(intersectionElements(ei,ej)!=null)
+				{
+					System.out.println("Here is an intersection");
+				}
+			}
+		}
+		
+		return elementsValidated;
+	}
+	
+	
+	public static Point3d intersectionElements(LimitedElement ei, LimitedElement ej)
+	{
+		if (ei.isLimitedArc())
+		{
+			LimitedArc arci = (LimitedArc)ei;
+			if(ej.isLimitedArc())
+			{
+				LimitedArc arcj = (LimitedArc)ej;
+				return intersectionPoint(arci, arcj);
+			}
+			else if ( ej.isLimitedLine())
+			{
+				LimitedLine linej = (LimitedLine)ej;
+				return intersectionPoint(arci, linej);
+			}
+			
+		}
+		else if(ei.isLimitedLine())
+		{
+			LimitedLine linei = (LimitedLine)ei;
+			if(ej.isLimitedArc())
+			{
+				LimitedArc arcj = (LimitedArc)ej;
+				return intersectionPoint(arcj, linei);
+			}
+			else if ( ej.isLimitedLine())
+			{
+				LimitedLine linej = (LimitedLine)ej;
+				return intersectionPoint(linei, linej);
+			}			
+		}
+		else
+		{
+			return null;
+		}
+		return null;
+	}
+	
 	public static Point3d middlePoint(LimitedArc arc)
 	{
 		double initialAngle = angle(minus(arc.getInitialPoint(), arc.getCenter()));
@@ -1519,7 +1578,7 @@ public class GeometricOperations
 
 		return intersection;
 	}
-	public Point3d intersectionPoint(LimitedArc arc1, LimitedArc arc2)
+	public static Point3d intersectionPoint(LimitedArc arc1, LimitedArc arc2)
 	{
 		Point3d intersection = new Point3d();
 		

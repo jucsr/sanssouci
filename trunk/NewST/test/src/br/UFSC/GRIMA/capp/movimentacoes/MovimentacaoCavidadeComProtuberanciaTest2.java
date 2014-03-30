@@ -158,6 +158,16 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		Point3d intersection = GeometricOperations.intersectionPoint(arc, line);
 //		System.err.println("INTERSECTION POINT = " + intersection);
 	}
+	@Test
+	public void nesarestPointTest()
+	{
+		LimitedArc arc1 = new LimitedArc(new Point3d(50, 102.85, 0), new Point3d(33.92, 47.53, 0), new Point3d(50, 69.47, 0));
+		LimitedArc arc2 = new LimitedArc(new Point3d(74.9, 154.2, 0), new Point3d(98.69, 105.92, 0), new Point3d(98.69, 135.92, 0));
+		Point3d nearest = GeometricOperations.nearestPoint(arc1, arc2);
+		double minimum = GeometricOperations.minimumDistanceArcToArc(arc1, arc2);
+		System.err.println("nearest = " + nearest);
+		System.err.println("minimum = " + minimum);
+	}
 	
 	@Test
 	public void determinarMovimentacaoGenCavTest()
@@ -248,7 +258,17 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				{
 					if(elementsAcabamento.get(i).getClass() == LimitedArc.class)
 					{
-						
+						LimitedArc tmp1 = (LimitedArc)elementsAcabamento.get(i);
+						for(int j = 0; j < elementsAcabamento.size(); j++)
+						{
+							if(elementsAcabamento.get(j).getClass() == LimitedArc.class)
+							{
+								
+							}else if(elementsAcabamento.get(j).getClass() == LimitedLine.class)
+							{
+								
+							}
+						}
 					} else if(elementsAcabamento.get(i).getClass() == LimitedLine.class)
 					{
 						

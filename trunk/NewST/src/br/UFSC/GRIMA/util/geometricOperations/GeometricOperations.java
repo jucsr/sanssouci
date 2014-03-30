@@ -515,7 +515,7 @@ public class GeometricOperations
 	 */
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
 	{		
-		ArrayList<LimitedElement> acabamentoElements = parallelPath(addPocket.getElements(), radius);
+		ArrayList<LimitedElement> acabamentoElements = parallelPath(addPocket.getElements(), radius).get(0);
 		
 		return acabamentoElements;
 	}
@@ -1413,11 +1413,11 @@ public class GeometricOperations
 		return vertex3d;
 	}
 	
-	public static ArrayList<ArrayList<LimitedElement>> multipleParallelPath(ArrayList<LimitedElement> elements, double distance)
+	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(ArrayList<LimitedElement> elements, double distance)
 	{
-		ArrayList<ArrayList<LimitedElement>> multipleParallel = new ArrayList<ArrayList<LimitedElement>>();
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 		
-		ArrayList<LimitedElement> parallelPath = parallelPath(elements, distance);
+		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath(elements, distance);
 		int i = 0;
 		while (i < 7)
 		{
@@ -1431,11 +1431,15 @@ public class GeometricOperations
 			System.out.println("*****************************************************");
 			System.out.println("*****************************************************");
 			multipleParallel.add(parallelPath);
-			parallelPath = parallelPath(parallelPath,distance);
+			for (ArrayList<LimitedElement> path:parallelPath)
+			{
+				parallelPath = parallelPath(path,distance);
+				showElements(path);
+			}
 			//showElements(parallelPath);
 			i++;
 		}		
-		showElements(parallelPath);
+
 		
 		return multipleParallel;
 	}

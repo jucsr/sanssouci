@@ -170,6 +170,17 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 	}
 	
 	@Test
+	public void intersectionPointLineToLine()
+	{
+		LimitedLine line1 = new LimitedLine(new Point3d(16.51, 47.84, 0), new Point3d(52.49, 17.15, 0));
+//		LimitedLine line2 = new LimitedLine(new Point3d(37.08, 23.13, 0), new Point3d(52.28, 64.56, 0));
+		LimitedLine line2 = new LimitedLine(new Point3d(42.29, 37.25, 0), new Point3d(52.28, 64.56, 0));
+		
+		Point3d intersection = GeometricOperations.intersectionPoint(line1, line2);
+		System.err.println("intersection line line= " + intersection);
+	}
+	
+	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{
 

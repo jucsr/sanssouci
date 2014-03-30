@@ -127,7 +127,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		// ---- criando Ferramenta ----
 		this.ferramenta = new FaceMill();
 
-		this.ferramenta.setDiametroFerramenta(20);
+		this.ferramenta.setDiametroFerramenta(250);
 
 		this.ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 		
@@ -233,22 +233,22 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				
 				GeneralPath shape = GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elementsAcabamento));
 //				
-				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
-				
-				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
+//				ArrayList<ArrayList<LimitedElement>> multipleParallel = GeometricOperations.multipleParallelPath(elementsAcabamento, ws.getCondicoesUsinagem().getAe());
+//				
+//				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
 //
 				g2d.draw(shape);
 //				
-				for(ArrayList<LimitedElement> elements:multipleParallel)
-				{
-					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
-				}
-				
-				for (GeneralPath s:shapes)
-				{
-					g2d.setColor(new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
-					g2d.draw(s);
-				}
+//				for(ArrayList<LimitedElement> elements:multipleParallel)
+//				{
+//					shapes.add(GeometricOperations.linearPathToGeneralPath(GeometricOperations.elementsLinearPath(elements)));										
+//				}
+//				
+//				for (GeneralPath s:shapes)
+//				{
+//					g2d.setColor(new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
+//					g2d.draw(s);
+//				}
 			}
 			
 			private ArrayList<LimitedElement> arrumarElementos(ArrayList<LimitedElement> elementsAcabamento, double distance)

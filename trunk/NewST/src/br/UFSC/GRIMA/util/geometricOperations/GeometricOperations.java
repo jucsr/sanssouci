@@ -737,7 +737,7 @@ public class GeometricOperations
 		return distance;
 	}
 	
-	public static ArrayList<LimitedElement> parallelPath (ArrayList<LimitedElement> elements, double distance)
+	public static ArrayList<ArrayList<LimitedElement>> parallelPath (ArrayList<LimitedElement> elements, double distance)
 	{
 		ArrayList<LimitedElement> parallel = new ArrayList<LimitedElement>();
 		
@@ -996,7 +996,7 @@ public class GeometricOperations
 			}
 		}
 		System.out.println("************************************************");
-		return parallel;		
+		return validarPath(parallel);		
 	}
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)

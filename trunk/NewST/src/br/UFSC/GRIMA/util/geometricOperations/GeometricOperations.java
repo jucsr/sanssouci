@@ -1496,16 +1496,15 @@ public class GeometricOperations
 			Point3d pi1 = line1.getInitialPoint();
 			Point3d pf1 = line1.getFinalPoint();
 			
-			Point3d pi2 = line1.getInitialPoint();
-			Point3d pf2 = line1.getFinalPoint();
+			Point3d pi2 = line2.getInitialPoint();
+			Point3d pf2 = line2.getFinalPoint();
 			
 			double b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
 			double a1 = pi1.getY() - b1*pi1.getX(); 
 			
 			double b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
 			double a2 = pi2.getY() - b2*pi2.getX();
-
-	
+					
 			if (b1==b2)
 			{
 				return null;
@@ -1516,9 +1515,51 @@ public class GeometricOperations
 				y0 = a1 + b1*x0;
 			}
 		}
-		Point3d intersect = new Point3d(x0,y0,line1.getInitialPoint().getZ());		
-		return intersect;
+		Point3d intersect = new Point3d(x0, y0, line1.getInitialPoint().getZ());
+		
+		Point3d vetorUnitario1 = unitVector(line1.getInitialPoint(), line1.getFinalPoint());
+		Point3d vetorUnitario2 = unitVector(line2.getInitialPoint(), line2.getFinalPoint());
+		double distance1 = line1.getInitialPoint().distance(intersect);
+		double distance2 = line2.getInitialPoint().distance(intersect);
+		
+		double possivelIntersecaoX1 = line1.getInitialPoint().x + multiply(distance1, vetorUnitario1).x;
+		double possivelIntersecaoY1 = line1.getInitialPoint().y + multiply(distance1, vetorUnitario1).y;
+		double possivelIntersecaoX2 = line2.getInitialPoint().x + multiply(distance2, vetorUnitario2).x;
+		double possivelIntersecaoY2 = line2.getInitialPoint().y + multiply(distance2, vetorUnitario2).y;
+		
+		double intersectXF = truncarDecimais(intersect.x, 10);
+		double intersectYF = truncarDecimais(intersect.y, 10);
+		double possivelIntersecaoXF1 = truncarDecimais(possivelIntersecaoX1, 10);
+		double possivelIntersecaoYF1 = truncarDecimais(possivelIntersecaoY1, 10);
+		double possivelIntersecaoXF2 = truncarDecimais(possivelIntersecaoX2, 10);
+		double possivelIntersecaoYF2 = truncarDecimais(possivelIntersecaoY2, 10);
+		
+		System.out.println("intersection x = " + intersectXF);
+		System.out.println("intersection y = " + intersectYF);
+		System.out.println("poss intersection x = " + possivelIntersecaoXF1);
+		System.out.println("poss intersection y = " + possivelIntersecaoYF1);
+		if(intersectXF == possivelIntersecaoXF1 && intersectYF ==  possivelIntersecaoYF1 && intersectXF == possivelIntersecaoXF2 && intersectYF == possivelIntersecaoYF2)
+		{
+			return intersect;
+		}
+		else
+		{
+			return null;
+		}
 	}
+	public static double truncarDecimais(double numero, int casasDecimais)
+	{
+		double saida = 0;
+		
+		String intersectX = ""+ numero;
+		int indiceDoPontoDecimal = intersectX.indexOf(".");
+		String decimais = intersectX.substring(indiceDoPontoDecimal, indiceDoPontoDecimal + casasDecimais + 1);
+		String intersectXFormatado = (int)(numero) + decimais;
+		saida = (Double.parseDouble(intersectXFormatado));
+		
+		return saida;
+	}
+
 	public static Point3d intersectionPoint(LimitedArc arc, LimitedLine line)
 	{
 		Point3d intersection = null;

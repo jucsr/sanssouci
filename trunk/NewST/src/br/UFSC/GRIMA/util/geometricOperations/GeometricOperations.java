@@ -1003,15 +1003,35 @@ public class GeometricOperations
 	{
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		
+		elementsValidated.add(new ArrayList<LimitedElement>());
 		for (int i=0; i < elements.size(); i++)
 		{
 			LimitedElement ei = elements.get(i);
 			for (int j=i+1; i < elements.size(); j++)
 			{
 				LimitedElement ej = elements.get(j);
-				if(intersectionElements(ei,ej)!=null)
+				Point3d intersection = intersectionElements(ei,ej);
+				if(intersection!=null)
 				{
-					System.out.println("Here is an intersection");
+					System.out.println("Here is an intersection point " + intersection);
+					if (ei.isLimitedLine())
+					{
+						LimitedLine linei = (LimitedLine)ei;
+						LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection);
+						LimitedLine lineAfterIntersection = new LimitedLine(intersection, linei.getFinalPoint());
+						elementsValidated.get(0).add(lineBeforeIntersection);
+						elementsValidated.get(0).add(lineAfterIntersection);
+					}
+					else if(ei.isLimitedArc())
+					{
+						LimitedArc arci = (LimitedArc)ei;
+						LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection, arci.getCenter());
+						LimitedArc arcAfterIntersection = new LimitedArc(intersection, arci.getFinalPoint(), arci.getCenter());
+					}
+				}
+				else 
+				{
+					elementsValidated.get(0).add(ei);
 				}
 			}
 		}

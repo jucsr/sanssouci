@@ -1789,6 +1789,7 @@ public class GeometricOperations
 		System.out.println("anguloNaIntersecaoCirculo1Possivel2 = " + (anguloNaIntersecaoCirculo1Possivel2 * 180 / Math.PI));
 		System.out.println("anguloNaIntersecaoCirculo2Possivel1 = " + (anguloNaIntersecaoCirculo2Possivel1 * 180 / Math.PI));
 		System.out.println("anguloNaIntersecaoCirculo2Possivel2 = " + (anguloNaIntersecaoCirculo2Possivel2 * 180 / Math.PI));
+		//System.out.println("")
 		
 		if(((anguloNaIntersecaoCirculo1Possivel1 <= anguloFinal1 && anguloNaIntersecaoCirculo1Possivel1 >= anguloInicial1) || (anguloNaIntersecaoCirculo1Possivel1 + 2 * Math.PI <= anguloFinal1 && anguloNaIntersecaoCirculo1Possivel1 + 2 * Math.PI >= anguloInicial1)) &&
 				((anguloNaIntersecaoCirculo2Possivel1 >= anguloFinal2 && anguloNaIntersecaoCirculo2Possivel1 <= anguloInicial2) ||(anguloNaIntersecaoCirculo2Possivel1 + 2 * Math.PI >= anguloFinal2 && anguloNaIntersecaoCirculo2Possivel1 + 2 * Math.PI <= anguloInicial2)))
@@ -1801,6 +1802,7 @@ public class GeometricOperations
 			intersection = possivel2;
 			System.out.println("X2");
 		}
+		
 		
 		return intersection;
 	}

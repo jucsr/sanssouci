@@ -196,12 +196,37 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //		LimitedArc arc1 = new LimitedArc(new Point3d(50, 10, 0), new Point3d(0, 60, 0), new Point3d(50, 60, 0));
 //		LimitedArc arc2 = new LimitedArc(new Point3d(60, 30, 0), new Point3d(20, 70, 0), new Point3d(60, 70, 0));
 		
-		LimitedArc arc1 = new LimitedArc(new Point3d(52.98, 43.70, 0), new Point3d(11.28, 46.61, 0), new Point3d(32.02, 43.70, 0));
-		LimitedArc arc2 = new LimitedArc(new Point3d(43.39, 66.38, 0), new Point3d(35.53, 40.40, 0), new Point3d(43.39, 52.20, 0));
+//		LimitedArc arc1 = new LimitedArc(new Point3d(52.98, 43.70, 0), new Point3d(11.28, 46.61, 0), new Point3d(32.02, 43.70, 0));
+//		LimitedArc arc2 = new LimitedArc(new Point3d(43.39, 66.38, 0), new Point3d(35.53, 40.40, 0), new Point3d(43.39, 52.20, 0));
+//		
+//		Point3d intersection = GeometricOperations.intersectionPoint(arc1, arc2);
+//		System.err.println("intersection = " + intersection);
+
+//		LimitedArc arc3 = new LimitedArc(new Point3d(40, 20, 0), new Point3d(20, 20, 0), new Point3d(30, 20, 0));
+//		LimitedArc arc4 = new LimitedArc(new Point3d(45, 45, 0), new Point3d(45, 15, 0), new Point3d(45, 30, 0));
+//		
+//		Point3d intersection2 = GeometricOperations.intersectionPoint(arc3, arc4);
+//		System.err.println("intersection2 = " + intersection2);
+//		
+		LimitedArc arc5 = new LimitedArc(new Point3d(30, 10, 0), new Point3d(35, 28.66, 0), new Point3d(30, 20, 0));
+		LimitedArc arc6 = new LimitedArc(new Point3d(45, 45, 0), new Point3d(45, 15, 0), new Point3d(45, 30, 0));
 		
+		Point3d intersection3 = GeometricOperations.intersectionPoint(arc5, arc6);
+		System.err.println("intersection3 = " + intersection3);
+		System.out.println("MATH ATAN2 = " + Math.atan2(0, 0));
+//		LimitedArc arc7 = new LimitedArc(new Point3d(45, 60, 0), new Point3d(30, 45, 0), new Point3d(30, 60, 0));
+//		LimitedArc arc8 = new LimitedArc(new Point3d(60, 70, 0), new Point3d(60, 70, 0), new Point3d(60, 80, 0));
+//		
+//		Point3d intersection4 = GeometricOperations.intersectionPoint(arc7, arc8);
+//		System.err.println("intersection4 = " + intersection4);
 		
-		Point3d intersection = GeometricOperations.intersectionPoint(arc1, arc2);
-		System.err.println("intersection = " + intersection);
+//		LimitedArc arc9 = new LimitedArc(new Point3d(40, 20, 0), new Point3d(35, 28.66, 0), new Point3d(30, 20, 0));
+//		LimitedArc arc10 = new LimitedArc(new Point3d(45, 45, 0), new Point3d(45, 15, 0), new Point3d(45, 30, 0));
+//		
+//		Point3d intersection5 = GeometricOperations.intersectionPoint(arc9, arc10);
+//		System.err.println("intersection5 = " + intersection5);
+		
+//		System.out.println(GeometricOperations.truncarDecimais(10.0004, 10));
 	}
 	@Test
 	public void nearestPointIntersectingArcArcTest()

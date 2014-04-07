@@ -1554,13 +1554,21 @@ public class GeometricOperations
 	public static double truncarDecimais(double numero, int casasDecimais)
 	{
 		double saida = 0;
-		
 		String intersectX = ""+ numero;
-		int indiceDoPontoDecimal = intersectX.indexOf(".");
-		String decimais = intersectX.substring(indiceDoPontoDecimal, indiceDoPontoDecimal + casasDecimais + 1);
-		String intersectXFormatado = (int)(numero) + decimais;
-		saida = (Double.parseDouble(intersectXFormatado));
-		
+//		System.out.println("NUMERO = " + intersectX);
+//		System.out.println("CONTAINS = " + intersectX.contains("."));
+		int carateresDepoisDoPonto = intersectX.length() - intersectX.indexOf(".") - 1;
+//		System.out.println("CARAT = " + carateresDepoisDoPonto);
+		if(carateresDepoisDoPonto > casasDecimais)
+		{
+			int indiceDoPontoDecimal = intersectX.indexOf(".");
+			String decimais = intersectX.substring(indiceDoPontoDecimal, indiceDoPontoDecimal + casasDecimais + 1);
+			String intersectXFormatado = (int)(numero) + decimais;
+			saida = (Double.parseDouble(intersectXFormatado));
+		} else
+		{
+			saida = numero;
+		}
 		return saida;
 	}
 
@@ -1623,46 +1631,46 @@ public class GeometricOperations
 		{
 			anguloNaIntersecao2 = 2* Math.PI + anguloNaIntersecao2;
 		}
-		System.err.println("x1 = " + x1 + "\ty1 = " + y1);
-		System.err.println("x2 = " + x2 + "\ty2 = " + y2);
-		System.err.println("ARC center = " + arc.getCenter());
-		System.err.println("anguloIntersecao1 (DEG) = " + (anguloNaIntersecao1 * 180 / Math.PI));
-		System.err.println("anguloIntersecao1 (RAD) = " + (anguloNaIntersecao1));
-		System.err.println("anguloIntersecao2 (DEG) = " + (anguloNaIntersecao2 * 180 / Math.PI));
-		System.err.println("anguloIntersecao2 (RAD) = " + (anguloNaIntersecao2));
-		System.err.println("anguloInicial (DEG) = " + (anguloInicial * 180 / Math.PI));
-		System.err.println("anguloInicial (RAD) = " + anguloInicial);
-		System.err.println("anguloFinal (DEG) = " + (anguloFinal * 180 / Math.PI));
-		System.err.println("anguloFinal (RAD) = " + anguloFinal);
+//		System.err.println("x1 = " + x1 + "\ty1 = " + y1);
+//		System.err.println("x2 = " + x2 + "\ty2 = " + y2);
+//		System.err.println("ARC center = " + arc.getCenter());
+//		System.err.println("anguloIntersecao1 (DEG) = " + (anguloNaIntersecao1 * 180 / Math.PI));
+//		System.err.println("anguloIntersecao1 (RAD) = " + (anguloNaIntersecao1));
+//		System.err.println("anguloIntersecao2 (DEG) = " + (anguloNaIntersecao2 * 180 / Math.PI));
+//		System.err.println("anguloIntersecao2 (RAD) = " + (anguloNaIntersecao2));
+//		System.err.println("anguloInicial (DEG) = " + (anguloInicial * 180 / Math.PI));
+//		System.err.println("anguloInicial (RAD) = " + anguloInicial);
+//		System.err.println("anguloFinal (DEG) = " + (anguloFinal * 180 / Math.PI));
+//		System.err.println("anguloFinal (RAD) = " + anguloFinal);
 		
 		if((anguloNaIntersecao1 <= anguloFinal && anguloNaIntersecao1 >= anguloInicial) || (anguloNaIntersecao1 >= anguloFinal && anguloNaIntersecao1 <= anguloInicial))
 		{
 			x = x1;
 			y = y1;
-			System.out.println("X1");
+//			System.out.println("X1");
 		} else if((anguloNaIntersecao2 <= anguloFinal && anguloNaIntersecao2 >= anguloInicial) || (anguloNaIntersecao2 >= anguloFinal && anguloNaIntersecao2 <=anguloInicial))
 		{
 			x = x2;
 			y = y2;
-			System.out.println("X2");
+//			System.out.println("X2");
 		}
 		intersection = new Point3d(x, y, 0);
-		System.err.println("INTERSECTION POINT = " + intersection);
+//		System.err.println("INTERSECTION POINT = " + intersection);
 
 		return intersection;
 	}
 	public static Point3d intersectionPoint(LimitedArc arc1, LimitedArc arc2)
 	{
-		Point3d intersection;
+		Point3d intersection = null;
 		
-		double x1, x2, y1, y2, r1 = 0, r2 = 0, cx1, cx2, cy1, cy2;
+		double x1, x2, y1 = 0, y2 = 0, r1 = 0, r2 = 0, cx1, cx2, cy1, cy2, x = 0, y = 0;
 		
 		cx1 = arc1.getCenter().x;
 		cx2 = arc2.getCenter().x;
 		cy1 = arc1.getCenter().y;
 		cy2 = arc2.getCenter().y;
-		r1 = Math.sqrt(Math.pow(arc1.getInitialPoint().getX() - arc1.getCenter().getX(), 2) + Math.pow(arc1.getInitialPoint().getY() - arc1.getCenter().getY(), 2));
-		r2 = Math.sqrt(Math.pow(arc2.getInitialPoint().getX() - arc2.getCenter().getX(), 2) + Math.pow(arc2.getInitialPoint().getY() - arc2.getCenter().getY(), 2));
+		r1 = Math.sqrt(Math.pow(arc1.getInitialPoint().x - arc1.getCenter().x, 2) + Math.pow(arc1.getInitialPoint().y - arc1.getCenter().y, 2));
+		r2 = Math.sqrt(Math.pow(arc2.getInitialPoint().x - arc2.getCenter().x, 2) + Math.pow(arc2.getInitialPoint().y - arc2.getCenter().y, 2));
 		
 		System.out.println("R1 = " + r1);
 		System.out.println("R2 = " + r2);
@@ -1676,11 +1684,123 @@ public class GeometricOperations
 		x1 = (cx1*Math.pow(cy1, 2) - Math.pow(cx1, 2)*cx2 - cx1*Math.pow(cx2, 2) + cx1*Math.pow(cy2, 2) + cx2*Math.pow(cy1, 2) + cx2*Math.pow(cy2, 2) - cx1*Math.pow(r1, 2) + cx2*Math.pow(r1, 2) + cx1*Math.pow(r2, 2) - cx2*Math.pow(r2, 2) + Math.pow(cx1, 3) + Math.pow(cx2, 3) - cy1*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1, 2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1, 2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) - Math.pow(r1, 4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) + cy2*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1,2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1,2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) -Math.pow(r1,4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) - 2*cx1*cy1*cy2 - 2*cx2*cy1*cy2)/(2*(Math.pow(cx1, 2) - 2*cx1*cx2 + Math.pow(cx2, 2) + Math.pow(cy1, 2) - 2*cy1*cy2 + Math.pow(cy2, 2)));
 		x2 = (cx1*Math.pow(cy1, 2) - Math.pow(cx1, 2)*cx2 - cx1*Math.pow(cx2, 2) + cx1*Math.pow(cy2, 2) + cx2*Math.pow(cy1, 2) + cx2*Math.pow(cy2, 2) - cx1*Math.pow(r1, 2) + cx2*Math.pow(r1, 2) + cx1*Math.pow(r2, 2) - cx2*Math.pow(r2, 2) + Math.pow(cx1, 3) + Math.pow(cx2, 3) + cy1*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1, 2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1, 2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) - Math.pow(r1, 4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) - cy2*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1, 2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1, 2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) - Math.pow(r1, 4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) - 2*cx1*cy1*cy2 - 2*cx2*cy1*cy2)/(2*(Math.pow(cx1, 2) - 2*cx1*cx2 + Math.pow(cx2, 2) + Math.pow(cy1, 2) - 2*cy1*cy2 + Math.pow(cy2, 2)));
 		
-		y1 = Math.sqrt(Math.pow(r1, 2) - Math.pow(x1 - cx1, 2)) + cy1;
-		y2 = Math.sqrt(Math.pow(r2, 2) - Math.pow(x2 - cx2, 2)) + cy2;
+		/**
+		 * todos os possiveis pontos de intersecao nos dois circulos com x1 e x2 calculados
+		 */
+		double y11 = cy1 + Math.sqrt(Math.pow(r1, 2) - Math.pow(x1 - cx1, 2));
+		double y12 = cy1 - Math.sqrt(Math.pow(r1, 2) - Math.pow(x1 - cx1, 2));
+		double y13 = cy1 + Math.sqrt(Math.pow(r1, 2) - Math.pow(x2 - cx1, 2));
+		double y14 = cy1 - Math.sqrt(Math.pow(r1, 2) - Math.pow(x2 - cx1, 2));
+		double y21 = cy2 + Math.sqrt(Math.pow(r2, 2) - Math.pow(x1 - cx2, 2));
+		double y22 = cy2 - Math.sqrt(Math.pow(r2, 2) - Math.pow(x1 - cx2, 2));
+		double y23 = cy2 + Math.sqrt(Math.pow(r2, 2) - Math.pow(x2 - cx2, 2));
+		double y24 = cy2 - Math.sqrt(Math.pow(r2, 2) - Math.pow(x2 - cx2, 2));
 		
-		intersection = new Point3d(x2, y2, 0);
+		double [] ypossiveis1 = {y11, y12, y13, y14};
+		double [] ypossiveis2 = {y21, y22, y23, y24};
+
+		for(int i = 0; i < ypossiveis1.length; i++)
+		{
+			for(int j = 0; j < ypossiveis2.length; j++)
+			{
+				if(truncarDecimais(ypossiveis1[i], 10) == truncarDecimais(ypossiveis2[j], 10))
+				{
+					if(i == 0 || i == 1)
+					{
+						y1 = ypossiveis1[i];
+					} else if(i == 2 || i == 3)
+					{
+						y2 = ypossiveis1[i];
+					}
+					ypossiveis1[i] = -1;
+					break;
+				}
+			}
+		}
 		
+		Point3d possivel1 = new Point3d(x1, y1, 0);
+		Point3d possivel2 = new Point3d(x2, y2, 0);
+		
+		System.err.println("poss 1 =" + possivel1);
+		System.err.println("poss 2 =" + possivel2);
+		
+		double anguloInicial1 = Math.atan2(arc1.getInitialPoint().y - arc1.getCenter().y, arc1.getInitialPoint().x - arc1.getCenter().x);
+		double anguloFinal1 = Math.atan2(arc1.getFinalPoint().y - arc1.getCenter().y, arc1.getFinalPoint().x - arc1.getCenter().x);
+		
+		double anguloInicial2 = Math.atan2(arc2.getInitialPoint().y - arc2.getCenter().y, arc2.getInitialPoint().x - arc2.getCenter().x);
+		double anguloFinal2 = Math.atan2(arc2.getFinalPoint().y - arc2.getCenter().y, arc2.getFinalPoint().x - arc2.getCenter().x);
+		
+		double anguloNaIntersecaoCirculo1Possivel1 = Math.atan2(possivel1.y - arc1.getCenter().y, possivel1.x - arc1.getCenter().x);
+		double anguloNaIntersecaoCirculo1Possivel2 = Math.atan2(possivel2.y - arc1.getCenter().y, possivel2.x - arc1.getCenter().x);
+		
+		double anguloNaIntersecaoCirculo2Possivel1 = Math.atan2(possivel1.y - arc2.getCenter().y, possivel1.x - arc2.getCenter().x);
+		double anguloNaIntersecaoCirculo2Possivel2 = Math.atan2(possivel2.y - arc2.getCenter().y, possivel2.x - arc2.getCenter().x);
+				
+		/**
+		 * correcao dos angulos negativos
+		 */
+		if(anguloInicial1 < 0)
+		{
+			anguloInicial1 = 2 * Math.PI + anguloInicial1;
+		}
+		if(anguloFinal1 <= 0)
+		{
+			anguloFinal1 = 2 * Math.PI + anguloFinal1;
+		}
+		if(anguloInicial2 < 0)
+		{
+			anguloInicial2 = 2 * Math.PI + anguloInicial2;
+		}
+		if(anguloFinal2 < 0)
+		{
+			anguloFinal2 = 2 * Math.PI + anguloFinal2;
+		}
+		if(anguloNaIntersecaoCirculo1Possivel1 < 0)
+		{
+			anguloNaIntersecaoCirculo1Possivel1 = 2 * Math.PI + anguloNaIntersecaoCirculo1Possivel1;
+		}
+		if(anguloNaIntersecaoCirculo1Possivel2 < 0)
+		{
+			anguloNaIntersecaoCirculo1Possivel2 = 2 * Math.PI + anguloNaIntersecaoCirculo1Possivel2;
+		}
+		if(anguloNaIntersecaoCirculo2Possivel1 < 0)
+		{
+			anguloNaIntersecaoCirculo2Possivel1 = 2 * Math.PI + anguloNaIntersecaoCirculo2Possivel1;
+		}
+		if(anguloNaIntersecaoCirculo2Possivel2 < 0)
+		{
+			anguloNaIntersecaoCirculo2Possivel2 = 2 * Math.PI + anguloNaIntersecaoCirculo2Possivel2;
+		}
+		
+		if(anguloInicial1 > anguloFinal1)
+		{
+			anguloFinal1 = 2 * Math.PI + anguloFinal1;
+		}
+		if(anguloInicial2 > anguloFinal2)
+		{
+			anguloFinal2 = 2 * Math.PI + anguloFinal2;
+		}
+		
+		System.out.println("AI1 = " + (anguloInicial1 * 180 / Math.PI));
+		System.out.println("AF1 = " + (anguloFinal1 * 180 / Math.PI));
+		System.out.println("AI2 = " + (anguloInicial2 * 180 / Math.PI));
+		System.out.println("AF2 = " + (anguloFinal2 * 180 / Math.PI));
+		System.out.println("anguloNaIntersecaoCirculo1Possivel1 = " + (anguloNaIntersecaoCirculo1Possivel1 * 180 / Math.PI));
+		System.out.println("anguloNaIntersecaoCirculo1Possivel2 = " + (anguloNaIntersecaoCirculo1Possivel2 * 180 / Math.PI));
+		System.out.println("anguloNaIntersecaoCirculo2Possivel1 = " + (anguloNaIntersecaoCirculo2Possivel1 * 180 / Math.PI));
+		System.out.println("anguloNaIntersecaoCirculo2Possivel2 = " + (anguloNaIntersecaoCirculo2Possivel2 * 180 / Math.PI));
+		
+		if(((anguloNaIntersecaoCirculo1Possivel1 <= anguloFinal1 && anguloNaIntersecaoCirculo1Possivel1 >= anguloInicial1) || (anguloNaIntersecaoCirculo1Possivel1 + 2 * Math.PI <= anguloFinal1 && anguloNaIntersecaoCirculo1Possivel1 + 2 * Math.PI >= anguloInicial1)) &&
+				((anguloNaIntersecaoCirculo2Possivel1 >= anguloFinal2 && anguloNaIntersecaoCirculo2Possivel1 <= anguloInicial2) ||(anguloNaIntersecaoCirculo2Possivel1 + 2 * Math.PI >= anguloFinal2 && anguloNaIntersecaoCirculo2Possivel1 + 2 * Math.PI <= anguloInicial2)))
+		{
+			intersection = possivel1;
+			System.out.println("X1");
+		} else if(((anguloNaIntersecaoCirculo1Possivel2 <= anguloFinal1 && anguloNaIntersecaoCirculo1Possivel2 >= anguloInicial1) || (anguloNaIntersecaoCirculo1Possivel2 + 2 * Math.PI <= anguloFinal1 && anguloNaIntersecaoCirculo1Possivel2 + 2 * Math.PI >= anguloInicial1)) &&
+				(anguloNaIntersecaoCirculo2Possivel2 >= anguloFinal2 && anguloNaIntersecaoCirculo2Possivel2 <=anguloInicial2) || (anguloNaIntersecaoCirculo2Possivel2 + 2 * Math.PI >= anguloFinal2 && anguloNaIntersecaoCirculo2Possivel2 + 2 * Math.PI <=anguloInicial2))
+		{
+			intersection = possivel2;
+			System.out.println("X2");
+		}
 		
 		return intersection;
 	}

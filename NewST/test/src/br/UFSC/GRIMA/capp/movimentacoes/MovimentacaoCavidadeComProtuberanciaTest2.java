@@ -156,13 +156,17 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //		LimitedLine line = new LimitedLine(new Point3d(105.592, 216.064, 0), new Point3d(131.310, 209.291, 0));
 //		LimitedArc arc = new LimitedArc(new Point3d(25, 40, 0), new Point3d(50, 15, 0), new Point3d(50, 40, 0));
 //		LimitedArc arc = new LimitedArc(new Point3d(50, 15, 0), new Point3d(75, 40, 0), new Point3d(50, 40, 0));
-		
-		LimitedArc arc = new LimitedArc(new Point3d(50, 65, 0), new Point3d(25, 40, 0), new Point3d(50, 40, 0));
-		LimitedLine line = new LimitedLine(new Point3d(30, 0, 0), new Point3d(30, 60, 0));
+//---------------------------------------------------------------------------------------------------------------------------------------
+//      Funcionou		
+//		LimitedArc arc = new LimitedArc(new Point3d(50, 65, 0), new Point3d(25, 40, 0), new Point3d(50, 40, 0));
+//		LimitedLine line = new LimitedLine(new Point3d(30, 0, 0), new Point3d(30, 60, 0));
+//---------------------------------------------------------------------------------------------------------------------------------------		
 //		Nao ha intersecao:
 //		LimitedArc arc = new LimitedArc(new Point3d(84.12, 69.08, 0), new Point3d(56.14, 41.31, 0), new Point3d(56.35, 69.08, 0));
 //		LimitedLine line = new LimitedLine(new Point3d(43.18, 19.09, 0), new Point3d(103.85, 53.91, 0));
-		
+
+		LimitedArc arc = new LimitedArc(new Point3d(175.0, 285.0, 0.0), new Point3d(325.0, 135.0, 0.0), new Point3d(175.0, 135.0, 0.0));
+		LimitedLine line = new LimitedLine(new Point3d(355.0, 165.0000000000001, 0.0), new Point3d(355.0, 195.00000000000034, 0.0));
 		Point3d intersection = GeometricOperations.intersectionPoint(arc, line);
 		System.err.println("INTERSECTION POINT = " + intersection);
 	}
@@ -207,13 +211,15 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //		
 //		Point3d intersection2 = GeometricOperations.intersectionPoint(arc3, arc4);
 //		System.err.println("intersection2 = " + intersection2);
+//----------------------------------------------------------------------------------------------------------------------
+//Arcos que se intersectam		
+//		LimitedArc arc5 = new LimitedArc(new Point3d(30, 10, 0), new Point3d(35, 28.66, 0), new Point3d(30, 20, 0));
+//		LimitedArc arc6 = new LimitedArc(new Point3d(45, 45, 0), new Point3d(45, 15, 0), new Point3d(45, 30, 0));
 //		
-		LimitedArc arc5 = new LimitedArc(new Point3d(30, 10, 0), new Point3d(35, 28.66, 0), new Point3d(30, 20, 0));
-		LimitedArc arc6 = new LimitedArc(new Point3d(45, 45, 0), new Point3d(45, 15, 0), new Point3d(45, 30, 0));
+//		Point3d intersection3 = GeometricOperations.intersectionPoint(arc5, arc6);
+//		System.err.println("intersection3 = " + intersection3);
+//		System.out.println("MATH ATAN2 = " + Math.atan2(0, 0));
 		
-		Point3d intersection3 = GeometricOperations.intersectionPoint(arc5, arc6);
-		System.err.println("intersection3 = " + intersection3);
-		System.out.println("MATH ATAN2 = " + Math.atan2(0, 0));
 //		LimitedArc arc7 = new LimitedArc(new Point3d(45, 60, 0), new Point3d(30, 45, 0), new Point3d(30, 60, 0));
 //		LimitedArc arc8 = new LimitedArc(new Point3d(60, 70, 0), new Point3d(60, 70, 0), new Point3d(60, 80, 0));
 //		
@@ -227,6 +233,12 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //		System.err.println("intersection5 = " + intersection5);
 		
 //		System.out.println(GeometricOperations.truncarDecimais(10.0004, 10));
+		LimitedArc arc11 = new LimitedArc(new Point3d(75, 130, 0), new Point3d(50, 105, 0), new Point3d(50,130 , 0));
+		LimitedArc arc12 = new LimitedArc(new Point3d(50, 125, 0), new Point3d(74.45, 105.19, 0), new Point3d(50, 100, 0));
+		
+		Point3d intersection6 = GeometricOperations.intersectionPoint(arc11, arc12);
+		System.err.println("intersection6 = " + intersection6);
+		//System.out.println("MATH ATAN2 = " + Math.atan2(0, 0)); 
 	}
 	@Test
 	public void nearestPointIntersectingArcArcTest()

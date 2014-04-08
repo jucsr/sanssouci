@@ -1006,8 +1006,12 @@ public class GeometricOperations
 	{
 		//vetor de saída
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
-		
-		elementsValidated.add(new ArrayList<LimitedElement>());
+		//Array de elementos intermediarios
+		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
+		//Array de intenrsecoes
+		ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
+		//int var1 = 0;
+		//elementsIntermediario.add(new ArrayList<LimitedElement>());
 		for (int i=0; i < elements.size(); i++)
 		{
 			LimitedElement ei = elements.get(i);
@@ -1017,20 +1021,24 @@ public class GeometricOperations
 				Point3d intersection = intersectionElements(ei,ej);
 				if(intersection!=null)
 				{
+					intersecoes.add(intersection);
 					System.out.println("Here is an intersection point " + intersection);
 					if (ei.isLimitedLine())
 					{
 						LimitedLine linei = (LimitedLine)ei;
 						LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection);
 						LimitedLine lineAfterIntersection = new LimitedLine(intersection, linei.getFinalPoint());
-						elementsValidated.get(0).add(lineBeforeIntersection);
-						elementsValidated.get(0).add(lineAfterIntersection);
+						elementsIntermediario.add(lineBeforeIntersection);
+						elementsIntermediario.add(lineAfterIntersection);
+						//var1 = var1++;
 					}
 					else if(ei.isLimitedArc())
 					{
 						LimitedArc arci = (LimitedArc)ei;
 						LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection, arci.getCenter());
 						LimitedArc arcAfterIntersection = new LimitedArc(intersection, arci.getFinalPoint(), arci.getCenter());
+						elementsIntermediario.add(arcBeforeIntersection);
+						elementsIntermediario.add(arcAfterIntersection);
 					}
 				}
 				else 
@@ -1038,6 +1046,20 @@ public class GeometricOperations
 					elementsValidated.get(0).add(ei);
 				}
 			}
+		}
+		Point3d pontoInicial;
+		if(elementsIntermediario.get(0).isLimitedLine())
+			pontoInicial = ((LimitedLine)elementsIntermediario.get(0)).getInitialPoint();
+		else if(elementsIntermediario.get(0).isLimitedArc())
+			pontoInicial = ((LimitedArc)elementsIntermediario.get(0)).getInitialPoint();
+		
+		for(int i = 0; i< elementsIntermediario.size();i++)
+		{
+			for(int j = 0; j<elementsIntermediario.size()-1;j++)
+			{
+				
+			}
+			LimitedElement ei1 = elementsIntermediario.get(i);
 		}
 		
 		return elementsValidated;

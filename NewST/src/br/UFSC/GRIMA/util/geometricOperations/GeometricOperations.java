@@ -1008,10 +1008,11 @@ public class GeometricOperations
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		//Array de elementos intermediarios
 		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		//Array de intenrsecoes
 		ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
 		//int var1 = 0;
-		//elementsIntermediario.add(new ArrayList<LimitedElement>());
+		elementsValidated.add(new ArrayList<LimitedElement>());
 		for (int i=0; i < elements.size(); i++)
 		{
 			LimitedElement ei = elements.get(i);
@@ -1021,6 +1022,7 @@ public class GeometricOperations
 				Point3d intersection = intersectionElements(ei,ej);
 				if(intersection!=null)
 				{
+					//adiciona os pontos de interseção ao vetor de interseções
 					intersecoes.add(intersection);
 					System.out.println("Here is an intersection point " + intersection);
 					if (ei.isLimitedLine())
@@ -1028,8 +1030,10 @@ public class GeometricOperations
 						LimitedLine linei = (LimitedLine)ei;
 						LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection);
 						LimitedLine lineAfterIntersection = new LimitedLine(intersection, linei.getFinalPoint());
-						elementsIntermediario.add(lineBeforeIntersection);
-						elementsIntermediario.add(lineAfterIntersection);
+						//elementsIntermediario.add(lineBeforeIntersection);
+						//elementsIntermediario.add(lineAfterIntersection);
+						elementsValidated.get(0).add(lineBeforeIntersection);
+						elementsValidated.get(0).add(lineAfterIntersection);
 						//var1 = var1++;
 					}
 					else if(ei.isLimitedArc())
@@ -1037,8 +1041,10 @@ public class GeometricOperations
 						LimitedArc arci = (LimitedArc)ei;
 						LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection, arci.getCenter());
 						LimitedArc arcAfterIntersection = new LimitedArc(intersection, arci.getFinalPoint(), arci.getCenter());
-						elementsIntermediario.add(arcBeforeIntersection);
-						elementsIntermediario.add(arcAfterIntersection);
+						//elementsIntermediario.add(arcBeforeIntersection);
+						//elementsIntermediario.add(arcAfterIntersection);
+						elementsValidated.get(0).add(arcBeforeIntersection);
+						elementsValidated.get(0).add(arcAfterIntersection);
 					}
 				}
 				else 
@@ -1047,38 +1053,64 @@ public class GeometricOperations
 				}
 			}
 		}
-		Point3d pontoInicial;
-		if(elementsIntermediario.get(0).isLimitedLine())
-			pontoInicial = ((LimitedLine)elementsIntermediario.get(0)).getInitialPoint();
-		else if(elementsIntermediario.get(0).isLimitedArc())
-			pontoInicial = ((LimitedArc)elementsIntermediario.get(0)).getInitialPoint();
 		
-		for(int i = 0; i< elementsIntermediario.size();i++)
-		{
-			for(int j = 0; j<elementsIntermediario.size()-1;j++)
-			{
-				
-			}
-			LimitedElement ei1 = elementsIntermediario.get(i);
-		}
-		
+//		Point3d intersection = intersecoes.get(0);
+//		Point3d initialPoint;
+//		
+////		if(intersecao == elementsIntermediario.get(0).isLimitedLine())
+////			pontoInicial = ((LimitedLine)elementsIntermediario.get(0)).getInitialPoint();
+////		else if(elementsIntermediario.get(0).isLimitedArc())
+////			pontoInicial = ((LimitedArc)elementsIntermediario.get(0)).getInitialPoint();
+//		
+//		for(int i = 0; i< elementsIntermediario.size();i++)
+//		{
+//			if(intersection == ((LimitedLine)elementsIntermediario.get(i)).getInitialPoint())
+//				initialPoint = ((LimitedLine)elementsIntermediario.get(i)).getInitialPoint();
+//					for(int j = i; j<elementsIntermediario.size()-1;j++)
+//					{
+//				
+//					}
+//			LimitedElement ei1 = elementsIntermediario.get(i);
+//			}
+//		}
+//		
+		System.out.println("Size:" + elements.size());
+		System.out.println("Size Validated:" + elementsValidated.get(0).size());
 		return elementsValidated;
 	}
 	
 	
 	public static Point3d intersectionElements(LimitedElement ei, LimitedElement ej)
 	{
+		Point3d intersection;
 		if (ei.isLimitedArc())
 		{
 			LimitedArc arci = (LimitedArc)ei;
 			if(ej.isLimitedArc())
 			{
 				LimitedArc arcj = (LimitedArc)ej;
+				intersection = intersectionPoint(arci,arcj);
+				if(isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) 
+					&& isTheSamePoint(arci.getFinalPoint(),arcj.getFinalPoint()) 
+						&& isTheSamePoint(arci.getInitialPoint(),arcj.getFinalPoint())
+							&& isTheSamePoint(arci.getFinalPoint(),arcj.getInitialPoint()))
+				{
+					return null;
+				}
+				
 				return intersectionPoint(arci, arcj);
 			}
 			else if ( ej.isLimitedLine())
 			{
 				LimitedLine linej = (LimitedLine)ej;
+				if(isTheSamePoint(arci.getInitialPoint(),linej.getInitialPoint()) 
+						&& isTheSamePoint(arci.getFinalPoint(),linej.getFinalPoint()) 
+							&& isTheSamePoint(arci.getInitialPoint(),linej.getFinalPoint())
+								&& isTheSamePoint(arci.getFinalPoint(),linej.getInitialPoint()))
+					{
+						return null;
+					}
+					
 				return intersectionPoint(arci, linej);
 			}
 			
@@ -1088,8 +1120,16 @@ public class GeometricOperations
 			LimitedLine linei = (LimitedLine)ei;
 			if(ej.isLimitedArc())
 			{
-				LimitedArc arcj = (LimitedArc)ej;
-				return intersectionPoint(arcj, linei);
+				LimitedLine linej = (LimitedLine)ej;
+				if(isTheSamePoint(linei.getInitialPoint(),linej.getInitialPoint()) 
+						&& isTheSamePoint(linei.getFinalPoint(),linej.getFinalPoint()) 
+							&& isTheSamePoint(linei.getInitialPoint(),linej.getFinalPoint())
+								&& isTheSamePoint(linei.getFinalPoint(),linej.getInitialPoint()))
+					{
+						return null;
+					}
+					
+				return intersectionPoint(linej, linei);
 			}
 			else if ( ej.isLimitedLine())
 			{
@@ -1104,6 +1144,15 @@ public class GeometricOperations
 		return null;
 	}
 	
+	public static boolean isTheSamePoint(Point3d p1, Point3d p2)
+	{
+		if(truncarDecimais(p1.x, 10) == truncarDecimais(p2.x,10) && truncarDecimais(p1.y, 10) == truncarDecimais(p2.y, 10) 
+				&& truncarDecimais(p1.z, 10) == truncarDecimais(p2.z, 10)){
+			return true;
+		}
+		else
+			return false;
+	}
 	public static Point3d middlePoint(LimitedArc arc)
 	{
 		double initialAngle = angle(minus(arc.getInitialPoint(), arc.getCenter()));

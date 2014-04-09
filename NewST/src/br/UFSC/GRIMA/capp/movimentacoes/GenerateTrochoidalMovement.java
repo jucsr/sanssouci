@@ -27,16 +27,132 @@ public class GenerateTrochoidalMovement
 			if(elements.get(i).isLimitedLine()){
 				
 				 LimitedLine temp = (LimitedLine)elements.get(i);
-				 double distance = temp.getInitialPoint().distance(temp.getFinalPoint());
-				 double Yinterseccao = Math.sqrt(Math.pow(this.raio, 2)- (Math.pow(this.avanco, 2))/4);
 				 
-				 Point3d initialPoint = new Point3d();
-				 Point3d finalPoint = new Point3d(); 
-				 Point3d center = new Point3d();
-				 
-//				 CircularPath arco = new CircularPath(center, initialPoint, finalPoint, angulo, sense);
+				 double xInicalPoint;
+				 double yInicalPoint; 
+				 double xFinalPoint; 
+				 double yFinalPoint;
+				 double xCenter; 
+				 double yCenter; 
 				
-			}else if(elements.get(i).isLimitedArc()){
+				 double angR = Math.atan((temp.getFinalPoint().y-temp.getInitialPoint().y)/(temp.getFinalPoint().x-temp.getInitialPoint().x));
+				 double angT = Math.acos(this.raio/(this.avanco/2));
+				 double distance = temp.getInitialPoint().distance(temp.getFinalPoint());
+				 double movInt = Math.floor((distance/this.avanco)+ 2*this.raio);
+				 
+				 if(angR == Math.PI/4){
+					 
+					  xInicalPoint = temp.getInitialPoint().x + Math.sqrt(Math.pow(this.raio, 2)- Math.pow(this.avanco/2, 2));
+					  yInicalPoint = temp.getInitialPoint().y + this.avanco/2;
+					  xFinalPoint = xInicalPoint;
+					  yFinalPoint = yInicalPoint;
+					  xCenter = temp.getInitialPoint().x + this.raio;
+					  yCenter = temp.getInitialPoint().y + this.raio;
+					 
+					 Point3d initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
+					 Point3d center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
+					 
+					 CircularPath arco = new CircularPath(center, initialPoint, initialPoint, 2*Math.PI,CircularPath.CCW );
+					 movimentacao.add(arco);  
+					 
+					 int j = 0;
+					while(j < movInt){
+						
+						
+						yFinalPoint = yFinalPoint + this.avanco;
+						yCenter = yCenter + this.avanco;
+						
+						
+						
+						Point3d finalPoint = new Point3d(xFinalPoint, yFinalPoint, temp.getFinalPoint().z);
+						initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
+						center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
+						arco = new CircularPath(center, initialPoint, finalPoint,(2*Math.PI - 2*angT),CircularPath.CCW );
+					    movimentacao.add(arco);
+					    
+					    yInicalPoint = yFinalPoint;
+					    yFinalPoint = yFinalPoint +this.avanco;
+						 
+						 j++;
+						 
+					}
+					
+					if(distance - movInt != 0 ){
+						
+						double avancoFinal = distance - movInt;
+						
+						yInicalPoint = yInicalPoint - avancoFinal;
+						yFinalPoint = yInicalPoint;
+						yCenter = yCenter + avancoFinal;
+						
+						Point3d finalPoint = new Point3d(xFinalPoint, yFinalPoint, temp.getFinalPoint().z);
+						initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
+						center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
+						arco = new CircularPath(center, initialPoint, finalPoint,2*Math.PI,CircularPath.CCW );
+					    movimentacao.add(arco);		
+					}
+					
+				 }else{
+					 
+					 double theta = angR + angT;
+					 
+					 xCenter = temp.getInitialPoint().x + this.raio;
+					 yCenter = temp.getInitialPoint().y;
+					 xInicalPoint = temp.getInitialPoint().x + (Math.cos(theta)*this.raio);
+					 yInicalPoint = Math.sqrt(Math.pow(this.raio, 2) + Math.pow((xInicalPoint - xCenter), 2)) + yCenter;
+					 xFinalPoint = xInicalPoint;
+					 yFinalPoint = yInicalPoint;
+					 
+					 Point3d initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
+					 Point3d center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
+					 
+					 CircularPath arco = new CircularPath(center, initialPoint, initialPoint, 2*Math.PI,CircularPath.CCW );
+					 movimentacao.add(arco);  
+					 
+					 int t = 0;
+					 while(t < movInt){
+						 
+						 xCenter = xCenter +  (Math.cos(theta)*this.avanco);
+						 yCenter = yCenter + (Math.sin(theta)*this.avanco);
+						 xFinalPoint = xFinalPoint + (Math.cos(theta)*this.avanco);
+						 yFinalPoint = Math.sqrt(Math.pow(this.raio, 2) + Math.pow((xInicalPoint - xCenter), 2)) + yCenter;
+						 xFinalPoint = xInicalPoint;
+						 yFinalPoint = yInicalPoint;
+						 
+						 
+						 initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
+						 center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
+						 
+						 arco = new CircularPath(center, initialPoint, initialPoint, (2*Math.PI - 2*angT),CircularPath.CCW );
+						 movimentacao.add(arco); 
+						 
+						 yInicalPoint = yFinalPoint;
+						    yFinalPoint = yFinalPoint +this.avanco;
+							 
+							 t++;
+						  }
+					 if(distance - movInt != 0 ){
+						 
+						 	
+						 double avancoFinal = distance - movInt;
+						 
+						 xCenter = xCenter +  (Math.cos(theta)*avancoFinal);
+						 yCenter = yCenter + (Math.sin(theta)*avancoFinal);
+						 xInicalPoint = xInicalPoint - (Math.cos(theta)*avancoFinal);
+						 yInicalPoint = Math.sqrt(Math.pow(this.raio, 2) + Math.pow((xInicalPoint - xCenter), 2)) + yCenter;
+						 xFinalPoint = xInicalPoint;
+						 yFinalPoint = yInicalPoint;
+						 
+						 Point3d finalPoint = new Point3d(xFinalPoint, yFinalPoint, temp.getFinalPoint().z);
+						 initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
+						 center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
+						 arco = new CircularPath(center, initialPoint, finalPoint,2*Math.PI,CircularPath.CCW );
+					     movimentacao.add(arco);	
+						 
+					     }				 
+					 }
+				
+		     }else if(elements.get(i).isLimitedArc()){
 				
 			}
 		}

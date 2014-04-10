@@ -1,14 +1,25 @@
 package br.UFSC.GRIMA.util.geometricOperations;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.vecmath.Point3d;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
-import javax.vecmath.Point3d;
-
 public class GeometricOperationsTest 
 {
+	LimitedLine lineA;
+	LimitedLine lineB;
 	Point3d p1_3D = new Point3d(0.0, 1.0, 0.0);
 	Point3d p2_3D = new Point3d(0.0, 0.0, 1.0);
 	Point3d p3_3D = new Point3d(110.0, 100.0, 0.0);
@@ -56,6 +67,12 @@ public class GeometricOperationsTest
 	Point3d testPoint = new Point3d(-0.5, -0.5, 0);
 	Point3d testPoint2 = new Point3d(1.0, 13.0, 0);
 	
+	@Before
+	public void init()
+	{
+		lineA = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
+	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
+	}
 	@Test
 	public void testeDistance3D()
 	{
@@ -121,5 +138,70 @@ public class GeometricOperationsTest
 		System.out.println("with Radius " + arc5.getRadius());
 		System.out.println("and center " + arc5.getCenter());
 		System.out.println("Distance " + GeometricOperations.minimumDistanceArcToArc(arc4, arc5));
+	}
+	
+	@Test
+	public void intersectionElementsTest() 
+	{
+		//Ponto Final e Inicial iguais 
+		LimitedLine line1 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
+		LimitedLine line2 = new LimitedLine(new Point3d(20,10,0), new Point3d(20,20,0));
+		
+		//Retas que não se tocam
+		LimitedLine line3 = new LimitedLine(new Point3d(30,30,0), new Point3d(40,30,0));
+		LimitedLine line4 = new LimitedLine(new Point3d(30,40,0), new Point3d(40,40,0));
+		
+		//Retas com intersectão (vertical - horizoltal)
+		LimitedLine line5 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
+		LimitedLine line6 = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
+		
+		//Linhas não paraleleas com intersecao
+		LimitedLine line7 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 20, 0));
+		LimitedLine line8 = new LimitedLine(new Point3d(15, 10, 0), new Point3d(20, 0, 0));
+		
+		Point3d intersection = GeometricOperations.intersectionElements(line5, line6);
+		System.err.println("Intersection Validated: " + intersection);
+	}
+	@Test
+	public void determinarMovimentacaoGenCavTest()
+	{
+
+		class painelTest extends JPanel
+		{
+			painelTest()
+			{
+			GeneralPath formaFeature = new GeneralPath();
+			
+			}
+			
+			@Override
+			public void paintComponent(Graphics g)
+			{
+				super.paintComponents(g);
+
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.translate(25, 325);
+				g2d.scale(1, -1);
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
+		
+				desenharLinha(lineA, g2d);
+				desenharLinha(lineB, g2d);
+			}
+
+			private void desenharLinha(LimitedLine line, Graphics2D g2d) 
+			{
+				Line2D linha = new Line2D.Double(line.getInitialPoint().x, line.getInitialPoint().y, line.getFinalPoint().x, line.getFinalPoint().y);
+				g2d.draw(linha);
+			}
+			
+		}
+		JFrame frame = new JFrame("Painel");
+		painelTest painel = new painelTest();
+		frame.setSize(700, 400);
+		frame.getContentPane().add(painel);
+		frame.setVisible(true);
+		painel.repaint();
+		for(;;);
 	}
 }

@@ -182,16 +182,20 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 	}
 	
 	@Test
-	public void intersectionPointLineToLine()
+	public void intersectionPointLineToLine() 
 	{
 		LimitedLine line1 = new LimitedLine(new Point3d(16.51, 47.84, 0), new Point3d(52.49, 17.15, 0));
 //		LimitedLine line2 = new LimitedLine(new Point3d(37.08, 23.13, 0), new Point3d(52.28, 64.56, 0));
 		LimitedLine line2 = new LimitedLine(new Point3d(42.29, 37.25, 0), new Point3d(52.28, 64.56, 0));
 		
-		Point3d intersection = GeometricOperations.intersectionPoint(line1, line2);
+		//Retas que se intersectão
+		LimitedLine line5 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(10, 20, 0));
+		LimitedLine line6 = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
+		
+		Point3d intersection = GeometricOperations.intersectionPoint(line5, line6);
 		System.err.println("intersection line line= " + intersection);
 	}
-	@Test
+	@Test 
 	public void intersectionPointArcArcTest()
 	{
 //		LimitedArc arc1 = new LimitedArc(new Point3d(50, 102.85, 0), new Point3d(33.92, 47.53, 0), new Point3d(50, 69.47, 0));

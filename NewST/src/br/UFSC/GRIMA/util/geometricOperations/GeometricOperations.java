@@ -1011,7 +1011,7 @@ public class GeometricOperations
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		//Array de intenrsecoes
 		ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
-		//int var1 = 0;
+		
 		elementsValidated.add(new ArrayList<LimitedElement>());
 		for (int i=0; i < elements.size(); i++)
 		{
@@ -1083,30 +1083,35 @@ public class GeometricOperations
 	public static Point3d intersectionElements(LimitedElement ei, LimitedElement ej)
 	{
 		Point3d intersection;
+		//Se o elemento i for um arco
 		if (ei.isLimitedArc())
 		{
 			LimitedArc arci = (LimitedArc)ei;
+			//Se o elemento j for um arco (arco, arco)
 			if(ej.isLimitedArc())
 			{
 				LimitedArc arcj = (LimitedArc)ej;
 				intersection = intersectionPoint(arci,arcj);
-				if(isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) 
-					&& isTheSamePoint(arci.getFinalPoint(),arcj.getFinalPoint()) 
-						&& isTheSamePoint(arci.getInitialPoint(),arcj.getFinalPoint())
-							&& isTheSamePoint(arci.getFinalPoint(),arcj.getInitialPoint()))
+				
+				//Alternativa para não identificar pontos de interseção nas extremidades dos Limited Elements
+				if(//isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) && 
+				   //isTheSamePoint(arci.getFinalPoint(),arcj.getFinalPoint()) || 
+				   isTheSamePoint(arci.getInitialPoint(),arcj.getFinalPoint())|| 
+				   isTheSamePoint(arci.getFinalPoint(),arcj.getInitialPoint()))
 				{
 					return null;
 				}
 				
 				return intersectionPoint(arci, arcj);
 			}
+			//Se o elemento j for uma linha (arco,linha)
 			else if ( ej.isLimitedLine())
 			{
 				LimitedLine linej = (LimitedLine)ej;
-				if(isTheSamePoint(arci.getInitialPoint(),linej.getInitialPoint()) 
-						&& isTheSamePoint(arci.getFinalPoint(),linej.getFinalPoint()) 
-							&& isTheSamePoint(arci.getInitialPoint(),linej.getFinalPoint())
-								&& isTheSamePoint(arci.getFinalPoint(),linej.getInitialPoint()))
+				if(//isTheSamePoint(arci.getInitialPoint(),linej.getInitialPoint()) && 
+				   //isTheSamePoint(arci.getFinalPoint(),linej.getFinalPoint()) || 
+				   isTheSamePoint(arci.getInitialPoint(),linej.getFinalPoint())|| 
+				   isTheSamePoint(arci.getFinalPoint(),linej.getInitialPoint()))
 					{
 						return null;
 					}
@@ -1115,27 +1120,40 @@ public class GeometricOperations
 			}
 			
 		}
+		//Se o elemento i for uma linha
 		else if(ei.isLimitedLine())
 		{
 			LimitedLine linei = (LimitedLine)ei;
+			//Se o elemento j for um arco (linha, arco)
 			if(ej.isLimitedArc())
 			{
-				LimitedLine linej = (LimitedLine)ej;
-				if(isTheSamePoint(linei.getInitialPoint(),linej.getInitialPoint()) 
-						&& isTheSamePoint(linei.getFinalPoint(),linej.getFinalPoint()) 
-							&& isTheSamePoint(linei.getInitialPoint(),linej.getFinalPoint())
-								&& isTheSamePoint(linei.getFinalPoint(),linej.getInitialPoint()))
+				LimitedArc arcj = (LimitedArc)ej;
+				if(//isTheSamePoint(linei.getInitialPoint(),arcj.getInitialPoint()) && 
+				   //isTheSamePoint(linei.getFinalPoint(),arcj.getFinalPoint()) || 
+				   isTheSamePoint(linei.getInitialPoint(),arcj.getFinalPoint())|| 
+				   isTheSamePoint(linei.getFinalPoint(),arcj.getInitialPoint()))
 					{
 						return null;
 					}
-					
-				return intersectionPoint(linej, linei);
+				//o metodo intersectionPoint não está definido para (line, arc) mas sim pra (arc, line)	
+				return intersectionPoint(arcj, linei);
 			}
+			//Se o elemento j for uma linha (linha, linha)
 			else if ( ej.isLimitedLine())
 			{
 				LimitedLine linej = (LimitedLine)ej;
+				if(//isTheSamePoint(linei.getInitialPoint(),linej.getInitialPoint()) && 
+				   //isTheSamePoint(linei.getFinalPoint(),linej.getFinalPoint()) || 
+				   isTheSamePoint(linei.getInitialPoint(),linej.getFinalPoint())|| 
+				   isTheSamePoint(linei.getFinalPoint(),linej.getInitialPoint()))
+				{
+					System.out.println("Debug1");
+					return null;
+				}
+				System.out.println("Debug2");
 				return intersectionPoint(linei, linej);
-			}			
+			}
+			System.out.println("Debug3");
 		}
 		else
 		{
@@ -1144,6 +1162,7 @@ public class GeometricOperations
 		return null;
 	}
 	
+	//Verifica a igualdade de pontos entre os Limited Elements
 	public static boolean isTheSamePoint(Point3d p1, Point3d p2)
 	{
 		if(truncarDecimais(p1.x, 10) == truncarDecimais(p2.x,10) && truncarDecimais(p1.y, 10) == truncarDecimais(p2.y, 10) 
@@ -1568,6 +1587,10 @@ public class GeometricOperations
 	{
 		double x0=0;
 		double y0=0;
+		double a1 =0;
+		double b1 =0;
+		double a2 = 0;
+		double b2 = 0;
 		
 		if(line1.getInitialPoint().getZ()==line2.getInitialPoint().getZ())
 		{
@@ -1578,11 +1601,48 @@ public class GeometricOperations
 			Point3d pi2 = line2.getInitialPoint();
 			Point3d pf2 = line2.getFinalPoint();
 			
-			double b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
-			double a1 = pi1.getY() - b1*pi1.getX(); 
-			
-			double b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
-			double a2 = pi2.getY() - b2*pi2.getX();
+			double Yinter = 0;
+			Point3d intersection = null;
+			//Garante que não calularemos uma tangente = infinity
+			if((pi1.getX() == pf1.getX()) && (pi2.getX() != pf2.getX()))
+			{
+				if(!((pi1.getX() >= pi2.getX())&& (pi1.getX() <= pf2.getX())))
+				{
+					return null;
+				}
+				else
+				{
+					b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
+					a2 = pi2.getY() - b2*pi2.getX();
+					Yinter = a2 + b2*pi1.getX();
+					intersection = new Point3d(Yinter, pi1.getX(),0);
+				}
+			}
+			else if((pi1.getX() != pf1.getX()) && (pi2.getX() == pf2.getX()))
+			{
+				if(!((pi2.getX() >= pi1.getX())&& (pi2.getX() <= pf1.getX())))
+				{
+					return null;
+				}
+				else
+				{
+					b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
+					a1 = pi1.getY() - b1*pi1.getX();
+					Yinter = a1 + b1*pi2.getX();
+					intersection = new Point3d(Yinter, pi2.getX(),0);
+				}
+			}
+			else if((pi1.getX() != pf1.getX()) && (pi2.getX() != pf2.getX()))
+			{
+				b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
+				a1 = pi1.getY() - b1*pi1.getX();
+				b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
+				a2 = pi2.getY() - b2*pi2.getX();
+			}
+			else
+			{
+				return null;
+			}
 					
 			if (b1==b2)
 			{

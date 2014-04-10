@@ -14,7 +14,7 @@ public class GenerateTrochoidalMovement
 {
 	private ArrayList<LimitedElement> elements;
 	private double raio, avanco;
-	public ArrayList<Path> movimentacao;
+	public ArrayList<Path> movimentacao = new ArrayList<Path>();
 	
 	public GenerateTrochoidalMovement(ArrayList<LimitedElement> elements,double raio, double avanco)
 	{
@@ -40,15 +40,21 @@ public class GenerateTrochoidalMovement
 				 double distance = temp.getInitialPoint().distance(temp.getFinalPoint());
 				 double movInt = Math.floor((distance/this.avanco)+ 2*this.raio);
 				 
-				 if(angR == Math.PI/4){
+				 System.err.println("Angulo "+ angR);
+				 if(angR == Math.PI/2){
+					
 					 
 					  xInicalPoint = temp.getInitialPoint().x + Math.sqrt(Math.pow(this.raio, 2)- Math.pow(this.avanco/2, 2));
 					  yInicalPoint = temp.getInitialPoint().y + this.avanco/2;
 					  xFinalPoint = xInicalPoint;
 					  yFinalPoint = yInicalPoint;
-					  xCenter = temp.getInitialPoint().x + this.raio;
-					  yCenter = temp.getInitialPoint().y + this.raio;
-					 
+					  xCenter = temp.getInitialPoint().x - this.raio ;
+					  yCenter = temp.getInitialPoint().y ;
+					
+					  
+					  System.out.println(" Cx "+xCenter);
+					  System.out.println(" Cy "+yCenter);
+					  
 					 Point3d initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
 					 Point3d center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 					 
@@ -58,6 +64,8 @@ public class GenerateTrochoidalMovement
 					 int j = 0;
 					while(j < movInt){
 						
+						System.out.println(" X "+xInicalPoint);
+						System.out.println(" Y "+yInicalPoint);
 						
 						yFinalPoint = yFinalPoint + this.avanco;
 						yCenter = yCenter + this.avanco;

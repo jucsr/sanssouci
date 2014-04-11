@@ -1604,6 +1604,7 @@ public class GeometricOperations
 			double Yinter = 0;
 			Point3d intersection = null;
 			//Garante que não calularemos uma tangente = infinity
+			//Xinicial1 = Xfinal1 e Xinicial2 != Xfinal2
 			if((pi1.getX() == pf1.getX()) && (pi2.getX() != pf2.getX()))
 			{
 				if(!((pi1.getX() >= pi2.getX())&& (pi1.getX() <= pf2.getX())))
@@ -1616,8 +1617,10 @@ public class GeometricOperations
 					a2 = pi2.getY() - b2*pi2.getX();
 					Yinter = a2 + b2*pi1.getX();
 					intersection = new Point3d(Yinter, pi1.getX(),0);
+					return intersection;
 				}
 			}
+			//Xinicial1 != Xfinal1 e Xinicial2 == Xfinal2
 			else if((pi1.getX() != pf1.getX()) && (pi2.getX() == pf2.getX()))
 			{
 				if(!((pi2.getX() >= pi1.getX())&& (pi2.getX() <= pf1.getX())))
@@ -1630,28 +1633,33 @@ public class GeometricOperations
 					a1 = pi1.getY() - b1*pi1.getX();
 					Yinter = a1 + b1*pi2.getX();
 					intersection = new Point3d(Yinter, pi2.getX(),0);
+					return intersection;
 				}
 			}
+			
+			else if((pi1.getX() == pf1.getX()) && (pi2.getX() == pf2.getX()))
+			{
+				return null;
+			}
+					
+			//Xinicial1 != Xfinal1 e Xinicial2 != Xfinal2
 			else if((pi1.getX() != pf1.getX()) && (pi2.getX() != pf2.getX()))
 			{
 				b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
 				a1 = pi1.getY() - b1*pi1.getX();
 				b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
 				a2 = pi2.getY() - b2*pi2.getX();
-			}
-			else
-			{
-				return null;
-			}
-					
-			if (b1==b2)
-			{
-				return null;
-			}
-			else
-			{
-				x0 = -(a1-a2)/(b1-b2);
-				y0 = a1 + b1*x0;
+				
+				if (b1==b2)
+				{
+					return null;
+				}
+				else
+				{
+					x0 = -(a1-a2)/(b1-b2);
+					y0 = a1 + b1*x0;
+				}
+				
 			}
 		}
 		Point3d intersect = new Point3d(x0, y0, line1.getInitialPoint().getZ());
@@ -1718,14 +1726,14 @@ public class GeometricOperations
 		double radical = 0;
 		double r = Math.sqrt(Math.pow(arc.getInitialPoint().getX() - arc.getCenter().getX(), 2) + Math.pow(arc.getInitialPoint().getY() - arc.getCenter().getY(), 2));
 		System.out.println("Raio: " + r);
-		double xin = arc.getCenter().x + r;
-		double xif = arc.getCenter().x - r;
+		double xin = arc.getCenter().x - r;
+		double xif = arc.getCenter().x + r;
 		if (line.getInitialPoint().x == line.getFinalPoint().x) 
 		{
 			if (!((line.getInitialPoint().x >= xin) && (line.getInitialPoint().x <= xif))) 
 			{
 				return null;
-			} 
+			}
 			else 
 			{
 				x1 = line.getInitialPoint().x;
@@ -1873,9 +1881,10 @@ public class GeometricOperations
 		
 		double [] ypossiveis1 = {y11, y12, y13, y14};
 		double [] ypossiveis2 = {y21, y22, y23, y24};
-
 		for(int i = 0; i < ypossiveis1.length; i++)
 		{
+			System.out.println("Ypossiveis1: " + ypossiveis1[i]);
+			System.out.println("Ypossiveis2: " + ypossiveis2[i]);
 			for(int j = 0; j < ypossiveis2.length; j++)
 			{
 				if(truncarDecimais(ypossiveis1[i], 10) == truncarDecimais(ypossiveis2[j], 10))

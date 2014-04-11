@@ -143,25 +143,54 @@ public class GeometricOperationsTest
 	@Test
 	public void intersectionElementsTest() 
 	{
+		/*
+		 * ---------------------------------------------------------------------------------
+		 * Linha - Linha
+		 */
 		//Ponto Final e Inicial iguais 
 		LimitedLine line1 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
 		LimitedLine line2 = new LimitedLine(new Point3d(20,10,0), new Point3d(20,20,0));
 		
 		//Retas que não se tocam
-		LimitedLine line3 = new LimitedLine(new Point3d(30,30,0), new Point3d(40,30,0));
-		LimitedLine line4 = new LimitedLine(new Point3d(30,40,0), new Point3d(40,40,0));
+		LimitedLine line3 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
+		LimitedLine line4 = new LimitedLine(new Point3d(10,20,0), new Point3d(20,20,0));
 		
 		//Retas com intersectão (vertical - horizoltal)
 		LimitedLine line5 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
 		LimitedLine line6 = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
 		
-		//Linhas não paraleleas com intersecao
+		//Linhas com interseção (não verticais)
 		LimitedLine line7 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 20, 0));
-		LimitedLine line8 = new LimitedLine(new Point3d(15, 10, 0), new Point3d(20, 0, 0));
+		LimitedLine line8 = new LimitedLine(new Point3d(20, 10, 0), new Point3d(10, 20, 0));
+		/*
+		 * ---------------------------------------------------------------------------------
+		 * Arco - Linha
+		 */
+		//Ponto Final e inicial iguais
+		LimitedArc arc1 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
+		LimitedLine line9 = new LimitedLine(new Point3d(10,10,0),new Point3d(20,10,0));
 		
-		Point3d intersection = GeometricOperations.intersectionElements(line5, line6);
+		//Com interseção
+		LimitedArc arc2 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
+		LimitedLine line10 = new LimitedLine(new Point3d(30, 10, 0), new Point3d(20, 20, 0));
+		
+		//Com interseção (arco + linha vertical)
+		LimitedArc arc3 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
+		LimitedLine line11 = new LimitedLine(new Point3d(25, 0, 0), new Point3d(25, 20, 0));
+		
+		//Com interseção (arco + arco), tamanho igual
+		LimitedArc arc4 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
+		LimitedArc arc5 = new LimitedArc(new Point3d(20, 20, 0), new Point3d(30, 20, 0), new Point3d(30,20,0));
+		
+		//Com interseção (arco + arco)
+		LimitedArc arc6 = new LimitedArc(new Point3d(75, 130, 0), new Point3d(50, 105, 0), new Point3d(50,130 , 0));
+		LimitedArc arc7 = new LimitedArc(new Point3d(50, 125, 0), new Point3d(74.45, 105.19, 0), new Point3d(50, 100, 0));
+		
+		
+		Point3d intersection = GeometricOperations.intersectionElements(arc6, arc7);
 		System.err.println("Intersection Validated: " + intersection);
 	}
+	
 	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{

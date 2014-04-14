@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -311,6 +312,18 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				ArrayList<LimitedElement> elementsAcabamento = GeometricOperations.acabamentoPath(addPocketVertex, ferramenta.getDiametroFerramenta() / 2);
 				
 				ArrayList<LimitedElement> elementsArrumados  = arrumarElementos(elementsAcabamento, ferramenta.getDiametroFerramenta() / 2);
+				for(int i=0;i<elementsAcabamento.size();i++)
+				{
+					if(elementsAcabamento.get(i).isLimitedLine()){
+						LimitedLine temp = (LimitedLine)elementsAcabamento.get(i);
+						System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + "new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0)");
+					}
+					else if(elementsAcabamento.get(i).isLimitedArc())
+					{
+						LimitedArc temp = (LimitedArc)elementsAcabamento.get(i);
+						System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + "new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0)" + "new Point3d(" + temp.getCenter().x + "," + temp.getCenter().y + ",0)");					}
+					
+				}
 				
 //				System.err.println("ELEMENTOS" + elementsAcabamento.size());
 //				
@@ -334,6 +347,11 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 //				ArrayList<GeneralPath> shapes = new ArrayList<GeneralPath>();
 //
 				g2d.draw(shape);
+				for(int i = 0; i<GeometricOperations.intersecoes.size();i++)
+				{
+					g2d.setColor(Color.green);
+					g2d.draw(new Ellipse2D.Double(GeometricOperations.intersecoes.get(i).x, GeometricOperations.intersecoes.get(i).y, 5, 5));
+				}
 //				
 //				for(ArrayList<LimitedElement> elements:multipleParallel)
 //				{

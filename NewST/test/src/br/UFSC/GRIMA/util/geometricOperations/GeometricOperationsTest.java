@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
 public class GeometricOperationsTest 
@@ -67,11 +69,29 @@ public class GeometricOperationsTest
 	Point3d testPoint = new Point3d(-0.5, -0.5, 0);
 	Point3d testPoint2 = new Point3d(1.0, 13.0, 0);
 	
+    LimitedArc arco0= new LimitedArc(new Point3d(175.0,285.0,0), new Point3d(325.0,135.0,0), new Point3d(175.0,135.0,0));
+    LimitedLine l1= new LimitedLine(new Point3d(325.0,134.99999999999997,0), new Point3d(325.0,165.0,0));
+    LimitedLine l2= new LimitedLine(new Point3d(325.0,165.0,0), new Point3d(355.0000000000001,165.0,0));
+    LimitedLine l3= new LimitedLine(new Point3d(355.0,165.0000000000001,0), new Point3d(355.0,195.00000000000034,0));
+    LimitedLine l4= new LimitedLine(new Point3d(354.99999999999966,195.0,0), new Point3d(132.99999999999983,195.0,0));
+    LimitedLine l5= new LimitedLine(new Point3d(133.0,194.99999999999983,0), new Point3d(133.0,285.0,0));
+    LimitedLine l6= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
+    ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
+    
+	
 	@Before
 	public void init()
 	{
 		lineA = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
 	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
+	    elementos.add(arco0);
+	    elementos.add(l1);
+	    elementos.add(l2);
+	    elementos.add(l3);
+	    elementos.add(l4);
+	    elementos.add(l5);
+	    elementos.add(l6);
+
 	}
 	@Test
 	public void testeDistance3D()
@@ -186,9 +206,23 @@ public class GeometricOperationsTest
 		LimitedArc arc6 = new LimitedArc(new Point3d(75, 130, 0), new Point3d(50, 105, 0), new Point3d(50,130 , 0));
 		LimitedArc arc7 = new LimitedArc(new Point3d(50, 125, 0), new Point3d(74.45, 105.19, 0), new Point3d(50, 100, 0));
 		
+		////Com interseção (arco + arco) tamanho diferente
+		LimitedArc arc8 = new LimitedArc(new Point3d(10, 10, 0), new Point3d(30, 30, 0), new Point3d(10,30 , 0));
+		LimitedArc arc9 = new LimitedArc(new Point3d(5, 70, 0), new Point3d(60, 15, 0), new Point3d(70, 60, 0));
 		
-		Point3d intersection = GeometricOperations.intersectionElements(arc6, arc7);
+		Point3d intersection = GeometricOperations.intersectionElements(arc8, arc9);
 		System.err.println("Intersection Validated: " + intersection);
+	}
+	
+	@Test
+	public void intersectionElementsTest1()
+	{
+		ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
+		for(int i=0;i<intersecoes.size();i++)
+		{
+			System.out.println("intersecoes: " + intersecoes.get(i));
+		}
+		
 	}
 	
 	@Test

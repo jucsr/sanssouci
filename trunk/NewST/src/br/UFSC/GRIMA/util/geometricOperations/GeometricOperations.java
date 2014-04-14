@@ -17,6 +17,7 @@ import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
 public class GeometricOperations 
 {
+	public static ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
 	private static double SMALL_NUM  =  0.00000001;
 
 	private static double chooseMinimum(ArrayList<Double> distances)
@@ -520,18 +521,18 @@ public class GeometricOperations
 		return acabamentoElements;
 	}
 	
-	public static GeneralPath linearPathToGeneralPath(ArrayList<LinearPath> lineas)
+	public static GeneralPath linearPathToGeneralPath(ArrayList<LinearPath> linhas)
 	{
 		GeneralPath shape = new GeneralPath();
-		for (int i = 0; i < lineas.size(); i++)
+		for (int i = 0; i < linhas.size(); i++)
 		{
 			if(i==0)
 			{
-				shape.moveTo(lineas.get(i).getInitialPoint().getX(), lineas.get(i).getInitialPoint().getY());
+				shape.moveTo(linhas.get(i).getInitialPoint().getX(), linhas.get(i).getInitialPoint().getY());
 			}
 			else
 			{
-				shape.lineTo(lineas.get(i).getInitialPoint().getX(), lineas.get(i).getInitialPoint().getY());
+				shape.lineTo(linhas.get(i).getInitialPoint().getX(), linhas.get(i).getInitialPoint().getY());
 			}
 		}
 		shape.closePath();
@@ -996,21 +997,22 @@ public class GeometricOperations
 			}
 		}
 		System.out.println("************************************************");
-		return validarPath(parallel);	
-//		ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
-//				s.add(parallel);
-//		return s;	
+//		return validarPath(parallel);	
+		ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
+				s.add(parallel);
+		return s;	
 	}
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)
 	{
 		//vetor de saída
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
+		//ArrayList<ArrayList<LimitedElement>> elements2 = new ArrayList<ArrayList<LimitedElement>>();
 		//Array de elementos intermediarios
 		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		//Array de intenrsecoes
-		ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
+		//ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
 		
 		elementsValidated.add(new ArrayList<LimitedElement>());
 		for (int i=0; i < elements.size(); i++)
@@ -1053,6 +1055,7 @@ public class GeometricOperations
 				}
 			}
 		}
+		System.out.println("Interseções: " + intersecoes.size());
 		
 //		Point3d intersection = intersecoes.get(0);
 //		Point3d initialPoint;
@@ -1079,6 +1082,26 @@ public class GeometricOperations
 		return elementsValidated;
 	}
 	
+	public static ArrayList<Point3d> intersectionElements(ArrayList<LimitedElement> elements)
+	{
+		ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
+		for (int i=0; i < elements.size(); i++)
+		{
+			LimitedElement ei = elements.get(i);
+			for (int j=i+1; j < (elements.size()-1); j++)
+			{
+				LimitedElement ej = elements.get(j);
+				Point3d intersection = intersectionElements(ei,ej);
+				if(intersection!=null)
+				{
+					//adiciona os pontos de interseção ao vetor de interseções
+					intersecoes.add(intersection);
+					System.out.println("Here is an intersection point " + intersection);
+				}
+			}
+		}
+		return intersecoes;
+	}
 	
 	public static Point3d intersectionElements(LimitedElement ei, LimitedElement ej)
 	{
@@ -1879,6 +1902,7 @@ public class GeometricOperations
 		double y23 = cy2 + Math.sqrt(Math.pow(r2, 2) - Math.pow(x2 - cx2, 2));
 		double y24 = cy2 - Math.sqrt(Math.pow(r2, 2) - Math.pow(x2 - cx2, 2));
 		
+		ArrayList<Double> ypossiveis = new ArrayList<Double>();
 		double [] ypossiveis1 = {y11, y12, y13, y14};
 		double [] ypossiveis2 = {y21, y22, y23, y24};
 		for(int i = 0; i < ypossiveis1.length; i++)
@@ -1887,21 +1911,31 @@ public class GeometricOperations
 			System.out.println("Ypossiveis2: " + ypossiveis2[i]);
 			for(int j = 0; j < ypossiveis2.length; j++)
 			{
+				if(truncarDecimais(x1, 10) == truncarDecimais(x2, 10))
+				{
+					ypossiveis.add(ypossiveis1[0]);
+					ypossiveis.add(ypossiveis1[1]);
+					break;
+				}
 				if(truncarDecimais(ypossiveis1[i], 10) == truncarDecimais(ypossiveis2[j], 10))
 				{
 					if(i == 0 || i == 1)
 					{
-						y1 = ypossiveis1[i];
+						ypossiveis.add(ypossiveis1[i]);
+						
 					} else if(i == 2 || i == 3)
 					{
-						y2 = ypossiveis1[i];
+						ypossiveis.add(ypossiveis1[i]);
 					}
-					ypossiveis1[i] = -1;
+					//ypossiveis1[i] = -1;
 					break;
 				}
 			}
 		}
 		
+		System.out.println("Array Ypossiveis: " + ypossiveis);
+		y1 = ypossiveis.get(0);
+		y2 = ypossiveis.get(1);
 		Point3d possivel1 = new Point3d(x1, y1, 0);
 		Point3d possivel2 = new Point3d(x2, y2, 0);
 		

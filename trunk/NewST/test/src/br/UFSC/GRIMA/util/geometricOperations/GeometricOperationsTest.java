@@ -86,11 +86,11 @@ public class GeometricOperationsTest
 	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
 	    elementos.add(arco0);
 	    elementos.add(l1);
-	    elementos.add(l2);
-	    elementos.add(l3);
-	    elementos.add(l4);
-	    elementos.add(l5);
-	    elementos.add(l6);
+	    //elementos.add(l2);
+	    //elementos.add(l3);
+	    //elementos.add(l4);
+	    //elementos.add(l5);
+	    //elementos.add(l6);
 
 	}
 	@Test
@@ -161,6 +161,7 @@ public class GeometricOperationsTest
 	}
 	
 	@Test
+	//Teste de Interseção entre Limited Elements (Dois Limited elements)
 	public void intersectionElementsTest() 
 	{
 		/*
@@ -196,8 +197,11 @@ public class GeometricOperationsTest
 		
 		//Com interseção (arco + linha vertical)
 		LimitedArc arc3 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
-		LimitedLine line11 = new LimitedLine(new Point3d(25, 0, 0), new Point3d(25, 20, 0));
-		
+		LimitedLine line11 = new LimitedLine(new Point3d(25, 0, 0), new Point3d(25, 20, 0));	
+		/*
+		 * ---------------------------------------------------------------------------------
+		 * Arco - Arco
+		 */
 		//Com interseção (arco + arco), tamanho igual
 		LimitedArc arc4 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
 		LimitedArc arc5 = new LimitedArc(new Point3d(20, 20, 0), new Point3d(30, 20, 0), new Point3d(30,20,0));
@@ -210,13 +214,25 @@ public class GeometricOperationsTest
 		LimitedArc arc8 = new LimitedArc(new Point3d(10, 10, 0), new Point3d(30, 30, 0), new Point3d(10,30 , 0));
 		LimitedArc arc9 = new LimitedArc(new Point3d(5, 70, 0), new Point3d(60, 15, 0), new Point3d(70, 60, 0));
 		
-		Point3d intersection = GeometricOperations.intersectionElements(arc8, arc9);
+		Point3d intersection = GeometricOperations.intersectionElements(line5, line6);
 		System.err.println("Intersection Validated: " + intersection);
 	}
 	
 	@Test
+	//Teste de Interseção entre Limited Elements (Array de Limited Elements)
 	public void intersectionElementsTest1()
 	{
+	    //LimitedArc arco1= new LimitedArc(new Point3d(50,75,0), new Point3d(25,50,0), new Point3d(50,50,0));
+	    //LimitedLine linha1= new LimitedLine(new Point3d(50,75,0), new Point3d(80,75,0));
+	    //LimitedLine linha2= new LimitedLine(new Point3d(70,60,0), new Point3d(70,90,0));
+		//LimitedLine linha1= new LimitedLine(new Point3d(30,100,0), new Point3d(70,60,0));
+	   // LimitedLine linha2= new LimitedLine(new Point3d(20,60,0), new Point3d(60,100,0));
+	   // LimitedLine linha3= new LimitedLine(new Point3d(60,100,0), new Point3d(100,100,0));
+	   // ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
+	    //elementos1.add(arco1);
+	    //elementos1.add(linha1);
+	    //elementos1.add(linha2);
+	    //elementos1.add(linha3);
 		ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
 		for(int i=0;i<intersecoes.size();i++)
 		{

@@ -997,10 +997,10 @@ public class GeometricOperations
 			}
 		}
 		System.out.println("************************************************");
-//		return validarPath(parallel);	
-		ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
-				s.add(parallel);
-		return s;	
+		return validarPath(parallel);	
+		//ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
+				//s.add(parallel);
+		//return s;	
 	}
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)
@@ -1088,7 +1088,7 @@ public class GeometricOperations
 		for (int i=0; i < elements.size(); i++)
 		{
 			LimitedElement ei = elements.get(i);
-			for (int j=i+1; j < (elements.size()-1); j++)
+			for (int j=i+1; j < (elements.size()); j++)
 			{
 				LimitedElement ej = elements.get(j);
 				Point3d intersection = intersectionElements(ei,ej);
@@ -1117,8 +1117,8 @@ public class GeometricOperations
 				intersection = intersectionPoint(arci,arcj);
 				
 				//Alternativa para não identificar pontos de interseção nas extremidades dos Limited Elements
-				if(//isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) && 
-				   //isTheSamePoint(arci.getFinalPoint(),arcj.getFinalPoint()) || 
+				if(isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) || 
+				   isTheSamePoint(arci.getFinalPoint(),arcj.getFinalPoint()) || 
 				   isTheSamePoint(arci.getInitialPoint(),arcj.getFinalPoint())|| 
 				   isTheSamePoint(arci.getFinalPoint(),arcj.getInitialPoint()))
 				{
@@ -1131,8 +1131,8 @@ public class GeometricOperations
 			else if ( ej.isLimitedLine())
 			{
 				LimitedLine linej = (LimitedLine)ej;
-				if(//isTheSamePoint(arci.getInitialPoint(),linej.getInitialPoint()) && 
-				   //isTheSamePoint(arci.getFinalPoint(),linej.getFinalPoint()) || 
+				if(isTheSamePoint(arci.getInitialPoint(),linej.getInitialPoint()) || 
+				   isTheSamePoint(arci.getFinalPoint(),linej.getFinalPoint()) || 
 				   isTheSamePoint(arci.getInitialPoint(),linej.getFinalPoint())|| 
 				   isTheSamePoint(arci.getFinalPoint(),linej.getInitialPoint()))
 					{
@@ -1151,8 +1151,8 @@ public class GeometricOperations
 			if(ej.isLimitedArc())
 			{
 				LimitedArc arcj = (LimitedArc)ej;
-				if(//isTheSamePoint(linei.getInitialPoint(),arcj.getInitialPoint()) && 
-				   //isTheSamePoint(linei.getFinalPoint(),arcj.getFinalPoint()) || 
+				if(isTheSamePoint(linei.getInitialPoint(),arcj.getInitialPoint()) || 
+				   isTheSamePoint(linei.getFinalPoint(),arcj.getFinalPoint()) || 
 				   isTheSamePoint(linei.getInitialPoint(),arcj.getFinalPoint())|| 
 				   isTheSamePoint(linei.getFinalPoint(),arcj.getInitialPoint()))
 					{
@@ -1165,18 +1165,16 @@ public class GeometricOperations
 			else if ( ej.isLimitedLine())
 			{
 				LimitedLine linej = (LimitedLine)ej;
-				if(//isTheSamePoint(linei.getInitialPoint(),linej.getInitialPoint()) && 
-				   //isTheSamePoint(linei.getFinalPoint(),linej.getFinalPoint()) || 
+				if(isTheSamePoint(linei.getInitialPoint(),linej.getInitialPoint()) || 
+				   isTheSamePoint(linei.getFinalPoint(),linej.getFinalPoint()) || 
 				   isTheSamePoint(linei.getInitialPoint(),linej.getFinalPoint())|| 
 				   isTheSamePoint(linei.getFinalPoint(),linej.getInitialPoint()))
 				{
-					System.out.println("Debug1");
 					return null;
 				}
-				System.out.println("Debug2");
 				return intersectionPoint(linei, linej);
 			}
-			System.out.println("Debug3");
+			
 		}
 		else
 		{
@@ -1782,8 +1780,8 @@ public class GeometricOperations
 			y1 = m * x1 + b;
 			y2 = m * x2 + b;
 		}
-		double x = 0;
-		double y = 0;
+		double x;
+		double y;
 		
 		/**
 		 *  caso a linha for vertical -- Se houver intersecao, o x da intersecao sera no x da linha
@@ -1850,17 +1848,19 @@ public class GeometricOperations
 		
 		if((anguloInicial <= anguloNaIntersecao1 && anguloFinal >= anguloNaIntersecao1))
 		{
-			x = x1;
-			y = y1;
+			//x = x1;
+			//y = y1;
+			intersection = new Point3d(x1,y1,0);
 //			System.out.println("X1");
 		} else if((anguloInicial <= anguloNaIntersecao2 && anguloFinal >= anguloNaIntersecao2))
 		{
-			x = x2;
-			y = y2;
+			//x = x2;
+			//y = y2;
+			intersection = new Point3d(x2,y2,0);
 //			System.out.println("X2");
 		}
 		
-		intersection = new Point3d(x, y, 0);
+		//intersection = new Point3d(x, y, 0);
 		System.err.println("INTERSECTION POINT = " + intersection);
 
 		return intersection;

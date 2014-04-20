@@ -1005,7 +1005,7 @@ public class GeometricOperations
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)
 	{
-		//vetor de saída
+		//vetor de saï¿½da
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		//ArrayList<ArrayList<LimitedElement>> elements2 = new ArrayList<ArrayList<LimitedElement>>();
 		//Array de elementos intermediarios
@@ -1024,7 +1024,7 @@ public class GeometricOperations
 				Point3d intersection = intersectionElements(ei,ej);
 				if(intersection!=null)
 				{
-					//adiciona os pontos de interseção ao vetor de interseções
+					//adiciona os pontos de interseï¿½ï¿½o ao vetor de interseï¿½ï¿½es
 					intersecoes.add(intersection);
 					System.out.println("Here is an intersection point " + intersection);
 					if (ei.isLimitedLine())
@@ -1055,7 +1055,7 @@ public class GeometricOperations
 				}
 			}
 		}
-		System.out.println("Interseções: " + intersecoes.size());
+		System.out.println("Interseï¿½ï¿½es: " + intersecoes.size());
 		
 //		Point3d intersection = intersecoes.get(0);
 //		Point3d initialPoint;
@@ -1094,7 +1094,7 @@ public class GeometricOperations
 				Point3d intersection = intersectionElements(ei,ej);
 				if(intersection!=null)
 				{
-					//adiciona os pontos de interseção ao vetor de interseções
+					//adiciona os pontos de interseï¿½ï¿½o ao vetor de interseï¿½ï¿½es
 					intersecoes.add(intersection);
 					System.out.println("Here is an intersection point " + intersection);
 				}
@@ -1116,7 +1116,7 @@ public class GeometricOperations
 				LimitedArc arcj = (LimitedArc)ej;
 				intersection = intersectionPoint(arci,arcj);
 				
-				//Alternativa para não identificar pontos de interseção nas extremidades dos Limited Elements
+				//Alternativa para nï¿½o identificar pontos de interseï¿½ï¿½o nas extremidades dos Limited Elements
 				if(isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) || 
 				   isTheSamePoint(arci.getFinalPoint(),arcj.getFinalPoint()) || 
 				   isTheSamePoint(arci.getInitialPoint(),arcj.getFinalPoint())|| 
@@ -1158,7 +1158,7 @@ public class GeometricOperations
 					{
 						return null;
 					}
-				//o metodo intersectionPoint não está definido para (line, arc) mas sim pra (arc, line)	
+				//o metodo intersectionPoint nï¿½o estï¿½ definido para (line, arc) mas sim pra (arc, line)	
 				return intersectionPoint(arcj, linei);
 			}
 			//Se o elemento j for uma linha (linha, linha)
@@ -1613,7 +1613,7 @@ public class GeometricOperations
 		double a2 = 0;
 		double b2 = 0;
 		
-		if(line1.getInitialPoint().getZ()==line2.getInitialPoint().getZ())
+		if (line1.getInitialPoint().z == line2.getInitialPoint().z)
 		{
 			//Equation y = a + b*x
 			Point3d pi1 = line1.getInitialPoint();
@@ -1624,84 +1624,84 @@ public class GeometricOperations
 			
 			double Yinter = 0;
 			Point3d intersection = null;
-			//Garante que não calularemos uma tangente = infinity
+			//Garante que nï¿½o calularemos uma tangente = infinity
 			//Xinicial1 = Xfinal1 e Xinicial2 != Xfinal2
-			if((pi1.getX() == pf1.getX()) && (pi2.getX() != pf2.getX()))
+			if ((pi1.x == pf1.x) && (pi2.x != pf2.x))
 			{
-				if(!((pi1.getX() >= pi2.getX())&& (pi1.getX() <= pf2.getX())))
+				if (!((pi1.x >= pi2.x) && (pi1.x <= pf2.x)))
 				{
 					return null;
 				}
 				else
 				{
-					b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
-					a2 = pi2.getY() - b2*pi2.getX();
-					Yinter = a2 + b2*pi1.getX();
-					intersection = new Point3d(Yinter, pi1.getX(),0);
+					b2 = (pf2.y - pi2.y) / (pf2.y - pi2.y);
+					a2 = pi2.y - b2 * pi2.y;
+					Yinter = a2 + b2 * pi1.y;
+					intersection = new Point3d(Yinter, pi1.y, 0);
 					return intersection;
 				}
 			}
 			//Xinicial1 != Xfinal1 e Xinicial2 == Xfinal2
-			else if((pi1.getX() != pf1.getX()) && (pi2.getX() == pf2.getX()))
+			else if ((pi1.y != pf1.y) && (pi2.y == pf2.y))
 			{
-				if(!((pi2.getX() >= pi1.getX())&& (pi2.getX() <= pf1.getX())))
+				if (!((pi2.y >= pi1.y) && (pi2.y <= pf1.y)))
 				{
 					return null;
 				}
 				else
 				{
-					b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
-					a1 = pi1.getY() - b1*pi1.getX();
-					Yinter = a1 + b1*pi2.getX();
-					intersection = new Point3d(Yinter, pi2.getX(),0);
+					b1 = (pf1.y - pi1.y) / (pf1.y - pi1.y);
+					a1 = pi1.y - b1 * pi1.x;
+					Yinter = a1 + b1 * pi2.x;
+					intersection = new Point3d(Yinter, pi2.x, 0);
 					return intersection;
 				}
 			}
 			
-			else if((pi1.getX() == pf1.getX()) && (pi2.getX() == pf2.getX()))
+			else if ((pi1.x == pf1.x) && (pi2.x == pf2.x))
 			{
 				return null;
 			}
 					
 			//Xinicial1 != Xfinal1 e Xinicial2 != Xfinal2
-			else if((pi1.getX() != pf1.getX()) && (pi2.getX() != pf2.getX()))
+			else if ((pi1.x != pf1.x) && (pi2.x != pf2.x))
 			{
-				b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
-				a1 = pi1.getY() - b1*pi1.getX();
-				b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
-				a2 = pi2.getY() - b2*pi2.getX();
-				
-				if (b1==b2)
+				b1 = (pf1.x - pi1.x) / (pf1.x - pi1.x);
+				a1 = pi1.y - b1 * pi1.x;
+				b2 = (pf2.y - pi2.y) / (pf2.x - pi2.x);
+				a2 = pi2.y - b2 * pi2.x;
+
+				if (b1 == b2)
 				{
 					return null;
 				}
 				else
 				{
-					x0 = -(a1-a2)/(b1-b2);
-					y0 = a1 + b1*x0;
+					x0 = -(a1 - a2) / (b1 - b2);
+					y0 = a1 + b1 * x0;
 				}
 				
 			}
 		}
 		Point3d intersect = new Point3d(x0, y0, line1.getInitialPoint().getZ());
-		
+
 		Point3d vetorUnitario1 = unitVector(line1.getInitialPoint(), line1.getFinalPoint());
 		Point3d vetorUnitario2 = unitVector(line2.getInitialPoint(), line2.getFinalPoint());
 		double distance1 = line1.getInitialPoint().distance(intersect);
 		double distance2 = line2.getInitialPoint().distance(intersect);
-		
+
 		double possivelIntersecaoX1 = line1.getInitialPoint().x + multiply(distance1, vetorUnitario1).x;
 		double possivelIntersecaoY1 = line1.getInitialPoint().y + multiply(distance1, vetorUnitario1).y;
 		double possivelIntersecaoX2 = line2.getInitialPoint().x + multiply(distance2, vetorUnitario2).x;
 		double possivelIntersecaoY2 = line2.getInitialPoint().y + multiply(distance2, vetorUnitario2).y;
-		
+
 		double intersectXF = truncarDecimais(intersect.x, 10);
 		double intersectYF = truncarDecimais(intersect.y, 10);
 		double possivelIntersecaoXF1 = truncarDecimais(possivelIntersecaoX1, 10);
 		double possivelIntersecaoYF1 = truncarDecimais(possivelIntersecaoY1, 10);
 		double possivelIntersecaoXF2 = truncarDecimais(possivelIntersecaoX2, 10);
 		double possivelIntersecaoYF2 = truncarDecimais(possivelIntersecaoY2, 10);
-		
+
 		System.out.println("intersection x = " + intersectXF);
 		System.out.println("intersection y = " + intersectYF);
 		System.out.println("poss intersection x = " + possivelIntersecaoXF1);
@@ -1811,7 +1811,7 @@ public class GeometricOperations
 			anguloNaIntersecao2 = 2* Math.PI + anguloNaIntersecao2;
 		}
 		
-		//Normalização dos angulos inicial e final
+		//Normalizaï¿½ï¿½o dos angulos inicial e final
 		if(anguloInicial > anguloFinal)
 		{
 			anguloFinal = 2 * Math.PI + anguloFinal;

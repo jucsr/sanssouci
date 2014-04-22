@@ -36,39 +36,41 @@ public class GenerateTrochoidalMovement
 				 double yCenter; 
 				
 				 double angR = Math.atan((temp.getFinalPoint().y-temp.getInitialPoint().y)/(temp.getFinalPoint().x-temp.getInitialPoint().x));
-				 double angT = Math.acos(this.raio/(this.avanco/2));
+				 double angT = Math.acos((this.avanco/2)/(this.raio));
 				 double distance = temp.getInitialPoint().distance(temp.getFinalPoint());
-				 double movInt = Math.floor((distance/this.avanco)+ 2*this.raio);
-				 
-				 System.err.println("Angulo "+ angR);
-				 if(angR == Math.PI/2){
+				 double movInt = Math.floor(distance/this.avanco);
+				
+				 System.out.println(" theta "+ angR);
+				 System.out.println(" PI/2 "+ Math.PI/2);	
+				
+				 if(Math.abs(angR) == Math.PI/2){
 					
-					 
-					  xInicalPoint = temp.getInitialPoint().x + Math.sqrt(Math.pow(this.raio, 2)- Math.pow(this.avanco/2, 2));
-					  yInicalPoint = temp.getInitialPoint().y + this.avanco/2;
+					 double sentido = (temp.getFinalPoint().y - temp.getInitialPoint().y)/Math.sqrt(Math.pow(temp.getFinalPoint().y - temp.getInitialPoint().y, 2));
+					 System.err.println("Err1");
+					
+					  xInicalPoint = temp.getInitialPoint().x + Math.sqrt(Math.pow(this.raio, 2)- Math.pow(sentido*this.avanco/2, 2));
+					  yInicalPoint = (temp.getInitialPoint().y + this.avanco/2);
 					  xFinalPoint = xInicalPoint;
 					  yFinalPoint = yInicalPoint;
-					  xCenter = temp.getInitialPoint().x - this.raio ;
+					  xCenter = temp.getInitialPoint().x - this.raio/2 ;
 					  yCenter = temp.getInitialPoint().y ;
 					
-					  
-					  System.out.println(" Cx "+xCenter);
-					  System.out.println(" Cy "+yCenter);
 					  
 					 Point3d initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
 					 Point3d center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 					 
 					 CircularPath arco = new CircularPath(center, initialPoint, initialPoint, 2*Math.PI,CircularPath.CCW );
+					 arco.setRadius(this.raio);
+					 arco.setInitialAngle(2*Math.PI);
+					 arco.setFinalAngle(2*Math.PI);
 					 movimentacao.add(arco);  
 					 
 					 int j = 0;
 					while(j < movInt){
 						
-						System.out.println(" X "+xInicalPoint);
-						System.out.println(" Y "+yInicalPoint);
-						
-						yFinalPoint = yFinalPoint + this.avanco;
-						yCenter = yCenter + this.avanco;
+					
+						yFinalPoint = yFinalPoint + sentido*this.avanco;
+						yCenter = yCenter + sentido*this.avanco;
 						
 						
 						
@@ -76,10 +78,13 @@ public class GenerateTrochoidalMovement
 						initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
 						center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 						arco = new CircularPath(center, initialPoint, finalPoint,(2*Math.PI - 2*angT),CircularPath.CCW );
-					    movimentacao.add(arco);
+						 arco.setRadius(this.raio);
+						 arco.setInitialAngle(2*Math.PI - angT - angR);
+						 arco.setFinalAngle(2*Math.PI + angT + angR);
+						 movimentacao.add(arco);
 					    
 					    yInicalPoint = yFinalPoint;
-					    yFinalPoint = yFinalPoint +this.avanco;
+					    yFinalPoint = yFinalPoint +sentido*this.avanco;
 						 
 						 j++;
 						 
@@ -97,12 +102,15 @@ public class GenerateTrochoidalMovement
 						initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
 						center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 						arco = new CircularPath(center, initialPoint, finalPoint,2*Math.PI,CircularPath.CCW );
-					    movimentacao.add(arco);		
+						 arco.setRadius(this.raio);
+						 arco.setInitialAngle(2*Math.PI);
+						 arco.setFinalAngle(2*Math.PI);
+						 movimentacao.add(arco);		
 					}
 					
 				 }else{
 					 
-					 double theta = angR + angT;
+					 double theta = angR;
 					 
 					 xCenter = temp.getInitialPoint().x + this.raio;
 					 yCenter = temp.getInitialPoint().y;
@@ -110,12 +118,17 @@ public class GenerateTrochoidalMovement
 					 yInicalPoint = Math.sqrt(Math.pow(this.raio, 2) + Math.pow((xInicalPoint - xCenter), 2)) + yCenter;
 					 xFinalPoint = xInicalPoint;
 					 yFinalPoint = yInicalPoint;
+					 System.out.println("X "+(angR));
 					 
 					 Point3d initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
 					 Point3d center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 					 
 					 CircularPath arco = new CircularPath(center, initialPoint, initialPoint, 2*Math.PI,CircularPath.CCW );
+					 arco.setRadius(this.raio);
+					 arco.setInitialAngle(2*Math.PI);
+					 arco.setFinalAngle(2*Math.PI);
 					 movimentacao.add(arco);  
+					 
 					 
 					 int t = 0;
 					 while(t < movInt){
@@ -132,6 +145,9 @@ public class GenerateTrochoidalMovement
 						 center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 						 
 						 arco = new CircularPath(center, initialPoint, initialPoint, (2*Math.PI - 2*angT),CircularPath.CCW );
+						 arco.setRadius(this.raio);
+						 arco.setInitialAngle(2*Math.PI - angT - angR);
+						 arco.setFinalAngle(2*Math.PI + angT + angR);
 						 movimentacao.add(arco); 
 						 
 						 yInicalPoint = yFinalPoint;
@@ -155,7 +171,10 @@ public class GenerateTrochoidalMovement
 						 initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
 						 center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 						 arco = new CircularPath(center, initialPoint, finalPoint,2*Math.PI,CircularPath.CCW );
-					     movimentacao.add(arco);	
+						 arco.setRadius(this.raio);
+						 arco.setInitialAngle(2*Math.PI);
+						 arco.setFinalAngle(2*Math.PI);
+						 movimentacao.add(arco);	
 						 
 					     }				 
 					 }

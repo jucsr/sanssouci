@@ -36,13 +36,13 @@ public class GenerateTrochoidalMovementTest
 	
 	public void Project(){
 		
-		Point3d point1 = new Point3d(0, 0, 0); 
-		Point3d point2 = new Point3d(0, 300, 0);
+		Point3d point1 = new Point3d(100, 0, 0); 
+		Point3d point2 = new Point3d(100, 200, 0);
 		LimitedLine linha1 = new LimitedLine(point1, point2);
 		elements = new ArrayList<LimitedElement>();
 		
 		elements.add(linha1);
-		path = new GenerateTrochoidalMovement(elements, 30, 10);
+		path = new GenerateTrochoidalMovement(elements, 50, 10);
 	}
 	
 	@Test
@@ -72,8 +72,8 @@ public class GenerateTrochoidalMovementTest
 				super.paintComponents(g);
 
 				Graphics2D g2d = (Graphics2D)g;
-				g2d.translate(25, 325);
-				g2d.scale(1, -1);
+//				g2d.translate(25, 325);
+//				g2d.scale(1, -1);
 				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
 		
@@ -88,9 +88,11 @@ public class GenerateTrochoidalMovementTest
 						for(int j = 0; j < path.movimentacao.size(); j++){
 							
 							CircularPath arcTemp = (CircularPath) path.movimentacao.get(j);
-							Arc2D.Double arc2D = new Arc2D.Double(arcTemp.getCenter().x, arcTemp.getCenter().y, 50, 50, 0, 360, 0);
+							Arc2D.Double arc2D = new Arc2D.Double(arcTemp.getCenter().x, arcTemp.getCenter().y, arcTemp.getRadius(), arcTemp.getRadius(), (arcTemp.getinicialAngle()*180)/Math.PI, (arcTemp.getFinalAngle()*180)/Math.PI, 0);
+							
+							System.out.println(" X centro "+ arcTemp.getCenter().x);
 							g2d.draw(arc2D);
-						 // System.out.println("Centro x, y "+arcTemp.getCenter().x + arcTemp.getCenter().y);
+						
 							
 							
 						}
@@ -100,7 +102,9 @@ public class GenerateTrochoidalMovementTest
 						
 					}
 				}
-
+				g2d.setColor(Color.blue);
+//				Arc2D.Double arc2D = new Arc2D.Double(0, 0, 50, 50, 270, 180, 0);
+//				g2d.draw(arc2D);
 			}
 		}
 		JFrame frame = new JFrame("Path");

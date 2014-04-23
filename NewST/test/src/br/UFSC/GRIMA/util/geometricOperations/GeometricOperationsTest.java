@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.util.geometricOperations;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -85,8 +86,8 @@ public class GeometricOperationsTest
 		lineA = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
 	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
 	    elementos.add(arco0);
-	    elementos.add(l1);
-	    //elementos.add(l2);
+	    //elementos.add(l1);
+	    elementos.add(l2);
 	    //elementos.add(l3);
 	    //elementos.add(l4);
 	    //elementos.add(l5);
@@ -222,17 +223,26 @@ public class GeometricOperationsTest
 	//Teste de Interseção entre Limited Elements (Array de Limited Elements)
 	public void intersectionElementsTest1()
 	{
+		/*
+		 * ---------------------------------------------------------------------------------
+		 * Teste 1
+		 */
 	    //LimitedArc arco1= new LimitedArc(new Point3d(50,75,0), new Point3d(25,50,0), new Point3d(50,50,0));
-	    //LimitedLine linha1= new LimitedLine(new Point3d(50,75,0), new Point3d(80,75,0));
+	    //LimitedLine linha1= new LimitedLine(new Point3d(80,75,0), new Point3d(50,75,0));
 	    //LimitedLine linha2= new LimitedLine(new Point3d(70,60,0), new Point3d(70,90,0));
+	    /*
+		 * ---------------------------------------------------------------------------------
+		 * Teste 2
+		 */
 		//LimitedLine linha1= new LimitedLine(new Point3d(30,100,0), new Point3d(70,60,0));
-	   // LimitedLine linha2= new LimitedLine(new Point3d(20,60,0), new Point3d(60,100,0));
-	   // LimitedLine linha3= new LimitedLine(new Point3d(60,100,0), new Point3d(100,100,0));
-	   // ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
+	    //LimitedLine linha2= new LimitedLine(new Point3d(20,60,0), new Point3d(60,100,0));
+	    //LimitedLine linha3= new LimitedLine(new Point3d(60,100,0), new Point3d(100,100,0));
+	    //ArrayList <LimitedElement> elementos1 = new ArrayList<LimitedElement>();
 	    //elementos1.add(arco1);
 	    //elementos1.add(linha1);
 	    //elementos1.add(linha2);
 	    //elementos1.add(linha3);
+		//ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos1);
 		ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
 		for(int i=0;i<intersecoes.size();i++)
 		{
@@ -244,9 +254,10 @@ public class GeometricOperationsTest
 	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{
-
+		
 		class painelTest extends JPanel
 		{
+			double zoom = 5;
 			painelTest()
 			{
 			GeneralPath formaFeature = new GeneralPath();
@@ -263,17 +274,59 @@ public class GeometricOperationsTest
 				g2d.scale(1, -1);
 				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
-		
+				
+				desenharGrade(g2d);
 				desenharLinha(lineA, g2d);
 				desenharLinha(lineB, g2d);
 			}
 
 			private void desenharLinha(LimitedLine line, Graphics2D g2d) 
 			{
-				Line2D linha = new Line2D.Double(line.getInitialPoint().x, line.getInitialPoint().y, line.getFinalPoint().x, line.getFinalPoint().y);
+				g2d.setColor(new Color(12, 66, 200));
+				Line2D linha = new Line2D.Double(line.getInitialPoint().x * zoom, line.getInitialPoint().y * zoom, line.getFinalPoint().x * zoom, line.getFinalPoint().y * zoom);
 				g2d.draw(linha);
 			}
-			
+			private void desenharGrade(Graphics2D g2d)
+			{
+				for(int i = 0; i < 100; i++)
+				{
+					/**
+					 * 	desenha as linhas
+					 */
+					/*
+					 * 	linhas horizontais
+					 */
+					g2d.setColor(new Color(200, 200, 200));
+					Line2D lineTmp = new Line2D.Double(0 * zoom, i * 10 * zoom, 100 * 10 * zoom, i * 10 * zoom);
+					g2d.draw(lineTmp);
+					/*
+					 * 	linhas verticais
+					 */
+					g2d.setColor(new Color(200, 200, 200));
+					lineTmp = new Line2D.Double(i * 10 * zoom, 0 * zoom, i * 10 * zoom, 100 * 10 * zoom);
+					g2d.draw(lineTmp);
+					
+					/**
+					 * 	desenha os numeros
+					 */
+					/*
+					 * 	eixo Y
+					 */
+					g2d.setColor(new Color(200, 12, 12));
+					g2d.scale(1,  -1);
+					g2d.drawString(""+ (i * 10), (int)(-10), (int)(-i * 10 * zoom));
+					g2d.scale(1, -1);
+					/*
+					 * 	eixo X
+					 */
+					g2d.rotate(-Math.PI / 2);
+					g2d.scale(-1, 1);
+					g2d.drawString(""+ (i * 10), (int)(-10), (int)(i * 10 * zoom));
+					g2d.scale(-1, 1);
+					g2d.rotate(Math.PI / 2);
+					
+				}
+			}
 		}
 		JFrame frame = new JFrame("Painel");
 		painelTest painel = new painelTest();

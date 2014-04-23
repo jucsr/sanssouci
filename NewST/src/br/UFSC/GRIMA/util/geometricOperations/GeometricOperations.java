@@ -1781,10 +1781,14 @@ public class GeometricOperations
 		System.out.println("Raio: " + r);
 		double xin = arc.getCenter().x - r;
 		double xif = arc.getCenter().x + r;
+		System.out.println("XcircIni: " + xin);
+		System.out.println("XcircFin: " + xif);
+		
 		if (line.getInitialPoint().x == line.getFinalPoint().x) 
 		{
 			if (!((line.getInitialPoint().x >= xin) && (line.getInitialPoint().x <= xif))) 
 			{
+				System.out.println("S/Inter");
 				return null;
 			}
 			else 

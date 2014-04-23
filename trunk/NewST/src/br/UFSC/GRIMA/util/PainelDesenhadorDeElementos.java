@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
@@ -36,9 +37,12 @@ public class PainelDesenhadorDeElementos extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-//		Graphics2D g2d = (Graphics2D)g;
-		g2d.translate(25, 350);
+//		Graphics2D g2d = (Graphics2D) g.create();
+		
+//		Toolkit toolkit = this.getToolkit();
+		
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.translate(25, this.getSize().height - 25);
 		g2d.scale(1, -1);
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
@@ -46,7 +50,7 @@ public class PainelDesenhadorDeElementos extends JPanel
 		desenharGrade(g2d);
 		
 		desenharElements(elements, g2d);
-		g2d.dispose();
+//		g2d.dispose();
 	}
 	private void desenharElements(ArrayList<LimitedElement> elements, Graphics2D g2d)
 	{

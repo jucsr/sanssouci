@@ -22,18 +22,19 @@ public class GenerateTrochoidalMovement
 		this.raio = raio;
 		this.avanco = avanco;
 		
+		double xInicalPoint;
+		double yInicalPoint; 
+		double xFinalPoint; 
+		double yFinalPoint;
+		double xCenter; 
+		double yCenter; 
+		
 		for(int i = 0; i < elements.size(); i++){
 			
 			if(elements.get(i).isLimitedLine()){
 				
 				 LimitedLine temp = (LimitedLine)elements.get(i);
 				 
-				 double xInicalPoint;
-				 double yInicalPoint; 
-				 double xFinalPoint; 
-				 double yFinalPoint;
-				 double xCenter; 
-				 double yCenter; 
 				
 				 double angR = Math.atan((temp.getFinalPoint().y-temp.getInitialPoint().y)/(temp.getFinalPoint().x-temp.getInitialPoint().x));
 				 double angT = Math.acos((this.avanco/2)/(this.raio));
@@ -79,8 +80,8 @@ public class GenerateTrochoidalMovement
 						center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
 						arco = new CircularPath(center, initialPoint, finalPoint,(2*Math.PI - 2*angT),CircularPath.CCW );
 						 arco.setRadius(this.raio);
-						 arco.setInitialAngle(2*Math.PI - angT - angR);
-						 arco.setFinalAngle(2*Math.PI + angT + angR);
+						 arco.setInitialAngle(angT + angR+ Math.PI/2);
+						 arco.setFinalAngle(angT + angR+ Math.PI);
 						 movimentacao.add(arco);
 					    
 					    yInicalPoint = yFinalPoint;
@@ -146,8 +147,8 @@ public class GenerateTrochoidalMovement
 						 
 						 arco = new CircularPath(center, initialPoint, initialPoint, (2*Math.PI - 2*angT),CircularPath.CCW );
 						 arco.setRadius(this.raio);
-						 arco.setInitialAngle(2*Math.PI - angT - angR);
-						 arco.setFinalAngle(2*Math.PI + angT + angR);
+						 arco.setInitialAngle(angT + angR+ Math.PI/2);
+						 arco.setFinalAngle(angT + angR+ Math.PI);
 						 movimentacao.add(arco); 
 						 
 						 yInicalPoint = yFinalPoint;
@@ -181,6 +182,28 @@ public class GenerateTrochoidalMovement
 				
 		     }else if(elements.get(i).isLimitedArc()){
 				
+		    	 LimitedArc temp = (LimitedArc) elements.get(i);
+		    	 
+		    	 double comprimento = temp.getDeltaAngle()*temp.getRadius();
+		    	 double mov = Math.floor(comprimento/this.raio);
+		    	 double theta = (comprimento-mov)/temp.getRadius();
+		    	 
+		    	 
+		    	 
+		    	// LimitedArc arc = new LimitedArc(center, initialPoint, deltaAngle, sense);
+		    	 
+		    	/* xInicalPoint = temp.getInitialPoint().x;
+		    	 yInicalPoint = temp.getInitialPoint().y;
+		    	 xCenter = temp.getInitialPoint().x + this.raio;
+		    	 yCenter = temp.getInitialPoint().y + this.raio; 
+		    	 
+		    	 Point3d initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
+				 Point3d center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
+				 
+				 CircularPath arco = new CircularPath(center, initialPoint, initialPoint, 2*Math.PI,CircularPath.CCW );*/
+				 
+				 
+		    	 
 			}
 		}
 		

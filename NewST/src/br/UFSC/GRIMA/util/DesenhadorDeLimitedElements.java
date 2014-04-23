@@ -62,7 +62,6 @@ public class DesenhadorDeLimitedElements  extends JanelaDesenhadorLimitedElement
 		this.setResizable(true);
 		this.pack();
 		Dimension windowDimension = toolkit.getScreenSize();
-		System.err.println("W --> " + windowDimension.width + " H --> " + windowDimension.height);
 //		Dimension thisDimension = this.getPreferredSize();
 		Dimension thisDimension = new Dimension((int)windowDimension.getWidth()/2, (int)windowDimension.getHeight()/2);
 		this.setSize(thisDimension);

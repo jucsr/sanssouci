@@ -26,6 +26,7 @@ public class PainelDesenhadorDeElementos extends JPanel
 {
 	private double zoom = 1;
 	public ArrayList<LimitedElement> elements;
+	public boolean desenharCoordenadas = false;
 	
 	public PainelDesenhadorDeElementos(ArrayList<LimitedElement> elements)
 	{
@@ -101,17 +102,23 @@ public class PainelDesenhadorDeElementos extends JPanel
 
 		Arc2D arco = new Arc2D.Double((arc.getCenter().x  - arc.getRadius()) * zoom, (arc.getCenter().y - arc.getRadius()) * zoom, arc.getRadius() * 2 * zoom, arc.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
 		g2d.draw(arco);
-		desenharCoordenadas(arc.getCenter(), g2d);
-		desenharCoordenadas(arc.getInitialPoint(), g2d);
-		desenharCoordenadas(arc.getFinalPoint(), g2d);
+		if(desenharCoordenadas)
+		{
+			desenharCoordenadas(arc.getCenter(), g2d);
+			desenharCoordenadas(arc.getInitialPoint(), g2d);
+			desenharCoordenadas(arc.getFinalPoint(), g2d);
+		}
 	}
 	private void desenharLinha(LimitedLine line, Graphics2D g2d) 
 	{
 		g2d.setColor(new Color(12, 66, 200));
 		Line2D linha = new Line2D.Double(line.getInitialPoint().x * zoom, line.getInitialPoint().y * zoom, line.getFinalPoint().x * zoom, line.getFinalPoint().y * zoom);
 		g2d.draw(linha);
-		desenharCoordenadas(line.getInitialPoint(), g2d);
-		desenharCoordenadas(line.getFinalPoint(), g2d);
+		if(desenharCoordenadas)
+		{
+			desenharCoordenadas(line.getInitialPoint(), g2d);
+			desenharCoordenadas(line.getFinalPoint(), g2d);
+		}
 	}
 	private void desenharGrade(Graphics2D g2d)
 	{

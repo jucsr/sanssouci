@@ -25,6 +25,7 @@ public class DesenhadorDeLimitedElements  extends JanelaDesenhadorLimitedElement
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.spinnerZoom.addChangeListener(this);
+		this.checkBox1.addActionListener(this);
 		this.scrollPane1.setViewportView(desenhador);
 		this.desenhador.revalidate();
 		this.scrollPane1.revalidate();
@@ -40,6 +41,10 @@ public class DesenhadorDeLimitedElements  extends JanelaDesenhadorLimitedElement
 		} else if(o == cancelButton)
 		{
 			this.dispose();
+		} else if(o ==checkBox1)
+		{
+			desenhador.desenharCoordenadas = checkBox1.isSelected();
+			desenhador.repaint();
 		}
 	}
 

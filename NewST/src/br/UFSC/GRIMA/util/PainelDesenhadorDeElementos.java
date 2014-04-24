@@ -1,10 +1,13 @@
 package br.UFSC.GRIMA.util;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
@@ -23,15 +26,18 @@ import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
  * @author Jc
  *
  */
-public class PainelDesenhadorDeElementos extends JPanel
+public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionListener
 {
 	private double zoom = 1;
 	public ArrayList<LimitedElement> elements;
 	public boolean desenharCoordenadas = false;
+	public String x = "";
+	public String y = "";
 	
 	public PainelDesenhadorDeElementos(ArrayList<LimitedElement> elements)
 	{
 		this.elements = elements;
+		this.addMouseMotionListener(this);
 	}
 	public void setZoom(double zoom)
 	{
@@ -52,7 +58,7 @@ public class PainelDesenhadorDeElementos extends JPanel
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,	RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		desenharGrade(g2d);
-		
+		desenharCoordinatesNoPonteiro(g2d);
 		desenharElements(elements, g2d);
 //		g2d.dispose();
 	}
@@ -76,6 +82,8 @@ public class PainelDesenhadorDeElementos extends JPanel
 		g2d.setColor(new Color(255, 200, 0));
 		g2d.fill(new Ellipse2D.Double(ponto.x * zoom - 5 / 2, ponto.y * zoom - 5 / 2, 5, 5));
 		g2d.scale(1, -1);
+//		g2d.setFont(new Font("Shruti", Font.BOLD, 12));
+		g2d.setFont(new Font("Perpetua Titling MT", Font.BOLD, 12));
 		g2d.drawString("(" + GeometricOperations.truncarDecimais(ponto.x, 2) + ", " + GeometricOperations.truncarDecimais(ponto.y, 2) + ")", (int)(ponto.x * zoom), (int)(-ponto.y * zoom));
 		g2d.scale(1, -1);
 	}
@@ -98,9 +106,15 @@ public class PainelDesenhadorDeElementos extends JPanel
 		{
 			anguloFinal = 2 * Math.PI + anguloFinal;
 		}
-		double deltaAngulo = -(anguloFinal - anguloInicial) * 180 / Math.PI;
-		anguloInicial = anguloInicial * 180 / Math.PI;
-
+		double deltaAngulo = - (anguloFinal - anguloInicial) * 180 / Math.PI;
+		anguloInicial = - anguloInicial * 180 / Math.PI;
+		
+//		System.out.println("================");
+//		System.out.println("A_INI = " + anguloInicial);
+//		System.out.println("A_FIN = " + anguloFinal * 180 / Math.PI);
+//		System.out.println("DELTA = " + deltaAngulo);
+//		System.out.println("================");
+		
 		Arc2D arco = new Arc2D.Double((arc.getCenter().x  - arc.getRadius()) * zoom, (arc.getCenter().y - arc.getRadius()) * zoom, arc.getRadius() * 2 * zoom, arc.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
 		g2d.draw(arco);
 		if(desenharCoordenadas)
@@ -163,5 +177,35 @@ public class PainelDesenhadorDeElementos extends JPanel
 			g2d.rotate(Math.PI / 2);
 			
 		}
+	}
+	private void desenharCoordinatesNoPonteiro(Graphics2D g2d)
+	{
+		g2d.scale(1, -1);
+		g2d.setColor(new Color(230,232,250));
+		g2d.setFont(new Font("Lucida Calligraphy", Font.BOLD, 12));
+		int x, y;
+		try
+		{
+			x = (int)Double.parseDouble(this.x);
+			y = (int)Double.parseDouble(this.y);
+			g2d.drawString("x:\t" + this.x, (int)(x * zoom), -(int)(y * zoom));
+			g2d.drawString("y:\t" + this.y, (int)(x * zoom), -(int)(y * zoom + 13));
+		} catch(Exception e)
+		{
+			
+		}
+		g2d.scale(1, -1);
+	}
+	@Override
+	public void mouseDragged(MouseEvent e) 
+	{
+		
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) 
+	{
+		x = "" + GeometricOperations.truncarDecimais((e.getX() - 25) / zoom, 2);
+		y = "" + GeometricOperations.truncarDecimais(((this.getSize().height - e.getY() - 25) / zoom), 2);
+		this.repaint();
 	}
 }

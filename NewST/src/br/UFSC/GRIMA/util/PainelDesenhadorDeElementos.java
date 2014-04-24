@@ -17,6 +17,7 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 /**
  * 
  * @author Jc
@@ -42,7 +43,7 @@ public class PainelDesenhadorDeElementos extends JPanel
 		super.paintComponent(g);
 //		Graphics2D g2d = (Graphics2D) g.create();
 		
-//		Toolkit toolkit = this.getToolkit();
+		this.setBackground(Color.black);
 		
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.translate(25, this.getSize().height - 25);
@@ -72,16 +73,16 @@ public class PainelDesenhadorDeElementos extends JPanel
 	}
 	private void desenharCoordenadas(Point3d ponto, Graphics2D g2d)
 	{
-		g2d.setColor(new Color(111, 12, 111));
+		g2d.setColor(new Color(255, 200, 0));
 		g2d.fill(new Ellipse2D.Double(ponto.x * zoom - 5 / 2, ponto.y * zoom - 5 / 2, 5, 5));
 		g2d.scale(1, -1);
-		g2d.drawString("(" + ponto.x + ", " + ponto.y + ")", (int)(ponto.x * zoom), (int)(-ponto.y * zoom));
+		g2d.drawString("(" + GeometricOperations.truncarDecimais(ponto.x, 2) + ", " + GeometricOperations.truncarDecimais(ponto.y, 2) + ")", (int)(ponto.x * zoom), (int)(-ponto.y * zoom));
 		g2d.scale(1, -1);
 	}
 	private void desenharArco(LimitedArc arc, Graphics2D g2d)
 	{
-		g2d.setColor(new Color(12, 66, 200));
-		
+//		g2d.setColor(new Color(12, 66, 200));
+		g2d.setColor(new Color(127, 255, 0));
 		double anguloInicial = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x);
 		double anguloFinal = Math.atan2(arc.getFinalPoint().y - arc.getCenter().y, arc.getFinalPoint().x - arc.getCenter().x);
 		
@@ -111,7 +112,8 @@ public class PainelDesenhadorDeElementos extends JPanel
 	}
 	private void desenharLinha(LimitedLine line, Graphics2D g2d) 
 	{
-		g2d.setColor(new Color(12, 66, 200));
+//		g2d.setColor(new Color(12, 66, 200));
+		g2d.setColor(new Color(127, 255, 0));
 		Line2D linha = new Line2D.Double(line.getInitialPoint().x * zoom, line.getInitialPoint().y * zoom, line.getFinalPoint().x * zoom, line.getFinalPoint().y * zoom);
 		g2d.draw(linha);
 		if(desenharCoordenadas)
@@ -130,13 +132,14 @@ public class PainelDesenhadorDeElementos extends JPanel
 			/*
 			 * 	linhas horizontais
 			 */
-			g2d.setColor(new Color(200, 200, 200));
+//			g2d.setColor(new Color(200, 200, 200));
+			g2d.setColor(new Color(33, 33, 33));
 			Line2D lineTmp = new Line2D.Double(0 * zoom, i * 10 * zoom, 100 * 10 * zoom, i * 10 * zoom);
 			g2d.draw(lineTmp);
 			/*
 			 * 	linhas verticais
 			 */
-			g2d.setColor(new Color(200, 200, 200));
+//			g2d.setColor(new Color(200, 200, 200));
 			lineTmp = new Line2D.Double(i * 10 * zoom, 0 * zoom, i * 10 * zoom, 100 * 10 * zoom);
 			g2d.draw(lineTmp);
 			

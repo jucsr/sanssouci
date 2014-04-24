@@ -15,6 +15,7 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 		panel1 = new JPanel();
 		label1 = new JLabel();
 		spinnerZoom = new JSpinner();
+		checkBox1 = new JCheckBox();
 		scrollPane1 = new JScrollPane();
 		buttonBar = new JPanel();
 		okButton = new JButton();
@@ -40,9 +41,9 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 				//======== panel1 ========
 				{
 					panel1.setLayout(new GridBagLayout());
-					((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 65, 0, 0};
+					((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 65, 0, 0, 0};
 					((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0};
-					((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+					((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
 					((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 					//---- label1 ----
@@ -56,6 +57,12 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 					panel1.add(spinnerZoom, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 5), 0, 0));
+
+					//---- checkBox1 ----
+					checkBox1.setText("show coordinates");
+					panel1.add(checkBox1, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0));
 				}
 				contentPanel.add(panel1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -99,6 +106,7 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 	private JPanel panel1;
 	private JLabel label1;
 	public JSpinner spinnerZoom;
+	public JCheckBox checkBox1;
 	public JScrollPane scrollPane1;
 	private JPanel buttonBar;
 	public JButton okButton;

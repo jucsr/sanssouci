@@ -6,11 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -67,6 +69,14 @@ public class PainelDesenhadorDeElementos extends JPanel
 			}
 		}
 	}
+	private void desenharCoordenadas(Point3d ponto, Graphics2D g2d)
+	{
+		g2d.setColor(new Color(111, 12, 111));
+		g2d.fill(new Ellipse2D.Double(ponto.x * zoom - 5 / 2, ponto.y * zoom - 5 / 2, 5, 5));
+		g2d.scale(1, -1);
+		g2d.drawString("(" + ponto.x + ", " + ponto.y + ")", (int)(ponto.x * zoom), (int)(-ponto.y * zoom));
+		g2d.scale(1, -1);
+	}
 	private void desenharArco(LimitedArc arc, Graphics2D g2d)
 	{
 		g2d.setColor(new Color(12, 66, 200));
@@ -91,12 +101,17 @@ public class PainelDesenhadorDeElementos extends JPanel
 
 		Arc2D arco = new Arc2D.Double((arc.getCenter().x  - arc.getRadius()) * zoom, (arc.getCenter().y - arc.getRadius()) * zoom, arc.getRadius() * 2 * zoom, arc.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
 		g2d.draw(arco);
+		desenharCoordenadas(arc.getCenter(), g2d);
+		desenharCoordenadas(arc.getInitialPoint(), g2d);
+		desenharCoordenadas(arc.getFinalPoint(), g2d);
 	}
 	private void desenharLinha(LimitedLine line, Graphics2D g2d) 
 	{
 		g2d.setColor(new Color(12, 66, 200));
 		Line2D linha = new Line2D.Double(line.getInitialPoint().x * zoom, line.getInitialPoint().y * zoom, line.getFinalPoint().x * zoom, line.getFinalPoint().y * zoom);
 		g2d.draw(linha);
+		desenharCoordenadas(line.getInitialPoint(), g2d);
+		desenharCoordenadas(line.getFinalPoint(), g2d);
 	}
 	private void desenharGrade(Graphics2D g2d)
 	{

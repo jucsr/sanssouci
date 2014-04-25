@@ -25,7 +25,9 @@ public class DesenhadorDeLimitedElements  extends JanelaDesenhadorLimitedElement
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
 		this.spinnerZoom.addChangeListener(this);
+		this.spinnerDecimais.addChangeListener(this);
 		this.checkBox1.addActionListener(this);
+		this.checkBox2.addActionListener(this);
 		this.scrollPane1.setViewportView(desenhador);
 		this.desenhador.revalidate();
 		this.scrollPane1.revalidate();
@@ -45,6 +47,10 @@ public class DesenhadorDeLimitedElements  extends JanelaDesenhadorLimitedElement
 		{
 			desenhador.desenharCoordenadas = checkBox1.isSelected();
 			desenhador.repaint();
+		} else if(o == checkBox2)
+		{
+			desenhador.desenharIntersecoes = checkBox2.isSelected();
+			desenhador.repaint();
 		}
 	}
 
@@ -55,6 +61,12 @@ public class DesenhadorDeLimitedElements  extends JanelaDesenhadorLimitedElement
 		if(o == spinnerZoom)
 		{
 			this.desenhador.setZoom((Double)(this.spinnerZoom.getValue()) / 100);
+			this.desenhador.repaint();
+			this.desenhador.revalidate();
+			this.scrollPane1.revalidate();
+		} else if(o == spinnerDecimais)
+		{
+			this.desenhador.setnDecimais((Integer)(this.spinnerDecimais.getValue()));
 			this.desenhador.repaint();
 			this.desenhador.revalidate();
 			this.scrollPane1.revalidate();

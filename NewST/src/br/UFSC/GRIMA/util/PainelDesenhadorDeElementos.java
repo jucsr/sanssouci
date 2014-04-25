@@ -1,16 +1,15 @@
 package br.UFSC.GRIMA.util;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
@@ -30,14 +29,40 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 {
 	private double zoom = 1;
 	public ArrayList<LimitedElement> elements;
+	public ArrayList<Point3d> intersections;
 	public boolean desenharCoordenadas = false;
+	public boolean desenharIntersecoes = false;
 	public String x = "";
 	public String y = "";
+	private Dimension tamanho;
+	private double xMax;
+	private double yMax;
+	private int nDecimais = 0;
 	
 	public PainelDesenhadorDeElementos(ArrayList<LimitedElement> elements)
 	{
 		this.elements = elements;
 		this.addMouseMotionListener(this);
+		this.intersections = GeometricOperations.intersectionElements(elements);
+		for(int i = 0; i < elements.size(); i++)
+		{
+			LimitedElement elementTmp = elements.get(i);
+			if(elementTmp.isLimitedLine())
+			{
+				if(((LimitedLine)elementTmp).xmaxl > xMax)
+				{
+					xMax = ((LimitedLine)elementTmp).xmaxl;
+				}
+				if(((LimitedLine)elementTmp).ymaxl > yMax)
+				{
+					yMax = ((LimitedLine)elementTmp).ymaxl;
+				}
+			}
+		}
+	}
+	public void setnDecimais(int nDecimais)
+	{
+		this.nDecimais = nDecimais;
 	}
 	public void setZoom(double zoom)
 	{
@@ -48,7 +73,9 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 	{
 		super.paintComponent(g);
 //		Graphics2D g2d = (Graphics2D) g.create();
-		
+		this.tamanho = new Dimension((int)(xMax * zoom + 100), (int)(yMax * zoom + 50));
+		this.setPreferredSize(tamanho);
+		this.revalidate();
 		this.setBackground(Color.black);
 		
 		Graphics2D g2d = (Graphics2D)g;
@@ -60,7 +87,19 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 		desenharGrade(g2d);
 		desenharCoordinatesNoPonteiro(g2d);
 		desenharElements(elements, g2d);
+		if(desenharIntersecoes)
+		{
+			this.desenharIntersecoes(this.intersections, g2d);
+		}
+		
 //		g2d.dispose();
+	}
+	private void desenharIntersecoes(ArrayList<Point3d> intersecoes, Graphics2D g2d)
+	{
+		for(Point3d pontoTmp: intersecoes)
+		{
+			this.desenharCoordenadas(pontoTmp, g2d, new Color(255, 200, 0));
+		}
 	}
 	private void desenharElements(ArrayList<LimitedElement> elements, Graphics2D g2d)
 	{
@@ -70,27 +109,28 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 			LimitedElement elementTmp = elements.get(i);
 			if(elementTmp.isLimitedLine())
 			{
-				desenharLinha((LimitedLine)elementTmp, g2d);
+//				desenharLinha((LimitedLine)elementTmp, g2d, new Color(127, 255, 0));
+				desenharLinha((LimitedLine) elementTmp, g2d, new Color(0, 100, 255));
 			} else if(elementTmp.isLimitedArc())
 			{
-				desenharArco((LimitedArc)elementTmp, g2d);
+				desenharArco((LimitedArc)elementTmp, g2d, new Color(0, 100, 255));
 			}
 		}
 	}
-	private void desenharCoordenadas(Point3d ponto, Graphics2D g2d)
+	private void desenharCoordenadas(Point3d ponto, Graphics2D g2d, Color color)
 	{
-		g2d.setColor(new Color(255, 200, 0));
+		g2d.setColor(color);
 		g2d.fill(new Ellipse2D.Double(ponto.x * zoom - 5 / 2, ponto.y * zoom - 5 / 2, 5, 5));
 		g2d.scale(1, -1);
 //		g2d.setFont(new Font("Shruti", Font.BOLD, 12));
-		g2d.setFont(new Font("Perpetua Titling MT", Font.BOLD, 12));
-		g2d.drawString("(" + GeometricOperations.truncarDecimais(ponto.x, 2) + ", " + GeometricOperations.truncarDecimais(ponto.y, 2) + ")", (int)(ponto.x * zoom), (int)(-ponto.y * zoom));
+		g2d.setFont(new Font("Perpetua Titling MT", Font.PLAIN, 12));
+		g2d.drawString("(" + GeometricOperations.truncarDecimais(ponto.x, nDecimais) + ", " + GeometricOperations.truncarDecimais(ponto.y, nDecimais) + ")", (int)(ponto.x * zoom + 2), (int)(-ponto.y * zoom - 2));
 		g2d.scale(1, -1);
 	}
-	private void desenharArco(LimitedArc arc, Graphics2D g2d)
+	private void desenharArco(LimitedArc arc, Graphics2D g2d, Color color)
 	{
 //		g2d.setColor(new Color(12, 66, 200));
-		g2d.setColor(new Color(127, 255, 0));
+		g2d.setColor(color);
 		double anguloInicial = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x);
 		double anguloFinal = Math.atan2(arc.getFinalPoint().y - arc.getCenter().y, arc.getFinalPoint().x - arc.getCenter().x);
 		
@@ -119,21 +159,20 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 		g2d.draw(arco);
 		if(desenharCoordenadas)
 		{
-			desenharCoordenadas(arc.getCenter(), g2d);
-			desenharCoordenadas(arc.getInitialPoint(), g2d);
-			desenharCoordenadas(arc.getFinalPoint(), g2d);
+			desenharCoordenadas(arc.getCenter(), g2d, new Color(0, 255, 0));
+			desenharCoordenadas(arc.getInitialPoint(), g2d, new Color(0, 255, 0));
+			desenharCoordenadas(arc.getFinalPoint(), g2d, new Color(0, 255, 0));
 		}
 	}
-	private void desenharLinha(LimitedLine line, Graphics2D g2d) 
+	private void desenharLinha(LimitedLine line, Graphics2D g2d, Color color) 
 	{
-//		g2d.setColor(new Color(12, 66, 200));
-		g2d.setColor(new Color(127, 255, 0));
+		g2d.setColor(color);
 		Line2D linha = new Line2D.Double(line.getInitialPoint().x * zoom, line.getInitialPoint().y * zoom, line.getFinalPoint().x * zoom, line.getFinalPoint().y * zoom);
 		g2d.draw(linha);
 		if(desenharCoordenadas)
 		{
-			desenharCoordenadas(line.getInitialPoint(), g2d);
-			desenharCoordenadas(line.getFinalPoint(), g2d);
+			desenharCoordenadas(line.getInitialPoint(), g2d, new Color(0, 255, 0));
+			desenharCoordenadas(line.getFinalPoint(), g2d, new Color(0, 255, 0));
 		}
 	}
 	private void desenharGrade(Graphics2D g2d)
@@ -204,8 +243,8 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 	@Override
 	public void mouseMoved(MouseEvent e) 
 	{
-		x = "" + GeometricOperations.truncarDecimais((e.getX() - 25) / zoom, 2);
-		y = "" + GeometricOperations.truncarDecimais(((this.getSize().height - e.getY() - 25) / zoom), 2);
+		x = "" + GeometricOperations.truncarDecimais((e.getX() - 25) / zoom, nDecimais);
+		y = "" + GeometricOperations.truncarDecimais(((this.getSize().height - e.getY() - 25) / zoom), nDecimais);
 		this.repaint();
 	}
 }

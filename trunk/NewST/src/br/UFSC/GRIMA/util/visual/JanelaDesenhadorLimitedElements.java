@@ -12,10 +12,14 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 		dialogPane = new JPanel();
 		contentPanel = new JPanel();
+		panel2 = new JPanel();
 		panel1 = new JPanel();
 		label1 = new JLabel();
 		spinnerZoom = new JSpinner();
 		checkBox1 = new JCheckBox();
+		checkBox2 = new JCheckBox();
+		label2 = new JLabel();
+		spinnerDecimais = new JSpinner();
 		scrollPane1 = new JScrollPane();
 		buttonBar = new JPanel();
 		okButton = new JButton();
@@ -23,6 +27,7 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 
 		//======== this ========
 		setTitle("Desenhador de Elementos");
+		setIconImage(new ImageIcon(getClass().getResource("/images/Acceptchanges.png")).getImage());
 		setLayout(new BorderLayout());
 
 		//======== dialogPane ========
@@ -38,33 +43,63 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 1.0, 1.0E-4};
 				((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0, 1.0E-4};
 
-				//======== panel1 ========
+				//======== panel2 ========
 				{
-					panel1.setLayout(new GridBagLayout());
-					((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 65, 0, 0, 0};
-					((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0};
-					((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
-					((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+					panel2.setLayout(new GridBagLayout());
+					((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+					((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 0};
+					((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+					((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
-					//---- label1 ----
-					label1.setText("zoom");
-					panel1.add(label1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+					//======== panel1 ========
+					{
+						panel1.setLayout(new GridBagLayout());
+						((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 65, 0, 0, 0, 0, 0, 0, 40, 0};
+						((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0};
+						((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+						//---- label1 ----
+						label1.setText("zoom");
+						panel1.add(label1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 0, 5), 0, 0));
+
+						//---- spinnerZoom ----
+						spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 1000.0, 100.0));
+						panel1.add(spinnerZoom, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 0, 5), 0, 0));
+
+						//---- checkBox1 ----
+						checkBox1.setText("show coordinates");
+						panel1.add(checkBox1, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 0, 5), 0, 0));
+
+						//---- checkBox2 ----
+						checkBox2.setText("show intersections");
+						panel1.add(checkBox2, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 0, 5), 0, 0));
+
+						//---- label2 ----
+						label2.setText("set N decimals");
+						panel1.add(label2, new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 0, 5), 0, 0));
+
+						//---- spinnerDecimais ----
+						spinnerDecimais.setModel(new SpinnerNumberModel(0, 0, 16, 1));
+						panel1.add(spinnerDecimais, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 0, 0), 0, 0));
+					}
+					panel2.add(panel1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 5), 0, 0));
-
-					//---- spinnerZoom ----
-					spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 1000.0, 100.0));
-					panel1.add(spinnerZoom, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(0, 0, 0, 5), 0, 0));
-
-					//---- checkBox1 ----
-					checkBox1.setText("show coordinates");
-					panel1.add(checkBox1, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(0, 0, 0, 0), 0, 0));
 				}
-				contentPanel.add(panel1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+				contentPanel.add(panel2, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 5, 0), 0, 0));
 				contentPanel.add(scrollPane1, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
@@ -103,10 +138,14 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	private JPanel dialogPane;
 	private JPanel contentPanel;
+	private JPanel panel2;
 	private JPanel panel1;
 	private JLabel label1;
 	public JSpinner spinnerZoom;
 	public JCheckBox checkBox1;
+	public JCheckBox checkBox2;
+	private JLabel label2;
+	public JSpinner spinnerDecimais;
 	public JScrollPane scrollPane1;
 	private JPanel buttonBar;
 	public JButton okButton;

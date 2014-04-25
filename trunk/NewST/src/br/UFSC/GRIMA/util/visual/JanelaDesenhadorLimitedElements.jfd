@@ -6,6 +6,7 @@ new FormModel {
 		add( new FormWindow( "java.awt.Frame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
 			"title": "Desenhador de Elementos"
+			"iconImage": new com.jformdesigner.model.SwingIcon( 0, "/images/Acceptchanges.png" )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "dialogPane"
 				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
@@ -19,35 +20,72 @@ new FormModel {
 				} ) {
 					name: "contentPanel"
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-						"$columnSpecs": "0, 60, 0, 0"
+						"$columnSpecs": "0:1.0, 0, 0:1.0"
 						"$rowSpecs": "0"
 						"$hGap": 5
 						"$vGap": 5
 						"$alignLeft": true
 						"$alignTop": true
 					} ) {
-						name: "panel1"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label1"
-							"text": "zoom"
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
-						add( new FormComponent( "javax.swing.JSpinner" ) {
-							name: "spinnerZoom"
-							"model": new javax.swing.SpinnerNumberModel( 100.0, 0.0, 1000.0, 100.0 )
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 1
-							}
+						name: "panel2"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+							"$columnSpecs": "0, 60, 0, 0, 0, 0, 0, 0, 40"
+							"$rowSpecs": "0"
+							"$hGap": 5
+							"$vGap": 5
+							"$alignLeft": true
+							"$alignTop": true
+						} ) {
+							name: "panel1"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label1"
+								"text": "zoom"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinnerZoom"
+								"model": new javax.swing.SpinnerNumberModel( 100.0, 0.0, 1000.0, 100.0 )
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 1
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 1
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "checkBox1"
+								"text": "show coordinates"
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 1
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 3
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "checkBox2"
+								"text": "show intersections"
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 1
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 5
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label2"
+								"text": "set N decimals"
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 7
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinnerDecimais"
+								"model": new javax.swing.SpinnerNumberModel( 0, 0, 16, 1 )
+								auxiliary() {
+									"JavaCodeGenerator.variableModifiers": 1
+									"JavaCodeGenerator.variableName": "spinnerDecimais"
+								}
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+								"gridx": 8
+							} )
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 							"gridx": 1
-						} )
-						add( new FormComponent( "javax.swing.JCheckBox" ) {
-							name: "checkBox1"
-							"text": "show coordinates"
-							auxiliary() {
-								"JavaCodeGenerator.variableModifiers": 1
-							}
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 3
 						} )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 1
@@ -101,7 +139,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 425, 325 )
+			"size": new java.awt.Dimension( 690, 385 )
 		} )
 	}
 }

@@ -1868,32 +1868,39 @@ public class GeometricOperations
 		System.err.println("Arco: " + arc.getInitialPoint() + arc.getFinalPoint() + arc.getCenter());
 		System.err.println("Radical: " + radical);
 		
-		
-		
-//		if((anguloNaIntersecao1 <= anguloFinal && anguloNaIntersecao1 >= anguloInicial) || (anguloNaIntersecao1 >= anguloFinal && anguloNaIntersecao1 <= anguloInicial))
-//		{
-//			x = x1;
-//			y = y1;
-////			System.out.println("X1");
-//		} else if((anguloNaIntersecao2 <= anguloFinal && anguloNaIntersecao2 >= anguloInicial) || (anguloNaIntersecao2 >= anguloFinal && anguloNaIntersecao2 <=anguloInicial))
-//		{
-//			x = x2;
-//			y = y2;
-////			System.out.println("X2");
-//		}
-		
+		//Modulo da linha de entrada
+		double moduloR1 = Math.sqrt(Math.pow((line.getFinalPoint().x - line.getInitialPoint().x),2) + Math.pow((line.getFinalPoint().y - line.getInitialPoint().y), 2));
+		//Vetor diretor da linha de entrada
+		Point3d diretor1 = new Point3d(((line.getFinalPoint().x - line.getInitialPoint().x)/moduloR1),((line.getFinalPoint().y - line.getInitialPoint().y)/moduloR1),0);
+		//Modulo da linha com ponto inicial da linha de entrada e ponto final = possivel ponto de intersecao
+		double moduloR2;
+		//Vetor da linha com ponto inicial da linha de entrada e ponto final = possivel ponto de intersecao
+		Point3d diretor2;
 		if((anguloInicial <= anguloNaIntersecao1 && anguloFinal >= anguloNaIntersecao1))
 		{
-			//x = x1;
-			//y = y1;
-			intersection = new Point3d(x1,y1,0);
-//			System.out.println("X1");
-		} else if((anguloInicial <= anguloNaIntersecao2 && anguloFinal >= anguloNaIntersecao2))
+			moduloR2 = Math.sqrt(Math.pow((x1 - line.getInitialPoint().x),2) + Math.pow((y1 - line.getInitialPoint().y), 2));
+			diretor2 = new Point3d(((x1 - line.getInitialPoint().x)/moduloR1),((y1 - line.getInitialPoint().y)/moduloR1),0);
+			//Validacao do possivel ponto de intersecao
+			if (!((diretor1.getX() == (-1)*diretor2.getX()) && (diretor1.getY() == (-1)*diretor2.getY())))
+			{
+				if(moduloR1 >= moduloR2)
+				{
+					intersection = new Point3d(x1,y1,0);
+				}
+			}
+		} 
+		else if((anguloInicial <= anguloNaIntersecao2 && anguloFinal >= anguloNaIntersecao2))
 		{
-			//x = x2;
-			//y = y2;
-			intersection = new Point3d(x2,y2,0);
-//			System.out.println("X2");
+			moduloR2 = Math.sqrt(Math.pow((x2 - line.getInitialPoint().x),2) + Math.pow((y2 - line.getInitialPoint().y), 2));
+			diretor2 = new Point3d(((x2 - line.getInitialPoint().x)/moduloR1),((y2 - line.getInitialPoint().y)/moduloR1),0);
+			//Validacao do possivel ponto de intersecao
+			if (!((diretor1.getX() == (-1)*diretor2.getX()) && (diretor1.getY() == (-1)*diretor2.getY())))
+			{
+				if(moduloR1 >= moduloR2)
+				{
+					intersection = new Point3d(x2,y2,0);
+				}
+			}
 		}
 		
 		//intersection = new Point3d(x, y, 0);

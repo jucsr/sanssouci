@@ -87,11 +87,11 @@ public class GeometricOperationsTest
 	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
 	    elementos.add(arco0);
 	    //elementos.add(l1);
-	    elementos.add(l2);
+	    //elementos.add(l2);
 	    //elementos.add(l3);
 	    //elementos.add(l4);
 	    //elementos.add(l5);
-	    //elementos.add(l6);
+	    elementos.add(l6);
 
 	}
 	@Test

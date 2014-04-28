@@ -49,14 +49,38 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 			LimitedElement elementTmp = elements.get(i);
 			if(elementTmp.isLimitedLine())
 			{
-				if(((LimitedLine)elementTmp).xmaxl > xMax)
-				{
-					xMax = ((LimitedLine)elementTmp).xmaxl;
-				}
-				if(((LimitedLine)elementTmp).ymaxl > yMax)
-				{
-					yMax = ((LimitedLine)elementTmp).ymaxl;
-				}
+				LimitedLine line = (LimitedLine)elementTmp;
+				/**
+				 * ==horizontal
+				 */
+				if(line.xmaxl > xMax)
+					xMax = line.xmaxl;
+				/**
+				 * ==vertical
+				 */
+				if(line.ymaxl > yMax)
+					yMax = line.ymaxl;
+			} else if(elementTmp.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)elementTmp;
+				/**
+				 * ==horizontal
+				 */
+				if(arc.getInitialPoint().x > xMax)
+					xMax = arc.getInitialPoint().x;
+				if(arc.getFinalPoint().x > xMax)
+					xMax = arc.getFinalPoint().x;
+				if(arc.getCenter().x > xMax)
+					xMax = arc.getCenter().x;
+				/**
+				 *  == vertical
+				 */
+				if(arc.getInitialPoint().y > yMax)
+					yMax = arc.getInitialPoint().y;
+				if(arc.getFinalPoint().y > yMax)
+					yMax = arc.getFinalPoint().y;
+				if(arc.getCenter().y > yMax)
+					yMax = arc.getCenter().y;
 			}
 		}
 	}

@@ -1005,7 +1005,7 @@ public class GeometricOperations
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)
 	{
-		//vetor de saída
+		//vetor de saï¿½da
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		//ArrayList<ArrayList<LimitedElement>> elements2 = new ArrayList<ArrayList<LimitedElement>>();
 		//Array de elementos intermediarios
@@ -1024,7 +1024,7 @@ public class GeometricOperations
 				Point3d intersection = intersectionElements(ei,ej);
 				if(intersection!=null)
 				{
-					//adiciona os pontos de interseção ao vetor de interseções
+					//adiciona os pontos de interseï¿½ï¿½o ao vetor de interseï¿½ï¿½es
 					intersecoes.add(intersection);
 					System.out.println("Here is an intersection point " + intersection);
 					if (ei.isLimitedLine())
@@ -1055,7 +1055,7 @@ public class GeometricOperations
 				}
 			}
 		}
-		System.out.println("Interseções: " + intersecoes.size());
+		System.out.println("Interseï¿½ï¿½es: " + intersecoes.size());
 		
 //		Point3d intersection = intersecoes.get(0);
 //		Point3d initialPoint;
@@ -1094,7 +1094,7 @@ public class GeometricOperations
 				Point3d intersection = intersectionElements(ei,ej);
 				if(intersection!=null)
 				{
-					//adiciona os pontos de interseção ao vetor de interseções
+					//adiciona os pontos de interseï¿½ï¿½o ao vetor de interseï¿½ï¿½es
 					intersecoes.add(intersection);
 					System.out.println("Here is an intersection point " + intersection);
 				}
@@ -1116,7 +1116,7 @@ public class GeometricOperations
 				LimitedArc arcj = (LimitedArc)ej;
 				intersection = intersectionPoint(arci,arcj);
 				
-				//Alternativa para não identificar pontos de interseção nas extremidades dos Limited Elements
+				//Alternativa para nï¿½o identificar pontos de interseï¿½ï¿½o nas extremidades dos Limited Elements
 				if(isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) || 
 				   isTheSamePoint(arci.getFinalPoint(),arcj.getFinalPoint()) || 
 				   isTheSamePoint(arci.getInitialPoint(),arcj.getFinalPoint())|| 
@@ -1158,7 +1158,7 @@ public class GeometricOperations
 					{
 						return null;
 					}
-				//o metodo intersectionPoint não está definido para (line, arc) mas sim pra (arc, line)	
+				//o metodo intersectionPoint nï¿½o estï¿½ definido para (line, arc) mas sim pra (arc, line)	
 				return intersectionPoint(arcj, linei);
 			}
 			//Se o elemento j for uma linha (linha, linha)
@@ -1186,8 +1186,8 @@ public class GeometricOperations
 	//Verifica a igualdade de pontos entre os Limited Elements
 	public static boolean isTheSamePoint(Point3d p1, Point3d p2)
 	{
-		if(truncarDecimais(p1.x, 10) == truncarDecimais(p2.x,10) && truncarDecimais(p1.y, 10) == truncarDecimais(p2.y, 10) 
-				&& truncarDecimais(p1.z, 10) == truncarDecimais(p2.z, 10)){
+		if(roundNumber(p1.x, 10) == roundNumber(p2.x,10) && roundNumber(p1.y, 10) == roundNumber(p2.y, 10) 
+				&& roundNumber(p1.z, 10) == roundNumber(p2.z, 10)){
 			return true;
 		}
 		else
@@ -1624,7 +1624,7 @@ public class GeometricOperations
 			
 			double Yinter = 0;
 			Point3d intersection = null;
-			//Garante que não calularemos uma tangente = infinity
+			//Garante que nï¿½o calularemos uma tangente = infinity
 			//Xinicial1 = Xfinal1 e Xinicial2 != Xfinal2
 			if((pi1.getX() == pf1.getX()) && (pi2.getX() != pf2.getX()))
 			{
@@ -1633,7 +1633,7 @@ public class GeometricOperations
 				if(pi2.getX() < pi2.getX())
 				{
 					System.out.println("Xinicial < Xfinal");
-					//Verifica se Xi1 não está entre Xi2 e Xf2 (garantindo que não haja interseção)
+					//Verifica se Xi1 nï¿½o estï¿½ entre Xi2 e Xf2 (garantindo que nï¿½o haja interseï¿½ï¿½o)
 					if(!((pi1.getX() >= pi2.getX())&& (pi1.getX() <= pf2.getX())))
 					{
 						return null;
@@ -1643,13 +1643,13 @@ public class GeometricOperations
 				if(pi2.getX() > pi2.getX())
 				{
 					System.out.println("Xinicial > Xfinal");
-					//Verifica se Xi1 não está entre Xi2 e Xf2 (garantindo que não haja interseção)
+					//Verifica se Xi1 nï¿½o estï¿½ entre Xi2 e Xf2 (garantindo que nï¿½o haja interseï¿½ï¿½o)
 					if(!((pi1.getX() >= pf2.getX())&& (pi1.getX() <= pi2.getX())))
 					{
 						return null;
 					}	
 				}
-				//Caso haja interseção, ela é calculada
+				//Caso haja interseï¿½ï¿½o, ela ï¿½ calculada
 				b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
 				a2 = pi2.getY() - b2*pi2.getX();
 				Yinter = a2 + b2*pi1.getX();
@@ -1664,7 +1664,7 @@ public class GeometricOperations
 				if(pi1.getX() < pf1.getX())
 				{
 					System.out.println("Xinicial < Xfinal");
-					//Verifica se Xi2 não está entre Xi1 e Xf1 (garantindo que não haja interseção)
+					//Verifica se Xi2 nï¿½o estï¿½ entre Xi1 e Xf1 (garantindo que nï¿½o haja interseï¿½ï¿½o)
 					if(!((pi2.getX() >= pi1.getX())&& (pi2.getX() <= pf1.getX())))
 					{
 						return null;
@@ -1674,13 +1674,13 @@ public class GeometricOperations
 				else if(pi1.getX() > pf1.getX())
 				{
 					System.out.println("Xinicial > Xfinal");
-					//Verifica se Xi2 não está entre Xi1 e Xf1 (garantindo que não haja interseção)
+					//Verifica se Xi2 nï¿½o estï¿½ entre Xi1 e Xf1 (garantindo que nï¿½o haja interseï¿½ï¿½o)
 					if(!((pi2.getX() >= pf1.getX())&& (pi2.getX() <= pi1.getX())))
 					{
 						return null;
 					}
 				}
-				//Caso haja interseção, ela é calculada
+				//Caso haja interseï¿½ï¿½o, ela ï¿½ calculada
 				b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
 				a1 = pi1.getY() - b1*pi1.getX();
 				Yinter = a1 + b1*pi2.getX();
@@ -1746,6 +1746,14 @@ public class GeometricOperations
 		{
 			return null;
 		}
+//		if(belongs(line1, intersect) && belongs(line2, intersect))
+//		{
+//			return intersect;
+//		}
+//		else
+//		{
+//			return null;
+//		}
 	}
 	public static double truncarDecimais(double numero, int casasDecimais)
 	{
@@ -1847,7 +1855,7 @@ public class GeometricOperations
 			anguloNaIntersecao2 = 2* Math.PI + anguloNaIntersecao2;
 		}
 		
-		//Normalização dos angulos inicial e final
+		//Normalizaï¿½ï¿½o dos angulos inicial e final
 		if(anguloInicial > anguloFinal)
 		{
 			anguloFinal = 2 * Math.PI + anguloFinal;
@@ -2078,5 +2086,15 @@ public class GeometricOperations
 		}
 		
 		return intersection;
+	}
+	public static double roundNumber(double number, int decimals)
+	{
+		double saida = 0;
+		saida = number * Math.pow(10, decimals);
+		saida = Math.round(saida);
+		saida = saida / Math.pow(10, decimals);
+//		saida  = truncarDecimais(number, decimals);
+		
+		return saida;
 	}
 }

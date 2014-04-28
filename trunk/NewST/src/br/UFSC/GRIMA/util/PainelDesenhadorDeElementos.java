@@ -148,7 +148,7 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 		g2d.scale(1, -1);
 //		g2d.setFont(new Font("Shruti", Font.BOLD, 12));
 		g2d.setFont(new Font("Perpetua Titling MT", Font.PLAIN, 12));
-		g2d.drawString("(" + GeometricOperations.truncarDecimais(ponto.x, nDecimais) + ", " + GeometricOperations.truncarDecimais(ponto.y, nDecimais) + ")", (int)(ponto.x * zoom + 2), (int)(-ponto.y * zoom - 2));
+		g2d.drawString("(" + GeometricOperations.roundNumber(ponto.x, nDecimais) + ", " + GeometricOperations.roundNumber(ponto.y, nDecimais) + ")", (int)(ponto.x * zoom + 2), (int)(-ponto.y * zoom - 2));
 		g2d.scale(1, -1);
 	}
 	private void desenharArco(LimitedArc arc, Graphics2D g2d, Color color)

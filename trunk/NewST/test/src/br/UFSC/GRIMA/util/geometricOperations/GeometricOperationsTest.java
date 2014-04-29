@@ -15,6 +15,7 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -70,7 +71,7 @@ public class GeometricOperationsTest
 	Point3d testPoint = new Point3d(-0.5, -0.5, 0);
 	Point3d testPoint2 = new Point3d(1.0, 13.0, 0);
 	
-    LimitedArc arco0= new LimitedArc(new Point3d(175.0,285.0,0), new Point3d(325.0,135.0,0), new Point3d(175.0,135.0,0));
+    LimitedArc arco0= new LimitedArc(new Point3d(325.0,135.0,0), new Point3d(175.0,285.0,0), new Point3d(175.0,135.0,0));
     LimitedLine l1= new LimitedLine(new Point3d(325.0,134.99999999999997,0), new Point3d(325.0,165.0,0));
     LimitedLine l2= new LimitedLine(new Point3d(325.0,165.0,0), new Point3d(355.0000000000001,165.0,0));
     LimitedLine l3= new LimitedLine(new Point3d(355.0,165.0000000000001,0), new Point3d(355.0,195.00000000000034,0));
@@ -86,11 +87,11 @@ public class GeometricOperationsTest
 		lineA = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
 	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
 	    elementos.add(arco0);
-	    //elementos.add(l1);
-	    //elementos.add(l2);
-	    //elementos.add(l3);
-	    //elementos.add(l4);
-	    //elementos.add(l5);
+	    elementos.add(l1);
+	    elementos.add(l2);
+	    elementos.add(l3);
+	    elementos.add(l4);
+	    elementos.add(l5);
 	    elementos.add(l6);
 
 	}
@@ -184,6 +185,10 @@ public class GeometricOperationsTest
 		//Linhas com interseção (não verticais)
 		LimitedLine line7 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 20, 0));
 		LimitedLine line8 = new LimitedLine(new Point3d(20, 10, 0), new Point3d(10, 20, 0));
+		
+		//
+		LimitedLine l3= new LimitedLine(new Point3d(355.0,165.0000000000001,0), new Point3d(355.0,195.00000000000034,0));
+		LimitedLine l6= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
 		/*
 		 * ---------------------------------------------------------------------------------
 		 * Arco - Linha
@@ -215,7 +220,7 @@ public class GeometricOperationsTest
 		LimitedArc arc8 = new LimitedArc(new Point3d(10, 10, 0), new Point3d(30, 30, 0), new Point3d(10,30 , 0));
 		LimitedArc arc9 = new LimitedArc(new Point3d(5, 70, 0), new Point3d(60, 15, 0), new Point3d(70, 60, 0));
 		
-		Point3d intersection = GeometricOperations.intersectionElements(line5, line6);
+		Point3d intersection = GeometricOperations.intersectionElements(l3, l6);
 		System.err.println("Intersection Validated: " + intersection);
 	}
 	
@@ -243,12 +248,51 @@ public class GeometricOperationsTest
 	    //elementos1.add(linha2);
 	    //elementos1.add(linha3);
 		//ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos1);
+		
+//		ArrayList <Integer> inteiros = new ArrayList<Integer>();
+//		inteiros.add(0);
+//		for(int i = 0; i<inteiros.size();i++)
+//		{
+//			inteiros.add(i);
+//		}
+		
 		ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
 		for(int i=0;i<intersecoes.size();i++)
 		{
 			System.out.println("intersecoes: " + intersecoes.get(i));
 		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementos);
+		desenhador.setVisible(true);
+		for(;;);
 		
+	}
+	
+	@Test
+	public void validarPathTest()
+	{
+		ArrayList<LimitedElement> elementosIntermediarios = GeometricOperations.validarPath(elementos).get(0);
+		for(int i = 0; i<(elementosIntermediarios.size()); i++)
+		{
+			if(elementosIntermediarios.get(i).isLimitedArc())
+			{
+				LimitedArc temp = (LimitedArc)elementosIntermediarios.get(i);
+				System.out.println("Arco " + i + ": " + temp.getInitialPoint() + ", " + temp.getFinalPoint() + ", " + temp.getCenter());
+			}
+		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosIntermediarios);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	
+	@Test
+	public void belongsTest()
+	{
+		//LimitedLine l1 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
+		//Point3d p1 = new Point3d(25,10,0);
+		
+		LimitedLine l1 = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
+		Point3d p1 = new Point3d(15,13,0);
+		System.out.println("belongs: " + GeometricOperations.belongs(l1, p1));
 	}
 	
 	@Test

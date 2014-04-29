@@ -1052,7 +1052,7 @@ public class GeometricOperations
 								elementsValidated.get(0).add(arcBeforeIntersection);
 								elementsValidated.get(0).add(arcAfterIntersection);
 							}
-							numeroDeIntersecao++;
+							//numeroDeIntersecao++;
 						}
 						else
 						{
@@ -1104,7 +1104,7 @@ public class GeometricOperations
 							}
 						}
 						
-
+						numeroDeIntersecao++;
 					}
 					intersection = null;
 				}
@@ -1112,10 +1112,11 @@ public class GeometricOperations
 			}
 			if(intersection == null)
 			{
+				System.out.println("add s/i");
 				elementsValidated.get(0).add(ei);
 			}
 		}
-		System.out.println("Interse��es: " + intersecoes.size());
+		System.out.println("Intersecoes: " + intersecoes.size());
 		
 //		Point3d intersection = intersecoes.get(0);
 //		Point3d initialPoint;
@@ -1867,7 +1868,7 @@ public class GeometricOperations
 		{
 			if (!((line.getInitialPoint().x >= xin) && (line.getInitialPoint().x <= xif))) 
 			{
-				System.out.println("S/Inter");
+				//System.out.println("S/Inter");
 				return null;
 			}
 			else 

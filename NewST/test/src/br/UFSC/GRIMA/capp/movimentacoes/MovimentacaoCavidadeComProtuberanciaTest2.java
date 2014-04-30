@@ -321,7 +321,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 					else if(elementsAcabamento.get(i).isLimitedArc())
 					{
 						LimitedArc temp = (LimitedArc)elementsAcabamento.get(i);
-						System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + "new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0)" + "new Point3d(" + temp.getCenter().x + "," + temp.getCenter().y + ",0)");					}
+						System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + "new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0)" + "new Point3d(" + temp.getCenter().x + "," + temp.getCenter().y + ",0)");					
+						}
 					
 				}
 				
@@ -349,8 +350,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				g2d.draw(shape);
 				for(int i = 0; i<GeometricOperations.intersecoes.size();i++)
 				{
-					g2d.setColor(Color.green);
-					g2d.draw(new Ellipse2D.Double(GeometricOperations.intersecoes.get(i).x, GeometricOperations.intersecoes.get(i).y, 5, 5));
+					g2d.setColor(Color.red);
+					g2d.fill(new Ellipse2D.Double(GeometricOperations.intersecoes.get(i).x - 2.5, GeometricOperations.intersecoes.get(i).y - 2.5, 5, 5));
 				}
 //				
 //				for(ArrayList<LimitedElement> elements:multipleParallel)

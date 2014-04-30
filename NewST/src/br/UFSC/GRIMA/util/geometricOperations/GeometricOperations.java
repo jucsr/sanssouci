@@ -1003,9 +1003,9 @@ public class GeometricOperations
 		}
 		System.out.println("************************************************");
 		return validarPath(parallel);	
-		//ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
-				//s.add(parallel);
-		//return s;	
+//		ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
+//				s.add(parallel);
+//		return s;	
 	}
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)
@@ -1038,7 +1038,10 @@ public class GeometricOperations
 						if(numeroDeIntersecao == 0)
 						{
 							//adiciona os pontos de intersecao ao vetor de intersecoes
-							intersecoes.add(intersection);
+							if(!(alreadyUsed(intersection,intersecoes)))
+							{
+								intersecoes.add(intersection);
+							}
 							if (ei.isLimitedLine())
 							{
 								LimitedLine linei = (LimitedLine)ei;
@@ -1066,25 +1069,35 @@ public class GeometricOperations
 						{
 							if((elementsValidated.get(0).get(elementsValidated.get(0).size()-1).isLimitedLine()))
 							{
-								LimitedLine aux1 = (LimitedLine)elementsValidated.get(0).get(elementsValidated.get(0).size()-2);
-								LimitedLine aux2 = (LimitedLine)elementsValidated.get(0).get(elementsValidated.get(0).size()-1);
+								int indice1 = elementsValidated.get(0).size()- 2;
+								int indice2 = elementsValidated.get(0).size()- 1;
+								LimitedLine aux1 = (LimitedLine)elementsValidated.get(0).get(indice1);
+								LimitedLine aux2 = (LimitedLine)elementsValidated.get(0).get(indice2);
+								
 								if(intersectionElements(aux1,ej) != null)
 								{
 									intersection = intersectionElements(aux1,ej);
 									LimitedLine lineBeforeIntersection = new LimitedLine(aux1.getInitialPoint(), intersection);
 									LimitedLine lineAfterIntersection = new LimitedLine(intersection, aux1.getFinalPoint());
-									elementsValidated.get(0).remove(elementsValidated.get(0).size()-2);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-2, lineBeforeIntersection);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-2, lineAfterIntersection);
+									//elementsValidated.get(0).remove(aux1);
+									//elementsValidated.get(0).add(elementsValidated.get(0).size()-2, lineBeforeIntersection);
+									//elementsValidated.get(0).add(elementsValidated.get(0).size()-2, lineAfterIntersection);
+									elementsValidated.get(0).add(lineBeforeIntersection);
+									elementsValidated.get(0).add(lineAfterIntersection);
+									elementsValidated.get(0).remove(indice1);
 								}
 								else if(intersectionElements(aux2,ej) != null)
 								{
 									intersection = intersectionElements(aux2,ej);
 									LimitedLine lineBeforeIntersection = new LimitedLine(aux2.getInitialPoint(), intersection);
 									LimitedLine lineAfterIntersection = new LimitedLine(intersection, aux2.getFinalPoint());
-									elementsValidated.get(0).remove(elementsValidated.get(0).size()-1);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, lineBeforeIntersection);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, lineAfterIntersection);
+//									elementsValidated.get(0).remove(aux2);
+									//elementsValidated.get(0).set((elementsValidated.get(0).size()-1),lineBeforeIntersection);
+//									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, lineBeforeIntersection);
+//									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, lineAfterIntersection);
+									elementsValidated.get(0).add(lineBeforeIntersection);
+									elementsValidated.get(0).add(lineAfterIntersection);
+									elementsValidated.get(0).remove(indice2);
 								}
 							}
 							else if((elementsValidated.get(0).get(elementsValidated.get(0).size()-1).isLimitedArc()))
@@ -1119,6 +1132,19 @@ public class GeometricOperations
 				elementsValidated.get(0).add(ei);
 			}
 		}
+		
+		for(int i=0;i<elementsValidated.get(0).size();i++)
+		{
+			if(elementsValidated.get(0).get(i).isLimitedLine()){
+				LimitedLine temp = (LimitedLine)elementsValidated.get(0).get(i);
+				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + ",new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0));");
+			}
+			else if(elementsValidated.get(0).get(i).isLimitedArc())
+			{
+				LimitedArc temp = (LimitedArc)elementsValidated.get(0).get(i);
+				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + ",new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0)" + "new Point3d(" + temp.getCenter().x + "," + temp.getCenter().y + ",0));");					
+				}
+		}
 		System.out.println("Intersecoes: " + intersecoes.size());
 		
 //		Point3d intersection = intersecoes.get(0);
@@ -1146,6 +1172,21 @@ public class GeometricOperations
 		return elementsValidated;
 	}
 	
+	public static boolean alreadyUsed(Point3d point, ArrayList<Point3d> array)
+	{
+		boolean answer = false;
+		if(array.size() > 0)
+		{
+			for (int i = 0; i < array.size();i++)
+			{
+				if(isTheSamePoint(point, array.get(i)))
+				{
+					answer = true;
+				}
+			}
+		}
+		return answer;
+	}
 	public static ArrayList<Point3d> intersectionElements(ArrayList<LimitedElement> elements)
 	{
 		ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();

@@ -72,6 +72,7 @@ public class GeometricOperationsTest
 	Point3d testPoint2 = new Point3d(1.0, 13.0, 0);
 	
     LimitedArc arco0= new LimitedArc(new Point3d(325.0,135.0,0), new Point3d(175.0,285.0,0), new Point3d(175.0,135.0,0));
+    LimitedArc arco1= new LimitedArc(new Point3d(150.0,50.0,0), new Point3d(150.0,250.0,0), new Point3d(150.0,150.0,0));
     LimitedLine l1= new LimitedLine(new Point3d(325.0,134.99999999999997,0), new Point3d(325.0,165.0,0));
     LimitedLine l2= new LimitedLine(new Point3d(325.0,165.0,0), new Point3d(355.0000000000001,165.0,0));
     LimitedLine l3= new LimitedLine(new Point3d(355.0,165.0000000000001,0), new Point3d(355.0,195.00000000000034,0));
@@ -86,7 +87,8 @@ public class GeometricOperationsTest
 	{
 		lineA = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
 	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
-	    elementos.add(arco0);
+//	    elementos.add(arco0);
+	    elementos.add(arco1);
 	    elementos.add(l1);
 	    elementos.add(l2);
 	    elementos.add(l3);
@@ -163,7 +165,7 @@ public class GeometricOperationsTest
 	}
 	
 	@Test
-	//Teste de Interseção entre Limited Elements (Dois Limited elements)
+	//Teste de Interseï¿½ï¿½o entre Limited Elements (Dois Limited elements)
 	public void intersectionElementsTest() 
 	{
 		/*
@@ -174,15 +176,15 @@ public class GeometricOperationsTest
 		LimitedLine line1 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
 		LimitedLine line2 = new LimitedLine(new Point3d(20,10,0), new Point3d(20,20,0));
 		
-		//Retas que não se tocam
+		//Retas que nï¿½o se tocam
 		LimitedLine line3 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
 		LimitedLine line4 = new LimitedLine(new Point3d(10,20,0), new Point3d(20,20,0));
 		
-		//Retas com intersectão (vertical - horizoltal)
+		//Retas com intersectï¿½o (vertical - horizoltal)
 		LimitedLine line5 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
 		LimitedLine line6 = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
 		
-		//Linhas com interseção (não verticais)
+		//Linhas com interseï¿½ï¿½o (nï¿½o verticais)
 		LimitedLine line7 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 20, 0));
 		LimitedLine line8 = new LimitedLine(new Point3d(20, 10, 0), new Point3d(10, 20, 0));
 		
@@ -197,26 +199,26 @@ public class GeometricOperationsTest
 		LimitedArc arc1 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
 		LimitedLine line9 = new LimitedLine(new Point3d(10,10,0),new Point3d(20,10,0));
 		
-		//Com interseção
+		//Com interseï¿½ï¿½o
 		LimitedArc arc2 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
 		LimitedLine line10 = new LimitedLine(new Point3d(30, 10, 0), new Point3d(20, 20, 0));
 		
-		//Com interseção (arco + linha vertical)
+		//Com interseï¿½ï¿½o (arco + linha vertical)
 		LimitedArc arc3 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
 		LimitedLine line11 = new LimitedLine(new Point3d(25, 0, 0), new Point3d(25, 20, 0));	
 		/*
 		 * ---------------------------------------------------------------------------------
 		 * Arco - Arco
 		 */
-		//Com interseção (arco + arco), tamanho igual
+		//Com interseï¿½ï¿½o (arco + arco), tamanho igual
 		LimitedArc arc4 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
 		LimitedArc arc5 = new LimitedArc(new Point3d(20, 20, 0), new Point3d(30, 20, 0), new Point3d(30,20,0));
 		
-		//Com interseção (arco + arco)
+		//Com interseï¿½ï¿½o (arco + arco)
 		LimitedArc arc6 = new LimitedArc(new Point3d(75, 130, 0), new Point3d(50, 105, 0), new Point3d(50,130 , 0));
 		LimitedArc arc7 = new LimitedArc(new Point3d(50, 125, 0), new Point3d(74.45, 105.19, 0), new Point3d(50, 100, 0));
 		
-		////Com interseção (arco + arco) tamanho diferente
+		////Com interseï¿½ï¿½o (arco + arco) tamanho diferente
 		LimitedArc arc8 = new LimitedArc(new Point3d(10, 10, 0), new Point3d(30, 30, 0), new Point3d(10,30 , 0));
 		LimitedArc arc9 = new LimitedArc(new Point3d(5, 70, 0), new Point3d(60, 15, 0), new Point3d(70, 60, 0));
 		
@@ -225,7 +227,7 @@ public class GeometricOperationsTest
 	}
 	
 	@Test
-	//Teste de Interseção entre Limited Elements (Array de Limited Elements)
+	//Teste de Interseï¿½ï¿½o entre Limited Elements (Array de Limited Elements)
 	public void intersectionElementsTest1()
 	{
 		/*

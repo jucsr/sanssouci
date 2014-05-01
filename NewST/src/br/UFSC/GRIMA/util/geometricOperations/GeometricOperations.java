@@ -1024,14 +1024,14 @@ public class GeometricOperations
 			Point3d intersection = null;
 			boolean thereIsIntersection = false;
 			LimitedElement ei = elements.get(i);
+			int numeroDeIntersecao = 0;
 			for (int j = 0; j < elements.size(); j++)
 			{
+				LimitedElement ej = elements.get(j);
 				intersection = null;
-				if(i != j)
+				if(!ei.equals(ej))
 				{
-					LimitedElement ej = elements.get(j);
-					intersection = intersectionElements(ei,ej);
-					int numeroDeIntersecao = 0;
+					intersection = intersectionElements(ei, ej);
 					if (intersection != null)
 					{
 						thereIsIntersection = true;

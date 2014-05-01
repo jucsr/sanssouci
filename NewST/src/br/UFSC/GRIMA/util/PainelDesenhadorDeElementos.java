@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.util;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -185,6 +186,17 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 		g2d.draw(arco);
 		if(desenharCoordenadas)
 		{
+			float dash1[] = {2.0f, 4.0f};  
+		    BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);  
+		    g2d.setStroke(dashed);  
+		  
+		  
+			Line2D line1 = new Line2D.Double(arc.getCenter().x * zoom, arc.getCenter().y * zoom, arc.getInitialPoint().x * zoom, arc.getInitialPoint().y * zoom);
+			Line2D line2 = new Line2D.Double(arc.getCenter().x * zoom, arc.getCenter().y * zoom, arc.getFinalPoint().x * zoom, arc.getFinalPoint().y * zoom);
+			g2d.draw(line1);
+			g2d.draw(line2);
+			g2d.setStroke(new BasicStroke());
+			
 			desenharCoordenadas(arc.getCenter(), g2d, new Color(0, 255, 0));
 			desenharCoordenadas(arc.getInitialPoint(), g2d, new Color(0, 255, 0));
 			desenharCoordenadas(arc.getFinalPoint(), g2d, new Color(0, 255, 0));

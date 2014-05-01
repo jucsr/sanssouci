@@ -80,6 +80,8 @@ public class GeometricOperationsTest
     LimitedLine l4= new LimitedLine(new Point3d(354.99999999999966,195.0,0), new Point3d(132.99999999999983,195.0,0));
     LimitedLine l5= new LimitedLine(new Point3d(133.0,194.99999999999983,0), new Point3d(133.0,285.0,0));
     LimitedLine l6= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
+//    LimitedLine l7= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
+    LimitedLine l8= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
     ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
     
 	
@@ -88,6 +90,8 @@ public class GeometricOperationsTest
 	{
 		lineA = new LimitedLine(new Point3d(10, 10, 0), new Point3d(20, 10, 0));
 	    lineB = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
+//	    l7 = new LimitedLine(new Point3d(150, 150, 0), new Point3d(200, 250, 0));
+	    l8 = new LimitedLine(new Point3d(200, 150, 0), new Point3d(250, 250, 0));
 	    elementos.add(arco00);
 	    elementos.add(arco0);
 	    //elementos.add(arco1);
@@ -97,6 +101,8 @@ public class GeometricOperationsTest
 	    elementos.add(l4);
 	    elementos.add(l5);
 	    elementos.add(l6);
+//	    elementos.add(l7);
+	    elementos.add(l8);
 
 	}
 	@Test
@@ -264,7 +270,6 @@ public class GeometricOperationsTest
 		 * Teste 3
 		 */
 		ArrayList <LimitedElement> elementos1 = new ArrayList<LimitedElement>();
-		ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos1);
 		
 		LimitedArc arco0= new LimitedArc(new Point3d(325.0,135.0,0), new Point3d(175.0,285.0,0), new Point3d(175.0,135.0,0));
 		LimitedLine l4= new LimitedLine(new Point3d(325.0,134.99999999999997,0),new Point3d(325.0,165.0,0));
@@ -287,6 +292,7 @@ public class GeometricOperationsTest
 	    elementos1.add(l11);
 	    elementos1.add(l12);
 //	    elementos1.remove(8);
+	    ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos1);
 		//ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
 		for(int i=0;i<intersecoes.size();i++)
 		{

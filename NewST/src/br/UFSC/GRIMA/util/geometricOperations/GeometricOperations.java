@@ -1067,60 +1067,53 @@ public class GeometricOperations
 						}
 						else
 						{
-							if((elementsValidated.get(0).get(elementsValidated.get(0).size()-1).isLimitedLine()))
+							int indice1 = elementsValidated.get(0).size() - 2;
+							int indice2 = elementsValidated.get(0).size() - 1;
+							if((elementsValidated.get(0).get(elementsValidated.get(0).size() - 1).isLimitedLine()))
 							{
-								int indice1 = elementsValidated.get(0).size()- 2;
-								int indice2 = elementsValidated.get(0).size()- 1;
 								LimitedLine aux1 = (LimitedLine)elementsValidated.get(0).get(indice1);
 								LimitedLine aux2 = (LimitedLine)elementsValidated.get(0).get(indice2);
 								
-								if(intersectionElements(aux1,ej) != null)
+								if (intersectionElements(aux1, ej) != null)
 								{
 									intersection = intersectionElements(aux1,ej);
 									LimitedLine lineBeforeIntersection = new LimitedLine(aux1.getInitialPoint(), intersection);
 									LimitedLine lineAfterIntersection = new LimitedLine(intersection, aux1.getFinalPoint());
-									//elementsValidated.get(0).remove(aux1);
-									//elementsValidated.get(0).add(elementsValidated.get(0).size()-2, lineBeforeIntersection);
-									//elementsValidated.get(0).add(elementsValidated.get(0).size()-2, lineAfterIntersection);
 									elementsValidated.get(0).add(lineBeforeIntersection);
 									elementsValidated.get(0).add(lineAfterIntersection);
 									elementsValidated.get(0).remove(indice1);
 								}
-								else if(intersectionElements(aux2,ej) != null)
+								else if (intersectionElements(aux2, ej) != null)
 								{
 									intersection = intersectionElements(aux2,ej);
 									LimitedLine lineBeforeIntersection = new LimitedLine(aux2.getInitialPoint(), intersection);
 									LimitedLine lineAfterIntersection = new LimitedLine(intersection, aux2.getFinalPoint());
-//									elementsValidated.get(0).remove(aux2);
-									//elementsValidated.get(0).set((elementsValidated.get(0).size()-1),lineBeforeIntersection);
-//									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, lineBeforeIntersection);
-//									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, lineAfterIntersection);
 									elementsValidated.get(0).add(lineBeforeIntersection);
 									elementsValidated.get(0).add(lineAfterIntersection);
 									elementsValidated.get(0).remove(indice2);
 								}
 							}
-							else if((elementsValidated.get(0).get(elementsValidated.get(0).size()-1).isLimitedArc()))
+							else if ((elementsValidated.get(0).get(elementsValidated.get(0).size() - 1).isLimitedArc()))
 							{
-								LimitedArc aux1 = (LimitedArc)elementsValidated.get(0).get(elementsValidated.get(0).size()-2);
-								LimitedArc aux2 = (LimitedArc)elementsValidated.get(0).get(elementsValidated.get(0).size()-1);
-								if(intersectionElements(aux1,ej) != null)
+								LimitedArc aux1 = (LimitedArc) elementsValidated.get(0).get(indice1);
+								LimitedArc aux2 = (LimitedArc) elementsValidated.get(0).get(indice2);
+								if (intersectionElements(aux1, ej) != null)
 								{
 									intersection = intersectionElements(aux1,ej);
 									LimitedArc arcBeforeIntersection = new LimitedArc(aux1.getInitialPoint(), intersection, ((LimitedArc)ei).getCenter());
 									LimitedArc arcAfterIntersection = new LimitedArc(intersection, aux1.getFinalPoint(), ((LimitedArc)ei).getCenter());
-									elementsValidated.get(0).remove(elementsValidated.get(0).size()-2);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-2, arcBeforeIntersection);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-2, arcAfterIntersection);
+									elementsValidated.get(0).add(arcBeforeIntersection);
+									elementsValidated.get(0).add(arcAfterIntersection);
+									elementsValidated.get(0).remove(indice1);
 								}
 								else if(intersectionElements(aux2,ej) != null)
 								{
 									intersection = intersectionElements(aux2,ej);
 									LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intersection, ((LimitedArc)ei).getCenter());
 									LimitedArc arcAfterIntersection = new LimitedArc(intersection, aux2.getFinalPoint(), ((LimitedArc)ei).getCenter());
-									elementsValidated.get(0).remove(elementsValidated.get(0).size()-1);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, arcBeforeIntersection);
-									elementsValidated.get(0).add(elementsValidated.get(0).size()-1, arcAfterIntersection);
+									elementsValidated.get(0).add(arcBeforeIntersection);
+									elementsValidated.get(0).add(arcAfterIntersection);
+									elementsValidated.get(0).remove(indice2);
 								}
 							}
 						}

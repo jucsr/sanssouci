@@ -1018,7 +1018,7 @@ public class GeometricOperations
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		//Array de intenrsecoes
 		//ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
-		elementsValidated.add(new ArrayList<LimitedElement>());
+		//elementsValidated.add(new ArrayList<LimitedElement>());
 		for (int i=0; i < elements.size(); i++)
 		{
 			Point3d intersection = null;
@@ -1034,86 +1034,81 @@ public class GeometricOperations
 					intersection = intersectionElements(ei, ej);
 					if (intersection != null)
 					{
+						if(!(alreadyUsed(intersection,intersecoes)))
+						{
+							intersecoes.add(intersection);
+						}
 						thereIsIntersection = true;
 						if(numeroDeIntersecao == 0)
 						{
 							//adiciona os pontos de intersecao ao vetor de intersecoes
-							if(!(alreadyUsed(intersection,intersecoes)))
-							{
-								intersecoes.add(intersection);
-							}
 							if (ei.isLimitedLine())
 							{
 								LimitedLine linei = (LimitedLine)ei;
 								LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection);
 								LimitedLine lineAfterIntersection = new LimitedLine(intersection, linei.getFinalPoint());
-								elementsValidated.get(0).add(lineBeforeIntersection);
-								elementsValidated.get(0).add(lineAfterIntersection);
-								
-								//elementsIntermediario.add(lineBeforeIntersection);
-								//elementsIntermediario.add(lineAfterIntersection);
+								elementsIntermediario.add(lineBeforeIntersection);
+								elementsIntermediario.add(lineAfterIntersection);
 							}
 							else if(ei.isLimitedArc())
 							{
 								LimitedArc arci = (LimitedArc)ei;
 								LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection, arci.getCenter());
 								LimitedArc arcAfterIntersection = new LimitedArc(intersection, arci.getFinalPoint(), arci.getCenter());
-								//elementsIntermediario.add(arcBeforeIntersection);
-								//elementsIntermediario.add(arcAfterIntersection);
-								elementsValidated.get(0).add(arcBeforeIntersection);
-								elementsValidated.get(0).add(arcAfterIntersection);
+								elementsIntermediario.add(arcBeforeIntersection);
+								elementsIntermediario.add(arcAfterIntersection);
 							}
 							numeroDeIntersecao++;
 						}
 						else
 						{
-							int indice1 = elementsValidated.get(0).size() - 2;
-							int indice2 = elementsValidated.get(0).size() - 1;
-							if((elementsValidated.get(0).get(elementsValidated.get(0).size() - 1).isLimitedLine()))
+							int indice1 = elementsIntermediario.size() - 2;
+							int indice2 = elementsIntermediario.size() - 1;
+							if((elementsIntermediario.get(elementsIntermediario.size() - 1).isLimitedLine()))
 							{
-								LimitedLine aux1 = (LimitedLine)elementsValidated.get(0).get(indice1);
-								LimitedLine aux2 = (LimitedLine)elementsValidated.get(0).get(indice2);
+								LimitedLine aux1 = (LimitedLine)elementsIntermediario.get(indice1);
+								LimitedLine aux2 = (LimitedLine)elementsIntermediario.get(indice2);
 								
 								if (intersectionElements(aux1, ej) != null)
 								{
 									intersection = intersectionElements(aux1,ej);
 									LimitedLine lineBeforeIntersection = new LimitedLine(aux1.getInitialPoint(), intersection);
 									LimitedLine lineAfterIntersection = new LimitedLine(intersection, aux1.getFinalPoint());
-									elementsValidated.get(0).add(lineBeforeIntersection);
-									elementsValidated.get(0).add(lineAfterIntersection);
-									elementsValidated.get(0).remove(indice1);
+									elementsIntermediario.add(lineBeforeIntersection);
+									elementsIntermediario.add(lineAfterIntersection);
+									elementsIntermediario.remove(indice1);
 								}
 								else if (intersectionElements(aux2, ej) != null)
 								{
 									intersection = intersectionElements(aux2,ej);
 									LimitedLine lineBeforeIntersection = new LimitedLine(aux2.getInitialPoint(), intersection);
 									LimitedLine lineAfterIntersection = new LimitedLine(intersection, aux2.getFinalPoint());
-									elementsValidated.get(0).add(lineBeforeIntersection);
-									elementsValidated.get(0).add(lineAfterIntersection);
-									elementsValidated.get(0).remove(indice2);
+									elementsIntermediario.add(lineBeforeIntersection);
+									elementsIntermediario.add(lineAfterIntersection);
+									elementsIntermediario.remove(indice2);
 								}
 							}
-							else if ((elementsValidated.get(0).get(elementsValidated.get(0).size() - 1).isLimitedArc()))
+							else if ((elementsIntermediario.get(elementsIntermediario.size() - 1).isLimitedArc()))
 							{
-								LimitedArc aux1 = (LimitedArc) elementsValidated.get(0).get(indice1);
-								LimitedArc aux2 = (LimitedArc) elementsValidated.get(0).get(indice2);
+								LimitedArc aux1 = (LimitedArc) elementsIntermediario.get(indice1);
+								LimitedArc aux2 = (LimitedArc) elementsIntermediario.get(indice2);
 								if (intersectionElements(aux1, ej) != null)
 								{
 									intersection = intersectionElements(aux1,ej);
 									LimitedArc arcBeforeIntersection = new LimitedArc(aux1.getInitialPoint(), intersection, ((LimitedArc)ei).getCenter());
 									LimitedArc arcAfterIntersection = new LimitedArc(intersection, aux1.getFinalPoint(), ((LimitedArc)ei).getCenter());
-									elementsValidated.get(0).add(arcBeforeIntersection);
-									elementsValidated.get(0).add(arcAfterIntersection);
-									elementsValidated.get(0).remove(indice1);
+									elementsIntermediario.add(arcBeforeIntersection);
+									elementsIntermediario.add(arcAfterIntersection);
+									elementsIntermediario.remove(indice1);
 								}
 								else if(intersectionElements(aux2,ej) != null)
 								{
 									intersection = intersectionElements(aux2,ej);
 									LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intersection, ((LimitedArc)ei).getCenter());
 									LimitedArc arcAfterIntersection = new LimitedArc(intersection, aux2.getFinalPoint(), ((LimitedArc)ei).getCenter());
-									elementsValidated.get(0).add(arcBeforeIntersection);
-									elementsValidated.get(0).add(arcAfterIntersection);
-									elementsValidated.get(0).remove(indice2);
+									elementsIntermediario.add(arcBeforeIntersection);
+									elementsIntermediario.add(arcAfterIntersection);
+									elementsIntermediario.remove(indice2);
 								}
 							}
 						}
@@ -1122,9 +1117,10 @@ public class GeometricOperations
 			}
 			if(thereIsIntersection == false)
 			{
-				elementsValidated.get(0).add(ei);
+				elementsIntermediario.add(ei);
 			}
 		}
+		elementsValidated.add(elementsIntermediario);
 		
 		for(int i=0;i<elementsValidated.get(0).size();i++)
 		{
@@ -1744,69 +1740,59 @@ public class GeometricOperations
 			
 			//Garante que n�o calularemos uma tangente = infinity
 			//Xinicial1 = Xfinal1 e Xinicial2 != Xfinal2
-			if((pi1.getX() == pf1.getX()) && (pi2.getX() != pf2.getX()))
+			if((roundNumber(pi1.x,10) == roundNumber(pf1.x,10)) && (roundNumber(pi2.x,10) != roundNumber(pf2.x,10)))
 			{
-				//Caso o Xinicial < Xfinal
-				if(pi2.getX() < pi2.getX())
+				double xini = pi2.x;
+				double xfin = pf2.x;
+				if(xini > xfin)
 				{
-					//Verifica se Xi1 n�o est� entre Xi2 e Xf2 (garantindo que n�o haja interse��o)
-					if(!((pi1.getX() >= pi2.getX())&& (pi1.getX() <= pf2.getX())))
-					{
-						return null;
-					}	
+					xini = pf2.x;
+					xfin = pi2.x;
 				}
-				//Caso o Xinicial > Xfinal
-				if(pi2.getX() > pi2.getX())
+				//Verifica se Xi1 nao estiver entre Xi2 e Xf2 (garantindo que nao haja intersecao)
+				if((pi1.x < xini) || (pi1.x > xfin))
 				{
-					//Verifica se Xi1 n�o est� entre Xi2 e Xf2 (garantindo que n�o haja interse��o)
-					if(!((pi1.getX() >= pf2.getX())&& (pi1.getX() <= pi2.getX())))
-					{
-						return null;
-					}	
-				}
-				//Caso haja interse��o, ela � calculada
-				b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
-				a2 = pi2.getY() - b2*pi2.getX();
+					return null;
+				}	
+				//Caso haja intersecao, ela e calculada
+				b2 = (pf2.y-pi2.y)/(pf2.x-pi2.x);
+				a2 = pi2.y - b2*pi2.x;
+				x0 = pi1.x;
+				y0 = a2 + b2 * x0;
 			}
 			//Xinicial1 != Xfinal1 e Xinicial2 == Xfinal2
-			else if((pi1.getX() != pf1.getX()) && (pi2.getX() == pf2.getX()))
+			else if((roundNumber(pi1.x,10) != roundNumber(pf1.x,10)) && (roundNumber(pi2.x,10) == roundNumber(pf2.x,10)))
 			{
-				//Caso o Xinicial < Xfinal
-				if(pi1.getX() < pf1.getX())
+				double xini = pi1.x;
+				double xfin = pf1.x;
+				if(xini > xfin)
 				{
-					//Verifica se Xi2 n�o est� entre Xi1 e Xf1 (garantindo que n�o haja interse��o)
-					if(!((pi2.getX() >= pi1.getX())&& (pi2.getX() <= pf1.getX())))
-					{
-						return null;
-					}
+					xini = pf1.x;
+					xfin = pi1.x;
 				}
-				//Caso o Xinicial > Xfinal
-				else if(pi1.getX() > pf1.getX())
+				//Verifica se Xi2 nao esta entre Xi1 e Xf1 (garantindo que nao haja intersecao)
+				if((pi2.x < xini)&& (pi2.x > xfin))
 				{
-					//Verifica se Xi2 n�o est� entre Xi1 e Xf1 (garantindo que n�o haja interse��o)
-					if(!((pi2.getX() >= pf1.getX())&& (pi2.getX() <= pi1.getX())))
-					{
-						return null;
-					}
+					return null;
 				}
-				//Caso haja interse��o, ela � calculada
-				b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
-				a1 = pi1.getY() - b1*pi1.getX();
+				//Caso haja intersecao, ela e calculada
+				b1 = (pf1.y-pi1.y)/(pf1.x-pi1.x);
+				a1 = pi1.y - b1*pi1.x;
+				x0 = pi2.x;
+				y0 = a1 + b1 * x0;
 			}
 			
-			else if((pi1.getX() == pf1.getX()) && (pi2.getX() == pf2.getX()))
+			else if((roundNumber(pi1.x,10) == roundNumber(pf1.x,10)) && (roundNumber(pi2.x,10) == roundNumber(pf2.x,10)))
 			{
 				return null;
 			}
-					
 			//Xinicial1 != Xfinal1 e Xinicial2 != Xfinal2
-			else if((pi1.getX() != pf1.getX()) && (pi2.getX() != pf2.getX()))
+			else if((roundNumber(pi1.x,10) != roundNumber(pf1.x,10)) && (roundNumber(pi2.x,10) != roundNumber(pf2.x,10)))
 			{
-				b1 = (pf1.getY()-pi1.getY())/(pf1.getX()-pi1.getX());
-				a1 = pi1.getY() - b1*pi1.getX();
-				b2 = (pf2.getY()-pi2.getY())/(pf2.getX()-pi2.getX());
-				a2 = pi2.getY() - b2*pi2.getX();
-				
+				b1 = (pf1.y-pi1.y)/(pf1.x-pi1.x);
+				a1 = pi1.y - b1*pi1.x;
+				b2 = (pf2.y-pi2.y)/(pf2.x-pi2.x);
+				a2 = pi2.y - b2*pi2.x;
 				if (b1==b2)
 				{
 					return null;

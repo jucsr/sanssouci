@@ -81,12 +81,12 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		this.cavidadeGeral.setRadius(25);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-		points.add(new Point2D.Double(2,40));
-      points.add(new Point2D.Double(2,80));
-      points.add(new Point2D.Double(120,80));
-      points.add(new Point2D.Double(120,10));
-      points.add(new Point2D.Double(50,10));
-      points.add(new Point2D.Double(50,40));
+		points.add(new Point2D.Double(2, 40));
+		points.add(new Point2D.Double(2, 80));
+		points.add(new Point2D.Double(120, 80));
+		points.add(new Point2D.Double(120, 10));
+		points.add(new Point2D.Double(50, 10));
+		points.add(new Point2D.Double(50,40));
 //         
 //		points.add(new Point2D.Double(2, 80));
 //		points.add(new Point2D.Double(150, 80));

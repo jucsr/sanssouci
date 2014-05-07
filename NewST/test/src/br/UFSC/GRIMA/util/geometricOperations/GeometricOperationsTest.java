@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
+import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
@@ -328,6 +330,30 @@ public class GeometricOperationsTest
 			}
 		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosIntermediarios);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	
+	@Test
+	public void minumumDistanceTest()
+	{
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
+		
+		points.add(new Point2D.Double(8, 160));
+		points.add(new Point2D.Double(8, 320));
+		points.add(new Point2D.Double(480, 320));
+		points.add(new Point2D.Double(480, 40));
+		points.add(new Point2D.Double(200, 40));
+		points.add(new Point2D.Double(200,160));
+		
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
+		ArrayList<LimitedElement> elements = addPocketVertex.getElements();
+		
+		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(elements, arco0));
+		
+		elements.add(arco0);
+		
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);
 	}

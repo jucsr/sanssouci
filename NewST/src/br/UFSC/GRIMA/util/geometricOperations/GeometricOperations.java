@@ -743,6 +743,24 @@ public class GeometricOperations
 		return distance;
 	}
 	
+	public static double minimumDistance(ArrayList<LimitedElement> formaOriginal, LimitedElement element)
+	{
+		double minimumDistance = minimumDistance(formaOriginal.get(0),element);
+		
+		for(int i = 0;i < formaOriginal.size(); i++)
+		{
+			LimitedElement temp = formaOriginal.get(i);
+			double auxiliar = minimumDistance(temp,element);
+			if(minimumDistance > auxiliar)
+			{
+				minimumDistance = auxiliar;
+			}
+		}
+		
+		return minimumDistance;
+	}
+
+
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath (ArrayList<LimitedElement> elements, double distance)
 	{
 		ArrayList<LimitedElement> parallel = new ArrayList<LimitedElement>();
@@ -1008,7 +1026,7 @@ public class GeometricOperations
 //		return s;	
 	}
 	
-	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements)
+	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
 		//vetor de sa�da
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
@@ -1136,7 +1154,7 @@ public class GeometricOperations
 		}
 		System.out.println("Intersecoes: " + intersecoes.size());
 		
-		Point3d intersection = intersecoes.get(0);
+		//Point3d intersection = intersecoes.get(0);
 		Point3d initialPoint;
 		int numeroDeLacos = 0;
 		
@@ -1147,23 +1165,11 @@ public class GeometricOperations
 //		
 		for(int i = 0; i< elementsIntermediario.size();i++)
 		{
-			if(intersection == ((LimitedLine)elementsIntermediario.get(i)).getInitialPoint())
+			if(minimumDistance(formaOriginal, elementsIntermediario.get(i)) > distance)
 			{
-				initialPoint = ((LimitedLine)elementsIntermediario.get(i)).getInitialPoint();
-//					for(int j = i; j<elementsIntermediario.size()-1;j++)
-//					{
-//						
-//					}
-				while(!(isTheSamePoint(initialPoint,intersection)))
-				{
-					
-				}
-			LimitedElement ei1 = elementsIntermediario.get(i);
+				elementsIntermediario2.add(elementsIntermediario.get(i));
 			}
-			else if(intersection == ((LimitedArc)elementsIntermediario.get(i)).getInitialPoint())
-			{
-				
-			}
+			
 		}
 		
 		System.out.println("Size:" + elements.size());

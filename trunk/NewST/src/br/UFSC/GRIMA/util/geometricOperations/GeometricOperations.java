@@ -1173,43 +1173,47 @@ public class GeometricOperations
 			
 		}
 		
-//		for(int i = 0; i < elementsIntermediario2.size(); i++)
-//		{
-//			LimitedElement ei0 = elementsIntermediario.get(i);
-//			LimitedElement ei1 = elementsIntermediario.get(i+1);
-//			//Point3d tempPoint = initialPoint;
-//			if(ei0.isLimitedArc())
-//			{
-//				LimitedArc arci = (LimitedArc)ei0;
-//				if(isTheSamePoint(initialPoint,arci.getInitialPoint()))
-//				{
-//					for(int j = 0; j < elementsIntermediario2.size(); j++)
-//					{
-//						
-//					}
+		for(int i = 0; i < elementsIntermediario2.size(); i++)
+		{
+			LimitedElement ei0 = elementsIntermediario.get(i);
+			LimitedElement ei1 = elementsIntermediario.get(i+1);
+			//Point3d tempPoint = initialPoint;
+			if(ei0.isLimitedArc())
+			{
+				LimitedArc arci0 = (LimitedArc)ei0;
+				Point3d arci0I = arci0.getInitialPoint();
+				Point3d arci0F = arci0.getFinalPoint();
+				if(isTheSamePoint(initialPoint,arci0I))
+				{
+					if(ei1.isLimitedArc())
+					{
+						LimitedArc arci1 = (LimitedArc)ei1;
+						Point3d arci1I = arci1.getInitialPoint();
+						for(int j = 0; j < elementsIntermediario2.size(); j++)
+						{
+							//LimitedElement ej0 = elementsIntermediario.get(i+j);
+							//LimitedElement ej1 = elementsIntermediario.get(i+j+1);
+							if(isTheSamePoint(arci0F,arci1I))
+							{
+								
+							}
+						}
+					}
 //					while(initialPoint != intersection)
 //					{
 //						
 //					}
-//				}
-//				else
-//				{
-//					if(ei1.isLimitedArc())
-//					{
-//						initialPoint = (LimitedArc)ei1.						
-//					}
-//					else if(ei1.isLimitedArc())
-//				}
-//			}
-//			else if(ei0.isLimitedLine())
-//			{
-//				LimitedLine linei = (LimitedLine)ei0;
-//				if(isTheSamePoint(initialPoint,linei.getInitialPoint()))
-//				{
-//					
-//				}
-//			}
-//		}
+				}
+			}
+			else if(ei0.isLimitedLine())
+			{
+				LimitedLine linei = (LimitedLine)ei0;
+				if(isTheSamePoint(initialPoint,linei.getInitialPoint()))
+				{
+					
+				}
+			}
+		}
 		
 		System.out.println("Size:" + elements.size());
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());

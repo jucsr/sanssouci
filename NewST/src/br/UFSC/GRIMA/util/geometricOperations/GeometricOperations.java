@@ -1154,8 +1154,8 @@ public class GeometricOperations
 		}
 		System.out.println("Intersecoes: " + intersecoes.size());
 		
-		//Point3d intersection = intersecoes.get(0);
-		Point3d initialPoint;
+		Point3d intersection = intersecoes.get(0);
+		Point3d initialPoint = intersection;
 		int numeroDeLacos = 0;
 		
 		//if(intersection == elementsIntermediario.get(0).isLimitedLine())
@@ -1165,12 +1165,51 @@ public class GeometricOperations
 //		
 		for(int i = 0; i< elementsIntermediario.size();i++)
 		{
-			if(minimumDistance(formaOriginal, elementsIntermediario.get(i)) > distance)
+			LimitedElement ei0 = elementsIntermediario.get(i);
+			if(minimumDistance(formaOriginal, ei0) > distance)
 			{
 				elementsIntermediario2.add(elementsIntermediario.get(i));
 			}
 			
 		}
+		
+//		for(int i = 0; i < elementsIntermediario2.size(); i++)
+//		{
+//			LimitedElement ei0 = elementsIntermediario.get(i);
+//			LimitedElement ei1 = elementsIntermediario.get(i+1);
+//			//Point3d tempPoint = initialPoint;
+//			if(ei0.isLimitedArc())
+//			{
+//				LimitedArc arci = (LimitedArc)ei0;
+//				if(isTheSamePoint(initialPoint,arci.getInitialPoint()))
+//				{
+//					for(int j = 0; j < elementsIntermediario2.size(); j++)
+//					{
+//						
+//					}
+//					while(initialPoint != intersection)
+//					{
+//						
+//					}
+//				}
+//				else
+//				{
+//					if(ei1.isLimitedArc())
+//					{
+//						initialPoint = (LimitedArc)ei1.						
+//					}
+//					else if(ei1.isLimitedArc())
+//				}
+//			}
+//			else if(ei0.isLimitedLine())
+//			{
+//				LimitedLine linei = (LimitedLine)ei0;
+//				if(isTheSamePoint(initialPoint,linei.getInitialPoint()))
+//				{
+//					
+//				}
+//			}
+//		}
 		
 		System.out.println("Size:" + elements.size());
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());

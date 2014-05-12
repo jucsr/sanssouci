@@ -87,6 +87,9 @@ public class GeometricOperationsTest
     LimitedLine l9 = new LimitedLine(new Point3d(233, 159, 0), new Point3d(233, 309, 0));
     ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
     
+    ArrayList<LimitedElement> formaOriginal;
+    
+    
 	
 	@Before
 	public void init()
@@ -108,6 +111,17 @@ public class GeometricOperationsTest
 	    //elementos.add(l7);
 	    //elementos.add(l8);
 	    //elementos.add(l9);
+	    
+	    ArrayList<Point2D> points = new ArrayList<Point2D>();
+		points.add(new Point2D.Double(8, 160));
+		points.add(new Point2D.Double(8, 320));
+		points.add(new Point2D.Double(480, 320));
+		points.add(new Point2D.Double(480, 40));
+		points.add(new Point2D.Double(200, 40));
+		points.add(new Point2D.Double(200,160));
+		
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
+		formaOriginal = addPocketVertex.getElements();
 
 	}
 	@Test
@@ -320,7 +334,7 @@ public class GeometricOperationsTest
 	@Test
 	public void validarPathTest()
 	{
-		ArrayList<LimitedElement> elementosIntermediarios = GeometricOperations.validarPath(elementos).get(0);
+		ArrayList<LimitedElement> elementosIntermediarios = GeometricOperations.validarPath(elementos,formaOriginal,125).get(0);
 		for(int i = 0; i<(elementosIntermediarios.size()); i++)
 		{
 			if(elementosIntermediarios.get(i).isLimitedArc())
@@ -336,24 +350,12 @@ public class GeometricOperationsTest
 	
 	@Test
 	public void minumumDistanceTest()
-	{
-		ArrayList<Point2D> points = new ArrayList<Point2D>();
+	{	
+		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(formaOriginal, arco0));
 		
-		points.add(new Point2D.Double(8, 160));
-		points.add(new Point2D.Double(8, 320));
-		points.add(new Point2D.Double(480, 320));
-		points.add(new Point2D.Double(480, 40));
-		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200,160));
+		formaOriginal.add(arco0);
 		
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
-		ArrayList<LimitedElement> elements = addPocketVertex.getElements();
-		
-		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(elements, arco0));
-		
-		elements.add(arco0);
-		
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
 		desenhador.setVisible(true);
 		for(;;);
 	}

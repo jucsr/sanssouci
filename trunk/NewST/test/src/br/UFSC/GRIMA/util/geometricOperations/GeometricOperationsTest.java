@@ -334,7 +334,7 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath1Test()
 	{
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 70).get(0);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 125).get(0);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);

@@ -335,6 +335,16 @@ public class GeometricOperationsTest
 	public void parallelPath1Test()
 	{
 		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 125).get(0);
+		
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		for(LimitedElement tmp : elements)
+		{
+			all.add(tmp);
+		}
+		for(LimitedElement tmp : formaOriginal)
+		{
+			all.add(tmp);
+		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);

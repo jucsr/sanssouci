@@ -773,17 +773,19 @@ public class GeometricOperations
 				LimitedLine lineTmp = (LimitedLine)elements.get(i);
 				LimitedLine newLine = absoluteParallel(lineTmp, distance);
 				lacoTmp.add(newLine);
+				System.err.println("linha " + i);
 				
 			} else if(elements.get(i).isLimitedArc())
 			{
 				LimitedArc arcTmp = (LimitedArc)elements.get(i);
 				LimitedArc newArc = parallelArc(arcTmp, distance);
 				lacoTmp.add(newArc);
+				System.err.println("arco " + i);
 			}
 		}
-		saida = validarPath(lacoTmp, elements, distance);
+//		saida = validarPath(lacoTmp, elements, distance);
 		
-//		saida.add(lacoTmp);
+		saida.add(lacoTmp);
 		
 		return saida;
 	}
@@ -1185,8 +1187,8 @@ public class GeometricOperations
 		
 		System.out.println("Intersecoes: " + intersecoes.size());
 		
-		Point3d intersection = intersecoes.get(0);
-		Point3d initialPoint = intersection;
+//		Point3d intersection = intersecoes.get(0);
+//		Point3d initialPoint = intersection;
 		
 		/*
 		 * 	Valida��o 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 

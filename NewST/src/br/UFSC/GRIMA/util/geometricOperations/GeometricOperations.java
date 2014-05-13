@@ -762,16 +762,31 @@ public class GeometricOperations
 	
 //	public 
 //
-//	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (ArrayList<LimitedElement> elements, double distance)
-//	{
-//		for (int i = 0; i < elements.size(); i++)
-//		{
-//			if(elements.get(i).isLimitedLine())
-//			{
-//				
-//			}
-//		}
-//	}
+	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (ArrayList<LimitedElement> elements, double distance)
+	{
+		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
+		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
+		for (int i = 0; i < elements.size(); i++)
+		{
+			if(elements.get(i).isLimitedLine())
+			{
+				LimitedLine lineTmp = (LimitedLine)elements.get(i);
+				LimitedLine newLine = absoluteParallel(lineTmp, distance);
+				lacoTmp.add(newLine);
+				
+			} else if(elements.get(i).isLimitedArc())
+			{
+				LimitedArc arcTmp = (LimitedArc)elements.get(i);
+				LimitedArc newArc = parallelArc(arcTmp, distance);
+				lacoTmp.add(newArc);
+			}
+		}
+		saida = validarPath(lacoTmp, elements, distance);
+		
+//		saida.add(lacoTmp);
+		
+		return saida;
+	}
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath (ArrayList<LimitedElement> elements, double distance)
 	{
 		ArrayList<LimitedElement> parallel = new ArrayList<LimitedElement>();
@@ -1050,7 +1065,7 @@ public class GeometricOperations
 		//elementsValidated.add(new ArrayList<LimitedElement>());
 		
 		/*
-		 * 	Validação 1: Quebra dos Elementos na intersecao
+		 * 	Validaï¿½ï¿½o 1: Quebra dos Elementos na intersecao
 		 */
 		for (int i=0; i < elements.size(); i++)
 		{
@@ -1174,7 +1189,7 @@ public class GeometricOperations
 		Point3d initialPoint = intersection;
 		
 		/*
-		 * 	Validação 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
+		 * 	Validaï¿½ï¿½o 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
 		 */
 		for(int i = 0; i< elementsIntermediario.size();i++)
 		{
@@ -1188,7 +1203,7 @@ public class GeometricOperations
 		}
 		
 		/*
-		 * 	Validação 3: Separacao dos elementos em lacos 
+		 * 	Validaï¿½ï¿½o 3: Separacao dos elementos em lacos 
 		 */
 //		int numeroDeLacos = 0;
 //		for(int i = 0; i < elementsIntermediario2.size(); i++)
@@ -1721,10 +1736,10 @@ public class GeometricOperations
 			}
 			else
 			{
-				LimitedArc tempArc = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle()/2,1);
-				Point3d unitToNewPoint = unitVector(tempArc.getFinalPoint(), arc.getCenter());
-				Point3d newCenter = plus(tempArc.getFinalPoint(),multiply(distance,unitToNewPoint));
-				newArc = new LimitedArc(newCenter, newCenter, arc.getDeltaAngle(),1);
+//				LimitedArc tempArc = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle()/2,1);
+//				Point3d unitToNewPoint = unitVector(tempArc.getFinalPoint(), arc.getCenter());
+//				Point3d newCenter = plus(tempArc.getFinalPoint(),multiply(distance,unitToNewPoint));
+//				newArc = new LimitedArc(newCenter, newCenter, arc.getDeltaAngle(),1);
 			}
 		}				
 //		System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());

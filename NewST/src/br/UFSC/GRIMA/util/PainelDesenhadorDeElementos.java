@@ -160,21 +160,29 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 		g2d.setColor(color);
 		double anguloInicial = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x);
 		double anguloFinal = Math.atan2(arc.getFinalPoint().y - arc.getCenter().y, arc.getFinalPoint().x - arc.getCenter().x);
-		
-		if(anguloInicial < 0)
+		double deltaAngulo = 0;
+		if(arc.getDeltaAngle() > 0)
 		{
-			anguloInicial = 2 * Math.PI + anguloInicial;
+			if(anguloInicial < 0)
+			{
+				anguloInicial = 2 * Math.PI + anguloInicial;
+			}
+			if(anguloFinal <= 0)
+			{
+				anguloFinal = 2 * Math.PI + anguloFinal;
+			}
+			if(anguloInicial > anguloFinal)
+			{
+				anguloFinal = 2 * Math.PI + anguloFinal;
+			}
+			deltaAngulo = - (anguloFinal - anguloInicial) * 180 / Math.PI;
+			anguloInicial = - anguloInicial * 180 / Math.PI;
 		}
-		if(anguloFinal <= 0)
+		else
 		{
-			anguloFinal = 2 * Math.PI + anguloFinal;
+			deltaAngulo = arc.getDeltaAngle()* 180 / Math.PI;
+			System.out.println("DeltaAngle: " + deltaAngulo);
 		}
-		if(anguloInicial > anguloFinal)
-		{
-			anguloFinal = 2 * Math.PI + anguloFinal;
-		}
-		double deltaAngulo = - (anguloFinal - anguloInicial) * 180 / Math.PI;
-		anguloInicial = - anguloInicial * 180 / Math.PI;
 		
 //		System.out.println("================");
 //		System.out.println("A_INI = " + anguloInicial);
@@ -183,6 +191,8 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 //		System.out.println("================");
 		
 		Arc2D arco = new Arc2D.Double((arc.getCenter().x  - arc.getRadius()) * zoom, (arc.getCenter().y - arc.getRadius()) * zoom, arc.getRadius() * 2 * zoom, arc.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
+//		Arc2D arco = new Arc2D.Double((100) * zoom, (100) * zoom, 20 * 2 * zoom, 20 * 2 * zoom, 0, 90, 0);
+
 		g2d.draw(arco);
 		if(desenharCoordenadas)
 		{

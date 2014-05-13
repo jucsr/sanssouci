@@ -345,7 +345,7 @@ public class GeometricOperationsTest
 		{
 			all.add(tmp);
 		}
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
 	}

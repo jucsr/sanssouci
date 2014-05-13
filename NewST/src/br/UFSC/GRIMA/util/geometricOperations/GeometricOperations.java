@@ -740,7 +740,7 @@ public class GeometricOperations
 				distance = minimumDistanceArcToArc(arc1, arc2);
 			}			
 		}		
-		return distance;
+		return roundNumber(distance, 10);
 	}
 	
 	public static double minimumDistance(ArrayList<LimitedElement> formaOriginal, LimitedElement element)
@@ -783,9 +783,10 @@ public class GeometricOperations
 				System.err.println("arco " + i);
 			}
 		}
-//		saida = validarPath(lacoTmp, elements, distance);
 		
-		saida.add(lacoTmp);
+		saida = validarPath(lacoTmp, elements, distance);
+		
+//		saida.add(lacoTmp);
 		
 		return saida;
 	}
@@ -1994,6 +1995,14 @@ public class GeometricOperations
 
 	public static Point3d intersectionPoint(LimitedArc arc, LimitedLine line)
 	{
+		if(arc.getDeltaAngle() < 0)
+		{
+			Point3d temp = arc.getInitialPoint();
+			Point3d temp1 = arc.getFinalPoint();
+			arc.setFinalPoint(temp);
+			arc.setInitialPoint(temp1);
+
+		}
 		Point3d intersection = null;
 		/**
 		 *  line --> y = m * x + b
@@ -2009,7 +2018,6 @@ public class GeometricOperations
 		{
 			if (!((line.getInitialPoint().x >= xin) && (line.getInitialPoint().x <= xif))) 
 			{
-				System.out.println("S/Inter");
 				return null;
 			}
 			else 
@@ -2152,6 +2160,22 @@ public class GeometricOperations
 	}
 	public static Point3d intersectionPoint(LimitedArc arc1, LimitedArc arc2)
 	{
+		if(arc1.getDeltaAngle() < 0)
+		{
+			Point3d temp = arc1.getInitialPoint();
+			Point3d temp1 = arc1.getFinalPoint();
+			arc1.setFinalPoint(temp);
+			arc1.setInitialPoint(temp1);
+
+		}
+		if(arc2.getDeltaAngle() < 0)
+		{
+			Point3d temp = arc2.getInitialPoint();
+			Point3d temp1 = arc2.getFinalPoint();
+			arc2.setFinalPoint(temp);
+			arc2.setInitialPoint(temp1);
+
+		}
 		Point3d intersection = null;
 		
 		double x1, x2, y1 = 0, y2 = 0, r1 = 0, r2 = 0, cx1, cx2, cy1, cy2, x = 0, y = 0;

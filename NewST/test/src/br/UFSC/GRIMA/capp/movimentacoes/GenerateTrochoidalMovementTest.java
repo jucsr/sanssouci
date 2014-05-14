@@ -36,13 +36,15 @@ public class GenerateTrochoidalMovementTest
 	
 	public void Project(){
 		
-		Point3d point1 = new Point3d(100, 0, 0); 
-		Point3d point2 = new Point3d(100, 200, 0);
+		Point3d point1 = new Point3d(0, 0, 0); 
+		Point3d point2 = new Point3d(0, 0, 0);
 		LimitedLine linha1 = new LimitedLine(point1, point2);
+		
+	
 		elements = new ArrayList<LimitedElement>();
 		
 		elements.add(linha1);
-		path = new GenerateTrochoidalMovement(elements, 50, 10);
+		path = new GenerateTrochoidalMovement(elements, 100, 20);
 	}
 	
 	@Test
@@ -87,6 +89,7 @@ public class GenerateTrochoidalMovementTest
 					
 						for(int j = 0; j < path.movimentacao.size(); j++){
 							
+							g2d.setColor(new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
 							CircularPath arcTemp = (CircularPath) path.movimentacao.get(j);
 							Arc2D.Double arc2D = new Arc2D.Double(arcTemp.getCenter().x, arcTemp.getCenter().y, arcTemp.getRadius(), arcTemp.getRadius(), (arcTemp.getinicialAngle()*180)/Math.PI, (arcTemp.getFinalAngle()*180)/Math.PI, 0);
 							

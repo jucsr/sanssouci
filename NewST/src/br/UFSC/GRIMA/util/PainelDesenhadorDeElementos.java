@@ -158,11 +158,22 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 	{
 //		g2d.setColor(new Color(12, 66, 200));
 		g2d.setColor(color);
-		double anguloInicial = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x);
-		double anguloFinal = Math.atan2(arc.getFinalPoint().y - arc.getCenter().y, arc.getFinalPoint().x - arc.getCenter().x);
-		double deltaAngulo = 0;
-		if(arc.getDeltaAngle() > 0)
+		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
+		if(arc.getDeltaAngle() < 0)
 		{
+			Point3d pInicial = arc.getInitialPoint();
+			Point3d pFinal = arc.getFinalPoint();
+			
+			arcTmp.setInitialPoint(pFinal);
+			arcTmp.setFinalPoint(pInicial);
+		}
+		double anguloInicial = Math.atan2(arcTmp.getInitialPoint().y - arcTmp.getCenter().y, arcTmp.getInitialPoint().x - arcTmp.getCenter().x);
+		double anguloFinal = Math.atan2(arcTmp.getFinalPoint().y - arcTmp.getCenter().y, arcTmp.getFinalPoint().x - arcTmp.getCenter().x);
+		double deltaAngulo = 0;
+		
+		
+//		if(arc.getDeltaAngle() > 0)
+//		{
 			if(anguloInicial < 0)
 			{
 				anguloInicial = 2 * Math.PI + anguloInicial;
@@ -177,12 +188,12 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 			}
 			deltaAngulo = - (anguloFinal - anguloInicial) * 180 / Math.PI;
 			anguloInicial = - anguloInicial * 180 / Math.PI;
-		}
-		else
-		{
-			deltaAngulo = arc.getDeltaAngle()* 180 / Math.PI;
-			System.out.println("DeltaAngle: " + deltaAngulo);
-		}
+//		}
+//		else
+//		{
+//			deltaAngulo = arc.getDeltaAngle()* 180 / Math.PI;
+//			System.out.println("DeltaAngle: " + deltaAngulo);
+//		}
 		
 //		System.out.println("================");
 //		System.out.println("A_INI = " + anguloInicial);
@@ -190,7 +201,7 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 //		System.out.println("DELTA = " + deltaAngulo);
 //		System.out.println("================");
 		
-		Arc2D arco = new Arc2D.Double((arc.getCenter().x  - arc.getRadius()) * zoom, (arc.getCenter().y - arc.getRadius()) * zoom, arc.getRadius() * 2 * zoom, arc.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
+		Arc2D arco = new Arc2D.Double((arcTmp.getCenter().x  - arcTmp.getRadius()) * zoom, (arcTmp.getCenter().y - arcTmp.getRadius()) * zoom, arcTmp.getRadius() * 2 * zoom, arcTmp.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
 //		Arc2D arco = new Arc2D.Double((100) * zoom, (100) * zoom, 20 * 2 * zoom, 20 * 2 * zoom, 0, 90, 0);
 
 		g2d.draw(arco);
@@ -201,15 +212,15 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 		    g2d.setStroke(dashed);  
 		  
 		  
-			Line2D line1 = new Line2D.Double(arc.getCenter().x * zoom, arc.getCenter().y * zoom, arc.getInitialPoint().x * zoom, arc.getInitialPoint().y * zoom);
-			Line2D line2 = new Line2D.Double(arc.getCenter().x * zoom, arc.getCenter().y * zoom, arc.getFinalPoint().x * zoom, arc.getFinalPoint().y * zoom);
+			Line2D line1 = new Line2D.Double(arcTmp.getCenter().x * zoom, arcTmp.getCenter().y * zoom, arcTmp.getInitialPoint().x * zoom, arcTmp.getInitialPoint().y * zoom);
+			Line2D line2 = new Line2D.Double(arcTmp.getCenter().x * zoom, arcTmp.getCenter().y * zoom, arcTmp.getFinalPoint().x * zoom, arcTmp.getFinalPoint().y * zoom);
 			g2d.draw(line1);
 			g2d.draw(line2);
 			g2d.setStroke(new BasicStroke());
 			
-			desenharCoordenadas(arc.getCenter(), g2d, new Color(0, 255, 0));
-			desenharCoordenadas(arc.getInitialPoint(), g2d, new Color(0, 255, 0));
-			desenharCoordenadas(arc.getFinalPoint(), g2d, new Color(0, 255, 0));
+			desenharCoordenadas(arcTmp.getCenter(), g2d, new Color(0, 255, 0));
+			desenharCoordenadas(arcTmp.getInitialPoint(), g2d, new Color(0, 255, 0));
+			desenharCoordenadas(arcTmp.getFinalPoint(), g2d, new Color(0, 255, 0));
 		}
 	}
 	private void desenharLinha(LimitedLine line, Graphics2D g2d, Color color) 

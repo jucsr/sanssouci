@@ -1995,13 +1995,12 @@ public class GeometricOperations
 
 	public static Point3d intersectionPoint(LimitedArc arc, LimitedLine line)
 	{
+		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
 		if(arc.getDeltaAngle() < 0)
 		{
 			Point3d temp = arc.getInitialPoint();
 			Point3d temp1 = arc.getFinalPoint();
-			arc.setFinalPoint(temp);
-			arc.setInitialPoint(temp1);
-
+			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
 		}
 		Point3d intersection = null;
 		/**
@@ -2010,9 +2009,9 @@ public class GeometricOperations
 		 */
 		double x1,x2,y1,y2;
 		double radical = 0;
-		double r = Math.sqrt(Math.pow(arc.getInitialPoint().getX() - arc.getCenter().getX(), 2) + Math.pow(arc.getInitialPoint().getY() - arc.getCenter().getY(), 2));
-		double xin = arc.getCenter().x - r;
-		double xif = arc.getCenter().x + r;
+		double r = Math.sqrt(Math.pow(arcTmp.getInitialPoint().getX() - arcTmp.getCenter().getX(), 2) + Math.pow(arcTmp.getInitialPoint().getY() - arcTmp.getCenter().getY(), 2));
+		double xin = arcTmp.getCenter().x - r;
+		double xif = arcTmp.getCenter().x + r;
 		
 		if (line.getInitialPoint().x == line.getFinalPoint().x) 
 		{
@@ -2024,8 +2023,8 @@ public class GeometricOperations
 			{
 				x1 = line.getInitialPoint().x;
 				x2 = line.getInitialPoint().x;
-				y1 = arc.getCenter().y + Math.sqrt(Math.pow(r, 2) - Math.pow(line.getInitialPoint().x - arc.getCenter().x, 2));
-				y2 = arc.getCenter().y - Math.sqrt(Math.pow(r, 2) - Math.pow(line.getInitialPoint().x - arc.getCenter().x, 2));
+				y1 = arcTmp.getCenter().y + Math.sqrt(Math.pow(r, 2) - Math.pow(line.getInitialPoint().x - arcTmp.getCenter().x, 2));
+				y2 = arcTmp.getCenter().y - Math.sqrt(Math.pow(r, 2) - Math.pow(line.getInitialPoint().x - arcTmp.getCenter().x, 2));
 			}
 		}
 		else
@@ -2035,13 +2034,13 @@ public class GeometricOperations
 			/**
 			 * caso nao haja ponto de intersecao
 			 */
-			radical = Math.pow(-2 * arc.getCenter().x + 2 * m * b - 2 * m * arc.getCenter().y, 2) - 4 * (1 + Math.pow(m, 2)) * (Math.pow(arc.getCenter().x, 2) + Math.pow(b, 2) - 2 * b * arc.getCenter().y + Math.pow(arc.getCenter().y, 2) - Math.pow(r, 2));
+			radical = Math.pow(-2 * arcTmp.getCenter().x + 2 * m * b - 2 * m * arcTmp.getCenter().y, 2) - 4 * (1 + Math.pow(m, 2)) * (Math.pow(arcTmp.getCenter().x, 2) + Math.pow(b, 2) - 2 * b * arcTmp.getCenter().y + Math.pow(arcTmp.getCenter().y, 2) - Math.pow(r, 2));
 			//Garante que nao de NaN na raiz
 			if(radical<0){
 				return null;
 			}
-			x1 = (2 * arc.getCenter().x - 2 * m * b + 2 * m *  arc.getCenter().y + Math.sqrt(radical)) / (2 + 2 * Math.pow(m, 2));
-			x2 = (2 * arc.getCenter().x - 2 * m * b + 2 * m *  arc.getCenter().y - Math.sqrt(radical)) / (2 + 2 * Math.pow(m, 2));
+			x1 = (2 * arcTmp.getCenter().x - 2 * m * b + 2 * m *  arcTmp.getCenter().y + Math.sqrt(radical)) / (2 + 2 * Math.pow(m, 2));
+			x2 = (2 * arcTmp.getCenter().x - 2 * m * b + 2 * m *  arcTmp.getCenter().y - Math.sqrt(radical)) / (2 + 2 * Math.pow(m, 2));
 			y1 = m * x1 + b;
 			y2 = m * x2 + b;
 		}
@@ -2052,10 +2051,10 @@ public class GeometricOperations
 		 *  caso a linha for vertical -- Se houver intersecao, o x da intersecao sera no x da linha
 		 */
 		
-		double anguloInicial = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x);
-		double anguloFinal = Math.atan2(arc.getFinalPoint().y - arc.getCenter().y, arc.getFinalPoint().x - arc.getCenter().x);
-		double anguloNaIntersecao1 = Math.atan2(y1 - arc.getCenter().y, x1 - arc.getCenter().x);
-		double anguloNaIntersecao2 = Math.atan2(y2 - arc.getCenter().y, x2 - arc.getCenter().x);
+		double anguloInicial = Math.atan2(arcTmp.getInitialPoint().y - arcTmp.getCenter().y, arcTmp.getInitialPoint().x - arcTmp.getCenter().x);
+		double anguloFinal = Math.atan2(arcTmp.getFinalPoint().y - arcTmp.getCenter().y, arcTmp.getFinalPoint().x - arcTmp.getCenter().x);
+		double anguloNaIntersecao1 = Math.atan2(y1 - arcTmp.getCenter().y, x1 - arcTmp.getCenter().x);
+		double anguloNaIntersecao2 = Math.atan2(y2 - arcTmp.getCenter().y, x2 - arcTmp.getCenter().x);
 		
 		
 		

@@ -1208,73 +1208,108 @@ public class GeometricOperations
 		/*
 		 * 	Valida��o 3: Separacao dos elementos em lacos 
 		 */
-//		int numeroDeLacos = 0;
-//		for(int i = 0; i < elementsIntermediario2.size(); i++)
-//		{
-//			LimitedElement ei0 = elementsIntermediario.get(i);
-//			//Point3d tempPoint = initialPoint;
-//			if(ei0.isLimitedArc())
-//			{
-//				LimitedArc arci0 = (LimitedArc)ei0;
-//				Point3d arci0I = arci0.getInitialPoint();
-//				Point3d arci0F = arci0.getFinalPoint();
-//				if(isTheSamePoint(initialPoint,arci0I))
-//				{
-//					elementsValidated.get(numeroDeLacos).add(ei0);
-//					for(int j = 0; j < elementsIntermediario2.size(); j++)
-//					{
-//						LimitedElement ej = elementsIntermediario.get(j);
-//						if(j == i)
-//						{
-//							j++;
-//						}
-//						if(ej.isLimitedArc())
-//						{
-//							LimitedArc arci1 = (LimitedArc)ej;
-//							Point3d arci1I = arci1.getInitialPoint();
-//	//						for(int j = 0; j < elementsIntermediario2.size(); j++)
-//	//						{
-//	//							//LimitedElement ej0 = elementsIntermediario.get(i+j);
-//	//							//LimitedElement ej1 = elementsIntermediario.get(i+j+1);
-//	//							if(isTheSamePoint(arci0F,arci1I))
-//	//							{
-//	//								
-//	//							}
-//	//						}
-//							if(isTheSamePoint(arci0F,arci1I))
-//							{
-//								
-//							}
-//						}
-//						else if(ej.isLimitedLine())
-//						{
-//							LimitedLine linei1 = (LimitedLine)ej;
-//							Point3d linei1I = linei1.getInitialPoint();
-////							for(int j = 0; j < elementsIntermediario2.size(); j++)
-////							{
-////								//LimitedElement ej0 = elementsIntermediario.get(i+j);
-////								//LimitedElement ej1 = elementsIntermediario.get(i+j+1);
-////								if(isTheSamePoint(arci0F,linei1I))
-////								{
-////									
-////								}
-////							}
-//						}
-//					}
-//				}
-//			}
-//			else if(ei0.isLimitedLine())
-//			{
-//				LimitedLine linei0 = (LimitedLine)ei0;
-//				Point3d linei0I = linei0.getInitialPoint();
-//				Point3d linei0F = linei0.getFinalPoint();
-//				if(isTheSamePoint(initialPoint,linei0I))
-//				{
-//					
-//				}
-//			}
-//		}
-		elementsValidated.add(elementsIntermediario2);
+		int numeroDeLacos = 0;
+		for(int i = 0; i < elementsIntermediario2.size(); i++)
+		{
+			LimitedElement ei0 = elementsIntermediario2.get(0);
+			elementsValidated.get(numeroDeLacos).add(ei0);
+			elementsIntermediario2.remove(ei0);
+			
+			if(ei0.isLimitedArc())
+			{
+				LimitedArc arci0 = (LimitedArc)ei0;
+				Point3d arci0I = arci0.getInitialPoint();
+				Point3d arci0F = arci0.getFinalPoint();
+				
+				for(int j = 1; j < elementsIntermediario2.size(); j++)
+				{
+					LimitedElement ej = elementsIntermediario2.get(j);
+					if(ej.isLimitedArc())
+					{
+						LimitedArc arci1 = (LimitedArc)ej;
+						Point3d arci1I = arci1.getInitialPoint();
+						Point3d arci1F = arci1.getFinalPoint();
+						if(!(isTheSamePoint(arci1F,arci0I)))
+						{
+							if(isTheSamePoint(arci0F,arci1I))
+							{
+								elementsValidated.get(numeroDeLacos).add(ej);
+								elementsIntermediario2.remove(ej);
+							}
+						}
+						else
+						{
+							numeroDeLacos++;
+						}
+					}
+					else if(ej.isLimitedLine())
+					{
+						LimitedLine linei1 = (LimitedLine)ej;
+						Point3d linei1I = linei1.getInitialPoint();
+						Point3d linei1F = linei1.getFinalPoint();
+						if(!(isTheSamePoint(linei1F,arci0I)))
+						{
+							if(isTheSamePoint(arci0F,linei1I))
+							{
+								elementsValidated.get(numeroDeLacos).add(ej);
+								elementsIntermediario2.remove(ej);
+							}
+						}
+						else
+						{
+							numeroDeLacos++;
+						}
+					}
+				}
+			}
+			else if(ei0.isLimitedLine())
+			{
+				LimitedLine linei0 = (LimitedLine)ei0;
+				Point3d linei0I = linei0.getInitialPoint();
+				Point3d linei0F = linei0.getFinalPoint();
+				for(int j = 1; j < elementsIntermediario2.size(); j++)
+				{
+					LimitedElement ej = elementsIntermediario2.get(j);
+					if(ej.isLimitedArc())
+					{
+						LimitedArc arci1 = (LimitedArc)ej;
+						Point3d arci1I = arci1.getInitialPoint();
+						Point3d arci1F = arci1.getFinalPoint();
+						if(!(isTheSamePoint(arci1F,linei0I)))
+						{
+							if(isTheSamePoint(linei0F,arci1I))
+							{
+								elementsValidated.get(numeroDeLacos).add(ej);
+								elementsIntermediario2.remove(ej);
+							}
+						}
+						else
+						{
+							numeroDeLacos++;
+						}
+					}
+					else if(ej.isLimitedLine())
+					{
+						LimitedLine linei1 = (LimitedLine)ej;
+						Point3d linei1I = linei1.getInitialPoint();
+						Point3d linei1F = linei1.getFinalPoint();
+						if(!(isTheSamePoint(linei1F,linei0I)))
+						{
+							if(isTheSamePoint(linei0F,linei1I))
+							{
+								elementsValidated.get(numeroDeLacos).add(ej);
+								elementsIntermediario2.remove(ej);
+							}
+						}
+						else
+						{
+							numeroDeLacos++;
+						}
+					}
+				}
+			}
+		}
+		//elementsValidated.add(elementsIntermediario2);
 		System.out.println("Size:" + elements.size());
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());
 		return elementsValidated;

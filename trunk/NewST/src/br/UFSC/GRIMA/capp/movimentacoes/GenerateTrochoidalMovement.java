@@ -185,23 +185,14 @@ public class GenerateTrochoidalMovement
 		    	 LimitedArc temp = (LimitedArc) elements.get(i);
 		    	 
 		    	 double comprimento = temp.getDeltaAngle()*temp.getRadius();
-		    	 double mov = Math.floor(comprimento/this.raio);
-		    	 double theta = (comprimento-mov)/temp.getRadius();
+		    	 double theta = (comprimento - this.avanco)/this.raio;	
+		    	 double theta1 = Math.atan((temp.getFinalPoint().y - temp.getCenter().y)/temp.getFinalPoint().x-temp.getCenter().x);
+		    	 
+		    	
+		    	
 		    	 
 		    	 
-		    	 
-		    	// LimitedArc arc = new LimitedArc(center, initialPoint, deltaAngle, sense);
-		    	 
-		    	/* xInicalPoint = temp.getInitialPoint().x;
-		    	 yInicalPoint = temp.getInitialPoint().y;
-		    	 xCenter = temp.getInitialPoint().x + this.raio;
-		    	 yCenter = temp.getInitialPoint().y + this.raio; 
-		    	 
-		    	 Point3d initialPoint = new Point3d(xInicalPoint, yInicalPoint, temp.getInitialPoint().z);
-				 Point3d center = new Point3d(xCenter, yCenter, temp.getInitialPoint().z);
-				 
-				 CircularPath arco = new CircularPath(center, initialPoint, initialPoint, 2*Math.PI,CircularPath.CCW );*/
-				 
+		
 				 
 		    	 
 			}

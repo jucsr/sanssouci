@@ -773,14 +773,14 @@ public class GeometricOperations
 				LimitedLine lineTmp = (LimitedLine)elements.get(i);
 				LimitedLine newLine = absoluteParallel(lineTmp, distance);
 				lacoTmp.add(newLine);
-				System.err.println("linha " + i);
+				//System.err.println("linha " + i);
 				
 			} else if(elements.get(i).isLimitedArc())
 			{
 				LimitedArc arcTmp = (LimitedArc)elements.get(i);
 				LimitedArc newArc = parallelArc(arcTmp, distance);
 				lacoTmp.add(newArc);
-				System.err.println("arco " + i);
+				//System.err.println("arco " + i);
 			}
 		}
 		
@@ -1194,122 +1194,123 @@ public class GeometricOperations
 		/*
 		 * 	Valida��o 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
 		 */
+		System.out.println("Elementos intermediarios: " + elementsIntermediario.size());
 		for(int i = 0; i< elementsIntermediario.size();i++)
 		{
 			LimitedElement ei0 = elementsIntermediario.get(i);
-			System.out.println("Menor distancia elemento " + i + ": " +  minimumDistance(formaOriginal, ei0));
+			//System.out.println("Menor distancia elemento " + i + ": " +  minimumDistance(formaOriginal, ei0));
 			if(minimumDistance(formaOriginal, ei0) >= distance)
 			{
 				elementsIntermediario2.add(ei0);
 			}
-			
 		}
 		
 		/*
 		 * 	Valida��o 3: Separacao dos elementos em lacos 
 		 */
-		int numeroDeLacos = 0;
-		for(int i = 0; i < elementsIntermediario2.size(); i++)
-		{
-			LimitedElement ei0 = elementsIntermediario2.get(0);
-			elementsValidated.get(numeroDeLacos).add(ei0);
-			elementsIntermediario2.remove(ei0);
-			
-			if(ei0.isLimitedArc())
-			{
-				LimitedArc arci0 = (LimitedArc)ei0;
-				Point3d arci0I = arci0.getInitialPoint();
-				Point3d arci0F = arci0.getFinalPoint();
-				
-				for(int j = 1; j < elementsIntermediario2.size(); j++)
-				{
-					LimitedElement ej = elementsIntermediario2.get(j);
-					if(ej.isLimitedArc())
-					{
-						LimitedArc arci1 = (LimitedArc)ej;
-						Point3d arci1I = arci1.getInitialPoint();
-						Point3d arci1F = arci1.getFinalPoint();
-						if(!(isTheSamePoint(arci1F,arci0I)))
-						{
-							if(isTheSamePoint(arci0F,arci1I))
-							{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								elementsIntermediario2.remove(ej);
-							}
-						}
-						else
-						{
-							numeroDeLacos++;
-						}
-					}
-					else if(ej.isLimitedLine())
-					{
-						LimitedLine linei1 = (LimitedLine)ej;
-						Point3d linei1I = linei1.getInitialPoint();
-						Point3d linei1F = linei1.getFinalPoint();
-						if(!(isTheSamePoint(linei1F,arci0I)))
-						{
-							if(isTheSamePoint(arci0F,linei1I))
-							{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								elementsIntermediario2.remove(ej);
-							}
-						}
-						else
-						{
-							numeroDeLacos++;
-						}
-					}
-				}
-			}
-			else if(ei0.isLimitedLine())
-			{
-				LimitedLine linei0 = (LimitedLine)ei0;
-				Point3d linei0I = linei0.getInitialPoint();
-				Point3d linei0F = linei0.getFinalPoint();
-				for(int j = 1; j < elementsIntermediario2.size(); j++)
-				{
-					LimitedElement ej = elementsIntermediario2.get(j);
-					if(ej.isLimitedArc())
-					{
-						LimitedArc arci1 = (LimitedArc)ej;
-						Point3d arci1I = arci1.getInitialPoint();
-						Point3d arci1F = arci1.getFinalPoint();
-						if(!(isTheSamePoint(arci1F,linei0I)))
-						{
-							if(isTheSamePoint(linei0F,arci1I))
-							{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								elementsIntermediario2.remove(ej);
-							}
-						}
-						else
-						{
-							numeroDeLacos++;
-						}
-					}
-					else if(ej.isLimitedLine())
-					{
-						LimitedLine linei1 = (LimitedLine)ej;
-						Point3d linei1I = linei1.getInitialPoint();
-						Point3d linei1F = linei1.getFinalPoint();
-						if(!(isTheSamePoint(linei1F,linei0I)))
-						{
-							if(isTheSamePoint(linei0F,linei1I))
-							{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								elementsIntermediario2.remove(ej);
-							}
-						}
-						else
-						{
-							numeroDeLacos++;
-						}
-					}
-				}
-			}
-		}
-		//elementsValidated.add(elementsIntermediario2);
+		System.out.println("Elementos intermediarios 2: " + elementsIntermediario2.size());
+		//int numeroDeLacos = 0;
+//		for(int i = 0; i < elementsIntermediario2.size(); i++)
+//		{
+//			LimitedElement ei0 = elementsIntermediario2.get(0);
+//			elementsValidated.get(numeroDeLacos).add(ei0);
+//			elementsIntermediario2.remove(ei0);
+//			
+//			if(ei0.isLimitedArc())
+//			{
+//				LimitedArc arci0 = (LimitedArc)ei0;
+//				Point3d arci0I = arci0.getInitialPoint();
+//				Point3d arci0F = arci0.getFinalPoint();
+//				
+//				for(int j = 1; j < elementsIntermediario2.size(); j++)
+//				{
+//					LimitedElement ej = elementsIntermediario2.get(j);
+//					if(ej.isLimitedArc())
+//					{
+//						LimitedArc arci1 = (LimitedArc)ej;
+//						Point3d arci1I = arci1.getInitialPoint();
+//						Point3d arci1F = arci1.getFinalPoint();
+//						if(!(isTheSamePoint(arci1F,arci0I)))
+//						{
+//							if(isTheSamePoint(arci0F,arci1I))
+//							{
+//								elementsValidated.get(numeroDeLacos).add(ej);
+//								elementsIntermediario2.remove(ej);
+//							}
+//						}
+//						else
+//						{
+//							numeroDeLacos++;
+//						}
+//					}
+//					else if(ej.isLimitedLine())
+//					{
+//						LimitedLine linei1 = (LimitedLine)ej;
+//						Point3d linei1I = linei1.getInitialPoint();
+//						Point3d linei1F = linei1.getFinalPoint();
+//						if(!(isTheSamePoint(linei1F,arci0I)))
+//						{
+//							if(isTheSamePoint(arci0F,linei1I))
+//							{
+//								elementsValidated.get(numeroDeLacos).add(ej);
+//								elementsIntermediario2.remove(ej);
+//							}
+//						}
+//						else
+//						{
+//							numeroDeLacos++;
+//						}
+//					}
+//				}
+//			}
+//			else if(ei0.isLimitedLine())
+//			{
+//				LimitedLine linei0 = (LimitedLine)ei0;
+//				Point3d linei0I = linei0.getInitialPoint();
+//				Point3d linei0F = linei0.getFinalPoint();
+//				for(int j = 1; j < elementsIntermediario2.size(); j++)
+//				{
+//					LimitedElement ej = elementsIntermediario2.get(j);
+//					if(ej.isLimitedArc())
+//					{
+//						LimitedArc arci1 = (LimitedArc)ej;
+//						Point3d arci1I = arci1.getInitialPoint();
+//						Point3d arci1F = arci1.getFinalPoint();
+//						if(!(isTheSamePoint(arci1F,linei0I)))
+//						{
+//							if(isTheSamePoint(linei0F,arci1I))
+//							{
+//								elementsValidated.get(numeroDeLacos).add(ej);
+//								elementsIntermediario2.remove(ej);
+//							}
+//						}
+//						else
+//						{
+//							numeroDeLacos++;
+//						}
+//					}
+//					else if(ej.isLimitedLine())
+//					{
+//						LimitedLine linei1 = (LimitedLine)ej;
+//						Point3d linei1I = linei1.getInitialPoint();
+//						Point3d linei1F = linei1.getFinalPoint();
+//						if(!(isTheSamePoint(linei1F,linei0I)))
+//						{
+//							if(isTheSamePoint(linei0F,linei1I))
+//							{
+//								elementsValidated.get(numeroDeLacos).add(ej);
+//								elementsIntermediario2.remove(ej);
+//							}
+//						}
+//						else
+//						{
+//							numeroDeLacos++;
+//						}
+//					}
+//				}
+//			}
+//		}
+		elementsValidated.add(elementsIntermediario2);
 		System.out.println("Size:" + elements.size());
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());
 		return elementsValidated;
@@ -1474,12 +1475,12 @@ public class GeometricOperations
 
 		Point3d newInitialPoint = plus(line.getInitialPoint(),distanceVector);
 		Point3d newFinalPoint = plus(line.getFinalPoint(),distanceVector);
-		System.out.println("Distance Vector " + distanceVector);
-		System.out.println("New Initial Point " + newInitialPoint);
-		System.out.println("New Final Point " + newFinalPoint);
+		//System.out.println("Distance Vector " + distanceVector);
+		//System.out.println("New Initial Point " + newInitialPoint);
+		//System.out.println("New Final Point " + newFinalPoint);
 		LimitedLine lineParallel = new LimitedLine(newInitialPoint, newFinalPoint);
 		
-		System.out.println("Parallel from " + lineParallel.getInitialPoint() + " to " + lineParallel.getFinalPoint());
+		//System.out.println("Parallel from " + lineParallel.getInitialPoint() + " to " + lineParallel.getFinalPoint());
 		
 		return lineParallel;
 	}
@@ -1837,12 +1838,12 @@ public class GeometricOperations
 			if(e.isLimitedArc())
 			{
 				LimitedArc arc = (LimitedArc)e;
-				System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
+				//System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
 			}
 			else if (e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
-				System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+				//System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
 			}			
 			i++;			
 		}
@@ -2110,7 +2111,7 @@ public class GeometricOperations
 			anguloNaIntersecao2 = 2* Math.PI + anguloNaIntersecao2;
 		}
 		
-		//Normaliza��o dos angulos inicial e final
+		//Normalizacao dos angulos inicial e final
 		if(anguloInicial > anguloFinal)
 		{
 			anguloFinal = 2 * Math.PI + anguloFinal;
@@ -2194,38 +2195,38 @@ public class GeometricOperations
 	}
 	public static Point3d intersectionPoint(LimitedArc arc1, LimitedArc arc2)
 	{
+		LimitedArc arc1Tmp = new LimitedArc(arc1.getInitialPoint(), arc1.getFinalPoint(), arc1.getCenter());
+		LimitedArc arc2Tmp = new LimitedArc(arc2.getInitialPoint(), arc2.getFinalPoint(), arc2.getCenter());
+
 		if(arc1.getDeltaAngle() < 0)
 		{
 			Point3d temp = arc1.getInitialPoint();
 			Point3d temp1 = arc1.getFinalPoint();
-			arc1.setFinalPoint(temp);
-			arc1.setInitialPoint(temp1);
-
+			arc1Tmp = new LimitedArc(temp1, temp, arc1.getCenter());
 		}
 		if(arc2.getDeltaAngle() < 0)
 		{
 			Point3d temp = arc2.getInitialPoint();
 			Point3d temp1 = arc2.getFinalPoint();
-			arc2.setFinalPoint(temp);
-			arc2.setInitialPoint(temp1);
+			arc2Tmp = new LimitedArc(temp1, temp, arc2.getCenter());
 
 		}
 		Point3d intersection = null;
 		
-		double x1, x2, y1 = 0, y2 = 0, r1 = 0, r2 = 0, cx1, cx2, cy1, cy2, x = 0, y = 0;
+		double x1, x2, y1 = 0, y2 = 0, r1 = 0, r2 = 0, cx1, cx2, cy1, cy2;
 		
-		cx1 = arc1.getCenter().x;
-		cx2 = arc2.getCenter().x;
-		cy1 = arc1.getCenter().y;
-		cy2 = arc2.getCenter().y;
-		r1 = arc1.getRadius();
-		r2 = arc2.getRadius();
+		cx1 = arc1Tmp.getCenter().x;
+		cx2 = arc2Tmp.getCenter().x;
+		cy1 = arc1Tmp.getCenter().y;
+		cy2 = arc2Tmp.getCenter().y;
+		r1 = arc1Tmp.getRadius();
+		r2 = arc2Tmp.getRadius();
 		
 //		if(isTheSamePoint(arc1.getCenter(),arc2.getCenter()))
 //		{
 //			return intersection;
 //		}
-		if(circleIsContentInOtherCircle(arc1, arc2) || circleIsContentInOtherCircle(arc2, arc1))
+		if(circleIsContentInOtherCircle(arc1Tmp, arc2Tmp) || circleIsContentInOtherCircle(arc2Tmp, arc1Tmp))
 		{
 			return intersection;
 		}
@@ -2284,17 +2285,17 @@ public class GeometricOperations
 //		System.err.println("poss 1 =" + possivel1);
 //		System.err.println("poss 2 =" + possivel2);
 		
-		double anguloInicial1 = Math.atan2(arc1.getInitialPoint().y - arc1.getCenter().y, arc1.getInitialPoint().x - arc1.getCenter().x);
-		double anguloFinal1 = Math.atan2(arc1.getFinalPoint().y - arc1.getCenter().y, arc1.getFinalPoint().x - arc1.getCenter().x);
+		double anguloInicial1 = Math.atan2(arc1Tmp.getInitialPoint().y - arc1Tmp.getCenter().y, arc1Tmp.getInitialPoint().x - arc1Tmp.getCenter().x);
+		double anguloFinal1 = Math.atan2(arc1Tmp.getFinalPoint().y - arc1Tmp.getCenter().y, arc1Tmp.getFinalPoint().x - arc1Tmp.getCenter().x);
 		
-		double anguloInicial2 = Math.atan2(arc2.getInitialPoint().y - arc2.getCenter().y, arc2.getInitialPoint().x - arc2.getCenter().x);
-		double anguloFinal2 = Math.atan2(arc2.getFinalPoint().y - arc2.getCenter().y, arc2.getFinalPoint().x - arc2.getCenter().x);
+		double anguloInicial2 = Math.atan2(arc2Tmp.getInitialPoint().y - arc2Tmp.getCenter().y, arc2Tmp.getInitialPoint().x - arc2Tmp.getCenter().x);
+		double anguloFinal2 = Math.atan2(arc2Tmp.getFinalPoint().y - arc2Tmp.getCenter().y, arc2Tmp.getFinalPoint().x - arc2Tmp.getCenter().x);
 		
-		double anguloNaIntersecaoCirculo1Possivel1 = Math.atan2(possivel1.y - arc1.getCenter().y, possivel1.x - arc1.getCenter().x);
-		double anguloNaIntersecaoCirculo1Possivel2 = Math.atan2(possivel2.y - arc1.getCenter().y, possivel2.x - arc1.getCenter().x);
+		double anguloNaIntersecaoCirculo1Possivel1 = Math.atan2(possivel1.y - arc1Tmp.getCenter().y, possivel1.x - arc1Tmp.getCenter().x);
+		double anguloNaIntersecaoCirculo1Possivel2 = Math.atan2(possivel2.y - arc1Tmp.getCenter().y, possivel2.x - arc1Tmp.getCenter().x);
 		
-		double anguloNaIntersecaoCirculo2Possivel1 = Math.atan2(possivel1.y - arc2.getCenter().y, possivel1.x - arc2.getCenter().x);
-		double anguloNaIntersecaoCirculo2Possivel2 = Math.atan2(possivel2.y - arc2.getCenter().y, possivel2.x - arc2.getCenter().x);
+		double anguloNaIntersecaoCirculo2Possivel1 = Math.atan2(possivel1.y - arc2Tmp.getCenter().y, possivel1.x - arc2Tmp.getCenter().x);
+		double anguloNaIntersecaoCirculo2Possivel2 = Math.atan2(possivel2.y - arc2Tmp.getCenter().y, possivel2.x - arc2Tmp.getCenter().x);
 				
 		/**
 		 * correcao dos angulos negativos

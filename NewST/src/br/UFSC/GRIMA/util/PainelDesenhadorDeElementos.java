@@ -159,50 +159,44 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 //		g2d.setColor(new Color(12, 66, 200));
 		g2d.setColor(color);
 		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
-		if(arc.getDeltaAngle() < 0)
-		{
-			Point3d pInicial = arc.getInitialPoint();
-			Point3d pFinal = arc.getFinalPoint();
-			
-			arcTmp.setInitialPoint(pFinal);
-			arcTmp.setFinalPoint(pInicial);
-		}
+//		if(arc.getDeltaAngle() < 0)
+//		{
+//			Point3d pInicial = arc.getInitialPoint();
+//			Point3d pFinal = arc.getFinalPoint();
+//			
+//			arcTmp.setInitialPoint(pFinal);
+//			arcTmp.setFinalPoint(pInicial);
+//		}
 		double anguloInicial = Math.atan2(arcTmp.getInitialPoint().y - arcTmp.getCenter().y, arcTmp.getInitialPoint().x - arcTmp.getCenter().x);
 		double anguloFinal = Math.atan2(arcTmp.getFinalPoint().y - arcTmp.getCenter().y, arcTmp.getFinalPoint().x - arcTmp.getCenter().x);
-		double deltaAngulo = 0;
-		
-		
-//		if(arc.getDeltaAngle() > 0)
-//		{
+		double deltaAngulo = -arc.getDeltaAngle()* 180 / Math.PI;
+//		
+//		
 			if(anguloInicial < 0)
 			{
 				anguloInicial = 2 * Math.PI + anguloInicial;
 			}
-			if(anguloFinal <= 0)
-			{
-				anguloFinal = 2 * Math.PI + anguloFinal;
-			}
-			if(anguloInicial > anguloFinal)
-			{
-				anguloFinal = 2 * Math.PI + anguloFinal;
-			}
-			deltaAngulo = - (anguloFinal - anguloInicial) * 180 / Math.PI;
+//			if(anguloFinal <= 0)
+//			{
+//				anguloFinal = 2 * Math.PI + anguloFinal;
+//			}
+//			if(anguloInicial > anguloFinal)
+//			{
+//				anguloFinal = 2 * Math.PI + anguloFinal;
+//			}
+//			deltaAngulo =  -(anguloFinal - anguloInicial) * 180 / Math.PI;
 			anguloInicial = - anguloInicial * 180 / Math.PI;
-//		}
-//		else
-//		{
-//			deltaAngulo = arc.getDeltaAngle()* 180 / Math.PI;
-//			System.out.println("DeltaAngle: " + deltaAngulo);
-//		}
 		
-//		System.out.println("================");
-//		System.out.println("A_INI = " + anguloInicial);
-//		System.out.println("A_FIN = " + anguloFinal * 180 / Math.PI);
-//		System.out.println("DELTA = " + deltaAngulo);
-//		System.out.println("================");
+		
+		System.out.println("================");
+		System.out.println("A_INI = " + anguloInicial);
+		//System.out.println("A_FIN = " + anguloFinal * 180 / Math.PI);
+		System.out.println("DELTA = " + deltaAngulo);
+		System.out.println("getDeltaAngulo = " + arc.getDeltaAngle()* 180 / Math.PI);
+		System.out.println("================");
 		
 		Arc2D arco = new Arc2D.Double((arcTmp.getCenter().x  - arcTmp.getRadius()) * zoom, (arcTmp.getCenter().y - arcTmp.getRadius()) * zoom, arcTmp.getRadius() * 2 * zoom, arcTmp.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
-//		Arc2D arco = new Arc2D.Double((100) * zoom, (100) * zoom, 20 * 2 * zoom, 20 * 2 * zoom, 0, 90, 0);
+		//Arc2D arco = new Arc2D.Double((100) * zoom, (100) * zoom, 100 * 2 * zoom, 100 * 2 * zoom, -30, -180, 0);
 
 		g2d.draw(arco);
 		if(desenharCoordenadas)

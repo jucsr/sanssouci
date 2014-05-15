@@ -95,14 +95,14 @@ public class LimitedArc extends LimitedElement
 		Point3d vFinal = GeometricOperations.minus(this.finalPoint,this.center);
 		
 		this.deltaAngle = GeometricOperations.angle(vFinal)-GeometricOperations.angle(vInitial);
-		if(deltaAngle < 0)
-		{
-			this.sense = CW;
-		}
-		else
-		{
-			this.sense = CCW;
-		}
+//		if(deltaAngle < 0)
+//		{
+//			this.sense = CW;
+//		}
+//		else
+//		{
+//			this.sense = CCW;
+//		}
 		this.radius = GeometricOperations.distance(this.center, this.initialPoint);
 		this.determinatePointsInArc();
 	}

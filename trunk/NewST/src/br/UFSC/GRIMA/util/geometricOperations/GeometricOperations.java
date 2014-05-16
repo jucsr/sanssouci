@@ -521,7 +521,7 @@ public class GeometricOperations
 	 */
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
 	{		
-		ArrayList<LimitedElement> acabamentoElements = parallelPath(addPocket.getElements(), radius).get(0);
+		ArrayList<LimitedElement> acabamentoElements = parallelPath1(addPocket.getElements(), radius).get(0);
 		
 		return acabamentoElements;
 	}
@@ -790,281 +790,278 @@ public class GeometricOperations
 		
 		return saida;
 	}
-	public static ArrayList<ArrayList<LimitedElement>> parallelPath (ArrayList<LimitedElement> elements, double distance)
-	{
-		ArrayList<LimitedElement> parallel = new ArrayList<LimitedElement>();
-		
-		for (int i = 0; i < elements.size(); i++)
-		{
-			
-			LimitedElement eCurrent;
-			LimitedElement eBefore;
-			LimitedElement eAfter;
-			
-			if(i==0)
-			{
-				eCurrent = elements.get(i);
-				eBefore = elements.get(elements.size()-1);
-				eAfter = elements.get(i+1);
-			}
-			else if(i==elements.size()-1)
-			{
-				eCurrent = elements.get(i);
-				eBefore = elements.get(i-1);
-				eAfter = elements.get(0);				
-			}
-			else
-			{
-				eCurrent = elements.get(i);
-				eBefore = elements.get(i-1);
-				eAfter = elements.get(i+1);				
-			}
-			
-			if(eCurrent.isLimitedLine())
-			{
-				LimitedLine lineCurrent = (LimitedLine)eCurrent;
-				System.out.println("*******************************");
-				System.out.println("Current element is a line");
-				
-				if(eBefore.isLimitedLine()&&eAfter.isLimitedLine())
-				{
-					System.out.println("Line before and Line after");
-					
-					LimitedLine lineBefore = (LimitedLine)eBefore;
-					LimitedLine lineAfter = (LimitedLine)eAfter;
-
-					Point3d newInitialPoint = new Point3d();
-					
-					LimitedLine parallelBefore = absoluteParallel(lineBefore, distance);
-					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-					LimitedLine parallelAfter = absoluteParallel(lineAfter, distance);
-					
-					newInitialPoint = intersect(parallelBefore, parallelCurrent);
-					Point3d newFinalPoint = new Point3d();
-					
-					newFinalPoint = intersect(parallelAfter, parallelCurrent);
-					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
-					
-					Point3d unitCurrent = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
-					Point3d unitNew = unitVector(newLine.getInitialPoint(), newLine.getFinalPoint());
-					
-					double test = escalar(unitNew, unitCurrent);
-					if (norm(newLine)>0)
-					{
-						if (test>0)
-							parallel.add(newLine);						
-					}
-				}
-								
-				else if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
-				{
-					System.out.println("Line before and Arc after");
-					LimitedLine lineBefore = (LimitedLine)eBefore;
-					LimitedArc arcAfter = (LimitedArc)eAfter;
-					
-					Point3d newInitialPoint = new Point3d();	
-					Point3d newFinalPoint = new Point3d();	
-					
-					boolean validLine = false;
-					
-					LimitedLine parallelBefore = absoluteParallel(lineBefore, distance);
-					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-					
-					newInitialPoint = intersect(parallelBefore, parallelCurrent);
-										
-					if (arcAfter.getDeltaAngle() > 0)
-					{
-						if(distance >= arcAfter.getRadius())
-						{
-							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcAfter),arcAfter.getCenter());
-							newFinalPoint = intersect(lineDiagonal, parallelCurrent);		
-						}
-						else
-						{
-							newFinalPoint = parallelCurrent.getFinalPoint();
-						}
-					}
-					else
-					{
-						newFinalPoint = parallelCurrent.getFinalPoint();
-					}
-					
-					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint); 
-					if (norm(newLine)>0)
-						parallel.add(newLine);
-				}
-				
-				else if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
-				{
-					System.out.println("Arc before and line after");
-					LimitedArc arcBefore = (LimitedArc)eBefore;
-					LimitedLine lineAfter = (LimitedLine)eAfter;
-					
-					Point3d newInitialPoint = new Point3d();	
-					Point3d newFinalPoint = new Point3d();
-					
-					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-					LimitedLine parallelAfter = absoluteParallel(lineAfter, distance);
-					
-					if (arcBefore.getDeltaAngle() >= 0)
-					{
-						if(distance < arcBefore.getRadius())
-						{						
-							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());							
-							newInitialPoint = intersect(lineDiagonal, parallelCurrent);		
-						}
-						else
-						{
-							newInitialPoint = parallelCurrent.getInitialPoint();
-						}
-					}
-					else
-					{
-						newInitialPoint = parallelCurrent.getInitialPoint();
-						System.out.println("Inside else, angle < 0 " + parallelCurrent.getInitialPoint());
-					}
-					
-					newFinalPoint = intersect(parallelCurrent, parallelAfter);
-					//System.out.println("Line Current from " + lineCurrent.getInitialPoint() + " to " + lineCurrent.getFinalPoint());
-					System.out.println("New Line from " + newInitialPoint + " to " + newFinalPoint);
-					
-					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
-
-					if (norm(newLine) > 0)
-						parallel.add(newLine);
-				}			
-				
-				else if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())
-				{
-					LimitedArc arcBefore = (LimitedArc)eBefore;
-					LimitedArc arcAfter = (LimitedArc)eAfter;
-					
-					Point3d newInitialPoint = new Point3d();	
-					Point3d newFinalPoint = new Point3d();
-					
-					boolean validity=false;
-					
-					Point3d intersection = new Point3d();
-					
-					System.out.println("Arco - Linea - Arco");
-
-					if(arcBefore.getDeltaAngle() > 0)						
-					{
-						System.out.println("Arc before");
-						if(distance < arcBefore.getRadius())						
-						{			
-							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-							newInitialPoint = parallelCurrent.getInitialPoint();
-						}
-						else
-						{
-							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());
-							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-							System.out.println("Distance > Radius");
-							newInitialPoint = intersect(lineDiagonal, parallelCurrent);		
-						}
-					}
-					else
-					{
-						newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
-					}
-					
-					if(arcAfter.getDeltaAngle() > 0)
-					{
-						System.out.println("Arc after");
-						if(distance < arcAfter.getRadius())						
-						{	
-							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-							newFinalPoint = parallelCurrent.getFinalPoint();
-						}
-						else
-						{
-							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcAfter),arcAfter.getCenter());
-							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
-							System.out.println("Distance > Radius");
-							newFinalPoint = intersect(lineDiagonal, parallelCurrent);
-							System.out.println("Radius arc " + arcAfter.getRadius());
-							System.out.println("Newfinalpoint for intersection " + newFinalPoint);
-						}
-					}
-					else
-					{
-						System.out.println("Arc with angle > 180º");
-						newFinalPoint = absoluteParallel(lineCurrent,distance).getFinalPoint();
-					}
-					System.out.println("New final point " + newFinalPoint);
-					LimitedLine newParallelLine = new LimitedLine(newInitialPoint, newFinalPoint);
-					System.out.println("Line from " + newParallelLine.getInitialPoint() + " to " + newParallelLine.getFinalPoint());
-					if(norm(newParallelLine)>0)
-						parallel.add(newParallelLine);
-				}								
-			}
-			
-			if(eCurrent.isLimitedArc())				
-			{
-				LimitedArc arcCurrent = (LimitedArc)eCurrent;
-				if(eBefore.isLimitedLine() && eAfter.isLimitedLine())
-				{
-					LimitedLine lineBefore = (LimitedLine)eBefore;
-					LimitedLine lineAfter = (LimitedLine)eAfter;
-
-					Point3d newInitialPoint = new Point3d();
-					if(arcCurrent.getDeltaAngle() < 0)
-					{
-						System.out.println("************************************************");
-						Point3d vectorInitial = multiply(arcCurrent.getRadius() + distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
-						newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
-						LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
-						System.out.println(arcCurrent.getInitialPoint() + " to " + arcCurrent.getFinalPoint());
-						if (arc.getRadius()>0)
-							parallel.add(arc);
-					}					
-					else
-					{
-						if (distance < arcCurrent.getRadius())
-						{
-							Point3d vectorInitial = multiply(arcCurrent.getRadius() - distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
-							newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
-							LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
-							if (arc.getRadius()>0)
-								parallel.add(arc);							
-						}
-					}
-				}
-			}
-		}
-		System.out.println("************************************************");
-		System.out.println("Lista de elementos antes de retornar el parallel");
-		for(LimitedElement e:parallel)
-		{
-			if(e.isLimitedArc())
-			{
-				LimitedArc arc = (LimitedArc)e;
-				System.out.println("Arc From " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " Radius " + arc.getRadius());
-			}
-			else if(e.isLimitedLine())
-			{
-				LimitedLine line = (LimitedLine)e;
-				System.out.println("Line From " + line.getInitialPoint() + " to " + line.getFinalPoint() + " Norm " + norm(line));
-			}
-		}
-		System.out.println("************************************************");
-		return validarPath(parallel,elements,distance);	
-//		ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
-//				s.add(parallel);
-//		return s;	
-	}
+//	public static ArrayList<ArrayList<LimitedElement>> parallelPath (ArrayList<LimitedElement> elements, double distance)
+//	{
+//		ArrayList<LimitedElement> parallel = new ArrayList<LimitedElement>();
+//		
+//		for (int i = 0; i < elements.size(); i++)
+//		{
+//			
+//			LimitedElement eCurrent;
+//			LimitedElement eBefore;
+//			LimitedElement eAfter;
+//			
+//			if(i==0)
+//			{
+//				eCurrent = elements.get(i);
+//				eBefore = elements.get(elements.size()-1);
+//				eAfter = elements.get(i+1);
+//			}
+//			else if(i==elements.size()-1)
+//			{
+//				eCurrent = elements.get(i);
+//				eBefore = elements.get(i-1);
+//				eAfter = elements.get(0);				
+//			}
+//			else
+//			{
+//				eCurrent = elements.get(i);
+//				eBefore = elements.get(i-1);
+//				eAfter = elements.get(i+1);				
+//			}
+//			
+//			if(eCurrent.isLimitedLine())
+//			{
+//				LimitedLine lineCurrent = (LimitedLine)eCurrent;
+//				System.out.println("*******************************");
+//				System.out.println("Current element is a line");
+//				
+//				if(eBefore.isLimitedLine()&&eAfter.isLimitedLine())
+//				{
+//					System.out.println("Line before and Line after");
+//					
+//					LimitedLine lineBefore = (LimitedLine)eBefore;
+//					LimitedLine lineAfter = (LimitedLine)eAfter;
+//
+//					Point3d newInitialPoint = new Point3d();
+//					
+//					LimitedLine parallelBefore = absoluteParallel(lineBefore, distance);
+//					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+//					LimitedLine parallelAfter = absoluteParallel(lineAfter, distance);
+//					
+//					newInitialPoint = intersect(parallelBefore, parallelCurrent);
+//					Point3d newFinalPoint = new Point3d();
+//					
+//					newFinalPoint = intersect(parallelAfter, parallelCurrent);
+//					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
+//					
+//					Point3d unitCurrent = unitVector(lineCurrent.getInitialPoint(), lineCurrent.getFinalPoint());
+//					Point3d unitNew = unitVector(newLine.getInitialPoint(), newLine.getFinalPoint());
+//					
+//					double test = escalar(unitNew, unitCurrent);
+//					if (norm(newLine)>0)
+//					{
+//						if (test>0)
+//							parallel.add(newLine);						
+//					}
+//				}
+//								
+//				else if(eBefore.isLimitedLine()&&eAfter.isLimitedArc())
+//				{
+//					System.out.println("Line before and Arc after");
+//					LimitedLine lineBefore = (LimitedLine)eBefore;
+//					LimitedArc arcAfter = (LimitedArc)eAfter;
+//					
+//					Point3d newInitialPoint = new Point3d();	
+//					Point3d newFinalPoint = new Point3d();	
+//					
+//					boolean validLine = false;
+//					
+//					LimitedLine parallelBefore = absoluteParallel(lineBefore, distance);
+//					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+//					
+//					newInitialPoint = intersect(parallelBefore, parallelCurrent);
+//										
+//					if (arcAfter.getDeltaAngle() > 0)
+//					{
+//						if(distance >= arcAfter.getRadius())
+//						{
+//							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcAfter),arcAfter.getCenter());
+//							newFinalPoint = intersect(lineDiagonal, parallelCurrent);		
+//						}
+//						else
+//						{
+//							newFinalPoint = parallelCurrent.getFinalPoint();
+//						}
+//					}
+//					else
+//					{
+//						newFinalPoint = parallelCurrent.getFinalPoint();
+//					}
+//					
+//					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint); 
+//					if (norm(newLine)>0)
+//						parallel.add(newLine);
+//				}
+//				
+//				else if(eBefore.isLimitedArc()&&eAfter.isLimitedLine())
+//				{
+//					System.out.println("Arc before and line after");
+//					LimitedArc arcBefore = (LimitedArc)eBefore;
+//					LimitedLine lineAfter = (LimitedLine)eAfter;
+//					
+//					Point3d newInitialPoint = new Point3d();	
+//					Point3d newFinalPoint = new Point3d();
+//					
+//					LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+//					LimitedLine parallelAfter = absoluteParallel(lineAfter, distance);
+//					
+//					if (arcBefore.getDeltaAngle() >= 0)
+//					{
+//						if(distance < arcBefore.getRadius())
+//						{						
+//							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());							
+//							newInitialPoint = intersect(lineDiagonal, parallelCurrent);		
+//						}
+//						else
+//						{
+//							newInitialPoint = parallelCurrent.getInitialPoint();
+//						}
+//					}
+//					else
+//					{
+//						newInitialPoint = parallelCurrent.getInitialPoint();
+//						System.out.println("Inside else, angle < 0 " + parallelCurrent.getInitialPoint());
+//					}
+//					
+//					newFinalPoint = intersect(parallelCurrent, parallelAfter);
+//					//System.out.println("Line Current from " + lineCurrent.getInitialPoint() + " to " + lineCurrent.getFinalPoint());
+//					System.out.println("New Line from " + newInitialPoint + " to " + newFinalPoint);
+//					
+//					LimitedLine newLine = new LimitedLine(newInitialPoint, newFinalPoint);
+//
+//					if (norm(newLine) > 0)
+//						parallel.add(newLine);
+//				}			
+//				
+//				else if(eBefore.isLimitedArc()&&eAfter.isLimitedArc())
+//				{
+//					LimitedArc arcBefore = (LimitedArc)eBefore;
+//					LimitedArc arcAfter = (LimitedArc)eAfter;
+//					
+//					Point3d newInitialPoint = new Point3d();	
+//					Point3d newFinalPoint = new Point3d();
+//					
+//					boolean validity=false;
+//					
+//					Point3d intersection = new Point3d();
+//					
+//					System.out.println("Arco - Linea - Arco");
+//
+//					if(arcBefore.getDeltaAngle() > 0)						
+//					{
+//						System.out.println("Arc before");
+//						if(distance < arcBefore.getRadius())						
+//						{			
+//							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+//							newInitialPoint = parallelCurrent.getInitialPoint();
+//						}
+//						else
+//						{
+//							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcBefore),arcBefore.getCenter());
+//							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+//							System.out.println("Distance > Radius");
+//							newInitialPoint = intersect(lineDiagonal, parallelCurrent);		
+//						}
+//					}
+//					else
+//					{
+//						newInitialPoint = absoluteParallel(lineCurrent,distance).getInitialPoint();
+//					}
+//					
+//					if(arcAfter.getDeltaAngle() > 0)
+//					{
+//						System.out.println("Arc after");
+//						if(distance < arcAfter.getRadius())						
+//						{	
+//							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+//							newFinalPoint = parallelCurrent.getFinalPoint();
+//						}
+//						else
+//						{
+//							LimitedLine lineDiagonal = new LimitedLine(middlePoint(arcAfter),arcAfter.getCenter());
+//							LimitedLine parallelCurrent = absoluteParallel(lineCurrent, distance);
+//							System.out.println("Distance > Radius");
+//							newFinalPoint = intersect(lineDiagonal, parallelCurrent);
+//							System.out.println("Radius arc " + arcAfter.getRadius());
+//							System.out.println("Newfinalpoint for intersection " + newFinalPoint);
+//						}
+//					}
+//					else
+//					{
+//						System.out.println("Arc with angle > 180º");
+//						newFinalPoint = absoluteParallel(lineCurrent,distance).getFinalPoint();
+//					}
+//					System.out.println("New final point " + newFinalPoint);
+//					LimitedLine newParallelLine = new LimitedLine(newInitialPoint, newFinalPoint);
+//					System.out.println("Line from " + newParallelLine.getInitialPoint() + " to " + newParallelLine.getFinalPoint());
+//					if(norm(newParallelLine)>0)
+//						parallel.add(newParallelLine);
+//				}								
+//			}
+//			
+//			if(eCurrent.isLimitedArc())				
+//			{
+//				LimitedArc arcCurrent = (LimitedArc)eCurrent;
+//				if(eBefore.isLimitedLine() && eAfter.isLimitedLine())
+//				{
+//					LimitedLine lineBefore = (LimitedLine)eBefore;
+//					LimitedLine lineAfter = (LimitedLine)eAfter;
+//
+//					Point3d newInitialPoint = new Point3d();
+//					if(arcCurrent.getDeltaAngle() < 0)
+//					{
+//						System.out.println("************************************************");
+//						Point3d vectorInitial = multiply(arcCurrent.getRadius() + distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
+//						newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
+//						LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
+//						System.out.println(arcCurrent.getInitialPoint() + " to " + arcCurrent.getFinalPoint());
+//						if (arc.getRadius()>0)
+//							parallel.add(arc);
+//					}					
+//					else
+//					{
+//						if (distance < arcCurrent.getRadius())
+//						{
+//							Point3d vectorInitial = multiply(arcCurrent.getRadius() - distance, unitVector(arcCurrent.getCenter(),arcCurrent.getInitialPoint()));
+//							newInitialPoint = plus(arcCurrent.getCenter(),vectorInitial);
+//							LimitedArc arc = new LimitedArc(arcCurrent.getCenter(), newInitialPoint, arcCurrent.getDeltaAngle(),LimitedArc.CCW);
+//							if (arc.getRadius()>0)
+//								parallel.add(arc);							
+//						}
+//					}
+//				}
+//			}
+//		}
+//		System.out.println("************************************************");
+//		System.out.println("Lista de elementos antes de retornar el parallel");
+//		for(LimitedElement e:parallel)
+//		{
+//			if(e.isLimitedArc())
+//			{
+//				LimitedArc arc = (LimitedArc)e;
+//				System.out.println("Arc From " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " Radius " + arc.getRadius());
+//			}
+//			else if(e.isLimitedLine())
+//			{
+//				LimitedLine line = (LimitedLine)e;
+//				System.out.println("Line From " + line.getInitialPoint() + " to " + line.getFinalPoint() + " Norm " + norm(line));
+//			}
+//		}
+//		System.out.println("************************************************");
+//		return validarPath(parallel,elements,distance);	
+////		ArrayList<ArrayList<LimitedElement>> s = new ArrayList<ArrayList<LimitedElement>>();
+////				s.add(parallel);
+////		return s;	
+//	}
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
-		//vetor de sa�da
+		//vetor de saida
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
-		//ArrayList<ArrayList<LimitedElement>> elements2 = new ArrayList<ArrayList<LimitedElement>>();
 		//Array de elementos intermediarios
 		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
-		//Array de intenrsecoes
-		//ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
 		//elementsValidated.add(new ArrayList<LimitedElement>());
 		
 		/*
@@ -1173,18 +1170,7 @@ public class GeometricOperations
 		}
 		//elementsValidated.add(elementsIntermediario);
 		
-//		for(int i=0;i<elementsValidated.get(0).size();i++)
-//		{
-//			if(elementsValidated.get(0).get(i).isLimitedLine()){
-//				LimitedLine temp = (LimitedLine)elementsValidated.get(0).get(i);
-//				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + ",new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0));");
-//			}
-//			else if(elementsValidated.get(0).get(i).isLimitedArc())
-//			{
-//				LimitedArc temp = (LimitedArc)elementsValidated.get(0).get(i);
-//				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + temp.getInitialPoint().x + "," + temp.getInitialPoint().y + ",0)" + ",new Point3d(" + temp.getFinalPoint().x + "," + temp.getFinalPoint().y + ",0)" + "new Point3d(" + temp.getCenter().x + "," + temp.getCenter().y + ",0));");					
-//				}
-//		}
+		//showElements(elementsIntermediario);
 		
 		System.out.println("Intersecoes: " + intersecoes.size());
 		
@@ -1315,6 +1301,11 @@ public class GeometricOperations
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());
 		return elementsValidated;
 	}
+	
+//	public static ArrayList<LimitedElement> validar2Path(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
+//	{
+//		
+//	}
 	
 	public static boolean alreadyUsed(Point3d point, ArrayList<Point3d> array)
 	{
@@ -1803,7 +1794,7 @@ public class GeometricOperations
 	{
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 		
-		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath(elements, distance);
+		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
 		int i = 0;
 		while (i < 7)
 		{
@@ -1819,7 +1810,7 @@ public class GeometricOperations
 			multipleParallel.add(parallelPath);
 			for (ArrayList<LimitedElement> path:parallelPath)
 			{
-				parallelPath = parallelPath(path,distance);
+				parallelPath = parallelPath1(path,distance);
 				showElements(path);
 			}
 			//showElements(parallelPath);
@@ -1839,11 +1830,15 @@ public class GeometricOperations
 			{
 				LimitedArc arc = (LimitedArc)e;
 				//System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
+				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ",0)" + ",new Point3d(" + arc.getFinalPoint().x + "," + arc.getFinalPoint().y + ",0)" + "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y + ",0));");					
+
 			}
 			else if (e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
 				//System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ",0)" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ",0));");
+
 			}			
 			i++;			
 		}

@@ -1069,7 +1069,7 @@ public class GeometricOperations
 		 */
 		for (int i=0; i < elements.size(); i++)
 		{
-			Point3d intersection = null;
+			ArrayList<Point3d> intersection = null;
 			boolean thereIsIntersection = false;
 			LimitedElement ei = elements.get(i);
 			int numeroDeIntersecao = 0;
@@ -1082,9 +1082,12 @@ public class GeometricOperations
 					intersection = intersectionElements(ei, ej);
 					if (intersection != null)
 					{
-						if(!(alreadyUsed(intersection,intersecoes)))
+						for(int k = 0;k < intersection.size();k++)
 						{
-							intersecoes.add(intersection);
+							if(!(alreadyUsed(intersection.get(k),intersecoes)))
+							{
+								intersecoes.add(intersection.get(k));
+							}
 						}
 						thereIsIntersection = true;
 						if(numeroDeIntersecao == 0)
@@ -1331,11 +1334,15 @@ public class GeometricOperations
 			for (int j = i + 1; j < (elements.size()); j++)
 			{
 				LimitedElement ej = elements.get(j);
-				Point3d intersection = intersectionElements(ei, ej);
+				ArrayList<Point3d> intersection = intersectionElements(ei, ej);
 				if(intersection!=null)
 				{
-					//adiciona os pontos de interse��o ao vetor de interse��es
-					intersecoes.add(intersection);
+					//adiciona os pontos de intersecao ao vetor de intersecoes
+					for(int k = 0; k < intersection.size();k++)
+					{
+						intersecoes.add(intersection.get(k));
+						
+					}
 					System.out.println("Here is an intersection point " + intersection);
 				}
 			}
@@ -1343,9 +1350,8 @@ public class GeometricOperations
 		return intersecoes;
 	}
 	
-	public static Point3d intersectionElements(LimitedElement ei, LimitedElement ej)
+	public static ArrayList<Point3d> intersectionElements(LimitedElement ei, LimitedElement ej)
 	{
-		Point3d intersection;
 		//Se o elemento i for um arco
 		
 		if (ei.isLimitedArc())
@@ -1355,7 +1361,7 @@ public class GeometricOperations
 			if(ej.isLimitedArc())
 			{
 				LimitedArc arcj = (LimitedArc)ej;
-				intersection = intersectionPoint(arci,arcj);
+				//intersection = intersectionPoint(arci,arcj);
 				
 				//Alternativa para n�o identificar pontos de interse��o nas extremidades dos Limited Elements
 				if(isTheSamePoint(arci.getInitialPoint(),arcj.getInitialPoint()) || 
@@ -1406,6 +1412,8 @@ public class GeometricOperations
 			else if ( ej.isLimitedLine())
 			{
 				LimitedLine linej = (LimitedLine)ej;
+				ArrayList<Point3d> intersection = new ArrayList<Point3d>();
+				intersection.add(intersectionPoint(linei, linej));
 				if(isTheSamePoint(linei.getInitialPoint(),linej.getInitialPoint()) || 
 				   isTheSamePoint(linei.getFinalPoint(),linej.getFinalPoint()) || 
 				   isTheSamePoint(linei.getInitialPoint(),linej.getFinalPoint())|| 
@@ -1413,7 +1421,7 @@ public class GeometricOperations
 				{
 					return null;
 				}
-				return intersectionPoint(linei, linej);
+				return intersection;
 			}
 			
 		}
@@ -2024,7 +2032,7 @@ public class GeometricOperations
 		return saida;
 	}
 
-	public static Point3d intersectionPoint(LimitedArc arc, LimitedLine line)
+	public static ArrayList<Point3d> intersectionPoint(LimitedArc arc, LimitedLine line)
 	{
 		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
 		if(arc.getDeltaAngle() < 0)
@@ -2033,7 +2041,7 @@ public class GeometricOperations
 			Point3d temp1 = arc.getFinalPoint();
 			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
 		}
-		Point3d intersection = null;
+		ArrayList<Point3d> intersection = null;
 		/**
 		 *  line --> y = m * x + b
 		 *  circle --> (cx - p)^2 + (cy - q)^2 = r^2
@@ -2075,8 +2083,8 @@ public class GeometricOperations
 			y1 = m * x1 + b;
 			y2 = m * x2 + b;
 		}
-		double x;
-		double y;
+		//double x;
+		//double y;
 		
 		/**
 		 *  caso a linha for vertical -- Se houver intersecao, o x da intersecao sera no x da linha
@@ -2145,11 +2153,12 @@ public class GeometricOperations
 			{
 				if(moduloR1 >= moduloR2)
 				{
-					intersection = new Point3d(x1,y1,0);
+					intersection = new ArrayList<Point3d> ();
+					intersection.add(new Point3d(x1,y1,0));
 				}
 			}
 		} 
-		else if((anguloInicial <= anguloNaIntersecao2 && anguloFinal >= anguloNaIntersecao2))
+		if((anguloInicial <= anguloNaIntersecao2 && anguloFinal >= anguloNaIntersecao2))
 		{
 			moduloR2 = Math.sqrt(Math.pow((x2 - line.getInitialPoint().x),2) + Math.pow((y2 - line.getInitialPoint().y), 2));
 			diretor2 = new Point3d(((x2 - line.getInitialPoint().x)/moduloR1),((y2 - line.getInitialPoint().y)/moduloR1),0);
@@ -2158,17 +2167,30 @@ public class GeometricOperations
 			{
 				if(moduloR1 >= moduloR2)
 				{
-					intersection = new Point3d(x2,y2,0);
+					if(intersection == null)
+					{
+						intersection = new ArrayList<Point3d> ();
+					}
+					intersection.add(new Point3d(x2,y2,0));
 				}
 			}
 		}
-		
 		if(!(intersection == null))
 		{
-			if (!belongs(line, intersection)) 
+			if(intersection.size() == 1)
 			{
-				intersection = null;
-			} 
+				if (!belongs(line, intersection.get(0))) 
+				{
+					intersection = null;
+				} 
+			}
+			else if(intersection.size() == 2)
+			{
+				if (!belongs(line, intersection.get(1))) 
+				{
+					intersection = null;
+				} 
+			}
 		}
 		return intersection;
 	}
@@ -2188,7 +2210,7 @@ public class GeometricOperations
 		}
 		return estaContido;
 	}
-	public static Point3d intersectionPoint(LimitedArc arc1, LimitedArc arc2)
+	public static ArrayList<Point3d> intersectionPoint(LimitedArc arc1, LimitedArc arc2)
 	{
 		LimitedArc arc1Tmp = new LimitedArc(arc1.getInitialPoint(), arc1.getFinalPoint(), arc1.getCenter());
 		LimitedArc arc2Tmp = new LimitedArc(arc2.getInitialPoint(), arc2.getFinalPoint(), arc2.getCenter());
@@ -2206,7 +2228,7 @@ public class GeometricOperations
 			arc2Tmp = new LimitedArc(temp1, temp, arc2.getCenter());
 
 		}
-		Point3d intersection = null;
+		ArrayList<Point3d> intersection = null;
 		
 		double x1, x2, y1 = 0, y2 = 0, r1 = 0, r2 = 0, cx1, cx2, cy1, cy2;
 		
@@ -2351,12 +2373,17 @@ public class GeometricOperations
 		if(((anguloInicial1 <= anguloNaIntersecaoCirculo1Possivel1) && (anguloFinal1 >= anguloNaIntersecaoCirculo1Possivel1))
 				&&((anguloInicial2 <= anguloNaIntersecaoCirculo2Possivel1) && (anguloFinal2 >= anguloNaIntersecaoCirculo2Possivel1)))
 		{
-			intersection = possivel1;
+			intersection = new ArrayList<Point3d> ();
+			intersection.add(possivel1);
 		}
-		else if(((anguloInicial1 <= anguloNaIntersecaoCirculo1Possivel2) && (anguloFinal1 >= anguloNaIntersecaoCirculo1Possivel2))
+		if(((anguloInicial1 <= anguloNaIntersecaoCirculo1Possivel2) && (anguloFinal1 >= anguloNaIntersecaoCirculo1Possivel2))
 				&&((anguloInicial2 <= anguloNaIntersecaoCirculo2Possivel2) && (anguloFinal2 >= anguloNaIntersecaoCirculo2Possivel2)))
 		{
-			intersection = possivel2;
+			if(intersection == null)
+			{
+				intersection = new ArrayList<Point3d> ();
+			}
+			intersection.add(possivel2);
 		}
 		
 		return intersection;

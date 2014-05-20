@@ -1096,10 +1096,28 @@ public class GeometricOperations
 							if (ei.isLimitedLine())
 							{
 								LimitedLine linei = (LimitedLine)ei;
-								LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection);
-								LimitedLine lineAfterIntersection = new LimitedLine(intersection, linei.getFinalPoint());
-								elementsIntermediario.add(lineBeforeIntersection);
-								elementsIntermediario.add(lineAfterIntersection);
+								if(intersection.size() == 1)
+								{
+									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection.get(0));
+									LimitedLine lineAfterIntersection = new LimitedLine(intersection.get(0), linei.getFinalPoint());
+									elementsIntermediario.add(lineBeforeIntersection);
+									elementsIntermediario.add(lineAfterIntersection);
+								}
+								else if(intersection.size() == 2)
+								{
+									ArrayList<Point3d> intersectionTemp = intersection;
+									if(distance(linei.getInitialPoint(), intersection.get(0)) > distance(linei.getInitialPoint(), intersection.get(1)))
+									{
+										intersectionTemp.set(0, intersection.get(1));
+										intersectionTemp.set(1, intersection.get(0));
+									}
+									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersectionTemp.get(0));
+									LimitedLine lineBetweenIntersection = new LimitedLine(intersectionTemp.get(0),intersectionTemp.get(1));
+									LimitedLine lineAfterIntersection = new LimitedLine(intersectionTemp.get(0), linei.getFinalPoint());
+									elementsIntermediario.add(lineBeforeIntersection);
+									elementsIntermediario.add(lineBetweenIntersection);
+									elementsIntermediario.add(lineAfterIntersection);
+								}
 							}
 							else if(ei.isLimitedArc())
 							{
@@ -1115,7 +1133,7 @@ public class GeometricOperations
 						{
 							int indice1 = elementsIntermediario.size() - 2;
 							int indice2 = elementsIntermediario.size() - 1;
-							if((elementsIntermediario.get(elementsIntermediario.size() - 1).isLimitedLine()))
+							if((elementsIntermediario.get(indice2).isLimitedLine()))
 							{
 								LimitedLine aux1 = (LimitedLine)elementsIntermediario.get(indice1);
 								LimitedLine aux2 = (LimitedLine)elementsIntermediario.get(indice2);
@@ -1139,7 +1157,7 @@ public class GeometricOperations
 									elementsIntermediario.remove(indice2);
 								}
 							}
-							else if ((elementsIntermediario.get(elementsIntermediario.size() - 1).isLimitedArc()))
+							else if ((elementsIntermediario.get(indice2).isLimitedArc()))
 							{
 								LimitedArc aux1 = (LimitedArc) elementsIntermediario.get(indice1);
 								LimitedArc aux2 = (LimitedArc) elementsIntermediario.get(indice2);

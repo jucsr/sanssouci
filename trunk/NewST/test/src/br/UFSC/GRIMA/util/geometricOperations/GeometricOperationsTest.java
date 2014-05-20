@@ -254,7 +254,7 @@ public class GeometricOperationsTest
 		LimitedArc arc8 = new LimitedArc(new Point3d(10, 10, 0), new Point3d(30, 30, 0), new Point3d(10,30 , 0));
 		LimitedArc arc9 = new LimitedArc(new Point3d(5, 70, 0), new Point3d(60, 15, 0), new Point3d(70, 60, 0));
 		
-		Point3d intersection = GeometricOperations.intersectionElements(l9, l4);
+		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(l9, l4);
 		System.err.println("Intersection Validated: " + intersection);
 	}
 	

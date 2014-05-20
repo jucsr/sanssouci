@@ -3,14 +3,14 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/forms.jar"/>
 	<classpathentry kind="lib" path="lib/jsdai_runtime.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.15-bin.jar"/>
 	<classpathentry kind="lib" path="lib/StepNc.jar"/>
 	<classpathentry kind="lib" path="lib/swing-layout.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/j3dcore.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/j3dutils.jar"/>
-	<classpathentry kind="lib" path="/usr/share/java/vecmath.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/Java3D/1.5.1/lib/ext/j3dcore.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/Java3D/1.5.1/lib/ext/j3dutils.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/Java3D/1.5.1/lib/ext/vecmath.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

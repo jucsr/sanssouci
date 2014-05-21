@@ -291,7 +291,7 @@ public class GeometricOperationsTest
 		LimitedLine l9 = new LimitedLine(new Point3d(233, 159, 0), new Point3d(233, 309, 0));
 	    LimitedLine l4= new LimitedLine(new Point3d(354.99999999999966,195.0,0), new Point3d(132.99999999999983,195.0,0));
 	    
-		LimitedArc arco0= new LimitedArc(new Point3d(325.0,135.0,0), new Point3d(175.0,285.0,0), new Point3d(175.0,135.0,0));
+		//LimitedArc arco0= new LimitedArc(new Point3d(325.0,135.0,0), new Point3d(175.0,285.0,0), new Point3d(175.0,135.0,0));
 //		LimitedLine l4= new LimitedLine(new Point3d(325.0,134.99999999999997,0),new Point3d(325.0,165.0,0));
 //		LimitedLine l5= new LimitedLine(new Point3d(325.0,165.0,0),new Point3d(355.0000000000001,165.0,0));
 //		LimitedLine l6= new LimitedLine(new Point3d(355.0,165.0000000000001,0),new Point3d(355.0,195.00000000000034,0));
@@ -301,7 +301,7 @@ public class GeometricOperationsTest
 //		LimitedLine l10= new LimitedLine(new Point3d(312.4772708486752,195.0,0),new Point3d(132.99999999999983,195.0,0));
 //		LimitedLine l11= new LimitedLine(new Point3d(133.0,194.99999999999983,0),new Point3d(133.0,285.0,0));
 //		LimitedLine l12= new LimitedLine(new Point3d(133.00000000000003,285.0,0),new Point3d(175.0,285.0,0));
-		elementos1.add(arco0);
+		//elementos1.add(arco0);
 //		elementos1.add(l4);
 //	    elementos1.add(l5);
 //	    elementos1.add(l6);
@@ -311,15 +311,27 @@ public class GeometricOperationsTest
 //	    elementos1.add(l10); //**
 //	    elementos1.add(l11);
 //	    elementos1.add(l12);
-	    elementos1.add(l9);
-	    elementos1.add(l4);
-	    ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
+	    //elementos1.add(l9);
+	    //elementos1.add(l4);
+
+		  /*
+	       * ---------------------------------------------------------------------------------
+		   * Teste 4 (Dupla intersecao)
+		   */		
+		LimitedArc arco0= new LimitedArc(new Point3d(122.6,135.00,0), new Point3d(77.34,160.95,0), new Point3d(92.6,133.57,0));
+		LimitedArc arco1= new LimitedArc(new Point3d(83.2,169.37,0), new Point3d(128.2,143.39,0), new Point3d(114.47,169.10,0));
+		LimitedLine l1= new LimitedLine(new Point3d(135.10,135.59,0),new Point3d(64.84,174.95,0));
+		elementos1.add(arco0);
+		elementos1.add(arco1);
+		//elementos1.add(l1);
+		
+	    ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos1);
 		//ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
 		for(int i=0;i<intersecoes.size();i++)
 		{
 			System.out.println("intersecoes: " + intersecoes.get(i));
 		}
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementos);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementos1);
 		desenhador.setVisible(true);
 		for(;;);
 		
@@ -380,7 +392,14 @@ public class GeometricOperationsTest
 		LimitedLine l1 = new LimitedLine(new Point3d(15, 5, 0), new Point3d(15, 15, 0));
 		Point3d p1 = new Point3d(15,13,0);
 		System.out.println("belongs: " + GeometricOperations.belongs(l1, p1));
+		
+		double x = Math.sqrt(-1);
+		if(((Double)x).isNaN())
+		{
+			System.out.println("NaNANANANA");
+		}
 	}
+	
 	
 	@Test
 	public void determinarMovimentacaoGenCavTest()

@@ -1122,10 +1122,27 @@ public class GeometricOperations
 							else if(ei.isLimitedArc())
 							{
 								LimitedArc arci = (LimitedArc)ei;
-								LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection, arci.getCenter());
-								LimitedArc arcAfterIntersection = new LimitedArc(intersection, arci.getFinalPoint(), arci.getCenter());
-								elementsIntermediario.add(arcBeforeIntersection);
-								elementsIntermediario.add(arcAfterIntersection);
+								if(intersection.size() == 1)
+								{
+									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
+									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
+									elementsIntermediario.add(arcBeforeIntersection);
+									elementsIntermediario.add(arcAfterIntersection);
+								}
+								else if(intersection.size() == 2)
+								{
+									ArrayList<Point3d> intersectionTemp = intersection;
+									if(distance(arci.getInitialPoint(), intersection.get(0)) > distance(arci.getInitialPoint(), intersection.get(1)))
+									{
+										intersectionTemp.set(0, intersection.get(1));
+										intersectionTemp.set(1, intersection.get(0));
+									}
+									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
+									LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0),intersectionTemp.get(1),arci.getCenter());
+									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
+									elementsIntermediario.add(arcBeforeIntersection);
+									elementsIntermediario.add(arcAfterIntersection);
+								}
 							}
 							numeroDeIntersecao++;
 						}
@@ -1526,6 +1543,7 @@ public class GeometricOperations
 			return false;
 		}
 		
+		
 //		System.out.println("Norma p1: " + norm(p1));
 //		System.out.println("Norma p2: " + norm(p2));
 //		if (norm(minus(p1, p2))==0 && norm(p1) <= norm(p2))
@@ -1538,6 +1556,10 @@ public class GeometricOperations
 //		}
 	}
 	
+//	public static boolean belongsArc(LimitedArc arc, Point3d p)
+//	{
+//		
+//	}
 	public static double norm(LimitedLine line)
 	{		
 		return distance(line.getInitialPoint(),line.getFinalPoint()); 
@@ -2261,10 +2283,10 @@ public class GeometricOperations
 //		{
 //			return intersection;
 //		}
-		if(circleIsContentInOtherCircle(arc1Tmp, arc2Tmp) || circleIsContentInOtherCircle(arc2Tmp, arc1Tmp))
-		{
-			return intersection;
-		}
+//		if(circleIsContentInOtherCircle(arc1Tmp, arc2Tmp) || circleIsContentInOtherCircle(arc2Tmp, arc1Tmp))
+//		{
+//			return intersection;
+//		}
 		x1 = (cx1*Math.pow(cy1, 2) - Math.pow(cx1, 2)*cx2 - cx1*Math.pow(cx2, 2) + cx1*Math.pow(cy2, 2) + cx2*Math.pow(cy1, 2) + cx2*Math.pow(cy2, 2) - cx1*Math.pow(r1, 2) + cx2*Math.pow(r1, 2) + cx1*Math.pow(r2, 2) - cx2*Math.pow(r2, 2) + Math.pow(cx1, 3) + Math.pow(cx2, 3) - cy1*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1, 2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1, 2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) - Math.pow(r1, 4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) + cy2*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1,2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1,2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) -Math.pow(r1,4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) - 2*cx1*cy1*cy2 - 2*cx2*cy1*cy2)/(2*(Math.pow(cx1, 2) - 2*cx1*cx2 + Math.pow(cx2, 2) + Math.pow(cy1, 2) - 2*cy1*cy2 + Math.pow(cy2, 2)));
 		x2 = (cx1*Math.pow(cy1, 2) - Math.pow(cx1, 2)*cx2 - cx1*Math.pow(cx2, 2) + cx1*Math.pow(cy2, 2) + cx2*Math.pow(cy1, 2) + cx2*Math.pow(cy2, 2) - cx1*Math.pow(r1, 2) + cx2*Math.pow(r1, 2) + cx1*Math.pow(r2, 2) - cx2*Math.pow(r2, 2) + Math.pow(cx1, 3) + Math.pow(cx2, 3) + cy1*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1, 2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1, 2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) - Math.pow(r1, 4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) - cy2*Math.sqrt(- Math.pow(cx1, 4) + 4*Math.pow(cx1, 3)*cx2 - 6*Math.pow(cx1, 2)*Math.pow(cx2, 2) - 2*Math.pow(cx1, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx1, 2)*cy1*cy2 - 2*Math.pow(cx1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx1, 2)*Math.pow(r1, 2) + 2*Math.pow(cx1, 2)*Math.pow(r2, 2) + 4*cx1*Math.pow(cx2, 3) + 4*cx1*cx2*Math.pow(cy1, 2) - 8*cx1*cx2*cy1*cy2 + 4*cx1*cx2*Math.pow(cy2, 2) - 4*cx1*cx2*Math.pow(r1, 2) - 4*cx1*cx2*Math.pow(r2, 2) - Math.pow(cx2, 4) - 2*Math.pow(cx2, 2)*Math.pow(cy1, 2) + 4*Math.pow(cx2, 2)*cy1*cy2 - 2*Math.pow(cx2, 2)*Math.pow(cy2, 2) + 2*Math.pow(cx2, 2)*Math.pow(r1, 2) + 2*Math.pow(cx2, 2)*Math.pow(r2, 2) - Math.pow(cy1, 4) + 4*Math.pow(cy1, 3)*cy2 - 6*Math.pow(cy1, 2)*Math.pow(cy2, 2) + 2*Math.pow(cy1, 2)*Math.pow(r1, 2) + 2*Math.pow(cy1, 2)*Math.pow(r2, 2) + 4*cy1*Math.pow(cy2, 3) - 4*cy1*cy2*Math.pow(r1, 2) - 4*cy1*cy2*Math.pow(r2, 2) - Math.pow(cy2, 4) + 2*Math.pow(cy2, 2)*Math.pow(r1, 2) + 2*Math.pow(cy2, 2)*Math.pow(r2, 2) - Math.pow(r1, 4) + 2*Math.pow(r1, 2)*Math.pow(r2, 2) - Math.pow(r2, 4)) - 2*cx1*cy1*cy2 - 2*cx2*cy1*cy2)/(2*(Math.pow(cx1, 2) - 2*cx1*cx2 + Math.pow(cx2, 2) + Math.pow(cy1, 2) - 2*cy1*cy2 + Math.pow(cy2, 2)));
 		
@@ -2312,6 +2334,7 @@ public class GeometricOperations
 		}
 		
 //		System.out.println("Array Ypossiveis: " + ypossiveis);
+		System.out.println("Possiveis size: " + ypossiveis.size());
 		y1 = ypossiveis.get(0);
 		y2 = ypossiveis.get(1);
 		Point3d possivel1 = new Point3d(x1, y1, 0);

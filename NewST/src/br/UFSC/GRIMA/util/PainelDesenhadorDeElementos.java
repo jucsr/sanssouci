@@ -188,12 +188,12 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 			anguloInicial = - anguloInicial * 180 / Math.PI;
 		
 		
-		System.out.println("================");
-		System.out.println("A_INI = " + anguloInicial);
-		//System.out.println("A_FIN = " + anguloFinal * 180 / Math.PI);
-		System.out.println("DELTA = " + deltaAngulo);
-		System.out.println("getDeltaAngulo = " + arc.getDeltaAngle()* 180 / Math.PI);
-		System.out.println("================");
+//		System.out.println("================");
+//		System.out.println("A_INI = " + anguloInicial);
+//		//System.out.println("A_FIN = " + anguloFinal * 180 / Math.PI);
+//		System.out.println("DELTA = " + deltaAngulo);
+//		System.out.println("getDeltaAngulo = " + arc.getDeltaAngle()* 180 / Math.PI);
+//		System.out.println("================");
 		
 		Arc2D arco = new Arc2D.Double((arcTmp.getCenter().x  - arcTmp.getRadius()) * zoom, (arcTmp.getCenter().y - arcTmp.getRadius()) * zoom, arcTmp.getRadius() * 2 * zoom, arcTmp.getRadius() * 2 * zoom, anguloInicial, deltaAngulo, 0);
 		//Arc2D arco = new Arc2D.Double((100) * zoom, (100) * zoom, 100 * 2 * zoom, 100 * 2 * zoom, -30, -180, 0);

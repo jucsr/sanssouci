@@ -254,7 +254,7 @@ public class GeometricOperationsTest
 		LimitedArc arc8 = new LimitedArc(new Point3d(10, 10, 0), new Point3d(30, 30, 0), new Point3d(10,30 , 0));
 		LimitedArc arc9 = new LimitedArc(new Point3d(5, 70, 0), new Point3d(60, 15, 0), new Point3d(70, 60, 0));
 		
-		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(l9, l4);
+		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(arc4, arc5);
 		System.err.println("Intersection Validated: " + intersection);
 	}
 	
@@ -320,9 +320,12 @@ public class GeometricOperationsTest
 		   */		
 		LimitedArc arco0= new LimitedArc(new Point3d(122.6,135.00,0), new Point3d(77.34,160.95,0), new Point3d(92.6,133.57,0));
 		LimitedArc arco1= new LimitedArc(new Point3d(83.2,169.37,0), new Point3d(128.2,143.39,0), new Point3d(114.47,169.10,0));
+		LimitedArc arco2 = new LimitedArc(new Point3d (20,10,0), new Point3d(30,20,0),new Point3d(20,20,0));
+		LimitedArc arco3 = new LimitedArc(new Point3d(20, 20, 0), new Point3d(30, 20, 0), new Point3d(30,20,0));
+		//LimitedArc arco4 = new LimitedArc(new Point3d (92.6,133.57,0), new Point3d(122.6,135.00,0), 90, 1 );
 		LimitedLine l1= new LimitedLine(new Point3d(135.10,135.59,0),new Point3d(64.84,174.95,0));
-		elementos1.add(arco0);
-		elementos1.add(arco1);
+		//elementos1.add(arco2);
+		//elementos1.add(arco4);
 		//elementos1.add(l1);
 		
 	    ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos1);

@@ -101,14 +101,14 @@ public class GeometricOperationsTest
 	    l8 = new LimitedLine(new Point3d(200, 150, 0), new Point3d(250, 300, 0)); //erro!!
 //	    l8 = new LimitedLine(new Point3d(200, 150, 0), new Point3d(200, 300, 0)); 
 	    //elementos.add(arco00);
-//	    elementos.add(arco0);
-	    elementos.add(arco1);
-//	    elementos.add(l1);
-//	    elementos.add(l2);
-//	    elementos.add(l3);
-//	    elementos.add(l4);
-//	    elementos.add(l5);
-//	    elementos.add(l6);
+	    elementos.add(arco0);
+	    //elementos.add(arco1);
+	    elementos.add(l1);
+	    elementos.add(l2);
+	    elementos.add(l3);
+	    elementos.add(l4);
+	    elementos.add(l5);
+	    elementos.add(l6);
 	    //elementos.add(l7);
 	    //elementos.add(l8);
 	    //elementos.add(l9);
@@ -328,13 +328,13 @@ public class GeometricOperationsTest
 		//elementos1.add(arco4);
 		//elementos1.add(l1);
 		
-	    ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos1);
+	    ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
 		//ArrayList<Point3d> intersecoes = GeometricOperations.intersectionElements(elementos);
 		for(int i=0;i<intersecoes.size();i++)
 		{
 			System.out.println("intersecoes: " + intersecoes.get(i));
 		}
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementos1);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementos);
 		desenhador.setVisible(true);
 		for(;;);
 		

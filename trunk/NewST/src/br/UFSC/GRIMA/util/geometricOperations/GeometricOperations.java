@@ -283,7 +283,14 @@ public class GeometricOperations
 	}
 	
 	public static double minimumDistancePointToArc(Point3d p, LimitedArc arc)
-	{		
+	{	
+		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
+		if(arc.getDeltaAngle() < 0)
+		{
+			Point3d temp = arc.getInitialPoint();
+			Point3d temp1 = arc.getFinalPoint();
+			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
+		}
 		Point3d v = new Point3d(p.getX()-arc.getCenter().getX(), p.getY()-arc.getCenter().getY(), p.getZ()-arc.getCenter().getZ());
 		Point3d normalPoint = plus(arc.getCenter(),multiply(arc.getRadius()/norm(v),v));
 		
@@ -755,8 +762,8 @@ public class GeometricOperations
 			{
 				minimumDistance = auxiliar;
 			}
+			System.out.println("Minumum Distance: " + minimumDistance + " \t--> " + temp.getClass());
 		}
-		
 		return roundNumber(minimumDistance,10);
 	}
 	
@@ -1978,15 +1985,15 @@ public class GeometricOperations
 		if (arc.getDeltaAngle()<0)
 		{
 			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);		
-//			System.out.println("Center: "+newArc.getCenter());
+			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
+			System.out.println("Arco: " + newArc.getInitialPoint());
 		}
 		else
 		{
 			if(arc.getRadius()>=distance)
 			{
 				Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);
+				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
 			}
 		}
 //		System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());

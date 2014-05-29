@@ -342,7 +342,7 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath1Test()
 	{
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 10).get(0);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 100).get(0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)

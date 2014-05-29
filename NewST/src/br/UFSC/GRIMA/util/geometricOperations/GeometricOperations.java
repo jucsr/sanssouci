@@ -780,6 +780,7 @@ public class GeometricOperations
 				LimitedArc arcTmp = (LimitedArc)elements.get(i);
 				LimitedArc newArc = parallelArc(arcTmp, distance);
 				lacoTmp.add(newArc);
+				System.out.println("Center: " + newArc.getCenter());
 				//System.err.println("arco " + i);
 			}
 		}
@@ -1063,6 +1064,7 @@ public class GeometricOperations
 		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		//elementsValidated.add(new ArrayList<LimitedElement>());
+		//showElements(elements);
 		
 		/*
 		 * 	Valida��o 1: Quebra dos Elementos na intersecao
@@ -1351,12 +1353,13 @@ public class GeometricOperations
 					}
 				}
 			}
-			if(thereIsIntersection == false)
-			{
-				elementsIntermediario.add(ei);
-			}
+		}
+		if(thereIsIntersection == false)
+		{
+			elementsIntermediario.add(ei);
 		}
 	}
+		//showElements(elementsIntermediario);
 		//elementsValidated.add(elementsIntermediario);
 		
 		//showElements(elementsIntermediario);

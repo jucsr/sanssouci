@@ -86,6 +86,42 @@ public class LimitedArc extends LimitedElement
 		}
 	}
 	
+	public LimitedArc(Point3d center, Point3d initialPoint, double deltaAngle)
+	{
+		this.center = center;
+		this.initialPoint = initialPoint;
+		this.deltaAngle = deltaAngle;
+		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
+		if(deltaAngle < 0)
+		{
+			this.sense = CW;
+		}
+		else
+		{
+			this.sense = CCW;
+		}
+		
+//		Point3d axisX = new Point3d(1.0, 0, 0);
+		Point3d vectorInitial = GeometricOperations.minus(this.initialPoint, this.center);
+		double initialAngle = GeometricOperations.angle(vectorInitial);
+		
+//		initialAngle = Math.acos(GeometricOperations.escalar(axisX, vectorInitial)/GeometricOperations.norm(axisX)/GeometricOperations.norm(vectorInitial));
+//		if (vectorInitial.getY() < 0)
+//			initialAngle = -initialAngle;
+
+		if (this.radius!=0)
+		{
+			this.finalPoint = new Point3d();
+			this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
+			this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
+			this.finalPoint.setZ(this.getCenter().getZ());
+		}
+//		else
+//		{
+//			this.finalPoint = this.center;
+//		}
+	}
+	
 	public LimitedArc(Point3d initialPoint, Point3d finalPoint, Point3d center)
 	{
 		this.center = center;

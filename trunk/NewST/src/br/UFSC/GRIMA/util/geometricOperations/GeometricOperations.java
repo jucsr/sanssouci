@@ -774,13 +774,17 @@ public class GeometricOperations
 				LimitedLine newLine = absoluteParallel(lineTmp, distance);
 				lacoTmp.add(newLine);
 				//System.err.println("linha " + i);
-				
-			} else if(elements.get(i).isLimitedArc())
+					
+			} 
+			else if(elements.get(i).isLimitedArc())
 			{
 				LimitedArc arcTmp = (LimitedArc)elements.get(i);
 				LimitedArc newArc = parallelArc(arcTmp, distance);
-				lacoTmp.add(newArc);
-				System.out.println("Center: " + newArc.getCenter());
+				if(newArc != null)
+				{
+					lacoTmp.add(newArc);
+				}
+//				System.out.println("Center: " + newArc.getCenter());
 				//System.err.println("arco " + i);
 			}
 		}
@@ -1064,7 +1068,7 @@ public class GeometricOperations
 		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		//elementsValidated.add(new ArrayList<LimitedElement>());
-		//showElements(elements);
+//		showElements(elements);
 		
 		/*
 		 * 	Valida��o 1: Quebra dos Elementos na intersecao
@@ -1359,7 +1363,7 @@ public class GeometricOperations
 			elementsIntermediario.add(ei);
 		}
 	}
-		//showElements(elementsIntermediario);
+		showElements(elementsIntermediario);
 		//elementsValidated.add(elementsIntermediario);
 		
 		//showElements(elementsIntermediario);
@@ -1970,11 +1974,12 @@ public class GeometricOperations
 	
 	public static LimitedArc parallelArc(LimitedArc arc, double distance)
 	{
-		LimitedArc newArc = new LimitedArc();		
+		LimitedArc newArc = null;
 		if (arc.getDeltaAngle()<0)
 		{
 			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);					
+			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);		
+//			System.out.println("Center: "+newArc.getCenter());
 		}
 		else
 		{
@@ -1983,14 +1988,7 @@ public class GeometricOperations
 				Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle(),1);
 			}
-			else
-			{
-//				LimitedArc tempArc = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle()/2,1);
-//				Point3d unitToNewPoint = unitVector(tempArc.getFinalPoint(), arc.getCenter());
-//				Point3d newCenter = plus(tempArc.getFinalPoint(),multiply(distance,unitToNewPoint));
-//				newArc = new LimitedArc(newCenter, newCenter, arc.getDeltaAngle(),1);
-			}
-		}				
+		}
 //		System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
 		return newArc;
 	}

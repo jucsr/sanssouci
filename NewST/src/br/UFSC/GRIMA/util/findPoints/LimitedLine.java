@@ -12,8 +12,6 @@ import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
  */
 
 public class LimitedLine extends LimitedElement {
-	private Point3d initialPoint;
-	private Point3d finalPoint;
 
 	private double a;
 	private double b;
@@ -90,21 +88,6 @@ public class LimitedLine extends LimitedElement {
 		this.setLenght();
 		return this.lenght;
 	}	
-	public Point3d getInitialPoint() {
-		return initialPoint;
-	}
-
-	public void setInitialPoint(Point3d fp) {
-		this.initialPoint = fp;
-	}
-
-	public Point3d getFinalPoint() {
-		return finalPoint;
-	}
-
-	public void setFinalPoint(Point3d sp) {
-		this.finalPoint = sp;
-	}
 
 	public double getA() {
 		return a;

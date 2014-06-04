@@ -1417,19 +1417,19 @@ public class GeometricOperations
 		 */
 		int numeroDeLacos = 0;
 		Point3d initialPoint = null;
-		int aux = 0;
 		boolean alreadyPassed = false;
 		int aux2 = 1;
 		LimitedElement ei0 = elementsIntermediario2.get(0);
+		LimitedElement ei0new = elementsIntermediario2.get(0);
 		//for(int i = 0; i < elementsIntermediario2.size(); i++)
 		System.out.println("Size:" + elementsIntermediario2.size());
-		while(elementsIntermediario2.size() > 1)
+		while(elementsIntermediario2.size() > 1 )
 		{
-			//System.out.println("Numero de lacos: " + numeroDeLacos);
+			ei0 = ei0new;
 			elementsValidated.get(numeroDeLacos).add(ei0);
 			for(int j = 0; j < elementsIntermediario2.size(); j++)
 			{
-				System.out.println("Aux2: " + aux2);
+//				System.out.println("Aux2: " + aux2);
 				if(j != (aux2 - 1))
 				{
 					LimitedElement ej = elementsIntermediario2.get(j);
@@ -1441,6 +1441,7 @@ public class GeometricOperations
 						if(!(alreadyPassed))
 						{
 							initialPoint = arciI;
+							System.out.println("InitialPoint: " + initialPoint);
 							alreadyPassed = true;
 						}
 						if(ej.isLimitedArc())
@@ -1451,9 +1452,10 @@ public class GeometricOperations
 							if(isTheSamePoint(arciF,arcjI))
 							{
 								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0 = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(aux2);
+								ei0new = elementsIntermediario2.get(j);
+								elementsIntermediario2.remove(ei0);
 								aux2 = j;
+								break;
 							}
 							else if(isTheSamePoint(arcjF,arcjI))
 							{
@@ -1469,9 +1471,10 @@ public class GeometricOperations
 	 						if(isTheSamePoint(arciF,linejI))
 		 					{
 								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0 = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(aux2);
+								ei0new = elementsIntermediario2.get(j);
+								elementsIntermediario2.remove(ei0);
 								aux2 = j;
+								break;
 							}
 	 						else if(isTheSamePoint(linejF,initialPoint))
 							{
@@ -1488,6 +1491,7 @@ public class GeometricOperations
 						if(!(alreadyPassed))
 						{
 							initialPoint = lineiI;
+							System.out.println("InitialPoint: " + initialPoint);
 							alreadyPassed = true;
 						}
 						if(ej.isLimitedArc())
@@ -1498,14 +1502,16 @@ public class GeometricOperations
 							if(isTheSamePoint(lineiF,arcjI))
 							{
 								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0 = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(aux2);
+								ei0new = elementsIntermediario2.get(j);
+								elementsIntermediario2.remove(ei0);
 								aux2 = j;
+								break;
 							}
 							else if(isTheSamePoint(arcjF,initialPoint))
 							{
 								numeroDeLacos++;
 								elementsValidated.add(new ArrayList<LimitedElement>());
+								
 							}
 						}
 						else if(ej.isLimitedLine())
@@ -1516,9 +1522,10 @@ public class GeometricOperations
 							if(isTheSamePoint(lineiF,linejI))
 							{
 								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0 = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(aux2);
+								ei0new = elementsIntermediario2.get(j);
+								elementsIntermediario2.remove(ei0);
 								aux2 = j;
+								break;
 							}
 							else if(isTheSamePoint(linejF,initialPoint))
 							{
@@ -1529,8 +1536,7 @@ public class GeometricOperations
 					}
 				}
 			}
-			aux++;
-			System.out.println("Size:" + elementsIntermediario2.size());
+			System.out.println("Numero de lacos: " + numeroDeLacos);
 		}
 		showElements(elementsValidated.get(0));
 //		elementsValidated.add(elementsIntermediario2);

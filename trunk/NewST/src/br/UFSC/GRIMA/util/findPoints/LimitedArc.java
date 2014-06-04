@@ -13,7 +13,7 @@ import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
  */
 public class LimitedArc extends LimitedElement
 {
-	private Point3d center, initialPoint, finalPoint;
+	private Point3d center;
 	private double deltaAngle;
 	private ArrayList<Point3d> pointsInArc;
 	private double radius;
@@ -193,18 +193,6 @@ public class LimitedArc extends LimitedElement
 	}
 	public void setCenter(Point3d center) {
 		this.center = center;
-	}
-	public Point3d getInitialPoint() {
-		return initialPoint;
-	}
-	public void setInitialPoint(Point3d initialPoint) {
-		this.initialPoint = initialPoint;
-	}
-	public Point3d getFinalPoint() {
-		return finalPoint;
-	}
-	public void setFinalPoint(Point3d finalPoint) {
-		this.finalPoint = finalPoint;
 	}
 	public ArrayList<Point3d> getPointsInArc() {
 		return pointsInArc;

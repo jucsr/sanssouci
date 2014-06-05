@@ -90,7 +90,7 @@ public class LimitedArc extends LimitedElement
 	{
 		this.center = center;
 		this.initialPoint = initialPoint;
-		this.deltaAngle = deltaAngle;
+		this.deltaAngle = (deltaAngle*Math.PI)/180;
 		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
 		if(deltaAngle < 0)
 		{

@@ -1100,6 +1100,7 @@ public class GeometricOperations
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		elementsValidated.add(new ArrayList<LimitedElement>());
 //		showElements(elements);
+		System.out.println("Elementos: " + elements.size());
 		
 		/*
 		 * 	Valida��o 1: Quebra dos Elementos na intersecao
@@ -1395,7 +1396,7 @@ public class GeometricOperations
 		//showElements(elementsIntermediario);
 		//elementsValidated.add(elementsIntermediario);
 		
-		System.out.println("Intersecoes: " + intersecoes.size());
+//		System.out.println("Intersecoes: " + intersecoes.size());
 
 		/*
 		 * 	Valida��o 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
@@ -1410,7 +1411,8 @@ public class GeometricOperations
 				elementsIntermediario2.add(ei0);
 			}
 		}
-		
+		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
+
 		showElements(elementsIntermediario2);
 		/*
 		 * 	Valida��o 3: Separacao dos elementos em lacos 
@@ -1423,117 +1425,39 @@ public class GeometricOperations
 		LimitedElement ei0new = elementsIntermediario2.get(0);
 		//for(int i = 0; i < elementsIntermediario2.size(); i++)
 		System.out.println("Size:" + elementsIntermediario2.size());
-		while(elementsIntermediario2.size() > 1 )
+		while(elementsIntermediario2.size() > 0 )
 		{
 			ei0 = ei0new;
+			Point3d ei0I = ei0.getInitialPoint();
+			System.out.println("ei0I: " + ei0I);
+			Point3d ei0F = ei0.getFinalPoint();
 			elementsValidated.get(numeroDeLacos).add(ei0);
 			for(int j = 0; j < elementsIntermediario2.size(); j++)
 			{
 //				System.out.println("Aux2: " + aux2);
-				if(j != (aux2 - 1))
+				LimitedElement ej = elementsIntermediario2.get(j);
+				if(!(alreadyPassed))
 				{
-					LimitedElement ej = elementsIntermediario2.get(j);
-					if(ei0.isLimitedArc())
-					{
-						LimitedArc arci = (LimitedArc)ei0;
-						Point3d arciI = arci.getInitialPoint();
-						Point3d arciF = arci.getFinalPoint();
-						if(!(alreadyPassed))
-						{
-							initialPoint = arciI;
-							System.out.println("InitialPoint: " + initialPoint);
-							alreadyPassed = true;
-						}
-						if(ej.isLimitedArc())
-						{
-							LimitedArc arcj = (LimitedArc)ej;
-							Point3d arcjI = arcj.getInitialPoint();
-							Point3d arcjF = arcj.getFinalPoint();
-							if(isTheSamePoint(arciF,arcjI))
-							{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0new = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(ei0);
-								aux2 = j;
-								break;
-							}
-							else if(isTheSamePoint(arcjF,arcjI))
-							{
-								numeroDeLacos++;
-								elementsValidated.add(new ArrayList<LimitedElement>());
-							}
-						}
-						else if(ej.isLimitedLine())
-						{
-							LimitedLine linej = (LimitedLine)ej;
-							Point3d linejI = linej.getInitialPoint();
-							Point3d linejF = linej.getFinalPoint();
-	 						if(isTheSamePoint(arciF,linejI))
-		 					{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0new = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(ei0);
-								aux2 = j;
-								break;
-							}
-	 						else if(isTheSamePoint(linejF,initialPoint))
-							{
-								numeroDeLacos++;
-								elementsValidated.add(new ArrayList<LimitedElement>());
-							}
-						}
-					}
-					else if(ei0.isLimitedLine())
-					{
-						LimitedLine linei = (LimitedLine)ei0;
-						Point3d lineiI = linei.getInitialPoint();
-						Point3d lineiF = linei.getFinalPoint();
-						if(!(alreadyPassed))
-						{
-							initialPoint = lineiI;
-							System.out.println("InitialPoint: " + initialPoint);
-							alreadyPassed = true;
-						}
-						if(ej.isLimitedArc())
-						{
-							LimitedArc arcj = (LimitedArc)ej;
-							Point3d arcjI = arcj.getInitialPoint();
-							Point3d arcjF = arcj.getFinalPoint();
-							if(isTheSamePoint(lineiF,arcjI))
-							{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0new = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(ei0);
-								aux2 = j;
-								break;
-							}
-							else if(isTheSamePoint(arcjF,initialPoint))
-							{
-								numeroDeLacos++;
-								elementsValidated.add(new ArrayList<LimitedElement>());
-								
-							}
-						}
-						else if(ej.isLimitedLine())
-						{
-							LimitedLine linej= (LimitedLine)ej;
-							Point3d linejI = linej.getInitialPoint();
-							Point3d linejF = linej.getFinalPoint();
-							if(isTheSamePoint(lineiF,linejI))
-							{
-								elementsValidated.get(numeroDeLacos).add(ej);
-								ei0new = elementsIntermediario2.get(j);
-								elementsIntermediario2.remove(ei0);
-								aux2 = j;
-								break;
-							}
-							else if(isTheSamePoint(linejF,initialPoint))
-							{
-								numeroDeLacos++;
-								elementsValidated.add(new ArrayList<LimitedElement>());
-							}
-						}
-					}
+					initialPoint = ei0I;
+					System.out.println("InitialPoint: " + initialPoint);
+					alreadyPassed = true;
+				}
+				Point3d ejI = ej.getInitialPoint();
+				System.out.println("ejI: " + ejI);
+				Point3d ejF = ej.getFinalPoint();
+				if(isTheSamePoint(ei0F,ejI))
+				{
+//					elementsValidated.get(numeroDeLacos).add(ej);
+					ei0new = elementsIntermediario2.get(j);
+					elementsIntermediario2.remove(ei0);
+					aux2 = j;
+					break;
+				}
+				else if(isTheSamePoint(ejF,initialPoint))
+				{
+					numeroDeLacos++;
+					elementsIntermediario2.remove(ei0);
+					elementsValidated.add(new ArrayList<LimitedElement>());
 				}
 			}
 			System.out.println("Numero de lacos: " + numeroDeLacos);
@@ -1544,12 +1468,7 @@ public class GeometricOperations
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());
 		return elementsValidated;
 	}
-	
-//	public static ArrayList<LimitedElement> validar2Path(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
-//	{
-//		
-//	}
-	
+
 	public static boolean alreadyUsed(Point3d point, ArrayList<Point3d> array)
 	{
 		boolean answer = false;
@@ -2087,7 +2006,7 @@ public class GeometricOperations
 			{
 				LimitedArc arc = (LimitedArc)e;
 				//System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
-				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ",0)" + ",new Point3d(" + arc.getFinalPoint().x + "," + arc.getFinalPoint().y + ",0)" + "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y + ",0));");					
+				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ",0)" + ",new Point3d(" + arc.getFinalPoint().x + "," + arc.getFinalPoint().y + ",0)" + "," + "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y + ",0));");					
 
 			}
 			else if (e.isLimitedLine())
@@ -2520,8 +2439,8 @@ public class GeometricOperations
 		double [] ypossiveis2 = {y21, y22, y23, y24};
 		for(int i = 0; i < ypossiveis1.length; i++)
 		{
-			System.out.println("Ypossiveis1: " + ypossiveis1[i]);
-			System.out.println("Ypossiveis2: " + ypossiveis2[i]);
+//			System.out.println("Ypossiveis1: " + ypossiveis1[i]);
+//			System.out.println("Ypossiveis2: " + ypossiveis2[i]);
 			for(int j = 0; j < ypossiveis2.length; j++)
 			{
 				if(truncarDecimais(x1, 10) == truncarDecimais(x2, 10))
@@ -2547,8 +2466,8 @@ public class GeometricOperations
 			}
 		}
 		
-		System.out.println("Array Ypossiveis: " + ypossiveis);
-		System.out.println("Possiveis size: " + ypossiveis.size());
+//		System.out.println("Array Ypossiveis: " + ypossiveis);
+//		System.out.println("Possiveis size: " + ypossiveis.size());
 		y1 = ypossiveis.get(0);
 		y2 = ypossiveis.get(1);
 		Point3d possivel1 = new Point3d(x1, y1, 0);

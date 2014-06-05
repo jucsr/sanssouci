@@ -13,6 +13,8 @@ import javax.vecmath.Point3d;
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -234,8 +236,98 @@ public class MovimentacaoGeneralClosedPocket {
 		
 		return unitPointer;
 	}
+	/**
+	 *  
+	 * @return trajetorias trocoidais
+	 */
+	public ArrayList<Path> getDesbasteTrocoidal()
+	{
+		ArrayList<Path> desbaste = new ArrayList<Path>();
+		double planoSeguranca = ws.getOperation().getRetractPlane();
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
+		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
+		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(addPocket.getElements(), trocoidalStrategy.getTrochoidalRadius());
+		for(int i = 0; i < elementos.size(); i++)
+		{
+			for(int j = 0; j < elementos.get(i).size(); j++)
+			{
+				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe());
+				/*
+				 * descendo em velocidade controlada no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
+				 */
+				Path pathTmp = eMov.getPaths().get(0);
+				LinearPath descendo = new LinearPath((new Point3d(pathTmp.getInitialPoint().x, pathTmp.getInitialPoint().y, planoSeguranca)), new Point3d(pathTmp.getInitialPoint().x, pathTmp.getInitialPoint().y, pathTmp.getInitialPoint().z));
+				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
+				desbaste.add(descendo);
+				for(int k = 0; k < eMov.getPaths().size(); k++)
+				{
+					desbaste.add(pathTmp);
+				}
+				/*
+				 * subindo em velocidade rapida
+				 */
+				LinearPath subindo = new LinearPath(new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, pathTmp.getFinalPoint().z), new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, planoSeguranca));
+				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
+				desbaste.add(subindo);
+			}
+		}
+		return desbaste;
+	}
+	/**
+	 * 
+	 * @return trajetorias de desbaste usando LIMITED_ELEMENT --> (Toda a trajetoria deve estar contemplada aqui, inclussive as trajetorias de saida e entrada da ferramenta)
+	 */
+	public ArrayList<Path> getDesbasteContourParallel()
+	{
+		ArrayList<Path> desbaste = new ArrayList<Path>();
+		double planoSeguranca = ws.getOperation().getRetractPlane();
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
+		
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(addPocket.getElements(), this.ws.getCondicoesUsinagem().getAe());
+		for(int i = 0; i < elementos.size(); i++)
+		{
+			for(int j = 0; j < elementos.get(i).size(); j++)
+			{
+				/*
+				 * descendo no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
+				 */
+				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
+				LinearPath descendo = new LinearPath((new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)), new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, eTmp.getInitialPoint().z));
+				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
+				desbaste.add(descendo);
+				for(int k = 0; k < elementos.get(i).get(j).size(); k++)
+				{
+					eTmp = elementos.get(i).get(j).get(k);
+					
+					if(eTmp.isLimitedLine())
+					{
+						LimitedLine eLineTmp = (LimitedLine)eTmp;
+						LinearPath lineTmp = new LinearPath(eLineTmp.getInitialPoint(), eLineTmp.getFinalPoint());
+						desbaste.add(lineTmp);
+					}
+					else if(eTmp.isLimitedArc())
+					{
+						LimitedArc eArcTmp = (LimitedArc)eTmp;
+						CircularPath circTmp = new CircularPath(eArcTmp.getInitialPoint(), eArcTmp.getFinalPoint(), eArcTmp.getCenter(), eArcTmp.getSense()); // ------> verificar este construtor
+						desbaste.add(circTmp);
+					}
+				}
+				/*
+				 * subindo
+				 */
+				LinearPath subindo = new LinearPath(new Point3d(eTmp.getFinalPoint().x, eTmp.getFinalPoint().y, eTmp.getFinalPoint().z), new Point3d(eTmp.getFinalPoint().x, eTmp.getFinalPoint().y, planoSeguranca));
+				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
+				desbaste.add(subindo);
+			}
+		}
+		return desbaste;
+	}
 	
-	
+	/**
+	 * 
+	 * @return trajetorias lineares (interpoladas) --> feito pelo Pedro
+	 */
 	public ArrayList<LinearPath> getDesbaste(){
 
 

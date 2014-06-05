@@ -1,6 +1,10 @@
 package br.UFSC.GRIMA.capp.machiningOperations;
-
-public class PlaneRoughMilling extends MachiningOperation
+/**
+ * 
+ * @author Jc
+ *
+ */
+public class PlaneRoughMilling extends Two5DMillingOperation
 {
 	private double axialCuttingDepth;
 	private double allowanceBottom;

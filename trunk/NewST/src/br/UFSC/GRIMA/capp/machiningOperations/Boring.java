@@ -1,8 +1,10 @@
 package br.UFSC.GRIMA.capp.machiningOperations;
-
-import javax.vecmath.Point3d;
-
-public class Boring extends MachiningOperation
+/**
+ * 
+ * @author Jc
+ *
+ */
+public class Boring extends DrillingTypeOperation
 {
 	private double cuttingDepth; // a quantidade a ser furada
 	private double previousDiameter;

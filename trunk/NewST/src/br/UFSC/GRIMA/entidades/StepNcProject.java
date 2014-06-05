@@ -26,6 +26,9 @@ import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
@@ -3246,7 +3249,7 @@ public class StepNcProject extends STEPProject
 	{
 		CenterDrill centerDrill = (CenterDrill)ws.getFerramenta();
 		EMilling_cutting_tool tool = (EMilling_cutting_tool)this.model.createEntityInstance(EMilling_cutting_tool.class);
-		ECenter_drill eCenter_drill = (ECenter_drill)this.model.createEntityInstance(ECenter_drill.class);
+		ECenterdrill eCenter_drill = (ECenterdrill)this.model.createEntityInstance(ECenterdrill.class);
 		EMilling_tool_dimension eTool_dimension = this.createToolDimension(centerDrill);
 		eCenter_drill.setDimension(null, eTool_dimension);
 		eCenter_drill.setNumber_of_teeth(null, centerDrill.getNumberOfTeeth());
@@ -3456,7 +3459,45 @@ public class StepNcProject extends STEPProject
 		functions.createOther_functions(null);
 		return functions;
 	}
-	
+	private ETwo5d_milling_strategy createStrategy(Two5DMillingStrategy strategy) throws SdaiException
+	{
+		if(strategy.getClass() == ContourParallel.class)
+		{
+			ContourParallel contour = (ContourParallel)strategy;
+			EContour_parallel eStrategy = (EContour_parallel)model.createEntityInstance(EContour_parallel.class);
+			eStrategy.setAllow_multiple_passes(null, contour.isAllowMultiplePasses());
+			if(contour.isRotationDirectionCCW())
+				eStrategy.setRotation_direction(null, ERot_direction.CCW);
+			else
+				eStrategy.setRotation_direction(null, ERot_direction.CW);
+			if(contour.getCutmodeType() == ContourParallel.conventional)
+				eStrategy.setCutmode(null, ECutmode_type.CONVENTIONAL);
+			else
+				eStrategy.setCutmode(null, ECutmode_type.CLIMB);
+			return eStrategy;
+		}else if(strategy.getClass() == TrochoidalAndContourParallelStrategy.class)
+		{
+			TrochoidalAndContourParallelStrategy trochoidal = (TrochoidalAndContourParallelStrategy)strategy;
+			ETrochoidal_and_contourn_parallel etrochoidal = (ETrochoidal_and_contourn_parallel)model.createEntityInstance(ETrochoidal_and_contourn_parallel.class);
+			etrochoidal.setAllow_multiple_passes(null, trochoidal.isAllowMultiplePasses());
+			if(trochoidal.isRotationDirectionCCW())
+				etrochoidal.setRotation_direction(null, ERot_direction.CCW);
+			else
+				etrochoidal.setRotation_direction(null, ERot_direction.CW);
+			if(trochoidal.getCutmodeType() == TrochoidalAndContourParallelStrategy.conventional)
+				etrochoidal.setCut_mode(null, ECutmode_type.CONVENTIONAL);
+			else
+				etrochoidal.setCut_mode(null, ECutmode_type.CLIMB);
+			etrochoidal.setTrochoidal_radius(null, trochoidal.getTrochoidalRadius());
+			if(trochoidal.getTrochoidalSense() == TrochoidalAndContourParallelStrategy.CCW)
+				etrochoidal.setTrochoidal_rot_direction(null, ERot_direction.CCW);
+			else
+				etrochoidal.setTrochoidal_rot_direction(null, ERot_direction.CW);
+			
+			return etrochoidal;
+		}
+		return null;
+	}
 //	public void closeProject() throws SdaiException {
 //		session.getActiveTransaction().endTransactionAccessCommit();
 //		repository.closeRepository();

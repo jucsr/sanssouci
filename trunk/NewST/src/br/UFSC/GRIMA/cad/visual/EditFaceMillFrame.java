@@ -85,6 +85,13 @@ public class EditFaceMillFrame extends JDialog {
 		spinner11 = new JSpinner();
 		spinner12 = new JSpinner();
 		label23 = new JLabel();
+		panel13 = new JPanel();
+		panel15 = new JPanel();
+		layeredPane4 = new JLayeredPane();
+		label2 = new JLabel();
+		panel14 = new JPanel();
+		radioButton1 = new JRadioButton();
+		radioButton2 = new JRadioButton();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -272,7 +279,6 @@ public class EditFaceMillFrame extends JDialog {
 					}
 					tabbedPane1.addTab("Operation", panel1);
 
-
 					//======== panel2 ========
 					{
 						panel2.setLayout(new GridBagLayout());
@@ -459,7 +465,6 @@ public class EditFaceMillFrame extends JDialog {
 					}
 					tabbedPane1.addTab("Tool", panel2);
 
-
 					//======== panel3 ========
 					{
 						panel3.setBorder(new EtchedBorder());
@@ -528,6 +533,65 @@ public class EditFaceMillFrame extends JDialog {
 					}
 					tabbedPane1.addTab("Technology", panel3);
 
+					//======== panel13 ========
+					{
+						panel13.setLayout(new GridBagLayout());
+						((GridBagLayout)panel13.getLayout()).columnWidths = new int[] {345, 0, 0, 0};
+						((GridBagLayout)panel13.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+						((GridBagLayout)panel13.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel13.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
+
+						//======== panel15 ========
+						{
+							panel15.setLayout(new GridBagLayout());
+							((GridBagLayout)panel15.getLayout()).columnWidths = new int[] {0, 0};
+							((GridBagLayout)panel15.getLayout()).rowHeights = new int[] {340, 0};
+							((GridBagLayout)panel15.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+							((GridBagLayout)panel15.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+							//======== layeredPane4 ========
+							{
+								layeredPane4.setBorder(new EtchedBorder());
+
+								//---- label2 ----
+								label2.setIcon(new ImageIcon(getClass().getResource("/images/defaultStrategie.png")));
+								layeredPane4.add(label2, JLayeredPane.DEFAULT_LAYER);
+								label2.setBounds(5, 5, 320, 330);
+							}
+							panel15.add(layeredPane4, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 0, 0), 0, 0));
+						}
+						panel13.add(panel15, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 5, 5), 0, 0));
+
+						//======== panel14 ========
+						{
+							panel14.setLayout(new GridBagLayout());
+							((GridBagLayout)panel14.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+							((GridBagLayout)panel14.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
+							((GridBagLayout)panel14.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+							((GridBagLayout)panel14.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 1.0, 1.0E-4};
+
+							//---- radioButton1 ----
+							radioButton1.setText("default");
+							radioButton1.setSelected(true);
+							panel14.add(radioButton1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 5), 0, 0));
+
+							//---- radioButton2 ----
+							radioButton2.setText("trochoidal");
+							panel14.add(radioButton2, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 5), 0, 0));
+						}
+						panel13.add(panel14, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 5, 5), 0, 0));
+					}
+					tabbedPane1.addTab("Strategy", panel13);
 				}
 				contentPanel.add(tabbedPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -559,6 +623,11 @@ public class EditFaceMillFrame extends JDialog {
 		contentPane.add(dialogPane, BorderLayout.CENTER);
 		pack();
 		setLocationRelativeTo(getOwner());
+
+		//---- buttonGroup1 ----
+		ButtonGroup buttonGroup1 = new ButtonGroup();
+		buttonGroup1.add(radioButton1);
+		buttonGroup1.add(radioButton2);
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
@@ -623,6 +692,13 @@ public class EditFaceMillFrame extends JDialog {
 	protected JSpinner spinner11;
 	protected JSpinner spinner12;
 	private JLabel label23;
+	private JPanel panel13;
+	private JPanel panel15;
+	private JLayeredPane layeredPane4;
+	private JLabel label2;
+	private JPanel panel14;
+	protected JRadioButton radioButton1;
+	protected JRadioButton radioButton2;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

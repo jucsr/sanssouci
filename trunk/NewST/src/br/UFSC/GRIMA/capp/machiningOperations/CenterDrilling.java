@@ -4,7 +4,7 @@ package br.UFSC.GRIMA.capp.machiningOperations;
  * @author Jc
  *
  */
-public class CenterDrilling extends MachiningOperation
+public class CenterDrilling extends DrillingTypeOperation
 {
 	private double cuttingDepth; // a quantidade a ser furada
 	private double previousDiameter;

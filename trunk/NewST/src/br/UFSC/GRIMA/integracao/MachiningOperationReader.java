@@ -15,6 +15,9 @@ import jsdai.SCombined_schema.EMilling_machine_functions;
 import jsdai.SCombined_schema.EPlane_finish_milling;
 import jsdai.SCombined_schema.EPlane_rough_milling;
 import jsdai.SCombined_schema.EReaming;
+import jsdai.SCombined_schema.ERot_direction;
+import jsdai.SCombined_schema.ETrochoidal_and_contourn_parallel;
+import jsdai.SCombined_schema.ETwo5d_milling_strategy;
 import jsdai.lang.SdaiException;
 import br.UFSC.GRIMA.capp.machiningOperations.Boring;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
@@ -26,6 +29,8 @@ import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
 
 public class MachiningOperationReader 
 {
@@ -74,6 +79,10 @@ public class MachiningOperationReader
 			bottomAndSideRoughMilling.setAllowanceBottom(((EBottom_and_side_rough_milling)eMachining_operation).getAllowance_bottom(null));
 			bottomAndSideRoughMilling.setAllowanceSide(((EBottom_and_side_rough_milling)eMachining_operation).getAllowance_side(null));
 			bottomAndSideRoughMilling.setStartPoint(cartesianPoint(eMachining_operation.getStart_point(null)));
+			/*
+			 *  cuidado, pode dar erro pois algumas operacoes nao tem este tipo de estrategia
+			 */
+			bottomAndSideRoughMilling.setMachiningStrategy(getStrategy(((EBottom_and_side_rough_milling)eMachining_operation).getIts_machining_strategy(null)));
 			return bottomAndSideRoughMilling;
 		} else if (eMachining_operation.isKindOf(EBottom_and_side_finish_milling.class))
 		{
@@ -102,6 +111,28 @@ public class MachiningOperationReader
 		}
 		//erro
 		return null;
+	}
+	private static Two5DMillingStrategy getStrategy(ETwo5d_milling_strategy eTwo5d_milling_strategy) throws SdaiException
+	{
+		Two5DMillingStrategy estrategia = null;
+		/*
+		 * estrategia trocoidal e contour parallel
+		 */
+		if(eTwo5d_milling_strategy.getClass() == ETrochoidal_and_contourn_parallel.class)
+		{
+			ETrochoidal_and_contourn_parallel eTrocoidal = (ETrochoidal_and_contourn_parallel)eTwo5d_milling_strategy;
+			TrochoidalAndContourParallelStrategy trocoidal = new TrochoidalAndContourParallelStrategy();
+			trocoidal.setAllowMultiplePasses(eTrocoidal.getAllow_multiple_passes(null));
+			trocoidal.setTrochoidalRadius(eTrocoidal.getTrochoidal_radius(null));
+			trocoidal.setTrochoidalSense(eTrocoidal.getTrochoidal_rot_direction(null));
+			if(eTrocoidal.getRotation_direction(null) == ERot_direction.CCW)
+				trocoidal.setRotationDirectionCCW(true);
+			else
+				trocoidal.setRotationDirectionCCW(false);
+			
+			return trocoidal;
+		}
+		return estrategia;
 	}
 	private static Point3d cartesianPoint(ECartesian_point eCartesian_point) throws SdaiException
 	{

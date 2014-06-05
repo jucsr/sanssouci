@@ -18,8 +18,6 @@ public class CircularPath extends Path
 	public double angulo;
 	double initialAngle;
 	double finalAngle;
-	private Point3d initialPoint=new Point3d();
-	private Point3d finalPoint=new Point3d();
 	
 	public CircularPath(Point3d center, Point3d initialPoint, Point3d finalPoint, double angulo, int sense)
 	{
@@ -27,16 +25,23 @@ public class CircularPath extends Path
 		this.angulo = angulo;
 		this.sense = sense;
 		this.center = center;
-		this.initialPoint = initialPoint;
-		this.finalPoint = finalPoint;
+		this.radius = this.center.distance(initialPoint);
 	}
 	
 	public CircularPath(Point3d initialPoint, Point3d finalPoint,  Point3d center) 
 	{
 		super(initialPoint, finalPoint);
 		this.setSense(CCW);
-		this.radius = GeometricOperations.distance(initialPoint, center);
 		this.center = center;
+		this.radius = initialPoint.distance(center);
+		this.calculateAngle(initialPoint, finalPoint);
+	}
+	public CircularPath(Point3d initialPoint, Point3d finalPoint,  Point3d center, int sense) 
+	{
+		super(initialPoint, finalPoint);
+		this.sense = sense;
+		this.center = center;
+		this.radius = initialPoint.distance(center);
 		this.calculateAngle(initialPoint, finalPoint);
 	}
 	public CircularPath(Point3d initialPoint, Point3d finalPoint, double radius) 
@@ -83,22 +88,6 @@ public class CircularPath extends Path
 
 	public void setInitialAngle(double initialAngle) {
 		this.initialAngle = initialAngle;
-	}
-
-	public Point3d getInitialPoint() {
-		return initialPoint;
-	}
-
-	public void setInitialPoint(Point3d initialPoint) {
-		this.initialPoint = initialPoint;
-	}
-
-	public Point3d getFinalPoint() {
-		return finalPoint;
-	}
-
-	public void setFinalPoint(Point3d finalPoint) {
-		this.finalPoint = finalPoint;
 	}
 
 	public static int getCw() {

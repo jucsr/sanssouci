@@ -44,7 +44,7 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 	{
 		this.elements = elements;
 		this.addMouseMotionListener(this);
-		this.intersections = GeometricOperations.intersectionElements(elements);
+//		this.intersections = GeometricOperations.intersectionElements(elements);
 		for(int i = 0; i < elements.size(); i++)
 		{
 			LimitedElement elementTmp = elements.get(i);
@@ -85,6 +85,7 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 			}
 		}
 	}
+
 	public void setnDecimais(int nDecimais)
 	{
 		this.nDecimais = nDecimais;

@@ -85,12 +85,17 @@ public class LimitedArc extends LimitedElement
 			this.finalPoint = this.center;
 		}
 	}
-	
+	/**
+	 * 
+	 * @param center
+	 * @param initialPoint
+	 * @param deltaAngle radianos
+	 */
 	public LimitedArc(Point3d center, Point3d initialPoint, double deltaAngle)
 	{
 		this.center = center;
 		this.initialPoint = initialPoint;
-		this.deltaAngle = (deltaAngle*Math.PI)/180;
+		this.deltaAngle = deltaAngle;
 		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
 		if(deltaAngle < 0)
 		{

@@ -4,6 +4,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -1423,13 +1424,14 @@ public class GeometricOperations
 		int aux2 = 1;
 		LimitedElement ei0 = elementsIntermediario2.get(0);
 		LimitedElement ei0new = elementsIntermediario2.get(0);
-		//for(int i = 0; i < elementsIntermediario2.size(); i++)
 		System.out.println("Size:" + elementsIntermediario2.size());
-		while(elementsIntermediario2.size() > 0 )
+		Iterator iter = elementsIntermediario2.iterator();
+		while(iter.hasNext())
 		{
+//			System.out.println("Size:" + elementsIntermediario2.size());
 			ei0 = ei0new;
 			Point3d ei0I = ei0.getInitialPoint();
-			System.out.println("ei0I: " + ei0I);
+//			System.out.println("ei0I: " + ei0I);
 			Point3d ei0F = ei0.getFinalPoint();
 			elementsValidated.get(numeroDeLacos).add(ei0);
 			for(int j = 0; j < elementsIntermediario2.size(); j++)
@@ -1443,26 +1445,33 @@ public class GeometricOperations
 					alreadyPassed = true;
 				}
 				Point3d ejI = ej.getInitialPoint();
-				System.out.println("ejI: " + ejI);
+//				System.out.println("ejI: " + ejI);
 				Point3d ejF = ej.getFinalPoint();
 				if(isTheSamePoint(ei0F,ejI))
 				{
-//					elementsValidated.get(numeroDeLacos).add(ej);
 					ei0new = elementsIntermediario2.get(j);
+					System.out.println("ei0I: " + ei0I);
 					elementsIntermediario2.remove(ei0);
-					aux2 = j;
 					break;
 				}
-				else if(isTheSamePoint(ejF,initialPoint))
+				else if(isTheSamePoint(ei0F,initialPoint))
 				{
+					System.out.println("ei0I: " + ei0I);
 					numeroDeLacos++;
+					alreadyPassed = false;
 					elementsIntermediario2.remove(ei0);
+					if(elementsIntermediario2.size() != 0)
+					{
+						ei0new = elementsIntermediario2.get(0);
+					}
 					elementsValidated.add(new ArrayList<LimitedElement>());
+					break;
 				}
 			}
-			System.out.println("Numero de lacos: " + numeroDeLacos);
+//			System.out.println("Numero de lacos: " + numeroDeLacos);
 		}
 		showElements(elementsValidated.get(0));
+		showElements(elementsValidated.get(1));
 //		elementsValidated.add(elementsIntermediario2);
 		System.out.println("Size:" + elements.size());
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());

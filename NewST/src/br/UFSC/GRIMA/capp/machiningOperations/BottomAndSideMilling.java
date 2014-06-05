@@ -4,7 +4,7 @@ package br.UFSC.GRIMA.capp.machiningOperations;
  * @author jc
  *
  */
-public abstract class BottomAndSideMilling extends MachiningOperation
+public abstract class BottomAndSideMilling extends Two5DMillingOperation
 {
 	private double allowanceSide;
 	private double allowanceBottom;

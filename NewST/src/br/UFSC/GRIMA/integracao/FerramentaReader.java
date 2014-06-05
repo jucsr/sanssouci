@@ -3,7 +3,7 @@ package br.UFSC.GRIMA.integracao;
 import jsdai.SCombined_schema.CBall_endmill;
 import jsdai.SCombined_schema.CBoring_tool;
 import jsdai.SCombined_schema.CBullnose_endmill;
-import jsdai.SCombined_schema.CCenter_drill;
+import jsdai.SCombined_schema.CCenterdrill;
 import jsdai.SCombined_schema.CEndmill;
 import jsdai.SCombined_schema.CFacemill;
 import jsdai.SCombined_schema.CReamer;
@@ -11,7 +11,7 @@ import jsdai.SCombined_schema.CTwist_drill;
 import jsdai.SCombined_schema.EBall_endmill;
 import jsdai.SCombined_schema.EBoring_tool;
 import jsdai.SCombined_schema.EBullnose_endmill;
-import jsdai.SCombined_schema.ECenter_drill;
+import jsdai.SCombined_schema.ECenterdrill;
 import jsdai.SCombined_schema.ECutting_component;
 import jsdai.SCombined_schema.ECutting_tool;
 import jsdai.SCombined_schema.EEndmill;
@@ -44,9 +44,9 @@ public class FerramentaReader {
 		ECutting_component cutting_component = cutting_tool
 				.getIts_cutting_edge(null).getByIndex(1);
 
-		if (eTool_body.getClass() == (CCenter_drill.class)) {
+		if (eTool_body.getClass() == (CCenterdrill.class)) {
 
-			ECenter_drill center_drill = (ECenter_drill) eTool_body;
+			ECenterdrill center_drill = (ECenterdrill) eTool_body;
 
 			EMilling_tool_dimension dimension = center_drill.getDimension(null);
 

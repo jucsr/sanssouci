@@ -1,11 +1,13 @@
 package br.UFSC.GRIMA.capp.machiningOperations;
-
-public class FreeformOperation extends MachiningOperation
+/**
+ * 
+ * @author Jc
+ *
+ */
+public class FreeformOperation extends MillingTypeOperation
 {
-
 	public FreeformOperation(String id, double retractPlane) 
 	{
 		super(id, retractPlane);
 	}
-
 }

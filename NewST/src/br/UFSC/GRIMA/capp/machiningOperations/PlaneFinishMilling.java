@@ -4,7 +4,7 @@ package br.UFSC.GRIMA.capp.machiningOperations;
  * @author Jc
  *
  */
-public class PlaneFinishMilling extends MachiningOperation
+public class PlaneFinishMilling extends Two5DMillingOperation
 {
 	private double axialCuttingDepth;
 	private double allowanceBottom;

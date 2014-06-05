@@ -2,7 +2,7 @@ package br.UFSC.GRIMA.capp.machiningOperations;
 
 import javax.vecmath.Point3d;
 
-public class Reaming extends MachiningOperation
+public class Reaming extends DrillingTypeOperation
 {
 	private double cuttingDepth; // a quantidade 
 	private double previousDiameter;

@@ -276,7 +276,6 @@ public class EditCenterDrillFrame extends JDialog {
 					}
 					tabbedPane1.addTab("Operation", panel1);
 
-
 					//======== panel2 ========
 					{
 						panel2.setLayout(new GridBagLayout());
@@ -463,7 +462,6 @@ public class EditCenterDrillFrame extends JDialog {
 					}
 					tabbedPane1.addTab("Tool", panel2);
 
-
 					//======== panel3 ========
 					{
 						panel3.setBorder(new EtchedBorder());
@@ -521,7 +519,6 @@ public class EditCenterDrillFrame extends JDialog {
 							new Insets(0, 0, 0, 5), 0, 0));
 					}
 					tabbedPane1.addTab("Technology", panel3);
-
 				}
 				contentPanel.add(tabbedPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,

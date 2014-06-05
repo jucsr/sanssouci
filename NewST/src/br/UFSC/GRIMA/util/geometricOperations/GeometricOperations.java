@@ -1477,7 +1477,76 @@ public class GeometricOperations
 		System.out.println("Size Validated:" + elementsValidated.get(0).size());
 		return elementsValidated;
 	}
-
+	/**
+	 * 
+	 * @param intermediario
+	 * @return 
+	 */
+	public static ArrayList<ArrayList<LimitedElement>> criarLacos(ArrayList<LimitedElement> intermediario)
+	{
+		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
+		LimitedElement primeiroTmp = intermediario.get(0);
+		LimitedElement eiTmp = intermediario.get(0);
+		LimitedElement ejTmp = intermediario.get(0);
+		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
+		for(int i = 0; i < intermediario.size(); i++)
+		{
+			Point3d pontoInicial = primeiroTmp.getInitialPoint();
+			if(i == 0 && !intermediario.isEmpty())
+			{
+				System.out.println("zero");
+				lacoTmp = new ArrayList<LimitedElement>();
+				lacoTmp.add(eiTmp);
+				intermediario.remove(eiTmp);
+			}else
+			{
+				eiTmp = intermediario.get(i);
+				
+				if(isTheSamePoint(pontoInicial, ejTmp.getFinalPoint()))
+				{
+					System.out.println("SAME");
+					saida.add(lacoTmp);
+					pontoInicial = ejTmp.getFinalPoint();
+					if(!intermediario.isEmpty())
+					{
+						lacoTmp = new ArrayList<LimitedElement>();
+					}
+				}
+				for(int j = i + 1; j < intermediario.size(); j++)
+				{
+					ejTmp = intermediario.get(j);
+					if(!ejTmp.equals(eiTmp))
+					{
+						System.out.println("jdsad");
+						if(isTheSamePoint(eiTmp.getFinalPoint(), ejTmp.getInitialPoint()))
+						{
+							lacoTmp.add(ejTmp);
+							intermediario.remove(ejTmp);
+							break;
+						}
+					}
+				}
+			}
+			
+//			for(int i = 0; i < intermediario.size(); i++)
+//			{
+//				eTmp = intermediario.get(i);
+//				for(int j = 0; j < intermediario.size() - 1; j++)
+//				{
+//					ejTmp = intermediario.get(j + 1);
+//					
+//					if(isTheSamePoint(eTmp.getFinalPoint(), ejTmp.getFinalPoint()))
+//					{
+//						lacoTmp.add(eTmp);
+//						intermediario.remove(eTmp);
+//					}
+//				}
+//				if(isTheSamePoint(pontoInicial, ejTmp.getFinalPoint()))
+//					break;
+//			}
+		}
+		return saida;
+	}
 	public static boolean alreadyUsed(Point3d point, ArrayList<Point3d> array)
 	{
 		boolean answer = false;

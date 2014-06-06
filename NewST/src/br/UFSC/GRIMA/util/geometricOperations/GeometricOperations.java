@@ -1498,7 +1498,7 @@ public class GeometricOperations
 				}
 			}
 			LimitedElement iElement = original.get(i);
-			for(int j = i+1; i < original.size(); j++)
+			for(int j = i+1; j < original.size(); j++)
 			{
 				System.out.println("\tElement " + j + " " + original.get(j).getInitialPoint() + " to " + original.get(j).getFinalPoint());
 

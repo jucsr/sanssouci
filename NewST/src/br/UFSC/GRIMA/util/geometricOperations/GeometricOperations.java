@@ -1542,8 +1542,11 @@ public class GeometricOperations
 		System.out.println("--------------------");
 		System.out.println(output.size() + " Lacos");
 		
+		int ilaco=0;
 		for(ArrayList<LimitedElement> laco:output)
 		{
+			System.out.println("--------------------");
+			System.out.println("Laco " + ilaco);
 			int ie=0;
 			for(LimitedElement le:laco)
 			{

@@ -134,6 +134,13 @@ public class GeometricOperationsTest
 	}
 	
 	@Test
+	public void criarLacosTest()
+	{
+		System.err.println("TAMANHO = " + GeometricOperations.criarLacosM(elementos).size());
+		//System.err.println("TAMANHO = " + GeometricOperations.criarLacos(elementos).size());
+	}
+	
+	@Test
 	public void testeMinimumDistance()
 	{
 		System.out.println("*********************************************************");

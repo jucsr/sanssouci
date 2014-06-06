@@ -1496,7 +1496,10 @@ public class GeometricOperations
 			{
 				if(i==blocked)
 				{
-					i++;
+					if(i<original.size()-3)
+					{
+						i++;
+					}
 				}
 			}
 			LimitedElement iElement = original.get(i);
@@ -1508,7 +1511,10 @@ public class GeometricOperations
 				{
 					if(j==blocked)
 					{
-						j++;
+						if(j<original.size()-2)
+						{
+							j++;
+						}
 					}
 				}
 				LimitedElement jElement = original.get(j);

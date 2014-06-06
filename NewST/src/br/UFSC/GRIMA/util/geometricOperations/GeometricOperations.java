@@ -1566,6 +1566,7 @@ public class GeometricOperations
 				{
 					System.out.println(ie + " Line from " + le.getInitialPoint() + " to " + le.getFinalPoint());
 				}
+				ie++;
 			}
 		}
 		

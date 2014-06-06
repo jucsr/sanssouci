@@ -136,8 +136,22 @@ public class GeometricOperationsTest
 	@Test
 	public void criarLacosTest()
 	{
+		LimitedArc arco0= new LimitedArc(new Point3d(266.65151389911676,219.99999999999997,0),new Point3d(299.89995996796796,140.0,0),new Point3d(175.0,135.0,0));
+		LimitedLine l1= new LimitedLine(new Point3d(299.89995996796796,140.0,0),new Point3d(380.10004003203204,140.0,0));
+		LimitedArc arco2= new LimitedArc(new Point3d(380.10004003203204,140.0,0),new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,135.0,0));
+		LimitedLine l3= new LimitedLine(new Point3d(564.5852267061321,260.0,0),new Point3d(600.0,260.0,0));
+		LimitedLine l4= new LimitedLine(new Point3d(600.0,260.0,0),new Point3d(600.0,288.9757236040737,0));
+		LimitedLine l5= new LimitedLine(new Point3d(600.0,288.97572360407366,0),new Point3d(564.5852267061321,259.99999999999994,0));
+		LimitedLine l6= new LimitedLine(new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(266.6515138991168,219.99999999999997,0));
+		ArrayList<LimitedElement> elementos = new ArrayList<LimitedElement>();
+		elementos.add(arco0);
+		elementos.add(l1);
+		elementos.add(arco2);
+		elementos.add(l3);
+		elementos.add(l4);
+		elementos.add(l5);
+		elementos.add(l6);
 		System.err.println("TAMANHO = " + GeometricOperations.criarLacosM(elementos).size());
-		//System.err.println("TAMANHO = " + GeometricOperations.criarLacos(elementos).size());
 	}
 	
 	@Test
@@ -422,7 +436,8 @@ public class GeometricOperationsTest
 	public void parallelPath1Test()
 	{
 		//esta bugando no offset 140
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 105).get(0);
+//		bugado no offset 90
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 100).get(0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)

@@ -437,7 +437,8 @@ public class GeometricOperationsTest
 	{
 		//esta bugando no offset 140
 //		bugado no offset 90
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 100).get(0);
+//		bugado no offset 95
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 96).get(0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)

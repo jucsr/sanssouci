@@ -1099,7 +1099,7 @@ public class GeometricOperations
 		//Array de elementos intermediarios
 		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
-		elementsValidated.add(new ArrayList<LimitedElement>());
+//		elementsValidated.add(new ArrayList<LimitedElement>());
 //		showElements(elements);
 		System.out.println("Elementos: " + elements.size());
 		
@@ -1415,66 +1415,68 @@ public class GeometricOperations
 		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
 
 		showElements(elementsIntermediario2);
+		
+		elementsValidated.add(elementsIntermediario2);
 		/*
 		 * 	Valida��o 3: Separacao dos elementos em lacos 
 		 */
-		int numeroDeLacos = 0;
-		Point3d initialPoint = null;
-		boolean alreadyPassed = false;
-		int aux2 = 1;
-		LimitedElement ei0 = elementsIntermediario2.get(0);
-		LimitedElement ei0new = elementsIntermediario2.get(0);
-		System.out.println("Size:" + elementsIntermediario2.size());
-		Iterator iter = elementsIntermediario2.iterator();
-		while(iter.hasNext())
-		{
-//			System.out.println("Size:" + elementsIntermediario2.size());
-			ei0 = ei0new;
-			Point3d ei0I = ei0.getInitialPoint();
-//			System.out.println("ei0I: " + ei0I);
-			Point3d ei0F = ei0.getFinalPoint();
-			elementsValidated.get(numeroDeLacos).add(ei0);
-			for(int j = 0; j < elementsIntermediario2.size(); j++)
-			{
-//				System.out.println("Aux2: " + aux2);
-				LimitedElement ej = elementsIntermediario2.get(j);
-				if(!(alreadyPassed))
-				{
-					initialPoint = ei0I;
-					System.out.println("InitialPoint: " + initialPoint);
-					alreadyPassed = true;
-				}
-				Point3d ejI = ej.getInitialPoint();
-//				System.out.println("ejI: " + ejI);
-				Point3d ejF = ej.getFinalPoint();
-				if(isTheSamePoint(ei0F,ejI))
-				{
-					ei0new = elementsIntermediario2.get(j);
-					System.out.println("ei0I: " + ei0I);
-					elementsIntermediario2.remove(ei0);
-					break;
-				}
-				else if(isTheSamePoint(ei0F,initialPoint))
-				{
-					System.out.println("ei0I: " + ei0I);
-					numeroDeLacos++;
-					alreadyPassed = false;
-					elementsIntermediario2.remove(ei0);
-					if(elementsIntermediario2.size() != 0)
-					{
-						ei0new = elementsIntermediario2.get(0);
-					}
-					elementsValidated.add(new ArrayList<LimitedElement>());
-					break;
-				}
-			}
-//			System.out.println("Numero de lacos: " + numeroDeLacos);
-		}
-		showElements(elementsValidated.get(0));
-		showElements(elementsValidated.get(1));
-//		elementsValidated.add(elementsIntermediario2);
-		System.out.println("Size:" + elements.size());
-		System.out.println("Size Validated:" + elementsValidated.get(0).size());
+//		int numeroDeLacos = 0;
+//		Point3d initialPoint = null;
+//		boolean alreadyPassed = false;
+//		int aux2 = 1;
+//		LimitedElement ei0 = elementsIntermediario2.get(0);
+//		LimitedElement ei0new = elementsIntermediario2.get(0);
+//		System.out.println("Size:" + elementsIntermediario2.size());
+//		Iterator iter = elementsIntermediario2.iterator();
+//		while(iter.hasNext())
+//		{
+////			System.out.println("Size:" + elementsIntermediario2.size());
+//			ei0 = ei0new;
+//			Point3d ei0I = ei0.getInitialPoint();
+////			System.out.println("ei0I: " + ei0I);
+//			Point3d ei0F = ei0.getFinalPoint();
+//			elementsValidated.get(numeroDeLacos).add(ei0);
+//			for(int j = 0; j < elementsIntermediario2.size(); j++)
+//			{
+////				System.out.println("Aux2: " + aux2);
+//				LimitedElement ej = elementsIntermediario2.get(j);
+//				if(!(alreadyPassed))
+//				{
+//					initialPoint = ei0I;
+//					System.out.println("InitialPoint: " + initialPoint);
+//					alreadyPassed = true;
+//				}
+//				Point3d ejI = ej.getInitialPoint();
+////				System.out.println("ejI: " + ejI);
+//				Point3d ejF = ej.getFinalPoint();
+//				if(isTheSamePoint(ei0F,ejI))
+//				{
+//					ei0new = elementsIntermediario2.get(j);
+//					System.out.println("ei0I: " + ei0I);
+//					elementsIntermediario2.remove(ei0);
+//					break;
+//				}
+//				else if(isTheSamePoint(ei0F,initialPoint))
+//				{
+//					System.out.println("ei0I: " + ei0I);
+//					numeroDeLacos++;
+//					alreadyPassed = false;
+//					elementsIntermediario2.remove(ei0);
+//					if(elementsIntermediario2.size() != 0)
+//					{
+//						ei0new = elementsIntermediario2.get(0);
+//					}
+//					elementsValidated.add(new ArrayList<LimitedElement>());
+//					break;
+//				}
+//			}
+////			System.out.println("Numero de lacos: " + numeroDeLacos);
+//		}
+//		showElements(elementsValidated.get(0));
+//		showElements(elementsValidated.get(1));
+////		elementsValidated.add(elementsIntermediario2);
+//		System.out.println("Size:" + elements.size());
+//		System.out.println("Size Validated:" + elementsValidated.get(0).size());
 		return elementsValidated;
 	}
 	/**
@@ -1510,7 +1512,7 @@ public class GeometricOperations
 					}
 				}
 				LimitedElement jElement = original.get(j);
-				if (equalPoints(iElement.getFinalPoint(),jElement.getInitialPoint()))
+				if (isTheSamePoint(iElement.getFinalPoint(),jElement.getInitialPoint()))
 				{
 					if(output.size() == 0)
 					{

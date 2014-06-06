@@ -1482,6 +1482,102 @@ public class GeometricOperations
 	 * @param intermediario
 	 * @return 
 	 */
+	public static ArrayList<ArrayList<LimitedElement>> criarLacosM(ArrayList<LimitedElement> original)	
+	{
+		System.out.println("---Creating lacos---");
+		ArrayList<ArrayList<LimitedElement>> output= new ArrayList<ArrayList<LimitedElement>>();
+		ArrayList<Integer> blacklist = new ArrayList<Integer>();
+		for(int i = 0; i < original.size()-1; i++)
+		{
+			System.out.println("Element " + i + " " + original.get(i).getInitialPoint() + " to " + original.get(i).getFinalPoint());
+			for(int blocked:blacklist)
+			{
+				while (i==blocked)
+				{
+					i++;
+				}
+			}
+			LimitedElement iElement = original.get(i);
+			for(int j = i+1; i < original.size(); j++)
+			{
+				System.out.println("\tElement " + j + " " + original.get(j).getInitialPoint() + " to " + original.get(j).getFinalPoint());
+
+				for(int blocked:blacklist)
+				{
+					while (j==blocked)
+					{
+						j++;
+					}
+				}
+				LimitedElement jElement = original.get(j);
+				if (equalPoints(iElement.getFinalPoint(),jElement.getInitialPoint()))
+				{
+					if(output.size() == 0)
+					{
+						output.add(new ArrayList<LimitedElement>());
+						output.get(0).add(iElement);
+						output.get(0).add(jElement);
+						blacklist.add(i);
+						blacklist.add(j);
+					}
+					else
+					{
+						if(output.get(output.size()-1).size()==0)
+						{
+							output.add(new ArrayList<LimitedElement>());							
+							output.get(output.size()-1).add(iElement);
+							output.get(output.size()-1).add(jElement);
+							blacklist.add(i);
+							blacklist.add(j);
+						}
+						else 
+						{
+							output.get(output.size()-1).add(jElement);
+							blacklist.add(j);
+						}
+					}											
+				}
+			}
+		}
+		System.out.println("--------------------");
+		System.out.println(output.size() + " Lacos");
+		
+		for(ArrayList<LimitedElement> laco:output)
+		{
+			int ie=0;
+			for(LimitedElement le:laco)
+			{
+				if(le.isLimitedArc())
+				{
+					System.out.println(ie + " Arc from " + le.getInitialPoint() + " to " + le.getFinalPoint());
+				}
+				else
+				{
+					System.out.println(ie + " Line from " + le.getInitialPoint() + " to " + le.getFinalPoint());
+				}
+			}
+		}
+		
+		return output;
+	}
+	
+	public static boolean equalPoints(Point3d p1, Point3d p2)
+	{
+		if(p1.getX()==p2.getX() && p1.getY()==p2.getY() && p1.getZ()==p2.getZ())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param intermediario
+	 * @return 
+	 */
 	public static ArrayList<ArrayList<LimitedElement>> criarLacos(ArrayList<LimitedElement> intermediario)
 	{
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();

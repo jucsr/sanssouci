@@ -152,6 +152,9 @@ public class GeometricOperationsTest
 		elementos.add(l5);
 		elementos.add(l6);
 		System.err.println("TAMANHO = " + GeometricOperations.criarLacosM(elementos).size());
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementos);
+		desenhador.setVisible(true);
+		for(;;);
 	}
 	
 	@Test

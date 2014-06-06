@@ -1,6 +1,6 @@
 package br.UFSC.GRIMA.capp.movimentacoes;
 
-	import java.awt.Color;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

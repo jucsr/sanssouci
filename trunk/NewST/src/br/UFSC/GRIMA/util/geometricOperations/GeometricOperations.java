@@ -1487,39 +1487,99 @@ public class GeometricOperations
 	public static ArrayList<ArrayList<LimitedElement>> criarLacosM(ArrayList<LimitedElement> original)	
 	{
 		System.out.println("---Creating lacos---");
+		System.out.println("---Original elements");
 		ArrayList<ArrayList<LimitedElement>> output= new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<Integer> blacklist = new ArrayList<Integer>();
+		int ie=0;
+		for(LimitedElement le:original)
+		{
+			if(le.isLimitedArc())
+			{
+				System.out.println(ie + " Arc from " + le.getInitialPoint() + " to " + le.getFinalPoint());
+			}
+			else if(le.isLimitedLine())
+			{
+				System.out.println(ie + " Line from " + le.getInitialPoint() + " to " + le.getFinalPoint());
+			}
+			ie++;
+		}
+		System.out.println("-----------------------------");
+		boolean closeLaco=false;		
 		for(int i = 0; i < original.size()-1; i++)
 		{
-			System.out.println("Element " + i + " " + original.get(i).getInitialPoint() + " to " + original.get(i).getFinalPoint());
+			String iLabel="";
+			if(original.get(i).isLimitedArc())
+			{
+				iLabel="Arc";
+			}
+			else if(original.get(i).isLimitedLine())
+			{
+				iLabel="Line";
+			}
+			System.out.println("Element " + i + " " + iLabel + " " + original.get(i).getInitialPoint() + " to " + original.get(i).getFinalPoint());
+			boolean isBlocked=false;
 			for(int blocked:blacklist)
 			{
 				if(i==blocked)
 				{
-					if(i<original.size()-3)
-					{
-						i++;
-					}
+					isBlocked=true;
 				}
 			}
-			LimitedElement iElement = original.get(i);
-			for(int j = i+1; j < original.size(); j++)
+			if(isBlocked)
 			{
-				System.out.println("\tElement " + j + " " + original.get(j).getInitialPoint() + " to " + original.get(j).getFinalPoint());
+				if(i < original.size() - 3)
+				{
+					continue;
+				}
+			}
 
+			LimitedElement iElement = original.get(i);
+			for(int j = 0; j < original.size(); j++)
+			{
+				if(i==j)
+				{
+					continue;
+				}
+				String jLabel="";
+				if(original.get(j).isLimitedArc())
+				{
+					jLabel="Arc";
+				}
+				else if(original.get(j).isLimitedLine())
+				{
+					jLabel="Line";
+				}
+				System.out.println("\tElement " + j + " "+ jLabel + " " + original.get(j).getInitialPoint() + " to " + original.get(j).getFinalPoint());
+
+				boolean isBlockedJ=false;
 				for(int blocked:blacklist)
 				{
 					if(j==blocked)
 					{
-						if(j<original.size()-2)
-						{
-							j++;
-						}
+						isBlockedJ=true;
 					}
 				}
+				if(isBlockedJ)
+				{
+					if(j < original.size() - 2)
+					{
+						continue;
+					}
+				}
+//				System.out.println("i="+i + " j="+j);
 				LimitedElement jElement = original.get(j);
 				if (isTheSamePoint(iElement.getFinalPoint(),jElement.getInitialPoint()))
 				{
+					LimitedElement le=jElement;
+					if(le.isLimitedArc())
+					{
+						System.out.println("\t\tAdd Arc from " + le.getInitialPoint() + " to " + le.getFinalPoint());
+					}
+					else
+					{
+						System.out.println("\t\tAdd Line from " + le.getInitialPoint() + " to " + le.getFinalPoint());
+					}
+
 					if(output.size() == 0)
 					{
 						output.add(new ArrayList<LimitedElement>());
@@ -1527,6 +1587,7 @@ public class GeometricOperations
 						output.get(0).add(jElement);
 						blacklist.add(i);
 						blacklist.add(j);
+						break;
 					}
 					else
 					{
@@ -1537,14 +1598,27 @@ public class GeometricOperations
 							output.get(output.size()-1).add(jElement);
 							blacklist.add(i);
 							blacklist.add(j);
+							break;
 						}
 						else 
 						{
 							output.get(output.size()-1).add(jElement);
+							
+							System.out.println(output.get(output.size()-1).get(0).initialPoint + " || " + jElement.finalPoint);
+							if(isTheSamePoint(output.get(output.size()-1).get(0).initialPoint, jElement.finalPoint))
+							{
+								System.out.println("--------------Closed Laco-------------");
+								closeLaco=true;
+								break;
+							}
 							blacklist.add(j);
 						}
 					}											
 				}
+			}
+			if (closeLaco)
+			{
+				continue;
 			}
 		}
 		System.out.println("--------------------");
@@ -1555,19 +1629,20 @@ public class GeometricOperations
 		{
 			System.out.println("--------------------");
 			System.out.println("Laco " + ilaco);
-			int ie=0;
+			ie=0;
 			for(LimitedElement le:laco)
 			{
 				if(le.isLimitedArc())
 				{
 					System.out.println(ie + " Arc from " + le.getInitialPoint() + " to " + le.getFinalPoint());
 				}
-				else
+				else if(le.isLimitedLine())
 				{
 					System.out.println(ie + " Line from " + le.getInitialPoint() + " to " + le.getFinalPoint());
 				}
 				ie++;
 			}
+			ilaco++;
 		}
 		
 		return output;
@@ -1790,8 +1865,11 @@ public class GeometricOperations
 	//Verifica a igualdade de pontos entre os Limited Elements
 	public static boolean isTheSamePoint(Point3d p1, Point3d p2)
 	{
-		if(roundNumber(p1.x, 10) == roundNumber(p2.x,10) && roundNumber(p1.y, 10) == roundNumber(p2.y, 10) 
-				&& roundNumber(p1.z, 10) == roundNumber(p2.z, 10)){
+		if(roundNumber(p1.x, 10) == roundNumber(p2.x,10) 
+				&& roundNumber(p1.y, 10) == roundNumber(p2.y, 10) 
+				&& roundNumber(p1.z, 10) == roundNumber(p2.z, 10)
+				)
+		{
 			return true;
 		}
 		else

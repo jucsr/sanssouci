@@ -1492,7 +1492,7 @@ public class GeometricOperations
 			System.out.println("Element " + i + " " + original.get(i).getInitialPoint() + " to " + original.get(i).getFinalPoint());
 			for(int blocked:blacklist)
 			{
-				while (i==blocked)
+				if(i==blocked)
 				{
 					i++;
 				}
@@ -1504,7 +1504,7 @@ public class GeometricOperations
 
 				for(int blocked:blacklist)
 				{
-					while (j==blocked)
+					if(j==blocked)
 					{
 						j++;
 					}

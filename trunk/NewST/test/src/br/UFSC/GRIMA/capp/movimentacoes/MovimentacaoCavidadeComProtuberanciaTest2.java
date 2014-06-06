@@ -168,8 +168,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 
 		LimitedArc arc = new LimitedArc(new Point3d(175.0, 285.0, 0.0), new Point3d(325.0, 135.0, 0.0), new Point3d(175.0, 135.0, 0.0));
 		LimitedLine line = new LimitedLine(new Point3d(355.0, 165.0000000000001, 0.0), new Point3d(355.0, 195.00000000000034, 0.0));
-		Point3d intersection = GeometricOperations.intersectionPoint(arc, line);
-		System.err.println("INTERSECTION POINT = " + intersection);
+//		Point3d intersection = GeometricOperations.intersectionPoint(arc, line);
+//		System.err.println("INTERSECTION POINT = " + intersection);
 	}
 	@Test
 	public void nearestPointArcArcTest()
@@ -241,8 +241,8 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 		LimitedArc arc11 = new LimitedArc(new Point3d(75, 130, 0), new Point3d(50, 105, 0), new Point3d(50,130 , 0));
 		LimitedArc arc12 = new LimitedArc(new Point3d(50, 125, 0), new Point3d(74.45, 105.19, 0), new Point3d(50, 100, 0));
 		
-		Point3d intersection6 = GeometricOperations.intersectionPoint(arc11, arc12);
-		System.err.println("intersection6 = " + intersection6);
+//		Point3d intersection6 = GeometricOperations.intersectionPoint(arc11, arc12);
+//		System.err.println("intersection6 = " + intersection6);
 		//System.out.println("MATH ATAN2 = " + Math.atan2(0, 0)); 
 	}
 	@Test

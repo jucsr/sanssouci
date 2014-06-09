@@ -151,8 +151,17 @@ public class GeometricOperationsTest
 		elementos.add(l4);
 		elementos.add(l5);
 		elementos.add(l6);
-		System.err.println("TAMANHO = " + GeometricOperations.criarLacosM(elementos).size());
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementos);
+		ArrayList<LimitedElement> elementosDesenho = new ArrayList<LimitedElement>();
+		ArrayList<ArrayList<LimitedElement>> elementsValidated = GeometricOperations.validar3Path(elementos);
+		System.err.println("TAMANHO = " + elementsValidated.size());
+		for(int i = 0;i < elementsValidated.size(); i++)
+		{
+			for(int j = 0; j < elementsValidated.get(i).size(); j++)
+			{
+				elementosDesenho.add(elementsValidated.get(i).get(j));
+			}
+		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosDesenho);
 		desenhador.setVisible(true);
 		for(;;);
 	}
@@ -314,60 +323,56 @@ public class GeometricOperationsTest
 		 * Teste 3
 		 */
 		//Forma 2
-//	    LimitedArc arco0= new LimitedArc(new Point3d(299.89995996796796,140.0,0),new Point3d(300.0,135.0,0),new Point3d(175.0,135.0,0));
-//	    LimitedArc arco1= new LimitedArc(new Point3d(175.0,260.0,0),new Point3d(266.65151389911676,219.99999999999997,0),new Point3d(175.0,135.0,0));
-//	    LimitedArc arco2= new LimitedArc(new Point3d(266.65151389911676,219.99999999999997,0),new Point3d(299.89995996796796,140.0,0),new Point3d(175.0,135.0,0));
-//	    LimitedLine l3= new LimitedLine(new Point3d(300.0,134.99999999999997,0),new Point3d(300.0,64.99999999999997,0));
-//	    LimitedLine l4= new LimitedLine(new Point3d(225.0,140.0,0),new Point3d(299.89995996796796,140.0,0));
-//	    LimitedLine l5= new LimitedLine(new Point3d(299.89995996796796,140.0,0),new Point3d(380.10004003203204,140.0,0));
-//	    LimitedLine l6= new LimitedLine(new Point3d(380.10004003203204,140.0,0),new Point3d(455.0,140.0,0));
-//	    LimitedLine l7= new LimitedLine(new Point3d(380.0,65.00000000000001,0),new Point3d(380.0,135.0,0));
-//	    LimitedArc arco8= new LimitedArc(new Point3d(380.0,135.0,0),new Point3d(380.10004003203204,140.0,0),new Point3d(505.0,135.0,0));
-//	    LimitedArc arco9= new LimitedArc(new Point3d(380.10004003203204,140.0,0),new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,135.0,0));
-//	    LimitedArc arco10= new LimitedArc(new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,260.0,0),new Point3d(505.0,135.0,0));
-//	    LimitedLine l11= new LimitedLine(new Point3d(600.0,260.0,0),new Point3d(675.0,260.0,0));
-//	    LimitedLine l12= new LimitedLine(new Point3d(505.0,260.0,0),new Point3d(564.5852267061321,260.0,0));
-//	    LimitedLine l13= new LimitedLine(new Point3d(564.5852267061321,260.0,0),new Point3d(600.0,260.0,0));
-//	    LimitedLine l14= new LimitedLine(new Point3d(600.0,185.0,0),new Point3d(600.0,260.0,0));
-//	    LimitedLine l15= new LimitedLine(new Point3d(600.0,260.0,0),new Point3d(600.0,288.9757236040737,0));
-//	    LimitedLine l16= new LimitedLine(new Point3d(600.0,288.9757236040737,0),new Point3d(600.0,447.2439309010185,0));
-//	    LimitedLine l17= new LimitedLine(new Point3d(564.5852267061321,259.99999999999994,0),new Point3d(550.230639327847,248.2553375995849,0));
-//	    LimitedLine l18= new LimitedLine(new Point3d(722.4928342692947,389.19713346076935,0),new Point3d(600.0,288.97572360407366,0));
-//	    LimitedLine l19= new LimitedLine(new Point3d(600.0,288.97572360407366,0),new Point3d(564.5852267061321,259.99999999999994,0));
-//	    LimitedArc arco20= new LimitedArc(new Point3d(550.2306393278471,248.255337599585,0),new Point3d(471.0759155456894,220.0,0),new Point3d(471.07591554568916,345.0,0));
-//	    LimitedLine l21= new LimitedLine(new Point3d(266.6515138991168,219.99999999999997,0),new Point3d(32.99999999999998,220.0,0));
-//	    LimitedLine l22= new LimitedLine(new Point3d(471.0759155456892,219.99999999999994,0),new Point3d(413.34848610088295,219.99999999999994,0));
-//	    LimitedLine l23= new LimitedLine(new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(266.6515138991168,219.99999999999997,0));
-//	    LimitedLine l24= new LimitedLine(new Point3d(108.0,220.0,0),new Point3d(108.0,184.99999999999997,0));
-//	    LimitedLine l25= new LimitedLine(new Point3d(108.0,295.0,0),new Point3d(108.0,260.0,0));
-//	    LimitedLine l26= new LimitedLine(new Point3d(108.0,260.0,0),new Point3d(108.0,220.0,0));
-//	    LimitedLine l27= new LimitedLine(new Point3d(33.0,260.0,0),new Point3d(108.0,260.0,0));
-//	    LimitedLine l28= new LimitedLine(new Point3d(108.0,260.0,0),new Point3d(175.0,260.0,0));
-//		elementos1.add(arco0);
-//		elementos1.add(arco1);
-//		elementos1.add(arco2);
-//		elementos1.add(l3);
-//	    elementos1.add(l4);
-//	    elementos1.add(l5);
-//	    elementos1.add(l6);
-//	    elementos1.add(l7);
-//	    elementos1.add(arco8);
-//	    elementos1.add(arco9);
-//	    elementos1.add(arco10);
-//	    elementos1.add(l11);
-//	    elementos1.add(l12);
-//	    elementos1.add(l13);
-//	    elementos1.add(l14);
-//	    elementos1.add(l15);
-//	    elementos1.add(l16);
-//	    elementos1.add(l17);
-//	    elementos1.add(l18);
-//	    elementos1.add(l19);
-//	    elementos1.add(arco20);
-//	    elementos1.add(l21);
-//	    elementos1.add(l22);
-//	    elementos1.add(l23);
-//	    elementos1.add(l24);
+		LimitedArc arco0= new LimitedArc(new Point3d(175.0,250.0,0),new Point3d(239.8074069840786,229.99999999999997,0),new Point3d(175.0,135.0,0));
+		LimitedArc arco1= new LimitedArc(new Point3d(239.8074069840786,229.99999999999997,0),new Point3d(290.0,135.0,0),new Point3d(175.0,135.0,0));
+		LimitedLine l2= new LimitedLine(new Point3d(290.0,134.99999999999997,0),new Point3d(290.0,130.0,0));
+		LimitedLine l3= new LimitedLine(new Point3d(290.0,130.0,0),new Point3d(290.0,64.99999999999997,0));
+		LimitedLine l4= new LimitedLine(new Point3d(225.0,130.0,0),new Point3d(290.0,130.0,0));
+		LimitedLine l5= new LimitedLine(new Point3d(290.0,130.0,0),new Point3d(390.0,130.0,0));
+		LimitedLine l6= new LimitedLine(new Point3d(390.0,130.0,0),new Point3d(455.0,130.0,0));
+		LimitedLine l7= new LimitedLine(new Point3d(390.0,65.00000000000001,0),new Point3d(390.0,130.0,0));
+		LimitedLine l8= new LimitedLine(new Point3d(390.0,130.0,0),new Point3d(390.0,135.0,0));
+		LimitedLine l9= new LimitedLine(new Point3d(610.0,250.0,0),new Point3d(675.0,250.0,0));
+		LimitedLine l10= new LimitedLine(new Point3d(505.0,250.0,0),new Point3d(535.8833225297675,250.0,0));
+		LimitedLine l11= new LimitedLine(new Point3d(535.8833225297675,250.0,0),new Point3d(610.0,250.0,0));
+		LimitedLine l12= new LimitedLine(new Point3d(610.0,185.0,0),new Point3d(610.0,250.0,0));
+		LimitedLine l13= new LimitedLine(new Point3d(610.0,250.0,0),new Point3d(610.0,310.0781512436663,0));
+		LimitedLine l14= new LimitedLine(new Point3d(610.0,310.0781512436663,0),new Point3d(610.0,447.2439309010185,0));
+		LimitedLine l15= new LimitedLine(new Point3d(716.1604563667221,396.9367064528026,0),new Point3d(610.0,310.0781512436663,0));
+		LimitedLine l16= new LimitedLine(new Point3d(610.0,310.0781512436663,0),new Point3d(543.8982614252744,255.9949105916181,0));
+		LimitedLine l17= new LimitedLine(new Point3d(239.8074069840786,229.99999999999997,0),new Point3d(32.999999999999986,230.0,0));
+		LimitedLine l18= new LimitedLine(new Point3d(471.0759155456892,229.99999999999994,0),new Point3d(440.1925930159214,229.99999999999994,0));
+		LimitedLine l19= new LimitedLine(new Point3d(440.1925930159214,229.99999999999994,0),new Point3d(239.8074069840786,229.99999999999997,0));
+		LimitedLine l20= new LimitedLine(new Point3d(98.0,230.0,0),new Point3d(98.0,184.99999999999997,0));
+		LimitedLine l21= new LimitedLine(new Point3d(98.0,295.0,0),new Point3d(98.0,250.0,0));
+		LimitedLine l22= new LimitedLine(new Point3d(98.0,250.0,0),new Point3d(98.0,230.0,0));
+		LimitedLine l23= new LimitedLine(new Point3d(33.0,250.0,0),new Point3d(98.0,250.0,0));
+		LimitedLine l24= new LimitedLine(new Point3d(98.0,250.0,0),new Point3d(175.0,250.0,0));
+		elementos1.add(arco0);
+		elementos1.add(arco1);
+		elementos1.add(l2);
+		elementos1.add(l3);
+	    elementos1.add(l4);
+	    elementos1.add(l5);
+	    elementos1.add(l6);
+	    elementos1.add(l7);
+	    elementos1.add(l8);
+	    elementos1.add(l9);
+	    elementos1.add(l10);
+	    elementos1.add(l11);
+	    elementos1.add(l12);
+	    elementos1.add(l13);
+	    elementos1.add(l14);
+	    elementos1.add(l15);
+	    elementos1.add(l16);
+	    elementos1.add(l17);
+	    elementos1.add(l18);
+	    elementos1.add(l19);
+	    elementos1.add(l20);
+	    elementos1.add(l21);
+	    elementos1.add(l22);
+	    elementos1.add(l23);
+	    elementos1.add(l24);
 //	    elementos1.add(l25);
 //	    elementos1.add(l26);
 //	    elementos1.add(l27);
@@ -387,20 +392,20 @@ public class GeometricOperationsTest
 //	    elementos1.add(l4);
 //	    elementos1.add(l5);
 //	    elementos1.add(l6);
-	    LimitedArc arco0= new LimitedArc(new Point3d(277.469507659596,214.99999999999997,0),new Point3d(304.6148139681572,145.0,0),new Point3d(175.0,135.0,0));
-	    LimitedLine l1= new LimitedLine(new Point3d(304.6148139681572,145.0,0),new Point3d(375.3851860318428,145.0,0));
-	    LimitedArc arco2= new LimitedArc(new Point3d(375.3851860318428,145.0,0),new Point3d(402.530492340404,214.99999999999994,0),new Point3d(505.0,135.0,0));
-	    LimitedLine l3= new LimitedLine(new Point3d(578.5922658192167,265.0,0),new Point3d(595.0,265.0,0));
-	    LimitedLine l4= new LimitedLine(new Point3d(595.0,265.0,0),new Point3d(595.0,278.4245097842773,0));
-	    LimitedLine l5= new LimitedLine(new Point3d(595.0,278.42450978427723,0),new Point3d(578.5922658192167,265.0,0));
-	    LimitedLine l6= new LimitedLine(new Point3d(402.5304923404038,214.99999999999994,0),new Point3d(277.469507659596,214.99999999999997,0));
-		elementos1.add(arco0);
-		elementos1.add(l1);
-		elementos1.add(arco2);
-		elementos1.add(l3);
-	    elementos1.add(l4);
-	    elementos1.add(l5);
-	    elementos1.add(l6);
+//	    LimitedArc arco0= new LimitedArc(new Point3d(277.469507659596,214.99999999999997,0),new Point3d(304.6148139681572,145.0,0),new Point3d(175.0,135.0,0));
+//	    LimitedLine l1= new LimitedLine(new Point3d(304.6148139681572,145.0,0),new Point3d(375.3851860318428,145.0,0));
+//	    LimitedArc arco2= new LimitedArc(new Point3d(375.3851860318428,145.0,0),new Point3d(402.530492340404,214.99999999999994,0),new Point3d(505.0,135.0,0));
+//	    LimitedLine l3= new LimitedLine(new Point3d(578.5922658192167,265.0,0),new Point3d(595.0,265.0,0));
+//	    LimitedLine l4= new LimitedLine(new Point3d(595.0,265.0,0),new Point3d(595.0,278.4245097842773,0));
+//	    LimitedLine l5= new LimitedLine(new Point3d(595.0,278.42450978427723,0),new Point3d(578.5922658192167,265.0,0));
+//	    LimitedLine l6= new LimitedLine(new Point3d(402.5304923404038,214.99999999999994,0),new Point3d(277.469507659596,214.99999999999997,0));
+//		elementos1.add(arco0);
+//		elementos1.add(l1);
+//		elementos1.add(arco2);
+//		elementos1.add(l3);
+//	    elementos1.add(l4);
+//	    elementos1.add(l5);
+//	    elementos1.add(l6);
 		  /*
 	       * ---------------------------------------------------------------------------------
 		   * Teste 4 (Dupla intersecao)
@@ -441,7 +446,7 @@ public class GeometricOperationsTest
 		//esta bugando no offset 140
 //		bugado no offset 90
 //		bugado no offset 95
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 96).get(0);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90).get(0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)
@@ -456,6 +461,9 @@ public class GeometricOperationsTest
 		desenhador.setVisible(true);
 		for(;;);
 	}
+//	Arco: (175.0, 250.0, 0.0)
+//	Arco: (390.0, 135.0, 0.0)
+//	Arco: (543.8982614252745, 255.99491059161818, 0.0)
 	@Test
 	public void validarPathTest()
 	{
@@ -469,12 +477,14 @@ public class GeometricOperationsTest
 	public void minumumDistanceTest()
 	{	
 //	    LimitedArc arco2= new LimitedArc(new Point3d(266.65151389911676,219.99999999999997,0),new Point3d(299.89995996796796,140.0,0),new Point3d(175.0,135.0,0));
-	    LimitedArc arco9= new LimitedArc(new Point3d(380.10004003203204,140.0,0),new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,135.0,0));
-	    System.out.println("Delta Angle: " + arco9.getDeltaAngle());
+//	    LimitedArc arco9= new LimitedArc(new Point3d(380.10004003203204,140.0,0),new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,135.0,0));
+	    LimitedLine l12= new LimitedLine(new Point3d(175.0,255.0,0),new Point3d(103.0,255.0,0));
+		LimitedArc arco19= new LimitedArc(new Point3d(543.2650236350173,256.7688678908215,0),new Point3d(532.5576201414465,249.0,0),new Point3d(471.07591554568916,345.0,0));
+	    System.out.println("Delta Angle: " + arco19.getDeltaAngle());
 	    
-		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(formaOriginal, arco9));
+		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(formaOriginal, l12));
 		
-		formaOriginal.add(arco9);
+		formaOriginal.add(arco19);
 		
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
 		desenhador.setVisible(true);
@@ -497,7 +507,13 @@ public class GeometricOperationsTest
 			System.out.println("NaNANANANA");
 		}
 	}
-	
+	@Test
+	public void belongsArcTest()
+	{
+	    LimitedArc arco1= new LimitedArc(new Point3d(75,50,0), new Point3d(50,75,0), new Point3d(50,50,0));
+	    Point3d p = new Point3d(50 + 25*Math.cos((Math.PI)/4), 50 + 25*Math.sin((Math.PI)/4),0);
+	    System.out.println("Boolean: " + GeometricOperations.belongsArc(arco1, p));
+	}
 	@Test
 	public void LimitedArcTest()
 	{	

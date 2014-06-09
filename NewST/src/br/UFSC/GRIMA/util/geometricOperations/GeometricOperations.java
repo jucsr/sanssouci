@@ -1648,17 +1648,6 @@ public class GeometricOperations
 		return output;
 	}
 	
-	public static boolean equalPoints(Point3d p1, Point3d p2)
-	{
-		if(p1.getX()==p2.getX() && p1.getY()==p2.getY() && p1.getZ()==p2.getZ())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 	
 	/**
 	 * 

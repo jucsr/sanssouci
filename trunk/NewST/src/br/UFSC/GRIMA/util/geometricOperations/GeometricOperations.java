@@ -2036,12 +2036,22 @@ public class GeometricOperations
 //		}
 	}
 	
-	public static boolean belongsArc(LimitedArc arcTmp, Point3d p)
+	public static boolean belongsArc(LimitedArc arc, Point3d p)
 	{
+
+		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
+
+		if(arc.getDeltaAngle() < 0)
+		{
+			Point3d temp = arc.getInitialPoint();
+			Point3d temp1 = arc.getFinalPoint();
+			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
+		}
+		
 		double anguloInicial = Math.atan2(arcTmp.getInitialPoint().y - arcTmp.getCenter().y, arcTmp.getInitialPoint().x - arcTmp.getCenter().x);
 		double anguloFinal = Math.atan2(arcTmp.getFinalPoint().y - arcTmp.getCenter().y, arcTmp.getFinalPoint().x - arcTmp.getCenter().x);
 		double anguloP = Math.atan2(p.y - arcTmp.getCenter().y, p.x - arcTmp.getCenter().x);
-
+		
 		if(anguloInicial < 0)
 		{
 			anguloInicial = 2 * Math.PI + anguloInicial;
@@ -2050,7 +2060,11 @@ public class GeometricOperations
 		{
 			anguloFinal = 2 * Math.PI + anguloFinal;
 		}
-		if(anguloP < 0)
+		if(roundNumber(anguloP,10) == 0 && roundNumber(anguloInicial,10) == 0)
+		{
+			return true;
+		}
+		if(anguloP <= 0)
 		{
 			anguloP = 2 * Math.PI + anguloP;
 		}
@@ -2064,11 +2078,11 @@ public class GeometricOperations
 		System.out.println("AnguloInicial: " + anguloInicial);
 		System.out.println("AnguloFinal: " + anguloFinal);
 		System.out.println("AnguloP: " + anguloP);
-		double distance = arcTmp.getCenter().distance(p);
+		double distance = arc.getCenter().distance(p);
 		System.out.println("Distance: " + distance);
-		if(roundNumber(distance,10) == roundNumber(arcTmp.getRadius(),10))
+		if(roundNumber(distance,10) == roundNumber(arc.getRadius(),10))
 		{
-			if(anguloFinal >= anguloP && anguloInicial <= anguloP)
+			if((anguloFinal >= anguloP && anguloInicial <= anguloP) || (anguloFinal >= (anguloP + 2*Math.PI) && anguloInicial <= (anguloP + 2*Math.PI)))
 			{
 				return true;
 			}
@@ -2583,12 +2597,12 @@ public class GeometricOperations
 
 	public static ArrayList<Point3d> intersectionPoint(LimitedArc arc, LimitedLine line)
 	{
-		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
+		LimitedArc arcTmp = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle());
 		if(arc.getDeltaAngle() < 0)
 		{
-			Point3d temp = arc.getInitialPoint();
+//			Point3d temp = arc.getInitialPoint();
 			Point3d temp1 = arc.getFinalPoint();
-			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
+			arcTmp = new LimitedArc(arc.getCenter(), temp1, -arc.getDeltaAngle());
 		}
 		ArrayList<Point3d> intersection = null;
 		/**
@@ -2684,63 +2698,78 @@ public class GeometricOperations
 //		System.err.println("Arco: " + arc.getInitialPoint() + arc.getFinalPoint() + arc.getCenter());
 //		System.err.println("Radical: " + radical);
 //		
-		//Modulo da linha de entrada
-		double moduloR1 = Math.sqrt(Math.pow((line.getFinalPoint().x - line.getInitialPoint().x),2) + Math.pow((line.getFinalPoint().y - line.getInitialPoint().y), 2));
-		//Vetor diretor da linha de entrada
-		Point3d diretor1 = new Point3d(((line.getFinalPoint().x - line.getInitialPoint().x)/moduloR1),((line.getFinalPoint().y - line.getInitialPoint().y)/moduloR1),0);
-		//Modulo da linha com ponto inicial da linha de entrada e ponto final = possivel ponto de intersecao
-		double moduloR2;
-		//Vetor da linha com ponto inicial da linha de entrada e ponto final = possivel ponto de intersecao
-		Point3d diretor2;
-		
-		if((anguloInicial <= anguloNaIntersecao1 && anguloFinal >= anguloNaIntersecao1))
+//		//Modulo da linha de entrada
+//		double moduloR1 = Math.sqrt(Math.pow((line.getFinalPoint().x - line.getInitialPoint().x),2) + Math.pow((line.getFinalPoint().y - line.getInitialPoint().y), 2));
+//		//Vetor diretor da linha de entrada
+//		Point3d diretor1 = new Point3d(((line.getFinalPoint().x - line.getInitialPoint().x)/moduloR1),((line.getFinalPoint().y - line.getInitialPoint().y)/moduloR1),0);
+//		//Modulo da linha com ponto inicial da linha de entrada e ponto final = possivel ponto de intersecao
+//		double moduloR2;
+//		//Vetor da linha com ponto inicial da linha de entrada e ponto final = possivel ponto de intersecao
+//		Point3d diretor2;
+//		
+//		if((anguloInicial <= anguloNaIntersecao1 && anguloFinal >= anguloNaIntersecao1))
+//		{
+//			moduloR2 = Math.sqrt(Math.pow((x1 - line.getInitialPoint().x),2) + Math.pow((y1 - line.getInitialPoint().y), 2));
+//			diretor2 = new Point3d(((x1 - line.getInitialPoint().x)/moduloR1),((y1 - line.getInitialPoint().y)/moduloR1),0);
+//			//Validacao do possivel ponto de intersecao
+//			if (!((diretor1.getX() == (-1)*diretor2.getX()) && (diretor1.getY() == (-1)*diretor2.getY())))
+//			{
+//				if(moduloR1 >= moduloR2)
+//				{
+//					intersection = new ArrayList<Point3d> ();
+//					intersection.add(new Point3d(x1,y1,0));
+//				}
+//			}
+//		} 
+//		if((anguloInicial <= anguloNaIntersecao2 && anguloFinal >= anguloNaIntersecao2))
+//		{
+//			moduloR2 = Math.sqrt(Math.pow((x2 - line.getInitialPoint().x),2) + Math.pow((y2 - line.getInitialPoint().y), 2));
+//			diretor2 = new Point3d(((x2 - line.getInitialPoint().x)/moduloR1),((y2 - line.getInitialPoint().y)/moduloR1),0);
+//			//Validacao do possivel ponto de intersecao
+//			if (!((diretor1.getX() == (-1)*diretor2.getX()) && (diretor1.getY() == (-1)*diretor2.getY())))
+//			{
+//				if(moduloR1 >= moduloR2)
+//				{
+//					if(intersection == null)
+//					{
+//						intersection = new ArrayList<Point3d> ();
+//					}
+//					intersection.add(new Point3d(x2,y2,0));
+//				}
+//			}
+//		}
+		Point3d P1 = new Point3d(x1,y1,line.getInitialPoint().z);
+		Point3d P2 = new Point3d(x2,y2,line.getInitialPoint().z);
+		if(belongsArc(arcTmp,P1) && belongs(line,P1))
 		{
-			moduloR2 = Math.sqrt(Math.pow((x1 - line.getInitialPoint().x),2) + Math.pow((y1 - line.getInitialPoint().y), 2));
-			diretor2 = new Point3d(((x1 - line.getInitialPoint().x)/moduloR1),((y1 - line.getInitialPoint().y)/moduloR1),0);
-			//Validacao do possivel ponto de intersecao
-			if (!((diretor1.getX() == (-1)*diretor2.getX()) && (diretor1.getY() == (-1)*diretor2.getY())))
-			{
-				if(moduloR1 >= moduloR2)
-				{
-					intersection = new ArrayList<Point3d> ();
-					intersection.add(new Point3d(x1,y1,0));
-				}
-			}
-		} 
-		if((anguloInicial <= anguloNaIntersecao2 && anguloFinal >= anguloNaIntersecao2))
-		{
-			moduloR2 = Math.sqrt(Math.pow((x2 - line.getInitialPoint().x),2) + Math.pow((y2 - line.getInitialPoint().y), 2));
-			diretor2 = new Point3d(((x2 - line.getInitialPoint().x)/moduloR1),((y2 - line.getInitialPoint().y)/moduloR1),0);
-			//Validacao do possivel ponto de intersecao
-			if (!((diretor1.getX() == (-1)*diretor2.getX()) && (diretor1.getY() == (-1)*diretor2.getY())))
-			{
-				if(moduloR1 >= moduloR2)
-				{
-					if(intersection == null)
-					{
-						intersection = new ArrayList<Point3d> ();
-					}
-					intersection.add(new Point3d(x2,y2,0));
-				}
-			}
+			intersection = new ArrayList<Point3d>();
+			intersection.add(P1);
 		}
-		if(!(intersection == null))
+		if(belongsArc(arcTmp,P2) && belongs(line,P2))
 		{
-			if(intersection.size() == 1)
+			if(intersection == null)
 			{
-				if (!belongs(line, intersection.get(0))) 
-				{
-					intersection = null;
-				} 
+				intersection = new ArrayList<Point3d> ();
 			}
-			else if(intersection.size() == 2)
-			{
-				if (!belongs(line, intersection.get(1))) 
-				{
-					intersection = null;
-				} 
-			}
+			intersection.add(P2);
 		}
+//		if(!(intersection == null))
+//		{
+//			if(intersection.size() == 1)
+//			{
+//				if (!belongs(line, intersection.get(0))) 
+//				{
+//					intersection = null;
+//				} 
+//			}
+//			else if(intersection.size() == 2)
+//			{
+//				if (!belongs(line, intersection.get(1))) 
+//				{
+//					intersection = null;
+//				} 
+//			}
+//		}
 		return intersection;
 	}
 	/**
@@ -2761,23 +2790,25 @@ public class GeometricOperations
 	}
 	public static ArrayList<Point3d> intersectionPoint(LimitedArc arc1, LimitedArc arc2)
 	{
-		LimitedArc arc1Tmp = new LimitedArc(arc1.getInitialPoint(), arc1.getFinalPoint(), arc1.getCenter());
-		LimitedArc arc2Tmp = new LimitedArc(arc2.getInitialPoint(), arc2.getFinalPoint(), arc2.getCenter());
+//		LimitedArc arc1Tmp = new LimitedArc(arc1.getInitialPoint(), arc1.getFinalPoint(), arc1.getCenter());
+//		LimitedArc arc2Tmp = new LimitedArc(arc2.getInitialPoint(), arc2.getFinalPoint(), arc2.getCenter());
+		LimitedArc arc1Tmp = new LimitedArc(arc1.getCenter(), arc1.getInitialPoint(), arc1.getDeltaAngle());
+		LimitedArc arc2Tmp = new LimitedArc(arc2.getCenter(), arc2.getInitialPoint(), arc2.getDeltaAngle());
 
 		if(arc1.getDeltaAngle() < 0)
 		{
-			Point3d temp = arc1.getInitialPoint();
+			//Point3d temp = arc1.getInitialPoint();
 			Point3d temp1 = arc1.getFinalPoint();
-			arc1Tmp = new LimitedArc(temp1, temp, arc1.getCenter());
+			arc1Tmp = new LimitedArc(arc1.getCenter(), temp1, -arc1.getDeltaAngle());
 		}
 		if(arc2.getDeltaAngle() < 0)
 		{
-			Point3d temp = arc2.getInitialPoint();
+			//Point3d temp = arc2.getInitialPoint();
 			Point3d temp1 = arc2.getFinalPoint();
-			arc2Tmp = new LimitedArc(temp1, temp, arc2.getCenter());
+			arc2Tmp = new LimitedArc(arc2.getCenter(), temp1, -arc2.getDeltaAngle());
 
 		}
-		ArrayList<Point3d> intersection = null;
+		ArrayList<Point3d> intersection = new ArrayList<Point3d>();
 		
 		double x1, x2, y1 = 0, y2 = 0, r1 = 0, r2 = 0, cx1, cx2, cy1, cy2;
 		
@@ -2801,7 +2832,7 @@ public class GeometricOperations
 		
 		if(((Double)x1).isNaN() || ((Double)x2).isNaN())
 		{
-			return intersection;
+			return null;
 		}
 		/**
 		 * todos os possiveis pontos de intersecao nos dois circulos com x1 e x2 calculados
@@ -2824,15 +2855,31 @@ public class GeometricOperations
 		pPossiveis.add(new Point3d(x2,y23,arc1.getCenter().z));
 		pPossiveis.add(new Point3d(x2,y24,arc1.getCenter().z));
 		
+//		for(int i = 0;i < pPossiveis.size(); i++)
+//		{
+//			System.out.println("P: " + pPossiveis.get(i));
+//		}
 		for(int i = 0;i < pPossiveis.size(); i++)
 		{
 			Point3d pTmp = pPossiveis.get(i);
-			if(!(belongsArc(arc1Tmp,pTmp) && belongsArc(arc2Tmp,pTmp)))
+			System.out.println("P: " + pTmp);
+			if(belongsArc(arc1Tmp,pTmp) && belongsArc(arc2Tmp,pTmp))
 			{
-				pPossiveis.remove(pTmp);
+				if(!(alreadyUsed(pTmp, intersection)))
+				{
+					intersection.add(pTmp);
+				}
 			}
 		}
-		
+		System.out.println("pPossiveis: " + pPossiveis);
+//		for(int i = 0;i < pPossiveis.size(); i++)
+//		{
+//			Point3d pTmp = pPossiveis.get(i);
+//			if(!(alreadyUsed(pTmp, intersection)))
+//			{
+//				intersection.add(pTmp);
+//			}
+//		}
 //		ArrayList<Double> ypossiveis = new ArrayList<Double>();
 //		double [] ypossiveis1 = {y11, y12, y13, y14};
 //		double [] ypossiveis2 = {y21, y22, y23, y24};
@@ -2959,7 +3006,7 @@ public class GeometricOperations
 //			intersection.add(possivel2);
 //		}
 		
-		return pPossiveis;
+		return intersection;
 	}
 	public static double roundNumber(double number, int decimals)
 	{

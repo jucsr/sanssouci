@@ -1422,9 +1422,11 @@ public class GeometricOperations
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
+		showElements(elements);
 		ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
-		showElements(elementsIntermediario);
+//		showElements(elementsIntermediario);
 		ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
+//		showElements(elementsIntermediario2);
 //		ArrayList<ArrayList<LimitedElement>> elementsValidated = validar3Path(elementsIntermediario2);
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		elementsValidated.add(elementsIntermediario2);
@@ -1744,7 +1746,6 @@ public class GeometricOperations
 		}
 		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
 	
-		showElements(elementsIntermediario2);
 		return elementsIntermediario2;
 	}
 	

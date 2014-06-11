@@ -1443,14 +1443,17 @@ public class GeometricOperations
 			ArrayList<Point3d> intersection = null;
 			boolean thereIsIntersection = false;
 			LimitedElement ei = elements.get(i);
+//			System.out.println("PIei: " + ei.getInitialPoint());
 			int numeroDeIntersecao = 0;
 			for (int j = 0; j < elements.size(); j++)
 			{
 				LimitedElement ej = elements.get(j);
+//				System.out.println("PIej: " + ej.getInitialPoint());
 				intersection = null;
 				if(!ei.equals(ej))
 				{
 					intersection = intersectionElements(ei, ej);
+					//essa condicao so funciona se o metodo que calcula as intersecoes retornar um array nulo quando nao ha intersecao (ao inves de um array vazio)
 					if (intersection != null)
 					{
 						int intSize = intersection.size();
@@ -1465,6 +1468,9 @@ public class GeometricOperations
 						thereIsIntersection = true;
 						if(numeroDeIntersecao == 0)
 						{
+							System.out.println("intersecoes: " + intersection);
+//							System.out.println("PIei: " + ei.getInitialPoint());
+//							System.out.println("PIej: " + ej.getInitialPoint());
 							//adiciona os pontos de intersecao ao vetor de intersecoes
 							if (ei.isLimitedLine())
 							{
@@ -1510,6 +1516,7 @@ public class GeometricOperations
 										intersectionTemp.set(0, intersection.get(1));
 										intersectionTemp.set(1, intersection.get(0));
 									}
+									//Mudar Construtor!!!
 									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
 									LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0),intersectionTemp.get(1),arci.getCenter());
 									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
@@ -1522,6 +1529,9 @@ public class GeometricOperations
 						}
 						else
 						{
+//							System.out.println("PIei: " + ei.getInitialPoint());
+//							System.out.println("PIej: " + ej.getInitialPoint());
+//							System.out.println("intersections: " + intersecoes);
 							int indice2 = elementsIntermediario.size() - 2;
 							int indice3 = elementsIntermediario.size() - 1;
 							if((elementsIntermediario.get(indice3).isLimitedLine()))
@@ -1728,6 +1738,7 @@ public class GeometricOperations
 		}
 		return elementsIntermediario;
 	}
+	
 	public static ArrayList<LimitedElement> validar2Path(ArrayList<LimitedElement> elementsIntermediario, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
 		/*
@@ -1748,7 +1759,10 @@ public class GeometricOperations
 	
 		return elementsIntermediario2;
 	}
-	
+//	public static calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d)
+//	{
+//		
+//	}
 	public static ArrayList<ArrayList<LimitedElement>> validar3Path(ArrayList<LimitedElement> elementsIntermediario2)
 	{
 		/*
@@ -2075,11 +2089,11 @@ public class GeometricOperations
 			anguloFinal = 2 * Math.PI + anguloFinal;
 		}
 		
-		System.out.println("AnguloInicial: " + anguloInicial);
-		System.out.println("AnguloFinal: " + anguloFinal);
-		System.out.println("AnguloP: " + anguloP);
+//		System.out.println("AnguloInicial: " + anguloInicial);
+//		System.out.println("AnguloFinal: " + anguloFinal);
+//		System.out.println("AnguloP: " + anguloP);
 		double distance = arc.getCenter().distance(p);
-		System.out.println("Distance: " + distance);
+//		System.out.println("Distance: " + distance);
 		if(roundNumber(distance,10) == roundNumber(arc.getRadius(),10))
 		{
 			if((anguloFinal >= anguloP && anguloInicial <= anguloP) || (anguloFinal >= (anguloP + 2*Math.PI) && anguloInicial <= (anguloP + 2*Math.PI)))
@@ -2862,7 +2876,7 @@ public class GeometricOperations
 		for(int i = 0;i < pPossiveis.size(); i++)
 		{
 			Point3d pTmp = pPossiveis.get(i);
-			System.out.println("P: " + pTmp);
+//			System.out.println("P: " + pTmp);
 			if(belongsArc(arc1Tmp,pTmp) && belongsArc(arc2Tmp,pTmp))
 			{
 				if(!(alreadyUsed(pTmp, intersection)))
@@ -2871,7 +2885,7 @@ public class GeometricOperations
 				}
 			}
 		}
-		System.out.println("pPossiveis: " + pPossiveis);
+//		System.out.println("pPossiveis: " + pPossiveis);
 //		for(int i = 0;i < pPossiveis.size(); i++)
 //		{
 //			Point3d pTmp = pPossiveis.get(i);
@@ -3005,7 +3019,10 @@ public class GeometricOperations
 //			}
 //			intersection.add(possivel2);
 //		}
-		
+		if(intersection.size() == 0)
+		{
+			return null;
+		}
 		return intersection;
 	}
 	public static double roundNumber(double number, int decimals)

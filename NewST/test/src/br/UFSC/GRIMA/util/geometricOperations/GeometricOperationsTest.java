@@ -294,7 +294,7 @@ public class GeometricOperationsTest
 		System.err.println("Intersection Validated: " + intersection);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		all.add(arc8);
-		all.add(line12);
+		all.add(arc9);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
@@ -475,14 +475,16 @@ public class GeometricOperationsTest
 	public void validar1PathTest()
 	{
 		ArrayList<LimitedElement> elementos1 = new ArrayList<LimitedElement>();
-		LimitedArc arco4= new LimitedArc(new Point3d(398.0,135.0,0),new Point3d(505.0,242.0,0),new Point3d(505.0,135.0,0));
-		LimitedLine l5= new LimitedLine(new Point3d(505.0,242.0,0),new Point3d(675.0,242.0,0));
-		LimitedArc arco8= new LimitedArc(new Point3d(538.8323591032164,262.1865689852448,0),new Point3d(471.0759155456893,238.0,0),new Point3d(471.07591554568916,345.0,0));
-		LimitedLine l9= new LimitedLine(new Point3d(471.0759155456892,237.99999999999994,0),new Point3d(32.999999999999986,238.0,0));
-		elementos1.add(arco4);
-		elementos1.add(arco8);
-		elementos1.add(l9);
-		elementos1.add(l5);
+//		LimitedArc arco4= new LimitedArc(new Point3d(398.0,135.0,0),new Point3d(505.0,242.0,0),new Point3d(505.0,135.0,0));
+//		LimitedLine l5= new LimitedLine(new Point3d(505.0,242.0,0),new Point3d(675.0,242.0,0));
+//		LimitedArc arco8= new LimitedArc(new Point3d(538.8323591032164,262.1865689852448,0),new Point3d(471.0759155456893,238.0,0),new Point3d(471.07591554568916,345.0,0));
+//		LimitedLine l9= new LimitedLine(new Point3d(471.0759155456892,237.99999999999994,0),new Point3d(32.999999999999986,238.0,0));
+		LimitedArc arc8 = new LimitedArc(new Point3d(50,50 , 0), new Point3d(50 + (25*Math.cos(Math.PI/4)), 50 - (25*Math.sin(Math.PI/4)), 0), Math.PI/2);
+		LimitedArc arc9 = new LimitedArc(new Point3d(90, 50, 0), new Point3d(90 - (25*Math.cos(Math.PI/4)), 50 + (25*Math.sin(Math.PI/4)), 0),Math.PI/2);
+		elementos1.add(arc8);
+		elementos1.add(arc9);
+//		elementos1.add(l9);
+//		elementos1.add(l5);
 		
 		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementos1);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);

@@ -1500,36 +1500,80 @@ public class GeometricOperations
 							}
 							else if(ei.isLimitedArc())
 							{
+								//Criar um metodo!!
 								LimitedArc arci = (LimitedArc)ei;
-								if(intSize == 1)
+								Point3d arciI = arci.getInitialPoint();
+								Point3d arciF = arci.getFinalPoint();
+								Point3d arciCenter = arci.getCenter();
+								double iDeltaAngle = arci.getDeltaAngle();
+								ArrayList<LimitedArc> arcTemp = new ArrayList<LimitedArc>(); 
+								Point3d intTemp;
+								for(int h = 0;h < intSize;h++)
 								{
-									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
-									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
-									elementsIntermediario.add(arcBeforeIntersection);
-									elementsIntermediario.add(arcAfterIntersection);
-								}
-								else if(intSize == 2)
-								{
-									ArrayList<Point3d> intersectionTemp = intersection;
-									if(distance(arci.getInitialPoint(), intersection.get(0)) > distance(arci.getInitialPoint(), intersection.get(1)))
+									intTemp = intersection.get(h);
+									if(arcTemp.size() == 0)
 									{
-										intersectionTemp.set(0, intersection.get(1));
-										intersectionTemp.set(1, intersection.get(0));
+										LimitedArc segTemp = new LimitedArc(arciCenter, arciI, calcDeltaAngle(arciI,intTemp,arciCenter,iDeltaAngle));
+										arcTemp.add(segTemp);
+										segTemp = new LimitedArc(arciCenter, intTemp, calcDeltaAngle(intTemp,arciF,arciCenter,iDeltaAngle));
+										arcTemp.add(segTemp);
 									}
-									//Mudar Construtor!!!
-									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
-									LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0),intersectionTemp.get(1),arci.getCenter());
-									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
-									elementsIntermediario.add(arcBeforeIntersection);
-									elementsIntermediario.add(arcBetweenIntersection);
-									elementsIntermediario.add(arcAfterIntersection);
+									else
+									{
+										for(int s = 0;s < arcTemp.size();s++)
+										{
+											Point3d arcTempI = arcTemp.get(s).getInitialPoint();
+//											double tempDeltaAngle = arcTemp.get(s).getDeltaAngle();
+											LimitedArc aTmp = arcTemp.get(s);
+											if(belongsArc(aTmp,intTemp))
+											{
+												LimitedArc segTemp = new LimitedArc(arciCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arciCenter,iDeltaAngle));
+												arcTemp.add(segTemp);
+												arcTemp.remove(aTmp);
+											}
+										}
+									}
 								}
+								for(int k = 0;k < arcTemp.size();k++)
+								{
+									elementsIntermediario.add(arcTemp.get(k));
+								}
+//								if(intSize == 1)
+//								{
+////									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
+////									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
+//									
+//									LimitedArc arcBeforeIntersection = new LimitedArc(arciCenter, arciI, calcDeltaAngle(arciI,intersection.get(0),arciCenter,iDeltaAngle));
+//									LimitedArc arcAfterIntersection = new LimitedArc(arciCenter, intersection.get(0), calcDeltaAngle(intersection.get(0),arciF,arciCenter,iDeltaAngle));
+//
+//									elementsIntermediario.add(arcBeforeIntersection);
+//									elementsIntermediario.add(arcAfterIntersection);
+//								}
+//								else if(intSize == 2)
+//								{
+//									ArrayList<Point3d> intersectionTemp = intersection;
+//									if(distance(arciI, intersection.get(0)) > distance(arci.getInitialPoint(), intersection.get(1)))
+//									{
+//										intersectionTemp.set(0, intersection.get(1));
+//										intersectionTemp.set(1, intersection.get(0));
+//									}
+//									//Mudar Construtor!!!
+////									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
+////									LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0),intersectionTemp.get(1),arci.getCenter());
+////									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
+//									LimitedArc arcBeforeIntersection = new LimitedArc(arciCenter, arciI, calcDeltaAngle(arciI,intersectionTemp.get(0),arciCenter,iDeltaAngle));
+//									LimitedArc arcBetweenIntersection = new LimitedArc(arci.getCenter(), intersectionTemp.get(0), calcDeltaAngle(intersectionTemp.get(0),intersectionTemp.get(1),arciCenter,iDeltaAngle));
+//									LimitedArc arcAfterIntersection = new LimitedArc(arciCenter, intersectionTemp.get(1), calcDeltaAngle(intersectionTemp.get(1),arciF,arciCenter,iDeltaAngle));									
+//									elementsIntermediario.add(arcBeforeIntersection);
+//									elementsIntermediario.add(arcBetweenIntersection);
+//									elementsIntermediario.add(arcAfterIntersection);
+//								}
 							}
 							numeroDeIntersecao++;
 						}
 						else
 						{
-//							System.out.println("PIei: " + ei.getInitialPoint());
+							System.out.println("PIei: " + ei.getInitialPoint());
 //							System.out.println("PIej: " + ej.getInitialPoint());
 //							System.out.println("intersections: " + intersecoes);
 							int indice2 = elementsIntermediario.size() - 2;
@@ -1641,13 +1685,18 @@ public class GeometricOperations
 								{
 									int indice1 = elementsIntermediario.size() - 3;
 									LimitedArc aux1 = (LimitedArc)elementsIntermediario.get(indice1);
+									Point3d aux1I = aux1.getInitialPoint();
+									Point3d aux1F = aux1.getFinalPoint();
+									double aux1DeltaAngle = aux1.getDeltaAngle();
 									ArrayList<Point3d> intAux1 = intersectionElements(aux1, ej);
 									if(intAux1 != null)
 									{
 										if(intSize == 1)
 										{
-											LimitedArc arcBeforeIntersection = new LimitedArc(aux1.getInitialPoint(), intAux1.get(0),centerEi);
-											LimitedArc arcAfterIntersection = new LimitedArc(intAux1.get(0), aux1.getFinalPoint(),centerEi);
+//											LimitedArc arcBeforeIntersection = new LimitedArc(aux1I, intAux1.get(0),centerEi);
+//											LimitedArc arcAfterIntersection = new LimitedArc(intAux1.get(0), aux1.getFinalPoint(),centerEi);
+											LimitedArc arcBeforeIntersection = new LimitedArc(centerEi, aux1I, calcDeltaAngle(aux1I,intAux1.get(0),centerEi,aux1DeltaAngle));
+											LimitedArc arcAfterIntersection = new LimitedArc(centerEi, intAux1.get(0), calcDeltaAngle(intAux1.get(0),aux1F,centerEi,aux1DeltaAngle));
 											elementsIntermediario.add(arcBeforeIntersection);
 											elementsIntermediario.add(arcAfterIntersection);
 											elementsIntermediario.remove(indice1);
@@ -1660,9 +1709,12 @@ public class GeometricOperations
 												intersectionTemp.set(0, intAux1.get(1));
 												intersectionTemp.set(1, intAux1.get(0));
 											}
-											LimitedArc arcBeforeIntersection = new LimitedArc(aux1.getInitialPoint(), intersectionTemp.get(0),centerEi);
-											LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0), intersectionTemp.get(1),centerEi);
-											LimitedArc arcAfterIntersection = new LimitedArc(intersectionTemp.get(1), aux1.getFinalPoint(),centerEi);
+//											LimitedArc arcBeforeIntersection = new LimitedArc(aux1.getInitialPoint(), intersectionTemp.get(0),centerEi);
+//											LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0), intersectionTemp.get(1),centerEi);
+//											LimitedArc arcAfterIntersection = new LimitedArc(intersectionTemp.get(1), aux1.getFinalPoint(),centerEi);
+											LimitedArc arcBeforeIntersection = new LimitedArc(centerEi, aux1I, calcDeltaAngle(aux1I,intersectionTemp.get(0),centerEi,aux1DeltaAngle));
+											LimitedArc arcBetweenIntersection = new LimitedArc(centerEi, intersectionTemp.get(0), calcDeltaAngle(intersectionTemp.get(0),intersectionTemp.get(1),centerEi,aux1DeltaAngle));
+											LimitedArc arcAfterIntersection = new LimitedArc(centerEi, intersectionTemp.get(1), calcDeltaAngle(intersectionTemp.get(1),aux1F,centerEi,aux1DeltaAngle));
 											elementsIntermediario.add(arcBeforeIntersection);
 											elementsIntermediario.add(arcBetweenIntersection);
 											elementsIntermediario.add(arcAfterIntersection);
@@ -1673,10 +1725,15 @@ public class GeometricOperations
 								if (intAux2 != null)
 								{
 									//intersection = intersectionElements(aux2,ej);
+									Point3d aux2I = aux2.getInitialPoint();
+									Point3d aux2F = aux2.getFinalPoint();
+									double aux2DeltaAngle = aux2.getDeltaAngle();
 									if(intSize == 1)
 									{
-										LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intAux2.get(0), centerEi);
-										LimitedArc arcAfterIntersection = new LimitedArc(intAux2.get(0), aux2.getFinalPoint(), centerEi);
+//										LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intAux2.get(0), centerEi);
+//										LimitedArc arcAfterIntersection = new LimitedArc(intAux2.get(0), aux2.getFinalPoint(), centerEi);
+										LimitedArc arcBeforeIntersection = new LimitedArc(centerEi, aux2I, calcDeltaAngle(aux2I,intAux2.get(0),centerEi,aux2DeltaAngle));
+										LimitedArc arcAfterIntersection = new LimitedArc(centerEi, intAux2.get(0), calcDeltaAngle(intAux2.get(0),aux2F,centerEi,aux2DeltaAngle));
 										elementsIntermediario.add(arcBeforeIntersection);
 										elementsIntermediario.add(arcAfterIntersection);
 										elementsIntermediario.remove(indice2);
@@ -1689,9 +1746,12 @@ public class GeometricOperations
 											intersectionTemp.set(0, intAux2.get(1));
 											intersectionTemp.set(1, intAux2.get(0));
 										}
-										LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intAux2.get(0), centerEi);
-										LimitedArc arcBetweenIntersection = new LimitedArc(intAux2.get(0), intAux2.get(1), centerEi);
-										LimitedArc arcAfterIntersection = new LimitedArc(intAux2.get(1), aux2.getFinalPoint(), centerEi);
+//										LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intAux2.get(0), centerEi);
+//										LimitedArc arcBetweenIntersection = new LimitedArc(intAux2.get(0), intAux2.get(1), centerEi);
+//										LimitedArc arcAfterIntersection = new LimitedArc(intAux2.get(1), aux2.getFinalPoint(), centerEi);
+										LimitedArc arcBeforeIntersection = new LimitedArc(centerEi, aux2I, calcDeltaAngle(aux2I,intersectionTemp.get(0),centerEi,aux2DeltaAngle));
+										LimitedArc arcBetweenIntersection = new LimitedArc(centerEi, intersectionTemp.get(0), calcDeltaAngle(intersectionTemp.get(0),intersectionTemp.get(1),centerEi,aux2DeltaAngle));
+										LimitedArc arcAfterIntersection = new LimitedArc(centerEi, intersectionTemp.get(1), calcDeltaAngle(intersectionTemp.get(1),aux2F,centerEi,aux2DeltaAngle));
 										elementsIntermediario.add(arcBeforeIntersection);
 										elementsIntermediario.add(arcBetweenIntersection);
 										elementsIntermediario.add(arcAfterIntersection);
@@ -1701,10 +1761,15 @@ public class GeometricOperations
 								if(intAux3 != null)
 								{
 									//intersection = intersectionElements(aux3,ej);
+									Point3d aux3I = aux3.getInitialPoint();
+									Point3d aux3F = aux3.getFinalPoint();
+									double aux3DeltaAngle = aux2.getDeltaAngle();
 									if(intSize == 1)
 									{
-										LimitedArc arcBeforeIntersection = new LimitedArc(aux3.getInitialPoint(), intAux3.get(0), centerEi);
-										LimitedArc arcAfterIntersection = new LimitedArc(intAux3.get(0), aux3.getFinalPoint(), centerEi);
+//										LimitedArc arcBeforeIntersection = new LimitedArc(aux3.getInitialPoint(), intAux3.get(0), centerEi);
+//										LimitedArc arcAfterIntersection = new LimitedArc(intAux3.get(0), aux3.getFinalPoint(), centerEi);
+										LimitedArc arcBeforeIntersection = new LimitedArc(centerEi, aux3I, calcDeltaAngle(aux3I,intAux3.get(0),centerEi,aux3DeltaAngle));
+										LimitedArc arcAfterIntersection = new LimitedArc(centerEi, intAux3.get(0), calcDeltaAngle(intAux3.get(0),aux3F,centerEi,aux3DeltaAngle));
 										elementsIntermediario.add(arcBeforeIntersection);
 										elementsIntermediario.add(arcAfterIntersection);
 										elementsIntermediario.remove(indice3);
@@ -1712,14 +1777,17 @@ public class GeometricOperations
 									else if(intSize == 2)
 									{
 										ArrayList<Point3d> intersectionTemp = intAux3;
-										if(distance(aux3.getInitialPoint(), intAux3.get(0)) > distance(aux3.getInitialPoint(), intAux3.get(1)))
+										if(distance(aux3I, intAux3.get(0)) > distance(aux3I, intAux3.get(1)))
 										{
 											intersectionTemp.set(0, intAux3.get(1));
 											intersectionTemp.set(1, intAux3.get(0));
 										}
-										LimitedArc arcBeforeIntersection = new LimitedArc(aux3.getInitialPoint(), intAux3.get(0), centerEi);
-										LimitedArc arcBetweenIntersection = new LimitedArc(intAux3.get(0), intAux3.get(1), centerEi);
-										LimitedArc arcAfterIntersection = new LimitedArc(intAux3.get(1), aux3.getFinalPoint(), centerEi);
+//										LimitedArc arcBeforeIntersection = new LimitedArc(aux3.getInitialPoint(), intAux3.get(0), centerEi);
+//										LimitedArc arcBetweenIntersection = new LimitedArc(intAux3.get(0), intAux3.get(1), centerEi);
+//										LimitedArc arcAfterIntersection = new LimitedArc(intAux3.get(1), aux3.getFinalPoint(), centerEi);
+										LimitedArc arcBeforeIntersection = new LimitedArc(centerEi, aux3I, calcDeltaAngle(aux3I,intersectionTemp.get(0),centerEi,aux3DeltaAngle));
+										LimitedArc arcBetweenIntersection = new LimitedArc(centerEi, intersectionTemp.get(0), calcDeltaAngle(intersectionTemp.get(0),intersectionTemp.get(1),centerEi,aux3DeltaAngle));
+										LimitedArc arcAfterIntersection = new LimitedArc(centerEi, intersectionTemp.get(1), calcDeltaAngle(intersectionTemp.get(1),aux3F,centerEi,aux3DeltaAngle));
 										elementsIntermediario.add(arcBeforeIntersection);
 										elementsIntermediario.add(arcBetweenIntersection);
 										elementsIntermediario.add(arcAfterIntersection);
@@ -1759,10 +1827,17 @@ public class GeometricOperations
 	
 		return elementsIntermediario2;
 	}
-//	public static calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d)
-//	{
-//		
-//	}
+	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle)
+	{
+		double r = center.distance(Pi);
+		double distance = Pi.distance(Pf);
+		double alpha = 2*(Math.asin(distance/(2*r)));
+		if(arcAngle < 0) 
+		{
+			alpha = -alpha;
+		}
+		return alpha;
+	}
 	public static ArrayList<ArrayList<LimitedElement>> validar3Path(ArrayList<LimitedElement> elementsIntermediario2)
 	{
 		/*

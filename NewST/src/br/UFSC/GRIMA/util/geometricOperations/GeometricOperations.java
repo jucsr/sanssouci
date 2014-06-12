@@ -1092,333 +1092,89 @@ public class GeometricOperations
 ////		return s;	
 //	}
 	
-//	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
-//	{
-//		//vetor de saida
-//		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
-//		//Array de elementos intermediarios
-//		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
-//		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
-////		elementsValidated.add(new ArrayList<LimitedElement>());
-////		showElements(elements);
-//		System.out.println("Elementos: " + elements.size());
-//		
-//		/*
-//		 * 	Validaï¿½ï¿½o 1: Quebra dos Elementos na intersecao
-//		 */
-//		for (int i=0; i < elements.size(); i++)
-//		{
-//			ArrayList<Point3d> intersection = null;
-//			boolean thereIsIntersection = false;
-//			LimitedElement ei = elements.get(i);
-//			int numeroDeIntersecao = 0;
-//			for (int j = 0; j < elements.size(); j++)
-//			{
-//				LimitedElement ej = elements.get(j);
-//				intersection = null;
-//				if(!ei.equals(ej))
-//				{
-//					intersection = intersectionElements(ei, ej);
-//					if (intersection != null)
-//					{
-//						int intSize = intersection.size();
-////						System.out.println("intersection: " + intersection);
-//						for(int k = 0;k < intSize;k++)
-//						{
-//							if(!(alreadyUsed(intersection.get(k),intersecoes)))
-//							{
-//								intersecoes.add(intersection.get(k));
-//							}
-//						}
-//						thereIsIntersection = true;
-//						if(numeroDeIntersecao == 0)
-//						{
-//							//adiciona os pontos de intersecao ao vetor de intersecoes
-//							if (ei.isLimitedLine())
-//							{
-//								LimitedLine linei = (LimitedLine)ei;
-//								if(intSize == 1)
-//								{
-//									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection.get(0));
-//									LimitedLine lineAfterIntersection = new LimitedLine(intersection.get(0), linei.getFinalPoint());
-//									elementsIntermediario.add(lineBeforeIntersection);
-//									elementsIntermediario.add(lineAfterIntersection);
-//								}
-//								else if(intSize == 2)
-//								{
-//									ArrayList<Point3d> intersectionTemp = intersection;
-//									if(distance(linei.getInitialPoint(), intersection.get(0)) > distance(linei.getInitialPoint(), intersection.get(1)))
-//									{
-//										intersectionTemp.set(0, intersection.get(1));
-//										intersectionTemp.set(1, intersection.get(0));
-//									}
-//									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersectionTemp.get(0));
-//									LimitedLine lineBetweenIntersection = new LimitedLine(intersectionTemp.get(0),intersectionTemp.get(1));
-//									LimitedLine lineAfterIntersection = new LimitedLine(intersectionTemp.get(0), linei.getFinalPoint());
-//									elementsIntermediario.add(lineBeforeIntersection);
-//									elementsIntermediario.add(lineBetweenIntersection);
-//									elementsIntermediario.add(lineAfterIntersection);
-//								}
-//							}
-//							else if(ei.isLimitedArc())
-//							{
-//								LimitedArc arci = (LimitedArc)ei;
-//								if(intSize == 1)
-//								{
-//									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
-//									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
-//									elementsIntermediario.add(arcBeforeIntersection);
-//									elementsIntermediario.add(arcAfterIntersection);
-//								}
-//								else if(intSize == 2)
-//								{
-//									ArrayList<Point3d> intersectionTemp = intersection;
-//									if(distance(arci.getInitialPoint(), intersection.get(0)) > distance(arci.getInitialPoint(), intersection.get(1)))
-//									{
-//										intersectionTemp.set(0, intersection.get(1));
-//										intersectionTemp.set(1, intersection.get(0));
-//									}
-//									LimitedArc arcBeforeIntersection = new LimitedArc(arci.getInitialPoint(), intersection.get(0), arci.getCenter());
-//									LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0),intersectionTemp.get(1),arci.getCenter());
-//									LimitedArc arcAfterIntersection = new LimitedArc(intersection.get(0), arci.getFinalPoint(), arci.getCenter());
-//									elementsIntermediario.add(arcBeforeIntersection);
-//									elementsIntermediario.add(arcBetweenIntersection);
-//									elementsIntermediario.add(arcAfterIntersection);
-//								}
-//							}
-//							numeroDeIntersecao++;
-//						}
-//						else
-//						{
-//							int indice2 = elementsIntermediario.size() - 2;
-//							int indice3 = elementsIntermediario.size() - 1;
-//							if((elementsIntermediario.get(indice3).isLimitedLine()))
-//							{
-//								LimitedLine aux2 = (LimitedLine)elementsIntermediario.get(indice2);
-//								ArrayList<Point3d> intAux2 = intersectionElements(aux2, ej);
-//								LimitedLine aux3 = (LimitedLine)elementsIntermediario.get(indice3);
-//								ArrayList<Point3d> intAux3 = intersectionElements(aux3, ej);
-//								if(intSize == 2)
-//								{
-//									int indice1 = elementsIntermediario.size() - 3;
-//									LimitedLine aux1 = (LimitedLine)elementsIntermediario.get(indice1);
-//									ArrayList<Point3d> intAux1 = intersectionElements(aux1, ej);
-//									if(intAux1 != null)
-//									{
-//										if(intSize == 1)
-//										{
-//											LimitedLine lineBeforeIntersection = new LimitedLine(aux1.getInitialPoint(), intAux1.get(0));
-//											LimitedLine lineAfterIntersection = new LimitedLine(intAux1.get(0), aux1.getFinalPoint());
-//											elementsIntermediario.add(lineBeforeIntersection);
-//											elementsIntermediario.add(lineAfterIntersection);
-//											elementsIntermediario.remove(indice1);
-//										}
-//										else if(intSize == 2)
-//										{
-//											ArrayList<Point3d> intersectionTemp = intAux1;
-//											if(distance(aux2.getInitialPoint(), intAux1.get(0)) > distance(aux2.getInitialPoint(), intAux1.get(1)))
-//											{
-//												intersectionTemp.set(0, intAux1.get(1));
-//												intersectionTemp.set(1, intAux1.get(0));
-//											}
-//											LimitedLine lineBeforeIntersection = new LimitedLine(aux2.getInitialPoint(), intersectionTemp.get(0));
-//											LimitedLine lineBetweenIntersection = new LimitedLine(intersectionTemp.get(0), intersectionTemp.get(1));
-//											LimitedLine lineAfterIntersection = new LimitedLine(intersectionTemp.get(1), aux2.getFinalPoint());
-//											elementsIntermediario.add(lineBeforeIntersection);
-//											elementsIntermediario.add(lineBetweenIntersection);
-//											elementsIntermediario.add(lineAfterIntersection);
-//											elementsIntermediario.remove(indice1);
-//										}
-//									}
-//								}
-//								if(intAux2 != null)
-//								{
-//									//intersection = intersectionElements(aux2,ej);
-//									if(intSize == 1)
-//									{
-//										LimitedLine lineBeforeIntersection = new LimitedLine(aux2.getInitialPoint(), intAux2.get(0));
-//										LimitedLine lineAfterIntersection = new LimitedLine(intAux2.get(0), aux2.getFinalPoint());
-//										elementsIntermediario.add(lineBeforeIntersection);
-//										elementsIntermediario.add(lineAfterIntersection);
-//										elementsIntermediario.remove(indice2);
-//									}
-//									else if(intSize == 2)
-//									{
-//										ArrayList<Point3d> intersectionTemp = intAux2;
-//										if(distance(aux2.getInitialPoint(), intAux2.get(0)) > distance(aux2.getInitialPoint(), intAux2.get(1)))
-//										{
-//											intersectionTemp.set(0, intAux2.get(1));
-//											intersectionTemp.set(1, intAux2.get(0));
-//										}
-//										LimitedLine lineBeforeIntersection = new LimitedLine(aux2.getInitialPoint(), intersectionTemp.get(0));
-//										LimitedLine arcBetweenIntersection = new LimitedLine(intersectionTemp.get(0), intersectionTemp.get(1));
-//										LimitedLine lineAfterIntersection = new LimitedLine(intersectionTemp.get(1), aux2.getFinalPoint());
-//										elementsIntermediario.add(lineBeforeIntersection);
-//										elementsIntermediario.add(arcBetweenIntersection);
-//										elementsIntermediario.add(lineAfterIntersection);
-//										elementsIntermediario.remove(indice2);
-//									}
-//								}
-//								if (intAux3 != null)
-//								{
-//									if(intSize == 1)
-//									{
-//										//intersection = intersectionElements(aux3,ej);
-//										LimitedLine lineBeforeIntersection = new LimitedLine(aux3.getInitialPoint(), intAux3.get(0));
-//										LimitedLine lineAfterIntersection = new LimitedLine(intAux3.get(0), aux3.getFinalPoint());
-//										elementsIntermediario.add(lineBeforeIntersection);
-//										elementsIntermediario.add(lineAfterIntersection);
-//										elementsIntermediario.remove(indice3);
-//									}
-//									else if(intSize == 2)
-//									{
-//										ArrayList<Point3d> intersectionTemp = intAux3;
-//										if(distance(aux3.getInitialPoint(), intAux3.get(0)) > distance(aux3.getInitialPoint(), intAux3.get(1)))
-//										{
-//											intersectionTemp.set(0, intAux3.get(1));
-//											intersectionTemp.set(1, intAux3.get(0));
-//										}
-//										LimitedLine lineBeforeIntersection = new LimitedLine(aux3.getInitialPoint(), intersectionTemp.get(0));
-//										LimitedLine arcBetweenIntersection = new LimitedLine(intersectionTemp.get(0), intersectionTemp.get(1));
-//										LimitedLine lineAfterIntersection = new LimitedLine(intersectionTemp.get(1), aux3.getFinalPoint());
-//										elementsIntermediario.add(lineBeforeIntersection);
-//										elementsIntermediario.add(arcBetweenIntersection);
-//										elementsIntermediario.add(lineAfterIntersection);
-//										elementsIntermediario.remove(indice3);
-//									}
-//								}
-//							}
-//							else if ((elementsIntermediario.get(indice3).isLimitedArc()))
-//							{
-//								LimitedArc aux2 = (LimitedArc) elementsIntermediario.get(indice2);
-//								ArrayList<Point3d> intAux2 = intersectionElements(aux2, ej);
-//								LimitedArc aux3 = (LimitedArc) elementsIntermediario.get(indice3);
-//								ArrayList<Point3d> intAux3 = intersectionElements(aux3, ej);
-//								Point3d centerEi = ((LimitedArc)ei).getCenter();
-//								if(intSize == 2)
-//								{
-//									int indice1 = elementsIntermediario.size() - 3;
-//									LimitedArc aux1 = (LimitedArc)elementsIntermediario.get(indice1);
-//									ArrayList<Point3d> intAux1 = intersectionElements(aux1, ej);
-//									if(intAux1 != null)
-//									{
-//										if(intSize == 1)
-//										{
-//											LimitedArc arcBeforeIntersection = new LimitedArc(aux1.getInitialPoint(), intAux1.get(0),centerEi);
-//											LimitedArc arcAfterIntersection = new LimitedArc(intAux1.get(0), aux1.getFinalPoint(),centerEi);
-//											elementsIntermediario.add(arcBeforeIntersection);
-//											elementsIntermediario.add(arcAfterIntersection);
-//											elementsIntermediario.remove(indice1);
-//										}
-//										else if(intSize == 2)
-//										{
-//											ArrayList<Point3d> intersectionTemp = intAux1;
-//											if(distance(aux2.getInitialPoint(), intAux1.get(0)) > distance(aux2.getInitialPoint(), intAux1.get(1)))
-//											{
-//												intersectionTemp.set(0, intAux1.get(1));
-//												intersectionTemp.set(1, intAux1.get(0));
-//											}
-//											LimitedArc arcBeforeIntersection = new LimitedArc(aux1.getInitialPoint(), intersectionTemp.get(0),centerEi);
-//											LimitedArc arcBetweenIntersection = new LimitedArc(intersectionTemp.get(0), intersectionTemp.get(1),centerEi);
-//											LimitedArc arcAfterIntersection = new LimitedArc(intersectionTemp.get(1), aux1.getFinalPoint(),centerEi);
-//											elementsIntermediario.add(arcBeforeIntersection);
-//											elementsIntermediario.add(arcBetweenIntersection);
-//											elementsIntermediario.add(arcAfterIntersection);
-//											elementsIntermediario.remove(indice1);
-//									}
-//								}
-//							}
-//								if (intAux2 != null)
-//								{
-//									//intersection = intersectionElements(aux2,ej);
-//									if(intSize == 1)
-//									{
-//										LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intAux2.get(0), centerEi);
-//										LimitedArc arcAfterIntersection = new LimitedArc(intAux2.get(0), aux2.getFinalPoint(), centerEi);
-//										elementsIntermediario.add(arcBeforeIntersection);
-//										elementsIntermediario.add(arcAfterIntersection);
-//										elementsIntermediario.remove(indice2);
-//									}
-//									else if(intSize == 2)
-//									{
-//										ArrayList<Point3d> intersectionTemp = intAux2;
-//										if(distance(aux2.getInitialPoint(), intAux2.get(0)) > distance(aux2.getInitialPoint(), intAux2.get(1)))
-//										{
-//											intersectionTemp.set(0, intAux2.get(1));
-//											intersectionTemp.set(1, intAux2.get(0));
-//										}
-//										LimitedArc arcBeforeIntersection = new LimitedArc(aux2.getInitialPoint(), intAux2.get(0), centerEi);
-//										LimitedArc arcBetweenIntersection = new LimitedArc(intAux2.get(0), intAux2.get(1), centerEi);
-//										LimitedArc arcAfterIntersection = new LimitedArc(intAux2.get(1), aux2.getFinalPoint(), centerEi);
-//										elementsIntermediario.add(arcBeforeIntersection);
-//										elementsIntermediario.add(arcBetweenIntersection);
-//										elementsIntermediario.add(arcAfterIntersection);
-//										elementsIntermediario.remove(indice2);
-//									}
-//								}
-//								if(intAux3 != null)
-//								{
-//									//intersection = intersectionElements(aux3,ej);
-//									if(intSize == 1)
-//									{
-//										LimitedArc arcBeforeIntersection = new LimitedArc(aux3.getInitialPoint(), intAux3.get(0), centerEi);
-//										LimitedArc arcAfterIntersection = new LimitedArc(intAux3.get(0), aux3.getFinalPoint(), centerEi);
-//										elementsIntermediario.add(arcBeforeIntersection);
-//										elementsIntermediario.add(arcAfterIntersection);
-//										elementsIntermediario.remove(indice3);
-//									}
-//									else if(intSize == 2)
-//									{
-//										ArrayList<Point3d> intersectionTemp = intAux3;
-//										if(distance(aux3.getInitialPoint(), intAux3.get(0)) > distance(aux3.getInitialPoint(), intAux3.get(1)))
-//										{
-//											intersectionTemp.set(0, intAux3.get(1));
-//											intersectionTemp.set(1, intAux3.get(0));
-//										}
-//										LimitedArc arcBeforeIntersection = new LimitedArc(aux3.getInitialPoint(), intAux3.get(0), centerEi);
-//										LimitedArc arcBetweenIntersection = new LimitedArc(intAux3.get(0), intAux3.get(1), centerEi);
-//										LimitedArc arcAfterIntersection = new LimitedArc(intAux3.get(1), aux3.getFinalPoint(), centerEi);
-//										elementsIntermediario.add(arcBeforeIntersection);
-//										elementsIntermediario.add(arcBetweenIntersection);
-//										elementsIntermediario.add(arcAfterIntersection);
-//										elementsIntermediario.remove(indice3);
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//		if(thereIsIntersection == false)
-//		{
-//			elementsIntermediario.add(ei);
-//		}
-//	}
-//		//showElements(elementsIntermediario);
-//		//elementsValidated.add(elementsIntermediario);
-//		
-////		System.out.println("Intersecoes: " + intersecoes.size());
-//
-//		/*
-//		 * 	Validaï¿½ï¿½o 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
-//		 */
-//		System.out.println("Elementos intermediarios: " + elementsIntermediario.size());
-//		for(int i = 0; i< elementsIntermediario.size();i++)
-//		{
-//			LimitedElement ei0 = elementsIntermediario.get(i);
-//			//System.out.println("Menor distancia elemento " + i + ": " +  minimumDistance(formaOriginal, ei0));
-//			if(minimumDistance(formaOriginal, ei0) >= distance)
-//			{
-//				elementsIntermediario2.add(ei0);
-//			}
-//		}
-//		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
-//
-//		showElements(elementsIntermediario2);
-//		
-//		elementsValidated.add(elementsIntermediario2);
-//		return elementsValidated;
-//	}
+	
+	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle)
+	{
+		double r = center.distance(Pi);
+		double distance = Pi.distance(Pf);
+		double alpha = 2*(Math.asin(distance/(2*r)));
+		if(arcAngle < 0) 
+		{
+			alpha = -alpha;
+		}
+		return alpha;
+	}
+	
+	public static ArrayList<LimitedArc> quebraArco(LimitedArc arc, ArrayList<Point3d> intersecoes)
+	{
+		double intSize = intersecoes.size();
+		Point3d arcI = arc.getInitialPoint();
+		Point3d arcF = arc.getFinalPoint();
+		Point3d arcCenter = arc.getCenter();
+		double oldDeltaAngle = arc.getDeltaAngle();
+		ArrayList<LimitedArc> arcTemp = new ArrayList<LimitedArc>(); 
+		Point3d intTemp;
+		for(int h = 0;h < intSize;h++)
+		{
+			intTemp = intersecoes.get(h);
+			if(arcTemp.size() == 0)
+			{
+				LimitedArc segTemp = new LimitedArc(arcCenter, arcI, calcDeltaAngle(arcI,intTemp,arcCenter,oldDeltaAngle));
+				arcTemp.add(segTemp);
+				segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
+				arcTemp.add(segTemp);
+			}
+			else
+			{
+				for(int s = 0;s < arcTemp.size();s++)
+				{
+					Point3d arcTempI = arcTemp.get(s).getInitialPoint();
+					LimitedArc aTmp = arcTemp.get(s);
+					if(belongsArc(aTmp,intTemp))
+					{
+						LimitedArc segTemp = new LimitedArc(arcCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle));
+						arcTemp.add(segTemp);
+						arcTemp.remove(aTmp);
+					}
+				}
+			}
+		}
+		return arcTemp;
+	}
+	public static ArrayList<LimitedLine> quebraLinha(LimitedLine line, ArrayList<Point3d> intersecoes)
+	{
+		double intSize = intersecoes.size(); 
+		Point3d lineI = line.getInitialPoint();
+		Point3d lineF = line.getFinalPoint();
+		ArrayList<LimitedLine> lineTemp = new ArrayList<LimitedLine>(); 
+		Point3d intTemp;
+		for(int h = 0;h < intSize;h++)
+		{
+			intTemp = intersecoes.get(h);
+			if(lineTemp.size() == 0)
+			{
+				LimitedLine segTemp = new LimitedLine(lineI, intTemp);
+				lineTemp.add(segTemp);
+				segTemp = new LimitedLine(intTemp, lineF);
+				lineTemp.add(segTemp);
+			}
+			else
+			{
+				for(int s = 0;s < lineTemp.size();s++)
+				{
+					Point3d lineTempI = lineTemp.get(s).getInitialPoint();
+					LimitedLine lTmp = lineTemp.get(s);
+					if(belongs(lTmp,intTemp))
+					{
+						LimitedLine segTemp = new LimitedLine(lineTempI, intTemp);
+						lineTemp.add(segTemp);
+						lineTemp.remove(lTmp);
+					}
+				}
+			}
+		}
+		return lineTemp;
+	}
 	
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
@@ -1457,6 +1213,11 @@ public class GeometricOperations
 					if (intersection != null)
 					{
 						int intSize = intersection.size();
+						boolean intSize2 = false;
+						if(intSize == 2)
+						{
+							intSize2 = true;
+						}
 	//					System.out.println("intersection: " + intersection);
 						for(int k = 0;k < intSize;k++)
 						{
@@ -1474,66 +1235,40 @@ public class GeometricOperations
 							//adiciona os pontos de intersecao ao vetor de intersecoes
 							if (ei.isLimitedLine())
 							{
+								
 								LimitedLine linei = (LimitedLine)ei;
-								if(intSize == 1)
+								ArrayList<LimitedLine> lineTemp = quebraLinha(linei,intersection); 
+								for(int k = 0;k < lineTemp.size();k++)
 								{
-									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection.get(0));
-									LimitedLine lineAfterIntersection = new LimitedLine(intersection.get(0), linei.getFinalPoint());
-									elementsIntermediario.add(lineBeforeIntersection);
-									elementsIntermediario.add(lineAfterIntersection);
+									elementsIntermediario.add(lineTemp.get(k));
 								}
-								else if(intSize == 2)
-								{
-									ArrayList<Point3d> intersectionTemp = intersection;
-									if(distance(linei.getInitialPoint(), intersection.get(0)) > distance(linei.getInitialPoint(), intersection.get(1)))
-									{
-										intersectionTemp.set(0, intersection.get(1));
-										intersectionTemp.set(1, intersection.get(0));
-									}
-									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersectionTemp.get(0));
-									LimitedLine lineBetweenIntersection = new LimitedLine(intersectionTemp.get(0),intersectionTemp.get(1));
-									LimitedLine lineAfterIntersection = new LimitedLine(intersectionTemp.get(0), linei.getFinalPoint());
-									elementsIntermediario.add(lineBeforeIntersection);
-									elementsIntermediario.add(lineBetweenIntersection);
-									elementsIntermediario.add(lineAfterIntersection);
-								}
+//								if(intSize == 1)
+//								{
+//									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersection.get(0));
+//									LimitedLine lineAfterIntersection = new LimitedLine(intersection.get(0), linei.getFinalPoint());
+//									elementsIntermediario.add(lineBeforeIntersection);
+//									elementsIntermediario.add(lineAfterIntersection);
+//								}
+//								else if(intSize == 2)
+//								{
+//									ArrayList<Point3d> intersectionTemp = intersection;
+//									if(distance(linei.getInitialPoint(), intersection.get(0)) > distance(linei.getInitialPoint(), intersection.get(1)))
+//									{
+//										intersectionTemp.set(0, intersection.get(1));
+//										intersectionTemp.set(1, intersection.get(0));
+//									}
+//									LimitedLine lineBeforeIntersection = new LimitedLine(linei.getInitialPoint(), intersectionTemp.get(0));
+//									LimitedLine lineBetweenIntersection = new LimitedLine(intersectionTemp.get(0),intersectionTemp.get(1));
+//									LimitedLine lineAfterIntersection = new LimitedLine(intersectionTemp.get(0), linei.getFinalPoint());
+//									elementsIntermediario.add(lineBeforeIntersection);
+//									elementsIntermediario.add(lineBetweenIntersection);
+//									elementsIntermediario.add(lineAfterIntersection);
+//								}
 							}
 							else if(ei.isLimitedArc())
 							{
-								//Criar um metodo!!
 								LimitedArc arci = (LimitedArc)ei;
-								Point3d arciI = arci.getInitialPoint();
-								Point3d arciF = arci.getFinalPoint();
-								Point3d arciCenter = arci.getCenter();
-								double iDeltaAngle = arci.getDeltaAngle();
-								ArrayList<LimitedArc> arcTemp = new ArrayList<LimitedArc>(); 
-								Point3d intTemp;
-								for(int h = 0;h < intSize;h++)
-								{
-									intTemp = intersection.get(h);
-									if(arcTemp.size() == 0)
-									{
-										LimitedArc segTemp = new LimitedArc(arciCenter, arciI, calcDeltaAngle(arciI,intTemp,arciCenter,iDeltaAngle));
-										arcTemp.add(segTemp);
-										segTemp = new LimitedArc(arciCenter, intTemp, calcDeltaAngle(intTemp,arciF,arciCenter,iDeltaAngle));
-										arcTemp.add(segTemp);
-									}
-									else
-									{
-										for(int s = 0;s < arcTemp.size();s++)
-										{
-											Point3d arcTempI = arcTemp.get(s).getInitialPoint();
-//											double tempDeltaAngle = arcTemp.get(s).getDeltaAngle();
-											LimitedArc aTmp = arcTemp.get(s);
-											if(belongsArc(aTmp,intTemp))
-											{
-												LimitedArc segTemp = new LimitedArc(arciCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arciCenter,iDeltaAngle));
-												arcTemp.add(segTemp);
-												arcTemp.remove(aTmp);
-											}
-										}
-									}
-								}
+								ArrayList<LimitedArc> arcTemp = quebraArco(arci,intersection); 
 								for(int k = 0;k < arcTemp.size();k++)
 								{
 									elementsIntermediario.add(arcTemp.get(k));
@@ -1576,6 +1311,7 @@ public class GeometricOperations
 							System.out.println("PIei: " + ei.getInitialPoint());
 //							System.out.println("PIej: " + ej.getInitialPoint());
 //							System.out.println("intersections: " + intersecoes);
+//							int indice1;
 							int indice2 = elementsIntermediario.size() - 2;
 							int indice3 = elementsIntermediario.size() - 1;
 							if((elementsIntermediario.get(indice3).isLimitedLine()))
@@ -1584,6 +1320,58 @@ public class GeometricOperations
 								ArrayList<Point3d> intAux2 = intersectionElements(aux2, ej);
 								LimitedLine aux3 = (LimitedLine)elementsIntermediario.get(indice3);
 								ArrayList<Point3d> intAux3 = intersectionElements(aux3, ej);
+//								ArrayList<LimitedLine> auxTemp = new ArrayList<LimitedLine>();
+//								auxTemp.add(aux2);
+//								auxTemp.add(aux3);
+//								if(intSize2)
+//								{
+//									indice1 = elementsIntermediario.size() - 3;
+//									LimitedLine aux1 = (LimitedLine)elementsIntermediario.get(indice1);
+//									auxTemp.add(aux1);
+//								}
+								
+//								for(int k = 0;k < lineTemp.size();k++)
+//								{
+//									elementsIntermediario.add(lineTemp.get(k));
+//								}
+								
+//								for(int k = 0;k < auxTemp.size();k++)
+//								{
+//									LimitedLine aTmp = auxTemp.get(k);
+//									boolean belongs1 = belongs(aTmp,intersection.get(0));
+//									if(intSize2)
+//									{
+//										boolean belongs2 = belongs(aTmp,intersection.get(1));
+//										if(belongs1 && belongs2)
+//										{
+//											ArrayList<LimitedLine> lineTemp = quebraLinha(aTmp,intersection);
+//										}
+//										else if(belongs1)
+//										{
+//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
+//											intTemp.add(intersection.get(0));
+//											ArrayList<LimitedLine> lineTemp = quebraLinha(aTmp,intTemp);
+//										}
+//										else if(belongs2)
+//										{
+//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
+//											intTemp.add(intersection.get(1));
+//											ArrayList<LimitedLine> lineTemp = quebraLinha(aTmp,intTemp);
+//										}
+//									}
+//									else
+//									{
+//										if(belongs1)
+//										{
+//											ArrayList<LimitedLine> lineTemp = quebraLinha(aTmp,intersection);
+//										}
+//									}
+//								}
+								
+//								for(int k = 0;k < lineTemp.size();k++)
+//								{
+//									elementsIntermediario.add(lineTemp.get(k));
+//								}
 								if(intSize == 2)
 								{
 									int indice1 = elementsIntermediario.size() - 3;
@@ -1826,17 +1614,6 @@ public class GeometricOperations
 		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
 	
 		return elementsIntermediario2;
-	}
-	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle)
-	{
-		double r = center.distance(Pi);
-		double distance = Pi.distance(Pf);
-		double alpha = 2*(Math.asin(distance/(2*r)));
-		if(arcAngle < 0) 
-		{
-			alpha = -alpha;
-		}
-		return alpha;
 	}
 	public static ArrayList<ArrayList<LimitedElement>> validar3Path(ArrayList<LimitedElement> elementsIntermediario2)
 	{

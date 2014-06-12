@@ -286,6 +286,7 @@ public class GeometricOperationsTest
 		
 		//Tangente
 		LimitedArc arc8 = new LimitedArc(new Point3d(50,50 , 0), new Point3d(50 + (25*Math.cos(Math.PI/4)), 50 - (25*Math.sin(Math.PI/4)), 0), Math.PI/2);
+//		LimitedArc arc10 = new LimitedArc(new Point3d(70,35,0),new Point3d(70,65,0),arc8.getCenter());
 		LimitedArc arc9 = new LimitedArc(new Point3d(90, 50, 0), new Point3d(90 - (25*Math.cos(Math.PI/4)), 50 + (25*Math.sin(Math.PI/4)), 0),Math.PI/2);
 		LimitedLine line12 = new LimitedLine(new Point3d(70, 20, 0), new Point3d(70, 80, 0));	
 		
@@ -295,6 +296,7 @@ public class GeometricOperationsTest
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		all.add(arc8);
 		all.add(arc9);
+//		all.add(arc10);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
@@ -445,7 +447,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 //		bugado no offset 82 (falta de elementos)
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 82).get(0);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 94).get(0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)
@@ -491,6 +493,15 @@ public class GeometricOperationsTest
 		desenhador.setVisible(true);
 		for(;;);
 
+	}
+	@Test
+	public void calcDeltaAngleTest()
+	{
+		LimitedArc arc8 = new LimitedArc(new Point3d(50,50 , 0), new Point3d(50 + (25*Math.cos(Math.PI/4)), 50 - (25*Math.sin(Math.PI/4)), 0), Math.PI/2);
+		LimitedArc arc9 = new LimitedArc(new Point3d(70,65,0),new Point3d(70,35,0),arc8.getCenter());
+		System.out.println("DeltaAngle: " + arc9.getDeltaAngle());
+		System.out.println("DeltaAngle1: " + arc8.getDeltaAngle());
+		System.out.println("DeltaAngle2: " + GeometricOperations.calcDeltaAngle(new Point3d(70,35,0),new Point3d(70,65,0), arc8.getCenter(), arc8.getDeltaAngle()));
 	}
 	
 	@Test

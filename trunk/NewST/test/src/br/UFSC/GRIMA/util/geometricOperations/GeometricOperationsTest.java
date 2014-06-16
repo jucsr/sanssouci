@@ -345,18 +345,18 @@ public class GeometricOperationsTest
 		LimitedLine l9= new LimitedLine(new Point3d(471.0759155456892,237.99999999999994,0),new Point3d(32.999999999999986,238.0,0));
 		LimitedLine l10= new LimitedLine(new Point3d(90.0,295.0,0),new Point3d(90.0,184.99999999999997,0));
 		LimitedLine l11= new LimitedLine(new Point3d(33.0,242.0,0),new Point3d(175.0,242.0,0));//		elementos1.add(arco0);
-//		elementos1.add(arco0);
-//		elementos1.add(l1);
-//		elementos1.add(l2);
-//		elementos1.add(l3);
+		elementos1.add(arco0);
+		elementos1.add(l1);
+		elementos1.add(l2);
+		elementos1.add(l3);
 	    elementos1.add(arco4);
 	    elementos1.add(l5);
-//	    elementos1.add(l6);
-//	    elementos1.add(l7);
+	    elementos1.add(l6);
+	    elementos1.add(l7);
 	    elementos1.add(arco8);
 	    elementos1.add(l9);
-//	    elementos1.add(l10);
-//	    elementos1.add(l11);
+	    elementos1.add(l10);
+	    elementos1.add(l11);
 //	    elementos1.add(l12);
 //	    elementos1.add(l13);
 //	    elementos1.add(l14);
@@ -418,9 +418,12 @@ public class GeometricOperationsTest
 //	    LimitedLine l5= new LimitedLine(new Point3d(505.0,250.0,0),new Point3d(675.0,250.0,0));
 //	    LimitedArc arco4= new LimitedArc(new Point3d(390.0,135.0,0),new Point3d(505.0,250.0,0),new Point3d(505.0,135.0,0));
 //	    LimitedArc arco8= new LimitedArc(new Point3d(543.8982614252745,255.99491059161818,0),new Point3d(471.0759155456893,229.99999999999997,0),new Point3d(471.07591554568916,345.0,0));
-//		elementos1.add(arco4);
-//		elementos1.add(arco8);
-//		elementos1.add(l9);
+	    LimitedArc arc8 = new LimitedArc(new Point3d(50,50 , 0), new Point3d(50 + (25*Math.cos(Math.PI/4)), 50 - (25*Math.sin(Math.PI/4)), 0), Math.PI/2);
+	    LimitedArc arc9 = new LimitedArc(new Point3d(90, 50, 0), new Point3d(90 - (25*Math.cos(Math.PI/4)), 50 + (25*Math.sin(Math.PI/4)), 0),Math.PI/2);
+	    LimitedLine line1 = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
+//		elementos1.add(arc8);
+//		elementos1.add(arc9);
+//		elementos1.add(line1);
 //		elementos1.add(l5);
 		//elementos1.add(l1);
 		
@@ -433,10 +436,10 @@ public class GeometricOperationsTest
 		{
 			all.add(tmp);
 		}
-		for(LimitedElement tmp : formaOriginal)
-		{
-			all.add(tmp);
-		}
+//		for(LimitedElement tmp : formaOriginal)
+//		{
+//			all.add(tmp);
+//		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
@@ -446,8 +449,7 @@ public class GeometricOperationsTest
 	public void parallelPath1Test()
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
-//		bugado no offset 82 (falta de elementos)
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 94).get(0);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90).get(0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)
@@ -483,9 +485,10 @@ public class GeometricOperationsTest
 //		LimitedLine l9= new LimitedLine(new Point3d(471.0759155456892,237.99999999999994,0),new Point3d(32.999999999999986,238.0,0));
 		LimitedArc arc8 = new LimitedArc(new Point3d(50,50 , 0), new Point3d(50 + (25*Math.cos(Math.PI/4)), 50 - (25*Math.sin(Math.PI/4)), 0), Math.PI/2);
 		LimitedArc arc9 = new LimitedArc(new Point3d(90, 50, 0), new Point3d(90 - (25*Math.cos(Math.PI/4)), 50 + (25*Math.sin(Math.PI/4)), 0),Math.PI/2);
+		LimitedLine line1 = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
 		elementos1.add(arc8);
 		elementos1.add(arc9);
-//		elementos1.add(l9);
+		elementos1.add(line1);
 //		elementos1.add(l5);
 		
 		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementos1);
@@ -515,7 +518,7 @@ public class GeometricOperationsTest
 	    
 		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(formaOriginal, l12));
 		
-		formaOriginal.add(arco19);
+		formaOriginal.add(l12);
 		
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
 		desenhador.setVisible(true);

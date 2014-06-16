@@ -105,15 +105,15 @@ public class GeometricOperationsTest
 	    
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
-		points.add(new Point2D.Double(8, 160));
-		points.add(new Point2D.Double(8, 320));
-		points.add(new Point2D.Double(480, 320));
-		points.add(new Point2D.Double(700, 500));
-		points.add(new Point2D.Double(700, 160));
-		points.add(new Point2D.Double(480, 160));
-		points.add(new Point2D.Double(480, 40));
-		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200,160));
+//		points.add(new Point2D.Double(8, 160));
+//		points.add(new Point2D.Double(8, 320));
+//		points.add(new Point2D.Double(480, 320));
+//		points.add(new Point2D.Double(700, 500));
+//		points.add(new Point2D.Double(700, 160));
+//		points.add(new Point2D.Double(480, 160));
+//		points.add(new Point2D.Double(480, 40));
+//		points.add(new Point2D.Double(200, 40));
+//		points.add(new Point2D.Double(200,160));
 		//Forma 2
 //	    points.add(new Point2D.Double(700, 320));
 //		points.add(new Point2D.Double(700, 160));
@@ -121,8 +121,21 @@ public class GeometricOperationsTest
 //		points.add(new Point2D.Double(480, 40));
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200, 320));
+		//Forma 4
+		points.add(new Point2D.Double(10, 10));
+		points.add(new Point2D.Double(200, 10));
+		points.add(new Point2D.Double(200, 100));
+		points.add(new Point2D.Double(350, 100));
+		points.add(new Point2D.Double(350, 10));
+		points.add(new Point2D.Double(500, 10));
+		points.add(new Point2D.Double(500, 100));
+		points.add(new Point2D.Double(400, 100));
+		points.add(new Point2D.Double(400, 200));
+		points.add(new Point2D.Double(180,200));
+		points.add(new Point2D.Double(180, 100));
+		points.add(new Point2D.Double(10, 100));
 		
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 30);
 		formaOriginal = addPocketVertex.getElements();
 
 	}
@@ -333,42 +346,54 @@ public class GeometricOperationsTest
 		 * Teste 3
 		 */
 		//Forma 2
-		LimitedArc arco0= new LimitedArc(new Point3d(175.0,242.0,0),new Point3d(282.0,135.0,0),new Point3d(175.0,135.0,0));
-		LimitedLine l1= new LimitedLine(new Point3d(282.0,134.99999999999997,0),new Point3d(282.0,64.99999999999999,0));
-		LimitedLine l2= new LimitedLine(new Point3d(225.0,122.0,0),new Point3d(455.0,122.0,0));
-		LimitedLine l3= new LimitedLine(new Point3d(398.0,65.00000000000001,0),new Point3d(398.0,135.0,0));
-		LimitedArc arco4= new LimitedArc(new Point3d(398.0,135.0,0),new Point3d(505.0,242.0,0),new Point3d(505.0,135.0,0));
-		LimitedLine l5= new LimitedLine(new Point3d(505.0,242.0,0),new Point3d(675.0,242.0,0));
-		LimitedLine l6= new LimitedLine(new Point3d(618.0,185.0,0),new Point3d(618.0,447.2439309010185,0));
-		LimitedLine l7= new LimitedLine(new Point3d(711.0945540446639,403.1283648464291,0),new Point3d(538.8323591032163,262.18656898524466,0));
-		LimitedArc arco8= new LimitedArc(new Point3d(538.8323591032164,262.1865689852448,0),new Point3d(471.0759155456893,238.0,0),new Point3d(471.07591554568916,345.0,0));
-		LimitedLine l9= new LimitedLine(new Point3d(471.0759155456892,237.99999999999994,0),new Point3d(32.999999999999986,238.0,0));
-		LimitedLine l10= new LimitedLine(new Point3d(90.0,295.0,0),new Point3d(90.0,184.99999999999997,0));
-		LimitedLine l11= new LimitedLine(new Point3d(33.0,242.0,0),new Point3d(175.0,242.0,0));//		elementos1.add(arco0);
+		LimitedArc arco0= new LimitedArc(new Point3d(30.0,34.0,0),new Point3d(34.0,30.0,0),new Point3d(34.0,34.0,0));
+		LimitedLine l1= new LimitedLine(new Point3d(33.99999999999999,30.0,0),new Point3d(176.0,30.0,0));
+		LimitedArc arco2= new LimitedArc(new Point3d(176.0,30.0,0),new Point3d(180.0,34.0,0),new Point3d(176.0,34.0,0));
+		LimitedLine l3= new LimitedLine(new Point3d(180.0,33.99999999999999,0),new Point3d(180.0,76.0,0));
+		LimitedArc arco4= new LimitedArc(new Point3d(180.0,76.0,0),new Point3d(224.0,120.0,0),new Point3d(224.0,76.0,0));
+		LimitedLine l5= new LimitedLine(new Point3d(224.0,120.0,0),new Point3d(326.0,120.0,0));
+		LimitedArc arco6= new LimitedArc(new Point3d(326.0,120.0,0),new Point3d(370.0,76.0,0),new Point3d(326.0,76.0,0));
+		LimitedLine l7= new LimitedLine(new Point3d(370.0,76.0,0),new Point3d(370.0,33.99999999999999,0));
+		LimitedArc arco8= new LimitedArc(new Point3d(370.0,34.0,0),new Point3d(374.0,30.0,0),new Point3d(374.0,34.0,0));
+		LimitedLine l9= new LimitedLine(new Point3d(374.0,30.0,0),new Point3d(476.0,30.0,0));
+		LimitedArc arco10= new LimitedArc(new Point3d(476.0,30.0,0),new Point3d(480.0,34.0,0),new Point3d(476.0,34.0,0));
+		LimitedLine l11= new LimitedLine(new Point3d(480.0,33.99999999999999,0),new Point3d(480.0,76.0,0));
+		LimitedArc arco12= new LimitedArc(new Point3d(480.0,76.0,0),new Point3d(476.0,80.0,0),new Point3d(476.0,76.0,0));
+		LimitedLine l13= new LimitedLine(new Point3d(476.0,80.0,0),new Point3d(424.0,80.0,0));
+		LimitedArc arco14= new LimitedArc(new Point3d(424.0,80.0,0),new Point3d(380.0,124.0,0),new Point3d(424.0,124.0,0));
+		LimitedLine l15= new LimitedLine(new Point3d(380.0,124.0,0),new Point3d(380.0,176.0,0));
+		LimitedArc arco16= new LimitedArc(new Point3d(380.0,176.0,0),new Point3d(376.0,180.0,0),new Point3d(376.0,176.0,0));
+		LimitedLine l17= new LimitedLine(new Point3d(376.0,180.0,0),new Point3d(204.0,180.0,0));
+		LimitedArc arco18= new LimitedArc(new Point3d(204.0,180.0,0),new Point3d(200.0,176.0,0),new Point3d(204.0,176.0,0));
+		LimitedLine l19= new LimitedLine(new Point3d(200.0,176.0,0),new Point3d(200.0,124.0,0));
+		LimitedArc arco20= new LimitedArc(new Point3d(200.0,124.0,0),new Point3d(156.0,80.0,0),new Point3d(156.0,124.0,0));
+		LimitedLine l21= new LimitedLine(new Point3d(156.0,80.0,0),new Point3d(33.99999999999999,80.0,0));
+		LimitedArc arco22= new LimitedArc(new Point3d(34.0,80.0,0),new Point3d(30.0,76.0,0),new Point3d(34.0,76.0,0));
+		LimitedLine l23= new LimitedLine(new Point3d(30.0,76.0,0),new Point3d(30.0,33.99999999999999,0));
 		elementos1.add(arco0);
 		elementos1.add(l1);
-		elementos1.add(l2);
+		elementos1.add(arco2);
 		elementos1.add(l3);
 	    elementos1.add(arco4);
 	    elementos1.add(l5);
-	    elementos1.add(l6);
+	    elementos1.add(arco6);
 	    elementos1.add(l7);
 	    elementos1.add(arco8);
 	    elementos1.add(l9);
-	    elementos1.add(l10);
+	    elementos1.add(arco10);
 	    elementos1.add(l11);
-//	    elementos1.add(l12);
-//	    elementos1.add(l13);
-//	    elementos1.add(l14);
-//	    elementos1.add(l15);
-//	    elementos1.add(l16);
-//	    elementos1.add(l17);
-//	    elementos1.add(l18);
-//	    elementos1.add(l19);
-//	    elementos1.add(l20);
-//	    elementos1.add(l21);
-//	    elementos1.add(l22);
-//	    elementos1.add(l23);
+	    elementos1.add(arco12);
+	    elementos1.add(l13);
+	    elementos1.add(arco14);
+	    elementos1.add(l15);
+	    elementos1.add(arco16);
+	    elementos1.add(l17);
+	    elementos1.add(arco18);
+	    elementos1.add(l19);
+	    elementos1.add(arco20);
+	    elementos1.add(l21);
+	    elementos1.add(arco22);
+	    elementos1.add(l23);
 //	    elementos1.add(l24);
 //	    elementos1.add(l25);
 //	    elementos1.add(l26);
@@ -449,7 +474,7 @@ public class GeometricOperationsTest
 	public void parallelPath1Test()
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90).get(0);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 100).get(0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)

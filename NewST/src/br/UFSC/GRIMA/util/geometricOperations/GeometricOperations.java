@@ -553,7 +553,8 @@ public class GeometricOperations
 	 * @return -- o array de elementos do path de acabamento
 	 */
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
-	{		
+	{
+		
 		ArrayList<LimitedElement> acabamentoElements = parallelPath1(addPocket.getElements(), radius).get(0);
 		
 		return acabamentoElements;
@@ -798,7 +799,7 @@ public class GeometricOperations
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (ArrayList<ArrayList<LimitedElement>> elements, double distance)
 	{
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
+		ArrayList<ArrayList<LimitedElement>> lacoTmp = new ArrayList<ArrayList<LimitedElement>>();
 		for (int i = 0; i < elements.size(); i++)
 		{
 			ArrayList<LimitedElement> a0 = elements.get(i);
@@ -808,7 +809,7 @@ public class GeometricOperations
 				{
 					LimitedLine lineTmp = (LimitedLine)a0.get(j);
 					LimitedLine newLine = absoluteParallel(lineTmp, distance);
-					lacoTmp.add(newLine);
+					lacoTmp.get(i).add(newLine);
 					//System.err.println("linha " + i);
 					
 				} 
@@ -818,7 +819,7 @@ public class GeometricOperations
 					LimitedArc newArc = parallelArc(arcTmp, distance);
 					if(newArc != null)
 					{
-						lacoTmp.add(newArc);
+						lacoTmp.get(i).add(newArc);
 					}
 //				System.out.println("Center: " + newArc.getCenter());
 					//System.err.println("arco " + i);
@@ -1181,17 +1182,24 @@ public class GeometricOperations
 		return lineTemp;
 	}
 	
-	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<ArrayList<LimitedElement>> elements, ArrayList<LimitedElement> formaOriginal, double distance)
+	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<ArrayList<LimitedElement>> elements, ArrayList<ArrayList<LimitedElement>> formaOriginal, double distance)
 	{
 //		showElements(elements);
-		ArrayList<ArrayList<LimitedElement>> elementsValidated = null;
+		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		for(int i = 0;i < elements.size();i++)
 		{
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements.get(i));
 //		showElements(elementsIntermediario);
-			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
+			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal.get(i),distance);
 //		showElements(elementsIntermediario2);
-			elementsValidated = validar3Path(elementsIntermediario2);
+			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
+			for(int j = 0;j < elementsIntermediario3.size();j++)
+			{
+				if(elementsIntermediario3.get(j) != null)
+				{
+					elementsValidated.add(elementsIntermediario3.get(j));					
+				}
+			}
 //		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 //		elementsValidated.add(elementsIntermediario2);
 		}

@@ -83,7 +83,7 @@ public class GeometricOperationsTest
 	
     ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
     
-    ArrayList<LimitedElement> formaOriginal;
+    ArrayList<ArrayList<LimitedElement>> formaOriginal;
     
     
 	
@@ -136,7 +136,10 @@ public class GeometricOperationsTest
 		points.add(new Point2D.Double(10, 100));
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 30);
-		formaOriginal = addPocketVertex.getElements();
+		for(int i = 0; i < addPocketVertex.getElements().size();i++)
+		{
+			formaOriginal.get(0).add(addPocketVertex.getElements().get(i));
+		}
 
 	}
 	@Test
@@ -481,7 +484,7 @@ public class GeometricOperationsTest
 		{
 			all.add(tmp);
 		}
-		for(LimitedElement tmp : formaOriginal)
+		for(LimitedElement tmp : formaOriginal.get(0))
 		{
 			all.add(tmp);
 		}
@@ -492,14 +495,14 @@ public class GeometricOperationsTest
 //	Arco: (175.0, 250.0, 0.0)
 //	Arco: (390.0, 135.0, 0.0)
 //	Arco: (543.8982614252745, 255.99491059161818, 0.0)
-	@Test
-	public void validarPathTest()
-	{
-		ArrayList<LimitedElement> elementosIntermediarios = GeometricOperations.validarPath(elementos,formaOriginal,100).get(0);
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosIntermediarios);
-		desenhador.setVisible(true);
-		for(;;);
-	}
+//	@Test
+//	public void validarPathTest()
+//	{
+//		ArrayList<LimitedElement> elementosIntermediarios = GeometricOperations.validarPath(elementos,formaOriginal,100).get(0);
+//		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosIntermediarios);
+//		desenhador.setVisible(true);
+//		for(;;);
+//	}
 	@Test
 	public void validar1PathTest()
 	{
@@ -541,11 +544,11 @@ public class GeometricOperationsTest
 		LimitedArc arco19= new LimitedArc(new Point3d(543.2650236350173,256.7688678908215,0),new Point3d(532.5576201414465,249.0,0),new Point3d(471.07591554568916,345.0,0));
 	    System.out.println("Delta Angle: " + arco19.getDeltaAngle());
 	    
-		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(formaOriginal, l12));
+		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(formaOriginal.get(0), l12));
 		
-		formaOriginal.add(l12);
+		formaOriginal.get(0).add(l12);
 		
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal.get(0));
 		desenhador.setVisible(true);
 		for(;;);
 	}
@@ -578,8 +581,8 @@ public class GeometricOperationsTest
 	{	
 		//construtor com deltaAngle
 		LimitedArc arc = new LimitedArc(new Point3d(505.0,135.0,0),new Point3d(380.10004003203204,140.0,0), -90);
-		formaOriginal.add(arc);
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
+		formaOriginal.get(0).add(arc);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal.get(0));
 		desenhador.setVisible(true);
 		for(;;);
 	}

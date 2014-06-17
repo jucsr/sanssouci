@@ -554,8 +554,9 @@ public class GeometricOperations
 	 */
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
 	{
-		
-		ArrayList<LimitedElement> acabamentoElements = parallelPath1(addPocket.getElements(), radius).get(0);
+		ArrayList<ArrayList<LimitedElement>> etmp = new ArrayList<ArrayList<LimitedElement>>();
+		etmp.add(addPocket.getElements());
+		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius).get(0);
 		
 		return acabamentoElements;
 	}

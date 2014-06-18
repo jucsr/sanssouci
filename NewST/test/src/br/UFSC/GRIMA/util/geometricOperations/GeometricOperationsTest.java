@@ -83,7 +83,7 @@ public class GeometricOperationsTest
 	
     ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
     
-    ArrayList<ArrayList<LimitedElement>> formaOriginal;
+    ArrayList<ArrayList<LimitedElement>> formaOriginal = new ArrayList<ArrayList<LimitedElement>>();
     
     
 	
@@ -136,10 +136,10 @@ public class GeometricOperationsTest
 		points.add(new Point2D.Double(10, 100));
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 30);
-		for(int i = 0; i < addPocketVertex.getElements().size();i++)
-		{
-			formaOriginal.get(0).add(addPocketVertex.getElements().get(i));
-		}
+//		for(int i = 0; i < addPocketVertex.getElements().size();i++)
+//		{
+		formaOriginal.add(addPocketVertex.getElements());
+//		}
 
 	}
 	@Test
@@ -477,8 +477,19 @@ public class GeometricOperationsTest
 	public void parallelPath1Test()
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 100).get(0);
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 30);
 		
+		if(elementsTmp != null)
+		{
+			for(int i = 0;i < elementsTmp.size();i++)
+			{
+				for(int j = 0;j < elementsTmp.get(i).size();j++)
+				{
+					elements.add(elementsTmp.get(i).get(j));
+				}
+			}
+		}
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : elements)
 		{

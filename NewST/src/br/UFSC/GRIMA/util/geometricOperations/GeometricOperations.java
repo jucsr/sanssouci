@@ -1198,7 +1198,7 @@ public class GeometricOperations
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements.get(i));
 //		showElements(elementsIntermediario);
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal.get(i),distance);
-//		showElements(elementsIntermediario2);
+//			showElements(elementsIntermediario2);
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
 			if(elementsIntermediario3 != null)
 			{
@@ -1210,7 +1210,14 @@ public class GeometricOperations
 //		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 //		elementsValidated.add(elementsIntermediario2);
 		}
-		return elementsValidated;
+		if (elementsValidated.size() != 0)
+		{
+			return elementsValidated;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	public static ArrayList<LimitedElement> validar1Path(ArrayList<LimitedElement> elements)
 	{
@@ -1449,10 +1456,11 @@ public class GeometricOperations
 			Iterator iter = elementsIntermediario2.iterator();
 			while(iter.hasNext())
 			{
+				boolean hasNoFinalPoint = true;
 //			System.out.println("Size:" + elementsIntermediario2.size());
 				ei0 = ei0new;
 				Point3d ei0I = ei0.getInitialPoint();
-//			System.out.println("ei0I: " + ei0I);
+				System.out.println("ei0I: " + ei0I);
 				Point3d ei0F = ei0.getFinalPoint();
 				elementsValidated.get(numeroDeLacos).add(ei0);
 				for(int j = 0; j < elementsIntermediario2.size(); j++)
@@ -1462,7 +1470,6 @@ public class GeometricOperations
 					if(!(alreadyPassed))
 					{
 						initialPoint = ei0I;
-//						System.out.println("InitialPoint: " + initialPoint);
 						alreadyPassed = true;
 					}
 					Point3d ejI = ej.getInitialPoint();
@@ -1472,11 +1479,11 @@ public class GeometricOperations
 						ei0new = elementsIntermediario2.get(j);
 //						System.out.println("ei0I: " + ei0I);
 						elementsIntermediario2.remove(ei0);
+						hasNoFinalPoint = false;
 						break;
 					}
 					else if(isTheSamePoint(ei0F,initialPoint))
 					{
-//						System.out.println("ei0I: " + ei0I);
 						alreadyPassed = false;
 						elementsIntermediario2.remove(ei0);
 						if(iter.hasNext())
@@ -1486,6 +1493,15 @@ public class GeometricOperations
 							elementsValidated.add(new ArrayList<LimitedElement>());
 						}
 						break;
+					}
+					if(hasNoFinalPoint)
+					{
+						elementsIntermediario2.remove(ei0);
+						if(iter.hasNext())
+						{
+							ei0new = elementsIntermediario2.get(0);
+						}
+
 					}
 				}
 //			System.out.println("Numero de lacos: " + numeroDeLacos);
@@ -2059,7 +2075,8 @@ public class GeometricOperations
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 		
 		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
-		while (parallelPath.size() != 0)
+		int aux = 1;
+		while (parallelPath != null)
 		{
 //			System.out.println("*****************************************************");
 //			System.out.println("*****************************************************");
@@ -2071,12 +2088,8 @@ public class GeometricOperations
 //			System.out.println("*****************************************************");
 //			System.out.println("*****************************************************");
 			multipleParallel.add(parallelPath);
-			ArrayList<ArrayList<LimitedElement>> parallelPathTmp = parallelPath1(parallelPath, distance);
-			parallelPath.clear();
-			for(int i = 0;i < parallelPathTmp.size(); i++)
-			{
-				parallelPath.add(parallelPathTmp.get(i));
-			}
+			parallelPath = parallelPath1(parallelPath, distance);
+
 //			for (ArrayList<LimitedElement> path:parallelPath)
 //			{
 //				parallelPath = parallelPath1(path,distance);
@@ -2084,9 +2097,10 @@ public class GeometricOperations
 //			}
 			
 			//showElements(parallelPath);
+			aux++;
 		}		
-
-		
+//		System.out.println("mutilplePath: " + multipleParallel.size());
+//		showElements(multipleParallel.get(0).get(0));
 		return multipleParallel;
 	}
 

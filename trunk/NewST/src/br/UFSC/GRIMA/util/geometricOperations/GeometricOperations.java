@@ -556,6 +556,7 @@ public class GeometricOperations
 	{
 		ArrayList<ArrayList<LimitedElement>> etmp = new ArrayList<ArrayList<LimitedElement>>();
 		etmp.add(addPocket.getElements());
+		System.out.println(etmp.size());
 		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius).get(0);
 		
 		return acabamentoElements;
@@ -800,17 +801,20 @@ public class GeometricOperations
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (ArrayList<ArrayList<LimitedElement>> elements, double distance)
 	{
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<ArrayList<LimitedElement>> lacoTmp = new ArrayList<ArrayList<LimitedElement>>();
+		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
+		System.out.println("Lacos da Forma Atual: " + elements.size());
 		for (int i = 0; i < elements.size(); i++)
 		{
 			ArrayList<LimitedElement> a0 = elements.get(i);
+			ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
+			System.out.println("Elementos do laco " + i + " da Forma Atual: " + a0.size());
 			for(int j = 0;j < a0.size();j++)
 			{
 				if(a0.get(j).isLimitedLine())
 				{
 					LimitedLine lineTmp = (LimitedLine)a0.get(j);
 					LimitedLine newLine = absoluteParallel(lineTmp, distance);
-					lacoTmp.get(i).add(newLine);
+					lacoTmp.add(newLine);
 					//System.err.println("linha " + i);
 					
 				} 
@@ -820,15 +824,16 @@ public class GeometricOperations
 					LimitedArc newArc = parallelArc(arcTmp, distance);
 					if(newArc != null)
 					{
-						lacoTmp.get(i).add(newArc);
+						lacoTmp.add(newArc);
 					}
 //				System.out.println("Center: " + newArc.getCenter());
 					//System.err.println("arco " + i);
 				}
 			}
+			laco.add(lacoTmp);
 		}
 		
-		saida = validarPath(lacoTmp, elements, distance);
+		saida = validarPath(laco, elements, distance);
 		
 //		saida.add(lacoTmp);
 		
@@ -1187,6 +1192,7 @@ public class GeometricOperations
 	{
 //		showElements(elements);
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
+		System.out.println("elements: " + elements.size());
 		for(int i = 0;i < elements.size();i++)
 		{
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements.get(i));
@@ -1194,9 +1200,9 @@ public class GeometricOperations
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal.get(i),distance);
 //		showElements(elementsIntermediario2);
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
-			for(int j = 0;j < elementsIntermediario3.size();j++)
+			if(elementsIntermediario3 != null)
 			{
-				if(elementsIntermediario3.get(j) != null)
+				for(int j = 0;j < elementsIntermediario3.size();j++)
 				{
 					elementsValidated.add(elementsIntermediario3.get(j));					
 				}
@@ -1248,7 +1254,7 @@ public class GeometricOperations
 						thereIsIntersection = true;
 						if(numeroDeIntersecao == 0)
 						{
-							System.out.println("intersecoes: " + intersection);
+//							System.out.println("intersecoes: " + intersection);
 //							System.out.println("PIei: " + ei.getInitialPoint());
 //							System.out.println("PIej: " + ej.getInitialPoint());
 							//adiciona os pontos de intersecao ao vetor de intersecoes
@@ -1276,7 +1282,7 @@ public class GeometricOperations
 						}
 						else
 						{
-							System.out.println("PIei: " + ei.getInitialPoint());
+//							System.out.println("PIei: " + ei.getInitialPoint());
 							int indice2 = elementsIntermediario.size() - 2;
 							int indice3 = elementsIntermediario.size() - 1;
 							if((elementsIntermediario.get(indice3).isLimitedLine()))
@@ -1407,7 +1413,7 @@ public class GeometricOperations
 		 * 	Valida��o 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
 		 */
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
-		System.out.println("Elementos intermediarios: " + elementsIntermediario.size());
+//		System.out.println("Elementos intermediarios: " + elementsIntermediario.size());
 		for(int i = 0; i< elementsIntermediario.size();i++)
 		{
 			LimitedElement ei0 = elementsIntermediario.get(i);
@@ -1417,7 +1423,7 @@ public class GeometricOperations
 				elementsIntermediario2.add(ei0);
 			}
 		}
-		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
+//		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
 	
 		return elementsIntermediario2;
 	}
@@ -1439,7 +1445,7 @@ public class GeometricOperations
 			boolean alreadyPassed = false;
 			LimitedElement ei0 = elementsIntermediario2.get(0);
 			LimitedElement ei0new = elementsIntermediario2.get(0);
-			System.out.println("Size:" + elementsIntermediario2.size());
+//			System.out.println("Size:" + elementsIntermediario2.size());
 			Iterator iter = elementsIntermediario2.iterator();
 			while(iter.hasNext())
 			{
@@ -1456,22 +1462,21 @@ public class GeometricOperations
 					if(!(alreadyPassed))
 					{
 						initialPoint = ei0I;
-						System.out.println("InitialPoint: " + initialPoint);
+//						System.out.println("InitialPoint: " + initialPoint);
 						alreadyPassed = true;
 					}
 					Point3d ejI = ej.getInitialPoint();
 //				System.out.println("ejI: " + ejI);
-					Point3d ejF = ej.getFinalPoint();
 					if(isTheSamePoint(ei0F,ejI))
 					{
 						ei0new = elementsIntermediario2.get(j);
-						System.out.println("ei0I: " + ei0I);
+//						System.out.println("ei0I: " + ei0I);
 						elementsIntermediario2.remove(ei0);
 						break;
 					}
 					else if(isTheSamePoint(ei0F,initialPoint))
 					{
-						System.out.println("ei0I: " + ei0I);
+//						System.out.println("ei0I: " + ei0I);
 						alreadyPassed = false;
 						elementsIntermediario2.remove(ei0);
 						if(iter.hasNext())
@@ -1484,16 +1489,16 @@ public class GeometricOperations
 					}
 				}
 //			System.out.println("Numero de lacos: " + numeroDeLacos);
-			}		
-			System.out.println("size1: " + elementsValidated.get(0).size());
+			}
+			System.out.println("laco1: " + elementsValidated.get(0).size());
 			if(elementsValidated.size() == 2)
 			{
-				System.out.println("size2: " + elementsValidated.get(1).size());
+				System.out.println("laco2: " + elementsValidated.get(1).size());
 			}
 			if(elementsValidated.size() == 3)
 			{
-				System.out.println("size2: " + elementsValidated.get(1).size());
-				System.out.println("size3: " + elementsValidated.get(2).size());
+				System.out.println("laco2: " + elementsValidated.get(1).size());
+				System.out.println("laco3: " + elementsValidated.get(2).size());
 			}
 			
 			return elementsValidated;
@@ -2017,13 +2022,11 @@ public class GeometricOperations
 	public static LimitedArc parallelArc(LimitedArc arc, double distance)
 	{
 		LimitedArc newArc = null;
-		System.out.println("raio: " + arc.getRadius());
 		
 		if (arc.getDeltaAngle()<0)
 		{
 			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-			System.out.println("Arco: " + newArc.getInitialPoint());
 		}
 		else
 		{
@@ -2056,26 +2059,31 @@ public class GeometricOperations
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 		
 		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
-		int i = 0;
-		while (i < 7)
+		while (parallelPath.size() != 0)
 		{
-			System.out.println("*****************************************************");
-			System.out.println("*****************************************************");
-			System.out.println("*****************************************************");
-			System.out.println("*****************************************************");
-			System.out.println(i+1 + " th Parallel Path");
-			System.out.println("*****************************************************");
-			System.out.println("*****************************************************");
-			System.out.println("*****************************************************");
-			System.out.println("*****************************************************");
+//			System.out.println("*****************************************************");
+//			System.out.println("*****************************************************");
+//			System.out.println("*****************************************************");
+//			System.out.println("*****************************************************");
+//			System.out.println(i+1 + " th Parallel Path");
+//			System.out.println("*****************************************************");
+//			System.out.println("*****************************************************");
+//			System.out.println("*****************************************************");
+//			System.out.println("*****************************************************");
 			multipleParallel.add(parallelPath);
-			for (ArrayList<LimitedElement> path:parallelPath)
+			ArrayList<ArrayList<LimitedElement>> parallelPathTmp = parallelPath1(parallelPath, distance);
+			parallelPath.clear();
+			for(int i = 0;i < parallelPathTmp.size(); i++)
 			{
-				parallelPath = parallelPath1(path,distance);
-				showElements(path);
+				parallelPath.add(parallelPathTmp.get(i));
 			}
+//			for (ArrayList<LimitedElement> path:parallelPath)
+//			{
+//				parallelPath = parallelPath1(path,distance);
+//				showElements(path);
+//			}
+			
 			//showElements(parallelPath);
-			i++;
 		}		
 
 		

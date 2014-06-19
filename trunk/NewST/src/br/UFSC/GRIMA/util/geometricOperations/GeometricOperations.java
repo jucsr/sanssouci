@@ -796,25 +796,64 @@ public class GeometricOperations
 		return roundNumber(minimumDistance,10);
 	}
 	
-//	public 
+public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(ArrayList<ArrayList<LimitedElement>> elements, double distance)
+		{
+			ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
+			
+			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
+			int aux = 1;
+//			parallelPath != null
+			while (parallelPath != null)
+			{
+	//			System.out.println("*****************************************************");
+	//			System.out.println("*****************************************************");
+	//			System.out.println("*****************************************************");
+	//			System.out.println("*****************************************************");
+	//			System.out.println(i+1 + " th Parallel Path");
+	//			System.out.println("*****************************************************");
+	//			System.out.println("*****************************************************");
+	//			System.out.println("*****************************************************");
+	//			System.out.println("*****************************************************");
+				multipleParallel.add(parallelPath);
+				parallelPath = parallelPath1(parallelPath, distance);
+	
+	//			for (ArrayList<LimitedElement> path:parallelPath)
+	//			{
+	//				parallelPath = parallelPath1(path,distance);
+	//				showElements(path);
+	//			}
+				
+				//showElements(parallelPath);
+				aux++;
+			}		
+	//		System.out.println("mutilplePath: " + multipleParallel.size());
+	//		showElements(multipleParallel.get(0).get(0));
+			return multipleParallel;
+		}
+
+
+	//	public 
 //
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (ArrayList<ArrayList<LimitedElement>> elements, double distance)
 	{
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
-		System.out.println("Lacos da Forma Atual: " + elements.size());
+//		System.out.println("Lacos da Forma Atual: " + elements.size());
 		for (int i = 0; i < elements.size(); i++)
 		{
 			ArrayList<LimitedElement> a0 = elements.get(i);
 			ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
-			System.out.println("Elementos do laco " + i + " da Forma Atual: " + a0.size());
+//			System.out.println("Elementos do laco " + i + " da Forma Atual: " + a0.size());
 			for(int j = 0;j < a0.size();j++)
 			{
 				if(a0.get(j).isLimitedLine())
 				{
 					LimitedLine lineTmp = (LimitedLine)a0.get(j);
 					LimitedLine newLine = absoluteParallel(lineTmp, distance);
-					lacoTmp.add(newLine);
+					if(newLine != null)
+					{
+						lacoTmp.add(newLine);
+					}
 					//System.err.println("linha " + i);
 					
 				} 
@@ -1192,16 +1231,18 @@ public class GeometricOperations
 	{
 //		showElements(elements);
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
-		System.out.println("elements: " + elements.size());
+//		System.out.println("elements: " + elements.size());
 		for(int i = 0;i < elements.size();i++)
 		{
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements.get(i));
 //		showElements(elementsIntermediario);
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal.get(i),distance);
-//			showElements(elementsIntermediario2);
+			System.out.println("elementsInter2: " + elementsIntermediario2.size());
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
 			if(elementsIntermediario3 != null)
 			{
+				System.out.println("elementsInter3: " + elementsIntermediario3.size());
+				showElements(elementsIntermediario2);
 				for(int j = 0;j < elementsIntermediario3.size();j++)
 				{
 					elementsValidated.add(elementsIntermediario3.get(j));					
@@ -1460,7 +1501,7 @@ public class GeometricOperations
 //			System.out.println("Size:" + elementsIntermediario2.size());
 				ei0 = ei0new;
 				Point3d ei0I = ei0.getInitialPoint();
-				System.out.println("ei0I: " + ei0I);
+//				System.out.println("ei0I: " + ei0I);
 				Point3d ei0F = ei0.getFinalPoint();
 				elementsValidated.get(numeroDeLacos).add(ei0);
 				for(int j = 0; j < elementsIntermediario2.size(); j++)
@@ -1471,6 +1512,7 @@ public class GeometricOperations
 					{
 						initialPoint = ei0I;
 						alreadyPassed = true;
+//					System.out.println("InitialPoint: " + initialPoint);
 					}
 					Point3d ejI = ej.getInitialPoint();
 //				System.out.println("ejI: " + ejI);
@@ -1698,14 +1740,20 @@ public class GeometricOperations
 
 		Point3d newInitialPoint = plus(line.getInitialPoint(),distanceVector);
 		Point3d newFinalPoint = plus(line.getFinalPoint(),distanceVector);
-		//System.out.println("Distance Vector " + distanceVector);
-		//System.out.println("New Initial Point " + newInitialPoint);
-		//System.out.println("New Final Point " + newFinalPoint);
-		LimitedLine lineParallel = new LimitedLine(newInitialPoint, newFinalPoint);
-		
+//		System.out.println("Distance Vector " + distanceVector);
+//		System.out.println("New Initial Point " + newInitialPoint);
+//		System.out.println("New Final Point " + newFinalPoint);
+		if((roundNumber(newInitialPoint.x,10) == roundNumber(newFinalPoint.x,10)) && (roundNumber(newInitialPoint.y,10) == roundNumber(newFinalPoint.y,10)))
+		{
+			return null;
+		}
+		else
+		{
+			LimitedLine lineParallel = new LimitedLine(newInitialPoint, newFinalPoint);
+			return lineParallel;
+		}
 		//System.out.println("Parallel from " + lineParallel.getInitialPoint() + " to " + lineParallel.getFinalPoint());
 		
-		return lineParallel;
 	}
 	
 	public static boolean belongs(LimitedLine line, Point3d p)
@@ -2070,40 +2118,6 @@ public class GeometricOperations
 		return vertex3d;
 	}
 	
-	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(ArrayList<ArrayList<LimitedElement>> elements, double distance)
-	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
-		
-		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
-		int aux = 1;
-		while (parallelPath != null)
-		{
-//			System.out.println("*****************************************************");
-//			System.out.println("*****************************************************");
-//			System.out.println("*****************************************************");
-//			System.out.println("*****************************************************");
-//			System.out.println(i+1 + " th Parallel Path");
-//			System.out.println("*****************************************************");
-//			System.out.println("*****************************************************");
-//			System.out.println("*****************************************************");
-//			System.out.println("*****************************************************");
-			multipleParallel.add(parallelPath);
-			parallelPath = parallelPath1(parallelPath, distance);
-
-//			for (ArrayList<LimitedElement> path:parallelPath)
-//			{
-//				parallelPath = parallelPath1(path,distance);
-//				showElements(path);
-//			}
-			
-			//showElements(parallelPath);
-			aux++;
-		}		
-//		System.out.println("mutilplePath: " + multipleParallel.size());
-//		showElements(multipleParallel.get(0).get(0));
-		return multipleParallel;
-	}
-
 	public static void showElements(ArrayList<LimitedElement> elements)
 	{
 		int i = 0;

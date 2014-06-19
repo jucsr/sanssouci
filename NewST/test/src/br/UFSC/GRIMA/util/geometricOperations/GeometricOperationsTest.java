@@ -482,6 +482,7 @@ public class GeometricOperationsTest
 		
 		if(elementsTmp != null)
 		{
+			System.out.println("lol");
 			for(int i = 0;i < elementsTmp.size();i++)
 			{
 				for(int j = 0;j < elementsTmp.get(i).size();j++)
@@ -514,12 +515,15 @@ public class GeometricOperationsTest
 //		desenhador.setVisible(true);
 //		for(;;);
 //	}
-	//Quando os arcos sao tangentes, nao considera os como 2 lacos
+	//aparentemente, quando sao tangentes, sao considerados os dois lacos (nao sei como haha)
+	//Com 20 de raio da certo, e o ocorre a tagencia
+	//bug no raio 9
+	//bug no raio 50
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 11) ;
-		GeometricOperations.showElements(multiplePath.get(0).get(0));
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 3) ;
+//		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
 		{

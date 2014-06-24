@@ -29,7 +29,9 @@ public class GenerateTrochoidalMovement1Test
 		
 //	    LimitedArc arco0= new LimitedArc(new Point3d(325.0,135.0,0), new Point3d(175.0,285.0,0), new Point3d(175.0,135.0,0));
 //	    LimitedArc arco0= new LimitedArc(new Point3d(400, 200.0,0), new Point3d(350.0,250,0), new Point3d(350,200,0));
-	    LimitedArc arco0= new LimitedArc(new Point3d(350.0,250,0), new Point3d(400, 200.0,0), new Point3d(350,200,0));
+//	    LimitedArc arco0= new LimitedArc(new Point3d(350.0,250,0), new Point3d(400, 200.0,0), new Point3d(350,200,0));
+	 
+//		LimitedArc arco0= new LimitedArc(new Point3d(400, 200.0,0), new Point3d(350,200,0), Math.PI / 2);
 		LimitedLine l1= new LimitedLine(new Point3d(325.0,134.99999999999997,0), new Point3d(325.0,165.0,0));
 	    LimitedLine l2= new LimitedLine(new Point3d(325.0,165.0,0), new Point3d(355.0000000000001,165.0,0));
 	    LimitedLine l3= new LimitedLine(new Point3d(355.0,165.0000000000001,0), new Point3d(355.0,195.00000000000034,0));
@@ -39,6 +41,8 @@ public class GenerateTrochoidalMovement1Test
 	    LimitedLine l7= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
 	    LimitedLine l8= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
 		
+		LimitedArc arco0 = new LimitedArc(new Point3d(400, 200.0, 0), new Point3d(350, 200, 0), Math.PI / 2);
+	    
 //		elements.add(l1);
 //		elements.add(l2);
 //		elements.add(l3);
@@ -64,7 +68,7 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateTrochoidalPathTest()
 	{
-		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elements, 20, 10);
+		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elements, 20, 20);
 		ArrayList<LimitedElement> movimentacoes = gen.generatePaths(gen.getPaths());
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();

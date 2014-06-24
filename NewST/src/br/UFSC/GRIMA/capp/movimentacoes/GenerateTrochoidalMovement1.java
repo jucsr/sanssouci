@@ -174,6 +174,8 @@ public class GenerateTrochoidalMovement1
 				}
 				else
 				{
+//					arcTmp = new LimitedArc(circularTmp.getCenter(), circularTmp.getInitialPoint(), circularTmp.getAngulo());	
+
 					if(circularTmp.getSense() == CircularPath.CCW)
 					{
 						arcTmp = new LimitedArc(circularTmp.getInitialPoint(), circularTmp.getFinalPoint(), circularTmp.getCenter());

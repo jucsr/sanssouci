@@ -139,7 +139,9 @@ public class GeometricOperationsTest
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)
 //		{
 		formaOriginal.add(addPocketVertex.getElements());
-//		}
+		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,210,0), 2*Math.PI);
+		formaOriginal.get(0).add(arco0);
+		//		}
 
 	}
 	@Test
@@ -478,7 +480,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 60);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 5);
 		
 		if(elementsTmp != null)
 		{
@@ -522,7 +524,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 3) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 60) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)

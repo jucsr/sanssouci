@@ -140,7 +140,7 @@ public class GeometricOperationsTest
 //		{
 		formaOriginal.add(addPocketVertex.getElements());
 		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,210,0), 2*Math.PI);
-		formaOriginal.get(0).add(arco0);
+//		formaOriginal.get(0).add(arco0);
 		//		}
 
 	}
@@ -480,7 +480,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 5);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 20);
 		
 		if(elementsTmp != null)
 		{
@@ -626,6 +626,47 @@ public class GeometricOperationsTest
 		LimitedArc arc = new LimitedArc(new Point3d(505.0,135.0,0),new Point3d(380.10004003203204,140.0,0), -90);
 		formaOriginal.get(0).add(arc);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal.get(0));
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void quebraLinhaTest()
+	{
+	    LimitedLine line1 = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
+	    ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
+	    intersecoes.add(new Point3d(50,50,0));
+	    intersecoes.add(new Point3d(80,50,0));
+	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+	    ArrayList<LimitedLine> lines = GeometricOperations.quebraLinha(line1, intersecoes);
+	    System.out.println("Elementos: " + lines.size());
+	    for(int i = 0;i < lines.size();i++)
+	    {
+	    	elements.add(lines.get(i));
+	    }
+	    DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		desenhador.setVisible(true);
+		for(;;);
+	    
+	}
+	@Test
+	public void quebraArcoTest()
+	{
+		LimitedArc arc1 = new LimitedArc(new Point3d(50,50,0), new Point3d(75,50,0),Math.PI/2);
+		Point3d p1 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/12), arc1.getCenter().y + 25*Math.sin(Math.PI/12),0);
+		Point3d p2 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/6), arc1.getCenter().y + 25*Math.sin(Math.PI/6),0);
+		Point3d p3 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/3), arc1.getCenter().y + 25*Math.sin(Math.PI/3),0);
+	    ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
+	    intersecoes.add(p2);
+	    intersecoes.add(p1);
+	    intersecoes.add(p3);
+	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arc1, intersecoes);
+	    System.out.println("Elementos: " + arcos.size());
+	    for(int i = 0;i < arcos.size();i++)
+	    {
+	    	elements.add(arcos.get(i));
+	    }
+	    DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);
 	}

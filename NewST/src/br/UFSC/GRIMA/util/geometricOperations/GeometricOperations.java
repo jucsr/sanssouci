@@ -886,24 +886,31 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		for(int h = 0;h < intSize;h++)
 		{
 			intTemp = intersecoes.get(h);
-			if(arcTemp.size() == 0)
+			if(belongsArc(arc,intTemp))
 			{
-				LimitedArc segTemp = new LimitedArc(arcCenter, arcI, calcDeltaAngle(arcI,intTemp,arcCenter,oldDeltaAngle));
-				arcTemp.add(segTemp);
-				segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
-				arcTemp.add(segTemp);
-			}
-			else
-			{
-				for(int s = 0;s < arcTemp.size();s++)
+				if(arcTemp.size() == 0)
 				{
-					Point3d arcTempI = arcTemp.get(s).getInitialPoint();
-					LimitedArc aTmp = arcTemp.get(s);
-					if(belongsArc(aTmp,intTemp))
+					LimitedArc segTemp = new LimitedArc(arcCenter, arcI, calcDeltaAngle(arcI,intTemp,arcCenter,oldDeltaAngle));
+					arcTemp.add(segTemp);
+					segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
+					arcTemp.add(segTemp);
+				}
+				else
+				{
+					int arcTempSize = arcTemp.size();
+					for(int s = 0;s < arcTempSize;s++)
 					{
-						LimitedArc segTemp = new LimitedArc(arcCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle));
-						arcTemp.add(segTemp);
-						arcTemp.remove(aTmp);
+						Point3d arcTempI = arcTemp.get(s).getInitialPoint();
+						Point3d arcTempF = arcTemp.get(s).getFinalPoint();
+						LimitedArc aTmp = arcTemp.get(s);
+						if(belongsArc(aTmp,intTemp))
+						{
+							LimitedArc segTemp = new LimitedArc(arcCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle));
+							arcTemp.add(segTemp);
+							segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcTempF,arcCenter,oldDeltaAngle));
+							arcTemp.add(segTemp);
+							arcTemp.remove(aTmp);
+						}
 					}
 				}
 			}
@@ -929,13 +936,17 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			}
 			else
 			{
-				for(int s = 0;s < lineTemp.size();s++)
+				int lineTempSize = lineTemp.size();
+				for(int s = 0;s < lineTempSize;s++)
 				{
 					Point3d lineTempI = lineTemp.get(s).getInitialPoint();
+					Point3d lineTempF = lineTemp.get(s).getFinalPoint();
 					LimitedLine lTmp = lineTemp.get(s);
 					if(belongs(lTmp,intTemp))
 					{
 						LimitedLine segTemp = new LimitedLine(lineTempI, intTemp);
+						lineTemp.add(segTemp);
+						segTemp = new LimitedLine(intTemp, lineTempF);
 						lineTemp.add(segTemp);
 						lineTemp.remove(lTmp);
 					}
@@ -978,6 +989,201 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			return null;
 		}
 	}
+//	public static ArrayList<LimitedElement> validar1Path(ArrayList<LimitedElement> elements)
+//	{
+//		/*
+//		 * 	Valida��o 1: Quebra dos Elementos na intersecao
+//		 */
+//		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
+//		for (int i=0; i < elements.size(); i++)
+//		{
+//			ArrayList<Point3d> intersection = null;
+//			boolean thereIsIntersection = false;
+//			LimitedElement ei = elements.get(i);
+////			System.out.println("PIei: " + ei.getInitialPoint());
+//			int numeroDeIntersecao = 0;
+//			for (int j = 0; j < elements.size(); j++)
+//			{
+//				LimitedElement ej = elements.get(j);
+////				System.out.println("PIej: " + ej.getInitialPoint());
+//				intersection = null;
+//				if(!ei.equals(ej))
+//				{
+//					intersection = intersectionElements(ei, ej);
+//					//essa condicao so funciona se o metodo que calcula as intersecoes retornar um array nulo quando nao ha intersecao (ao inves de um array vazio)
+//					if (intersection != null)
+//					{
+//						int intSize = intersection.size();
+//						boolean intSize2 = false;
+//						boolean auxIntSize2 = false;
+//						if(intSize == 2)
+//						{
+//							intSize2 = true;
+//						}
+//	//					System.out.println("intersection: " + intersection);
+//						for(int k = 0;k < intSize;k++)
+//						{
+//							if(!(alreadyUsed(intersection.get(k),intersecoes)))
+//							{
+//								intersecoes.add(intersection.get(k));
+//							}
+//						}
+//						thereIsIntersection = true;
+//						if(numeroDeIntersecao == 0)
+//						{
+////							System.out.println("intersecoes: " + intersection);
+////							System.out.println("PIei: " + ei.getInitialPoint());
+////							System.out.println("PIej: " + ej.getInitialPoint());
+//							//adiciona os pontos de intersecao ao vetor de intersecoes
+//							if (ei.isLimitedLine())
+//							{
+//								
+//								LimitedLine linei = (LimitedLine)ei;
+//								ArrayList<LimitedLine> lineTemp = quebraLinha(linei,intersection); 
+//								for(int k = 0;k < lineTemp.size();k++)
+//								{
+//									elementsIntermediario.add(lineTemp.get(k));
+//								}
+//							}
+//							else if(ei.isLimitedArc())
+//							{
+//								LimitedArc arci = (LimitedArc)ei;
+//								ArrayList<LimitedArc> arcTemp = quebraArco(arci,intersection); 
+//								for(int k = 0;k < arcTemp.size();k++)
+//								{
+//									elementsIntermediario.add(arcTemp.get(k));
+//								}
+//							}
+//							numeroDeIntersecao++;
+//							auxIntSize2 = intSize2;
+//						}
+//						else
+//						{
+////							System.out.println("PIei: " + ei.getInitialPoint());
+//							int indice2 = elementsIntermediario.size() - 2;
+//							int indice3 = elementsIntermediario.size() - 1;
+//							if((elementsIntermediario.get(indice3).isLimitedLine()))
+//							{
+//								LimitedLine aux2 = (LimitedLine)elementsIntermediario.get(indice2);
+//								LimitedLine aux3 = (LimitedLine)elementsIntermediario.get(indice3);
+//								ArrayList<LimitedLine> auxTemp = new ArrayList<LimitedLine>();
+//								ArrayList<LimitedLine> lineTemp = null;
+//								auxTemp.add(aux2);
+//								auxTemp.add(aux3);
+//								if(auxIntSize2)
+//								{
+//									int indice1 = elementsIntermediario.size() - 3;
+//									LimitedLine aux1 = (LimitedLine)elementsIntermediario.get(indice1);
+//									auxTemp.add(aux1);
+//								}
+//								
+//								for(int k = 0;k < auxTemp.size();k++)
+//								{
+//									LimitedLine aTmp = auxTemp.get(k);
+//									boolean belongs1 = belongs(aTmp,intersection.get(0));
+//									if(auxIntSize2)
+//									{
+//										boolean belongs2 = belongs(aTmp,intersection.get(1));
+//										if(belongs1 && belongs2)
+//										{
+//											lineTemp = quebraLinha(aTmp,intersection);
+//										}
+//										else if(belongs1)
+//										{
+//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
+//											intTemp.add(intersection.get(0));
+//											lineTemp = quebraLinha(aTmp,intTemp);
+//										}
+//										else if(belongs2)
+//										{
+//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
+//											intTemp.add(intersection.get(1));
+//											lineTemp = quebraLinha(aTmp,intTemp);
+//										}
+//									}
+//									else
+//									{
+//										if(belongs1)
+//										{
+//											lineTemp = quebraLinha(aTmp,intersection);
+//										}
+//									}
+//								}
+//								if(lineTemp != null)
+//								{
+//									for(int k = 0;k < lineTemp.size();k++)
+//									{
+//										elementsIntermediario.add(lineTemp.get(k));
+//									}
+//								}
+//							}
+//							else if ((elementsIntermediario.get(indice3).isLimitedArc()))
+//							{
+//								LimitedArc aux2 = (LimitedArc) elementsIntermediario.get(indice2);
+//								LimitedArc aux3 = (LimitedArc) elementsIntermediario.get(indice3);
+//								ArrayList<LimitedArc> auxTemp = new ArrayList<LimitedArc>();
+//								ArrayList<LimitedArc> ArcTemp = null;
+//								auxTemp.add(aux2);
+//								auxTemp.add(aux3);
+//								if(auxIntSize2)
+//								{
+//									int indice1 = elementsIntermediario.size() - 3;
+//									LimitedArc aux1 = (LimitedArc)elementsIntermediario.get(indice1);
+//									auxTemp.add(aux1);
+//								}
+//								
+//								for(int k = 0;k < auxTemp.size();k++)
+//								{
+//									LimitedArc aTmp = auxTemp.get(k);
+//									boolean belongs1 = belongsArc(aTmp,intersection.get(0));
+//									if(auxIntSize2)
+//									{
+//										boolean belongs2 = belongsArc(aTmp,intersection.get(1));
+//										if(belongs1 && belongs2)
+//										{
+//											ArcTemp = quebraArco(aTmp,intersection);
+//										}
+//										else if(belongs1)
+//										{
+//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
+//											intTemp.add(intersection.get(0));
+//											ArcTemp = quebraArco(aTmp,intTemp);
+//										}
+//										else if(belongs2)
+//										{
+//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
+//											intTemp.add(intersection.get(1));
+//											ArcTemp = quebraArco(aTmp,intTemp);
+//										}
+//									}
+//									else
+//									{
+//										if(belongs1)
+//										{
+//											ArcTemp = quebraArco(aTmp,intersection);
+//										}
+//									}
+//								}
+//								if(ArcTemp != null)
+//								{
+//									for(int k = 0;k < ArcTemp.size();k++)
+//									{
+//										elementsIntermediario.add(ArcTemp.get(k));
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//			if(thereIsIntersection == false)
+//			{
+//				elementsIntermediario.add(ei);
+//			}
+//		}
+//		return elementsIntermediario;
+//	}
+	
 	public static ArrayList<LimitedElement> validar1Path(ArrayList<LimitedElement> elements)
 	{
 		/*
@@ -988,180 +1194,50 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		{
 			ArrayList<Point3d> intersection = null;
 			boolean thereIsIntersection = false;
+			boolean firstIntersection = true;
 			LimitedElement ei = elements.get(i);
-//			System.out.println("PIei: " + ei.getInitialPoint());
-			int numeroDeIntersecao = 0;
 			for (int j = 0; j < elements.size(); j++)
 			{
+				ArrayList<Point3d> intersectionTemp = null;
 				LimitedElement ej = elements.get(j);
-//				System.out.println("PIej: " + ej.getInitialPoint());
 				intersection = null;
 				if(!ei.equals(ej))
 				{
-					intersection = intersectionElements(ei, ej);
+					intersectionTemp = intersectionElements(ei, ej);
 					//essa condicao so funciona se o metodo que calcula as intersecoes retornar um array nulo quando nao ha intersecao (ao inves de um array vazio)
-					if (intersection != null)
+					if (intersectionTemp != null)
 					{
-						int intSize = intersection.size();
-						boolean intSize2 = false;
-						boolean auxIntSize2 = false;
-						if(intSize == 2)
-						{
-							intSize2 = true;
-						}
-	//					System.out.println("intersection: " + intersection);
-						for(int k = 0;k < intSize;k++)
-						{
-							if(!(alreadyUsed(intersection.get(k),intersecoes)))
-							{
-								intersecoes.add(intersection.get(k));
-							}
-						}
 						thereIsIntersection = true;
-						if(numeroDeIntersecao == 0)
+						if(firstIntersection)
 						{
-//							System.out.println("intersecoes: " + intersection);
-//							System.out.println("PIei: " + ei.getInitialPoint());
-//							System.out.println("PIej: " + ej.getInitialPoint());
-							//adiciona os pontos de intersecao ao vetor de intersecoes
-							if (ei.isLimitedLine())
-							{
-								
-								LimitedLine linei = (LimitedLine)ei;
-								ArrayList<LimitedLine> lineTemp = quebraLinha(linei,intersection); 
-								for(int k = 0;k < lineTemp.size();k++)
-								{
-									elementsIntermediario.add(lineTemp.get(k));
-								}
-							}
-							else if(ei.isLimitedArc())
-							{
-								LimitedArc arci = (LimitedArc)ei;
-								ArrayList<LimitedArc> arcTemp = quebraArco(arci,intersection); 
-								for(int k = 0;k < arcTemp.size();k++)
-								{
-									elementsIntermediario.add(arcTemp.get(k));
-								}
-							}
-							numeroDeIntersecao++;
-							auxIntSize2 = intSize2;
+							intersection = new ArrayList<Point3d>();
+							firstIntersection = false;
 						}
-						else
+						for(int k = 0;k < intersectionTemp.size();k++)
 						{
-//							System.out.println("PIei: " + ei.getInitialPoint());
-							int indice2 = elementsIntermediario.size() - 2;
-							int indice3 = elementsIntermediario.size() - 1;
-							if((elementsIntermediario.get(indice3).isLimitedLine()))
-							{
-								LimitedLine aux2 = (LimitedLine)elementsIntermediario.get(indice2);
-								LimitedLine aux3 = (LimitedLine)elementsIntermediario.get(indice3);
-								ArrayList<LimitedLine> auxTemp = new ArrayList<LimitedLine>();
-								ArrayList<LimitedLine> lineTemp = null;
-								auxTemp.add(aux2);
-								auxTemp.add(aux3);
-								if(auxIntSize2)
-								{
-									int indice1 = elementsIntermediario.size() - 3;
-									LimitedLine aux1 = (LimitedLine)elementsIntermediario.get(indice1);
-									auxTemp.add(aux1);
-								}
-								
-								for(int k = 0;k < auxTemp.size();k++)
-								{
-									LimitedLine aTmp = auxTemp.get(k);
-									boolean belongs1 = belongs(aTmp,intersection.get(0));
-									if(auxIntSize2)
-									{
-										boolean belongs2 = belongs(aTmp,intersection.get(1));
-										if(belongs1 && belongs2)
-										{
-											lineTemp = quebraLinha(aTmp,intersection);
-										}
-										else if(belongs1)
-										{
-											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-											intTemp.add(intersection.get(0));
-											lineTemp = quebraLinha(aTmp,intTemp);
-										}
-										else if(belongs2)
-										{
-											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-											intTemp.add(intersection.get(1));
-											lineTemp = quebraLinha(aTmp,intTemp);
-										}
-									}
-									else
-									{
-										if(belongs1)
-										{
-											lineTemp = quebraLinha(aTmp,intersection);
-										}
-									}
-								}
-								if(lineTemp != null)
-								{
-									for(int k = 0;k < lineTemp.size();k++)
-									{
-										elementsIntermediario.add(lineTemp.get(k));
-									}
-								}
-							}
-							else if ((elementsIntermediario.get(indice3).isLimitedArc()))
-							{
-								LimitedArc aux2 = (LimitedArc) elementsIntermediario.get(indice2);
-								LimitedArc aux3 = (LimitedArc) elementsIntermediario.get(indice3);
-								ArrayList<LimitedArc> auxTemp = new ArrayList<LimitedArc>();
-								ArrayList<LimitedArc> ArcTemp = null;
-								auxTemp.add(aux2);
-								auxTemp.add(aux3);
-								if(auxIntSize2)
-								{
-									int indice1 = elementsIntermediario.size() - 3;
-									LimitedArc aux1 = (LimitedArc)elementsIntermediario.get(indice1);
-									auxTemp.add(aux1);
-								}
-								
-								for(int k = 0;k < auxTemp.size();k++)
-								{
-									LimitedArc aTmp = auxTemp.get(k);
-									boolean belongs1 = belongsArc(aTmp,intersection.get(0));
-									if(auxIntSize2)
-									{
-										boolean belongs2 = belongsArc(aTmp,intersection.get(1));
-										if(belongs1 && belongs2)
-										{
-											ArcTemp = quebraArco(aTmp,intersection);
-										}
-										else if(belongs1)
-										{
-											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-											intTemp.add(intersection.get(0));
-											ArcTemp = quebraArco(aTmp,intTemp);
-										}
-										else if(belongs2)
-										{
-											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-											intTemp.add(intersection.get(1));
-											ArcTemp = quebraArco(aTmp,intTemp);
-										}
-									}
-									else
-									{
-										if(belongs1)
-										{
-											ArcTemp = quebraArco(aTmp,intersection);
-										}
-									}
-								}
-								if(ArcTemp != null)
-								{
-									for(int k = 0;k < ArcTemp.size();k++)
-									{
-										elementsIntermediario.add(ArcTemp.get(k));
-									}
-								}
-							}
+							intersection.add(intersectionTemp.get(k));
 						}
+					}
+				}
+			}
+			if(intersection != null)
+			{
+				if (ei.isLimitedLine())
+				{
+					LimitedLine linei = (LimitedLine)ei;
+					ArrayList<LimitedLine> lineTemp = quebraLinha(linei,intersection); 
+					for(int k = 0;k < lineTemp.size();k++)
+					{
+						elementsIntermediario.add(lineTemp.get(k));
+					}
+				}
+				else if(ei.isLimitedArc())
+				{
+					LimitedArc arci = (LimitedArc)ei;
+					ArrayList<LimitedArc> arcTemp = quebraArco(arci,intersection); 
+					for(int k = 0;k < arcTemp.size();k++)
+					{
+						elementsIntermediario.add(arcTemp.get(k));
 					}
 				}
 			}
@@ -1172,7 +1248,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		}
 		return elementsIntermediario;
 	}
-	
 	public static ArrayList<LimitedElement> validar2Path(ArrayList<LimitedElement> elementsIntermediario, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
 		/*

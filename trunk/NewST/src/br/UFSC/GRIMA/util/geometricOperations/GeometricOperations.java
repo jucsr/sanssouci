@@ -894,6 +894,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					arcTemp.add(segTemp);
 					segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
 					arcTemp.add(segTemp);
+					showArcs(arcTemp);
 				}
 				else
 				{
@@ -903,15 +904,21 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 						Point3d arcTempI = arcTemp.get(s).getInitialPoint();
 						Point3d arcTempF = arcTemp.get(s).getFinalPoint();
 						LimitedArc aTmp = arcTemp.get(s);
+						//Problema: Esta fazendo o belongs com o mesmo aTmp, varias vezes
 						if(belongsArc(aTmp,intTemp))
 						{
+							System.out.println("intTemp: " + intTemp);
+							System.out.println("aTmp: " + arcTempI);
+							System.out.println("Intersection " + h + " Belongs to arc " + s);
 							LimitedArc segTemp = new LimitedArc(arcCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle));
 							arcTemp.add(segTemp);
 							segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcTempF,arcCenter,oldDeltaAngle));
 							arcTemp.add(segTemp);
 							arcTemp.remove(aTmp);
+							break;
 						}
 					}
+					showArcs(arcTemp);
 				}
 			}
 		}
@@ -949,6 +956,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 						segTemp = new LimitedLine(intTemp, lineTempF);
 						lineTemp.add(segTemp);
 						lineTemp.remove(lTmp);
+						break;
 					}
 				}
 			}
@@ -1589,14 +1597,14 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 	public static boolean belongsArc(LimitedArc arc, Point3d p)
 	{
 
-		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
-
-		if(arc.getDeltaAngle() < 0)
-		{
-			Point3d temp = arc.getInitialPoint();
-			Point3d temp1 = arc.getFinalPoint();
-			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
-		}
+//		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
+		LimitedArc arcTmp = new LimitedArc(arc.getCenter(),arc.getInitialPoint(), arc.getDeltaAngle());
+//		if(arc.getDeltaAngle() < 0)
+//		{
+//			Point3d temp = arc.getInitialPoint();
+//			Point3d temp1 = arc.getFinalPoint();
+//			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
+//		}
 		
 		double anguloInicial = Math.atan2(arcTmp.getInitialPoint().y - arcTmp.getCenter().y, arcTmp.getInitialPoint().x - arcTmp.getCenter().x);
 		double anguloFinal = Math.atan2(arcTmp.getFinalPoint().y - arcTmp.getCenter().y, arcTmp.getFinalPoint().x - arcTmp.getCenter().x);
@@ -1930,6 +1938,28 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ",0)" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ",0));");
 
 			}			
+			i++;			
+		}
+
+	}
+	public static void showLines(ArrayList<LimitedLine> elements)
+	{
+		int i = 0;
+		for (LimitedElement e:elements)
+		{
+			LimitedLine line = (LimitedLine)e;
+			System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ",0)" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ",0));");	
+			i++;			
+		}
+
+	}
+	public static void showArcs(ArrayList<LimitedArc> elements)
+	{
+		int i = 0;
+		for (LimitedElement e:elements)
+		{
+			LimitedArc arc = (LimitedArc)e;
+			System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ",0)" + ",new Point3d(" + arc.getFinalPoint().x + "," + arc.getFinalPoint().y + ",0)" + "," + "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y + ",0));");							
 			i++;			
 		}
 

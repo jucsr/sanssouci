@@ -615,9 +615,18 @@ public class GeometricOperationsTest
 	@Test
 	public void belongsArcTest()
 	{
-	    LimitedArc arco1= new LimitedArc(new Point3d(75,50,0), new Point3d(50,75,0), new Point3d(50,50,0));
-	    Point3d p = new Point3d(50 + 25*Math.cos((Math.PI)/4), 50 + 25*Math.sin((Math.PI)/4),0);
-	    System.out.println("Boolean: " + GeometricOperations.belongsArc(arco1, p));
+		LimitedArc arcOriginal = new LimitedArc(new Point3d(50,50,0), new Point3d(75,50,0),Math.PI/2);
+		LimitedArc arco0= new LimitedArc(new Point3d(75.0,50.0,0),new Point3d(71.65063509461098,62.5,0),new Point3d(50.0,50.0,0));
+		LimitedArc arco1= new LimitedArc(new Point3d(71.65063509461098,62.5,0),new Point3d(50.0,75.00000000000001,0),new Point3d(50.0,50.0,0));
+		Point3d p1 = new Point3d(arcOriginal.getCenter().x + 25*Math.cos(Math.PI/12), arcOriginal.getCenter().y + 25*Math.sin(Math.PI/12),0);
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		elements.add(arco0);
+		elements.add(arco1);
+		System.out.println("Boolean0: " + GeometricOperations.belongsArc(arco0, p1));
+		System.out.println("Boolean1: " + GeometricOperations.belongsArc(arco1, p1));
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		desenhador.setVisible(true);
+		for(;;);
 	}
 	@Test
 	public void LimitedArcTest()
@@ -649,6 +658,7 @@ public class GeometricOperationsTest
 	    
 	}
 	@Test
+	//Problema no BelongsArc
 	public void quebraArcoTest()
 	{
 		LimitedArc arc1 = new LimitedArc(new Point3d(50,50,0), new Point3d(75,50,0),Math.PI/2);

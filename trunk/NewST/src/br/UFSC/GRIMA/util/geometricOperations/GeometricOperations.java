@@ -818,6 +818,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (ArrayList<ArrayList<LimitedElement>> elements, double distance)
 	{
+		boolean inside = true;
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
 //		System.out.println("Lacos da Forma Atual: " + elements.size());
@@ -831,7 +832,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				if(a0.get(j).isLimitedLine())
 				{
 					LimitedLine lineTmp = (LimitedLine)a0.get(j);
-					LimitedLine newLine = absoluteParallel(lineTmp, distance);
+					LimitedLine newLine = absoluteParallel(lineTmp, distance,inside);
 					if(newLine != null)
 					{
 						lacoTmp.add(newLine);
@@ -842,7 +843,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				else if(a0.get(j).isLimitedArc())
 				{
 					LimitedArc arcTmp = (LimitedArc)a0.get(j);
-					LimitedArc newArc = parallelArc(arcTmp, distance);
+					LimitedArc newArc = parallelArc(arcTmp, distance,inside);
 					if(newArc != null)
 					{
 						lacoTmp.add(newArc);
@@ -862,19 +863,25 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 	}
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (GeneralClosedPocket pocket, double distance)
 	{
+		boolean inside = true;
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), 0, 30);
 
+		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
+		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<ArrayList<LimitedElement>> elements = new ArrayList<ArrayList<LimitedElement>>();
 		elements.add(addPocketVertex.getElements());
 		
 		ArrayList<Boss> bossArray = pocket.getItsBoss();
+		ArrayList<LimitedElement> lacoTmp1 = new ArrayList<LimitedElement>();
 		for(Boss bossTmp: bossArray)
 		{
 			if(bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
 				LimitedArc arc = new LimitedArc(tmp.getCentre(), new Point3d(tmp.getCentre().x + tmp.getDiametro1() / 2, tmp.getCentre().y + tmp.getDiametro1() / 2, tmp.Z), 2 * Math.PI);
-			}else if (bossTmp.getClass() == RectangularBoss.class)
+				lacoTmp1.add(parallelArc(arc, distance, !inside));
+			}
+			else if (bossTmp.getClass() == RectangularBoss.class)
 			{
 				// fazer linhas
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
@@ -884,25 +891,26 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //				tmp.getVertexPoints()
 			}
 		}
+		if(lacoTmp1.size() != 0)
+		{
+			laco.add(lacoTmp1);
+		}
 		
-		
-		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
 //		System.out.println("Lacos da Forma Atual: " + elements.size());
 		for (int i = 0; i < elements.size(); i++)
 		{
 			ArrayList<LimitedElement> a0 = elements.get(i);
-			ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
+			ArrayList<LimitedElement> lacoTmp2 = new ArrayList<LimitedElement>();
 //			System.out.println("Elementos do laco " + i + " da Forma Atual: " + a0.size());
 			for(int j = 0;j < a0.size();j++)
 			{
 				if(a0.get(j).isLimitedLine())
 				{
 					LimitedLine lineTmp = (LimitedLine)a0.get(j);
-					LimitedLine newLine = absoluteParallel(lineTmp, distance);
+					LimitedLine newLine = absoluteParallel(lineTmp, distance,inside);
 					if(newLine != null)
 					{
-						lacoTmp.add(newLine);
+						lacoTmp2.add(newLine);
 					}
 					//System.err.println("linha " + i);
 					
@@ -910,16 +918,16 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				else if(a0.get(j).isLimitedArc())
 				{
 					LimitedArc arcTmp = (LimitedArc)a0.get(j);
-					LimitedArc newArc = parallelArc(arcTmp, distance);
+					LimitedArc newArc = parallelArc(arcTmp, distance,inside);
 					if(newArc != null)
 					{
-						lacoTmp.add(newArc);
+						lacoTmp2.add(newArc);
 					}
 //				System.out.println("Center: " + newArc.getCenter());
 					//System.err.println("arco " + i);
 				}
 			}
-			laco.add(lacoTmp);
+			laco.add(lacoTmp2);
 		}
 		
 		saida = validarPath(laco, elements, distance);
@@ -1609,7 +1617,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		return angleCurrentBefore;
 	}
 	
-	public static LimitedLine absoluteParallel(LimitedLine line, double distance)
+	public static LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside)
 	{
 		
 		double angleLine = angle(minus(line.getFinalPoint(), line.getInitialPoint()));
@@ -1617,7 +1625,15 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		double x = Math.cos(newDistanceAngle);
 		double y = Math.sin(newDistanceAngle);
 		Point3d unitDistance = new Point3d(x,y,line.getInitialPoint().getZ());
-		Point3d distanceVector = multiply(distance, unitDistance);		
+		Point3d distanceVector;
+		if(inside)
+		{
+			distanceVector = multiply(distance, unitDistance);		
+		}
+		else
+		{
+			distanceVector = multiply(-distance, unitDistance);
+		}
 
 		Point3d newInitialPoint = plus(line.getInitialPoint(),distanceVector);
 		Point3d newFinalPoint = plus(line.getFinalPoint(),distanceVector);
@@ -1964,11 +1980,11 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		return intersect;
 	}
 	
-	public static LimitedArc parallelArc(LimitedArc arc, double distance)
+	public static LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside)
 	{
 		LimitedArc newArc = null;
 		
-		if (arc.getDeltaAngle()<0)
+		if (arc.getDeltaAngle()<0 || !(inside))
 		{
 			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());

@@ -480,11 +480,11 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 30);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 24);
 		
 		if(elementsTmp != null)
 		{
-			System.out.println("lol");
+//			System.out.println("lol");
 			for(int i = 0;i < elementsTmp.size();i++)
 			{
 				for(int j = 0;j < elementsTmp.get(i).size();j++)
@@ -524,7 +524,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 10) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 6) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
@@ -585,14 +585,17 @@ public class GeometricOperationsTest
 	{	
 //	    LimitedArc arco2= new LimitedArc(new Point3d(266.65151389911676,219.99999999999997,0),new Point3d(299.89995996796796,140.0,0),new Point3d(175.0,135.0,0));
 //	    LimitedArc arco9= new LimitedArc(new Point3d(380.10004003203204,140.0,0),new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,135.0,0));
-	    LimitedLine l12= new LimitedLine(new Point3d(175.0,255.0,0),new Point3d(103.0,255.0,0));
+		//(177.7623531673773,83.68313755650307,0)
+		LimitedArc arco2= new LimitedArc(new Point3d(230.0,70.0,0),new Point3d(202.2376468326227,116.31686244349693,0),0.7746332017773072);
+//		LimitedArc arco3= new LimitedArc(new Point3d(150.0,130.0,0),new Point3d(202.2376468326227,116.31686244349693,0),-0.7746332017773072);
+		LimitedLine l12= new LimitedLine(new Point3d(175.0,255.0,0),new Point3d(103.0,255.0,0));
 		LimitedArc arco19= new LimitedArc(new Point3d(543.2650236350173,256.7688678908215,0),new Point3d(532.5576201414465,249.0,0),new Point3d(471.07591554568916,345.0,0));
 	    System.out.println("Delta Angle: " + arco19.getDeltaAngle());
 	    
-		System.out.println("MINIMUM = " + GeometricOperations.minimumDistance(formaOriginal.get(0), l12));
-		
-		formaOriginal.get(0).add(l12);
-		
+		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal.get(0), arco2));
+//		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal.get(0), arco3));
+		formaOriginal.get(0).add(arco2);
+//		formaOriginal.get(0).add(arco3);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal.get(0));
 		desenhador.setVisible(true);
 		for(;;);
@@ -689,6 +692,8 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelArcTest()
 	{
+		LimitedArc arcoOrig1= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
+		LimitedArc arcoOrig2= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
 		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
 		LimitedArc newArc = GeometricOperations.parallelArc(arco0, 5, false);
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();

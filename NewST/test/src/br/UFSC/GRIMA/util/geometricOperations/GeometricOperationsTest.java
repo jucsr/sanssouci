@@ -140,7 +140,7 @@ public class GeometricOperationsTest
 //		{
 		formaOriginal.add(addPocketVertex.getElements());
 		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
-		formaOriginal.get(0).add(arco0);
+//		formaOriginal.get(0).add(arco0);
 		//		}
 
 	}
@@ -524,7 +524,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 60) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 10) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
@@ -683,6 +683,30 @@ public class GeometricOperationsTest
 	    	elements.add(arcos.get(i));
 	    }
 	    DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void parallelArcTest()
+	{
+		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
+		LimitedArc newArc = GeometricOperations.parallelArc(arco0, 5, false);
+	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+    	elements.add(arco0);
+    	elements.add(newArc);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void absolutParallelTest()
+	{
+	    LimitedLine line1 = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
+	    LimitedLine newLine = GeometricOperations.absoluteParallel(line1, 5, true);
+	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+    	elements.add(line1);
+    	elements.add(newLine);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);
 	}

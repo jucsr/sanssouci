@@ -134,8 +134,8 @@ public class GeometricOperations
 		Point3d p1 = line.getFinalPoint();
 		Point3d p0 = line.getInitialPoint();
 		
-		Point3d v = new Point3d(p1.getX() - p0.getX(), p1.getY()-p0.getY(), p1.getZ()-p0.getZ());
-		Point3d w = new Point3d(p.getX() - p0.getX(), p.getY()-p0.getY(), p.getZ()-p0.getZ());
+		Point3d v = new Point3d(p1.x - p0.x, p1.y-p0.y, p1.z-p0.z);
+		Point3d w = new Point3d(p.x - p0.x, p.y-p0.y, p.z-p0.z);
 		
 		double c1 = escalar(v,w);
 		double c2 = escalar(v,v);
@@ -153,7 +153,7 @@ public class GeometricOperations
 		}
 
        double b = c1 / c2;
-       Point3d Pb = new Point3d(p0.getX() + b*v.getX(), p0.getY() + b*v.getY(), p0.getZ() + b*v.getZ());
+       Point3d Pb = new Point3d(p0.x + b*v.x, p0.y + b*v.y, p0.z + b*v.z);
 //       System.out.println("Nearest point " + Pb);      
        return Pb;
 	}
@@ -176,81 +176,111 @@ public class GeometricOperations
 		return vectorial;
 	}
 	
+//	public static double minimumDistanceLineToLine(LimitedLine S1, LimitedLine S2)
+//	{
+//	    Point3d   u = new Point3d(S1.getFinalPoint().getX() - S1.getInitialPoint().getX(), S1.getFinalPoint().getY() - S1.getInitialPoint().getY(), S1.getFinalPoint().getZ() - S1.getInitialPoint().getZ());
+//	    Point3d   v = new Point3d(S2.getFinalPoint().getX() - S2.getInitialPoint().getX(), S2.getFinalPoint().getY() - S2.getInitialPoint().getY(), S2.getFinalPoint().getZ() - S2.getInitialPoint().getZ());
+//	    Point3d   w = new Point3d(S1.getInitialPoint().getX() - S2.getInitialPoint().getX(), S1.getInitialPoint().getY() - S2.getInitialPoint().getY(), S1.getInitialPoint().getZ() - S2.getInitialPoint().getZ());
+////	    Point3d   w = new Point3d(S1.getFinalPoint().getX() - S2.getFinalPoint().getX(), S1.getFinalPoint().getY() - S2.getFinalPoint().getY(), S1.getFinalPoint().getZ() - S2.getFinalPoint().getZ());
+//
+//	    double    a = escalar(u,u);         // always >= 0
+//	    double    b = escalar(u,v);
+//	    double    c = escalar(v,v);         // always >= 0
+//	    double    d = escalar(u,w);
+//	    double    e = escalar(v,w);
+//	    double    D = a*c - b*b;        // always >= 0
+//	    double    sc, sN, sD = D;       // sc = sN / sD, default sD = D >= 0
+//	    double    tc, tN, tD = D;       // tc = tN / tD, default tD = D >= 0
+//
+//	    // compute the line parameters of the two closest points
+//	    if (D < SMALL_NUM) 
+//	    { // the lines are almost parallel
+//	        sN = 0.0;         // force using point P0 on segment S1
+//	        sD = 1.0;         // to prevent possible division by 0.0 later
+//	        tN = e;
+//	        tD = c;
+//	    }
+//	    else 
+//	    {                 // get the closest points on the infinite lines
+//	        sN = (b*e - c*d);
+//	        tN = (a*e - b*d);
+//	        if (sN < 0.0) {        // sc < 0 => the s=0 edge is visible
+//	            sN = 0.0;
+//	            tN = e;
+//	            tD = c;
+//	        }
+//	        else if (sN > sD) {  // sc > 1  => the s=1 edge is visible
+//	            sN = sD;
+//	            tN = e + b;
+//	            tD = c;
+//	        }
+//	    }
+//
+//	    if (tN < 0.0) 
+//	    {            // tc < 0 => the t=0 edge is visible
+//	        tN = 0.0;
+//	        // recompute sc for this edge
+//	        if (-d < 0.0)
+//	            sN = 0.0;
+//	        else if (-d > a)
+//	            sN = sD;
+//	        else 
+//	        {
+//	            sN = -d;
+//	            sD = a;
+//	        }
+//	    }
+//	    else if (tN > tD) 
+//	    {      // tc > 1  => the t=1 edge is visible
+//	        tN = tD;
+//	        // recompute sc for this edge
+//	        if ((-d + b) < 0.0)
+//	            sN = 0;
+//	        else if ((-d + b) > a)
+//	            sN = sD;
+//	        else {
+//	            sN = (-d +  b);
+//	            sD = a;
+//	        }
+//	    }
+//	    // finally do the division to get sc and tc
+//	    sc = (Math.abs(sN) < SMALL_NUM ? 0.0 : sN / sD);
+//	    tc = (Math.abs(tN) < SMALL_NUM ? 0.0 : tN / tD);
+//
+//	    // get the difference of the two closest points
+//	    Point3d   dP = new Point3d(w.getX() + (sc * u.getX()) - (tc * v.getX()), w.getY() + (sc * u.getY()) - (tc * v.getY()), w.getZ() + (sc * u.getZ()) - (tc * v.getZ()));  // =  S1(sc) - S2(tc)
+//
+//	    return norm(dP);   // return the closestdistance
+//	}
+	
 	public static double minimumDistanceLineToLine(LimitedLine S1, LimitedLine S2)
 	{
-	    Point3d   u = new Point3d(S1.getFinalPoint().getX() - S1.getInitialPoint().getX(), S1.getFinalPoint().getY() - S1.getInitialPoint().getY(), S1.getFinalPoint().getZ() - S1.getInitialPoint().getZ());
-	    Point3d   v = new Point3d(S2.getFinalPoint().getX() - S2.getInitialPoint().getX(), S2.getFinalPoint().getY() - S2.getInitialPoint().getY(), S2.getFinalPoint().getZ() - S2.getInitialPoint().getZ());
-	    Point3d   w = new Point3d(S1.getInitialPoint().getX() - S2.getInitialPoint().getX(), S1.getInitialPoint().getY() - S2.getInitialPoint().getY(), S1.getInitialPoint().getZ() - S2.getInitialPoint().getZ());
-//	    Point3d   w = new Point3d(S1.getFinalPoint().getX() - S2.getFinalPoint().getX(), S1.getFinalPoint().getY() - S2.getFinalPoint().getY(), S1.getFinalPoint().getZ() - S2.getFinalPoint().getZ());
-
-	    double    a = escalar(u,u);         // always >= 0
-	    double    b = escalar(u,v);
-	    double    c = escalar(v,v);         // always >= 0
-	    double    d = escalar(u,w);
-	    double    e = escalar(v,w);
-	    double    D = a*c - b*b;        // always >= 0
-	    double    sc, sN, sD = D;       // sc = sN / sD, default sD = D >= 0
-	    double    tc, tN, tD = D;       // tc = tN / tD, default tD = D >= 0
-
-	    // compute the line parameters of the two closest points
-	    if (D < SMALL_NUM) 
-	    { // the lines are almost parallel
-	        sN = 0.0;         // force using point P0 on segment S1
-	        sD = 1.0;         // to prevent possible division by 0.0 later
-	        tN = e;
-	        tD = c;
-	    }
-	    else 
-	    {                 // get the closest points on the infinite lines
-	        sN = (b*e - c*d);
-	        tN = (a*e - b*d);
-	        if (sN < 0.0) {        // sc < 0 => the s=0 edge is visible
-	            sN = 0.0;
-	            tN = e;
-	            tD = c;
-	        }
-	        else if (sN > sD) {  // sc > 1  => the s=1 edge is visible
-	            sN = sD;
-	            tN = e + b;
-	            tD = c;
-	        }
-	    }
-
-	    if (tN < 0.0) 
-	    {            // tc < 0 => the t=0 edge is visible
-	        tN = 0.0;
-	        // recompute sc for this edge
-	        if (-d < 0.0)
-	            sN = 0.0;
-	        else if (-d > a)
-	            sN = sD;
-	        else 
-	        {
-	            sN = -d;
-	            sD = a;
-	        }
-	    }
-	    else if (tN > tD) 
-	    {      // tc > 1  => the t=1 edge is visible
-	        tN = tD;
-	        // recompute sc for this edge
-	        if ((-d + b) < 0.0)
-	            sN = 0;
-	        else if ((-d + b) > a)
-	            sN = sD;
-	        else {
-	            sN = (-d +  b);
-	            sD = a;
-	        }
-	    }
-	    // finally do the division to get sc and tc
-	    sc = (Math.abs(sN) < SMALL_NUM ? 0.0 : sN / sD);
-	    tc = (Math.abs(tN) < SMALL_NUM ? 0.0 : tN / tD);
-
-	    // get the difference of the two closest points
-	    Point3d   dP = new Point3d(w.getX() + (sc * u.getX()) - (tc * v.getX()), w.getY() + (sc * u.getY()) - (tc * v.getY()), w.getZ() + (sc * u.getZ()) - (tc * v.getZ()));  // =  S1(sc) - S2(tc)
-
-	    return norm(dP);   // return the closestdistance
+		double minimumDistance = 0;
+		if(intersectionPoint(S1, S2) == null)
+		{
+			Point3d p1I = S1.getInitialPoint();
+			Point3d p1F = S1.getFinalPoint();
+			Point3d p2I = S2.getInitialPoint();
+			Point3d p2F = S2.getFinalPoint();
+			double tmp1 = p1I.distance(nearestPoint(p1I, S2));
+			double tmp2 = p1F.distance(nearestPoint(p1F, S2));
+			double tmp3 = p2I.distance(nearestPoint(p2I, S1));
+			double tmp4 = p2F.distance(nearestPoint(p2F, S1));
+			ArrayList<Double> distances = new ArrayList<Double>();
+			distances.add(tmp1);
+			distances.add(tmp2);
+			distances.add(tmp3);
+			distances.add(tmp4);
+			minimumDistance = distances.get(0);
+			for(Double tmp:distances)
+			{
+				if(tmp < minimumDistance)
+				{
+					minimumDistance = tmp;
+				}
+			}
+		}
+		return minimumDistance;
 	}
 	
 	public static Point3d nearestPoint(Point3d p, LimitedArc arc)
@@ -937,76 +967,63 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		
 		return saida;
 	}
-	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (GeneralClosedPocket pocket, double distance)
+	public static ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance)
 	{
 		boolean inside = true;
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), 0, 30);
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.Z, pocket.getRadius());
 
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<ArrayList<LimitedElement>> elements = new ArrayList<ArrayList<LimitedElement>>();
-		elements.add(addPocketVertex.getElements());
+		ArrayList<LimitedElement> elements = addPocketVertex.getElements();
 		
 		ArrayList<Boss> bossArray = pocket.getItsBoss();
-		ArrayList<LimitedElement> lacoTmp1 = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
 		for(Boss bossTmp: bossArray)
 		{
 			if(bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
 				LimitedArc arc = new LimitedArc(tmp.getCentre(), new Point3d(tmp.getCentre().x + tmp.getDiametro1() / 2, tmp.getCentre().y + tmp.getDiametro1() / 2, tmp.Z), 2 * Math.PI);
-				lacoTmp1.add(parallelArc(arc, distance, !inside));
+				lacoTmp.add(parallelArc(arc, distance, !inside));
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)
 			{
-				// fazer linhas
+				RectangularBoss tmp = (RectangularBoss)bossTmp;
+				//Tamanho em x
+				double l = tmp.getL1();
+				//Tamanho em y
+				double c = tmp.getL2();
+				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
+				LimitedLine l1 = new LimitedLine(position,new Point3d(position.x + l,position.y,position.z));
+				LimitedLine l2 = new LimitedLine(l1.getFinalPoint(),new Point3d(l1.getFinalPoint().x,l1.getFinalPoint().y + c,l1.getFinalPoint().z));
+				LimitedLine l3 = new LimitedLine(l2.getFinalPoint(),new Point3d(l1.getFinalPoint().x - l,l1.getFinalPoint().y,l1.getFinalPoint().z));
+				LimitedLine l4 = new LimitedLine(l3.getFinalPoint(),new Point3d(l1.getFinalPoint().x,l1.getFinalPoint().y - c,l1.getFinalPoint().z));
+				
+				
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
 				// fazer
 				GeneralProfileBoss tmp = (GeneralProfileBoss)bossTmp;
-//				tmp.getVertexPoints()
+				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(tmp.getVertexPoints(), tmp.Z, tmp.getRadius());
+				ArrayList<LimitedElement> elem = addBossVertex.getElements();
+				
 			}
 		}
-		if(lacoTmp1.size() != 0)
+		if(lacoTmp.size() != 0)
 		{
-			laco.add(lacoTmp1);
+			laco.add(lacoTmp);
 		}
 		
-//		System.out.println("Lacos da Forma Atual: " + elements.size());
-		for (int i = 0; i < elements.size(); i++)
+		if(elements.size() != 0)
 		{
-			ArrayList<LimitedElement> a0 = elements.get(i);
-			ArrayList<LimitedElement> lacoTmp2 = new ArrayList<LimitedElement>();
-//			System.out.println("Elementos do laco " + i + " da Forma Atual: " + a0.size());
-			for(int j = 0;j < a0.size();j++)
-			{
-				if(a0.get(j).isLimitedLine())
-				{
-					LimitedLine lineTmp = (LimitedLine)a0.get(j);
-					LimitedLine newLine = absoluteParallel(lineTmp, distance,inside);
-					if(newLine != null)
-					{
-						lacoTmp2.add(newLine);
-					}
-					//System.err.println("linha " + i);
-					
-				} 
-				else if(a0.get(j).isLimitedArc())
-				{
-					LimitedArc arcTmp = (LimitedArc)a0.get(j);
-					LimitedArc newArc = parallelArc(arcTmp, distance,inside);
-					if(newArc != null)
-					{
-						lacoTmp2.add(newArc);
-					}
-//				System.out.println("Center: " + newArc.getCenter());
-					//System.err.println("arco " + i);
-				}
-			}
-			laco.add(lacoTmp2);
+			laco.add(elements);
 		}
 		
-		saida = validarPath(laco, elements, distance);
+//		saida = parallelPath1(laco, distance, !inside);
+		
+		
+		
+//		saida = validarPath(laco, elements, distance);
 		
 //		saida.add(lacoTmp);
 		

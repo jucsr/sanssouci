@@ -105,15 +105,15 @@ public class GeometricOperationsTest
 	    
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
-//		points.add(new Point2D.Double(8, 160));
-//		points.add(new Point2D.Double(8, 320));
-//		points.add(new Point2D.Double(480, 320));
-//		points.add(new Point2D.Double(700, 500));
-//		points.add(new Point2D.Double(700, 160));
-//		points.add(new Point2D.Double(480, 160));
-//		points.add(new Point2D.Double(480, 40));
-//		points.add(new Point2D.Double(200, 40));
-//		points.add(new Point2D.Double(200,160));
+		points.add(new Point2D.Double(8, 160));
+		points.add(new Point2D.Double(8, 320));
+		points.add(new Point2D.Double(480, 320));
+		points.add(new Point2D.Double(700, 500));
+		points.add(new Point2D.Double(700, 160));
+		points.add(new Point2D.Double(480, 160));
+		points.add(new Point2D.Double(480, 40));
+		points.add(new Point2D.Double(200, 40));
+		points.add(new Point2D.Double(200,160));
 		//Forma 2
 //	    points.add(new Point2D.Double(700, 320));
 //		points.add(new Point2D.Double(700, 160));
@@ -122,25 +122,25 @@ public class GeometricOperationsTest
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200, 320));
 		//Forma 4
-		points.add(new Point2D.Double(10, 10));
-		points.add(new Point2D.Double(200, 10));
-		points.add(new Point2D.Double(200, 100));
-		points.add(new Point2D.Double(350, 100));
-		points.add(new Point2D.Double(350, 10));
-		points.add(new Point2D.Double(500, 10));
-		points.add(new Point2D.Double(500, 100));
-		points.add(new Point2D.Double(400, 100));
-		points.add(new Point2D.Double(400, 200));
-		points.add(new Point2D.Double(180,200));
-		points.add(new Point2D.Double(180, 100));
-		points.add(new Point2D.Double(10, 100));
+//		points.add(new Point2D.Double(10, 10));
+//		points.add(new Point2D.Double(200, 10));
+//		points.add(new Point2D.Double(200, 100));
+//		points.add(new Point2D.Double(350, 100));
+//		points.add(new Point2D.Double(350, 10));
+//		points.add(new Point2D.Double(500, 10));
+//		points.add(new Point2D.Double(500, 100));
+//		points.add(new Point2D.Double(400, 100));
+//		points.add(new Point2D.Double(400, 200));
+//		points.add(new Point2D.Double(180,200));
+//		points.add(new Point2D.Double(180, 100));
+//		points.add(new Point2D.Double(10, 100));
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 30);
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)
 //		{
 		formaOriginal.add(addPocketVertex.getElements());
 		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
-//		formaOriginal.get(0).add(arco0);
+		formaOriginal.get(0).add(arco0);
 		//		}
 
 	}
@@ -480,7 +480,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 24);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 90);
 		
 		if(elementsTmp != null)
 		{
@@ -560,11 +560,12 @@ public class GeometricOperationsTest
 		LimitedArc arc2 = new LimitedArc(new Point3d(150.0, 130.0, 0.0), new Point3d(210.0, 130.0, 0.0),-1.5707963267948966);
 //		LimitedLine line1 = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
 //		elementos1.add(arc8);
-		elementos1.add(arc1);
-		elementos1.add(arc2);
+//		elementos1.add(arc1);
+//		elementos1.add(arc2);
 //		elementos1.add(l5);
 		
-		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementos1);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 90);
+		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);
 		for(;;);
@@ -714,6 +715,14 @@ public class GeometricOperationsTest
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);
+	}
+	@Test
+	public void nearestPointTest()
+	{
+	    LimitedLine line = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
+	    Point3d p = new Point3d(50,70,0);
+	    Point3d pNear = GeometricOperations.nearestPoint(p, line);
+	    System.out.println("Nearest Point: " + pNear);
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

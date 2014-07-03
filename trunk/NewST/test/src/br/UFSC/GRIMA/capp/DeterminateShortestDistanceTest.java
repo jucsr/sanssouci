@@ -63,7 +63,7 @@ public class DeterminateShortestDistanceTest
 		this.boss.setPosicao(25, 25, 0);
 		this.boss.setNome("boss");
 		this.boss.createGeometricalElements();
-		this.boss.setCentre(new Point3d(boss.X, boss.Y, boss.Z));
+		this.boss.setCenter(new Point3d(boss.X, boss.Y, boss.Z));
 		itsBoss.add(this.boss);
 		
 		this.faceXY.addFeature(this.boss);
@@ -76,7 +76,7 @@ public class DeterminateShortestDistanceTest
 		boss1.setPosicao(40, 35, 0);
 		boss1.setNome("boss1");
 		boss1.createGeometricalElements();
-		boss1.setCentre(new Point3d(boss1.X, boss1.Y, boss1.Z));
+		boss1.setCenter(new Point3d(boss1.X, boss1.Y, boss1.Z));
 
 		itsBoss.add(boss1);
 		
@@ -89,7 +89,7 @@ public class DeterminateShortestDistanceTest
 		boss2.setPosicao(20, 50, 0);
 		boss2.setNome("boss2");
 		boss2.createGeometricalElements();
-		boss2.setCentre(new Point3d(boss2.X, boss2.Y, boss2.Z));
+		boss2.setCenter(new Point3d(boss2.X, boss2.Y, boss2.Z));
 
 		itsBoss.add(boss2);
 		
@@ -102,7 +102,7 @@ public class DeterminateShortestDistanceTest
 		boss3.setPosicao(20, 35, 0);
 		boss3.setNome("boss3");
 		boss3.createGeometricalElements();
-		boss3.setCentre(new Point3d(boss3.X, boss3.Y, boss3.Z));
+		boss3.setCenter(new Point3d(boss3.X, boss3.Y, boss3.Z));
 
 		itsBoss.add(boss3);
 		

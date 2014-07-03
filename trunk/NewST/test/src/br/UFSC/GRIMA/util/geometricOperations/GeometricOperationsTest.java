@@ -16,6 +16,10 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.entidades.features.Boss;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
@@ -82,8 +86,8 @@ public class GeometricOperationsTest
 	LimitedLine l6= new LimitedLine(new Point3d(675.0,220.0,0),new Point3d(224.99999999999997,220.0,0));
 	
     ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
-    
-    ArrayList<ArrayList<LimitedElement>> formaOriginal = new ArrayList<ArrayList<LimitedElement>>();
+	GeneralClosedPocket pocket = new GeneralClosedPocket();
+    ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();
     
     
 	
@@ -135,12 +139,23 @@ public class GeometricOperationsTest
 //		points.add(new Point2D.Double(180, 100));
 //		points.add(new Point2D.Double(10, 100));
 		
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 30);
+		pocket.setPoints(points);
+		pocket.setRadius(30);
+		pocket.setPosicao(50, 50, 0);
+		pocket.setProfundidade(15);
+		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+		CircularBoss arcBoss = new CircularBoss("", 100, 200, pocket.Z, 15, 15, pocket.getProfundidade());
+		RectangularBoss rectBoss = new RectangularBoss(15, 10, pocket.getProfundidade(), 0);
+		rectBoss.setPosicao(100, 200, pocket.Z);
+		itsBoss.add(rectBoss);
+//		itsBoss.add(arcBoss);
+		pocket.setItsBoss(itsBoss);
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)
 //		{
-		formaOriginal.add(addPocketVertex.getElements());
+		formaOriginal = addPocketVertex.getElements();
 		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
-		formaOriginal.get(0).add(arco0);
+//		formaOriginal.get(0).add(arco0);
 		//		}
 
 	}
@@ -479,32 +494,58 @@ public class GeometricOperationsTest
 	public void parallelPath1Test()
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
-		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 90);
+//		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,true);
 		
-		if(elementsTmp != null)
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		if(elements != null)
 		{
 //			System.out.println("lol");
-			for(int i = 0;i < elementsTmp.size();i++)
+//			for(int i = 0;i < elementsTmp.size();i++)
+//			{
+//				for(int j = 0;j < elementsTmp.size();j++)
+//				{
+//					elements.add(elementsTmp.get(j));
+//				}
+//			}
+			for(LimitedElement tmp : elements)
 			{
-				for(int j = 0;j < elementsTmp.get(i).size();j++)
+				all.add(tmp);
+			}
+			for(LimitedElement tmp : formaOriginal)
+			{
+				all.add(tmp);
+			}
+		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	
+	@Test
+	public void parallelPath2Test()
+	{
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 42);
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		
+		if(path != null)
+		{
+			for(ArrayList<LimitedElement> tmp:path)
+			{
+				for(int i = 0;i < tmp.size();i++)
 				{
-					elements.add(elementsTmp.get(i).get(j));
+					all.add(tmp.get(i));
 				}
 			}
 		}
-		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
-		for(LimitedElement tmp : elements)
-		{
-			all.add(tmp);
-		}
-		for(LimitedElement tmp : formaOriginal.get(0))
+		for(LimitedElement tmp : formaOriginal)
 		{
 			all.add(tmp);
 		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
+		
 	}
 //	Arco: (175.0, 250.0, 0.0)
 //	Arco: (390.0, 135.0, 0.0)
@@ -524,7 +565,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(formaOriginal, 6) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 6) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
@@ -538,7 +579,7 @@ public class GeometricOperationsTest
 			}
 		}
 		System.out.println("all: " + all.size());
-		for(LimitedElement tmp : formaOriginal.get(0))
+		for(LimitedElement tmp : formaOriginal)
 		{
 			all.add(tmp);
 		}
@@ -564,7 +605,7 @@ public class GeometricOperationsTest
 //		elementos1.add(arc2);
 //		elementos1.add(l5);
 		
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath1(formaOriginal, 90);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 90);
 		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);
@@ -593,11 +634,11 @@ public class GeometricOperationsTest
 		LimitedArc arco19= new LimitedArc(new Point3d(543.2650236350173,256.7688678908215,0),new Point3d(532.5576201414465,249.0,0),new Point3d(471.07591554568916,345.0,0));
 	    System.out.println("Delta Angle: " + arco19.getDeltaAngle());
 	    
-		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal.get(0), arco2));
+		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal, arco2));
 //		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal.get(0), arco3));
-		formaOriginal.get(0).add(arco2);
+//		formaOriginal.get(0).add(arco2);
 //		formaOriginal.get(0).add(arco3);
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal.get(0));
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
 		desenhador.setVisible(true);
 		for(;;);
 	}
@@ -643,8 +684,8 @@ public class GeometricOperationsTest
 	{	
 		//construtor com deltaAngle
 		LimitedArc arc = new LimitedArc(new Point3d(505.0,135.0,0),new Point3d(380.10004003203204,140.0,0), -90);
-		formaOriginal.get(0).add(arc);
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal.get(0));
+		formaOriginal.add(arc);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
 		desenhador.setVisible(true);
 		for(;;);
 	}
@@ -671,16 +712,19 @@ public class GeometricOperationsTest
 	//Problema no BelongsArc
 	public void quebraArcoTest()
 	{
-		LimitedArc arc1 = new LimitedArc(new Point3d(50,50,0), new Point3d(75,50,0),Math.PI/2);
-		Point3d p1 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/12), arc1.getCenter().y + 25*Math.sin(Math.PI/12),0);
-		Point3d p2 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/6), arc1.getCenter().y + 25*Math.sin(Math.PI/6),0);
-		Point3d p3 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/3), arc1.getCenter().y + 25*Math.sin(Math.PI/3),0);
-	    ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
-	    intersecoes.add(p2);
-	    intersecoes.add(p1);
-	    intersecoes.add(p3);
+//		LimitedArc arc1 = new LimitedArc(new Point3d(50,50,0), new Point3d(75,50,0),Math.PI/2);
+//		Point3d p1 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/12), arc1.getCenter().y + 25*Math.sin(Math.PI/12),0);
+//		Point3d p2 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/6), arc1.getCenter().y + 25*Math.sin(Math.PI/6),0);
+//		Point3d p3 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/3), arc1.getCenter().y + 25*Math.sin(Math.PI/3),0);
+		LimitedArc arc2 = new LimitedArc(new Point3d(100,200,0), new Point3d(124.5,200,0),2*Math.PI);
+		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
+	    ArrayList<Point3d> intersecoes = GeometricOperations.intersectionPoint(arc2, line);
+	    System.out.println(intersecoes);
+//	    intersecoes.add(p2);
+//	    intersecoes.add(p1);
+//	    intersecoes.add(p3);
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arc1, intersecoes);
+	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arc2, intersecoes);
 	    System.out.println("Elementos: " + arcos.size());
 	    for(int i = 0;i < arcos.size();i++)
 	    {
@@ -723,6 +767,7 @@ public class GeometricOperationsTest
 	    Point3d p = new Point3d(50,70,0);
 	    Point3d pNear = GeometricOperations.nearestPoint(p, line);
 	    System.out.println("Nearest Point: " + pNear);
+	    double lol = 1.1600697726695512E-15;
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

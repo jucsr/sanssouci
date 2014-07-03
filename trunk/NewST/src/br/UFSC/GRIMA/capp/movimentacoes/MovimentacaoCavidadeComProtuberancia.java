@@ -854,7 +854,7 @@ public class MovimentacaoCavidadeComProtuberancia {
 				CircularBoss boss = (CircularBoss) bossTmp;
 				raioAtual=(boss.getDiametro2()-boss.getDiametro1()*(-z-this.cavidade.getPosicaoZ())/(boss.getAltura()*2)+(boss.getDiametro1()/2));
 				bossArray.add(new Ellipse2D.Double(bossTmp.getPosicaoX()-raioAtual, bossTmp.getPosicaoY()-raioAtual, raioAtual*2, raioAtual*2));
-				borda = Cavidade.determinarPontosEmCircunferencia(boss.getCentre(), 0, 2*Math.PI, raioAtual, (int) Math.round(Math.PI*2/raioAtual));
+				borda = Cavidade.determinarPontosEmCircunferencia(boss.getCenter(), 0, 2*Math.PI, raioAtual, (int) Math.round(Math.PI*2/raioAtual));
 				for(int k=0;k<borda.length;k++){
 					pontosPeriferia.add(new Point3d(borda[k].getX(),borda[k].getY(),z));
 				}

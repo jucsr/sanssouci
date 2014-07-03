@@ -164,7 +164,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		faceXY.addFeature(this.genClosed);
 
 		this.boss = new CircularBoss();
-		this.boss.setCentre(new Point3d(30,30,0));
+		this.boss.setCenter(new Point3d(30,30,0));
 		this.boss.setDiametro1(10);
 		this.boss.setDiametro2(10);
 		this.boss.setAltura(10);
@@ -307,7 +307,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		faceXY.addFeature(this.genClosed);
 
 		this.boss=new CircularBoss();
-		this.boss.setCentre(new Point3d(30,30,0));
+		this.boss.setCenter(new Point3d(30,30,0));
 		this.boss.setDiametro1(10);
 		this.boss.setDiametro2(10);
 		this.boss.setAltura(10);

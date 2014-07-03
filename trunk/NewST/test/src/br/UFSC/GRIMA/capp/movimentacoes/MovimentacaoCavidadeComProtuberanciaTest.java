@@ -109,7 +109,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		faceXY.addFeature(this.cavidade);
 
 		this.boss=new CircularBoss();
-		this.boss.setCentre(new Point3d(48,54,0));
+		this.boss.setCenter(new Point3d(48,54,0));
 		this.boss.setDiametro1(44.40720662234904);
 		this.boss.setDiametro2(44.40720662234904);
 		this.boss.setAltura(10);
@@ -119,7 +119,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 
 
 		this.boss1=new CircularBoss();
-		this.boss1.setCentre(new Point3d(106,93,0));
+		this.boss1.setCenter(new Point3d(106,93,0));
 		this.boss1.setDiametro1(48.16637831516918);
 		this.boss1.setDiametro2(48.16637831516918);
 		this.boss1.setAltura(10);
@@ -128,7 +128,7 @@ public class MovimentacaoCavidadeComProtuberanciaTest {
 		this.boss1.createGeometricalElements();
 
 		this.boss2=new CircularBoss();
-		this.boss2.setCentre(new Point3d(124,41,0));
+		this.boss2.setCenter(new Point3d(124,41,0));
 		this.boss2.setDiametro1(44.40720662234904);
 		this.boss2.setDiametro2(44.40720662234904);
 		this.boss2.setAltura(10);

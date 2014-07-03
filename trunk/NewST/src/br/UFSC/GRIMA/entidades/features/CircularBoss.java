@@ -12,7 +12,7 @@ public class CircularBoss extends Boss
 {
 	private double diametro1;
 	private double diametro2;
-	private Point3d centre;
+	private Point3d center;
 	
 	public CircularBoss()
 	{
@@ -25,7 +25,7 @@ public class CircularBoss extends Boss
 		this.diametro1 = diametro1;
 		this.diametro2 = diametro2;
 		this.setPosicao(x, y, z);
-		this.setCentre(new Point3d(x, y, z));
+		this.setCenter(new Point3d(x, y, z));
 		this.createGeometricalElements();
 	}
 	public double getDiametro1() 
@@ -49,12 +49,12 @@ public class CircularBoss extends Boss
 		this.geometricalElements.add(new LimitedCircle(new Point3d(this.X, this.Y, this.Z), this.diametro1 / 2));
 	}
 
-	public Point3d getCentre() {
-		return centre;
+	public Point3d getCenter() {
+		return center;
 	}
 
-	public void setCentre(Point3d centre) {
-		this.centre = centre;
+	public void setCenter(Point3d center) {
+		this.center = center;
 	}
 
 	public DefaultMutableTreeNode getNodo() {

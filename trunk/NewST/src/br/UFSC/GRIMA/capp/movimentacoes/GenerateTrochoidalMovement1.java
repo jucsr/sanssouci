@@ -48,7 +48,7 @@ public class GenerateTrochoidalMovement1
 //		ArrayList<Path> saida = new ArrayList<Path>();
 		double norma = line.getInitialPoint().distance(line.getFinalPoint());
 		double distanciaAcumulada = 0;
-		LimitedLine lineAuxTmp = GeometricOperations.absoluteParallel(line, radius); // linha paralela
+		LimitedLine lineAuxTmp = GeometricOperations.absoluteParallel(line, radius, true); // linha paralela
 		Point3d vetorUnitario = GeometricOperations.unitVector(lineAuxTmp.getInitialPoint(), lineAuxTmp.getFinalPoint()); // vetor unitario da linha paralela
 		int fracionamento = (int)(norma / avanco);
 		for (int i = 0; i < fracionamento; i++)
@@ -165,6 +165,7 @@ public class GenerateTrochoidalMovement1
 			else if(pathTmp.isCircular())
 			{
 				CircularPath circularTmp = (CircularPath)pathTmp;
+				System.err.println("DELTA =  " + circularTmp.getAngulo());
 //				LimitedArc arcTmp = new LimitedArc(circularTmp.getInitialPoint(), circularTmp.getFinalPoint(), circularTmp.getCenter());
 				LimitedArc arcTmp;
 
@@ -174,16 +175,16 @@ public class GenerateTrochoidalMovement1
 				}
 				else
 				{
-//					arcTmp = new LimitedArc(circularTmp.getCenter(), circularTmp.getInitialPoint(), circularTmp.getAngulo());	
+					arcTmp = new LimitedArc(circularTmp.getCenter(), circularTmp.getInitialPoint(), circularTmp.getAngulo());	
 
-					if(circularTmp.getSense() == CircularPath.CCW)
-					{
-						arcTmp = new LimitedArc(circularTmp.getInitialPoint(), circularTmp.getFinalPoint(), circularTmp.getCenter());
-					}
-					else
-					{
-						arcTmp = new LimitedArc(circularTmp.getFinalPoint(), circularTmp.getInitialPoint(), circularTmp.getCenter());
-					}
+//					if(circularTmp.getSense() == CircularPath.CCW)
+//					{
+//						arcTmp = new LimitedArc(circularTmp.getInitialPoint(), circularTmp.getFinalPoint(), circularTmp.getCenter());
+//					}
+//					else
+//					{
+//						arcTmp = new LimitedArc(circularTmp.getFinalPoint(), circularTmp.getInitialPoint(), circularTmp.getCenter());
+//					}
 				}
 				saida.add(arcTmp);
 			}

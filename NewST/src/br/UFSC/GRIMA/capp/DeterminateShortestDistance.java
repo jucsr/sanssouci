@@ -131,7 +131,7 @@ public class DeterminateShortestDistance
 						{
 							CircularBoss circularBossTmp1 = (CircularBoss)bossTmp1;
 //							distanceTmp = circularBossTmp.X + circularBossTmp.getDiametro1() / 2 - circularBossTmp1.getDiametro1() / 2;
-							distanceTmp = OperationsVector.distanceVector(circularBossTmp.getCentre(), circularBossTmp1.getCentre()) - circularBossTmp.getDiametro1() / 2 - circularBossTmp1.getDiametro1() / 2;
+							distanceTmp = OperationsVector.distanceVector(circularBossTmp.getCenter(), circularBossTmp1.getCenter()) - circularBossTmp.getDiametro1() / 2 - circularBossTmp1.getDiametro1() / 2;
 						}
 //						System.err.println("DIST TMP = " + distanceTmp);
 						if (distanceTmp < this.shortestDistance)

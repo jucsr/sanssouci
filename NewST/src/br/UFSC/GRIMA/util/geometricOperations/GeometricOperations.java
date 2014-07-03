@@ -659,10 +659,10 @@ public class GeometricOperations
 	 */
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
 	{
-		ArrayList<ArrayList<LimitedElement>> etmp = new ArrayList<ArrayList<LimitedElement>>();
-		etmp.add(addPocket.getElements());
-		System.out.println(etmp.size());
-		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius).get(0);
+		boolean inside = true;
+		ArrayList<LimitedElement> etmp = new ArrayList<LimitedElement>();
+		etmp = addPocket.getElements();
+		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius,inside);
 		
 		return acabamentoElements;
 	}
@@ -901,17 +901,18 @@ public class GeometricOperations
 		return roundNumber(minimumDistance,10);
 	}
 	
-public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(ArrayList<ArrayList<LimitedElement>> elements, double distance)
+public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance)
 		{
 			ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 			
-			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
+//			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
+			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath2(pocket, distance);
 			int aux = 1;
 //			parallelPath != null
 			while (parallelPath != null)
 			{
 				multipleParallel.add(parallelPath);
-				parallelPath = parallelPath1(elements, aux*distance);
+				parallelPath = parallelPath2(pocket, aux*distance);
 				aux++;
 			}		
 	//		System.out.println("mutilplePath: " + multipleParallel.size());
@@ -920,35 +921,32 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		}
 
 
-	//	public 
-//
-	public static ArrayList<ArrayList<LimitedElement>> parallelPath1 (ArrayList<ArrayList<LimitedElement>> elements, double distance)
+	//Voltei para Array linear (ta ficando complicado de fazer recursivo, toda saída teria que ser transformada em um GeneralClosedPocket)
+	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside)
 	{
-		boolean inside = true;
-		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
-//		System.out.println("Lacos da Forma Atual: " + elements.size());
-		for (int i = 0; i < elements.size(); i++)
-		{
-			ArrayList<LimitedElement> a0 = elements.get(i);
+//		boolean inside = true;
+//		ArrayList<LimitedElement> saida = new ArrayList<LimitedElement>();
+//		ArrayList<LimitedElement> laco = new ArrayList<LimitedElement>();
+//		for (int i = 0; i < elements.size(); i++)
+//		{
+//			ArrayList<LimitedElement> a0 = elements.get(i);
 			ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
 //			System.out.println("Elementos do laco " + i + " da Forma Atual: " + a0.size());
-			for(int j = 0;j < a0.size();j++)
+			for(int j = 0;j < elements.size();j++)
 			{
-				if(a0.get(j).isLimitedLine())
+				if(elements.get(j).isLimitedLine())
 				{
-					LimitedLine lineTmp = (LimitedLine)a0.get(j);
+					LimitedLine lineTmp = (LimitedLine)elements.get(j);
 					LimitedLine newLine = absoluteParallel(lineTmp, distance,inside);
 					if(newLine != null)
 					{
 						lacoTmp.add(newLine);
 					}
 					//System.err.println("linha " + i);
-					
 				} 
-				else if(a0.get(j).isLimitedArc())
+				else if(elements.get(j).isLimitedArc())
 				{
-					LimitedArc arcTmp = (LimitedArc)a0.get(j);
+					LimitedArc arcTmp = (LimitedArc)elements.get(j);
 					LimitedArc newArc = parallelArc(arcTmp, distance,inside);
 					if(newArc != null)
 					{
@@ -958,14 +956,14 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					//System.err.println("arco " + i);
 				}
 			}
-			laco.add(lacoTmp);
-		}
+//			laco.add(lacoTmp);
+//		}
 		
-		saida = validarPath(laco, elements, distance);
+//		saida = validarPath(laco, elements, distance);
 		
 //		saida.add(lacoTmp);
 		
-		return saida;
+		return lacoTmp;
 	}
 	public static ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance)
 	{
@@ -973,18 +971,22 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.Z, pocket.getRadius());
 
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<ArrayList<LimitedElement>> laco = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<LimitedElement> elements = addPocketVertex.getElements();
-		
-		ArrayList<Boss> bossArray = pocket.getItsBoss();
-		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
+		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
+		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
+		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
+		ArrayList<LimitedElement> elementsCavidade = addPocketVertex.getElements();             //Cavidade
+		ArrayList<Boss> bossArray = pocket.getItsBoss();                                        //Protuberancia
+		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
 		for(Boss bossTmp: bossArray)
 		{
 			if(bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
-				LimitedArc arc = new LimitedArc(tmp.getCentre(), new Point3d(tmp.getCentre().x + tmp.getDiametro1() / 2, tmp.getCentre().y + tmp.getDiametro1() / 2, tmp.Z), 2 * Math.PI);
-				lacoTmp.add(parallelArc(arc, distance, !inside));
+				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
+				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, tmp.Z), 2 * Math.PI);
+				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
+				elementosProtuberancia.add(arc);
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)
 			{
@@ -996,34 +998,61 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
 				LimitedLine l1 = new LimitedLine(position,new Point3d(position.x + l,position.y,position.z));
 				LimitedLine l2 = new LimitedLine(l1.getFinalPoint(),new Point3d(l1.getFinalPoint().x,l1.getFinalPoint().y + c,l1.getFinalPoint().z));
-				LimitedLine l3 = new LimitedLine(l2.getFinalPoint(),new Point3d(l1.getFinalPoint().x - l,l1.getFinalPoint().y,l1.getFinalPoint().z));
-				LimitedLine l4 = new LimitedLine(l3.getFinalPoint(),new Point3d(l1.getFinalPoint().x,l1.getFinalPoint().y - c,l1.getFinalPoint().z));
+				LimitedLine l3 = new LimitedLine(l2.getFinalPoint(),new Point3d(l2.getFinalPoint().x - l,l2.getFinalPoint().y,l2.getFinalPoint().z));
+				LimitedLine l4 = new LimitedLine(l3.getFinalPoint(),new Point3d(l3.getFinalPoint().x,l3.getFinalPoint().y - c,l3.getFinalPoint().z));
+				//Criar arcos de arredondamento
+				LimitedArc a1 = new LimitedArc();
 				
+				elementosProtuberancia.add(l1);
+				elementosProtuberancia.add(l2);
+				elementosProtuberancia.add(l3);
+				elementosProtuberancia.add(l4);
 				
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
-				// fazer
 				GeneralProfileBoss tmp = (GeneralProfileBoss)bossTmp;
 				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(tmp.getVertexPoints(), tmp.Z, tmp.getRadius());
-				ArrayList<LimitedElement> elem = addBossVertex.getElements();
+				ArrayList<LimitedElement> elementosProtuberanciaGeral = addBossVertex.getElements();
+				for(int i = 0;i < elementosProtuberanciaGeral.size();i++)
+				{
+					elementosProtuberancia.add(elementosProtuberanciaGeral.get(i));
+				}
 				
 			}
 		}
-		if(lacoTmp.size() != 0)
+//		if(elementosProtuberancia.size() != 0)
+//		{
+//			laco.add(elementosProtuberancia);
+//		}
+//		
+//		if(elementsCavidade.size() != 0)
+//		{
+//			laco.add(elementsCavidade);
+//		}
+		for(LimitedElement tmp:elementosProtuberancia)
 		{
-			laco.add(lacoTmp);
+			formaOriginal.add(tmp);
 		}
-		
-		if(elements.size() != 0)
+		for(LimitedElement tmp:elementsCavidade)
 		{
-			laco.add(elements);
+			formaOriginal.add(tmp);
+		}
+		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside);
+		showElements(parallelTemp1);
+		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside);
+		
+		for(LimitedElement tmp:parallelTemp1)
+		{
+			totalParallel.add(tmp);
+		}
+		for(LimitedElement tmp:parallelTemp2)
+		{
+			totalParallel.add(tmp);
 		}
 		
 //		saida = parallelPath1(laco, distance, !inside);
 		
-		
-		
-//		saida = validarPath(laco, elements, distance);
+		saida = validarPath(totalParallel, formaOriginal, distance);
 		
 //		saida.add(lacoTmp);
 		
@@ -1031,9 +1060,18 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 	}
 	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle)
 	{
+		double anglePi = Math.atan2(Pi.y - center.y, Pi.x - center.x);
+		double anglePf = Math.atan2(Pf.y - center.y, Pf.x - center.x);
 		double r = center.distance(Pi);
 		double distance = Pi.distance(Pf);
 		double alpha = 2*(Math.asin(distance/(2*r)));
+		if(arcAngle == 2*Math.PI)
+		{
+			if(anglePi > anglePf)
+			{
+				alpha = 2*Math.PI - alpha;
+			}
+		}
 		if(arcAngle < 0) 
 		{
 			alpha = -alpha;
@@ -1063,10 +1101,22 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				{
 					if(arcTemp.size() == 0)
 					{
-						LimitedArc segTemp = new LimitedArc(arcCenter, arcI, calcDeltaAngle(arcI,intTemp,arcCenter,oldDeltaAngle));
-						arcTemp.add(segTemp);
-						segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
-						arcTemp.add(segTemp);
+						if(arc.getDeltaAngle() == 2*Math.PI)
+						{
+							Point3d intTempNext = intersecoes.get(h+1);
+							LimitedArc segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,intTempNext,arcCenter,oldDeltaAngle));
+							arcTemp.add(segTemp);
+							segTemp = new LimitedArc(arcCenter, intTempNext, calcDeltaAngle(intTempNext,intTemp,arcCenter,oldDeltaAngle));
+							arcTemp.add(segTemp);
+
+						}
+						else
+						{
+							LimitedArc segTemp = new LimitedArc(arcCenter, arcI, calcDeltaAngle(arcI,intTemp,arcCenter,oldDeltaAngle));
+							arcTemp.add(segTemp);
+							segTemp = new LimitedArc(arcCenter, intTemp,calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
+							arcTemp.add(segTemp);
+						}
 						showArcs(arcTemp);
 					}
 					else
@@ -1078,19 +1128,19 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 							Point3d arcTempF = arcTemp.get(s).getFinalPoint();
 							LimitedArc aTmp = arcTemp.get(s);
 							//Problema: Esta fazendo o belongs com o mesmo aTmp, varias vezes
-							if(belongsArc(aTmp,intTemp))
+
+							if((roundNumber(calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle),10) != 0) && (roundNumber(calcDeltaAngle(intTemp,arcTempF,arcCenter,oldDeltaAngle),10) != 0))							
 							{
-//								System.out.println("intTemp: " + intTemp);
-//								System.out.println("aTmp: " + arcTempI);
-//								System.out.println("Intersection " + h + " Belongs to arc " + s);
-								LimitedArc segTemp = new LimitedArc(arcCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle));
-								System.out.println(segTemp.getInitialPoint());
-								System.out.println(segTemp.getDeltaAngle());
-								arcTemp.add(segTemp);
-								segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcTempF,arcCenter,oldDeltaAngle));
-								arcTemp.add(segTemp);
-								arcTemp.remove(aTmp);
-								break;
+								
+								if(belongsArc(aTmp,intTemp))
+								{
+									LimitedArc segTemp = new LimitedArc(arcCenter, arcTempI, calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle));
+									arcTemp.add(segTemp);
+									segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,arcTempF,arcCenter,oldDeltaAngle));
+									arcTemp.add(segTemp);
+									arcTemp.remove(aTmp);
+									break;
+								}
 							}
 						}
 						showArcs(arcTemp);
@@ -1140,22 +1190,22 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		return lineTemp;
 	}
 	
-	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<ArrayList<LimitedElement>> elements, ArrayList<ArrayList<LimitedElement>> formaOriginal, double distance)
+	//O validar é um array de arrays, pois cria lacos
+	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
-		showElements(elements.get(0));
+//		showElements(elements);
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 //		System.out.println("elements: " + elements.size());
-		for(int i = 0;i < elements.size();i++)
-		{
-			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements.get(i));
-//		showElements(elementsIntermediario);
-			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal.get(i),distance);
+//		for(int i = 0;i < elements.size();i++)
+//		{
+			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
+			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
 			System.out.println("elementsInter2: " + elementsIntermediario2.size());
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
 			if(elementsIntermediario3 != null)
 			{
 				System.out.println("elementsInter3: " + elementsIntermediario3.size());
-				showElements(elementsIntermediario2);
+//				showElements(elementsIntermediario2);
 				for(int j = 0;j < elementsIntermediario3.size();j++)
 				{
 					elementsValidated.add(elementsIntermediario3.get(j));					
@@ -1163,7 +1213,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			}
 //		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 //		elementsValidated.add(elementsIntermediario2);
-		}
+//		}
 		if (elementsValidated.size() != 0)
 		{
 			return elementsValidated;
@@ -2079,7 +2129,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 	{
 		LimitedArc newArc = null;
 		
-		if (arc.getDeltaAngle()<0 /*|| !(inside)*/)
+		if (arc.getDeltaAngle()<0 || !(inside))
 		{
 			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());

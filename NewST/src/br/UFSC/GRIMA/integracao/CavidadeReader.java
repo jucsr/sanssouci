@@ -235,7 +235,7 @@ public class CavidadeReader {
 				circularBoss.setAltura(altura);
 				circularBoss.setDiametro1(diametro1);
 				circularBoss.setDiametro2(diametro2);
-				circularBoss.setCentre(centre);
+				circularBoss.setCenter(centre);
 				circularBoss.setPosicao(centre.getX(), centre.getY(), z + profundidadeCavidade - altura);
 				circularBoss.setFace(faceAtual);
 				circularBoss.setPosition(positionBoss);

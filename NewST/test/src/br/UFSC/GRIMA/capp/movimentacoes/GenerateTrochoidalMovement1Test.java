@@ -41,7 +41,8 @@ public class GenerateTrochoidalMovement1Test
 	    LimitedLine l7= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
 	    LimitedLine l8= new LimitedLine(new Point3d(133.00000000000003,285.0,0), new Point3d(175.0,285.0,0));
 		
-		LimitedArc arco0 = new LimitedArc(new Point3d(400, 200.0, 0), new Point3d(350, 200, 0), Math.PI / 2);
+//		LimitedArc arco0 = new LimitedArc(new Point3d(400, 200.0, 0), new Point3d(350, 200, 0), Math.PI /2);
+		LimitedArc arco0 = new LimitedArc(new Point3d(400, 200.0, 0), new Point3d(400, 150, 0), Math.PI / 2);
 	    
 //		elements.add(l1);
 //		elements.add(l2);

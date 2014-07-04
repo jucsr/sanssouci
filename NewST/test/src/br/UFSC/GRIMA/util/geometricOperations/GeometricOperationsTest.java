@@ -147,8 +147,9 @@ public class GeometricOperationsTest
 		CircularBoss arcBoss = new CircularBoss("", 100, 200, pocket.Z, 15, 15, pocket.getProfundidade());
 		RectangularBoss rectBoss = new RectangularBoss(15, 10, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(100, 200, pocket.Z);
-		itsBoss.add(rectBoss);
-//		itsBoss.add(arcBoss);
+		rectBoss.setRadius(0);
+//		itsBoss.add(rectBoss);
+		itsBoss.add(arcBoss);
 		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)
@@ -525,7 +526,7 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath2Test()
 	{
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 42);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket,30);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -565,7 +566,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 6) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)

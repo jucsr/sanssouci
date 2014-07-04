@@ -155,19 +155,19 @@ public class GeneralClosedPocketVertexAdd
 //			System.out.println("Initial Point of arc " + arcNew.getInitialPoint());
 //			System.out.println("Final Point of arc " + arcNew.getFinalPoint());
 
-			if (arcNew.getRadius()==0)
-			{
-				if (tempElements.size()!=0)
-				{
-					if (tempElements.getClass().equals(LimitedLine.class))
-					{
-						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
-						tempElements.add(new LimitedLine(lastPoint, p2));
-					}
-				}
-				tempElements.add(new LimitedLine(p2, p3));
-			}
-			else
+//			if (arcNew.getRadius()==0)
+//			{
+//				if (tempElements.size()!=0)
+//				{
+//					if (tempElements.getClass().equals(LimitedLine.class))
+//					{
+//						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
+//						tempElements.add(new LimitedLine(lastPoint, p2));
+//					}
+//				}
+//				tempElements.add(new LimitedLine(p2, p3));
+//			}
+//			else
 			{
 				if (tempElements.size()!=0)
 				{

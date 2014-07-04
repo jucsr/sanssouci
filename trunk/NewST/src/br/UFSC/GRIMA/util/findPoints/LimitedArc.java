@@ -114,17 +114,17 @@ public class LimitedArc extends LimitedElement
 //		if (vectorInitial.getY() < 0)
 //			initialAngle = -initialAngle;
 
-//		if (this.radius != 0)
-//		{
+		if (this.radius != 0)
+		{
 			this.finalPoint = new Point3d();
 			this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
 			this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
 			this.finalPoint.setZ(this.getCenter().getZ());
-//		}
-//		else
-//		{
-//			this.finalPoint = this.center;
-//		}
+		}
+		else
+		{
+			this.finalPoint = this.center;
+		}
 	}
 	
 	public LimitedArc(Point3d initialPoint, Point3d finalPoint, Point3d center)

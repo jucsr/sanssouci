@@ -101,6 +101,77 @@ public class GeometricOperations
 		Point3d plusPoint = new Point3d(p1.getX()+p2.getX(), p1.getY()+p2.getY(),p1.getZ()+p2.getZ());
 		return plusPoint;
 	}
+	
+	public static Point3d pointPlusEscalar(Point3d p, String svar, double dvar)
+	{
+		Point3d plusPoint = p;
+		if(svar == "x")
+		{
+			plusPoint = new Point3d(p.getX()+dvar, p.getY(),p.getZ());
+		}
+		else if(svar == "y")
+		{
+			plusPoint = new Point3d(p.getX(), p.getY()+dvar,p.getZ());
+		}
+		else if(svar == "z")
+		{
+			plusPoint = new Point3d(p.getX(), p.getY(),p.getZ()+dvar);
+		}
+		else if(svar == "+x+y")
+		{
+			plusPoint = new Point3d(p.getX()+dvar, p.getY()+dvar,p.getZ());
+		}
+		else if(svar == "+x-y")
+		{
+			plusPoint = new Point3d(p.getX()+dvar, p.getY()-dvar,p.getZ());
+		}
+		else if(svar == "-x+y")
+		{
+			plusPoint = new Point3d(p.getX()-dvar, p.getY()+dvar,p.getZ());
+		}
+		else if(svar == "-x-y")
+		{
+			plusPoint = new Point3d(p.getX()-dvar, p.getY()-dvar,p.getZ());
+		}
+		else if(svar == "+x+z")
+		{
+			plusPoint = new Point3d(p.getX()+dvar, p.getY(),p.getZ()+dvar);
+		}
+		else if(svar == "+x-z")
+		{
+			plusPoint = new Point3d(p.getX()+dvar, p.getY(),p.getZ()-dvar);
+		}
+		else if(svar == "-x+z")
+		{
+			plusPoint = new Point3d(p.getX()-dvar, p.getY(),p.getZ()+dvar);
+		}
+		else if(svar == "-x-z")
+		{
+			plusPoint = new Point3d(p.getX()-dvar, p.getY(),p.getZ()-dvar);
+		}
+		else if(svar == "+y+z")
+		{
+			plusPoint = new Point3d(p.getX(), p.getY()+dvar,p.getZ()+dvar);
+		}
+		else if(svar == "+y-z")
+		{
+			plusPoint = new Point3d(p.getX(), p.getY()+dvar,p.getZ()-dvar);
+		}
+		else if(svar == "-y+z")
+		{
+			plusPoint = new Point3d(p.getX(), p.getY()-dvar,p.getZ()+dvar);
+		}
+		else if(svar == "-y-z")
+		{
+			plusPoint = new Point3d(p.getX(), p.getY()-dvar,p.getZ()-dvar);
+		}
+		else if(svar == "+x+y+z")
+		{
+			plusPoint = new Point3d(p.getX()+dvar, p.getY()+dvar,p.getZ()+dvar);
+		}
+		return plusPoint;
+	}
+	
 
 	public static Point3d minus(Point3d p1, Point3d p2)
 	{
@@ -947,7 +1018,19 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				else if(elements.get(j).isLimitedArc())
 				{
 					LimitedArc arcTmp = (LimitedArc)elements.get(j);
-					LimitedArc newArc = parallelArc(arcTmp, distance,inside);
+					LimitedArc newArc;
+					if (arcTmp.getRadius() == 0)
+					{
+						System.out.println(lacoTmp);
+						Point3d center = arcTmp.getInitialPoint();
+						Point3d pI = lacoTmp.get(j-1).getFinalPoint();
+						newArc = new LimitedArc(center,pI,Math.PI/2);
+						
+					}
+					else
+					{
+						newArc = parallelArc(arcTmp, distance,inside);
+					}
 					if(newArc != null)
 					{
 						lacoTmp.add(newArc);
@@ -996,17 +1079,57 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				//Tamanho em y
 				double c = tmp.getL2();
 				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
-				LimitedLine l1 = new LimitedLine(position,new Point3d(position.x + l,position.y,position.z));
-				LimitedLine l2 = new LimitedLine(l1.getFinalPoint(),new Point3d(l1.getFinalPoint().x,l1.getFinalPoint().y + c,l1.getFinalPoint().z));
-				LimitedLine l3 = new LimitedLine(l2.getFinalPoint(),new Point3d(l2.getFinalPoint().x - l,l2.getFinalPoint().y,l2.getFinalPoint().z));
-				LimitedLine l4 = new LimitedLine(l3.getFinalPoint(),new Point3d(l3.getFinalPoint().x,l3.getFinalPoint().y - c,l3.getFinalPoint().z));
-				//Criar arcos de arredondamento
-				LimitedArc a1 = new LimitedArc();
+//				Point3d arcCenter = pointPlusEscalar(position, "+x+y", tmp.getRadius());
+//				Point3d arcI = pointPlusEscalar(position, "y", tmp.getRadius());
+//				for(int i = 0;i < 4;i++)
+//				{
+//					LimitedArc a = new LimitedArc(arcCenter,arcI,Math.PI/2);
+//					LimitedLine lTmp = new LimitedLine(a.getFinalPoint(),l - 2*(tmp.getRadius()),0);
+//					if(i == )
+//					arcCenter = 
+//				}
+				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-2*tmp.getRadius())));
+				LimitedArc a1 = new LimitedArc(pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
+				System.out.println(a1.getFinalPoint());
+				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
+				LimitedArc a2 = new LimitedArc(pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
+				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),pointPlusEscalar(a2.getFinalPoint(), "x", -(l - 2*tmp.getRadius())));
+				LimitedArc a3 = new LimitedArc(pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
+				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
+				LimitedArc a4 = new LimitedArc(pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
 				
+//				ArrayList<Point2D> vertex = new ArrayList<Point2D>();
+//				Point2D p1 = new Point2D.Double(position.x,position.y);
+//				Point2D p2 = new Point2D.Double(p1.getX() + l,p1.getY());
+//				Point2D p3 = new Point2D.Double(p2.getX(),p2.getY() + c);
+//				Point2D p4 = new Point2D.Double(p3.getX() - l,p3.getY());
+//				vertex.add(p1);
+//				vertex.add(p2);
+//				vertex.add(p3);
+//				vertex.add(p4);
+//				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(vertex, tmp.Z, tmp.getRadius());
+//				ArrayList<LimitedElement> elementosProtuberanciaRect = addBossVertex.getElements();
+//				showElements(elementosProtuberanciaRect);
+//				if(tmp.getRadius() == 0)
+//				{
+//					LimitedElement elementTemp1 = elementosProtuberanciaRect.get(0);					
+//					elementosProtuberanciaRect.add(elementTemp1);
+//					elementosProtuberanciaRect.remove(0);
+//				}
+//				showElements(elementosProtuberanciaRect);
+//				for(int i = 0;i < elementosProtuberanciaRect.size();i++)
+//				{
+//					elementosProtuberancia.add(elementosProtuberanciaRect.get(i));
+//				}
 				elementosProtuberancia.add(l1);
+				elementosProtuberancia.add(a1);
 				elementosProtuberancia.add(l2);
+				elementosProtuberancia.add(a2);
 				elementosProtuberancia.add(l3);
+				elementosProtuberancia.add(a3);
 				elementosProtuberancia.add(l4);
+				elementosProtuberancia.add(a4);
+				
 				
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
@@ -2127,18 +2250,18 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 	
 	public static LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside)
 	{
+		Point3d newInitialPoint;
 		LimitedArc newArc = null;
-		
 		if (arc.getDeltaAngle()<0 || !(inside))
 		{
-			Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
+			newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
 		}
 		else
 		{
 			if(arc.getRadius() > distance)
 			{
-				Point3d newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
+				newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
 			}
 		}
@@ -2159,7 +2282,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		Point3d vertex3d = plus(arc.getCenter(), multiply(distanceCenterToVertex,unitarialFromCenterToVertex));
 		return vertex3d;
 	}
-	
 	public static void showElements(ArrayList<LimitedElement> elements)
 	{
 		int i = 0;

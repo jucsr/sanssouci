@@ -69,11 +69,11 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateTrochoidalPathTest()
 	{
-		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elements, 20, 25);
+		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(formaOriginal, 20, 25);
 		ArrayList<LimitedElement> movimentacoes = gen.generatePaths(gen.getPaths());
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
-		for(LimitedElement tmp : elements)
+		for(LimitedElement tmp : formaOriginal)
 		{
 			all.add(tmp);
 		}

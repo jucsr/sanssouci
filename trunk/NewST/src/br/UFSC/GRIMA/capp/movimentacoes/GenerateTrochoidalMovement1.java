@@ -48,7 +48,7 @@ public class GenerateTrochoidalMovement1
 //		ArrayList<Path> saida = new ArrayList<Path>();
 		double norma = line.getInitialPoint().distance(line.getFinalPoint());
 		double distanciaAcumulada = 0;
-		LimitedLine lineAuxTmp = GeometricOperations.absoluteParallel(line, radius, true); // linha paralela
+		LimitedLine lineAuxTmp = GeometricOperations.absoluteParallel(line, radius, false); // linha paralela
 		Point3d vetorUnitario = GeometricOperations.unitVector(lineAuxTmp.getInitialPoint(), lineAuxTmp.getFinalPoint()); // vetor unitario da linha paralela
 		int fracionamento = (int)(norma / avanco);
 		for (int i = 0; i < fracionamento; i++)
@@ -96,8 +96,8 @@ public class GenerateTrochoidalMovement1
 		double deltaAcumulado = 0;
 		int fracionamento = (int)(norma / avanco) + 1;
 		double deltaTmp = avanco / arc.getRadius();
-		System.out.println("fracionamento = " + fracionamento);
-		System.out.println("norma = " + norma);
+//		System.out.println("fracionamento = " + fracionamento);
+//		System.out.println("norma = " + norma);
 		for(int i = 0; i < fracionamento; i++)
 		{
 //			for(int i = 0; i * deltaAcumulado * arc.getRadius() < norma; i++)
@@ -202,7 +202,6 @@ public class GenerateTrochoidalMovement1
 			else if(pathTmp.isCircular())
 			{
 				CircularPath circularTmp = (CircularPath)pathTmp;
-				System.err.println("DELTA =  " + circularTmp.getAngulo());
 //				LimitedArc arcTmp = new LimitedArc(circularTmp.getInitialPoint(), circularTmp.getFinalPoint(), circularTmp.getCenter());
 				LimitedArc arcTmp;
 

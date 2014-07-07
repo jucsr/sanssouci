@@ -155,7 +155,6 @@ public class GeometricOperationsTest
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)
 //		{
 		formaOriginal = addPocketVertex.getElements();
-		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
 //		formaOriginal.get(0).add(arco0);
 		//		}
 

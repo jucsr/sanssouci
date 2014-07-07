@@ -8,11 +8,13 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 public class GenerateTrochoidalMovement1Test 
 {
@@ -78,6 +80,65 @@ public class GenerateTrochoidalMovement1Test
 			all.add(tmp);
 		}
 		for(LimitedElement tmp : movimentacoes)
+		{
+			all.add(tmp);
+		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void generateMultipleParallelAndTrochoidalMovementTest()
+	{
+		double trochoidalRadius = 10;
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
+	    //Forma 1
+		points.add(new Point2D.Double(8, 160));
+		points.add(new Point2D.Double(8, 320));
+		points.add(new Point2D.Double(480, 320));
+		points.add(new Point2D.Double(700, 500));
+		points.add(new Point2D.Double(700, 160));
+		points.add(new Point2D.Double(480, 160));
+		points.add(new Point2D.Double(480, 40));
+		points.add(new Point2D.Double(200, 40));
+		points.add(new Point2D.Double(200,160));
+		
+		GeneralClosedPocket pocket = new GeneralClosedPocket();
+		pocket.setPoints(points);
+		pocket.setRadius(30);
+		pocket.setPosicao(50, 50, 0);
+		pocket.setProfundidade(15);
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
+		formaOriginal = addPocketVertex.getElements();
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius) ;
+		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
+		for(int i = 0; i < multiplePath.size(); i++)
+		{
+			for(int j = 0; j < multiplePath.get(i).size(); j++)
+			{
+				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), 50, 25);
+				ArrayList<LimitedElement> movimentacoes = gen.generatePaths(gen.getPaths());
+				for(int k = 0; k < movimentacoes.size(); k ++)
+				{
+					pathsVector.add(movimentacoes.get(k));
+				}
+//				for(int k = 0; k < multiplePath.get(i).get(j).size(); k++)
+//				{
+//					if(multiplePath.get(i).get(j).get(k) != null)
+//					{
+//						if(multiplePath.get(i).get(j).get(k).isLimitedLine())
+//						System.err.println("line = "+ ((LimitedLine)multiplePath.get(i).get(j).get(k)).getInitialPoint() + ((LimitedLine)multiplePath.get(i).get(j).get(k)).getFinalPoint());
+//					}
+//				}
+			}
+		}
+		
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		for(LimitedElement tmp : formaOriginal)
+		{
+			all.add(tmp);
+		}
+		for(LimitedElement tmp : pathsVector)
 		{
 			all.add(tmp);
 		}

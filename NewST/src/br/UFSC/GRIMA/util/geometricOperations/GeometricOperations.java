@@ -1621,7 +1621,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					ArrayList<LimitedLine> lineTemp = quebraLinha(linei,intersection); 
 					for(int k = 0;k < lineTemp.size();k++)
 					{
-						if(lineTemp.get(k).getInitialPoint() != lineTemp.get(k).getFinalPoint())
+						if(!isTheSamePoint(lineTemp.get(k).getInitialPoint(), lineTemp.get(k).getFinalPoint()))
 						{
 							elementsIntermediario.add(lineTemp.get(k));
 						}
@@ -1638,7 +1638,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					System.out.println(arcTemp.size());
 					for(int k = 0;k < arcTemp.size();k++)
 					{
-						if(arcTemp.get(k).getInitialPoint() != arcTemp.get(k).getFinalPoint())
+						if(!isTheSamePoint(arcTemp.get(k).getInitialPoint(), arcTemp.get(k).getFinalPoint()))
 						{
 							elementsIntermediario.add(arcTemp.get(k));
 						}
@@ -1648,7 +1648,12 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			if(thereIsIntersection == false)
 			{
 				elementsIntermediario.add(ei);
+				if(!isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
+				{
+					elementsIntermediario.add(ei);
+				}
 			}
+			
 		}
 		return elementsIntermediario;
 	}

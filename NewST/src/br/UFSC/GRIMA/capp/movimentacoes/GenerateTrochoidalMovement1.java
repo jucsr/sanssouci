@@ -49,6 +49,8 @@ public class GenerateTrochoidalMovement1
 		double norma = line.getInitialPoint().distance(line.getFinalPoint());
 		double distanciaAcumulada = 0;
 		LimitedLine lineAuxTmp = GeometricOperations.absoluteParallel(line, radius, false); // linha paralela
+//		System.out.println("line = " + line.getInitialPoint() + line.getFinalPoint() + "\t\t\tlineaux = " + lineAuxTmp);
+		
 		Point3d vetorUnitario = GeometricOperations.unitVector(lineAuxTmp.getInitialPoint(), lineAuxTmp.getFinalPoint()); // vetor unitario da linha paralela
 		int fracionamento = (int)(norma / avanco);
 		for (int i = 0; i < fracionamento; i++)

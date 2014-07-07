@@ -148,8 +148,8 @@ public class GeometricOperationsTest
 		RectangularBoss rectBoss = new RectangularBoss(15, 10, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(100, 200, pocket.Z);
 		rectBoss.setRadius(0);
-//		itsBoss.add(rectBoss);
-		itsBoss.add(arcBoss);
+		itsBoss.add(rectBoss);
+//		itsBoss.add(arcBoss);
 		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)

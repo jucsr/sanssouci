@@ -41,7 +41,7 @@ public class GeneralClosedPocketVertexAdd
 		
 		this.makeForma();
 		this.makeElements();
-		this.showElements();
+//		this.showElements();
 		this.elementsToLinearPath();
 	}
 	
@@ -50,7 +50,7 @@ public class GeneralClosedPocketVertexAdd
 		this.makeVertex(elementsIn);
 		this.makeForma();
 		this.makeElements();
-		this.showElements();
+//		this.showElements();
 		this.elementsToLinearPath();
 	}
 	
@@ -64,7 +64,7 @@ public class GeneralClosedPocketVertexAdd
 		}
 		this.makeForma();
 		this.makeElements();
-		this.showElements();
+//		this.showElements();
 		this.elementsToLinearPath();
 	}	
 

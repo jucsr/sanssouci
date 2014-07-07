@@ -89,15 +89,19 @@ public class GenerateTrochoidalMovement1
 	}
 	private ArrayList<Path> generatePathsInLimitedArcBase(LimitedArc arc)
 	{
+		
 //		ArrayList<Path> saida = new ArrayList<Path>();
 		double norma = Math.abs(arc.getDeltaAngle() * arc.getRadius());
 		double initialAngle = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x); 
 		double deltaAcumulado = 0;
 		int fracionamento = (int)(norma / avanco) + 1;
-		System.out.println("fracionamento" + fracionamento);
-		System.out.println("deltaAngle = " + arc.getDeltaAngle());
+		double deltaTmp = avanco / arc.getRadius();
+		System.out.println("fracionamento = " + fracionamento);
+		System.out.println("norma = " + norma);
 		for(int i = 0; i < fracionamento; i++)
 		{
+//			for(int i = 0; i * deltaAcumulado * arc.getRadius() < norma; i++)
+
 			double xBase = arc.getCenter().x + arc.getRadius() * Math.cos(initialAngle + deltaAcumulado);
 			double yBase = arc.getCenter().y + arc.getRadius() * Math.sin(initialAngle + deltaAcumulado);
 			Point3d centroBaseTmp = new Point3d(xBase, yBase, arc.getCenter().z);
@@ -126,13 +130,46 @@ public class GenerateTrochoidalMovement1
 			Point3d vetorUnitarioProximaTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseProximaTmp);
 			Point3d pontoFinalTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radius, vetorUnitarioProximaTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radius, vetorUnitarioProximaTmp).y, arc.getCenter().z + GeometricOperations.multiply(arc.getRadius() + radius, vetorUnitarioProximaTmp).z);
 			
-			CircularPath arcTmp = new CircularPath(pontoInicialTmp, pontoFinalTmp, arc.getCenter(), sense);
+//			CircularPath arcTmp = new CircularPath(pontoInicialTmp, pontoFinalTmp, arc.getCenter(), sense);
+			double deltaAnguloTmp = avanco / (arc.getRadius()); 
+			double normaAcumulada = Math.abs((i + 1) * deltaTmp * arc.getRadius());
+			double normaAcumulada1 = Math.abs(i * deltaTmp * arc.getRadius());
+			if(arc.getDeltaAngle() < 0)
+			{
+				 if(normaAcumulada > norma)
+				 {
+					 deltaAnguloTmp = -(norma - normaAcumulada1) / (arc.getRadius());
+//					 System.err.println("****\ndeltaAnguloTmp = " + (deltaAnguloTmp * 180 / Math.PI));
+//					 System.err.println("****\ndeltaAnguloTmp = " + (deltaAnguloTmp));
+//					 System.err.println("norma = " + (norma));
+//					 System.err.println("norma acumulada = " + (normaAcumulada));
+//					 System.err.println("norma acumulada1 = " + (normaAcumulada1));
+				 } else
+				 {
+					 deltaAnguloTmp = - deltaAnguloTmp;
+				 }
+			}	
+			else
+			{
+				if(normaAcumulada > norma)
+				 {
+					 deltaAnguloTmp = (norma - normaAcumulada1) / (arc.getRadius());
+				 }
+			}
+//			System.err.println("normaAcumulada = " + normaAcumulada);
+//			if(arc.getDeltaAngle() < 0)
+//			{
+//				deltaAnguloTmp = -deltaAnguloTmp;
+//			}
+//			System.out.println("delta Acumulado == " + deltaAcumulado);
+			CircularPath arcTmp = new CircularPath(arc.getCenter(), pontoInicialTmp, pontoFinalTmp, deltaAnguloTmp, sense);
+//			System.out.println("delta ANGULO " + i + " = "+ arcTmp.getAngulo());
+//			System.out.println("ponto inicial " + i + " = " + arcTmp.getInitialPoint());
+//			System.out.println("ponto final " + i + " = " + arcTmp.getFinalPoint());
 //			arcTmp.setAngulo(angulo);
 			paths.add(arcTmp);
 
-			System.out.println(i + " ===============");
-			System.out.println("pontoInicial = " + pontoInicialTmp);
-			System.out.println("pontoFinal = " + pontoFinalTmp);
+
 //			System.out.println("RaioArcTmp =  " + pontoInicialTmp.distance(arc.getCenter()));
 //			System.out.println("centerBaseTmp = " + centroBaseTmp);
 			

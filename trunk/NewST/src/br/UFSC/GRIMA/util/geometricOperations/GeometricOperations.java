@@ -411,6 +411,42 @@ public class GeometricOperations
 		return minimumDistanceLineToArc(line, arc);
 	}
 	
+//	public static double minimumDistanceLineToArc(LimitedLine line, LimitedArc arc)
+//	{
+//		double distance=0.0;
+//		
+//		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());
+//		if(arc.getDeltaAngle() < 0)
+//		{
+//			Point3d temp = arc.getInitialPoint();
+//			Point3d temp1 = arc.getFinalPoint();
+//			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
+//		}
+//		
+//		//System.out.println("Center of arc " + arc.getCenter());
+//		Point3d nearestFromLine = nearestPoint(arcTmp.getCenter(), line);
+//		//System.out.println("Nearest calculated*****" + nearestFromLine);
+//		
+//		if(chooseMinimum(distance(arcTmp.getCenter(), line.getInitialPoint()), distance(arcTmp.getCenter(), line.getFinalPoint())) <= arcTmp.getRadius())
+//		{
+//			//System.out.println("Line within the arc ");
+//			//System.out.println("Arc Initial to line" + minimumDistance(arc.getInitialPoint(), line));
+//			distance = chooseMinimum(minimumDistancePointToLine(arcTmp.getInitialPoint(), line), minimumDistancePointToLine(arcTmp.getFinalPoint(), line), minimumDistancePointToArc(line.getInitialPoint(), arcTmp), minimumDistancePointToArc(line.getFinalPoint(), arcTmp));
+//			return distance;
+//		}
+//		
+//		Point3d v = new Point3d(nearestFromLine.getX()-arcTmp.getCenter().getX(), nearestFromLine.getY()-arcTmp.getCenter().getY(), nearestFromLine.getZ()-arcTmp.getCenter().getZ());
+//		Point3d normalPoint = plus(arcTmp.getCenter(),multiply(arcTmp.getRadius()/norm(v),v));
+//		if (!contentsPoint(normalPoint, arcTmp))
+//		{
+//			//System.out.println("normalPoint is not within the arc");
+//			return chooseMinimum(minimumDistancePointToLine(arcTmp.getInitialPoint(),line), minimumDistancePointToLine(arcTmp.getFinalPoint(), line), minimumDistancePointToArc(line.getInitialPoint(),arcTmp), minimumDistancePointToArc(line.getFinalPoint(), arcTmp));
+//		}
+//
+//		distance = distance(normalPoint,nearestFromLine);
+//		return distance;
+//	}
+	
 	public static double minimumDistanceLineToArc(LimitedLine line, LimitedArc arc)
 	{
 		double distance=0.0;
@@ -423,9 +459,7 @@ public class GeometricOperations
 			arcTmp = new LimitedArc(temp1, temp, arc.getCenter());
 		}
 		
-		//System.out.println("Center of arc " + arc.getCenter());
 		Point3d nearestFromLine = nearestPoint(arcTmp.getCenter(), line);
-		//System.out.println("Nearest calculated*****" + nearestFromLine);
 		
 		if(chooseMinimum(distance(arcTmp.getCenter(), line.getInitialPoint()), distance(arcTmp.getCenter(), line.getFinalPoint())) <= arcTmp.getRadius())
 		{
@@ -1587,7 +1621,10 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					ArrayList<LimitedLine> lineTemp = quebraLinha(linei,intersection); 
 					for(int k = 0;k < lineTemp.size();k++)
 					{
-						elementsIntermediario.add(lineTemp.get(k));
+						if(lineTemp.get(k).getInitialPoint() != lineTemp.get(k).getFinalPoint())
+						{
+							elementsIntermediario.add(lineTemp.get(k));
+						}
 					}
 				}
 				else if(ei.isLimitedArc())
@@ -1601,7 +1638,10 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					System.out.println(arcTemp.size());
 					for(int k = 0;k < arcTemp.size();k++)
 					{
-						elementsIntermediario.add(arcTemp.get(k));
+						if(arcTemp.get(k).getInitialPoint() != arcTemp.get(k).getFinalPoint())
+						{
+							elementsIntermediario.add(arcTemp.get(k));
+						}
 					}
 				}
 			}

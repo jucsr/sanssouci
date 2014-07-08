@@ -494,26 +494,15 @@ public class GeometricOperations
 			}
 			else
 			{
-				double distance1 = line.getInitialPoint().distance(arc.getInitialPoint());
-				double distance2 = line.getInitialPoint().distance(arc.getFinalPoint());
-				double distance3 = line.getFinalPoint().distance(arc.getInitialPoint());
-				double distance4 = line.getFinalPoint().distance(arc.getFinalPoint());
-				ArrayList<Double> distances = new ArrayList<Double>();
-				distances.add(distance1);
-				distances.add(distance2);
-				distances.add(distance3);
-				distances.add(distance4);
-				minimum = distances.get(0);
-				for(Double distanceTmp : distances)
+				double distance1 = arc.getInitialPoint().distance(nearestPoint(arc.getInitialPoint(), line));
+				double distance2 = arc.getFinalPoint().distance(nearestPoint(arc.getInitialPoint(), line));
+				minimum = distance1;
+				if (distance2 < minimum) 
 				{
-					if(distanceTmp < minimum)
-					{
-						minimum = distanceTmp;
-					}
+					minimum = distance2;
 				}
 			}
 		}
-//		System.out.println("minimum = " + minimum);
 		return minimum;
 	}
 	public static Point3d nearestPoint(LimitedArc arc1, LimitedArc arc2)

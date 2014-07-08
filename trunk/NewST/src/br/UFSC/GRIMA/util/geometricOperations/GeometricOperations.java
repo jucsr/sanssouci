@@ -480,7 +480,42 @@ public class GeometricOperations
 		distance = distance(normalPoint,nearestFromLine);
 		return distance;
 	}
-
+	public static double minimumDistanceLineToArc1(LimitedLine line, LimitedArc arc)
+	{
+		double minimum = 0;
+		Point3d p = nearestPoint(arc.getCenter(), line);
+		LimitedLine lineaAux = new LimitedLine(p, arc.getCenter());
+		if(intersectionPoint(arc, line) == null)
+		{
+			if(intersectionPoint(arc, lineaAux) != null)
+			{
+				Point3d intersection = intersectionPoint(arc, lineaAux).get(0);
+				minimum = p.distance(intersection);
+			}
+			else
+			{
+				double distance1 = line.getInitialPoint().distance(arc.getInitialPoint());
+				double distance2 = line.getInitialPoint().distance(arc.getFinalPoint());
+				double distance3 = line.getFinalPoint().distance(arc.getInitialPoint());
+				double distance4 = line.getFinalPoint().distance(arc.getFinalPoint());
+				ArrayList<Double> distances = new ArrayList<Double>();
+				distances.add(distance1);
+				distances.add(distance2);
+				distances.add(distance3);
+				distances.add(distance4);
+				minimum = distances.get(0);
+				for(Double distanceTmp : distances)
+				{
+					if(distanceTmp < minimum)
+					{
+						minimum = distanceTmp;
+					}
+				}
+			}
+		}
+//		System.out.println("minimum = " + minimum);
+		return minimum;
+	}
 	public static Point3d nearestPoint(LimitedArc arc1, LimitedArc arc2)
 	{
 		ArrayList<Double> distances = new ArrayList<Double>();
@@ -969,7 +1004,8 @@ public class GeometricOperations
 			if (e2.isLimitedArc())
 			{
 				LimitedArc arc2 = (LimitedArc)e2;
-				distance = minimumDistanceLineToArc(line1, arc2);
+//				distance = minimumDistanceLineToArc(line1, arc2);
+				distance = minimumDistanceLineToArc1(line1, arc2);
 			}
 		}
 		else if (e1.isLimitedArc())
@@ -978,7 +1014,8 @@ public class GeometricOperations
 			if (e2.isLimitedLine())
 			{
 				LimitedLine line2 = (LimitedLine)e2;
-				distance = minimumDistanceArcToLine(arc1,line2);
+//				distance = minimumDistanceArcToLine(arc1,line2);
+				distance = minimumDistanceLineToArc1(line2, arc1);
 			}
 			if (e2.isLimitedArc())
 			{

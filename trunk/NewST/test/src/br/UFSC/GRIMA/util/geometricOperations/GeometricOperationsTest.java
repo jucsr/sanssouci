@@ -148,8 +148,9 @@ public class GeometricOperationsTest
 		RectangularBoss rectBoss = new RectangularBoss(15, 10, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(100, 200, pocket.Z);
 		rectBoss.setRadius(0);
-		itsBoss.add(rectBoss);
-//		itsBoss.add(arcBoss);
+//		itsBoss.add(rectBoss);
+		
+		itsBoss.add(arcBoss);
 		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)
@@ -763,7 +764,8 @@ public class GeometricOperationsTest
 	@Test
 	public void nearestPointTest()
 	{
-	    LimitedLine line = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
+//	    LimitedLine line = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
+	    LimitedLine line = new LimitedLine(new Point3d(30,50,0), new Point3d(100,50,0));
 	    Point3d p = new Point3d(50,70,0);
 	    Point3d pNear = GeometricOperations.nearestPoint(p, line);
 	    System.out.println("Nearest Point: " + pNear);

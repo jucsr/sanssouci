@@ -495,7 +495,7 @@ public class GeometricOperations
 			else
 			{
 				double distance1 = arc.getInitialPoint().distance(nearestPoint(arc.getInitialPoint(), line));
-				double distance2 = arc.getFinalPoint().distance(nearestPoint(arc.getInitialPoint(), line));
+				double distance2 = arc.getFinalPoint().distance(nearestPoint(arc.getFinalPoint(), line));
 				minimum = distance1;
 				if (distance2 < minimum) 
 				{
@@ -644,15 +644,26 @@ public class GeometricOperations
 				{
 					if(belongsArc(arc2,intersection.get(0)))
 					{
-						double distanceTmp1 = arc2.getCenter().distance(arc1.getInitialPoint()) - arc2.getRadius();
-						double distanceTmp2 = arc2.getCenter().distance(arc1.getFinalPoint()) - arc2.getRadius();
-						if(distanceTmp1 < distanceTmp2)
+						LimitedLine temp1 = new LimitedLine(arc2.getCenter(),arc1.getInitialPoint());
+						LimitedLine temp2 = new LimitedLine(arc2.getCenter(),arc1.getFinalPoint());
+//						double distanceTmp1 = arc2.getCenter().distance(arc1.getInitialPoint()) - arc2.getRadius();
+//						double distanceTmp2 = arc2.getCenter().distance(arc1.getFinalPoint()) - arc2.getRadius();
+						ArrayList<Double> distanceTmp = new ArrayList<Double>();
+						if(intersectionPoint(arc2,temp1) != null)
 						{
-							minimumDistance = distanceTmp1;
+							distanceTmp.add(temp1.getInitialPoint().distance(temp1.getFinalPoint()));
 						}
-						else
+						if(intersectionPoint(arc2,temp2) != null)
 						{
-							minimumDistance = distanceTmp2;
+							distanceTmp.add(temp2.getInitialPoint().distance(temp2.getFinalPoint()));
+						}
+						minimumDistance = distanceTmp.get(0);
+						for(Double tmp:distanceTmp)
+						{
+							if(tmp<minimumDistance)
+							{
+								minimumDistance = tmp;
+							}
 						}
 					}
 				}
@@ -1023,6 +1034,9 @@ public class GeometricOperations
 		{
 			LimitedElement temp = formaOriginal.get(i);
 			double auxiliar = minimumDistance(temp,element);
+			System.out.println(temp.getClass());
+			System.out.println(temp.getInitialPoint());
+			System.out.println(auxiliar);
 			if(minimumDistance > auxiliar)
 			{
 				minimumDistance = auxiliar;
@@ -1081,7 +1095,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					LimitedArc newArc;
 					if (arcTmp.getRadius() == 0)
 					{
-						System.out.println(lacoTmp);
+//						System.out.println(lacoTmp);
 						Point3d center = arcTmp.getInitialPoint();
 						Point3d pI = lacoTmp.get(j-1).getFinalPoint();
 						newArc = new LimitedArc(center,pI,Math.PI/2);
@@ -1221,7 +1235,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			formaOriginal.add(tmp);
 		}
 		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside);
-		showElements(parallelTemp1);
+//		showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside);
 		
 		for(LimitedElement tmp:parallelTemp1)
@@ -1232,6 +1246,8 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		{
 			totalParallel.add(tmp);
 		}
+		
+//		showElements(totalParallel);
 		
 //		saida = parallelPath1(laco, distance, !inside);
 		
@@ -1300,7 +1316,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 							segTemp = new LimitedArc(arcCenter, intTemp,calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
 							arcTemp.add(segTemp);
 						}
-						showArcs(arcTemp);
+//						showArcs(arcTemp);
 					}
 					else
 					{
@@ -1326,7 +1342,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 								}
 							}
 						}
-						showArcs(arcTemp);
+//						showArcs(arcTemp);
 					}
 				}
 			}
@@ -1383,6 +1399,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //		{
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
+			showElements(elementsIntermediario);
 			System.out.println("elementsInter2: " + elementsIntermediario2.size());
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
 			if(elementsIntermediario3 != null)
@@ -2327,6 +2344,10 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		{
 			newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 			newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
+			ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
+			arcs.add(newArc);
+//			showArcs(arcs);
+			
 		}
 		else
 		{

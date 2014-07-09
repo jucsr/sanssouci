@@ -144,9 +144,9 @@ public class GeometricOperationsTest
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-		CircularBoss arcBoss = new CircularBoss("", 100, 200, pocket.Z, 15, 15, pocket.getProfundidade());
-		RectangularBoss rectBoss = new RectangularBoss(15, 10, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(100, 200, pocket.Z);
+		CircularBoss arcBoss = new CircularBoss("", 100, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
+		rectBoss.setPosicao(400, 200, pocket.Z);
 		rectBoss.setRadius(0);
 //		itsBoss.add(rectBoss);
 		
@@ -630,14 +630,16 @@ public class GeometricOperationsTest
 //	    LimitedArc arco9= new LimitedArc(new Point3d(380.10004003203204,140.0,0),new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,135.0,0));
 		//(177.7623531673773,83.68313755650307,0)
 		LimitedArc arco2= new LimitedArc(new Point3d(230.0,70.0,0),new Point3d(202.2376468326227,116.31686244349693,0),0.7746332017773072);
+		LimitedArc arco1= new LimitedArc(new Point3d(100.0,200.0,0),new Point3d(143.87482193696061,190.0,0),3.5897788381925357);
 //		LimitedArc arco3= new LimitedArc(new Point3d(150.0,130.0,0),new Point3d(202.2376468326227,116.31686244349693,0),-0.7746332017773072);
-		LimitedLine l12= new LimitedLine(new Point3d(175.0,255.0,0),new Point3d(103.0,255.0,0));
+		LimitedLine l12= new LimitedLine(new Point3d(170,160,0),new Point3d(38,160,0));
 		LimitedArc arco19= new LimitedArc(new Point3d(543.2650236350173,256.7688678908215,0),new Point3d(532.5576201414465,249.0,0),new Point3d(471.07591554568916,345.0,0));
-	    System.out.println("Delta Angle: " + arco19.getDeltaAngle());
+	    System.out.println("Delta Angle: " + arco1.getDeltaAngle());
 	    
-		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal, arco2));
+		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal, arco1));
+		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistanceArcToLine(arco1, l12));
 //		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal.get(0), arco3));
-//		formaOriginal.get(0).add(arco2);
+		formaOriginal.add(arco1);
 //		formaOriginal.get(0).add(arco3);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(formaOriginal);
 		desenhador.setVisible(true);
@@ -766,10 +768,19 @@ public class GeometricOperationsTest
 	{
 //	    LimitedLine line = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
 	    LimitedLine line = new LimitedLine(new Point3d(30,50,0), new Point3d(100,50,0));
-	    Point3d p = new Point3d(50,70,0);
-	    Point3d pNear = GeometricOperations.nearestPoint(p, line);
+	    LimitedArc arc1 = new LimitedArc(new Point3d(100,100,0),new Point3d(150,100,0),Math.PI);
+	    LimitedArc arc2 = new LimitedArc(new Point3d(50,110,0),new Point3d(35,110,0),Math.PI);
+	    Point3d p = new Point3d(50,100,0);
+//	    Point3d pNear = GeometricOperations.nearestPoint(p, line);
+	    Point3d pNear = GeometricOperations.nearestPoint(p, arc2);
 	    System.out.println("Nearest Point: " + pNear);
-	    double lol = 1.1600697726695512E-15;
+	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+    	elements.add(arc1);
+    	elements.add(arc2);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		desenhador.setVisible(true);
+		for(;;);
+	    
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

@@ -772,7 +772,7 @@ public class GeometricOperationsTest
 	    LimitedArc arc2 = new LimitedArc(new Point3d(50,110,0),new Point3d(35,110,0),Math.PI);
 	    Point3d p = new Point3d(50,100,0);
 //	    Point3d pNear = GeometricOperations.nearestPoint(p, line);
-	    Point3d pNear = GeometricOperations.nearestPoint(p, arc2);
+	    Point3d pNear = GeometricOperations.nearestPoint1(p, arc2);
 	    System.out.println("Nearest Point: " + pNear);
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
     	elements.add(arc1);

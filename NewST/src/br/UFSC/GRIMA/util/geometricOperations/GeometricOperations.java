@@ -452,7 +452,13 @@ public class GeometricOperations
 		//System.out.println("Normal point " + normalPoint);
 		return distance(p, normalPoint);
 	}	
-
+	public static double minimumDistancePointToArc1(Point3d p, LimitedArc arc)
+	{	
+		double minimaDistancia = 0;
+		Point3d pontoMaisProximo = nearestPoint1(p, arc);
+		minimaDistancia = p.distance(pontoMaisProximo);
+		return minimaDistancia;
+	}	
 	public static double minimumDistanceArcToLine(LimitedArc arc, LimitedLine line)
 	{
 		return minimumDistanceLineToArc(line, arc);

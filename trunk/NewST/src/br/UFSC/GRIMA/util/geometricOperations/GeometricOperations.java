@@ -411,8 +411,8 @@ public class GeometricOperations
 			}
 		} else // ======= p esta dentro do circulo
 		{
-			Point3d vetorUnitario = unitVector(p, arc.getCenter());
-			Point3d intersection = multiply(arc.getRadius(), vetorUnitario);
+			Point3d vetorUnitario = unitVector(arc.getCenter(), p);
+			Point3d intersection = new Point3d(arc.getCenter().x + multiply(arc.getRadius(), vetorUnitario).x, arc.getCenter().y + multiply(arc.getRadius(), vetorUnitario).y, arc.getCenter().z);
 			if(belongsArc(arc, intersection))
 			{
 				pontoMaisProximo = intersection;
@@ -744,7 +744,12 @@ public class GeometricOperations
 		}
 		return minimumDistance;
 	}
-	
+	public static double minimumDistanceArcToArc1(LimitedArc arc1, LimitedArc arc2)
+	{
+		double minimumDistance = 0;
+		
+		return minimumDistance;
+	}
 	public static double angle(Point3d v)
 	{
 		double alpha=0.0;

@@ -383,7 +383,54 @@ public class GeometricOperations
 		return normalPoint;
 
 	}
-	
+	public static Point3d nearestPoint1(Point3d p, LimitedArc arc)
+	{
+		Point3d pontoMaisProximo = null;
+		boolean estaFora = false;
+		if(p.distance(arc.getCenter()) >= arc.getRadius())
+		{
+			estaFora = true;
+		}
+		LimitedLine lineAux = new LimitedLine(arc.getCenter(), p);
+		if (estaFora) // ====== p esta fora do circulo
+		{
+			if(intersectionPoint(arc, lineAux) != null)
+			{
+				pontoMaisProximo = intersectionPoint(arc, lineAux).get(0);
+			}
+			else
+			{
+				if(arc.getInitialPoint().distance(p) < arc.getFinalPoint().distance(p))
+				{
+					pontoMaisProximo = arc.getInitialPoint();
+				}
+				else
+				{
+					pontoMaisProximo = arc.getFinalPoint();
+				}
+			}
+		} else // ======= p esta dentro do circulo
+		{
+			Point3d vetorUnitario = unitVector(p, arc.getCenter());
+			Point3d intersection = multiply(arc.getRadius(), vetorUnitario);
+			if(belongsArc(arc, intersection))
+			{
+				pontoMaisProximo = intersection;
+			}
+			else
+			{
+				if(p.distance(arc.getInitialPoint()) < p.distance(arc.getFinalPoint()))
+				{
+					pontoMaisProximo = arc.getInitialPoint();
+				}
+				else
+				{
+					pontoMaisProximo = arc.getFinalPoint();
+				}
+			}
+		}
+		return pontoMaisProximo;
+	}
 	public static double minimumDistancePointToArc(Point3d p, LimitedArc arc)
 	{	
 		LimitedArc arcTmp = new LimitedArc(arc.getInitialPoint(), arc.getFinalPoint(), arc.getCenter());

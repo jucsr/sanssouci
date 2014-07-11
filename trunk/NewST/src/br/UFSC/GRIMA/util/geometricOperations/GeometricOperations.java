@@ -1372,8 +1372,11 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 	}
 	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle)
 	{
+		System.out.println("DeltaAngle do Arco original: " + arcAngle);
 		double anglePi = Math.atan2(Pi.y - center.y, Pi.x - center.x);
+		System.out.println("Angulo do ponto PI: " + anglePi);
 		double anglePf = Math.atan2(Pf.y - center.y, Pf.x - center.x);
+		System.out.println("Angulo do ponto PF: " + anglePf);
 		double r = center.distance(Pi);
 		double distance = Pi.distance(Pf);
 		double alpha = 2*(Math.asin(distance/(2*r)));
@@ -1388,6 +1391,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		{
 			alpha = -alpha;
 		}
+		System.out.println("Angulo entre PI e PF: "+ alpha);
 		return alpha;
 	}
 	
@@ -1399,7 +1403,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		Point3d arcCenter = arc.getCenter();
 		double oldDeltaAngle = arc.getDeltaAngle();
 		ArrayList<LimitedArc> arcTemp = new ArrayList<LimitedArc>(); 
-		Point3d intTemp;
+//		Point3d intTemp;
 		if(arc.getDeltaAngle() == 2*Math.PI && intersecoes.size() == 1)
 		{
 			arcTemp.add(arc);
@@ -1412,12 +1416,40 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //			for(int i = 1;i < intersecoes.size(); i++)
 //			{
 //				Point3d temp = intersecoes.get(i);
-//				double anlgeTmp1 = calcDeltaAngle(pI,temp , arcCenter, oldDeltaAngle);
+//				boolean alreadyAdd = false;				//indica se o elemento ja foi add no array ordenado
+//				double angleTemp1 = calcDeltaAngle(pI,temp , arcCenter, oldDeltaAngle);
 //				int intTempSize = intersecoesTmp.size();
 //				for(int j = 0;j < intTempSize;j++)
 //				{
 //					double angleTemp2 = calcDeltaAngle(pI, intersecoesTmp.get(j), arcCenter, oldDeltaAngle);
-//					if(angleTmp2 < angle)
+//					if(angleTemp1 < angleTemp2)
+//					{
+//						intersecoesTmp.add(j, temp);
+//						alreadyAdd = true;
+//					}
+//				}
+//				if(alreadyAdd == false)
+//				{
+//					intersecoesTmp.add(temp);
+//				}
+//			}
+//			System.out.println(intersecoesTmp);
+//			for(int i = 0;i < intersecoesTmp.size();i++)
+//			{
+//				Point3d intTmp = intersecoesTmp.get(i);
+//				System.out.println(intTmp);
+//				if(i != intersecoesTmp.size()-1)
+//				{
+//					Point3d intTmpNext = intersecoesTmp.get(i+1);
+//					System.out.println(intTmpNext);
+//					LimitedArc segTemp = new LimitedArc(arcCenter, intTmp, calcDeltaAngle(intTmp,intTmpNext,arcCenter,oldDeltaAngle));
+//					arcTemp.add(segTemp);
+//				}
+//				else
+//				{
+//					Point3d intTmpNext = intersecoesTmp.get(0);
+//					LimitedArc segTemp = new LimitedArc(arcCenter, intTmp, calcDeltaAngle(intTmp,intTmpNext,arcCenter,oldDeltaAngle));
+//					arcTemp.add(segTemp);
 //				}
 //			}
 //		}
@@ -1425,7 +1457,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		{
 			for(int h = 0;h < intSize;h++)
 			{
-				intTemp = intersecoes.get(h);
+				Point3d intTemp = intersecoes.get(h);
 				if(belongsArc(arc,intTemp))
 				{
 					if(arcTemp.size() == 0)
@@ -1460,8 +1492,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 							Point3d arcTempI = arcTemp.get(s).getInitialPoint();
 							Point3d arcTempF = arcTemp.get(s).getFinalPoint();
 							LimitedArc aTmp = arcTemp.get(s);
-							//Problema: Esta fazendo o belongs com o mesmo aTmp, varias vezes
-
 							if((roundNumber(calcDeltaAngle(arcTempI,intTemp,arcCenter,oldDeltaAngle),10) != 0) && (roundNumber(calcDeltaAngle(intTemp,arcTempF,arcCenter,oldDeltaAngle),10) != 0))							
 							{
 								

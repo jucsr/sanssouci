@@ -724,7 +724,6 @@ public class GeometricOperationsTest
 	    ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
 	    intersecoes.add(p2);
 	    intersecoes.add(p1);
-	    System.out.println(intersecoes);
 //	    intersecoes.add(p3);
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arc2, intersecoes);

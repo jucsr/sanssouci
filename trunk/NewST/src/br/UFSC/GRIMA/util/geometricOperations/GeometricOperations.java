@@ -1389,15 +1389,16 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //			alpha = -alpha;
 //		}
 //		return alpha;
+		
 		double saida = 0;
 		saida = Math.atan2(Pf.y - center.y, Pf.x - center.x) - Math.atan2(Pi.y - center.y, Pi.x - center.x);
 		if(saida < 0)
 		{
-			saida = 2*Math.PI + saida;
+			saida = 2 * Math.PI + saida;
 		}
 		if(arcAngle < 0)
 		{
-			saida = -saida;
+			saida = -(2 * Math.PI - saida);
 		}
 		return saida;
 	}

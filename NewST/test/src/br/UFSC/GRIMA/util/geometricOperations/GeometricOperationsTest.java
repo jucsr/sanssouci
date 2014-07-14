@@ -149,8 +149,8 @@ public class GeometricOperationsTest
 		rectBoss.setPosicao(400, 200, pocket.Z);
 		rectBoss.setRadius(0);
 //		itsBoss.add(rectBoss);
-		
 		itsBoss.add(arcBoss);
+		
 		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
 //		for(int i = 0; i < addPocketVertex.getElements().size();i++)
@@ -518,7 +518,7 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath2Test()
 	{
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket,50);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket,70);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -583,22 +583,7 @@ public class GeometricOperationsTest
 	@Test
 	public void validar1PathTest()
 	{
-		ArrayList<LimitedElement> elementos1 = new ArrayList<LimitedElement>();
-//		LimitedArc arco4= new LimitedArc(new Point3d(398.0,135.0,0),new Point3d(505.0,242.0,0),new Point3d(505.0,135.0,0));
-//		LimitedLine l5= new LimitedLine(new Point3d(505.0,242.0,0),new Point3d(675.0,242.0,0));
-//		LimitedArc arco8= new LimitedArc(new Point3d(538.8323591032164,262.1865689852448,0),new Point3d(471.0759155456893,238.0,0),new Point3d(471.07591554568916,345.0,0));
-//		LimitedLine l9= new LimitedLine(new Point3d(471.0759155456892,237.99999999999994,0),new Point3d(32.999999999999986,238.0,0));
-//		LimitedArc arc8 = new LimitedArc(new Point3d(50,50 , 0), new Point3d(50 + (25*Math.cos(Math.PI/4)), 50 - (25*Math.sin(Math.PI/4)), 0), Math.PI/2);
-//		LimitedArc arc9 = new LimitedArc(new Point3d(90, 50, 0), new Point3d(90 - (25*Math.cos(Math.PI/4)), 50 + (25*Math.sin(Math.PI/4)), 0),Math.PI/2);
-		LimitedArc arc1 = new LimitedArc(new Point3d(230.0, 70.0, 0.0), new Point3d(170.0, 70.0, 0.0),-1.5707963267948966);
-		LimitedArc arc2 = new LimitedArc(new Point3d(150.0, 130.0, 0.0), new Point3d(210.0, 130.0, 0.0),-1.5707963267948966);
-//		LimitedLine line1 = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
-//		elementos1.add(arc8);
-//		elementos1.add(arc1);
-//		elementos1.add(arc2);
-//		elementos1.add(l5);
-		
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 50);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 70);
 		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);

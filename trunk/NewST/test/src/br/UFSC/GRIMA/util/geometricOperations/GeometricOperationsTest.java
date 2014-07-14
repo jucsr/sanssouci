@@ -19,6 +19,7 @@ import org.junit.Test;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
@@ -144,20 +145,50 @@ public class GeometricOperationsTest
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
+		GeneralProfileBoss genBoss = new GeneralProfileBoss();
+		genBoss.setRadius(10);
+		ArrayList<Point2D> vertexPoints = new ArrayList<Point2D>();
+		vertexPoints.add(new Point2D.Double(150, 300));
+		vertexPoints.add(new Point2D.Double(300, 300));
+		vertexPoints.add(new Point2D.Double(300, 250));
+		vertexPoints.add(new Point2D.Double(200, 250));
+		vertexPoints.add(new Point2D.Double(200, 180));
+		vertexPoints.add(new Point2D.Double(150, 180));
+		vertexPoints.add(new Point2D.Double(50, 180));
+		vertexPoints.add(new Point2D.Double(50, 240));
+		vertexPoints.add(new Point2D.Double(150, 240));
+		genBoss.setVertexPoints(vertexPoints);
 		rectBoss.setPosicao(400, 200, pocket.Z);
 		rectBoss.setRadius(0);
-//		itsBoss.add(rectBoss);
+		itsBoss.add(rectBoss);
 		itsBoss.add(arcBoss);
+		itsBoss.add(genBoss);
 		
 		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
-//		for(int i = 0; i < addPocketVertex.getElements().size();i++)
-//		{
+
 		formaOriginal = addPocketVertex.getElements();
-//		formaOriginal.get(0).add(arco0);
-		//		}
+		for(int i = 0; i < pocket.getItsBoss().size(); i++)
+		{
+			if(pocket.getItsBoss().get(i).getClass() == RectangularBoss.class)
+			{
+				
+			} else if(pocket.getItsBoss().get(i).getClass() == CircularBoss.class)
+			{
+				
+			} else if(pocket.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
+			{
+				GeneralProfileBoss gen = (GeneralProfileBoss)pocket.getItsBoss().get(i);
+				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(gen.getVertexPoints(), pocket.Z, genBoss.getRadius());
+				for(int j = 0; j < addBossVertex.getElements().size(); j++)
+				{
+					formaOriginal.add(addBossVertex.getElements().get(j));
+				}
+			}
+		}
+
 
 	}
 	@Test
@@ -518,7 +549,7 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath2Test()
 	{
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket,70);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 40);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -782,9 +813,10 @@ public class GeometricOperationsTest
 	public void getDeltaAnguloTest()
 	{
 		Point3d center = new Point3d(100, 100, 0);
-		Point3d p1 = new Point3d(150, 100, 0);
-		Point3d p2 = new Point3d(100,50 , 0);
-		System.out.println(GeometricOperations.getDeltaAngle(center, p1, p2));
+		Point3d p1 = new Point3d(150, 150, 0);
+		Point3d p2 = new Point3d(150, 50, 0);
+		System.out.println((GeometricOperations.getDeltaAngle(center, p1, p2) * 180 / Math.PI));
+		System.err.println((GeometricOperations.calcDeltaAngle(p1, p2, center, 1) * 180 / Math.PI));
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

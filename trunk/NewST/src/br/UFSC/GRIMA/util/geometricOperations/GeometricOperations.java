@@ -1500,7 +1500,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 	public static double getDeltaAngle(Point3d center, Point3d p1, Point3d p2)
 	{
 		double saida = 0;
-		saida = Math.atan2(p2.y - center.y, p1.x - center.x);
+		saida = Math.atan2(p2.y - center.y, p2.x - center.x) + Math.atan2(p1.y - center.y, p1.x - center.x);
 		return saida;
 	}
 	public static ArrayList<Double> ordenaNumeros(ArrayList<Double> input)

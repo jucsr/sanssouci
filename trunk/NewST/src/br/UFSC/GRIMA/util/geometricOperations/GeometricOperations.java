@@ -799,12 +799,6 @@ public class GeometricOperations
 		}
 		return minimumDistance;
 	}
-	public static double minimumDistanceArcToArc1(LimitedArc arc1, LimitedArc arc2)
-	{
-		double minimumDistance = 0;
-		
-		return minimumDistance;
-	}
 	public static double angle(Point3d v)
 	{
 		double alpha=0.0;
@@ -1266,15 +1260,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				//Tamanho em y
 				double c = tmp.getL2();
 				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
-//				Point3d arcCenter = pointPlusEscalar(position, "+x+y", tmp.getRadius());
-//				Point3d arcI = pointPlusEscalar(position, "y", tmp.getRadius());
-//				for(int i = 0;i < 4;i++)
-//				{
-//					LimitedArc a = new LimitedArc(arcCenter,arcI,Math.PI/2);
-//					LimitedLine lTmp = new LimitedLine(a.getFinalPoint(),l - 2*(tmp.getRadius()),0);
-//					if(i == )
-//					arcCenter = 
-//				}
 				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-2*tmp.getRadius())));
 				LimitedArc a1 = new LimitedArc(pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
 				System.out.println(a1.getFinalPoint());
@@ -1284,30 +1269,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				LimitedArc a3 = new LimitedArc(pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
 				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
 				LimitedArc a4 = new LimitedArc(pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
-				
-//				ArrayList<Point2D> vertex = new ArrayList<Point2D>();
-//				Point2D p1 = new Point2D.Double(position.x,position.y);
-//				Point2D p2 = new Point2D.Double(p1.getX() + l,p1.getY());
-//				Point2D p3 = new Point2D.Double(p2.getX(),p2.getY() + c);
-//				Point2D p4 = new Point2D.Double(p3.getX() - l,p3.getY());
-//				vertex.add(p1);
-//				vertex.add(p2);
-//				vertex.add(p3);
-//				vertex.add(p4);
-//				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(vertex, tmp.Z, tmp.getRadius());
-//				ArrayList<LimitedElement> elementosProtuberanciaRect = addBossVertex.getElements();
-//				showElements(elementosProtuberanciaRect);
-//				if(tmp.getRadius() == 0)
-//				{
-//					LimitedElement elementTemp1 = elementosProtuberanciaRect.get(0);					
-//					elementosProtuberanciaRect.add(elementTemp1);
-//					elementosProtuberanciaRect.remove(0);
-//				}
-//				showElements(elementosProtuberanciaRect);
-//				for(int i = 0;i < elementosProtuberanciaRect.size();i++)
-//				{
-//					elementosProtuberancia.add(elementosProtuberanciaRect.get(i));
-//				}
+
 				elementosProtuberancia.add(l1);
 				elementosProtuberancia.add(a1);
 				elementosProtuberancia.add(l2);
@@ -1316,7 +1278,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				elementosProtuberancia.add(a3);
 				elementosProtuberancia.add(l4);
 				elementosProtuberancia.add(a4);
-				
 				
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
@@ -1364,34 +1325,44 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		
 //		saida = parallelPath1(laco, distance, !inside);
 		
-		saida = validarPath(totalParallel, formaOriginal, distance);
+//		saida = validarPath(totalParallel, formaOriginal, distance);
 		
-//		saida.add(lacoTmp);
+		saida.add(totalParallel);
 		
 		return saida;
 	}
 	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle)
 	{
-		System.out.println("DeltaAngle do Arco original: " + arcAngle);
+//		System.out.println("DeltaAngle do Arco original: " + arcAngle);
 		double anglePi = Math.atan2(Pi.y - center.y, Pi.x - center.x);
-		System.out.println("Angulo do ponto PI: " + anglePi);
+		if(anglePi < 0)
+		{
+			anglePi = anglePi + 2*Math.PI;
+		}
+//		System.out.println("Angulo do ponto PI: " + anglePi);
 		double anglePf = Math.atan2(Pf.y - center.y, Pf.x - center.x);
+		if(anglePf < 0)
+		{
+			anglePf = anglePf + 2*Math.PI;
+		}
 		System.out.println("Angulo do ponto PF: " + anglePf);
 		double r = center.distance(Pi);
 		double distance = Pi.distance(Pf);
 		double alpha = 2*(Math.asin(distance/(2*r)));
 		if(arcAngle == 2*Math.PI)
 		{
+//			double alpha = anglePf - anglePi;
 			if(anglePi > anglePf)
 			{
 				alpha = 2*Math.PI - alpha;
+//				alpha = anglePi - anglePf;
 			}
 		}
 		if(arcAngle < 0) 
 		{
 			alpha = -alpha;
 		}
-		System.out.println("Angulo entre PI e PF: "+ alpha);
+//		System.out.println("Angulo entre PI e PF: "+ alpha);
 		return alpha;
 	}
 	
@@ -1408,51 +1379,52 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		{
 			arcTemp.add(arc);
 		}
-//		else if(arc.getDeltaAngle() == 2*Math.PI && intersecoes.size() > 1)
-//		{
-//			Point3d pI = intersecoes.get(0);
-//			ArrayList<Point3d> intersecoesTmp = new ArrayList<Point3d>();
-//			intersecoesTmp.add(pI);
-//			for(int i = 1;i < intersecoes.size(); i++)
-//			{
-//				Point3d temp = intersecoes.get(i);
-//				boolean alreadyAdd = false;				//indica se o elemento ja foi add no array ordenado
-//				double angleTemp1 = calcDeltaAngle(pI,temp , arcCenter, oldDeltaAngle);
-//				int intTempSize = intersecoesTmp.size();
-//				for(int j = 0;j < intTempSize;j++)
-//				{
-//					double angleTemp2 = calcDeltaAngle(pI, intersecoesTmp.get(j), arcCenter, oldDeltaAngle);
-//					if(angleTemp1 < angleTemp2)
-//					{
-//						intersecoesTmp.add(j, temp);
-//						alreadyAdd = true;
-//					}
-//				}
-//				if(alreadyAdd == false)
-//				{
-//					intersecoesTmp.add(temp);
-//				}
-//			}
-//			System.out.println(intersecoesTmp);
-//			for(int i = 0;i < intersecoesTmp.size();i++)
-//			{
-//				Point3d intTmp = intersecoesTmp.get(i);
-//				System.out.println(intTmp);
-//				if(i != intersecoesTmp.size()-1)
-//				{
-//					Point3d intTmpNext = intersecoesTmp.get(i+1);
-//					System.out.println(intTmpNext);
-//					LimitedArc segTemp = new LimitedArc(arcCenter, intTmp, calcDeltaAngle(intTmp,intTmpNext,arcCenter,oldDeltaAngle));
-//					arcTemp.add(segTemp);
-//				}
-//				else
-//				{
-//					Point3d intTmpNext = intersecoesTmp.get(0);
-//					LimitedArc segTemp = new LimitedArc(arcCenter, intTmp, calcDeltaAngle(intTmp,intTmpNext,arcCenter,oldDeltaAngle));
-//					arcTemp.add(segTemp);
-//				}
-//			}
-//		}
+		else if(arc.getDeltaAngle() == 2*Math.PI && intersecoes.size() > 1)
+		{
+			Point3d pI = intersecoes.get(0);
+			ArrayList<Point3d> intersecoesTmp = new ArrayList<Point3d>();
+			intersecoesTmp.add(pI);
+			for(int i = 1;i < intersecoes.size(); i++)
+			{
+				Point3d temp = intersecoes.get(i);
+				boolean alreadyAdd = false;				//indica se o elemento ja foi add no array ordenado
+				double angleTemp1 = calcDeltaAngle(pI,temp , arcCenter, oldDeltaAngle);
+				int intTempSize = intersecoesTmp.size();
+				for(int j = 0;j < intTempSize;j++)
+				{
+					double angleTemp2 = calcDeltaAngle(pI, intersecoesTmp.get(j), arcCenter, oldDeltaAngle);
+					if(angleTemp1 < angleTemp2)
+					{
+						intersecoesTmp.add(j, temp);
+						alreadyAdd = true;
+					}
+				}
+				if(alreadyAdd == false)
+				{
+					intersecoesTmp.add(temp);
+				}
+			}
+			System.out.println(intersecoesTmp);
+			for(int i = 0;i < intersecoesTmp.size();i++)
+			{
+				Point3d intTmp = intersecoesTmp.get(i);
+				System.out.println(intTmp);
+				System.out.println("DeltaAngle: " + calcDeltaAngle(intersecoesTmp.get(0), intTmp, arcCenter, oldDeltaAngle));
+				if(i != intersecoesTmp.size()-1)
+				{
+					Point3d intTmpNext = intersecoesTmp.get(i+1);
+					System.out.println(intTmpNext);
+					LimitedArc segTemp = new LimitedArc(arcCenter, intTmp, calcDeltaAngle(intTmp,intTmpNext,arcCenter,oldDeltaAngle));
+					arcTemp.add(segTemp);
+				}
+				else
+				{
+					Point3d intTmpNext = intersecoesTmp.get(0);
+					LimitedArc segTemp = new LimitedArc(arcCenter, intTmp, calcDeltaAngle(intTmp,intTmpNext,arcCenter,oldDeltaAngle));
+					arcTemp.add(segTemp);
+				}
+			}
+		}
 		else
 		{
 			for(int h = 0;h < intSize;h++)
@@ -1462,26 +1434,26 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				{
 					if(arcTemp.size() == 0)
 					{
-						if(arc.getDeltaAngle() == 2*Math.PI)
-						{
-							Point3d intTempNext = intersecoes.get(h+1);
-							LimitedArc segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,intTempNext,arcCenter,oldDeltaAngle));
-							System.err.println(calcDeltaAngle(intTemp,intTempNext,arcCenter,oldDeltaAngle));
-							arcTemp.add(segTemp);
-							segTemp = new LimitedArc(arcCenter, intTempNext, calcDeltaAngle(intTempNext,intTemp,arcCenter,oldDeltaAngle));
-							
-							System.err.println(calcDeltaAngle(intTempNext,intTemp,arcCenter,oldDeltaAngle));
-							System.err.println(intTempNext);
-
-							arcTemp.add(segTemp);
-						}
-						else
-						{
+//						if(arc.getDeltaAngle() == 2*Math.PI)
+//						{
+//							Point3d intTempNext = intersecoes.get(h+1);
+//							LimitedArc segTemp = new LimitedArc(arcCenter, intTemp, calcDeltaAngle(intTemp,intTempNext,arcCenter,oldDeltaAngle));
+//							System.err.println(calcDeltaAngle(intTemp,intTempNext,arcCenter,oldDeltaAngle));
+//							arcTemp.add(segTemp);
+//							segTemp = new LimitedArc(arcCenter, intTempNext, calcDeltaAngle(intTempNext,intTemp,arcCenter,oldDeltaAngle));
+//							
+//							System.err.println(calcDeltaAngle(intTempNext,intTemp,arcCenter,oldDeltaAngle));
+//							System.err.println(intTempNext);
+//
+//							arcTemp.add(segTemp);
+//						}
+//						else
+//						{
 							LimitedArc segTemp = new LimitedArc(arcCenter, arcI, calcDeltaAngle(arcI,intTemp,arcCenter,oldDeltaAngle));
 							arcTemp.add(segTemp);
 							segTemp = new LimitedArc(arcCenter, intTemp,calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
 							arcTemp.add(segTemp);
-						}
+//						}
 						showArcs(arcTemp);
 					}
 					else

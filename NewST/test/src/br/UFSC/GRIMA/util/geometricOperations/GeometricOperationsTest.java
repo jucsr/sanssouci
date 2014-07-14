@@ -767,6 +767,25 @@ public class GeometricOperationsTest
 		for(;;);
 	    
 	}
+	public void ordenaNumerosTest()
+	{
+		ArrayList<Double> input = new ArrayList<Double>();
+		input.add(1.);
+		input.add(11.);
+		input.add(5.);
+		input.add(7.);
+		input.add(1.);
+		// GeometricOperations.ordenaNumeros(input);
+		System.out.println(GeometricOperations.ordenaNumeros(input));
+	}
+	@Test
+	public void getDeltaAnguloTest()
+	{
+		Point3d center = new Point3d(100, 100, 0);
+		Point3d p1 = new Point3d(150, 100, 0);
+		Point3d p2 = new Point3d(100, 50, 0);
+		System.out.println(GeometricOperations.getDeltaAngle(center, p1, p2));
+	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{

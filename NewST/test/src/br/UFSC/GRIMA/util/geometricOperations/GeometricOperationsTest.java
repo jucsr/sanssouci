@@ -783,7 +783,7 @@ public class GeometricOperationsTest
 	{
 		Point3d center = new Point3d(100, 100, 0);
 		Point3d p1 = new Point3d(150, 100, 0);
-		Point3d p2 = new Point3d(100, 50, 0);
+		Point3d p2 = new Point3d(100,50 , 0);
 		System.out.println(GeometricOperations.getDeltaAngle(center, p1, p2));
 	}
 	@Test

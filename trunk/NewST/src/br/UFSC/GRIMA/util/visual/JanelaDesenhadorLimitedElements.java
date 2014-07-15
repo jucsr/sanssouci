@@ -66,7 +66,7 @@ public class JanelaDesenhadorLimitedElements extends Frame {
 							new Insets(0, 0, 0, 5), 0, 0));
 
 						//---- spinnerZoom ----
-						spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 1000.0, 100.0));
+						spinnerZoom.setModel(new SpinnerNumberModel(100.0, 0.0, 2000.0, 100.0));
 						panel1.add(spinnerZoom, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 0, 5), 0, 0));

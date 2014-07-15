@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.2.0.134" Java: "1.7.0_51" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.2.0.134" Java: "1.7.0_55" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -43,7 +43,7 @@ new FormModel {
 							}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 							add( new FormComponent( "javax.swing.JSpinner" ) {
 								name: "spinnerZoom"
-								"model": new javax.swing.SpinnerNumberModel( 100.0, 0.0, 1000.0, 100.0 )
+								"model": new javax.swing.SpinnerNumberModel( 100.0, 0.0, 2000.0, 100.0 )
 								auxiliary() {
 									"JavaCodeGenerator.variableModifiers": 1
 								}

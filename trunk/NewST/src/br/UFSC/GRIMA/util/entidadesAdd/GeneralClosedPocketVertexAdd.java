@@ -36,7 +36,7 @@ public class GeneralClosedPocketVertexAdd
 		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex2D))
 		{
 			this.vertex.add(new Point3d(p.getX(), p.getY(), zCoordinate));
-			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
+//			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
 		}
 		
 		this.makeForma();
@@ -60,7 +60,7 @@ public class GeneralClosedPocketVertexAdd
 		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex2D))
 		{
 			this.vertex.add(new Point3d(p.getX(), p.getY(), zCoordinate));
-			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
+//			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
 		}
 		this.makeForma();
 		this.makeElements();
@@ -85,12 +85,12 @@ public class GeneralClosedPocketVertexAdd
 			}
 		}
 		
-		System.out.println("Vertex generated ");
+//		System.out.println("Vertex generated ");
 		for (LimitedArc arc:arcElements)
 		{			
 			Point3d vertArc = GeometricOperations.arcToVertec(arc);
 			this.vertex.add(vertArc);
-			System.out.println(vertArc);
+//			System.out.println(vertArc);
 		}
 	}
 	

@@ -113,6 +113,7 @@ public class GeometricOperationsTest
 		points.add(new Point2D.Double(8, 160));
 		points.add(new Point2D.Double(8, 320));
 		points.add(new Point2D.Double(480, 320));
+//		points.add(new Point2D.Double(480, 500));
 		points.add(new Point2D.Double(700, 500));
 		points.add(new Point2D.Double(700, 160));
 		points.add(new Point2D.Double(480, 160));
@@ -167,7 +168,7 @@ public class GeometricOperationsTest
 		itsBoss.add(genBoss);
 		
 		pocket.setItsBoss(itsBoss);
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 
 		formaOriginal = addPocketVertex.getElements();
 		for(int i = 0; i < pocket.getItsBoss().size(); i++)
@@ -549,7 +550,7 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath2Test()
 	{
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 40);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 51);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)

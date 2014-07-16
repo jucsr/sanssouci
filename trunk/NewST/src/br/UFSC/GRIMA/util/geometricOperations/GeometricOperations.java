@@ -535,24 +535,55 @@ public class GeometricOperations
 	}
 	public static double minimumDistanceLineToArc1(LimitedLine line, LimitedArc arc)
 	{
-		double minimum = 0;
+		boolean inside = false;
 		Point3d p = nearestPoint(arc.getCenter(), line);
-		LimitedLine lineaAux = new LimitedLine(p, arc.getCenter());
+		LimitedLine lineAux = new LimitedLine(p, arc.getCenter());
+		double minimum = 0;
 		if(intersectionPoint(arc, line) == null)
 		{
-			if(intersectionPoint(arc, lineaAux) != null)
+			if(intersectionPoint(arc, lineAux) != null)
 			{
-				Point3d intersection = intersectionPoint(arc, lineaAux).get(0);
+				Point3d intersection = intersectionPoint(arc, lineAux).get(0);
 				minimum = p.distance(intersection);
 			}
 			else
 			{
-				double distance1 = arc.getInitialPoint().distance(nearestPoint(arc.getInitialPoint(), line));
-				double distance2 = arc.getFinalPoint().distance(nearestPoint(arc.getFinalPoint(), line));
-				minimum = distance1;
-				if (distance2 < minimum) 
+				Point3d unitVec1 = unitVector(arc.getCenter(), line.getInitialPoint());
+				Point3d p1 = plus(arc.getCenter(),multiply(arc.getRadius(),unitVec1));
+				Point3d unitVec2 = unitVector(arc.getCenter(), line.getFinalPoint());
+				Point3d p2 = plus(arc.getCenter(),multiply(arc.getRadius(),unitVec2));
+				if(belongsArc(arc,p1) || belongsArc(arc,p2))
 				{
-					minimum = distance2;
+					inside = true;
+				}
+//				double distance1 = arc.getInitialPoint().distance(nearestPoint(arc.getInitialPoint(), line));
+//				double distance2 = arc.getFinalPoint().distance(nearestPoint(arc.getFinalPoint(), line));
+				ArrayList<Double> minimumDistances = new ArrayList<Double>();
+				
+				double d1 = minimumDistancePointToArc(line.getInitialPoint(), arc);
+				double d2 = minimumDistancePointToArc(line.getFinalPoint(), arc);
+				double d3 = minimumDistancePointToLine(arc.getInitialPoint(), line);
+				double d4 = minimumDistancePointToLine(arc.getFinalPoint(), line);
+				//Considera o caso da linha estar dentro do espaço de abrangencia do arco
+//				if(inside)
+//				{
+//					minimumDistances.add(d1);
+//					minimumDistances.add(d2);
+//				}
+				minimumDistances.add(d3);
+				minimumDistances.add(d4);
+				minimum = minimumDistances.get(0);
+//				minimum = distance1;
+//				if (distance2 < minimum) 
+//				{
+//					minimum = distance2;
+//				}
+				for(double tmp: minimumDistances)
+				{
+					if(tmp < minimum)
+					{
+						minimum = tmp;
+					}
 				}
 			}
 		}
@@ -682,16 +713,6 @@ public class GeometricOperations
 			{
 				if(belongsArc(arc1,intersection.get(0)))
 				{
-//					double distanceTmp1 = arc1.getCenter().distance(arc2.getInitialPoint()) - arc1.getRadius();
-//					double distanceTmp2 = arc1.getCenter().distance(arc2.getFinalPoint()) - arc1.getRadius();
-//					if(distanceTmp1 < distanceTmp2)
-//					{
-//						minimumDistance = distanceTmp1;
-//					}
-//					else
-//					{
-//						minimumDistance = distanceTmp2;
-//					}
 					double distanceTmp1 = minimumDistancePointToArc(arc2.getInitialPoint(), arc1);
 					double distanceTmp2 = minimumDistancePointToArc(arc2.getFinalPoint(), arc1);
 					if(distanceTmp1 < distanceTmp2)
@@ -706,31 +727,6 @@ public class GeometricOperations
 				}
 				else if(belongsArc(arc2,intersection.get(0)))
 				{
-//					if(belongsArc(arc2,intersection.get(0)))
-//					{
-//						LimitedLine temp1 = new LimitedLine(arc2.getCenter(),arc1.getInitialPoint());
-//						LimitedLine temp2 = new LimitedLine(arc2.getCenter(),arc1.getFinalPoint());
-////						double distanceTmp1 = arc2.getCenter().distance(arc1.getInitialPoint()) - arc2.getRadius();
-////						double distanceTmp2 = arc2.getCenter().distance(arc1.getFinalPoint()) - arc2.getRadius();
-//						ArrayList<Double> distanceTmp = new ArrayList<Double>();
-//						if(intersectionPoint(arc2,temp1) != null)
-//						{
-//							distanceTmp.add(temp1.getInitialPoint().distance(temp1.getFinalPoint()));
-//						}
-//						if(intersectionPoint(arc2,temp2) != null)
-//						{
-//							distanceTmp.add(temp2.getInitialPoint().distance(temp2.getFinalPoint()));
-//						}
-//						minimumDistance = distanceTmp.get(0);
-//						for(Double tmp:distanceTmp)
-//						{
-//							if(tmp<minimumDistance)
-//							{
-//								minimumDistance = tmp;
-//							}
-//						}
-//					}
-//				}
 					double distanceTmp1 = minimumDistancePointToArc(arc1.getInitialPoint(), arc2);
 					double distanceTmp2 = minimumDistancePointToArc(arc1.getFinalPoint(), arc2);
 					if(distanceTmp1 < distanceTmp2)
@@ -745,23 +741,6 @@ public class GeometricOperations
 			}
 			else
 			{
-//				double distanceTmp1 = arc1.getInitialPoint().distance(arc2.getInitialPoint());
-//				double distanceTmp2 = arc1.getInitialPoint().distance(arc2.getFinalPoint());
-//				double distanceTmp3 = arc2.getInitialPoint().distance(arc1.getInitialPoint());
-//				double distanceTmp4 = arc2.getInitialPoint().distance(arc1.getFinalPoint());
-//				ArrayList<Double> distanceTemp = new ArrayList<Double>();
-//				distanceTemp.add(distanceTmp1);
-//				distanceTemp.add(distanceTmp2);
-//				distanceTemp.add(distanceTmp3);
-//				distanceTemp.add(distanceTmp4);
-//				minimumDistance = distanceTemp.get(0);
-//				for(Double tmp:distanceTemp)
-//				{
-//					if(tmp < minimumDistance)
-//					{
-//						minimumDistance = tmp;
-//					}
-//				}
 				Point3d pNear1 = nearestPoint1(arc1.getCenter(), arc2);
 				LimitedLine aux1 = new LimitedLine(arc1.getCenter(),pNear1);
 				Point3d pNear2 = nearestPoint1(arc2.getCenter(), arc1);
@@ -797,12 +776,6 @@ public class GeometricOperations
 				}
 			}
 		}
-		return minimumDistance;
-	}
-	public static double minimumDistanceArcToArc1(LimitedArc arc1, LimitedArc arc2)
-	{
-		double minimumDistance = 0;
-		
 		return minimumDistance;
 	}
 	public static double angle(Point3d v)
@@ -1119,6 +1092,12 @@ public class GeometricOperations
 				LimitedArc arc2 = (LimitedArc)e2;
 //				distance = minimumDistanceLineToArc(line1, arc2);
 				distance = minimumDistanceLineToArc1(line1, arc2);
+				if(distance <= 51)
+				{
+//					System.out.println("Linha: from " + line1.getInitialPoint() + " to " + line1.getFinalPoint());
+//					System.out.println("Arc: from " + arc2.getInitialPoint() + " centred in " + arc2.getCenter());
+//					System.out.println("Distancia: " + distance);
+				}
 			}
 		}
 		else if (e1.isLimitedArc())
@@ -1134,6 +1113,12 @@ public class GeometricOperations
 			{
 				LimitedArc arc2 = (LimitedArc)e2;
 				distance = minimumDistanceArcToArc(arc1, arc2);
+				if(distance <= 51)
+				{
+//					System.out.println("Arc1: from " + arc1.getInitialPoint() + " centred in " + arc1.getCenter() + "DeltaAngle: " + arc1.getDeltaAngle());
+//					System.out.println("Arc2: from " + arc2.getInitialPoint() + " centred in " + arc2.getCenter() + "DeltaAngle: " + arc2.getDeltaAngle());
+//					System.out.println("Distancia: " + distance);
+				}
 			}			
 		}		
 		return roundNumber(distance, 10);
@@ -1253,7 +1238,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			if(bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
-				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
+//				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
 				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, tmp.Z), 2 * Math.PI);
 				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
 				elementosProtuberancia.add(arc);
@@ -1266,48 +1251,14 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				//Tamanho em y
 				double c = tmp.getL2();
 				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
-//				Point3d arcCenter = pointPlusEscalar(position, "+x+y", tmp.getRadius());
-//				Point3d arcI = pointPlusEscalar(position, "y", tmp.getRadius());
-//				for(int i = 0;i < 4;i++)
-//				{
-//					LimitedArc a = new LimitedArc(arcCenter,arcI,Math.PI/2);
-//					LimitedLine lTmp = new LimitedLine(a.getFinalPoint(),l - 2*(tmp.getRadius()),0);
-//					if(i == )
-//					arcCenter = 
-//				}
 				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-2*tmp.getRadius())));
 				LimitedArc a1 = new LimitedArc(pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
-				System.out.println(a1.getFinalPoint());
 				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
 				LimitedArc a2 = new LimitedArc(pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
 				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),pointPlusEscalar(a2.getFinalPoint(), "x", -(l - 2*tmp.getRadius())));
 				LimitedArc a3 = new LimitedArc(pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
 				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
 				LimitedArc a4 = new LimitedArc(pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
-				
-//				ArrayList<Point2D> vertex = new ArrayList<Point2D>();
-//				Point2D p1 = new Point2D.Double(position.x,position.y);
-//				Point2D p2 = new Point2D.Double(p1.getX() + l,p1.getY());
-//				Point2D p3 = new Point2D.Double(p2.getX(),p2.getY() + c);
-//				Point2D p4 = new Point2D.Double(p3.getX() - l,p3.getY());
-//				vertex.add(p1);
-//				vertex.add(p2);
-//				vertex.add(p3);
-//				vertex.add(p4);
-//				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(vertex, tmp.Z, tmp.getRadius());
-//				ArrayList<LimitedElement> elementosProtuberanciaRect = addBossVertex.getElements();
-//				showElements(elementosProtuberanciaRect);
-//				if(tmp.getRadius() == 0)
-//				{
-//					LimitedElement elementTemp1 = elementosProtuberanciaRect.get(0);					
-//					elementosProtuberanciaRect.add(elementTemp1);
-//					elementosProtuberanciaRect.remove(0);
-//				}
-//				showElements(elementosProtuberanciaRect);
-//				for(int i = 0;i < elementosProtuberanciaRect.size();i++)
-//				{
-//					elementosProtuberancia.add(elementosProtuberanciaRect.get(i));
-//				}
 				elementosProtuberancia.add(l1);
 				elementosProtuberancia.add(a1);
 				elementosProtuberancia.add(l2);
@@ -1316,7 +1267,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				elementosProtuberancia.add(a3);
 				elementosProtuberancia.add(l4);
 				elementosProtuberancia.add(a4);
-				
 				
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
@@ -1330,18 +1280,20 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				
 			}
 		}
-//		if(elementosProtuberancia.size() != 0)
-//		{
-//			laco.add(elementosProtuberancia);
-//		}
-//		
-//		if(elementsCavidade.size() != 0)
-//		{
-//			laco.add(elementsCavidade);
-//		}
 		for(LimitedElement tmp:elementosProtuberancia)
 		{
-			formaOriginal.add(tmp);
+			boolean allowAdd = true;
+			if(tmp.isLimitedArc())
+			{
+				if(((LimitedArc)tmp).getRadius() == 0)
+				{
+					allowAdd = false;
+				}
+			}
+			if(allowAdd)
+			{
+				formaOriginal.add(tmp);
+			}
 		}
 		for(LimitedElement tmp:elementsCavidade)
 		{
@@ -1441,16 +1393,16 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					intersecoesTmp.add(temp);
 				}
 			}
-			System.out.println(intersecoesTmp);
+//			System.out.println(intersecoesTmp);
 			for(int i = 0;i < intersecoesTmp.size();i++)
 			{
 				Point3d intTmp = intersecoesTmp.get(i);
-				System.out.println(intTmp);
-				System.out.println("DeltaAngle: " + calcDeltaAngle(intersecoesTmp.get(0), intTmp, arcCenter, oldDeltaAngle));
+//				System.out.println(intTmp);
+//				System.out.println("DeltaAngle: " + calcDeltaAngle(intersecoesTmp.get(0), intTmp, arcCenter, oldDeltaAngle));
 				if(i != intersecoesTmp.size()-1)
 				{
 					Point3d intTmpNext = intersecoesTmp.get(i+1);
-					System.out.println(intTmpNext);
+//					System.out.println(intTmpNext);
 					LimitedArc segTemp = new LimitedArc(arcCenter, intTmp, calcDeltaAngle(intTmp,intTmpNext,arcCenter,oldDeltaAngle));
 					arcTemp.add(segTemp);
 				}
@@ -1491,7 +1443,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 							segTemp = new LimitedArc(arcCenter, intTemp,calcDeltaAngle(intTemp,arcF,arcCenter,oldDeltaAngle));
 							arcTemp.add(segTemp);
 //						}
-						showArcs(arcTemp);
+//						showArcs(arcTemp);
 					}
 					else
 					{
@@ -1521,7 +1473,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				}
 			}
 		}
-		showArcs(arcTemp);
+//		showArcs(arcTemp);
 		return arcTemp;
 	}
 	public static ArrayList<LimitedArc> quebraArco1(LimitedArc arc, ArrayList<Point3d> intersecoes)
@@ -1623,7 +1575,10 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //		for(int i = 0;i < elements.size();i++)
 //		{
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
+//			showElements(elementsIntermediario);
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
+			showElements(elementsIntermediario2);
+//			elementsValidated.add(elementsIntermediario2);
 //			showElements(elements);
 //			System.out.println("elementsInter2: " + elementsIntermediario2.size());
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
@@ -1636,7 +1591,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 					elementsValidated.add(elementsIntermediario3.get(j));					
 				}
 			}
-//		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 //		elementsValidated.add(elementsIntermediario2);
 //		}
 		if (elementsValidated.size() != 0)
@@ -1903,7 +1857,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //					System.out.println(arci.getDeltaAngle());
 //					System.out.println(intersection);
 					ArrayList<LimitedArc> arcTemp = quebraArco(arci,intersection); 
-					System.out.println(arcTemp.size());
+//					System.out.println(arcTemp.size());
 					for(int k = 0;k < arcTemp.size();k++)
 					{
 						if(!isTheSamePoint(arcTemp.get(k).getInitialPoint(), arcTemp.get(k).getFinalPoint()))
@@ -1915,7 +1869,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			}
 			if(thereIsIntersection == false)
 			{
-				elementsIntermediario.add(ei);
+//				elementsIntermediario.add(ei);
 				if(!isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
 				{
 					elementsIntermediario.add(ei);
@@ -1942,7 +1896,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			}
 		}
 //		System.out.println("Elementos intermediarios2: " + elementsIntermediario2.size());
-	
+//		showElements(elementsIntermediario2);
 		return elementsIntermediario2;
 	}
 	public static ArrayList<ArrayList<LimitedElement>> validar3Path(ArrayList<LimitedElement> elementsIntermediario2)
@@ -2018,15 +1972,15 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				}
 //			System.out.println("Numero de lacos: " + numeroDeLacos);
 			}
-			System.out.println("laco1: " + elementsValidated.get(0).size());
+//			System.out.println("laco1: " + elementsValidated.get(0).size());
 			if(elementsValidated.size() == 2)
 			{
-				System.out.println("laco2: " + elementsValidated.get(1).size());
+//				System.out.println("laco2: " + elementsValidated.get(1).size());
 			}
 			if(elementsValidated.size() == 3)
 			{
-				System.out.println("laco2: " + elementsValidated.get(1).size());
-				System.out.println("laco3: " + elementsValidated.get(2).size());
+//				System.out.println("laco2: " + elementsValidated.get(1).size());
+//				System.out.println("laco3: " + elementsValidated.get(2).size());
 			}
 			
 			return elementsValidated;
@@ -2577,11 +2531,11 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			}
 			else
 			{
-				if(arc.getRadius() > distance)
-				{
+//				if(arc.getRadius() > distance)
+//				{
 					newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 					newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-				}
+//				}
 			}
 //			showArcs(arcs);
 			

@@ -16,6 +16,8 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.javafx.scene.paint.GradientUtils.Point;
+
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
@@ -156,7 +158,7 @@ public class GeometricOperationsTest
 		vertexPoints.add(new Point2D.Double(300, 250));
 		vertexPoints.add(new Point2D.Double(200, 250));
 		vertexPoints.add(new Point2D.Double(200, 180));
-		vertexPoints.add(new Point2D.Double(150, 180));
+//		vertexPoints.add(new Point2D.Double(150, 180));
 		vertexPoints.add(new Point2D.Double(50, 180));
 		vertexPoints.add(new Point2D.Double(50, 240));
 		vertexPoints.add(new Point2D.Double(150, 240));
@@ -175,10 +177,33 @@ public class GeometricOperationsTest
 		{
 			if(pocket.getItsBoss().get(i).getClass() == RectangularBoss.class)
 			{
-				
+				RectangularBoss tmp = (RectangularBoss)pocket.getItsBoss().get(i);
+				//Tamanho em x
+				double l = tmp.getL1();
+				//Tamanho em y
+				double c = tmp.getL2();
+				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
+				LimitedLine l1 = new LimitedLine(GeometricOperations.pointPlusEscalar(position, "x", tmp.getRadius()),GeometricOperations.pointPlusEscalar(position,"x",(l-2*tmp.getRadius())));
+				LimitedArc a1 = new LimitedArc(GeometricOperations.pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
+				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),GeometricOperations.pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
+				LimitedArc a2 = new LimitedArc(GeometricOperations.pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
+				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),GeometricOperations.pointPlusEscalar(a2.getFinalPoint(), "x", -(l - 2*tmp.getRadius())));
+				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
+				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),GeometricOperations.pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
+				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
+				formaOriginal.add(l1);
+				formaOriginal.add(a1);
+				formaOriginal.add(l2);
+				formaOriginal.add(a2);
+				formaOriginal.add(l3);
+				formaOriginal.add(a3);
+				formaOriginal.add(l4);
+				formaOriginal.add(a4);
 			} else if(pocket.getItsBoss().get(i).getClass() == CircularBoss.class)
 			{
-				
+				CircularBoss tmp = (CircularBoss)pocket.getItsBoss().get(i);
+				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, tmp.Z), 2 * Math.PI);
+				formaOriginal.add(arc);
 			} else if(pocket.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 			{
 				GeneralProfileBoss gen = (GeneralProfileBoss)pocket.getItsBoss().get(i);
@@ -546,11 +571,13 @@ public class GeometricOperationsTest
 		desenhador.setVisible(true);
 		for(;;);
 	}
-	
+	//Bug no 53
+	//Bug no 51
+	//E as paralelas que deviam ficar mais proximas do circular boos??
 	@Test
 	public void parallelPath2Test()
 	{
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 51);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 53);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -615,7 +642,7 @@ public class GeometricOperationsTest
 	@Test
 	public void validar1PathTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 70);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 53);
 		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);
@@ -635,28 +662,43 @@ public class GeometricOperationsTest
 	@Test
 	public void minumumDistanceTest()
 	{	
-//	    LimitedArc arco2= new LimitedArc(new Point3d(266.65151389911676,219.99999999999997,0),new Point3d(299.89995996796796,140.0,0),new Point3d(175.0,135.0,0));
-//	    LimitedArc arco9= new LimitedArc(new Point3d(380.10004003203204,140.0,0),new Point3d(413.34848610088295,219.99999999999994,0),new Point3d(505.0,135.0,0));
-		//(177.7623531673773,83.68313755650307,0)
-		LimitedArc arco2= new LimitedArc(new Point3d(230.0,70.0,0),new Point3d(202.2376468326227,116.31686244349693,0),0.7746332017773072);
-		LimitedArc arco1= new LimitedArc(new Point3d(100.0,200.0,0),new Point3d(143.87482193696061,190.0,0),3.5897788381925357);
-//		LimitedArc arco3= new LimitedArc(new Point3d(150.0,130.0,0),new Point3d(202.2376468326227,116.31686244349693,0),-0.7746332017773072);
-		LimitedLine l12= new LimitedLine(new Point3d(170,160,0),new Point3d(38,160,0));
-		LimitedArc arco19= new LimitedArc(new Point3d(543.2650236350173,256.7688678908215,0),new Point3d(532.5576201414465,249.0,0),new Point3d(471.07591554568916,345.0,0));
+		LimitedArc arc1= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(355.9661709794729,265.729786275657,0),0.284139186943849);
+		LimitedLine l1= new LimitedLine(new Point3d(353.0,264.4948974278318,0),new Point3d(353.0,267.0,0));
+		LimitedArc arc2= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(354.3929829960345,267.0,0),0.054088596833184344);
+		LimitedArc arc3= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(358.04764607319396,269.0,0),0.07602706101202061);
 		
-		LimitedArc arc1= new LimitedArc(new Point3d(100,100,0),new Point3d(200,100,0),Math.PI/2);
-		LimitedArc arc2= new LimitedArc(new Point3d(125,100,0),new Point3d(100,100,0),Math.PI/2);
-//		System.out.println("Delta Angle: " + arco1.getDeltaAngle());
+		//Linha -- Arco
+		LimitedArc arc4 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
+		LimitedLine l2 = new LimitedLine(new Point3d(140,90,0),new Point3d(140,110,0));
 	    
-//		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal, arco1));
-		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistanceArcToArc(arc1, arc2));
-//		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal.get(0), arco3));
-//		formaOriginal.add(arco1);
-//		formaOriginal.get(0).add(arco3);
+		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc4));
+		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistance(formaOriginal, arc1));
+		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal, arc2));
+		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal, arc3));
+		System.out.println("MINIMUM4 = " + GeometricOperations.minimumDistance(formaOriginal, l1));
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	    elements.add(arc1);
-	    elements.add(arc2);
+	    elements.add(arc4);
+	    elements.add(l2);
+//	    elements.add(arc3);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void validar2Test()
+	{
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+//		ArrayList<LimitedElement> elements = GeometricOperations.validar1Path(GeometricOperations.parallelPath2(pocket, 51).get(0));
+		ArrayList<LimitedElement> elements1 = new ArrayList<LimitedElement>();
+		LimitedArc arc1= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(355.9661709794729,265.729786275657,0),0.284139186943849);
+		LimitedArc arc2= new LimitedArc(new Point3d(290.0,260.0,0),new Point3d(290,250,0),1.5707963267948966);
+		System.out.println(GeometricOperations.minimumDistanceArcToArc(arc1, arc2));
+		elements.add(arc2);
+		elements1.add(arc1);
+		ArrayList<LimitedElement> elementsValidated = GeometricOperations.validar2Path(elements1, formaOriginal, 51);
+		System.out.println(elementsValidated);
+		elementsValidated.add(arc2);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementsValidated);
 		desenhador.setVisible(true);
 		for(;;);
 	}
@@ -786,17 +828,18 @@ public class GeometricOperationsTest
 	    LimitedLine line = new LimitedLine(new Point3d(30,50,0), new Point3d(100,50,0));
 	    LimitedArc arc1 = new LimitedArc(new Point3d(100,100,0),new Point3d(150,100,0),Math.PI);
 	    LimitedArc arc2 = new LimitedArc(new Point3d(50,110,0),new Point3d(35,110,0),Math.PI);
-	    Point3d p = new Point3d(50,100,0);
+	    Point3d p = new Point3d(50,70,0);
 	    Point3d pNear1 = GeometricOperations.nearestPoint(p, arc2);
 	    Point3d pNear2 = GeometricOperations.nearestPoint1(p, arc2);
-	    System.out.println("Nearest Point1: " + pNear1);
-	    System.out.println("Nearest Point2: " + pNear2);
+	    Point3d pNear3 = GeometricOperations.nearestPoint(p, line);
+//	    System.out.println("Nearest Point1: " + pNear1);
+	    System.out.println("Nearest Point2: " + pNear3);
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
     	elements.add(arc1);
     	elements.add(arc2);
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
-		desenhador.setVisible(true);
-		for(;;);
+//		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+//		desenhador.setVisible(true);
+//		for(;;);
 	    
 	}
 	public void ordenaNumerosTest()

@@ -577,7 +577,7 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath2Test()
 	{
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 53);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 51);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -617,7 +617,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 1) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
@@ -642,7 +642,7 @@ public class GeometricOperationsTest
 	@Test
 	public void validar1PathTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 53);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 51);
 		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);
@@ -665,14 +665,17 @@ public class GeometricOperationsTest
 		//Offset 51
 		LimitedArc arc1= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(355.9661709794729,265.729786275657,0),0.284139186943849);
 		LimitedArc arc2= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(358.04764607319396,269.0,0),0.07602706101202061);
-//		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal, arc1));
+		System.out.println("MINIMUM1 = " + GeometricOperations.roundNumber(GeometricOperations.minimumDistance(formaOriginal, arc2),9));
 //		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistance(formaOriginal, arc2));
+		LimitedArc arcBoss = new LimitedArc(new Point3d(350.0, 200.0, 0.0),new Point3d(365.0, 200.0, 0.0),2*Math.PI);
+		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistanceArcToArc(arc2, arcBoss));
+
 		
 		//Offset 53
 		LimitedArc arc4= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(354.3929829960345,267.0,0),0.054088596833184344);
 		LimitedLine l3= new LimitedLine(new Point3d(353.0,264.4948974278318,0),new Point3d(353.0,267.0,0));
-		System.out.println("Minimum: " + GeometricOperations.minimumDistance(formaOriginal, arc4));
-		System.out.println("Minimum: " + GeometricOperations.minimumDistance(formaOriginal, l3));
+//		System.out.println("Minimum: " + GeometricOperations.minimumDistance(formaOriginal, arc4));
+//		System.out.println("Minimum: " + GeometricOperations.minimumDistance(formaOriginal, l3));
 		
 		//Linha -- Arco
 		LimitedArc arc3 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
@@ -680,10 +683,10 @@ public class GeometricOperationsTest
 //		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc3));
 	    
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	    elements.add(arc4);
-	    elements.add(l3);
-	    elements.add(arc1);
+//	    elements.add(arc4);
+//	    elements.add(l3);
 	    elements.add(arc2);
+	    elements.add(arcBoss);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);

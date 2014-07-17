@@ -1115,13 +1115,13 @@ public class GeometricOperations
 				distance = minimumDistanceArcToArc(arc1, arc2);
 				if(distance <= 51)
 				{
-//					System.out.println("Arc1: from " + arc1.getInitialPoint() + " centred in " + arc1.getCenter() + "DeltaAngle: " + arc1.getDeltaAngle());
-//					System.out.println("Arc2: from " + arc2.getInitialPoint() + " centred in " + arc2.getCenter() + "DeltaAngle: " + arc2.getDeltaAngle());
-//					System.out.println("Distancia: " + distance);
+					System.out.println("Arc1: from " + arc1.getInitialPoint() + " centred in " + arc1.getCenter() + "DeltaAngle: " + arc1.getDeltaAngle());
+					System.out.println("Arc2: from " + arc2.getInitialPoint() + " centred in " + arc2.getCenter() + "DeltaAngle: " + arc2.getDeltaAngle());
+					System.out.println("Distancia: " + distance);
 				}
 			}			
 		}		
-		return roundNumber(distance, 10);
+		return distance;
 	}
 	
 	public static double minimumDistance(ArrayList<LimitedElement> formaOriginal, LimitedElement element)
@@ -1141,7 +1141,7 @@ public class GeometricOperations
 			}
 //			System.out.println("Minumum Distance: " + minimumDistance + " \t--> " + temp.getClass());
 		}
-		return roundNumber(minimumDistance,10);
+		return minimumDistance;
 	}
 	
 public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance)
@@ -1575,7 +1575,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //		for(int i = 0;i < elements.size();i++)
 //		{
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
-//			showElements(elementsIntermediario);
+			showElements(elementsIntermediario);
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
 			showElements(elementsIntermediario2);
 //			elementsValidated.add(elementsIntermediario2);
@@ -1891,7 +1891,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		{
 			LimitedElement ei0 = elementsIntermediario.get(i);
 			//System.out.println("Menor distancia elemento " + i + ": " +  minimumDistance(formaOriginal, ei0));
-			if(minimumDistance(formaOriginal, ei0) >= distance)
+			if(roundNumber(minimumDistance(formaOriginal, ei0),7) >= distance)
 			{
 				elementsIntermediario2.add(ei0);
 			}
@@ -2945,12 +2945,21 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 //		}
 		Point3d P1 = new Point3d(x1,y1,line.getInitialPoint().z);
 		Point3d P2 = new Point3d(x2,y2,line.getInitialPoint().z);
-		if(belongsArc(arcTmp,P1) && belongs(line,P1))
+		boolean p1BelongsArc = belongsArc(arcTmp,P1);
+		boolean p1BelongsLine = belongs(line,P1);
+		boolean p2BelongsArc = belongsArc(arcTmp,P2);
+		boolean p2BelongsLine = belongs(line,P2);
+		if(arc.getDeltaAngle() == 2*Math.PI)
+		{
+			p1BelongsArc = true;
+			p2BelongsArc = true;
+		}
+		if(p1BelongsArc && p1BelongsLine)
 		{
 			intersection = new ArrayList<Point3d>();
 			intersection.add(P1);
 		}
-		if(belongsArc(arcTmp,P2) && belongs(line,P2))
+		if(p2BelongsArc && p2BelongsLine)
 		{
 			if(intersection == null)
 			{

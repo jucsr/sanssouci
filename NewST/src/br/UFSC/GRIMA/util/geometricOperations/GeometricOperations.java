@@ -1877,6 +1877,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			}
 			
 		}
+		showElements(elementsIntermediario);
 		return elementsIntermediario;
 	}
 	public static ArrayList<LimitedElement> validar2Path(ArrayList<LimitedElement> elementsIntermediario, ArrayList<LimitedElement> formaOriginal, double distance)

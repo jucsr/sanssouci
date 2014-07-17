@@ -662,24 +662,28 @@ public class GeometricOperationsTest
 	@Test
 	public void minumumDistanceTest()
 	{	
+		//Offset 51
 		LimitedArc arc1= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(355.9661709794729,265.729786275657,0),0.284139186943849);
-		LimitedLine l1= new LimitedLine(new Point3d(353.0,264.4948974278318,0),new Point3d(353.0,267.0,0));
-		LimitedArc arc2= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(354.3929829960345,267.0,0),0.054088596833184344);
-		LimitedArc arc3= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(358.04764607319396,269.0,0),0.07602706101202061);
+		LimitedArc arc2= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(358.04764607319396,269.0,0),0.07602706101202061);
+//		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistance(formaOriginal, arc1));
+//		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistance(formaOriginal, arc2));
+		
+		//Offset 53
+		LimitedArc arc4= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(354.3929829960345,267.0,0),0.054088596833184344);
+		LimitedLine l3= new LimitedLine(new Point3d(353.0,264.4948974278318,0),new Point3d(353.0,267.0,0));
+		System.out.println("Minimum: " + GeometricOperations.minimumDistance(formaOriginal, arc4));
+		System.out.println("Minimum: " + GeometricOperations.minimumDistance(formaOriginal, l3));
 		
 		//Linha -- Arco
-		LimitedArc arc4 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
+		LimitedArc arc3 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
 		LimitedLine l2 = new LimitedLine(new Point3d(140,90,0),new Point3d(140,110,0));
+//		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc3));
 	    
-		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc4));
-		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistance(formaOriginal, arc1));
-		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal, arc2));
-		System.out.println("MINIMUM3 = " + GeometricOperations.minimumDistance(formaOriginal, arc3));
-		System.out.println("MINIMUM4 = " + GeometricOperations.minimumDistance(formaOriginal, l1));
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	    elements.add(arc4);
-	    elements.add(l2);
-//	    elements.add(arc3);
+	    elements.add(l3);
+	    elements.add(arc1);
+	    elements.add(arc2);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);
@@ -722,19 +726,20 @@ public class GeometricOperationsTest
 	@Test
 	public void belongsArcTest()
 	{
-//		LimitedArc arcOriginal = new LimitedArc(new Point3d(50,50,0), new Point3d(75,50,0),Math.PI/2);
-//		LimitedArc arco0= new LimitedArc(new Point3d(75.0,50.0,0),new Point3d(71.65063509461098,62.5,0),new Point3d(50.0,50.0,0));
-//		LimitedArc arco1= new LimitedArc(new Point3d(71.65063509461098,62.5,0),new Point3d(50.0,75.00000000000001,0),new Point3d(50.0,50.0,0));
+		LimitedArc arc0 = new LimitedArc(new Point3d(350,200,0), new Point3d(365,200,0),2*Math.PI);
 		LimitedArc arc1 = new LimitedArc(new Point3d(230.0, 70.0, 0.0), new Point3d(170.0, 70.0, 0.0),-1.5707963267948966);
 		LimitedArc arc2 = new LimitedArc(new Point3d(150.0, 130.0, 0.0), new Point3d(210.0, 130.0, 0.0),-1.5707963267948966);
-//		Point3d p1 = new Point3d(arcOriginal.getCenter().x + 25*Math.cos(Math.PI/12), arcOriginal.getCenter().y + 25*Math.sin(Math.PI/12),0);
-		Point3d p1 = new Point3d(209.89974874213235, 126.53299832284318, 0.0);
-		Point3d p2 = new Point3d(170.10025125786765, 73.46700167715775, 0.0);
+//		Point3d p1 = new Point3d(209.89974874213235, 126.53299832284318, 0.0);
+//		Point3d p2 = new Point3d(170.10025125786765, 73.46700167715775, 0.0);
+		Point3d  p1 = new Point3d(350.1486682852965, 214.999263247395, 0.0);
+		Point3d  p2 = new Point3d(349.8513317147035, 185.000736752605, 0.0);
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		elements.add(arc1);
-		elements.add(arc2);
-		System.out.println("Boolean0: " + GeometricOperations.belongsArc(arc1, p2));
-		System.out.println("Boolean1: " + GeometricOperations.belongsArc(arc2, p2));
+		elements.add(arc0);
+//		elements.add(arc2);
+		System.out.println(GeometricOperations.roundNumber(p1.distance(arc0.getCenter()),10));
+		System.out.println(arc0.getRadius());
+		System.out.println("Boolean0: " + GeometricOperations.belongsArc(arc0, p1));
+		System.out.println("Boolean1: " + GeometricOperations.belongsArc(arc0, p2));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);

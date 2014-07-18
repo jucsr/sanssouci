@@ -249,7 +249,7 @@ public class MovimentacaoGeneralClosedPocket {
 		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
 		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
 		entrada.add(addPocket.getElements());
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(entrada, trocoidalStrategy.getTrochoidalRadius());
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius(), trocoidalStrategy.getOverLap());
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
@@ -287,7 +287,7 @@ public class MovimentacaoGeneralClosedPocket {
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
 		entrada.add(addPocket.getElements());
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(entrada, this.ws.getCondicoesUsinagem().getAe());
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(), this.ws.getCondicoesUsinagem().getAe());
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)

@@ -148,8 +148,15 @@ public class GeometricOperationsTest
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+		//Circular Boss
 		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		itsBoss.add(arcBoss);
+		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
+		rectBoss.setPosicao(400, 200, pocket.Z);
+		rectBoss.setRadius(10);
+		itsBoss.add(rectBoss);
+		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
 		genBoss.setRadius(10);
 		ArrayList<Point2D> vertexPoints = new ArrayList<Point2D>();
@@ -163,10 +170,6 @@ public class GeometricOperationsTest
 		vertexPoints.add(new Point2D.Double(50, 240));
 		vertexPoints.add(new Point2D.Double(150, 240));
 		genBoss.setVertexPoints(vertexPoints);
-		rectBoss.setPosicao(400, 200, pocket.Z);
-		rectBoss.setRadius(0);
-		itsBoss.add(rectBoss);
-		itsBoss.add(arcBoss);
 		itsBoss.add(genBoss);
 		
 		pocket.setItsBoss(itsBoss);
@@ -183,7 +186,7 @@ public class GeometricOperationsTest
 				//Tamanho em y
 				double c = tmp.getL2();
 				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
-				LimitedLine l1 = new LimitedLine(GeometricOperations.pointPlusEscalar(position, "x", tmp.getRadius()),GeometricOperations.pointPlusEscalar(position,"x",(l-2*tmp.getRadius())));
+				LimitedLine l1 = new LimitedLine(GeometricOperations.pointPlusEscalar(position, "x", tmp.getRadius()),GeometricOperations.pointPlusEscalar(position,"x",(l-tmp.getRadius())));
 				LimitedArc a1 = new LimitedArc(GeometricOperations.pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
 				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),GeometricOperations.pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
 				LimitedArc a2 = new LimitedArc(GeometricOperations.pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
@@ -328,6 +331,9 @@ public class GeometricOperationsTest
 		//Ponto Final e Inicial iguais 
 		LimitedLine line1 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
 		LimitedLine line2 = new LimitedLine(new Point3d(20,10,0), new Point3d(20,20,0));
+		
+		//Retas sobrepostas
+//		LimitedLine l10 = new LimitedLine(new Point3d(50,50,0),new Point3d())
 		
 		//Retas que n�o se tocam
 		LimitedLine line3 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
@@ -577,7 +583,8 @@ public class GeometricOperationsTest
 	@Test
 	public void parallelPath2Test()
 	{
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 51);
+		//Nao esta criando paralela do circular Boss antes dos 17.914 de offset
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket,10);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -617,7 +624,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 1) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10,0.5) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
@@ -642,8 +649,12 @@ public class GeometricOperationsTest
 	@Test
 	public void validar1PathTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 51);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 10);
 		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
+		for(LimitedElement tmp : formaOriginal)
+		{
+			elementosQuebrados.add(tmp);
+		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);
 		for(;;);

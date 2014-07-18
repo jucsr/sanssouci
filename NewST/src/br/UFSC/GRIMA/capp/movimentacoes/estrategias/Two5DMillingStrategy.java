@@ -4,7 +4,7 @@ package br.UFSC.GRIMA.capp.movimentacoes.estrategias;
  * @author Jc
  *
  */
-public abstract class Two5DMillingStrategy 
+public abstract class Two5DMillingStrategy extends MachinningStrategy
 {
 	private double overLap;
 	private boolean allowMultiplePasses = true;

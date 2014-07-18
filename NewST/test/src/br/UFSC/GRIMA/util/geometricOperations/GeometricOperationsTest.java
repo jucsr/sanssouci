@@ -16,8 +16,6 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.javafx.scene.paint.GradientUtils.Point;
-
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;

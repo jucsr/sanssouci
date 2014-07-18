@@ -3,6 +3,8 @@ package br.UFSC.GRIMA.capp.machiningOperations;
 import java.io.Serializable;
 
 import javax.vecmath.Point3d;
+
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.MachinningStrategy;
 /**
  * 
  * @author Jc
@@ -15,6 +17,17 @@ public abstract class MachiningOperation implements Serializable
 	private Point3d startPoint = new Point3d(); // ponto de inicio da operacao
 	private boolean coolant = true;
 	private String operationType;
+	private MachinningStrategy ms;
+	public MachinningStrategy getMs() 
+	{
+		return ms;
+	}
+
+	public void setMs(MachinningStrategy ms) 
+	{
+		this.ms = ms;
+	}
+
 	public MachiningOperation(String id, double retractPlane)
 	{
 		this.id = id;

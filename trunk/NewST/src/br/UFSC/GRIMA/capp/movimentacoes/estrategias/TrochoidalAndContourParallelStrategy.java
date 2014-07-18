@@ -8,7 +8,16 @@ public class TrochoidalAndContourParallelStrategy extends ContourParallel
 {
 	private double trochoidalRadius;
 	private int trochoidalSense;
+	private double radialDephtPercent;
 	
+	public double getRadialDephtPercent()
+	{
+		return radialDephtPercent;
+	}
+	public void setRadialDephtPercent(double radialDephtPercent)
+	{
+		this.radialDephtPercent = radialDephtPercent;
+	}
 	public static final int CCW = 0;
 	public static final int CW = 1;
 	

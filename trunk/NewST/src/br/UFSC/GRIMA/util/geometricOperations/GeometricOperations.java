@@ -1144,18 +1144,19 @@ public class GeometricOperations
 		return minimumDistance;
 	}
 	
-public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance)
+public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance, double percentagem)
 		{
 			ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 			
 //			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
 			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath2(pocket, distance);
 			int aux = 1;
+			double distanceAtualizada = 2*distance*percentagem;
 //			parallelPath != null
 			while (parallelPath != null)
 			{
 				multipleParallel.add(parallelPath);
-				parallelPath = parallelPath2(pocket, aux*distance);
+				parallelPath = parallelPath2(pocket, distance + (aux*distanceAtualizada));
 				aux++;
 			}		
 	//		System.out.println("mutilplePath: " + multipleParallel.size());
@@ -1251,7 +1252,7 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 				//Tamanho em y
 				double c = tmp.getL2();
 				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
-				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-2*tmp.getRadius())));
+				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-tmp.getRadius())));
 				LimitedArc a1 = new LimitedArc(pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
 				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
 				LimitedArc a2 = new LimitedArc(pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
@@ -1475,13 +1476,6 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 		}
 //		showArcs(arcTemp);
 		return arcTemp;
-	}
-	public static ArrayList<LimitedArc> quebraArco1(LimitedArc arc, ArrayList<Point3d> intersecoes)
-	{
-		Point3d inicial = intersecoes.get(0);
-		//Assumindo que o array intersecoes contem pontos que estao dentro do arc
-		
-		return null;
 	}
 	/**
 	 * 
@@ -1870,7 +1864,11 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			if(thereIsIntersection == false)
 			{
 //				elementsIntermediario.add(ei);
-				if(!isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
+				if(ei.isLimitedLine() && !isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
+				{
+					elementsIntermediario.add(ei);
+				}
+				else if(ei.isLimitedArc() && roundNumber(((LimitedArc)ei).getDeltaAngle(),10) != 0)
 				{
 					elementsIntermediario.add(ei);
 				}
@@ -2532,11 +2530,11 @@ public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPa
 			}
 			else
 			{
-//				if(arc.getRadius() > distance)
-//				{
+				if(arc.getRadius() > distance)
+				{
 					newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 					newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-//				}
+				}
 			}
 //			showArcs(arcs);
 			

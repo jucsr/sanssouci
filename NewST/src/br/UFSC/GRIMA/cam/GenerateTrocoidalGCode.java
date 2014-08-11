@@ -4,12 +4,11 @@ package br.UFSC.GRIMA.cam;
 import java.util.ArrayList;
 
 import br.UFSC.GRIMA.capp.Workingstep;
-import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
-import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
-import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
-import br.UFSC.GRIMA.util.findPoints.LimitedElement;
-import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.LinearPath;
+import br.UFSC.GRIMA.util.Path;
 
 public class GenerateTrocoidalGCode 
 {
@@ -17,20 +16,47 @@ public class GenerateTrocoidalGCode
 	public GenerateTrocoidalGCode(Workingstep ws)
 	{
 		this.ws = ws;
+
 	}
-	private String getGCode()
+	public String getGCode()
 	{
-//		GeneralClosedPocket pocket = ((GeneralClosedPocket)ws.getFeature());
-		double offset = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMs()).getTrochoidalRadius();
+		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(this.ws);
+		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
 		
-//		ArrayList<ArrayList<LimitedElement>> elements = GeometricOperations.multipleParallelPath(pocket, offset,);
-//		for(int i = 0;i < elements.size();i++)
-//		{
-//			GenerateTrochoidalMovement1 tm = new GenerateTrochoidalMovement1(elements, radius, avanco)
-//		}
-		String GCode = "N" + " G54" + "\n";
-//		String ferramenta = ws.getFerramenta().getName();
-//		((BottomAndSideRoughMilling)ws.getOperation()).get
+		String GCode = "N10" + " G54" + "\n";
+		GCode += "N20" + " S" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF();
+		int numeroDeLinha = 0;
+		for(int i = 0; i < paths.size(); i++)
+		{
+			numeroDeLinha = (i + 2) * 10;
+			String aux = "";
+			Path pathTmp = paths.get(i);
+			if(paths.get(i).getClass() == LinearPath.class)
+			{
+				LinearPath linearTmp = (LinearPath)pathTmp;
+				if(linearTmp.getTipoDeMovimento() == LinearPath.FAST_MOV)
+				{
+					aux = "G0 " + " X" + pathTmp.getFinalPoint().x + " Y" + pathTmp.getFinalPoint().y + " Z" + pathTmp.getFinalPoint().z;
+				} else if(linearTmp.getTipoDeMovimento() == LinearPath.SLOW_MOV)
+				{
+					aux = "G1 " + " X" + pathTmp.getFinalPoint().x + " Y" + pathTmp.getFinalPoint().y + " Z" + pathTmp.getFinalPoint().z;
+				}
+			} else if(paths.get(i).getClass() == CircularPath.class)
+			{
+				CircularPath circularTmp = (CircularPath)pathTmp;
+				double I = circularTmp.getInitialPoint().x - circularTmp.getCenter().x;
+				double J = circularTmp.getInitialPoint().y - circularTmp.getCenter().y;
+				
+				if(circularTmp.getAngulo() < 0) // Sentido Horario
+				{
+					aux = "G2 " + " X" + circularTmp.getFinalPoint().x + " Y" + circularTmp.getFinalPoint().y + " Z" + circularTmp.getFinalPoint().z + " I" + I + " J" + J;
+				} else // sentido Antihorario
+				{
+					aux = "G3 " + " X" + circularTmp.getFinalPoint().x + " Y" + circularTmp.getFinalPoint().y + " Z" + circularTmp.getFinalPoint().z + " I" + I + " J" + J;
+				}
+			}
+			GCode += "\nN" + numeroDeLinha + aux;
+		}
 		return GCode;
 	}
 }

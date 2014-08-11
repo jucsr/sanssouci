@@ -541,7 +541,7 @@ public class GeometricOperations
 		double minimum = 0;
 		if(intersectionPoint(arc, line) == null)
 		{
-			if(intersectionPoint(arc, lineAux) != null)
+			if(intersectionPoint(arc, lineAux) != null) 
 			{
 				Point3d intersection = intersectionPoint(arc, lineAux).get(0);
 				minimum = p.distance(intersection);
@@ -565,11 +565,11 @@ public class GeometricOperations
 				double d3 = minimumDistancePointToLine(arc.getInitialPoint(), line);
 				double d4 = minimumDistancePointToLine(arc.getFinalPoint(), line);
 				//Considera o caso da linha estar dentro do espaço de abrangencia do arco
-//				if(inside)
-//				{
-//					minimumDistances.add(d1);
-//					minimumDistances.add(d2);
-//				}
+				if(inside)
+				{
+					minimumDistances.add(d1);
+					minimumDistances.add(d2);
+				}
 				minimumDistances.add(d3);
 				minimumDistances.add(d4);
 				minimum = minimumDistances.get(0);
@@ -1143,8 +1143,62 @@ public class GeometricOperations
 		}
 		return minimumDistance;
 	}
-	
-public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance, double percentagem)
+	/**
+	 * 	o metodo calcula a menor maior distancia entre uma lista de elementos (supoe-se que eh uma forma com protuberancias, portanto nao hah intersecoes, ou seja, menor distancia = 0)
+	 * @param elements --> lista de elementos para o qual deseja-se conhecer a menor_maior distancia
+	 * @return
+	 */
+	public static double minimumMaximunDistanceBetweenElements(ArrayList<LimitedElement> elements)
+	{
+//		double minimumDistance = minimumDistance(formaOriginal.get(0),element);
+		double minimumDistance = 100;//minimumDistance(elements.get(0), elements.get(1));
+		ArrayList<Double> negativos = new ArrayList<Double>();
+		ArrayList<Double> positivos = new ArrayList<Double>();
+		for(int i = 0;i < elements.size(); i++)
+		{
+			LimitedElement temp = elements.get(i);
+			if (temp.isLimitedArc()) {
+				LimitedArc atmp = (LimitedArc) temp;
+				if (atmp.getDeltaAngle() < 0) 
+				{
+					negativos.add(atmp.getInitialPoint().distance(atmp.getFinalPoint()));
+				} else
+				{
+					positivos.add(atmp.getInitialPoint().distance(atmp.getFinalPoint()));
+				}
+			}
+		}
+		for(int i = 0;i < elements.size(); i++)
+		{
+			LimitedElement temp = elements.get(i);
+			for(int j = i + 1; j < elements.size(); j ++) // Pode dar problema de ponteiro nulo em tempo de execucao!!!!
+			{
+				LimitedElement temp1 = elements.get(j);
+				double dTmp = minimumDistance(temp, temp1);
+//				System.out.println(dTmp);
+				if(roundNumber(dTmp, 10) > 0 && minimumDistance > dTmp) // a distancia deve ser maior a zero
+				{
+					if(!isInList(negativos, dTmp))
+						minimumDistance = dTmp;
+				}
+			}
+		}
+		return minimumDistance;
+	}
+	public static boolean isInList(ArrayList<Double> list, double in)
+	{
+		boolean is = false;
+		for(Double tmp : list)
+		{
+			if(roundNumber(tmp, 10) == roundNumber(in, 10))
+			{
+				is = true;
+				break;
+			}
+		}
+		return is;
+	}
+	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance, double percentagem)
 		{
 			ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 			

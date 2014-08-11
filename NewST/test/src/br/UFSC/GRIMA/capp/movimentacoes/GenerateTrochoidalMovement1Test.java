@@ -8,7 +8,11 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.entidades.features.Boss;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
@@ -90,8 +94,8 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateMultipleParallelAndTrochoidalMovementTest()
 	{
-		double trochoidalRadius = 30;
-		double trochoidalPercent = .75;
+		double trochoidalRadius = 5;
+		double trochoidalPercent = 1.5;
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
 		points.add(new Point2D.Double(8, 160));
@@ -109,7 +113,35 @@ public class GenerateTrochoidalMovement1Test
 		pocket.setRadius(30);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, 30);
+		
+		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+		//Circular Boss
+		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		itsBoss.add(arcBoss);
+		//Rectangular Boss
+		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
+		rectBoss.setPosicao(400, 200, pocket.Z);
+		rectBoss.setRadius(10);
+		itsBoss.add(rectBoss);
+		//General Boss
+		GeneralProfileBoss genBoss = new GeneralProfileBoss();
+		genBoss.setRadius(10);
+		ArrayList<Point2D> vertexPoints = new ArrayList<Point2D>();
+		vertexPoints.add(new Point2D.Double(150, 300));
+		vertexPoints.add(new Point2D.Double(300, 300));
+		vertexPoints.add(new Point2D.Double(300, 250));
+		vertexPoints.add(new Point2D.Double(200, 250));
+		vertexPoints.add(new Point2D.Double(200, 180));
+//		vertexPoints.add(new Point2D.Double(150, 180));
+		vertexPoints.add(new Point2D.Double(50, 180));
+		vertexPoints.add(new Point2D.Double(50, 240));
+		vertexPoints.add(new Point2D.Double(150, 240));
+		genBoss.setVertexPoints(vertexPoints);
+		itsBoss.add(genBoss);
+		
+		pocket.setItsBoss(itsBoss);
+		
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, trochoidalPercent) ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
@@ -117,7 +149,7 @@ public class GenerateTrochoidalMovement1Test
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
-				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), 30, 10);
+				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), trochoidalRadius, 10);
 				ArrayList<LimitedElement> movimentacoes = gen.generatePaths(gen.getPaths());
 				for(int k = 0; k < movimentacoes.size(); k ++)
 				{

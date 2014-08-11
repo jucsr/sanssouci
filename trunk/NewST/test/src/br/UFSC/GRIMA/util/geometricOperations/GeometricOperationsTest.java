@@ -111,7 +111,9 @@ public class GeometricOperationsTest
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
 		points.add(new Point2D.Double(8, 160));
-		points.add(new Point2D.Double(8, 320));
+//		points.add(new Point2D.Double(8, 500)); // erro
+		points.add(new Point2D.Double(8, 500));
+//		points.add(new Point2D.Double(480, 500));
 		points.add(new Point2D.Double(480, 320));
 //		points.add(new Point2D.Double(480, 500));
 		points.add(new Point2D.Double(700, 500));
@@ -163,7 +165,7 @@ public class GeometricOperationsTest
 		vertexPoints.add(new Point2D.Double(300, 250));
 		vertexPoints.add(new Point2D.Double(200, 250));
 		vertexPoints.add(new Point2D.Double(200, 180));
-//		vertexPoints.add(new Point2D.Double(150, 180));
+//		vertexPoints.add(new Point2D.Double(150, 230)); // ------- //
 		vertexPoints.add(new Point2D.Double(50, 180));
 		vertexPoints.add(new Point2D.Double(50, 240));
 		vertexPoints.add(new Point2D.Double(150, 240));
@@ -582,7 +584,7 @@ public class GeometricOperationsTest
 	public void parallelPath2Test()
 	{
 		//Nao esta criando paralela do circular Boss antes dos 17.914 de offset
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket,10);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 30);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -640,6 +642,8 @@ public class GeometricOperationsTest
 		{
 			all.add(tmp);
 		}
+		double min = GeometricOperations.minimumMaximunDistanceBetweenElements(formaOriginal);
+		System.err.println("min = " + min);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
@@ -878,6 +882,41 @@ public class GeometricOperationsTest
 		Point3d p2 = new Point3d(150, 50, 0);
 		System.out.println((GeometricOperations.getDeltaAngle(center, p1, p2) * 180 / Math.PI));
 		System.err.println((GeometricOperations.calcDeltaAngle(p1, p2, center, 1) * 180 / Math.PI));
+	}
+	@Test
+	public void minimumMaximunDistanceBetweenElements()
+	{
+//		LimitedLine line1 = new LimitedLine(new Point3d(10, 10, 0), new Point3d(100, 10, 0));
+//		LimitedLine line2 = new LimitedLine(new Point3d(100, 10, 0), new Point3d(100, 50, 0));
+//		LimitedLine line3 = new LimitedLine(new Point3d(100, 50, 0), new Point3d(10, 50, 0));
+//		LimitedLine line4 = new LimitedLine(new Point3d(10, 50, 0), new Point3d(10, 10, 0));
+		LimitedLine line1 = new LimitedLine(new Point3d(20, 10, 0), new Point3d(90, 10, 0));
+		LimitedArc arc1 = new LimitedArc(new Point3d(20, 20, 0), new Point3d(10, 20, 0), Math.PI / 2);
+		LimitedLine line2 = new LimitedLine(new Point3d(100, 20, 0), new Point3d(100, 40, 0));
+		LimitedArc arc2 = new LimitedArc(new Point3d(90, 20, 0), new Point3d(90, 10, 0), Math.PI / 2);
+		LimitedLine line3 = new LimitedLine(new Point3d(90, 50, 0), new Point3d(20, 50, 0));
+		LimitedArc arc3 = new LimitedArc(new Point3d(90, 40, 0), new Point3d(100, 40, 0), Math.PI / 2);
+		LimitedLine line4 = new LimitedLine(new Point3d(10, 40, 0), new Point3d(10, 20, 0));
+		LimitedArc arc4 = new LimitedArc(new Point3d(20, 40, 0), new Point3d(20, 50, 0), Math.PI / 2);
+		// BOSS
+		
+		LimitedLine bl1 = new LimitedLine(new Point3d(15, 15, 0), new Point3d(90, 15, 0));
+		
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		elements.add(line1);
+		elements.add(line2);
+		elements.add(line3);
+		elements.add(line4);
+		elements.add(arc1);
+		elements.add(arc2);
+		elements.add(arc3);
+		elements.add(arc4);
+		elements.add(bl1);
+		
+		System.out.println("mmmm = " + GeometricOperations.minimumDistance(arc1, bl1));
+//		double minimaMaxima = GeometricOperations.minimumMaximunDistanceBetweenElements(elements);
+//		double minimaMaxima = GeometricOperations.minimumDistance(line2, line4);
+//		System.err.println("minimaMaxima = " + minimaMaxima);
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

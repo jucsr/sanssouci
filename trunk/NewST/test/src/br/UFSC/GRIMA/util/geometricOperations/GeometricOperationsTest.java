@@ -388,9 +388,13 @@ public class GeometricOperationsTest
 		LimitedLine line12 = new LimitedLine(new Point3d(70, 20, 0), new Point3d(70, 80, 0));
 		LimitedLine line13 = new LimitedLine(new Point3d(70, 20, 0), new Point3d(70, 80, 0));
 		
+		//Erro
+		LimitedLine l97= new LimitedLine(new Point3d(87.99999999999996,459.5250284141424,0),new Point3d(87.99999999999996,320.0,0));
+		LimitedArc arco55= new LimitedArc(new Point3d(160.0,290.0,0),new Point3d(160.0,380.0,0),1.2309594173407747);
 		
 		
-		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(line13, line12);
+		
+		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(l97, arco55);
 		System.err.println("Intersection Validated: " + intersection);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		all.add(arc8);
@@ -584,7 +588,7 @@ public class GeometricOperationsTest
 	public void parallelPath2Test()
 	{
 		//Nao esta criando paralela do circular Boss antes dos 17.914 de offset
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 30);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 80);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -651,12 +655,21 @@ public class GeometricOperationsTest
 	@Test
 	public void validar1PathTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 10);
-		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
-		for(LimitedElement tmp : formaOriginal)
-		{
-			elementosQuebrados.add(tmp);
-		}
+		LimitedLine l1= new LimitedLine(new Point3d(87.99999999999994,456.45186009241115,0),new Point3d(88.0,189.99999999999997,0));
+		LimitedArc arc1= new LimitedArc(new Point3d(160.0,290.0,0),new Point3d(160.0,380.0,0),1.5707963267948966);
+		
+		ArrayList<LimitedElement> elementsTmp = new ArrayList<LimitedElement>();
+		elementsTmp.add(l1);
+		elementsTmp.add(arc1);
+		
+//		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 80);
+//		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
+//		for(LimitedElement tmp : formaOriginal)
+//		{
+//			elementosQuebrados.add(tmp);
+//		}
+		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp);
+
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);
 		for(;;);

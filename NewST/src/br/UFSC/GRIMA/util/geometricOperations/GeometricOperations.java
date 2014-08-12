@@ -1371,9 +1371,10 @@ public class GeometricOperations
 		
 //		saida = parallelPath1(laco, distance, !inside);
 		
-		saida = validarPath(totalParallel, formaOriginal, distance);
+//		saida = validarPath(totalParallel, formaOriginal, distance);
 		
-//		saida.add(totalParallel);
+		saida.add(totalParallel);
+		showElements(totalParallel);
 		
 		return saida;
 	}

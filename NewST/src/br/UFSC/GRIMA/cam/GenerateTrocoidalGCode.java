@@ -13,17 +13,18 @@ import br.UFSC.GRIMA.util.Path;
 public class GenerateTrocoidalGCode 
 {
 	private Workingstep ws;
-	public GenerateTrocoidalGCode(Workingstep ws)
+	private int n;
+	public GenerateTrocoidalGCode(Workingstep ws, int n)
 	{
 		this.ws = ws;
-
+		this.n = n;
 	}
 	public String getGCode()
 	{
 		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(this.ws);
-		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
-		
-		String GCode = "N10" + " G54" + "\n";
+//		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
+		ArrayList<Path> paths = mov.getDesbasteContourParallel();
+		String GCode = "N" + n + " G54" + "\n";
 		GCode += "N20" + " S" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF();
 		int numeroDeLinha = 0;
 		for(int i = 0; i < paths.size(); i++)

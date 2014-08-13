@@ -656,8 +656,8 @@ public class GeometricOperationsTest
 	public void validar1PathTest()
 	{
 		LimitedLine l1= new LimitedLine(new Point3d(87.99999999999994,456.45186009241115,0),new Point3d(88.0,189.99999999999997,0));
-		LimitedArc arc1= new LimitedArc(new Point3d(160.0,290.0,0),new Point3d(160.0,380.0,0),1.5707963267948966);
-		
+		LimitedArc arc1= new LimitedArc(new Point3d(160.0,290.0,0),new Point3d(70,290,0),-1.5707963267948966);
+		//(160.0,380.0,0)
 		ArrayList<LimitedElement> elementsTmp = new ArrayList<LimitedElement>();
 		elementsTmp.add(l1);
 		elementsTmp.add(arc1);

@@ -1371,10 +1371,10 @@ public class GeometricOperations
 		
 //		saida = parallelPath1(laco, distance, !inside);
 		
-//		saida = validarPath(totalParallel, formaOriginal, distance);
+		saida = validarPath(totalParallel, formaOriginal, distance);
 		
-		saida.add(totalParallel);
-		showElements(totalParallel);
+//		saida.add(totalParallel);
+//		showElements(totalParallel);
 		
 		return saida;
 	}
@@ -1886,6 +1886,7 @@ public class GeometricOperations
 			}
 			if(intersection != null)
 			{
+//				System.out.println("Intersecoes: " + intersection);
 				if (ei.isLimitedLine())
 				{
 					LimitedLine linei = (LimitedLine)ei;
@@ -2873,7 +2874,7 @@ public class GeometricOperations
 		double xin = arcTmp.getCenter().x - r;
 		double xif = arcTmp.getCenter().x + r;
 		
-		if (line.getInitialPoint().x == line.getFinalPoint().x) 
+		if (roundNumber(line.getInitialPoint().x,10) == roundNumber(line.getFinalPoint().x,10))
 		{
 			if (!((line.getInitialPoint().x >= xin) && (line.getInitialPoint().x <= xif))) 
 			{

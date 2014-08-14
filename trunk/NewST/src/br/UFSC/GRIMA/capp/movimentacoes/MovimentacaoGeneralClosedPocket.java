@@ -250,7 +250,7 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
 		entrada.add(addPocket.getElements());
 		System.out.println(GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius(), trocoidalStrategy.getOverLap()));
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius(), trocoidalStrategy.getOverLap());
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2), trocoidalStrategy.getOverLap());
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
@@ -288,7 +288,11 @@ public class MovimentacaoGeneralClosedPocket {
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
 		entrada.add(addPocket.getElements());
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(), this.ws.getFerramenta().getDiametroFerramenta() / this.ws.getCondicoesUsinagem().getAe());
+		System.out.println(this.ws.getCondicoesUsinagem().getAe());
+		System.out.println(this.ws.getFerramenta().getDiametroFerramenta());
+		//this.ws.getCondicoesUsinagem().getAe() / this.ws.getFerramenta().getDiametroFerramenta()
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(), 0.5);
+		System.out.println("Tamanho: " + elementos.get(0).get(0).size());
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
@@ -313,7 +317,7 @@ public class MovimentacaoGeneralClosedPocket {
 					else if(eTmp.isLimitedArc())
 					{
 						LimitedArc eArcTmp = (LimitedArc)eTmp;
-						CircularPath circTmp = new CircularPath(eArcTmp.getInitialPoint(), eArcTmp.getFinalPoint(), eArcTmp.getCenter(), eArcTmp.getSense()); // ------> verificar este construtor
+						CircularPath circTmp = new CircularPath(eArcTmp.getCenter(), eArcTmp.getInitialPoint(), eArcTmp.getFinalPoint(),eArcTmp.getDeltaAngle()); // ------> verificar este construtor
 						desbaste.add(circTmp);
 					}
 				}

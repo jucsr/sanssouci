@@ -110,18 +110,18 @@ public class GeometricOperationsTest
 	    
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
-		points.add(new Point2D.Double(8, 160));
-//		points.add(new Point2D.Double(8, 500)); // erro
-		points.add(new Point2D.Double(8, 500));
-//		points.add(new Point2D.Double(480, 500));
-		points.add(new Point2D.Double(480, 320));
-//		points.add(new Point2D.Double(480, 500));
-		points.add(new Point2D.Double(700, 500));
-		points.add(new Point2D.Double(700, 160));
-		points.add(new Point2D.Double(480, 160));
-		points.add(new Point2D.Double(480, 40));
-		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200,160));
+//		points.add(new Point2D.Double(8, 160));
+////		points.add(new Point2D.Double(8, 500)); // erro
+//		points.add(new Point2D.Double(8, 500));
+////		points.add(new Point2D.Double(480, 500));
+//		points.add(new Point2D.Double(480, 320));
+////		points.add(new Point2D.Double(480, 500));
+//		points.add(new Point2D.Double(700, 500));
+//		points.add(new Point2D.Double(700, 160));
+//		points.add(new Point2D.Double(480, 160));
+//		points.add(new Point2D.Double(480, 40));
+//		points.add(new Point2D.Double(200, 40));
+//		points.add(new Point2D.Double(200,160));
 		//Forma 2
 //	    points.add(new Point2D.Double(700, 320));
 //		points.add(new Point2D.Double(700, 160));
@@ -129,6 +129,12 @@ public class GeometricOperationsTest
 //		points.add(new Point2D.Double(480, 40));
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200, 320));
+	    points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		//Forma 4
 //		points.add(new Point2D.Double(10, 10));
 //		points.add(new Point2D.Double(200, 10));
@@ -172,7 +178,7 @@ public class GeometricOperationsTest
 		genBoss.setVertexPoints(vertexPoints);
 		itsBoss.add(genBoss);
 		
-		pocket.setItsBoss(itsBoss);
+		//pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 
 		formaOriginal = addPocketVertex.getElements();
@@ -588,7 +594,7 @@ public class GeometricOperationsTest
 	public void parallelPath2Test()
 	{
 		//Nao esta criando paralela do circular Boss antes dos 17.914 de offset
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 80);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 100);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)

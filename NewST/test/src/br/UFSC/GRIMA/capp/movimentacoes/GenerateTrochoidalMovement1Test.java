@@ -61,12 +61,19 @@ public class GenerateTrochoidalMovement1Test
 		elements.add(arco0);
 		
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
-		points.add(new Point2D.Double(8, 160));
-		points.add(new Point2D.Double(8, 320));
-		points.add(new Point2D.Double(480, 320));
+//		points.add(new Point2D.Double(8, 160));
+//		points.add(new Point2D.Double(8, 320));
+//		points.add(new Point2D.Double(480, 320));
+//		points.add(new Point2D.Double(480, 40));
+//		points.add(new Point2D.Double(200, 40));
+//		points.add(new Point2D.Double(200,160));
+		
+		points.add(new Point2D.Double(700, 320));
+		points.add(new Point2D.Double(700, 160));
+		points.add(new Point2D.Double(480, 160));
 		points.add(new Point2D.Double(480, 40));
 		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200,160));
+		points.add(new Point2D.Double(200, 320));
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
 		formaOriginal = addPocketVertex.getElements();

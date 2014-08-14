@@ -1115,9 +1115,9 @@ public class GeometricOperations
 				distance = minimumDistanceArcToArc(arc1, arc2);
 				if(distance <= 51)
 				{
-					System.out.println("Arc1: from " + arc1.getInitialPoint() + " centred in " + arc1.getCenter() + "DeltaAngle: " + arc1.getDeltaAngle());
-					System.out.println("Arc2: from " + arc2.getInitialPoint() + " centred in " + arc2.getCenter() + "DeltaAngle: " + arc2.getDeltaAngle());
-					System.out.println("Distancia: " + distance);
+//					System.out.println("Arc1: from " + arc1.getInitialPoint() + " centred in " + arc1.getCenter() + "DeltaAngle: " + arc1.getDeltaAngle());
+//					System.out.println("Arc2: from " + arc2.getInitialPoint() + " centred in " + arc2.getCenter() + "DeltaAngle: " + arc2.getDeltaAngle());
+//					System.out.println("Distancia: " + distance);
 				}
 			}			
 		}		
@@ -1206,6 +1206,9 @@ public class GeometricOperations
 			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath2(pocket, distance);
 			int aux = 1;
 			double distanceAtualizada = 2*distance*percentagem;
+			System.out.println("Distancia: " + distance);
+			System.out.println("DistanciaAtual: " + distanceAtualizada);
+			System.out.println("Percentagem: " + percentagem);
 //			parallelPath != null
 			while (parallelPath != null)
 			{
@@ -1624,7 +1627,7 @@ public class GeometricOperations
 //		for(int i = 0;i < elements.size();i++)
 //		{
 			ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
-			showElements(elementsIntermediario);
+//			showElements(elementsIntermediario);
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
 			showElements(elementsIntermediario2);
 //			elementsValidated.add(elementsIntermediario2);
@@ -1931,7 +1934,7 @@ public class GeometricOperations
 			}
 			
 		}
-		showElements(elementsIntermediario);
+//		showElements(elementsIntermediario);
 		return elementsIntermediario;
 	}
 	public static ArrayList<LimitedElement> validar2Path(ArrayList<LimitedElement> elementsIntermediario, ArrayList<LimitedElement> formaOriginal, double distance)

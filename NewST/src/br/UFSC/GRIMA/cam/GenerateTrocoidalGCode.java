@@ -9,6 +9,7 @@ import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallel
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 public class GenerateTrocoidalGCode 
 {
@@ -37,23 +38,23 @@ public class GenerateTrocoidalGCode
 				LinearPath linearTmp = (LinearPath)pathTmp;
 				if(linearTmp.getTipoDeMovimento() == LinearPath.FAST_MOV)
 				{
-					aux = "G0 " + " X" + pathTmp.getFinalPoint().x + " Y" + pathTmp.getFinalPoint().y + " Z" + pathTmp.getFinalPoint().z;
+					aux = "G0 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().z,5);
 				} else if(linearTmp.getTipoDeMovimento() == LinearPath.SLOW_MOV)
 				{
-					aux = "G1 " + " X" + pathTmp.getFinalPoint().x + " Y" + pathTmp.getFinalPoint().y + " Z" + pathTmp.getFinalPoint().z;
+					aux = "G1 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().z,5);
 				}
 			} else if(paths.get(i).getClass() == CircularPath.class)
 			{
 				CircularPath circularTmp = (CircularPath)pathTmp;
-				double I = circularTmp.getInitialPoint().x - circularTmp.getCenter().x;
-				double J = circularTmp.getInitialPoint().y - circularTmp.getCenter().y;
+				double I = circularTmp.getCenter().x - circularTmp.getInitialPoint().x;
+				double J = circularTmp.getCenter().y - circularTmp.getInitialPoint().y;
 				
 				if(circularTmp.getAngulo() < 0) // Sentido Horario
 				{
-					aux = "G2 " + " X" + circularTmp.getFinalPoint().x + " Y" + circularTmp.getFinalPoint().y + " Z" + circularTmp.getFinalPoint().z + " I" + I + " J" + J;
+					aux = "G2 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().z,5) + " I" + GeometricOperations.roundNumber(I,5) + " J" + GeometricOperations.roundNumber(J,5);
 				} else // sentido Antihorario
 				{
-					aux = "G3 " + " X" + circularTmp.getFinalPoint().x + " Y" + circularTmp.getFinalPoint().y + " Z" + circularTmp.getFinalPoint().z + " I" + I + " J" + J;
+					aux = "G3 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().z,5) + " I" + GeometricOperations.roundNumber(I,5) + " J" + GeometricOperations.roundNumber(J,5);
 				}
 			}
 			GCode += "\nN" + numeroDeLinha + aux;

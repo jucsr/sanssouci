@@ -28,19 +28,35 @@ public class GenerateTrocoidalGCodeTest
 	@Before
 	public void init()
 	{
+		//Forma 1
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
-		points.add(new Point2D.Double(8, 160));
-//		points.add(new Point2D.Double(8, 500)); // erro
-		points.add(new Point2D.Double(8, 500));
-//		points.add(new Point2D.Double(480, 500));
-		points.add(new Point2D.Double(480, 320));
-//		points.add(new Point2D.Double(480, 500));
-		points.add(new Point2D.Double(700, 500));
-		points.add(new Point2D.Double(700, 160));
-		points.add(new Point2D.Double(480, 160));
-		points.add(new Point2D.Double(480, 40));
-		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200,160));
+//		points.add(new Point2D.Double(8, 160));
+////		points.add(new Point2D.Double(8, 500)); // erro
+//		points.add(new Point2D.Double(8, 500));
+////		points.add(new Point2D.Double(480, 500));
+//		points.add(new Point2D.Double(480, 320));
+////		points.add(new Point2D.Double(480, 500));
+//		points.add(new Point2D.Double(700, 500));
+//		points.add(new Point2D.Double(700, 160));
+//		points.add(new Point2D.Double(480, 160));
+//		points.add(new Point2D.Double(480, 40));
+//		points.add(new Point2D.Double(200, 40));
+//		points.add(new Point2D.Double(200,160));
+	    
+	    //Forma 2
+//	    points.add(new Point2D.Double(700, 320));
+//		points.add(new Point2D.Double(700, 160));
+//		points.add(new Point2D.Double(480, 160));
+//		points.add(new Point2D.Double(480, 40));
+//		points.add(new Point2D.Double(200, 40));
+//		points.add(new Point2D.Double(200, 320));
+		
+		points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		
 		pocket.setPoints(points);
 		pocket.setRadius(30);
@@ -76,7 +92,7 @@ public class GenerateTrocoidalGCodeTest
 		// --- Criando Machining workingstep ----
 		
 		// ---- criando Operacao ----
-		MachiningOperation operation = new BottomAndSideRoughMilling("Desbaste", 5);
+		MachiningOperation operation = new BottomAndSideRoughMilling("Desbaste", 50);
 		operation.setCoolant(true);
 		
 		// ---- criando Ferramenta ----

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
+import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
@@ -25,12 +26,19 @@ public class GenerateTrocoidalGCode
 		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(this.ws);
 //		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
 		ArrayList<Path> paths = mov.getDesbasteContourParallel();
-		String GCode = "N" + n + " G54" + "\n";
-		GCode += "N20" + " S" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF();
+		String GCode = "N" + (n + 1 * 10) + "\tG54";
+		String sentidoRotacao = " M03";
+		if(ws.getFerramenta().getHandOfCut() == Ferramenta.RIGHT_HAND_OF_CUT)
+		{
+			sentidoRotacao = " M04";
+		}
+		GCode += "\nN" + (n + 2 * 10) + "\t S" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF() + sentidoRotacao;
+		GCode += "\nN" + (n + 3 * 10) + "\tT = " + ws.getFerramenta().getName();
+		GCode += "\nN" + (n + 4 * 10) + "\tM06";
 		int numeroDeLinha = 0;
 		for(int i = 0; i < paths.size(); i++)
 		{
-			numeroDeLinha = (i + 2) * 10;
+			numeroDeLinha = (i + 6) * 10;
 			String aux = "";
 			Path pathTmp = paths.get(i);
 			if(paths.get(i).getClass() == LinearPath.class)

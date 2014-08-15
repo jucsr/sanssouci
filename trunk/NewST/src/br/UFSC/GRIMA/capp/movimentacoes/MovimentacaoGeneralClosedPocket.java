@@ -292,16 +292,19 @@ public class MovimentacaoGeneralClosedPocket {
 		System.out.println(this.ws.getFerramenta().getDiametroFerramenta());
 		//this.ws.getCondicoesUsinagem().getAe() / this.ws.getFerramenta().getDiametroFerramenta()
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(), 0.5);
-		System.out.println("Tamanho: " + elementos.get(0).get(0).size());
+//		System.out.println("Tamanho: " + elementos.get(0).get(0).size());
+		
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
 			{
+				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
+				LinearPath posicionamentoAntesDeDescer = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
+				desbaste.add(posicionamentoAntesDeDescer);
 				/*
 				 * descendo no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
 				 */
-				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
-				LinearPath descendo = new LinearPath((new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)), new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, eTmp.getInitialPoint().z));
+				LinearPath descendo = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, eTmp.getInitialPoint().z));
 				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
 				desbaste.add(descendo);
 				for(int k = 0; k < elementos.get(i).get(j).size(); k++)

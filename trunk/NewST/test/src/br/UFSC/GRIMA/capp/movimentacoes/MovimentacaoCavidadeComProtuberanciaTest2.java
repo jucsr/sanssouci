@@ -306,10 +306,9 @@ public class MovimentacaoCavidadeComProtuberanciaTest2
 				
 				g2d.setColor(Color.black);
 				
-				
 				GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(cavidadeGeral.getVertexPoints(), cavidadeGeral.Z,cavidadeGeral.getRadius());
 				
-				ArrayList<LimitedElement> elementsAcabamento = GeometricOperations.acabamentoPath(addPocketVertex, ferramenta.getDiametroFerramenta() / 2);
+				ArrayList<LimitedElement> elementsAcabamento = GeometricOperations.acabamentoPath(addPocketVertex, ferramenta.getDiametroFerramenta() / 2,0);
 				
 				ArrayList<LimitedElement> elementsArrumados  = arrumarElementos(elementsAcabamento, ferramenta.getDiametroFerramenta() / 2);
 				for(int i=0;i<elementsAcabamento.size();i++)

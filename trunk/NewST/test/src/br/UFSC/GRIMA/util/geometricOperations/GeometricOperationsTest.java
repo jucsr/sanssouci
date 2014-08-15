@@ -129,39 +129,42 @@ public class GeometricOperationsTest
 //		points.add(new Point2D.Double(480, 40));
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200, 320));
-	    points.add(new Point2D.Double(500, 320));
-		points.add(new Point2D.Double(500, 160));
-		points.add(new Point2D.Double(280, 160));
-		points.add(new Point2D.Double(280, 40));
-		points.add(new Point2D.Double(0, 40));
-		points.add(new Point2D.Double(0, 320));
+	    
+//	    points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 160));
+//		points.add(new Point2D.Double(280, 160));
+//		points.add(new Point2D.Double(280, 40));
+//		points.add(new Point2D.Double(0, 40));
+//		points.add(new Point2D.Double(0, 320));
 		//Forma 4
-//		points.add(new Point2D.Double(10, 10));
-//		points.add(new Point2D.Double(200, 10));
-//		points.add(new Point2D.Double(200, 100));
-//		points.add(new Point2D.Double(350, 100));
-//		points.add(new Point2D.Double(350, 10));
-//		points.add(new Point2D.Double(500, 10));
-//		points.add(new Point2D.Double(500, 100));
-//		points.add(new Point2D.Double(400, 100));
-//		points.add(new Point2D.Double(400, 200));
-//		points.add(new Point2D.Double(180,200));
-//		points.add(new Point2D.Double(180, 100));
-//		points.add(new Point2D.Double(10, 100));
+		points.add(new Point2D.Double(10, 10));
+		points.add(new Point2D.Double(200, 10));
+		points.add(new Point2D.Double(200, 100));
+		points.add(new Point2D.Double(350, 100));
+		points.add(new Point2D.Double(350, 10));
+		points.add(new Point2D.Double(500, 10));
+		points.add(new Point2D.Double(500, 100));
+		points.add(new Point2D.Double(400, 100));
+		points.add(new Point2D.Double(400, 200));
+		points.add(new Point2D.Double(180,200));
+		points.add(new Point2D.Double(180, 100));
+		points.add(new Point2D.Double(10, 100));
 		
 		pocket.setPoints(points);
-		pocket.setRadius(30);
+		pocket.setRadius(10);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		//Circular Boss
-		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+//		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
+
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(400, 200, pocket.Z);
 		rectBoss.setRadius(10);
-		itsBoss.add(rectBoss);
+//		itsBoss.add(rectBoss);
 		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
 		genBoss.setRadius(10);
@@ -176,9 +179,9 @@ public class GeometricOperationsTest
 		vertexPoints.add(new Point2D.Double(50, 240));
 		vertexPoints.add(new Point2D.Double(150, 240));
 		genBoss.setVertexPoints(vertexPoints);
-		itsBoss.add(genBoss);
+//		itsBoss.add(genBoss);
 		
-		//pocket.setItsBoss(itsBoss);
+		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 
 		formaOriginal = addPocketVertex.getElements();
@@ -561,7 +564,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 //		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,true);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,true,0);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		if(elements != null)
@@ -594,7 +597,7 @@ public class GeometricOperationsTest
 	public void parallelPath2Test()
 	{
 		//Nao esta criando paralela do circular Boss antes dos 17.914 de offset
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 100);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 100,0);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		
 		if(path != null)
@@ -634,7 +637,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10,0.5) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10,0.5,0) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)

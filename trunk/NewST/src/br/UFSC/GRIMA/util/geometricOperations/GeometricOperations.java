@@ -883,12 +883,12 @@ public class GeometricOperations
 	 * @param addPocket
 	 * @return -- o array de elementos do path de acabamento
 	 */
-	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
+	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius, double planoZ)	
 	{
 		boolean inside = true;
 		ArrayList<LimitedElement> etmp = new ArrayList<LimitedElement>();
 		etmp = addPocket.getElements();
-		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius,inside);
+		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius,inside,planoZ);
 		
 		return acabamentoElements;
 	}
@@ -911,10 +911,10 @@ public class GeometricOperations
 		return shape;
 	}
 	
-	public static ArrayList<LinearPath> acabamentoLinearPath(GeneralClosedPocketVertexAdd addPocket, double radius)
+	public static ArrayList<LinearPath> acabamentoLinearPath(GeneralClosedPocketVertexAdd addPocket, double radius, double planoZ)
 	{
 		ArrayList<LimitedElement> saida = new ArrayList<LimitedElement>(); 
-		saida = acabamentoPath(addPocket, radius);
+		saida = acabamentoPath(addPocket, radius,planoZ);
 		ArrayList<LinearPath> linearSaida = new ArrayList<LinearPath>();		
 		for(LimitedElement s:saida)
 		{
@@ -1015,10 +1015,10 @@ public class GeometricOperations
 		return points;
 	}
 	
-	public static ArrayList<LimitedElement> elementsToDesbaste (GeneralClosedPocket pocket, double allowance)
+	public static ArrayList<LimitedElement> elementsToDesbaste (GeneralClosedPocket pocket, double allowance, double planoZ)
 	{
-		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.getPosicaoZ(), allowance);
-		return acabamentoPath(addPocket, allowance);
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), planoZ, allowance);
+		return acabamentoPath(addPocket, allowance,planoZ);
 	}
 	
 	public static double minimumDistance(ArrayList<LimitedElement> elementsToAssess)
@@ -1198,12 +1198,12 @@ public class GeometricOperations
 		}
 		return is;
 	}
-	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance, double percentagem)
+	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance, double percentagem, double planoZ)
 		{
 			ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 			
 //			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
-			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath2(pocket, distance);
+			ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath2(pocket, distance, planoZ);
 			int aux = 1;
 			double distanceAtualizada = 2*distance*percentagem;
 			System.out.println("Distancia: " + distance);
@@ -1213,7 +1213,7 @@ public class GeometricOperations
 			while (parallelPath != null)
 			{
 				multipleParallel.add(parallelPath);
-				parallelPath = parallelPath2(pocket, distance + (aux*distanceAtualizada));
+				parallelPath = parallelPath2(pocket, distance + (aux*distanceAtualizada),planoZ);
 				aux++;
 			}		
 	//		System.out.println("mutilplePath: " + multipleParallel.size());
@@ -1223,7 +1223,7 @@ public class GeometricOperations
 
 
 	//Voltei para Array linear (ta ficando complicado de fazer recursivo, toda saída teria que ser transformada em um GeneralClosedPocket)
-	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside)
+	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside, double planoZ)
 	{
 //		boolean inside = true;
 //		ArrayList<LimitedElement> saida = new ArrayList<LimitedElement>();
@@ -1278,10 +1278,10 @@ public class GeometricOperations
 		
 		return lacoTmp;
 	}
-	public static ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance)
+	public static ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
 	{
 		boolean inside = true;
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.Z, pocket.getRadius());
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), planoZ, pocket.getRadius());
 
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
@@ -1297,7 +1297,7 @@ public class GeometricOperations
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
 //				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
-				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, tmp.Z), 2 * Math.PI);
+				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), 2 * Math.PI);
 				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
 				elementosProtuberancia.add(arc);
 			}
@@ -1308,7 +1308,7 @@ public class GeometricOperations
 				double l = tmp.getL1();
 				//Tamanho em y
 				double c = tmp.getL2();
-				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
+				Point3d position = new Point3d(tmp.X,tmp.Y,planoZ);
 				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-tmp.getRadius())));
 				LimitedArc a1 = new LimitedArc(pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
 				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
@@ -1329,7 +1329,7 @@ public class GeometricOperations
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
 				GeneralProfileBoss tmp = (GeneralProfileBoss)bossTmp;
-				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(tmp.getVertexPoints(), tmp.Z, tmp.getRadius());
+				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(tmp.getVertexPoints(), planoZ, tmp.getRadius());
 				ArrayList<LimitedElement> elementosProtuberanciaGeral = addBossVertex.getElements();
 				for(int i = 0;i < elementosProtuberanciaGeral.size();i++)
 				{
@@ -1357,9 +1357,9 @@ public class GeometricOperations
 		{
 			formaOriginal.add(tmp);
 		}
-		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside);
+		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside,planoZ);
 //		showElements(parallelTemp1);
-		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside);
+		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,planoZ);
 		
 		for(LimitedElement tmp:parallelTemp1)
 		{

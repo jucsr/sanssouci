@@ -637,7 +637,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10,0.5,0) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10,0.75,0) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)

@@ -311,7 +311,7 @@ public class MovimentacaoGeneralClosedPocket {
 			planoZ = ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
 		}
 		//----
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(), 0.5,planoZ);
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(), .75 ,planoZ);
 //		System.out.println("Tamanho: " + elementos.get(0).get(0).size());
 		
 		for(int i = 0; i < elementos.size(); i++)

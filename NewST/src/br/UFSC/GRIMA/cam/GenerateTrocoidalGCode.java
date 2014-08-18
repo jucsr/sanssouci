@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
@@ -36,6 +37,12 @@ public class GenerateTrocoidalGCode
 		GCode += "\nN" + (n + 3 * 10) + "\tT = " + ws.getFerramenta().getName();
 		GCode += "\nN" + (n + 4 * 10) + "\tM06";
 		int numeroDeLinha = 0;
+		
+		GCode += "\nR2 = -" + ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
+		GCode += "\nR1 = 0";
+		GCode += "\nLABEL 1:";
+		GCode += "\nR0 = R1 + " + ws.getCondicoesUsinagem().getAp();
+		GCode += "\nR1 = R1 - " + ws.getCondicoesUsinagem().getAp();
 		for(int i = 0; i < paths.size(); i++)
 		{
 			numeroDeLinha = (i + 6) * 10;
@@ -46,10 +53,10 @@ public class GenerateTrocoidalGCode
 				LinearPath linearTmp = (LinearPath)pathTmp;
 				if(linearTmp.getTipoDeMovimento() == LinearPath.FAST_MOV)
 				{
-					aux = "G0 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().z,5);
+					aux = "G0 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z = R1";
 				} else if(linearTmp.getTipoDeMovimento() == LinearPath.SLOW_MOV)
 				{
-					aux = "G1 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().z,5);
+					aux = "G1 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z = R1";
 				}
 			} else if(paths.get(i).getClass() == CircularPath.class)
 			{
@@ -59,14 +66,15 @@ public class GenerateTrocoidalGCode
 				
 				if(circularTmp.getAngulo() < 0) // Sentido Horario
 				{
-					aux = "G2 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().z,5) + " I" + GeometricOperations.roundNumber(I,5) + " J" + GeometricOperations.roundNumber(J,5);
+					aux = "G2 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z = R1" + " I" + GeometricOperations.roundNumber(I,5) + " J" + GeometricOperations.roundNumber(J,5);
 				} else // sentido Antihorario
 				{
-					aux = "G3 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().z,5) + " I" + GeometricOperations.roundNumber(I,5) + " J" + GeometricOperations.roundNumber(J,5);
+					aux = "G3 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z = R1" + " I" + GeometricOperations.roundNumber(I,5) + " J" + GeometricOperations.roundNumber(J,5);
 				}
 			}
 			GCode += "\nN" + numeroDeLinha + aux;
 		}
+		GCode += "IF R1>R2 GOTOB LABEL1";
 		return GCode;
 	}
 }

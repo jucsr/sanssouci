@@ -150,7 +150,7 @@ public class GenerateTrochoidalMovement1Test
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, trochoidalPercent) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, trochoidalPercent,0) ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)
 		{

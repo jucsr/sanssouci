@@ -74,7 +74,7 @@ public class GenerateTrocoidalGCode
 			}
 			GCode += "\nN" + numeroDeLinha + aux;
 		}
-		GCode += "IF R1>R2 GOTOB LABEL1";
+		GCode += "\nIF R1>R2 GOTOB LABEL1";
 		return GCode;
 	}
 }

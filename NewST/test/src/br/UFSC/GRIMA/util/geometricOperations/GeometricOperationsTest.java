@@ -130,39 +130,39 @@ public class GeometricOperationsTest
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200, 320));
 	    
-//	    points.add(new Point2D.Double(500, 320));
-//		points.add(new Point2D.Double(500, 160));
-//		points.add(new Point2D.Double(280, 160));
-//		points.add(new Point2D.Double(280, 40));
-//		points.add(new Point2D.Double(0, 40));
-//		points.add(new Point2D.Double(0, 320));
+	    points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		//Forma 4
-		points.add(new Point2D.Double(10, 10));
-		points.add(new Point2D.Double(200, 10));
-		points.add(new Point2D.Double(200, 100));
-		points.add(new Point2D.Double(350, 100));
-		points.add(new Point2D.Double(350, 10));
-		points.add(new Point2D.Double(500, 10));
-		points.add(new Point2D.Double(500, 100));
-		points.add(new Point2D.Double(400, 100));
-		points.add(new Point2D.Double(400, 200));
-		points.add(new Point2D.Double(180,200));
-		points.add(new Point2D.Double(180, 100));
-		points.add(new Point2D.Double(10, 100));
+//		points.add(new Point2D.Double(10, 10));
+//		points.add(new Point2D.Double(200, 10));
+//		points.add(new Point2D.Double(200, 100));
+//		points.add(new Point2D.Double(350, 100));
+//		points.add(new Point2D.Double(350, 10));
+//		points.add(new Point2D.Double(500, 10));
+//		points.add(new Point2D.Double(500, 100));
+//		points.add(new Point2D.Double(400, 100));
+//		points.add(new Point2D.Double(400, 200));
+//		points.add(new Point2D.Double(180,200));
+//		points.add(new Point2D.Double(180, 100));
+//		points.add(new Point2D.Double(10, 100));
 		
 		pocket.setPoints(points);
-		pocket.setRadius(10);
+		pocket.setRadius(30);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		//Circular Boss
 //		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
-		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
-
+//		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(400, 200, pocket.Z);
+		rectBoss.setPosicao(320, 230, pocket.Z);
 		rectBoss.setRadius(10);
 //		itsBoss.add(rectBoss);
 		//General Boss
@@ -458,19 +458,19 @@ public class GeometricOperationsTest
 		LimitedLine l10= new LimitedLine(new Point3d(469.29109865482695,270.0,0),new Point3d(37.99999999999999,270.0,0));
 		LimitedLine l11= new LimitedLine(new Point3d(58.0,290.0,0),new Point3d(58.0,190.0,0));
 		LimitedLine l12= new LimitedLine(new Point3d(37.99999999999999,210.0,0),new Point3d(170.0,210.0,0));
-		elementos1.add(arco0);
-		elementos1.add(arco1);
-		elementos1.add(l2);
-		elementos1.add(l3);
-	    elementos1.add(l4);
-	    elementos1.add(arco5);
-	    elementos1.add(l6);
-	    elementos1.add(l7);
-	    elementos1.add(l8);
-	    elementos1.add(arco9);
-	    elementos1.add(l10);
-	    elementos1.add(l11);
-	    elementos1.add(l12);
+//		elementos1.add(arco0);
+//		elementos1.add(arco1);
+//		elementos1.add(l2);
+//		elementos1.add(l3);
+//	    elementos1.add(l4);
+//	    elementos1.add(arco5);
+//	    elementos1.add(l6);
+//	    elementos1.add(l7);
+//	    elementos1.add(l8);
+//	    elementos1.add(arco9);
+//	    elementos1.add(l10);
+//	    elementos1.add(l11);
+//	    elementos1.add(l12);
 //	    elementos1.add(l13);
 //	    elementos1.add(l14);
 //	    elementos1.add(l15);
@@ -534,10 +534,10 @@ public class GeometricOperationsTest
 //	    LimitedArc arco8= new LimitedArc(new Point3d(543.8982614252745,255.99491059161818,0),new Point3d(471.0759155456893,229.99999999999997,0),new Point3d(471.07591554568916,345.0,0));
 	    LimitedArc arc8 = new LimitedArc(new Point3d(50,50 , 0), new Point3d(50 + (25*Math.cos(Math.PI/4)), 50 - (25*Math.sin(Math.PI/4)), 0), Math.PI/2);
 	    LimitedArc arc9 = new LimitedArc(new Point3d(90, 50, 0), new Point3d(90 - (25*Math.cos(Math.PI/4)), 50 + (25*Math.sin(Math.PI/4)), 0),Math.PI/2);
-	    LimitedLine line1 = new LimitedLine(new Point3d(100,50,0), new Point3d(30,50,0));
-//		elementos1.add(arc8);
-//		elementos1.add(arc9);
-//		elementos1.add(line1);
+	    LimitedLine line1 = new LimitedLine(new Point3d(100,30,0), new Point3d(40,70,0));
+		elementos1.add(arc8);
+		elementos1.add(arc9);
+		elementos1.add(line1);
 //		elementos1.add(l5);
 		//elementos1.add(l1);
 		
@@ -564,7 +564,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 //		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,true,0);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,true);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		if(elements != null)
@@ -637,7 +637,7 @@ public class GeometricOperationsTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10,0.75,0) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, 10) ;
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)

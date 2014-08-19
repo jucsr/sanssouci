@@ -101,19 +101,27 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateMultipleParallelAndTrochoidalMovementTest()
 	{
-		double trochoidalRadius = 5;
+		double trochoidalRadius = 10;
 		double trochoidalPercent = 1.5;
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
-		points.add(new Point2D.Double(8, 160));
-		points.add(new Point2D.Double(8, 320));
-		points.add(new Point2D.Double(480, 320));
-		points.add(new Point2D.Double(700, 500));
-		points.add(new Point2D.Double(700, 160));
-		points.add(new Point2D.Double(480, 160));
-		points.add(new Point2D.Double(480, 40));
-		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200,160));
+//		points.add(new Point2D.Double(8, 160));
+//		points.add(new Point2D.Double(8, 320));
+//		points.add(new Point2D.Double(480, 320));
+//		points.add(new Point2D.Double(700, 500));
+//		points.add(new Point2D.Double(700, 160));
+//		points.add(new Point2D.Double(480, 160));
+//		points.add(new Point2D.Double(480, 40));
+//		points.add(new Point2D.Double(200, 40));
+//		points.add(new Point2D.Double(200,160));
+		
+		//Forma 2
+		points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		
 		GeneralClosedPocket pocket = new GeneralClosedPocket();
 		pocket.setPoints(points);
@@ -123,13 +131,15 @@ public class GenerateTrochoidalMovement1Test
 		
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		//Circular Boss
-		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+//		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 15, pocket.getProfundidade());
+
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(400, 200, pocket.Z);
 		rectBoss.setRadius(10);
-		itsBoss.add(rectBoss);
+//		itsBoss.add(rectBoss);
 		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
 		genBoss.setRadius(10);
@@ -144,13 +154,13 @@ public class GenerateTrochoidalMovement1Test
 		vertexPoints.add(new Point2D.Double(50, 240));
 		vertexPoints.add(new Point2D.Double(150, 240));
 		genBoss.setVertexPoints(vertexPoints);
-		itsBoss.add(genBoss);
+//		itsBoss.add(genBoss);
 		
 		pocket.setItsBoss(itsBoss);
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, trochoidalPercent,0) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius) ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)
 		{

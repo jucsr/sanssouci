@@ -53,7 +53,7 @@ public class GenerateTrocoidalGCode
 				LinearPath linearTmp = (LinearPath)pathTmp;
 				if(linearTmp.getTipoDeMovimento() == LinearPath.FAST_MOV)
 				{
-					aux = "G0 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z = R1";
+					aux = "G0 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().z, 5);
 				} else if(linearTmp.getTipoDeMovimento() == LinearPath.SLOW_MOV)
 				{
 					aux = "G1 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x,5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y,5) + " Z = R1";

@@ -1198,9 +1198,9 @@ public class GeometricOperations
 		}
 		return is;
 	}
-	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance)
+	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance,double planoZ)
 	{
-		double planoZ = 0;
+//		double planoZ = 0;
 		double percentagem = 0.75;
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 		

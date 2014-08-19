@@ -263,7 +263,7 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		//----
 //		System.out.println(GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius()));
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2));
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2),planoZ);
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
@@ -312,7 +312,7 @@ public class MovimentacaoGeneralClosedPocket {
 			planoZ = ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
 		}
 		//----
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe());
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(),planoZ);
 //		System.out.println("Tamanho: " + elementos.get(0).get(0).size());
 		
 		for(int i = 0; i < elementos.size(); i++)

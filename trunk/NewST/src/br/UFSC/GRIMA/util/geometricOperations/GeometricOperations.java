@@ -866,7 +866,7 @@ public class GeometricOperations
 		double distanceToCenterFromP2 = Math.sqrt(1+Math.tan(alfa/2)*Math.tan(alfa/2))*radius;
 //		System.out.println("Angle to center point " + centerAngle*180/Math.PI);
 
-		Point3d center = new Point3d(p2.getX()+distanceToCenterFromP2*Math.cos(centerAngle), p2.getY()+distanceToCenterFromP2*Math.sin(centerAngle),p2.getZ());
+		Point3d center = new Point3d(p2.x+distanceToCenterFromP2*Math.cos(centerAngle), p2.y+distanceToCenterFromP2*Math.sin(centerAngle),p2.z);
 		
 		Point3d initialPoint = plus(p2,multiply(Math.tan(alfa/2)*radius, unitVector(p2,p1)));
 		
@@ -2024,7 +2024,6 @@ public class GeometricOperations
 	
 	public static LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside)
 	{
-		
 		double angleLine = angle(minus(line.getFinalPoint(), line.getInitialPoint()));
 		double newDistanceAngle = angleLine+Math.PI/2;
 		double x = Math.cos(newDistanceAngle);
@@ -2813,6 +2812,7 @@ public class GeometricOperations
 //			}
 //		}
 		Point3d P1 = new Point3d(x1,y1,line.getInitialPoint().z);
+		System.err.println(line.getInitialPoint().z);
 		Point3d P2 = new Point3d(x2,y2,line.getInitialPoint().z);
 		boolean p1BelongsArc = belongsArc(arcTmp,P1);
 		boolean p1BelongsLine = belongs(line,P1);
@@ -2954,140 +2954,6 @@ public class GeometricOperations
 				}
 			}
 		}
-//		System.out.println("pPossiveis: " + pPossiveis);
-//		for(int i = 0;i < pPossiveis.size(); i++)
-//		{
-//			Point3d pTmp = pPossiveis.get(i);
-//			if(!(alreadyUsed(pTmp, intersection)))
-//			{
-//				intersection.add(pTmp);
-//			}
-//		}
-//		ArrayList<Double> ypossiveis = new ArrayList<Double>();
-//		double [] ypossiveis1 = {y11, y12, y13, y14};
-//		double [] ypossiveis2 = {y21, y22, y23, y24};
-//		for(int i = 0; i < ypossiveis1.length; i++)
-//		{
-//			System.out.println("Ypossiveis1: " + ypossiveis1[i]);
-//			System.out.println("Ypossiveis2: " + ypossiveis2[i]);
-//			for(int j = 0; j < ypossiveis2.length; j++)
-//			{
-//				if(roundNumber(x1, 10) == roundNumber(x2, 10))
-//				{
-//					ypossiveis.add(ypossiveis1[0]);
-//					ypossiveis.add(ypossiveis1[1]);
-//					break;
-//				}
-//				if(roundNumber(ypossiveis1[i], 10) == roundNumber(ypossiveis2[j], 10))
-//				{
-//					if(i == 0 || i == 1)
-//					{
-//						ypossiveis.add(ypossiveis1[i]);
-//						
-//					} 
-//					else if(i == 2 || i == 3)
-//					{
-//						ypossiveis.add(ypossiveis1[i]);
-//					}
-//					//ypossiveis1[i] = -1;
-//					break;
-//				}
-//			}
-//		}
-		
-//		System.out.println("Array Ypossiveis: " + ypossiveis);
-//		System.out.println("Possiveis size: " + ypossiveis.size());
-//		y1 = pPossiveis.get(0);
-//		y2 = pPossiveis.get(1);
-//		Point3d possivel1 = new Point3d(x1, y1, 0);
-//		Point3d possivel2 = new Point3d(x2, y2, 0);
-//		
-////		System.err.println("poss 1 =" + possivel1);
-////		System.err.println("poss 2 =" + possivel2);
-//		
-//		double anguloInicial1 = Math.atan2(arc1Tmp.getInitialPoint().y - arc1Tmp.getCenter().y, arc1Tmp.getInitialPoint().x - arc1Tmp.getCenter().x);
-//		double anguloFinal1 = Math.atan2(arc1Tmp.getFinalPoint().y - arc1Tmp.getCenter().y, arc1Tmp.getFinalPoint().x - arc1Tmp.getCenter().x);
-//		
-//		double anguloInicial2 = Math.atan2(arc2Tmp.getInitialPoint().y - arc2Tmp.getCenter().y, arc2Tmp.getInitialPoint().x - arc2Tmp.getCenter().x);
-//		double anguloFinal2 = Math.atan2(arc2Tmp.getFinalPoint().y - arc2Tmp.getCenter().y, arc2Tmp.getFinalPoint().x - arc2Tmp.getCenter().x);
-//		
-//		double anguloNaIntersecaoCirculo1Possivel1 = Math.atan2(possivel1.y - arc1Tmp.getCenter().y, possivel1.x - arc1Tmp.getCenter().x);
-//		double anguloNaIntersecaoCirculo1Possivel2 = Math.atan2(possivel2.y - arc1Tmp.getCenter().y, possivel2.x - arc1Tmp.getCenter().x);
-//		
-//		double anguloNaIntersecaoCirculo2Possivel1 = Math.atan2(possivel1.y - arc2Tmp.getCenter().y, possivel1.x - arc2Tmp.getCenter().x);
-//		double anguloNaIntersecaoCirculo2Possivel2 = Math.atan2(possivel2.y - arc2Tmp.getCenter().y, possivel2.x - arc2Tmp.getCenter().x);
-//				
-//		/**
-//		 * correcao dos angulos negativos
-//		 */
-//		if(anguloInicial1 < 0)
-//		{
-//			anguloInicial1 = 2 * Math.PI + anguloInicial1;
-//		}
-//		if(anguloFinal1 <= 0)
-//		{
-//			anguloFinal1 = 2 * Math.PI + anguloFinal1;
-//		}
-//		if(anguloInicial2 < 0)
-//		{
-//			anguloInicial2 = 2 * Math.PI + anguloInicial2;
-//		}
-//		if(anguloFinal2 < 0)
-//		{
-//			anguloFinal2 = 2 * Math.PI + anguloFinal2;
-//		}
-//		if(anguloNaIntersecaoCirculo1Possivel1 < 0)
-//		{
-//			anguloNaIntersecaoCirculo1Possivel1 = 2 * Math.PI + anguloNaIntersecaoCirculo1Possivel1;
-//		}
-//		if(anguloNaIntersecaoCirculo1Possivel2 < 0)
-//		{
-//			anguloNaIntersecaoCirculo1Possivel2 = 2 * Math.PI + anguloNaIntersecaoCirculo1Possivel2;
-//		}
-//		if(anguloNaIntersecaoCirculo2Possivel1 < 0)
-//		{
-//			anguloNaIntersecaoCirculo2Possivel1 = 2 * Math.PI + anguloNaIntersecaoCirculo2Possivel1;
-//		}
-//		if(anguloNaIntersecaoCirculo2Possivel2 < 0)
-//		{
-//			anguloNaIntersecaoCirculo2Possivel2 = 2 * Math.PI + anguloNaIntersecaoCirculo2Possivel2;
-//		}
-//		
-//		if(anguloInicial1 > anguloFinal1)
-//		{
-//			anguloFinal1 = 2 * Math.PI + anguloFinal1;
-//		}
-//		if(anguloInicial2 > anguloFinal2)
-//		{
-//			anguloFinal2 = 2 * Math.PI + anguloFinal2;
-//		}
-//		
-////		System.out.println("AI1 = " + (anguloInicial1 * 180 / Math.PI));
-////		System.out.println("AF1 = " + (anguloFinal1 * 180 / Math.PI));
-////		System.out.println("AI2 = " + (anguloInicial2 * 180 / Math.PI));
-////		System.out.println("AF2 = " + (anguloFinal2 * 180 / Math.PI));
-////		System.out.println("anguloNaIntersecaoCirculo1Possivel1 = " + (anguloNaIntersecaoCirculo1Possivel1 * 180 / Math.PI));
-////		System.out.println("anguloNaIntersecaoCirculo1Possivel2 = " + (anguloNaIntersecaoCirculo1Possivel2 * 180 / Math.PI));
-////		System.out.println("anguloNaIntersecaoCirculo2Possivel1 = " + (anguloNaIntersecaoCirculo2Possivel1 * 180 / Math.PI));
-////		System.out.println("anguloNaIntersecaoCirculo2Possivel2 = " + (anguloNaIntersecaoCirculo2Possivel2 * 180 / Math.PI));
-//		//System.out.println("")
-//		
-//
-//		if(((anguloInicial1 <= anguloNaIntersecaoCirculo1Possivel1) && (anguloFinal1 >= anguloNaIntersecaoCirculo1Possivel1))
-//				&&((anguloInicial2 <= anguloNaIntersecaoCirculo2Possivel1) && (anguloFinal2 >= anguloNaIntersecaoCirculo2Possivel1)))
-//		{
-//			intersection = new ArrayList<Point3d> ();
-//			intersection.add(possivel1);
-//		}
-//		if(((anguloInicial1 <= anguloNaIntersecaoCirculo1Possivel2) && (anguloFinal1 >= anguloNaIntersecaoCirculo1Possivel2))
-//				&&((anguloInicial2 <= anguloNaIntersecaoCirculo2Possivel2) && (anguloFinal2 >= anguloNaIntersecaoCirculo2Possivel2)))
-//		{
-//			if(intersection == null)
-//			{
-//				intersection = new ArrayList<Point3d> ();
-//			}
-//			intersection.add(possivel2);
-//		}
 		if(intersection.size() == 0)
 		{
 			return null;

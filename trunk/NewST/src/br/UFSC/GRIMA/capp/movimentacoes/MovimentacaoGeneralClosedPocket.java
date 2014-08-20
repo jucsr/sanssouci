@@ -264,7 +264,7 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		//----
 //		System.out.println(GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius()));
-		GenerateContournParallel contourn = GenerateContournParallel((GeneralClosedPocket)ws.getFeature(),planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2));
+		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(),planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2));
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = contourn.multipleParallelPath();
 		for(int i = 0; i < elementos.size(); i++)
 		{

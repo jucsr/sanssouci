@@ -1303,7 +1303,7 @@ public class GeometricOperations
 				CircularBoss tmp = (CircularBoss)bossTmp;
 				System.out.println("Profundidade Boss: " + tmp.Z);
 //				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
-				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, tmp.getCenter().z), 2 * Math.PI);
+				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), 2 * Math.PI);
 				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
 				elementosProtuberancia.add(arc);
 			}
@@ -1314,7 +1314,7 @@ public class GeometricOperations
 				double l = tmp.getL1();
 				//Tamanho em y
 				double c = tmp.getL2();
-				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
+				Point3d position = new Point3d(tmp.X,tmp.Y,planoZ);
 				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-tmp.getRadius())));
 				LimitedArc a1 = new LimitedArc(pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
 				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
@@ -1660,200 +1660,6 @@ public class GeometricOperations
 			return null;
 		}
 	}
-//	public static ArrayList<LimitedElement> validar1Path(ArrayList<LimitedElement> elements)
-//	{
-//		/*
-//		 * 	Valida��o 1: Quebra dos Elementos na intersecao
-//		 */
-//		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
-//		for (int i=0; i < elements.size(); i++)
-//		{
-//			ArrayList<Point3d> intersection = null;
-//			boolean thereIsIntersection = false;
-//			LimitedElement ei = elements.get(i);
-////			System.out.println("PIei: " + ei.getInitialPoint());
-//			int numeroDeIntersecao = 0;
-//			for (int j = 0; j < elements.size(); j++)
-//			{
-//				LimitedElement ej = elements.get(j);
-////				System.out.println("PIej: " + ej.getInitialPoint());
-//				intersection = null;
-//				if(!ei.equals(ej))
-//				{
-//					intersection = intersectionElements(ei, ej);
-//					//essa condicao so funciona se o metodo que calcula as intersecoes retornar um array nulo quando nao ha intersecao (ao inves de um array vazio)
-//					if (intersection != null)
-//					{
-//						int intSize = intersection.size();
-//						boolean intSize2 = false;
-//						boolean auxIntSize2 = false;
-//						if(intSize == 2)
-//						{
-//							intSize2 = true;
-//						}
-//	//					System.out.println("intersection: " + intersection);
-//						for(int k = 0;k < intSize;k++)
-//						{
-//							if(!(alreadyUsed(intersection.get(k),intersecoes)))
-//							{
-//								intersecoes.add(intersection.get(k));
-//							}
-//						}
-//						thereIsIntersection = true;
-//						if(numeroDeIntersecao == 0)
-//						{
-////							System.out.println("intersecoes: " + intersection);
-////							System.out.println("PIei: " + ei.getInitialPoint());
-////							System.out.println("PIej: " + ej.getInitialPoint());
-//							//adiciona os pontos de intersecao ao vetor de intersecoes
-//							if (ei.isLimitedLine())
-//							{
-//								
-//								LimitedLine linei = (LimitedLine)ei;
-//								ArrayList<LimitedLine> lineTemp = quebraLinha(linei,intersection); 
-//								for(int k = 0;k < lineTemp.size();k++)
-//								{
-//									elementsIntermediario.add(lineTemp.get(k));
-//								}
-//							}
-//							else if(ei.isLimitedArc())
-//							{
-//								LimitedArc arci = (LimitedArc)ei;
-//								ArrayList<LimitedArc> arcTemp = quebraArco(arci,intersection); 
-//								for(int k = 0;k < arcTemp.size();k++)
-//								{
-//									elementsIntermediario.add(arcTemp.get(k));
-//								}
-//							}
-//							numeroDeIntersecao++;
-//							auxIntSize2 = intSize2;
-//						}
-//						else
-//						{
-////							System.out.println("PIei: " + ei.getInitialPoint());
-//							int indice2 = elementsIntermediario.size() - 2;
-//							int indice3 = elementsIntermediario.size() - 1;
-//							if((elementsIntermediario.get(indice3).isLimitedLine()))
-//							{
-//								LimitedLine aux2 = (LimitedLine)elementsIntermediario.get(indice2);
-//								LimitedLine aux3 = (LimitedLine)elementsIntermediario.get(indice3);
-//								ArrayList<LimitedLine> auxTemp = new ArrayList<LimitedLine>();
-//								ArrayList<LimitedLine> lineTemp = null;
-//								auxTemp.add(aux2);
-//								auxTemp.add(aux3);
-//								if(auxIntSize2)
-//								{
-//									int indice1 = elementsIntermediario.size() - 3;
-//									LimitedLine aux1 = (LimitedLine)elementsIntermediario.get(indice1);
-//									auxTemp.add(aux1);
-//								}
-//								
-//								for(int k = 0;k < auxTemp.size();k++)
-//								{
-//									LimitedLine aTmp = auxTemp.get(k);
-//									boolean belongs1 = belongs(aTmp,intersection.get(0));
-//									if(auxIntSize2)
-//									{
-//										boolean belongs2 = belongs(aTmp,intersection.get(1));
-//										if(belongs1 && belongs2)
-//										{
-//											lineTemp = quebraLinha(aTmp,intersection);
-//										}
-//										else if(belongs1)
-//										{
-//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-//											intTemp.add(intersection.get(0));
-//											lineTemp = quebraLinha(aTmp,intTemp);
-//										}
-//										else if(belongs2)
-//										{
-//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-//											intTemp.add(intersection.get(1));
-//											lineTemp = quebraLinha(aTmp,intTemp);
-//										}
-//									}
-//									else
-//									{
-//										if(belongs1)
-//										{
-//											lineTemp = quebraLinha(aTmp,intersection);
-//										}
-//									}
-//								}
-//								if(lineTemp != null)
-//								{
-//									for(int k = 0;k < lineTemp.size();k++)
-//									{
-//										elementsIntermediario.add(lineTemp.get(k));
-//									}
-//								}
-//							}
-//							else if ((elementsIntermediario.get(indice3).isLimitedArc()))
-//							{
-//								LimitedArc aux2 = (LimitedArc) elementsIntermediario.get(indice2);
-//								LimitedArc aux3 = (LimitedArc) elementsIntermediario.get(indice3);
-//								ArrayList<LimitedArc> auxTemp = new ArrayList<LimitedArc>();
-//								ArrayList<LimitedArc> ArcTemp = null;
-//								auxTemp.add(aux2);
-//								auxTemp.add(aux3);
-//								if(auxIntSize2)
-//								{
-//									int indice1 = elementsIntermediario.size() - 3;
-//									LimitedArc aux1 = (LimitedArc)elementsIntermediario.get(indice1);
-//									auxTemp.add(aux1);
-//								}
-//								
-//								for(int k = 0;k < auxTemp.size();k++)
-//								{
-//									LimitedArc aTmp = auxTemp.get(k);
-//									boolean belongs1 = belongsArc(aTmp,intersection.get(0));
-//									if(auxIntSize2)
-//									{
-//										boolean belongs2 = belongsArc(aTmp,intersection.get(1));
-//										if(belongs1 && belongs2)
-//										{
-//											ArcTemp = quebraArco(aTmp,intersection);
-//										}
-//										else if(belongs1)
-//										{
-//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-//											intTemp.add(intersection.get(0));
-//											ArcTemp = quebraArco(aTmp,intTemp);
-//										}
-//										else if(belongs2)
-//										{
-//											ArrayList<Point3d> intTemp = new ArrayList<Point3d>();
-//											intTemp.add(intersection.get(1));
-//											ArcTemp = quebraArco(aTmp,intTemp);
-//										}
-//									}
-//									else
-//									{
-//										if(belongs1)
-//										{
-//											ArcTemp = quebraArco(aTmp,intersection);
-//										}
-//									}
-//								}
-//								if(ArcTemp != null)
-//								{
-//									for(int k = 0;k < ArcTemp.size();k++)
-//									{
-//										elementsIntermediario.add(ArcTemp.get(k));
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//			if(thereIsIntersection == false)
-//			{
-//				elementsIntermediario.add(ei);
-//			}
-//		}
-//		return elementsIntermediario;
-//	}
 	
 	public static ArrayList<LimitedElement> validar1Path(ArrayList<LimitedElement> elements)
 	{

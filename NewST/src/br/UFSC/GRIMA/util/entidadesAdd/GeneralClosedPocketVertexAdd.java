@@ -146,7 +146,6 @@ public class GeneralClosedPocketVertexAdd
 				p3 = this.vertex.get(0);
 			}
 			arcNew = GeometricOperations.roundVertex(p1, p2, p3, this.radius);
-			
 //			System.out.println("First point " + p1);
 //			System.out.println("Second point " + p2);
 //			System.out.println("Third point " + p3);
@@ -188,8 +187,8 @@ public class GeneralClosedPocketVertexAdd
 			}
 		}
 		
-		Point3d lastPoint = new Point3d();
-		Point3d firstPoint = new Point3d();
+		Point3d lastPoint = null;// = new Point3d();
+		Point3d firstPoint = null;// = new Point3d();
 		if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedLine.class))
 		{
 			lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
@@ -209,8 +208,10 @@ public class GeneralClosedPocketVertexAdd
 		}
 		
 		tempElements.add(new LimitedLine (lastPoint, firstPoint));
-		
+		System.err.println(lastPoint);
 		this.elements = tempElements;
+		
+		GeometricOperations.showElements(elements);
 	}
 	
 	

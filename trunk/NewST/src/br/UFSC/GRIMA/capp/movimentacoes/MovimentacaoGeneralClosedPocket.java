@@ -321,16 +321,25 @@ public class MovimentacaoGeneralClosedPocket {
 //		System.out.println("Tamanho: " + elementos.get(0).get(0).size());
 		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe());
 		this.elementos = contourn.multipleParallelPath();
-
+		Point3d lastPoint = null;
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
 			{
 				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
-				LinearPath posicionamentoAntesDeDescer = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
-				desbaste.add(posicionamentoAntesDeDescer);
+				if(lastPoint != null)
+				{
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPoint, new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
+					desbaste.add(posicionamentoAntesDeDescer);
+				}
+				else
+				{
+//					LinearPath posicionamentoAntesDeDescer = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
+//					desbaste.add(posicionamentoAntesDeDescer);
+
+				}
 				/*
-				 * descendo no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
+				 * descendo no primeiro ponto desde o plano de seguranca ate o primeiro path (jah dentro da peca)
 				 */
 				LinearPath descendo = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, eTmp.getInitialPoint().z));
 				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
@@ -356,8 +365,10 @@ public class MovimentacaoGeneralClosedPocket {
 				 * subindo
 				 */
 				LinearPath subindo = new LinearPath(new Point3d(eTmp.getFinalPoint().x, eTmp.getFinalPoint().y, eTmp.getFinalPoint().z), new Point3d(eTmp.getFinalPoint().x, eTmp.getFinalPoint().y, planoSeguranca));
+				lastPoint = subindo.getFinalPoint();
 				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
 				desbaste.add(subindo);
+				
 			}
 		}
 		return desbaste;

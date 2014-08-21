@@ -196,7 +196,6 @@ public class GenerateTrocoidalGCodeTest
 		{
 			all.add(tmp);
 		}
-		double min = GeometricOperations.minimumMaximunDistanceBetweenElements(formaOriginal);
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);

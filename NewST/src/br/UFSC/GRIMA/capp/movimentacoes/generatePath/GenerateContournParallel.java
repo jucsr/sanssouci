@@ -133,7 +133,7 @@ public class GenerateContournParallel
 			multipleParallel.add(parallelPath);
 			parallelPath = parallelPath2(pocket, distance + (aux*distanceAtualizada), planoZ);
 			aux++;
-			break;
+//			break;
 		}		
 	//		System.out.println("mutilplePath: " + multipleParallel.size());
 	//		showElements(multipleParallel.get(0).get(0));
@@ -183,7 +183,6 @@ public class GenerateContournParallel
 //		{
 //			ArrayList<LimitedElement> a0 = elements.get(i);
 			ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
-//			System.out.println("Elementos do laco " + i + " da Forma Atual: " + a0.size());
 			for(int j = 0;j < elements.size();j++)
 			{
 				if(elements.get(j).isLimitedLine())
@@ -195,7 +194,6 @@ public class GenerateContournParallel
 					{
 						lacoTmp.add(newLine);
 					}
-					//System.err.println("linha " + i);
 				} 
 				else if(elements.get(j).isLimitedArc())
 				{
@@ -203,11 +201,9 @@ public class GenerateContournParallel
 					LimitedArc newArc;
 					if (arcTmp.getRadius() == 0)
 					{
-//						System.out.println(lacoTmp);
 						Point3d center = arcTmp.getInitialPoint();
 						Point3d pI = lacoTmp.get(j - 1).getFinalPoint();
 						newArc = new LimitedArc(center, pI, Math.PI / 2);
-						
 					}
 					else
 					{
@@ -217,8 +213,6 @@ public class GenerateContournParallel
 					{
 						lacoTmp.add(newArc);
 					}
-//				System.out.println("Center: " + newArc.getCenter());
-					//System.err.println("arco " + i);
 				}
 			}
 //			laco.add(lacoTmp);
@@ -474,7 +468,7 @@ public class GenerateContournParallel
 		double y = Math.sin(newDistanceAngle);
 		Point3d unitDistance = new Point3d(x, y, 0);
 		Point3d distanceVector;
-		if(inside)
+		if(!inside) // ========= Nao entendi ====== 
 		{
 			distanceVector = GeometricOperations.multiply(distance, unitDistance);		
 		}
@@ -485,8 +479,8 @@ public class GenerateContournParallel
 
 		Point3d newInitialPoint = GeometricOperations.plus(initialPoint, distanceVector);
 		Point3d newFinalPoint = GeometricOperations.plus(finalPoint, distanceVector);
-		/*
-		 * fazendo uma gambiarra ...
+		/**
+		 *  ======= fazendo uma gambiarra ...
 		 */
 		Point3d newInitialPoint1 = new Point3d(newInitialPoint.x, newInitialPoint.y, planoZ);
 		Point3d newFinalPoint1 = new Point3d(newFinalPoint.x, newFinalPoint.y, planoZ);

@@ -60,7 +60,7 @@ public class GeneralClosedPocketVertexAdd
 		for (Point2D p:CreateGeneralPocket.transformPolygonInCounterClockPolygon(vertex2D))
 		{
 			this.vertex.add(new Point3d(p.getX(), p.getY(), zCoordinate));
-//			System.out.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
+//			System.err.println(p.getX() + " " + p.getY() + " " + zCoordinate);			
 		}
 		this.makeForma();
 		this.makeElements();
@@ -146,6 +146,7 @@ public class GeneralClosedPocketVertexAdd
 				p3 = this.vertex.get(0);
 			}
 			arcNew = GeometricOperations.roundVertex(p1, p2, p3, this.radius);
+			
 //			System.out.println("First point " + p1);
 //			System.out.println("Second point " + p2);
 //			System.out.println("Third point " + p3);
@@ -171,18 +172,18 @@ public class GeneralClosedPocketVertexAdd
 				if (tempElements.size()!=0)
 				{
 //					System.out.println("Size  elements " + tempElements.size());
+					Point3d lastPoint = null;
 					if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedLine.class))
 					{
-						Point3d lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
+						lastPoint = ((LimitedLine)tempElements.get(tempElements.size()-1)).getFinalPoint();
 						tempElements.add(new LimitedLine(lastPoint, arcNew.getInitialPoint()));
 					}
 					else if (tempElements.get(tempElements.size()-1).getClass().equals(LimitedArc.class))
 					{
-						Point3d lastPoint = ((LimitedArc)tempElements.get(tempElements.size()-1)).getFinalPoint();
+						lastPoint = ((LimitedArc)tempElements.get(tempElements.size()-1)).getFinalPoint();
 						tempElements.add(new LimitedLine(lastPoint, arcNew.getInitialPoint()));
 					}
 				}
-				
 				tempElements.add(arcNew);
 			}
 		}
@@ -208,10 +209,9 @@ public class GeneralClosedPocketVertexAdd
 		}
 		
 		tempElements.add(new LimitedLine (lastPoint, firstPoint));
-		System.err.println(lastPoint);
 		this.elements = tempElements;
 		
-		GeometricOperations.showElements(elements);
+//		GeometricOperations.showElements(elements);
 	}
 	
 	

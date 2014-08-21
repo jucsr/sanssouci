@@ -20,7 +20,7 @@ import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
-public class GenarateContournParallel 
+public class GenarateContournParallelTest
 {
     ArrayList <LimitedElement> elementos = new ArrayList<LimitedElement>();
 	GeneralClosedPocket pocket = new GeneralClosedPocket();

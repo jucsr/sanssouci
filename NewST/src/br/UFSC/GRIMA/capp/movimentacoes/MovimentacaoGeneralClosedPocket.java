@@ -38,7 +38,8 @@ public class MovimentacaoGeneralClosedPocket {
 	private Ferramenta ferramenta;
 	private GeneralClosedPocket genClosed;
 	private ArrayList<Boss> itsBoss;
-
+	private ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos; // do multipleParallel
+	
 	public MovimentacaoGeneralClosedPocket(Workingstep ws){
 		this.ws = ws;
 		this.genClosed = (GeneralClosedPocket) this.ws.getFeature();
@@ -264,8 +265,10 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		//----
 //		System.out.println(GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius()));
-		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(),planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2));
+		// =========== CUIDADO =====
+		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(),planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = contourn.multipleParallelPath();
+		// ========= END CUIDADO ======
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
@@ -303,9 +306,9 @@ public class MovimentacaoGeneralClosedPocket {
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
 		entrada.add(addPocket.getElements());
-		System.out.println("Ae: " + this.ws.getCondicoesUsinagem().getAe());
-		System.out.println("Ap: " + ws.getCondicoesUsinagem().getAp());
-		System.out.println("Diametro da Ferramenta: " + this.ws.getFerramenta().getDiametroFerramenta());
+//		System.out.println("Ae: " + this.ws.getCondicoesUsinagem().getAe());
+//		System.out.println("Ap: " + ws.getCondicoesUsinagem().getAp());
+//		System.out.println("Diametro da Ferramenta: " + this.ws.getFerramenta().getDiametroFerramenta());
 		//this.ws.getCondicoesUsinagem().getAe() / this.ws.getFerramenta().getDiametroFerramenta()
 		//----
 		double planoZ = ws.getCondicoesUsinagem().getAp();
@@ -317,7 +320,7 @@ public class MovimentacaoGeneralClosedPocket {
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = GeometricOperations.multipleParallelPath(this.genClosed, this.ws.getCondicoesUsinagem().getAe(),planoZ);
 //		System.out.println("Tamanho: " + elementos.get(0).get(0).size());
 		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe());
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = contourn.multipleParallelPath();
+		this.elementos = contourn.multipleParallelPath();
 
 		for(int i = 0; i < elementos.size(); i++)
 		{
@@ -359,7 +362,14 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		return desbaste;
 	}
-	
+	/**
+	 * 
+	 * @return multiple parallel elements
+	 */
+	public ArrayList<ArrayList<ArrayList<LimitedElement>>> getMultipleLimitedElements()
+	{
+		return this.elementos;
+	}
 	/**
 	 * 
 	 * @return trajetorias lineares (interpoladas) --> feito pelo Pedro

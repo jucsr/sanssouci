@@ -104,9 +104,9 @@ public class GenarateContournParallelTest
 //		itsBoss.add(genBoss);
 		
 		pocket.setItsBoss(itsBoss);
-//		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
+		formaOriginal = addPocketVertex.getElements();
 
-//		formaOriginal = addPocketVertex.getElements();
 		for(int i = 0; i < pocket.getItsBoss().size(); i++)
 		{
 			if(pocket.getItsBoss().get(i).getClass() == RectangularBoss.class)
@@ -144,7 +144,7 @@ public class GenarateContournParallelTest
 				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(gen.getVertexPoints(), pocket.Z, genBoss.getRadius());
 				for(int j = 0; j < addBossVertex.getElements().size(); j++)
 				{
-//					formaOriginal.add(addBossVertex.getElements().get(j));
+					formaOriginal.add(addBossVertex.getElements().get(j));
 				}
 			}
 		}
@@ -167,15 +167,14 @@ public class GenarateContournParallelTest
 			}
 		}
 		System.out.println("all: " + all.size());
-//		for(LimitedElement tmp : formaOriginal)
-//		{
-//			all.add(tmp);
-//		}
-//		double min = GeometricOperations.minimumMaximunDistanceBetweenElements(formaOriginal);
-//		System.err.println("min = " + min);
-//		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
-//		desenhador.setVisible(true);
-//		for(;;);
+		for(LimitedElement tmp : formaOriginal)
+		{
+			all.add(tmp);
+		}
+
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
 	}
 
 }

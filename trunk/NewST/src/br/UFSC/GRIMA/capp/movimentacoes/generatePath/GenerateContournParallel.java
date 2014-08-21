@@ -133,7 +133,7 @@ public class GenerateContournParallel
 			multipleParallel.add(parallelPath);
 			parallelPath = parallelPath2(pocket, distance + (aux*distanceAtualizada), planoZ);
 			aux++;
-//			break;
+			break;
 		}		
 	//		System.out.println("mutilplePath: " + multipleParallel.size());
 	//		showElements(multipleParallel.get(0).get(0));
@@ -205,8 +205,8 @@ public class GenerateContournParallel
 					{
 //						System.out.println(lacoTmp);
 						Point3d center = arcTmp.getInitialPoint();
-						Point3d pI = lacoTmp.get(j-1).getFinalPoint();
-						newArc = new LimitedArc(center,pI,Math.PI/2);
+						Point3d pI = lacoTmp.get(j - 1).getFinalPoint();
+						newArc = new LimitedArc(center, pI, Math.PI / 2);
 						
 					}
 					else

@@ -410,7 +410,7 @@ public class GenerateContournParallel
 		 */
 		Point3d newInitialPoint1 = new Point3d(newInitialPoint.x, newInitialPoint.y, planoZ);
 		Point3d newFinalPoint1 = new Point3d(newFinalPoint.x, newFinalPoint.y, planoZ);
-		if ((GeometricOperations.roundNumber(newInitialPoint.x, 10) == GeometricOperations	.roundNumber(newFinalPoint.x, 10)) && (GeometricOperations.roundNumber(newInitialPoint.y, 10) == GeometricOperations.roundNumber(newFinalPoint.y, 10)))
+		if ((GeometricOperations.roundNumber(newInitialPoint.x, 10) == GeometricOperations.roundNumber(newFinalPoint.x, 10)) && (GeometricOperations.roundNumber(newInitialPoint.y, 10) == GeometricOperations.roundNumber(newFinalPoint.y, 10)))
 		{
 			return null;
 		}

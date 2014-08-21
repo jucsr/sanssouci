@@ -95,7 +95,7 @@ public class GenerateTrocoidalGCodeTest
 		genBoss.setVertexPoints(vertexPoints);
 //		itsBoss.add(genBoss);
 		
-//		pocket.setItsBoss(itsBoss);
+		pocket.setItsBoss(itsBoss);
 		
 		// --- Criando Machining workingstep ----
 		
@@ -179,8 +179,11 @@ public class GenerateTrocoidalGCodeTest
 	{
 		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, 10);
 		System.out.println(gCode.getGCode());
-		
+		LimitedLine l1 = new LimitedLine(new Point3d(30,310,0),new Point3d(30,295,0));
+		LimitedLine l2 = new LimitedLine(new Point3d(30,295,0), new Point3d(40,280,50));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		all.add(l1);
+		all.add(l2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
 		for(int i = 0;i < multiplePath.size();i++)
 		{

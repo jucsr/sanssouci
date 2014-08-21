@@ -327,21 +327,24 @@ public class MovimentacaoGeneralClosedPocket {
 			for(int j = 0; j < elementos.get(i).size(); j++)
 			{
 				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
+				Point3d pointTmp = new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca));
 				if(lastPoint != null)
 				{
-					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPoint, new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPoint, pointTmp);
 					desbaste.add(posicionamentoAntesDeDescer);
+					System.out.println("Lastpoint: " + lastPoint);
+					System.out.println(pointTmp);
 				}
-				else
-				{
+//				else
+//				{
 //					LinearPath posicionamentoAntesDeDescer = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
 //					desbaste.add(posicionamentoAntesDeDescer);
-
-				}
+//
+//				}
 				/*
 				 * descendo no primeiro ponto desde o plano de seguranca ate o primeiro path (jah dentro da peca)
 				 */
-				LinearPath descendo = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, eTmp.getInitialPoint().z));
+				LinearPath descendo = new LinearPath(new Point3d(pointTmp), new Point3d(pointTmp.x, pointTmp.y, eTmp.getInitialPoint().z));
 				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
 				desbaste.add(descendo);
 				for(int k = 0; k < elementos.get(i).get(j).size(); k++)

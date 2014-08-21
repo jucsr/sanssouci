@@ -175,13 +175,13 @@ public class GeometricOperations
 
 	public static Point3d minus(Point3d p1, Point3d p2)
 	{
-		Point3d minusPoint = new Point3d(p1.getX()-p2.getX(), p1.getY()-p2.getY(),p1.getZ()-p2.getZ());
+		Point3d minusPoint = new Point3d(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);
 		return minusPoint;
 	}	
 	
 	public static Point3d multiply(double m, Point3d p)
 	{
-		return new Point3d(m*p.getX(),m*p.getY(),m*p.getZ());
+		return new Point3d(m * p.x, m * p.y, m * p.z);
 	}
 	
 	public static Point3d crossVector(Vector3d v1, Vector3d v2)
@@ -224,8 +224,8 @@ public class GeometricOperations
 		}
 
        double b = c1 / c2;
-       Point3d Pb = new Point3d(p0.x + b*v.x, p0.y + b*v.y, p0.z + b*v.z);
-//       System.out.println("Nearest point " + Pb);      
+		Point3d Pb = new Point3d(p0.x + b * v.x, p0.y + b * v.y, p0.z + b * v.z);
+		//       System.out.println("Nearest point " + Pb);      
        return Pb;
 	}
 	
@@ -237,13 +237,13 @@ public class GeometricOperations
 	
 	public static double escalar(Point3d p1, Point3d p2)
 	{
-		double escalar = p1.getX()*p2.getX()+p1.getY()*p2.getY()+p1.getZ()*p2.getZ();
+		double escalar = p1.x * p2.x + p1.y * p2.y + p1.z * p2.z;
 		return escalar;
 	}
 	
 	public static Point3d vectorial(Point3d p1, Point3d p2)
 	{
-		Point3d vectorial= new Point3d(p1.getY()*p2.getZ()-p2.getY()*p1.getZ(),-(p1.getX()*p2.getZ()-p2.getX()*p1.getZ()), p1.getX()*p2.getY()-p2.getX()*p1.getY());		
+		Point3d vectorial = new Point3d(p1.y * p2.z - p2.y * p1.z, -(p1.x * p2.z - p2.x * p1.z), p1.x * p2.y - p2.x * p1.y);		
 		return vectorial;
 	}
 	
@@ -780,12 +780,12 @@ public class GeometricOperations
 	}
 	public static double angle(Point3d v)
 	{
-		double alpha=0.0;
+		double alpha;
 		Point3d axisX = new Point3d(1.0, 0.0, 0.0);
-		alpha = Math.acos(escalar(axisX, v)/norm(axisX)/norm(v));
+		alpha = Math.acos(escalar(axisX, v) / norm(axisX) / norm(v));
 				
-		if(v.getY() < 0)
-			alpha = -alpha + 2*Math.PI;
+		if (v.getY() < 0)
+			alpha = -alpha + 2 * Math.PI;
 		//System.out.println("Alpha from angle " + alpha*180/Math.PI);
 
 		return alpha;
@@ -1932,7 +1932,9 @@ public class GeometricOperations
 					{
 						return null;
 					}
-				//System.out.println("NuloArcLine:" + intersectionPoint(arci, linej));	
+//				System.err.println("NuloArcLine:" + intersectionPoint(arci, linej));	
+//				System.err.println("NuloArcLine:" + arci.getCenter() + "\t" + linej.getInitialPoint());	
+//				System.err.println("NuloArcLine:" + intersectionPoint(arci, linej));	
 				return intersectionPoint(arci, linej);
 			}
 			
@@ -2453,13 +2455,13 @@ public class GeometricOperations
 			{
 				LimitedArc arc = (LimitedArc)e;
 				//System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
-				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y + ",0)" + ",new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ",0)" + "," + arc.getDeltaAngle() + ");");		
+				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y  + ", " + arc.getCenter().z + ")" + ",new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ", " + arc.getInitialPoint().z + ")" + "," + arc.getDeltaAngle() + ");");		
 			}
 			else if (e.isLimitedLine())
 			{
 				LimitedLine line = (LimitedLine)e;
 				//System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
-				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ",0)" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ",0));");
+				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ", " + line.getInitialPoint().z + ");" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ", " + line.getFinalPoint().z + ");");
 
 			}			
 			i++;			
@@ -2472,7 +2474,7 @@ public class GeometricOperations
 		for (LimitedElement e:elements)
 		{
 			LimitedLine line = (LimitedLine)e;
-			System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ",0)" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ",0));");	
+			System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y  + ", " + line.getInitialPoint().z + ")"  + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ", " + line.getFinalPoint().z + ")" );	
 			i++;			
 		}
 
@@ -2483,7 +2485,7 @@ public class GeometricOperations
 		for (LimitedElement e:elements)
 		{
 			LimitedArc arc = (LimitedArc)e;
-			System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y + ",0)" + ",new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ",0)" + "," + arc.getDeltaAngle() + ");");							
+			System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y + ", " + arc.getCenter().z + ")"  + ",new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ", " + arc.getInitialPoint().z + ")"  + "," + arc.getDeltaAngle() + ");");							
 			i++;			
 		}
 
@@ -2670,6 +2672,9 @@ public class GeometricOperations
 
 	public static ArrayList<Point3d> intersectionPoint(LimitedArc arc, LimitedLine line)
 	{
+//		System.err.println(line.getInitialPoint().z + "\t" + line.getFinalPoint());
+		
+
 		LimitedArc arcTmp = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle());
 		if(arc.getDeltaAngle() < 0)
 		{
@@ -2812,7 +2817,6 @@ public class GeometricOperations
 //			}
 //		}
 		Point3d P1 = new Point3d(x1,y1,line.getInitialPoint().z);
-		System.err.println(line.getInitialPoint().z);
 		Point3d P2 = new Point3d(x2,y2,line.getInitialPoint().z);
 		boolean p1BelongsArc = belongsArc(arcTmp,P1);
 		boolean p1BelongsLine = belongs(line,P1);

@@ -95,7 +95,7 @@ public class GenerateTrocoidalGCodeTest
 		genBoss.setVertexPoints(vertexPoints);
 //		itsBoss.add(genBoss);
 		
-		pocket.setItsBoss(itsBoss);
+//		pocket.setItsBoss(itsBoss);
 		
 		// --- Criando Machining workingstep ----
 		
@@ -201,5 +201,4 @@ public class GenerateTrocoidalGCodeTest
 		desenhador.setVisible(true);
 		for(;;);
 	}
-	
 }

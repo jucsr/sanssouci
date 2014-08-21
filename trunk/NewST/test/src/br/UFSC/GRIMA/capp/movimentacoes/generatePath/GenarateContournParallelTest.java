@@ -125,19 +125,19 @@ public class GenarateContournParallelTest
 				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
 				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),GeometricOperations.pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
 				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
-//				formaOriginal.add(l1);
-//				formaOriginal.add(a1);
-//				formaOriginal.add(l2);
-//				formaOriginal.add(a2);
-//				formaOriginal.add(l3);
-//				formaOriginal.add(a3);
-//				formaOriginal.add(l4);
-//				formaOriginal.add(a4);
+				formaOriginal.add(l1);
+				formaOriginal.add(a1);
+				formaOriginal.add(l2);
+				formaOriginal.add(a2);
+				formaOriginal.add(l3);
+				formaOriginal.add(a3);
+				formaOriginal.add(l4);
+				formaOriginal.add(a4);
 			} else if(pocket.getItsBoss().get(i).getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)pocket.getItsBoss().get(i);
 				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, tmp.Z), 2 * Math.PI);
-//				formaOriginal.add(arc);
+				formaOriginal.add(arc);
 			} else if(pocket.getItsBoss().get(i).getClass() == GeneralProfileBoss.class)
 			{
 				GeneralProfileBoss gen = (GeneralProfileBoss)pocket.getItsBoss().get(i);
@@ -153,7 +153,7 @@ public class GenarateContournParallelTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 2, 10);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 10);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
@@ -166,7 +166,6 @@ public class GenarateContournParallelTest
 				}
 			}
 		}
-		System.out.println("all: " + all.size());
 		for(LimitedElement tmp : formaOriginal)
 		{
 			all.add(tmp);

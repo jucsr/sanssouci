@@ -105,14 +105,14 @@ public class GenerateTrocoidalGCodeTest
 		
 		// ---- criando Ferramenta ----
 		FaceMill ferramenta= new FaceMill();
-		ferramenta.setName("1");
+		ferramenta.setName("name");
 		ferramenta.setDiametroFerramenta(250);
 
 		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 			
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(2);
+		cond.setAp(15);
 		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);

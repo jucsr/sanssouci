@@ -328,19 +328,21 @@ public class MovimentacaoGeneralClosedPocket {
 			{
 				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
 				Point3d pointTmp = new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca));
-				if(lastPoint != null)
+				if(i==0 && j==0)
+				{
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
+					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+					desbaste.add(posicionamentoAntesDeDescer);
+				}
+				else
 				{
 					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPoint, pointTmp);
+					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+
 					desbaste.add(posicionamentoAntesDeDescer);
 					System.out.println("Lastpoint: " + lastPoint);
 					System.out.println(pointTmp);
 				}
-//				else
-//				{
-//					LinearPath posicionamentoAntesDeDescer = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
-//					desbaste.add(posicionamentoAntesDeDescer);
-//
-//				}
 				/*
 				 * descendo no primeiro ponto desde o plano de seguranca ate o primeiro path (jah dentro da peca)
 				 */
@@ -372,7 +374,26 @@ public class MovimentacaoGeneralClosedPocket {
 				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
 				desbaste.add(subindo);
 				
+				/*
+				 *  indo pro proximo loop
+				 */
+				
 			}
+//			try
+//			{
+//				elementos.get(i+1).get(0);
+////				Point3d pI = subindo.getFinalPoint();  
+//				Point3d pF = new Point3d(elementos.get(i+1).get(0).get(0).getInitialPoint().x,elementos.get(i+1).get(0).get(0).getInitialPoint().y,planoSeguranca);
+//				LinearPath horizontal = new LinearPath(lastPoint, pF);
+//				horizontal.setTipoDeMovimento(LinearPath.FAST_MOV);
+//				System.out.println("pI: " + lastPoint);
+//				System.out.println("pF: " + pF);
+//				desbaste.add(horizontal);
+//			}
+//			catch (Exception e)
+//			{
+//				
+//			}
 		}
 		return desbaste;
 	}

@@ -11,20 +11,22 @@ import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 public class GenerateTrocoidalGCode 
 {
 	private Workingstep ws;
 	private int n;
+	private MovimentacaoGeneralClosedPocket mov;
 	public GenerateTrocoidalGCode(Workingstep ws, int n)
 	{
 		this.ws = ws;
 		this.n = n;
+		this.mov = new MovimentacaoGeneralClosedPocket(this.ws);
 	}
 	public String getGCode()
 	{
-		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(this.ws);
 //		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
 		ArrayList<Path> paths = mov.getDesbasteContourParallel();
 		String GCode = "N" + (n + 1 * 10) + "\tG54";
@@ -76,5 +78,13 @@ public class GenerateTrocoidalGCode
 		}
 		GCode += "\nIF R1>R2 GOTOB LABEL1";
 		return GCode;
+	}
+	/**
+	 * 
+	 * @return - o array de lacos do multipleParallel
+	 */
+	public ArrayList<ArrayList<ArrayList<LimitedElement>>> getMultipleLimitedElements()
+	{
+		return this.mov.getMultipleLimitedElements();
 	}
 }

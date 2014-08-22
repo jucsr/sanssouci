@@ -340,8 +340,6 @@ public class MovimentacaoGeneralClosedPocket {
 					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
 
 					desbaste.add(posicionamentoAntesDeDescer);
-					System.out.println("Lastpoint: " + lastPoint);
-					System.out.println(pointTmp);
 				}
 				/*
 				 * descendo no primeiro ponto desde o plano de seguranca ate o primeiro path (jah dentro da peca)

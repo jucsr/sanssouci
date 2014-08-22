@@ -96,7 +96,7 @@ public class LimitedArc extends LimitedElement
 		this.center = center;
 		this.initialPoint = initialPoint;
 		this.deltaAngle = deltaAngle;
-		this.radius = GeometricOperations.distance(this.initialPoint, this.center);
+		this.radius = this.initialPoint.distance(this.center);
 		if(deltaAngle < 0)
 		{
 			this.sense = CW;
@@ -117,9 +117,9 @@ public class LimitedArc extends LimitedElement
 		if (this.radius != 0)
 		{
 			this.finalPoint = new Point3d();
-			this.finalPoint.setX(this.center.getX()+this.radius*Math.cos(deltaAngle+initialAngle));
-			this.finalPoint.setY(this.center.getY()+this.radius*Math.sin(deltaAngle+initialAngle));
-			this.finalPoint.setZ(this.getCenter().getZ());
+			this.finalPoint.setX(this.center.x + this.radius * Math.cos(deltaAngle + initialAngle));
+			this.finalPoint.setY(this.center.y + this.radius * Math.sin(deltaAngle + initialAngle));
+			this.finalPoint.setZ(this.center.z);
 		}
 		else
 		{

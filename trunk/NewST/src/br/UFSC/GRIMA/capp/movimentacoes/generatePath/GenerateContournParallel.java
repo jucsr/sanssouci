@@ -5,6 +5,8 @@ import java.util.Iterator;
 
 import javax.vecmath.Point3d;
 
+import com.sun.webkit.ContextMenu.ShowContext;
+
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
@@ -128,7 +130,7 @@ public class GenerateContournParallel
 			multipleParallel.add(parallelPath);
 			parallelPath = parallelPath2(pocket, distance + (aux*distanceAtualizada), planoZ);
 			aux++;
-		}		
+		}	
 		return multipleParallel;
 	}
 	public ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
@@ -375,12 +377,6 @@ public class GenerateContournParallel
 
 					}
 				}
-			}
-			if(elementsValidated.size() == 2)
-			{
-			}
-			if(elementsValidated.size() == 3)
-			{
 			}
 			return elementsValidated;
 		}

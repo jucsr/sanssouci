@@ -1639,6 +1639,7 @@ public class GeometricOperations
 //			elementsValidated.add(elementsIntermediario2);
 //			showElements(elements);
 //			System.out.println("elementsInter2: " + elementsIntermediario2.size());
+			showElements(elementsIntermediario2);
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
 			if(elementsIntermediario3 != null)
 			{
@@ -1800,6 +1801,7 @@ public class GeometricOperations
 				elementsValidated.get(numeroDeLacos).add(ei0);
 				for(int j = 0; j < elementsIntermediario2.size(); j++)
 				{
+					
 //				System.out.println("Aux2: " + aux2);
 					LimitedElement ej = elementsIntermediario2.get(j);
 					if(!(alreadyPassed))
@@ -1840,6 +1842,7 @@ public class GeometricOperations
 
 					}
 				}
+				System.out.println("Numero de lacos: " + numeroDeLacos);
 //			System.out.println("Numero de lacos: " + numeroDeLacos);
 			}
 //			System.out.println("laco1: " + elementsValidated.get(0).size());
@@ -1994,9 +1997,9 @@ public class GeometricOperations
 	//Verifica a igualdade de pontos entre os Limited Elements
 	public static boolean isTheSamePoint(Point3d p1, Point3d p2)
 	{
-		if(roundNumber(p1.x, 10) == roundNumber(p2.x,10) 
-				&& roundNumber(p1.y, 10) == roundNumber(p2.y, 10) 
-				&& roundNumber(p1.z, 10) == roundNumber(p2.z, 10)
+		if(roundNumber(p1.x, 5) == roundNumber(p2.x,5) 
+				&& roundNumber(p1.y, 5) == roundNumber(p2.y, 5) 
+				&& roundNumber(p1.z, 5) == roundNumber(p2.z, 5)
 				)
 		{
 			return true;

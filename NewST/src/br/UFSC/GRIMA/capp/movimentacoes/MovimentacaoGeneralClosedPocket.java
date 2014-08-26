@@ -322,6 +322,7 @@ public class MovimentacaoGeneralClosedPocket {
 		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe());
 		this.elementos = contourn.multipleParallelPath();
 		Point3d lastPoint = null;
+		Point3d lastPointPlanoZ = null;
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
@@ -330,13 +331,13 @@ public class MovimentacaoGeneralClosedPocket {
 				Point3d pointTmp = new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca));
 				if(i==0 && j==0)
 				{
-					LinearPath posicionamentoAntesDeDescer = new LinearPath(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca), new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca)));
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp,pointTmp);
 					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
 					desbaste.add(posicionamentoAntesDeDescer);
 				}
 				else
 				{
-					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPoint, pointTmp);
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
 					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
 
 					desbaste.add(posicionamentoAntesDeDescer);
@@ -347,10 +348,10 @@ public class MovimentacaoGeneralClosedPocket {
 				LinearPath descendo = new LinearPath(new Point3d(pointTmp), new Point3d(pointTmp.x, pointTmp.y, eTmp.getInitialPoint().z));
 				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
 				desbaste.add(descendo);
+				System.out.println(j);
 				for(int k = 0; k < elementos.get(i).get(j).size(); k++)
 				{
 					eTmp = elementos.get(i).get(j).get(k);
-					
 					if(eTmp.isLimitedLine())
 					{
 						LimitedLine eLineTmp = (LimitedLine)eTmp;
@@ -363,12 +364,17 @@ public class MovimentacaoGeneralClosedPocket {
 						CircularPath circTmp = new CircularPath(eArcTmp.getCenter(), eArcTmp.getInitialPoint(), eArcTmp.getFinalPoint(),eArcTmp.getDeltaAngle()); // ------> verificar este construtor
 						desbaste.add(circTmp);
 					}
+					if(k == elementos.get(i).get(j).size()-1)
+					{
+						lastPoint = eTmp.getFinalPoint();
+						System.out.println(lastPoint);
+					}
 				}
 				/*
 				 * subindo
 				 */
-				LinearPath subindo = new LinearPath(new Point3d(eTmp.getFinalPoint().x, eTmp.getFinalPoint().y, eTmp.getFinalPoint().z), new Point3d(eTmp.getFinalPoint().x, eTmp.getFinalPoint().y, planoSeguranca));
-				lastPoint = subindo.getFinalPoint();
+				LinearPath subindo = new LinearPath(lastPoint, new Point3d(lastPoint.x, lastPoint.y, planoSeguranca));
+				lastPointPlanoZ = subindo.getFinalPoint();
 				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
 				desbaste.add(subindo);
 				

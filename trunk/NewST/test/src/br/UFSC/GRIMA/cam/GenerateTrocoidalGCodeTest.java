@@ -13,6 +13,7 @@ import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
+import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -20,7 +21,10 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
+import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
+import br.UFSC.GRIMA.util.LinearPath;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -112,7 +116,7 @@ public class GenerateTrocoidalGCodeTest
 			
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(15);
+		cond.setAp(2);
 		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
@@ -182,8 +186,8 @@ public class GenerateTrocoidalGCodeTest
 		LimitedLine l1 = new LimitedLine(new Point3d(30,310,0),new Point3d(30,295,0));
 		LimitedLine l2 = new LimitedLine(new Point3d(30,295,0), new Point3d(40,280,50));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
-		all.add(l1);
-		all.add(l2);
+//		all.add(l1);
+//		all.add(l2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
 		for(int i = 0;i < multiplePath.size();i++)
 		{
@@ -201,6 +205,31 @@ public class GenerateTrocoidalGCodeTest
 		}
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void getDesbasteContournParallel()
+	{
+		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(ws);
+		ArrayList<Path> paths = mov.getDesbasteContourParallel();
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		for(Path pathTmp:paths)
+		{
+			if(pathTmp.isCircular())
+			{
+				CircularPath arcPath = (CircularPath)pathTmp;
+				LimitedArc arcTmp = new LimitedArc(arcPath.getCenter(),arcPath.getInitialPoint(),arcPath.getAngulo());
+				elements.add(arcTmp);
+			}
+			else if(pathTmp.isLine())	
+			{
+				LinearPath linePath = (LinearPath)pathTmp;
+				LimitedLine lineTmp = new LimitedLine(linePath.getInitialPoint(),linePath.getFinalPoint());
+				elements.add(lineTmp);
+			}
+		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);
 		for(;;);
 	}

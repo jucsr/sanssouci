@@ -121,7 +121,8 @@ public class GenerateContournParallel
 
 		int aux = 1;
 		double distanceAtualizada = 2*distance*percentagem;
-
+		//parallelPath != null
+		//aux != 3
 		while (parallelPath != null)
 		{
 			multipleParallel.add(parallelPath);

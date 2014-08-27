@@ -49,7 +49,7 @@ public class GenerateContournParallel
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
 
-				LimitedArc arc = new LimitedArc(new Point3d(tmp.getCenter().x, tmp.getCenter().y, planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), 2 * Math.PI); // analisar angulo
+				LimitedArc arc = new LimitedArc(new Point3d(tmp.getCenter().x, tmp.getCenter().y, planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ),  -2 * Math.PI); 
 				elementosProtuberancia.add(arc);
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)
@@ -60,14 +60,15 @@ public class GenerateContournParallel
 				//Tamanho em y
 				double c = tmp.getL2();
 				Point3d position = new Point3d(tmp.X, tmp.Y, planoZ);
-				LimitedLine l1 = new LimitedLine(GeometricOperations.pointPlusEscalar(position, "x", tmp.getRadius()),GeometricOperations.pointPlusEscalar(position,"x",(l-tmp.getRadius())));
-				LimitedArc a1 = new LimitedArc(GeometricOperations.pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
-				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),GeometricOperations.pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
-				LimitedArc a2 = new LimitedArc(GeometricOperations.pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
-				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),GeometricOperations.pointPlusEscalar(a2.getFinalPoint(), "x", -(l - 2*tmp.getRadius())));
-				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
-				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),GeometricOperations.pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
-				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
+				LimitedLine l1 = new LimitedLine(
+						GeometricOperations.pointPlusEscalar(position, "x", tmp.getRadius()), GeometricOperations.pointPlusEscalar(position, "x", (l - tmp.getRadius())));
+				LimitedArc a1 = new LimitedArc(GeometricOperations.pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()), l1.getFinalPoint(), Math.PI / 2);
+				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(), GeometricOperations.pointPlusEscalar(a1.getFinalPoint(), "y", (c - 2 * tmp.getRadius())));
+				LimitedArc a2 = new LimitedArc(GeometricOperations.pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()), l2.getFinalPoint(), Math.PI / 2);
+				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),GeometricOperations.pointPlusEscalar(a2.getFinalPoint(), "x", -(l - 2 * tmp.getRadius())));
+				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()), l3.getFinalPoint(), Math.PI / 2);
+				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(), GeometricOperations.pointPlusEscalar(a3.getFinalPoint(), "y", -(c - 2 * tmp.getRadius())));
+				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()), l4.getFinalPoint(), Math.PI / 2);
 				elementosProtuberancia.add(l1);
 				elementosProtuberancia.add(a1);
 				elementosProtuberancia.add(l2);
@@ -121,14 +122,23 @@ public class GenerateContournParallel
 
 		int aux = 1;
 		double distanceAtualizada = 2*distance*percentagem;
-		//parallelPath != null
-		//aux != 3
+
 		while (parallelPath != null)
 		{
 			multipleParallel.add(parallelPath);
 			parallelPath = parallelPath2(pocket, distance + (aux*distanceAtualizada), planoZ);
 			aux++;
 		}	
+		
+		for(int i = 0; i < multipleParallel.size(); i++)
+		{
+			for(int j = 0; j < multipleParallel.get(i).size(); j++)
+			{
+				System.err.println("=====formaOriginal ======");
+				GeometricOperations.showElements(multipleParallel.get(i).get(j));		
+				System.err.println("=====EndformaOriginal ======");
+			}
+		}
 		return multipleParallel;
 	}
 	public ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
@@ -141,7 +151,7 @@ public class GenerateContournParallel
 		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
 
 		
-		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside);
+		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside);
 		
 		for(LimitedElement tmp:parallelTemp1)
@@ -160,12 +170,12 @@ public class GenerateContournParallel
 	public ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside)
 	{
 		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
-		for(int j = 0;j < elements.size();j++)
+		for(int j = 0; j < elements.size();j++)
 		{
 			if(elements.get(j).isLimitedLine())
 			{
 				LimitedLine lineTmp = (LimitedLine)elements.get(j);
-				LimitedLine newLine = absoluteParallel(lineTmp, distance,inside);
+				LimitedLine newLine = absoluteParallel(lineTmp, distance, inside);
 
 				if(newLine != null)
 				{
@@ -184,7 +194,7 @@ public class GenerateContournParallel
 				}
 				else
 				{
-					newArc = parallelArc(arcTmp, distance,inside);
+					newArc = parallelArc(arcTmp, distance, inside);
 				}
 				if(newArc != null)
 				{
@@ -384,7 +394,7 @@ public class GenerateContournParallel
 		Point3d initialPoint = new Point3d(line.getInitialPoint().x, line.getInitialPoint().y, 0);
 		Point3d finalPoint = new Point3d(line.getFinalPoint().x, line.getFinalPoint().y, 0);
 		double angleLine = GeometricOperations.angle(GeometricOperations.minus(initialPoint, finalPoint));
-		double newDistanceAngle = angleLine+Math.PI/2;
+		double newDistanceAngle = angleLine + Math.PI / 2;
 		double x = Math.cos(newDistanceAngle);
 		double y = Math.sin(newDistanceAngle);
 		Point3d unitDistance = new Point3d(x, y, 0);
@@ -417,16 +427,16 @@ public class GenerateContournParallel
 	}
 	public LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside)
 	{
-		Point3d initialPoint = new Point3d(arc.getInitialPoint().x,arc.getInitialPoint().y,planoZ);
-		Point3d center = new Point3d(arc.getCenter().x,arc.getCenter().y,planoZ);
+		Point3d initialPoint = new Point3d(arc.getInitialPoint().x, arc.getInitialPoint().y, planoZ);
+		Point3d center = new Point3d(arc.getCenter().x, arc.getCenter().y, planoZ);
 		boolean isBoss = !inside;
 		Point3d newInitialPoint;
 		LimitedArc newArc = null;
-		if (arc.getDeltaAngle()<0)
+		if (arc.getDeltaAngle() < 0)
 		{
 			if(!isBoss)
 			{
-				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()+distance),GeometricOperations.unitVector(center,initialPoint)));
+				newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
 				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
 				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
 				arcs.add(newArc);
@@ -435,7 +445,7 @@ public class GenerateContournParallel
 			{
 				if(arc.getRadius() > distance)
 				{
-					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()-distance),GeometricOperations.unitVector(center,initialPoint)));
+					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()-distance),GeometricOperations.unitVector(center, initialPoint)));
 					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
 				}
 			}
@@ -446,13 +456,13 @@ public class GenerateContournParallel
 			{
 				if(arc.getRadius() > distance)
 				{
-					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()-distance),GeometricOperations.unitVector(center,initialPoint)));
+					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() - distance),GeometricOperations.unitVector(center, initialPoint)));
 					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
 				}
 			}
 			else
 			{
-				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()+distance),GeometricOperations.unitVector(center,initialPoint)));
+				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() + distance),GeometricOperations.unitVector(center, initialPoint)));
 				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
 				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
 				arcs.add(newArc);

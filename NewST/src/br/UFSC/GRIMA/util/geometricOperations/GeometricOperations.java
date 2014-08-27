@@ -1303,7 +1303,7 @@ public class GeometricOperations
 				CircularBoss tmp = (CircularBoss)bossTmp;
 				System.out.println("Profundidade Boss: " + tmp.Z);
 //				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
-				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), 2 * Math.PI);
+				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), -2 * Math.PI);
 				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
 				elementosProtuberancia.add(arc);
 			}
@@ -1380,9 +1380,9 @@ public class GeometricOperations
 		
 //		saida = parallelPath1(laco, distance, !inside);
 		
-		saida = validarPath(totalParallel, formaOriginal, distance);
+//		saida = validarPath(totalParallel, formaOriginal, distance);
 		
-//		saida.add(totalParallel);
+		saida.add(totalParallel);
 //		showElements(totalParallel);
 		
 		return saida;
@@ -1639,12 +1639,12 @@ public class GeometricOperations
 //			elementsValidated.add(elementsIntermediario2);
 //			showElements(elements);
 //			System.out.println("elementsInter2: " + elementsIntermediario2.size());
-			showElements(elementsIntermediario2);
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
+//			showElements(elementsIntermediario3.get(0));
 			if(elementsIntermediario3 != null)
 			{
 //				System.out.println("elementsInter3: " + elementsIntermediario3.size());
-//				showElements(elementsIntermediario2);
+//				showElements(elementsIntermediario3.get(0));
 				for(int j = 0;j < elementsIntermediario3.size();j++)
 				{
 					elementsValidated.add(elementsIntermediario3.get(j));					
@@ -1842,7 +1842,6 @@ public class GeometricOperations
 
 					}
 				}
-				System.out.println("Numero de lacos: " + numeroDeLacos);
 //			System.out.println("Numero de lacos: " + numeroDeLacos);
 			}
 //			System.out.println("laco1: " + elementsValidated.get(0).size());
@@ -2400,16 +2399,17 @@ public class GeometricOperations
 			{
 				newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
-				arcs.add(newArc);
+//				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
+//				arcs.add(newArc);
 			}
 			else
 			{
-				if(arc.getRadius() > distance)
-				{
-					newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
+//				if(arc.getRadius() > distance)
+//				{
+//					System.out.println("lol");
+					newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 					newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-				}
+//				}
 			}
 //			showArcs(arcs);
 			
@@ -2418,11 +2418,11 @@ public class GeometricOperations
 		{
 			if(!isBoss)
 			{
-				if(arc.getRadius() > distance)
-				{
+//				if(arc.getRadius() > distance)
+//				{
 					newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
 					newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-				}
+//				}
 			}
 			else
 			{

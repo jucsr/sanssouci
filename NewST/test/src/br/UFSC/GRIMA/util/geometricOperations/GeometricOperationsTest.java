@@ -163,22 +163,22 @@ public class GeometricOperationsTest
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(320, 230, pocket.Z);
+		rectBoss.setPosicao(20, 200, pocket.Z);
 		rectBoss.setRadius(10);
 //		itsBoss.add(rectBoss);
 		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
 		genBoss.setRadius(10);
 		ArrayList<Point2D> vertexPoints = new ArrayList<Point2D>();
-		vertexPoints.add(new Point2D.Double(150, 300));
-		vertexPoints.add(new Point2D.Double(300, 300));
-		vertexPoints.add(new Point2D.Double(300, 250));
+		vertexPoints.add(new Point2D.Double(150, 200));
+		vertexPoints.add(new Point2D.Double(200, 200));
 		vertexPoints.add(new Point2D.Double(200, 250));
-		vertexPoints.add(new Point2D.Double(200, 180));
+		vertexPoints.add(new Point2D.Double(100, 250));
+		vertexPoints.add(new Point2D.Double(100, 150));
 //		vertexPoints.add(new Point2D.Double(150, 230)); // ------- //
-		vertexPoints.add(new Point2D.Double(50, 180));
-		vertexPoints.add(new Point2D.Double(50, 240));
-		vertexPoints.add(new Point2D.Double(150, 240));
+		vertexPoints.add(new Point2D.Double(50, 150));
+		vertexPoints.add(new Point2D.Double(50, 200));
+		vertexPoints.add(new Point2D.Double(150, 200));
 		genBoss.setVertexPoints(vertexPoints);
 //		itsBoss.add(genBoss);
 		
@@ -565,7 +565,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 //		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,true);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,false);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		if(elements != null)
@@ -598,7 +598,7 @@ public class GeometricOperationsTest
 	public void parallelPath2Test()
 	{
 		//Nao esta criando paralela do circular Boss antes dos 17.914 de offset
-		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 60,0);
+		ArrayList<ArrayList<LimitedElement>> path = GeometricOperations.parallelPath2(pocket, 70,0);
 		System.out.println("Tamanho: " + path.size());
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		

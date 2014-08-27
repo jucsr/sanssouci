@@ -5,8 +5,6 @@ import java.util.Iterator;
 
 import javax.vecmath.Point3d;
 
-import com.sun.webkit.ContextMenu.ShowContext;
-
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
@@ -51,7 +49,7 @@ public class GenerateContournParallel
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
 
-				LimitedArc arc = new LimitedArc(new Point3d(tmp.getCenter().x, tmp.getCenter().y, planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), 2 * Math.PI);
+				LimitedArc arc = new LimitedArc(new Point3d(tmp.getCenter().x, tmp.getCenter().y, planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), 2 * Math.PI); // analisar angulo
 				elementosProtuberancia.add(arc);
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)

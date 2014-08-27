@@ -16,6 +16,7 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
@@ -940,6 +941,24 @@ public class GeometricOperationsTest
 //		double minimaMaxima = GeometricOperations.minimumMaximunDistanceBetweenElements(elements);
 //		double minimaMaxima = GeometricOperations.minimumDistance(line2, line4);
 //		System.err.println("minimaMaxima = " + minimaMaxima);
+	}
+	@Test
+	public void arcoParaleloTest()
+	{
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		// ------- sentido antihorario
+		LimitedArc arcoAntihorario = new LimitedArc(new Point3d(100, 100, 0), new Point3d(200, 100, 0), Math.PI / 2);
+		elements.add(arcoAntihorario);
+		LimitedArc arcoParalelo = GeometricOperations.parallelArc(arcoAntihorario, 20, true); // ----> estranho: parametro "inside" 
+		elements.add(arcoParalelo);
+		//---------- sentido horario
+		LimitedArc arcoHorario = new LimitedArc(new Point3d(100, 100, 0), new Point3d(200, 100, 0), -Math.PI / 2);
+		elements.add(arcoHorario);
+		LimitedArc arcoParalelo1 = GeometricOperations.parallelArc(arcoHorario, 20, true); // ----> aqui o parametro "inside" inverte
+		elements.add(arcoParalelo1);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+		desenhador.setVisible(true);
+		for(;;);
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

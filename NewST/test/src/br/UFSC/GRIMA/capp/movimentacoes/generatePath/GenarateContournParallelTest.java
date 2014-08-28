@@ -84,7 +84,7 @@ public class GenarateContournParallelTest
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(320, 230, pocket.Z);
+		rectBoss.setPosicao(20, 200, pocket.Z);
 		rectBoss.setRadius(10);
 //		itsBoss.add(rectBoss);
 		//General Boss

@@ -1201,7 +1201,7 @@ public class GeometricOperations
 	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double distance,double planoZ)
 	{
 //		double planoZ = 0;
-		double percentagem = 0.75;
+		double percentagem = 0.5;
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 		
 //		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath1(elements, distance);
@@ -1364,7 +1364,7 @@ public class GeometricOperations
 			formaOriginal.add(tmp);
 		}
 		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside);
-//		showElements(parallelTemp1);
+		showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside);
 		
 		for(LimitedElement tmp:parallelTemp1)
@@ -1380,9 +1380,9 @@ public class GeometricOperations
 		
 //		saida = parallelPath1(laco, distance, !inside);
 		
-//		saida = validarPath(totalParallel, formaOriginal, distance);
+		saida = validarPath(totalParallel, formaOriginal, distance);
 		
-		saida.add(totalParallel);
+//		saida.add(totalParallel);
 //		showElements(totalParallel);
 		
 		return saida;
@@ -1429,11 +1429,13 @@ public class GeometricOperations
 		double oldDeltaAngle = arc.getDeltaAngle();
 		ArrayList<LimitedArc> arcTemp = new ArrayList<LimitedArc>(); 
 		Point3d intTemp;
-		if(arc.getDeltaAngle() == 2*Math.PI && intersecoes.size() == 1)
+//		System.out.println("Tamanho: " + intSize);
+//		System.out.println("DeltaAngulo: " + Math.abs(roundNumber(arc.getDeltaAngle(),10)));
+		if(Math.abs(arc.getDeltaAngle()) == 2*Math.PI && intersecoes.size() == 1)
 		{
 			arcTemp.add(arc);
 		}
-		else if(arc.getDeltaAngle() == 2*Math.PI && intersecoes.size() > 1)
+		else if(Math.abs(arc.getDeltaAngle()) == 2*Math.PI && intersecoes.size() > 1)
 		{
 			Point3d pI = intersecoes.get(0);
 			ArrayList<Point3d> intersecoesTmp = new ArrayList<Point3d>();
@@ -1442,15 +1444,16 @@ public class GeometricOperations
 			{
 				Point3d temp = intersecoes.get(i);
 				boolean alreadyAdd = false;				//indica se o elemento ja foi add no array ordenado
-				double angleTemp1 = calcDeltaAngle(pI,temp , arcCenter, oldDeltaAngle);
+				double angleTemp1 = Math.abs(calcDeltaAngle(pI,temp , arcCenter, oldDeltaAngle));
 				int intTempSize = intersecoesTmp.size();
 				for(int j = 0;j < intTempSize;j++)
 				{
-					double angleTemp2 = calcDeltaAngle(pI, intersecoesTmp.get(j), arcCenter, oldDeltaAngle);
+					double angleTemp2 = Math.abs(calcDeltaAngle(pI, intersecoesTmp.get(j), arcCenter, oldDeltaAngle));
 					if(angleTemp1 < angleTemp2)
 					{
 						intersecoesTmp.add(j, temp);
 						alreadyAdd = true;
+						break;
 					}
 				}
 				if(alreadyAdd == false)

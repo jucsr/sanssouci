@@ -23,6 +23,7 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
+import br.UFSC.GRIMA.util.Ponto;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -669,17 +670,17 @@ public class GeometricOperationsTest
 		LimitedLine l1= new LimitedLine(new Point3d(87.99999999999994,456.45186009241115,0),new Point3d(88.0,189.99999999999997,0));
 		LimitedArc arc1= new LimitedArc(new Point3d(160.0,290.0,0),new Point3d(70,290,0),-1.5707963267948966);
 		//(160.0,380.0,0)
-		ArrayList<LimitedElement> elementsTmp = new ArrayList<LimitedElement>();
-		elementsTmp.add(l1);
-		elementsTmp.add(arc1);
+//		ArrayList<LimitedElement> elementsTmp = new ArrayList<LimitedElement>();
+//		elementsTmp.add(l1);
+//		elementsTmp.add(arc1);
 		
-//		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 80);
-//		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
-//		for(LimitedElement tmp : formaOriginal)
-//		{
-//			elementosQuebrados.add(tmp);
-//		}
-		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp);
+		ArrayList<ArrayList<LimitedElement>> elementsTmp = GeometricOperations.parallelPath2(pocket, 70,0);
+		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp.get(0));
+		for(LimitedElement tmp : formaOriginal)
+		{
+			elementosQuebrados.add(tmp);
+		}
+//		ArrayList<LimitedElement> elementosQuebrados = GeometricOperations.validar1Path(elementsTmp);
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elementosQuebrados);
 		desenhador.setVisible(true);
@@ -824,13 +825,23 @@ public class GeometricOperationsTest
 		LimitedArc arc2 = new LimitedArc(new Point3d(200,200,0), new Point3d(265,200,0),2*Math.PI);
 		Point3d p1 = new Point3d(135.77383710667436,210,0);
 		Point3d p2 = new Point3d(246.2206916201619,154.29827501993068,0);
+		//---------------------------------------------------------------
+		//Teste Atual
+		LimitedArc arco0= new LimitedArc(new Point3d(320.0,230.0, 0.0),new Point3d(405.0,230.0, 0.0),-6.283185307179586);
+		Point3d pA = new Point3d(237.3864417907085, 250,0);
+		Point3d pB = new Point3d(239.963649065658, 201.3786350934,0);
+		Point3d pC = new Point3d(405, 230,0);
+		Point3d pD = new Point3d(402.6135582092915, 250,0);
+		//---------------------------------------------------------------
+
 		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
 	    ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
-	    intersecoes.add(p2);
-	    intersecoes.add(p1);
-//	    intersecoes.add(p3);
+	    intersecoes.add(pA);
+	    intersecoes.add(pB);
+	    intersecoes.add(pC);
+	    intersecoes.add(pD);
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arc2, intersecoes);
+	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arco0, intersecoes);
 	    for(int i = 0;i < arcos.size();i++)
 	    {
 	    	elements.add(arcos.get(i));

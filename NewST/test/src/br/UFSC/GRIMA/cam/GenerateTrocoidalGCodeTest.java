@@ -76,7 +76,7 @@ public class GenerateTrocoidalGCodeTest
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		//Circular Boss
-		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
@@ -117,7 +117,7 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(2);
-		cond.setAe(60);
+		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
 			
@@ -214,8 +214,8 @@ public class GenerateTrocoidalGCodeTest
 		MovimentacaoGeneralClosedPocket mov = new MovimentacaoGeneralClosedPocket(ws);
 		ArrayList<Path> paths = mov.getDesbasteContourParallel();
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elements1 = GeometricOperations.multipleParallelPath(pocket, 60, 0);
-		System.out.println("Tamanho: " + elements1.get(0).size());
+//		ArrayList<ArrayList<ArrayList<LimitedElement>>> elements1 = GeometricOperations.multipleParallelPath(pocket, 60, 0);
+//		System.out.println("Tamanho: " + elements1.get(0).size());
 		for(Path pathTmp:paths)
 		{
 			if(pathTmp.isCircular())

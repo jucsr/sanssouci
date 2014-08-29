@@ -14,6 +14,7 @@ import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -114,14 +115,24 @@ public class GenerateTrocoidalGCodeTest
 
 		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 			
-		// ---- criando Condicoes de usinagem -----S
+		// ---- criando Condicoes de usinagem -----
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(2);
 		cond.setAe(20);
 		cond.setF(.0123);
 		cond.setN(1500);
-			
+		
+		// ---- criando estrategia -----
+		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
+		strategy.setAllowMultiplePasses(true);
+		strategy.setTrochoidalRadius(10);
+		strategy.setRotationDirectionCCW(Boolean.TRUE);
+		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
+		strategy.setRadialDephtPercent(20);
+		operation.setMachiningStrategy(strategy);
+		
 	    ws = new Workingstep();
+	    ws.setId("milling test");
 		ws.setOperation(operation);
 		ws.setFerramenta(ferramenta);
 		ws.setFeature(pocket);
@@ -181,7 +192,8 @@ public class GenerateTrocoidalGCodeTest
 	@Test
 	public void getCodeTest()
 	{
-		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, 0);
+		int numeroDeLinha = 0;
+		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, numeroDeLinha);
 		System.out.println(gCode.getGCode());
 		LimitedLine l1 = new LimitedLine(new Point3d(30,310,0),new Point3d(30,295,0));
 		LimitedLine l2 = new LimitedLine(new Point3d(30,295,0), new Point3d(40,280,50));
@@ -189,9 +201,10 @@ public class GenerateTrocoidalGCodeTest
 //		all.add(l1);
 //		all.add(l2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
-		for(int i = 0;i < multiplePath.size();i++)
+		System.out.println("mu " + multiplePath);
+		for(int i = 0; i < multiplePath.size(); i++)
 		{
-			for(int j = 0;j < multiplePath.get(i).size(); j++)
+			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
 				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
 				{

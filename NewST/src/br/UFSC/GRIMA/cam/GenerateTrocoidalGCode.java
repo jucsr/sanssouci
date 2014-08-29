@@ -29,6 +29,7 @@ public class GenerateTrocoidalGCode
 	{
 //		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
 		ArrayList<Path> paths = mov.getDesbasteContourParallel();
+		
 		String GCode = "\nN" + (n + 1 * 10) + "\t; Feature -->" + ws.getFeature().getNome() + "\t WS --> " + ws.getOperation().getOperationType();
 		GCode += "\nN" + (n + 2 * 10) + "\tG54";
 		String sentidoRotacao = " M03";

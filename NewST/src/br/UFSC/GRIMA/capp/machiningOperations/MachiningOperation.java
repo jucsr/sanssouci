@@ -17,15 +17,16 @@ public abstract class MachiningOperation implements Serializable
 	private Point3d startPoint = new Point3d(); // ponto de inicio da operacao
 	private boolean coolant = true;
 	private String operationType;
-	private MachinningStrategy ms;
-	public MachinningStrategy getMs() 
+	private MachinningStrategy machiningStrategy;
+	
+	public MachinningStrategy getMachiningStrategy() 
 	{
-		return ms;
+		return machiningStrategy;
 	}
 
-	public void setMs(MachinningStrategy ms) 
+	public void setMachiningStrategy(MachinningStrategy machiningStrategy) 
 	{
-		this.ms = ms;
+		this.machiningStrategy = machiningStrategy;
 	}
 
 	public MachiningOperation(String id, double retractPlane)

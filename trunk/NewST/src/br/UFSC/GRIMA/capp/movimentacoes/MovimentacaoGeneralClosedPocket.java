@@ -167,27 +167,27 @@ public class MovimentacaoGeneralClosedPocket {
 		before.setLocation(before.getX() + p2.getX(), before.getY() + p2.getY());
 		after.setLocation(after.getX()+p2.getX(), after.getY()+p2.getY());
 		
-		System.out.println("Before " + before.getX() + "," + before.getY());
-		System.out.println("After " + after.getX() + "," + after.getY());
+//		System.out.println("Before " + before.getX() + "," + before.getY());
+//		System.out.println("After " + after.getX() + "," + after.getY());
 		
 		center.setLocation((after.getX()+before.getX())/2, (after.getY()+before.getY())/2);
 		
-		System.out.println("Center " + center.getX() + "," + center.getY());
+//		System.out.println("Center " + center.getX() + "," + center.getY());
 		
 		centerUnit = unitPointer(p2,center);
 				
 		outPoint.setLocation(p2.getX()-centerUnit.getX()*radio, p2.getY()-centerUnit.getY()*radio);
 		
-		System.out.println("Adding R " + outPoint.getX() + "," + outPoint.getY());
+//		System.out.println("Adding R " + outPoint.getX() + "," + outPoint.getY());
 		if (!forma.contains(outPoint))
 		{
-			System.out.println("inPoint");
+//			System.out.println("inPoint");
 			return outPoint;
 		}
 		
 		else
 		{
-			System.out.println("Is not possible to put the point out from the form");
+//			System.out.println("Is not possible to put the point out from the form");
 			return p2;
 		}
 	}
@@ -266,8 +266,8 @@ public class MovimentacaoGeneralClosedPocket {
 		//----
 //		System.out.println(GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius()));
 		// =========== CUIDADO =====
-		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(),planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> elementos = contourn.multipleParallelPath();
+		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
+		elementos = contourn.multipleParallelPath();
 		// ========= END CUIDADO ======
 		for(int i = 0; i < elementos.size(); i++)
 		{
@@ -348,7 +348,7 @@ public class MovimentacaoGeneralClosedPocket {
 				LinearPath descendo = new LinearPath(new Point3d(pointTmp), new Point3d(pointTmp.x, pointTmp.y, eTmp.getInitialPoint().z));
 				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
 				desbaste.add(descendo);
-				System.out.println(j);
+//				System.out.println(j);
 				for(int k = 0; k < elementos.get(i).get(j).size(); k++)
 				{
 					eTmp = elementos.get(i).get(j).get(k);

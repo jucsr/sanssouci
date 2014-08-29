@@ -133,9 +133,9 @@ public class GenerateContournParallel
 		{
 			for(int j = 0; j < multipleParallel.get(i).size(); j++)
 			{
-				System.err.println("=====formaOriginal ======");
-				GeometricOperations.showElements(multipleParallel.get(i).get(j));		
-				System.err.println("=====EndformaOriginal ======");
+//				System.err.println("=====formaOriginal ======");
+//				GeometricOperations.showElements(multipleParallel.get(i).get(j));		
+//				System.err.println("=====EndformaOriginal ======");
 			}
 		}
 		return multipleParallel;

@@ -29,25 +29,27 @@ public class GenerateTrocoidalGCode
 	{
 //		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
 		ArrayList<Path> paths = mov.getDesbasteContourParallel();
-		String GCode = "N" + (n + 1 * 10) + "\tG54";
+		String GCode = "\nN" + (n + 1 * 10) + "\t; Feature -->" + ws.getFeature().getNome() + "\t WS --> " + ws.getOperation().getOperationType();
+		GCode += "\nN" + (n + 2 * 10) + "\tG54";
 		String sentidoRotacao = " M03";
 		if(ws.getFerramenta().getHandOfCut() == Ferramenta.RIGHT_HAND_OF_CUT)
 		{
 			sentidoRotacao = " M04";
 		}
-		GCode += "\nN" + (n + 2 * 10) + "\t S" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF() + sentidoRotacao;
-		GCode += "\nN" + (n + 3 * 10) + "\tT = " + ws.getFerramenta().getName();
-		GCode += "\nN" + (n + 4 * 10) + "\tM06";
-		int numeroDeLinha = 0;
+		GCode += "\nN" + (n + 3 * 10) + "\tS" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF() + sentidoRotacao;
+		GCode += "\nN" + (n + 4 * 10) + "\tT = " + ws.getFerramenta().getName();
+		GCode += "\nN" + (n + 5 * 10) + "\tM06";
+//		int numeroDeLinha = 0;
 		
-		GCode += "\nR2 = -" + ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
-		GCode += "\nR1 = 0";
-		GCode += "\nLABEL 1:";
-		GCode += "\nR0 = R1 + " + ws.getCondicoesUsinagem().getAp();
-		GCode += "\nR1 = R1 - " + ws.getCondicoesUsinagem().getAp();
+		GCode += "\nN" + (n + 6 * 10) + "\tR2 = -" + ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
+		GCode += "\nN" + (n + 7 * 10) + "\tR1 = 0";
+		GCode += "\nN" + (n + 8 * 10) + "\tLABEL 1:";
+		GCode +=  "\nN" + (n + 9 * 10) + "\tR0 = R1 + " + ws.getCondicoesUsinagem().getAp();
+		GCode +=  "\nN" + (n + 10 * 10) + "\tR1 = R1 - " + ws.getCondicoesUsinagem().getAp();
 		for(int i = 0; i < paths.size(); i++)
 		{
-			numeroDeLinha = (i + 6) * 10;
+//			numeroDeLinha = (i + 6) * 10;
+			n = n + 11 * 10;
 			String aux = "";
 			Path pathTmp = paths.get(i);
 			if(paths.get(i).getClass() == LinearPath.class)
@@ -74,9 +76,10 @@ public class GenerateTrocoidalGCode
 					aux = "G3 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z = R1" + " I" + GeometricOperations.roundNumber(I, 5) + " J" + GeometricOperations.roundNumber(J, 5);
 				}
 			}
-			GCode += "\nN" + numeroDeLinha + aux;
+//			GCode += "\nN" + numeroDeLinha + aux;
+			GCode += "\nN" + n + aux;
 		}
-		GCode += "\nIF R1>R2 GOTOB LABEL1";
+		GCode += "\nN" + (n + 1 * 10) + "\tIF R1>R2 GOTOB LABEL1";
 		return GCode;
 	}
 	/**

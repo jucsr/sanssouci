@@ -117,7 +117,7 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando Condicoes de usinagem -----S
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(2);
-		cond.setAe(10);
+		cond.setAe(20);
 		cond.setF(.0123);
 		cond.setN(1500);
 			
@@ -181,7 +181,7 @@ public class GenerateTrocoidalGCodeTest
 	@Test
 	public void getCodeTest()
 	{
-		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, 10);
+		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, 0);
 		System.out.println(gCode.getGCode());
 		LimitedLine l1 = new LimitedLine(new Point3d(30,310,0),new Point3d(30,295,0));
 		LimitedLine l2 = new LimitedLine(new Point3d(30,295,0), new Point3d(40,280,50));

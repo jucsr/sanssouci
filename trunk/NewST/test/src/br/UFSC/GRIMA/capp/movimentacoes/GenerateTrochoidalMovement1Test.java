@@ -116,12 +116,26 @@ public class GenerateTrochoidalMovement1Test
 //		points.add(new Point2D.Double(200,160));
 		
 		//Forma 2
-		points.add(new Point2D.Double(500, 320));
-		points.add(new Point2D.Double(500, 160));
-		points.add(new Point2D.Double(280, 160));
-		points.add(new Point2D.Double(280, 40));
-		points.add(new Point2D.Double(0, 40));
-		points.add(new Point2D.Double(0, 320));
+//		points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 160));
+//		points.add(new Point2D.Double(280, 160));
+//		points.add(new Point2D.Double(280, 40));
+//		points.add(new Point2D.Double(0, 40));
+//		points.add(new Point2D.Double(0, 320));
+		
+		//Forma 4
+		points.add(new Point2D.Double(10, 10));
+		points.add(new Point2D.Double(200, 10));
+		points.add(new Point2D.Double(200, 100));
+		points.add(new Point2D.Double(350, 100));
+		points.add(new Point2D.Double(350, 10));
+		points.add(new Point2D.Double(500, 10));
+		points.add(new Point2D.Double(500, 100));
+		points.add(new Point2D.Double(400, 100));
+		points.add(new Point2D.Double(400, 200));
+		points.add(new Point2D.Double(180,200));
+		points.add(new Point2D.Double(180, 100));
+		points.add(new Point2D.Double(10, 100));
 		
 		GeneralClosedPocket pocket = new GeneralClosedPocket();
 		pocket.setPoints(points);
@@ -132,7 +146,8 @@ public class GenerateTrochoidalMovement1Test
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		//Circular Boss
 //		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
-		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 15, pocket.getProfundidade());
+//		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 15, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 250, 150, pocket.Z, 30, 30, pocket.getProfundidade());
 
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
@@ -160,13 +175,13 @@ public class GenerateTrochoidalMovement1Test
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius,0) ;
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, 0) ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
-				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), trochoidalRadius, 10);
+				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), trochoidalRadius, 15);
 				ArrayList<LimitedElement> movimentacoes = gen.generatePaths(gen.getPaths());
 				for(int k = 0; k < movimentacoes.size(); k ++)
 				{

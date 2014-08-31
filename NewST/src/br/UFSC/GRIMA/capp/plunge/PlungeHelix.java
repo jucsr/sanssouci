@@ -1,6 +1,29 @@
 package br.UFSC.GRIMA.capp.plunge;
 
-public class PlungeHelix 
+import javax.vecmath.Point3d;
+
+public class PlungeHelix extends PlungeStrategy 
 {
 	private double angle, radius;
+	public PlungeHelix(Point3d toolDirection) 
+	{
+		super(toolDirection);
+	}
+	public double getAngle() 
+	{
+		return angle;
+	}
+	public void setAngle(double angle) 
+	{
+		this.angle = angle;
+	}
+	public double getRadius() 
+	{
+		return radius;
+	}
+	public void setRadius(double radius) 
+	{
+		this.radius = radius;
+	}
+
 }

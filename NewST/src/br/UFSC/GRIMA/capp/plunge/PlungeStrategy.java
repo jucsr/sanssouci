@@ -6,6 +6,8 @@ public abstract class PlungeStrategy
 {
 	private Point3d toolDirection; // Vetor diretor do mergulho
 
+	
+
 	public PlungeStrategy(Point3d toolDirection)
 	{
 		this.toolDirection = toolDirection;

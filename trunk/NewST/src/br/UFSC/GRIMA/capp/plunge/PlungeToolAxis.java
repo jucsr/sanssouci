@@ -1,6 +1,12 @@
 package br.UFSC.GRIMA.capp.plunge;
 
-public class PlungeToolAxis
+import javax.vecmath.Point3d;
+
+public class PlungeToolAxis extends PlungeStrategy
 {
 
+	public PlungeToolAxis(Point3d toolDirection) //toolDirection eh entrada 
+	{
+		super(toolDirection); //constroi o pai com a entrada
+	}
 }

@@ -83,7 +83,7 @@ public class GenerateTrochoidalMovement1Test
 	public void generateTrochoidalPathTest()
 	{
 		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(formaOriginal, 20, 25);
-		ArrayList<LimitedElement> movimentacoes = gen.generatePaths(gen.getPaths());
+		ArrayList<LimitedElement> movimentacoes = gen.transformPathsInLimitedElements(gen.getPaths());
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : formaOriginal)
@@ -182,7 +182,7 @@ public class GenerateTrochoidalMovement1Test
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
 				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), trochoidalRadius, 15);
-				ArrayList<LimitedElement> movimentacoes = gen.generatePaths(gen.getPaths());
+				ArrayList<LimitedElement> movimentacoes = gen.transformPathsInLimitedElements(gen.getPaths());
 				for(int k = 0; k < movimentacoes.size(); k ++)
 				{
 					pathsVector.add(movimentacoes.get(k));

@@ -437,9 +437,8 @@ public class GenerateContournParallel
 		{
 			if(!isBoss)
 			{
-
-					newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
-					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
+				newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
+				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
 			}
 			else
 			{

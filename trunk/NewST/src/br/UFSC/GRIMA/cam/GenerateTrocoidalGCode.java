@@ -19,18 +19,19 @@ public class GenerateTrocoidalGCode
 	private Workingstep ws;
 	private int n;
 	private MovimentacaoGeneralClosedPocket mov;
+	private ArrayList<Path> paths;
 	private ArrayList<ArrayList<ArrayList<LimitedElement>>> baseLines;
 	public GenerateTrocoidalGCode(Workingstep ws, int n)
 	{
 		this.ws = ws;
 		this.n = n;
 		this.mov = new MovimentacaoGeneralClosedPocket(this.ws);
-		this.baseLines = mov.getMultipleLimitedElements();
 	}
 	public String getGCode()
 	{
-		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
+		this.paths = mov.getDesbasteTrocoidal();                 //Array de paths (caminhos da ferramenta)
 //		ArrayList<Path> paths = mov.getDesbasteContourParallel();
+		this.baseLines = mov.getMultipleLimitedElements();       //Array de linhas guia
 		System.out.println("PATHS = " + paths.size());
 		System.out.println("elements = " + mov.getMultipleLimitedElements().size());
 		String GCode = "\nN" + (n + 1 * 10) + "\t; Feature -->" + ws.getFeature().getNome() + "\t WS --> " + ws.getOperation().getOperationType();
@@ -101,5 +102,9 @@ public class GenerateTrocoidalGCode
 	public ArrayList<ArrayList<ArrayList<LimitedElement>>> getBaseLines() 
 	{
 		return baseLines;
+	}
+	public ArrayList<Path> getPaths()
+	{
+		return paths;
 	}
 }

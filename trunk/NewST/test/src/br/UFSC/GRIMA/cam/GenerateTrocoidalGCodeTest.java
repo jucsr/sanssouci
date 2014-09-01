@@ -13,6 +13,7 @@ import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
+import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.Material;
@@ -195,23 +196,28 @@ public class GenerateTrocoidalGCodeTest
 		int numeroDeLinha = 0;
 		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, numeroDeLinha);
 		System.out.println(gCode.getGCode());
-		LimitedLine l1 = new LimitedLine(new Point3d(30,310,0),new Point3d(30,295,0));
-		LimitedLine l2 = new LimitedLine(new Point3d(30,295,0), new Point3d(40,280,50));
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
-//		all.add(l1);
-//		all.add(l2);
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
-		System.out.println("mu " + multiplePath);
-		for(int i = 0; i < multiplePath.size(); i++)
+		
+		//--------Esta muito errado o desenho!--------
+		ArrayList<LimitedElement> multiplePath = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gCode.getPaths());
+		//--------------------------------------------
+
+		//		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
+//		System.out.println("mu " + multiplePath);
+//		for(int i = 0; i < multiplePath.size(); i++)
+//		{
+//			for(int j = 0; j < multiplePath.get(i).size(); j++)
+//			{
+//				GeometricOperations.showElements(multiplePath.get(i).get(j));
+//				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
+//				{
+//					all.add(multiplePath.get(i).get(j).get(k));
+//				}
+//			}
+//		}
+		for(LimitedElement tmp : multiplePath)
 		{
-			for(int j = 0; j < multiplePath.get(i).size(); j++)
-			{
-				GeometricOperations.showElements(multiplePath.get(i).get(j));
-				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
-				{
-					all.add(multiplePath.get(i).get(j).get(k));
-				}
-			}
+			all.add(tmp);
 		}
 		for(LimitedElement tmp : formaOriginal)
 		{

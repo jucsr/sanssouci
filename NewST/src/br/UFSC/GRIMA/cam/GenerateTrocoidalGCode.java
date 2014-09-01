@@ -19,17 +19,20 @@ public class GenerateTrocoidalGCode
 	private Workingstep ws;
 	private int n;
 	private MovimentacaoGeneralClosedPocket mov;
+	private ArrayList<ArrayList<ArrayList<LimitedElement>>> baseLines;
 	public GenerateTrocoidalGCode(Workingstep ws, int n)
 	{
 		this.ws = ws;
 		this.n = n;
 		this.mov = new MovimentacaoGeneralClosedPocket(this.ws);
+		this.baseLines = mov.getMultipleLimitedElements();
 	}
 	public String getGCode()
 	{
-//		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
-		ArrayList<Path> paths = mov.getDesbasteContourParallel();
-		
+		ArrayList<Path> paths = mov.getDesbasteTrocoidal();
+//		ArrayList<Path> paths = mov.getDesbasteContourParallel();
+		System.out.println("PATHS = " + paths.size());
+		System.out.println("elements = " + mov.getMultipleLimitedElements().size());
 		String GCode = "\nN" + (n + 1 * 10) + "\t; Feature -->" + ws.getFeature().getNome() + "\t WS --> " + ws.getOperation().getOperationType();
 		GCode += "\nN" + (n + 2 * 10) + "\tG54";
 		String sentidoRotacao = " M03";
@@ -42,15 +45,15 @@ public class GenerateTrocoidalGCode
 		GCode += "\nN" + (n + 5 * 10) + "\tM06";
 //		int numeroDeLinha = 0;
 		
-		GCode += "\nN" + (n + 6 * 10) + "\tR2 = -" + ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
-		GCode += "\nN" + (n + 7 * 10) + "\tR1 = 0";
-		GCode += "\nN" + (n + 8 * 10) + "\tLABEL 1:";
-		GCode +=  "\nN" + (n + 9 * 10) + "\tR0 = R1 + " + ws.getCondicoesUsinagem().getAp();
-		GCode +=  "\nN" + (n + 10 * 10) + "\tR1 = R1 - " + ws.getCondicoesUsinagem().getAp();
+		GCode += "\nN" + (n + 6 * 10) + "R2 = -" + ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
+		GCode += "\nN" + (n + 7 * 10) + "R1 = 0";
+		GCode += "\nN" + (n + 8 * 10) + "LABEL 1:";
+		GCode +=  "\nN" + (n + 9 * 10) + "R0 = R1 + " + ws.getCondicoesUsinagem().getAp();
+		GCode +=  "\nN" + (n + 10 * 10) + "R1 = R1 - " + ws.getCondicoesUsinagem().getAp();
 		for(int i = 0; i < paths.size(); i++)
 		{
 //			numeroDeLinha = (i + 6) * 10;
-			n = n + 11 * 10;
+			n = (i + 11) * 10;
 			String aux = "";
 			Path pathTmp = paths.get(i);
 			if(paths.get(i).getClass() == LinearPath.class)
@@ -80,7 +83,7 @@ public class GenerateTrocoidalGCode
 //			GCode += "\nN" + numeroDeLinha + aux;
 			GCode += "\nN" + n + aux;
 		}
-		GCode += "\nN" + (n + 1 * 10) + "\tIF R1>R2 GOTOB LABEL1";
+		GCode += "\nN" + (n + 1 * 10) + "IF R1>R2 GOTOB LABEL1";
 		return GCode;
 	}
 	/**
@@ -89,6 +92,14 @@ public class GenerateTrocoidalGCode
 	 */
 	public ArrayList<ArrayList<ArrayList<LimitedElement>>> getMultipleLimitedElements()
 	{
-		return this.mov.getMultipleLimitedElements();
+		return this.baseLines;
+	}
+	/**
+	 *  linhas guia do caminho trocoidal
+	 * @return
+	 */
+	public ArrayList<ArrayList<ArrayList<LimitedElement>>> getBaseLines() 
+	{
+		return baseLines;
 	}
 }

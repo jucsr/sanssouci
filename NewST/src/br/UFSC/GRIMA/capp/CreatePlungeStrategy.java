@@ -8,6 +8,9 @@ import javax.swing.ImageIcon;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.capp.visual.PlungeFrame1;
+import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.GeneralPath;
+import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 
 /**
@@ -27,8 +30,8 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 	public CreatePlungeStrategy(ArrayList<Path> paths, double retractPlane)
 	{
 		this.paths = paths;
-		pFinal = paths.get(0).getFinalPoint();
 		pInicial = paths.get(0).getInitialPoint();
+		pFinal = paths.get(1).getFinalPoint();
 		this.button1.addActionListener(this);
 		this.button2.addActionListener(this);
 		this.bolaVert.addActionListener(this);
@@ -106,26 +109,48 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		double x1=pFinal.x;
 		double y0=pInicial.y;
 		double y1=pFinal.y;
-		double distP = Math.sqrt((x0 - x1) + (y0 - y1) + (pInicial.z - pFinal.z));
-		double beta = Math.atan((y1 - y0)/(x1 - x0)); // beta = arco tangente Y/X
-		 
+		double distP0 = Math.sqrt(Math.pow((x0 - x1),2) + Math.pow((y0 - y1),2) + Math.pow((pInicial.z - pFinal.z),2));  //distancia path
+		double beta = Math.atan2((y1 - y0),(x1 - x0)); // beta = arco tangente* Y/X - * essa funçao especial trata o x=0
+		double xk,yk,zk=retractPlane; 	//pontos de inicio da ferramenta 
 		if (a == 'v')
 		{
 		
 		}
 		else if (a == 'r')
 		{
-			System.out.println("distP: " + distP );
-			System.out.println("x0/x1: " +x0 +"/"+ x1);
-			System.out.println("y0/y1: "+ y0 +"/"+ y1);
-			double course = high/Math.tan(angle);
+			System.out.println("distP: " + distP0 );
+			double course = high/Math.tan(angle);  // curso ferramenta
 			System.out.println("course: " + course );
-			if (course <= distP)
+			if (course <= distP0)
 			{
-				double xK = Math.sqrt(Math.pow(course, 2)/(Math.pow(Math.tan(beta), 2))+1) + x0; //x do pTool
-				double yK = ((y1-y0)*(xK-x0)/(x1-x0))+y0; //y do pTool
-				pTool = new Point3d(xK,yK,retractPlane);
+				xk = Math.sqrt(Math.pow(course, 2)/((Math.pow(Math.tan(beta), 2))+1)) + x0; //x do pTool
+				if (beta == Math.PI/2)
+					yk = y0 + course;
+				else if(beta == -Math.PI/2)
+					yk = y0 - course;
+				else
+					yk = ((xk-x0)*Math.tan(beta))+y0; //y do pTool
+				pTool = new Point3d(xk,yk,zk);
 				System.out.println("ponto: " + pTool);
+			}
+			else // se distP>course ('distancia path' maior que 'curso da ferramenta')
+			{
+				double perimetro;
+				for (int i=0;i<paths.size();i++) //calcular perimetro
+				{
+					Path pathTmp = paths.get(i);
+					if(pathTmp.getClass().equals(LinearPath.class))
+						perimetro =+ pathTmp.getInitialPoint().distance(pathTmp.getFinalPoint());// simbolo =+ acumulap
+					else if(pathTmp.getClass() == CircularPath.class)
+					{
+						CircularPath circularTmp = (CircularPath)pathTmp;
+						perimetro =+ circularTmp.getAngulo() * circularTmp.getRadius();
+					}
+					else if(pathTmp.getClass() == GeneralPath.class)
+					{
+						
+					}
+				}
 			}
 		}
 		else if (a == 'z')

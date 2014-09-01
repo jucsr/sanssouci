@@ -263,16 +263,17 @@ public class MovimentacaoGeneralClosedPocket {
 		{
 			planoZ = ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
 		}
-		System.out.println("Distancia: " + (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)));
+//		System.out.println("Distancia: " + (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)));
 		//----
 //		System.out.println(GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius()));
 		// =========== CUIDADO =====
+		//---- gerando as linhas guia para o trocoidal
 		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
 		elementos = contourn.multipleParallelPath();
 		// ========= END CUIDADO ======
 		for(int i = 0; i < elementos.size(); i++)
 		{
-			System.out.println("lol");
+//			System.out.println("lol");
 			for(int j = 0; j < elementos.get(i).size(); j++)
 			{
 				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe());
@@ -280,11 +281,13 @@ public class MovimentacaoGeneralClosedPocket {
 				 * descendo em velocidade controlada no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
 				 */
 				Path pathTmp = eMov.getPaths().get(0);
+//				Path pathTmp = null;
 				LinearPath descendo = new LinearPath((new Point3d(pathTmp.getInitialPoint().x, pathTmp.getInitialPoint().y, planoSeguranca)), new Point3d(pathTmp.getInitialPoint().x, pathTmp.getInitialPoint().y, pathTmp.getInitialPoint().z));
 				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
 				desbaste.add(descendo);
 				for(int k = 0; k < eMov.getPaths().size(); k++)
 				{
+					pathTmp = eMov.getPaths().get(k);
 					desbaste.add(pathTmp);
 				}
 				/*
@@ -410,6 +413,25 @@ public class MovimentacaoGeneralClosedPocket {
 	public ArrayList<ArrayList<ArrayList<LimitedElement>>> getMultipleLimitedElements()
 	{
 		return this.elementos;
+	}
+	public static ArrayList<LimitedElement> transformPathsInLimitedElements(ArrayList<Path> paths)
+	{
+		for(Path pathTmp : paths)
+		{
+			if(pathTmp.getClass() == LinearPath.class)
+			{
+				
+			}
+			else if(pathTmp.getClass() == CircularPath.class)
+			{
+				
+			}
+//			else if(pathTmp.getClass() == GeneralPath.class)
+//			{
+//				
+//			}
+		}
+		return null;
 	}
 	/**
 	 * 

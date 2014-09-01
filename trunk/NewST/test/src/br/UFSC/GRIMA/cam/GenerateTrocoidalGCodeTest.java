@@ -117,15 +117,15 @@ public class GenerateTrocoidalGCodeTest
 			
 		// ---- criando Condicoes de usinagem -----
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(2);
-		cond.setAe(20);
+		cond.setAp(15);
+		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
 		// ---- criando estrategia -----
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
-		strategy.setTrochoidalRadius(10);
+		strategy.setTrochoidalRadius(50);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 		strategy.setRadialDephtPercent(0.2);
@@ -201,7 +201,7 @@ public class GenerateTrocoidalGCodeTest
 //		all.add(l1);
 //		all.add(l2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
-//		System.out.println("mu " + multiplePath);
+		System.out.println("mu " + multiplePath);
 		for(int i = 0; i < multiplePath.size(); i++)
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)

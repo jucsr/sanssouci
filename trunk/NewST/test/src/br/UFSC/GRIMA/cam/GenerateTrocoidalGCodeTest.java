@@ -111,7 +111,7 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando Ferramenta ----
 		FaceMill ferramenta= new FaceMill();
 		ferramenta.setName("1");
-		ferramenta.setDiametroFerramenta(250);
+		ferramenta.setDiametroFerramenta(20);
 
 		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 			
@@ -128,7 +128,7 @@ public class GenerateTrocoidalGCodeTest
 		strategy.setTrochoidalRadius(10);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
-		strategy.setRadialDephtPercent(20);
+		strategy.setRadialDephtPercent(0.2);
 		operation.setMachiningStrategy(strategy);
 		
 	    ws = new Workingstep();
@@ -201,11 +201,12 @@ public class GenerateTrocoidalGCodeTest
 //		all.add(l1);
 //		all.add(l2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
-		System.out.println("mu " + multiplePath);
+//		System.out.println("mu " + multiplePath);
 		for(int i = 0; i < multiplePath.size(); i++)
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
+				GeometricOperations.showElements(multiplePath.get(i).get(j));
 				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
 				{
 					all.add(multiplePath.get(i).get(j).get(k));

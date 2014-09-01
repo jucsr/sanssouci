@@ -263,6 +263,7 @@ public class MovimentacaoGeneralClosedPocket {
 		{
 			planoZ = ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
 		}
+		System.out.println("Distancia: " + (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)));
 		//----
 //		System.out.println(GeometricOperations.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), trocoidalStrategy.getTrochoidalRadius()));
 		// =========== CUIDADO =====
@@ -271,6 +272,7 @@ public class MovimentacaoGeneralClosedPocket {
 		// ========= END CUIDADO ======
 		for(int i = 0; i < elementos.size(); i++)
 		{
+			System.out.println("lol");
 			for(int j = 0; j < elementos.get(i).size(); j++)
 			{
 				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe());
@@ -411,7 +413,7 @@ public class MovimentacaoGeneralClosedPocket {
 	}
 	/**
 	 * 
-	 * @return trajetorias lineares (interpoladas) --> feito pelo Pedro
+	 * @return trajetorias lineares (interpoladas) --> feito pelo Pedro 8
 	 */
 	public ArrayList<LinearPath> getDesbaste(){
 

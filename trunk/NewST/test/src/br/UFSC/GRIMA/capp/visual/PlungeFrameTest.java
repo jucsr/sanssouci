@@ -18,14 +18,14 @@ public class PlungeFrameTest
 	@Before
 	public void init()
 	{
-		LinearPath p1 = new LinearPath(new Point3d(10,10,-10), new Point3d(110,10,-10));
-		LinearPath p2 = new LinearPath(new Point3d(110,10,-10), new Point3d(110,60,-10));
-		LinearPath p3 = new LinearPath(new Point3d(110,60,-10), new Point3d(10,60,-10));
-		LinearPath p4 = new LinearPath(new Point3d(10,60,-10), new Point3d(10,10,-10));
+		LinearPath p0 = new LinearPath(new Point3d(10,10,-10), new Point3d(110,10,-10));
+		LinearPath p1 = new LinearPath(new Point3d(110,10,-10), new Point3d(110,60,-10));
+		LinearPath p2 = new LinearPath(new Point3d(110,60,-10), new Point3d(10,60,-10));
+		LinearPath p3 = new LinearPath(new Point3d(10,60,-10), new Point3d(10,10,-10));
+		path.add(p0);
 		path.add(p1);
 		path.add(p2);
 		path.add(p3);
-		path.add(p4);
 	}
 	@Test
 	public void test()

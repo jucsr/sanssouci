@@ -116,12 +116,12 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		{
 		
 		}
-		else if (a == 'r')
+		else if (a == 'r') //se estiver marcado RAMP
 		{
 			System.out.println("distP: " + distP0 );
 			double course = high/Math.tan(angle);  // curso ferramenta
 			System.out.println("course: " + course );
-			if (course <= distP0)
+			if (course <= distP0) //se curso <= distancia dois primeiros pontos
 			{
 				xk = Math.sqrt(Math.pow(course, 2)/((Math.pow(Math.tan(beta), 2))+1)) + x0; //x do pTool
 				if (beta == Math.PI/2)
@@ -131,11 +131,11 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				else
 					yk = ((xk-x0)*Math.tan(beta))+y0; //y do pTool
 				pTool = new Point3d(xk,yk,zk);
-				System.out.println("ponto: " + pTool);
+				System.out.println("ponto ferramenta: " + pTool);
 			}
-			else // se distP>course ('distancia path' maior que 'curso da ferramenta')
+			else // se distP>course ('distancia p0/p1' maior que 'curso da ferramenta')
 			{
-				double perimetro;
+				double perimetro=0;
 				for (int i=0;i<paths.size();i++) //calcular perimetro
 				{
 					Path pathTmp = paths.get(i);
@@ -150,7 +150,45 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 					{
 						
 					}
-				}
+				}	
+					double temp = 0;
+					int voltas=0, cont=0;
+					while (course > temp)
+					{
+						if(paths.get(cont).getClass().equals(LinearPath.class)) //se o caminho for reto
+						{
+							LinearPath pTmp = (LinearPath)paths.get(cont);							
+							temp = temp + pTmp.getInitialPoint().distance(pTmp.getFinalPoint());
+						}
+						else if(paths.get(cont).getClass().equals(CircularPath.class))//se caminho for circular
+						{
+							CircularPath cTmp = (CircularPath)paths.get(cont);
+							temp = temp + cTmp.getAngulo()*cTmp.getRadius();
+						}
+						if (cont == paths.size()-1) //se completou uma volta
+						{
+							cont = 0;
+							voltas ++;
+						}
+						cont ++;
+					}
+					double distToolFinal = temp - course; //sera a distancia entre a ferramenta e o proximo ponto do PATH
+					double distPInicialFinal = paths.get(cont).getFinalPoint().distance(paths.get(cont).getFinalPoint());//distancia entre os pontos inicial e final do caminho onde a ferramenta estara situada
+					double course2 = distPInicialFinal - distToolFinal; //distancia entre os pontos inicial e a ferramenta no caminho que a ferramenta começara
+					Point3d p2Inicial = paths.get(cont).getInitialPoint();
+					Point3d p2Final = paths.get(cont).getFinalPoint();
+					double beta2 = Math.atan2((p2Final.y - p2Inicial.y),(p2Final.x - p2Inicial.x)); // beta2 = arco tangente* Y/X
+					double xk2 = Math.sqrt(Math.pow(course2, 2)/((Math.pow(Math.tan(beta2), 2))+1)) + p2Inicial.x; //x do pTool
+					double yk2;
+					if (beta2 == Math.PI/2)
+						yk2 = p2Inicial.y + course;
+					else if(beta2 == -Math.PI/2)
+						yk2 = p2Inicial.y - course;
+					else
+						yk2 = ((xk2-p2Inicial.x)*Math.tan(beta2))+p2Inicial.y; //y do pTool
+					Point3d p2Tool = new Point3d(xk2,yk2,retractPlane);
+					System.out.println("ponto ferramenta: " + p2Tool);
+					System.out.println("ultimo Trecho: "+cont+"\nvoltas: "+voltas);
 			}
 		}
 		else if (a == 'z')

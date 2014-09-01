@@ -190,7 +190,12 @@ public class GenerateTrochoidalMovement1
 		}
 		return paths;
 	}
-	public ArrayList<LimitedElement> generatePaths(ArrayList<Path> paths)
+	/**
+	 *  transforma paths em limitedElements
+	 * @param paths --> paths
+	 * @return
+	 */
+	public static ArrayList<LimitedElement> transformPathsInLimitedElements(ArrayList<Path> paths)
 	{
 		ArrayList<LimitedElement> saida = new ArrayList<LimitedElement>();
 		for(Path pathTmp : paths)

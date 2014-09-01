@@ -414,25 +414,25 @@ public class MovimentacaoGeneralClosedPocket {
 	{
 		return this.elementos;
 	}
-	public static ArrayList<LimitedElement> transformPathsInLimitedElements(ArrayList<Path> paths)
-	{
-		for(Path pathTmp : paths)
-		{
-			if(pathTmp.getClass() == LinearPath.class)
-			{
-				
-			}
-			else if(pathTmp.getClass() == CircularPath.class)
-			{
-				
-			}
+//	public static ArrayList<LimitedElement> transformPathsInLimitedElements(ArrayList<Path> paths)
+//	{
+//		for(Path pathTmp : paths)
+//		{
+//			if(pathTmp.getClass() == LinearPath.class)
+//			{
+//				
+//			}
+//			else if(pathTmp.getClass() == CircularPath.class)
+//			{
+//				
+//			}
 //			else if(pathTmp.getClass() == GeneralPath.class)
 //			{
 //				
 //			}
-		}
-		return null;
-	}
+//		}
+//		return null;
+//	}
 	/**
 	 * 
 	 * @return trajetorias lineares (interpoladas) --> feito pelo Pedro 8

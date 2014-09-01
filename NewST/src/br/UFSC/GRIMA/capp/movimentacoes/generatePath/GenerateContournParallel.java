@@ -288,7 +288,8 @@ public class GenerateContournParallel
 					}
 				}
 			}
-			if(thereIsIntersection == false)
+//			if(thereIsIntersection == false)
+			else
 			{
 				if(ei.isLimitedLine() && !GeometricOperations.isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
 				{
@@ -296,6 +297,7 @@ public class GenerateContournParallel
 				}
 				else if(ei.isLimitedArc() && GeometricOperations.roundNumber(((LimitedArc)ei).getDeltaAngle(),10) != 0)
 				{
+					System.out.println("Arco: " + ei.getInitialPoint());
 					elementsIntermediario.add(ei);
 				}
 			}
@@ -433,39 +435,33 @@ public class GenerateContournParallel
 		LimitedArc newArc = null;
 		if (arc.getDeltaAngle() < 0)
 		{
-//			if(!isBoss)
-//			{
-				newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
-				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-//				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
-//				arcs.add(newArc);
-//			}
-//			else
-//			{
-////				if(arc.getRadius() > distance)
-////				{
-//					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()+distance),GeometricOperations.unitVector(center, initialPoint)));
-//					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-////				}
-//			}
-		}
-		else
-		{
 			if(!isBoss)
 			{
-//				if(arc.getRadius() > distance)
-//				{
-					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() - distance),GeometricOperations.unitVector(center, initialPoint)));
+
+					newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
 					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-//				}
 			}
 			else
 			{
-				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() + distance),GeometricOperations.unitVector(center, initialPoint)));
+				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()+distance),GeometricOperations.unitVector(center, initialPoint)));
 				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-//				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
-//				arcs.add(newArc);
 			}
+		}
+		else
+		{
+//			if(!isBoss)
+//			{
+				if(arc.getRadius() > distance)
+				{
+					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() - distance),GeometricOperations.unitVector(center, initialPoint)));
+					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
+				}
+//			}
+//			else
+//			{
+//				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() + distance),GeometricOperations.unitVector(center, initialPoint)));
+//				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
+//			}
 		}
 		return newArc;
 	}

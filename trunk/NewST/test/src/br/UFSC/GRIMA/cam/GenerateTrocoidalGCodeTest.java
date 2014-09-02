@@ -197,27 +197,29 @@ public class GenerateTrocoidalGCodeTest
 		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, numeroDeLinha);
 		System.out.println(gCode.getGCode());
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		System.out.println("--------" + gCode.getPaths());
 		
 		//--------Esta muito errado o desenho!--------
-		ArrayList<LimitedElement> multiplePath = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gCode.getPaths());
-		//--------------------------------------------
-
-		//		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getMultipleLimitedElements();
-//		System.out.println("mu " + multiplePath);
-//		for(int i = 0; i < multiplePath.size(); i++)
-//		{
-//			for(int j = 0; j < multiplePath.get(i).size(); j++)
-//			{
-//				GeometricOperations.showElements(multiplePath.get(i).get(j));
-//				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
-//				{
-//					all.add(multiplePath.get(i).get(j).get(k));
-//				}
-//			}
-//		}
-		for(LimitedElement tmp : multiplePath)
+		//------ desenha paths trocoidais ------
+		ArrayList<LimitedElement> trochoidalPath = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gCode.getPaths());
+		for(LimitedElement tmp : trochoidalPath)
 		{
 			all.add(tmp);
+		}
+		//--------------------------------------------
+
+		// ---- desenha linhas base ----
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getBaseLines();
+		for(int i = 0; i < multiplePath.size(); i++)
+		{
+			for(int j = 0; j < multiplePath.get(i).size(); j++)
+			{
+				GeometricOperations.showElements(multiplePath.get(i).get(j));
+				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
+				{
+					all.add(multiplePath.get(i).get(j).get(k));
+				}
+			}
 		}
 		for(LimitedElement tmp : formaOriginal)
 		{

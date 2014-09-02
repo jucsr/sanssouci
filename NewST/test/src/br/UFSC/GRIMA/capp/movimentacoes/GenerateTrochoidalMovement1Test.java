@@ -8,6 +8,7 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
@@ -83,7 +84,7 @@ public class GenerateTrochoidalMovement1Test
 	public void generateTrochoidalPathTest()
 	{
 		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(formaOriginal, 20, 25);
-		ArrayList<LimitedElement> movimentacoes = gen.transformPathsInLimitedElements(gen.getPaths());
+		ArrayList<LimitedElement> movimentacoes = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gen.getPaths());
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : formaOriginal)
@@ -175,14 +176,16 @@ public class GenerateTrochoidalMovement1Test
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, 0) ;
+//		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, 0) ;
+		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, trochoidalRadius);
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = generateContorun.multipleParallelPath() ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
 				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), trochoidalRadius, 15);
-				ArrayList<LimitedElement> movimentacoes = gen.transformPathsInLimitedElements(gen.getPaths());
+				ArrayList<LimitedElement> movimentacoes = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gen.getPaths());
 				for(int k = 0; k < movimentacoes.size(); k ++)
 				{
 					pathsVector.add(movimentacoes.get(k));

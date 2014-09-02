@@ -197,7 +197,7 @@ public class GenerateTrocoidalGCodeTest
 		GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(ws, numeroDeLinha);
 		System.out.println(gCode.getGCode());
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
-		System.out.println("--------" + gCode.getPaths());
+//		System.out.println("--------" + gCode.getPaths());
 		
 		//--------Esta muito errado o desenho!--------
 		//------ desenha paths trocoidais ------

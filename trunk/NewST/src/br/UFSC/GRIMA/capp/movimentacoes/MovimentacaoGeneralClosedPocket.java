@@ -275,13 +275,13 @@ public class MovimentacaoGeneralClosedPocket {
 			{
 				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe());
 				Path pathTmp = eMov.getPaths().get(0); //Primeiro path do array
-				Point3d pointTmp = new Point3d(pathTmp.getFinalPoint().x,pathTmp.getFinalPoint().y,planoSeguranca);
+				Point3d pointTmp = new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, planoSeguranca);
 				/*
 				 * Posicionamento antes de descer (Velocidade rapida)
 				 */
-				if(i==0 && j==0)
+				if (i == 0 && j == 0)
 				{
-					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp,pointTmp);
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp, pointTmp);
 					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
 					desbaste.add(posicionamentoAntesDeDescer);
 				}
@@ -304,7 +304,7 @@ public class MovimentacaoGeneralClosedPocket {
 				{
 					pathTmp = eMov.getPaths().get(k);
 					desbaste.add(pathTmp);
-					if(k == elementos.get(i).get(j).size()-1)
+					if (k == elementos.get(i).get(j).size() - 1)
 					{
 						lastPoint = pathTmp.getFinalPoint();
 //						System.out.println(lastPoint);

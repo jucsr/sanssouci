@@ -30,10 +30,11 @@ public class GenerateTrocoidalGCode
 	public String getGCode()
 	{
 		this.paths = mov.getDesbasteTrocoidal();                 //Array de paths (caminhos da ferramenta)
-//		ArrayList<Path> paths = mov.getDesbasteContourParallel();
+//		this.paths = mov.getDesbasteContourParallel();
 		this.baseLines = mov.getMultipleLimitedElements();       //Array de linhas guia
-		System.out.println("PATHS = " + paths.size());
-		System.out.println("elements = " + mov.getMultipleLimitedElements().size());
+		System.err.println("PATHS = " + baseLines);
+//		System.out.println("PATHS = " + paths.size());
+//		System.out.println("elements = " + mov.getMultipleLimitedElements().size());
 		String GCode = "\nN" + (n + 1 * 10) + "\t; Feature -->" + ws.getFeature().getNome() + "\t WS --> " + ws.getOperation().getOperationType();
 		GCode += "\nN" + (n + 2 * 10) + "\tG54";
 		String sentidoRotacao = " M03";

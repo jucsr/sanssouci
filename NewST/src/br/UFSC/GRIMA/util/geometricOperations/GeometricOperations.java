@@ -827,7 +827,7 @@ public class GeometricOperations
 	public static Point3d unitVector(Point3d p1, Point3d p2)
 	{
 		//System.out.println("Unit vector from " + p1 + " to " + p2 + " " + multiply(1/norm(minus(p2,p1)),minus(p2,p1)));
-		return multiply(1/norm(minus(p2,p1)),minus(p2,p1));
+		return multiply(1 / norm(minus(p2, p1)), minus(p2, p1));
 	}
 
 	public static LimitedArc roundVertexBetweenAdjacentLines(LimitedLine line1, LimitedLine line2, double radius)	

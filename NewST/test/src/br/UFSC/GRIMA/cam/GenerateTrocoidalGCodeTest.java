@@ -209,22 +209,22 @@ public class GenerateTrocoidalGCodeTest
 		//--------------------------------------------
 
 		// ---- desenha linhas base ----
-		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getBaseLines();
-		for(int i = 0; i < multiplePath.size(); i++)
-		{
-			for(int j = 0; j < multiplePath.get(i).size(); j++)
-			{
-				GeometricOperations.showElements(multiplePath.get(i).get(j));
-				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
-				{
-					all.add(multiplePath.get(i).get(j).get(k));
-				}
-			}
-		}
-		for(LimitedElement tmp : formaOriginal)
-		{
-			all.add(tmp);
-		}
+//		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getBaseLines();
+//		for(int i = 0; i < multiplePath.size(); i++)
+//		{
+//			for(int j = 0; j < multiplePath.get(i).size(); j++)
+//			{
+//				GeometricOperations.showElements(multiplePath.get(i).get(j));
+//				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
+//				{
+//					all.add(multiplePath.get(i).get(j).get(k));
+//				}
+//			}
+//		}
+//		for(LimitedElement tmp : formaOriginal)
+//		{
+//			all.add(tmp);
+//		}
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);

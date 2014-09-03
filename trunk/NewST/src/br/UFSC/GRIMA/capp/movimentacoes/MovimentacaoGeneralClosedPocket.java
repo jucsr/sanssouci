@@ -252,11 +252,11 @@ public class MovimentacaoGeneralClosedPocket {
 	{
 		ArrayList<Path> desbaste = new ArrayList<Path>();                    //Array de paths
 		double planoSeguranca = ws.getOperation().getRetractPlane();         //plano de seguranca da ferramenta
-		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
+//		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(), ((GeneralClosedPocket)ws.getFeature()).getRadius());
 		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
 		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
-		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
-		entrada.add(addPocket.getElements());
+//		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
+//		entrada.add(addPocket.getElements());
 		double planoZ = ws.getCondicoesUsinagem().getAp();                    //plano de desbaste da feature
 		if(planoZ > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste seja maior que a profundidade da feature
 		{
@@ -264,7 +264,8 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		// =========== CUIDADO =====
 		//---- gerando as linhas guia para o trocoidal
-		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
+//		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
+		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius()); 
 		this.elementos = contourn.multipleParallelPath();
 		// ========= END CUIDADO ======
 		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 

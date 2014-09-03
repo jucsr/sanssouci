@@ -57,7 +57,8 @@ public class GenerateTrochoidalMovement1
 		{
 //			Point3d pontoInicialTmp = new Point3d(lineAuxTmp.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, lineAuxTmp.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, lineAuxTmp.getInitialPoint().z + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).z);
 			Point3d pontoInicialTmp = new Point3d(lineAuxTmp.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, lineAuxTmp.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
-			System.out.println("pi = " + pontoInicialTmp);
+//			System.out.println("line = " + line.getInitialPoint());
+//			System.out.println("pi = " + pontoInicialTmp);
 			/*
 			 * gerando uma movimentacao circular
 			 */
@@ -98,7 +99,7 @@ public class GenerateTrochoidalMovement1
 	}
 	private ArrayList<Path> generatePathsInLimitedArcBase(LimitedArc arc)
 	{
-		
+//		System.out.println("arc = " + arc.getCenter());
 //		ArrayList<Path> saida = new ArrayList<Path>();
 		double norma = Math.abs(arc.getDeltaAngle() * arc.getRadius());
 		double initialAngle = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x); 

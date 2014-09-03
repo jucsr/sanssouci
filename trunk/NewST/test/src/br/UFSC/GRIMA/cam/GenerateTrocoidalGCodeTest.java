@@ -72,6 +72,7 @@ public class GenerateTrocoidalGCodeTest
 		points.add(new Point2D.Double(0, 40));
 		points.add(new Point2D.Double(0, 320));
 		
+		pocket.setNome(" cavidade geral");
 		pocket.setPoints(points);
 		pocket.setRadius(30);
 		pocket.setPosicao(50, 50, 0);
@@ -119,14 +120,14 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando Condicoes de usinagem -----
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(15);
-		cond.setAe(10);
+		cond.setAe(15);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
 		// ---- criando estrategia -----
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
-		strategy.setTrochoidalRadius(10);
+		strategy.setTrochoidalRadius(20);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 		strategy.setRadialDephtPercent(0.2);

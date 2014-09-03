@@ -94,10 +94,10 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<Path> saida = new ArrayList<Path>();
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		//----
-		double planoZ = ws.getCondicoesUsinagem().getAp();
-		if(planoZ > ((GeneralClosedPocket)ws.getFeature()).getProfundidade())
+		double planoZ = -ws.getCondicoesUsinagem().getAp();
+		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade())
 		{
-			planoZ = ((GeneralClosedPocket)ws.getFeature()).getProfundidade();
+			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();
 		}
 		//----
 		ArrayList<LimitedElement> acabamentoPath = GeometricOperations.acabamentoPath(addPocket,  ws.getFerramenta().getDiametroFerramenta()/2);
@@ -257,10 +257,10 @@ public class MovimentacaoGeneralClosedPocket {
 		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
 //		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
 //		entrada.add(addPocket.getElements());
-		double planoZ = ws.getCondicoesUsinagem().getAp();                    //plano de desbaste da feature
-		if(planoZ > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste seja maior que a profundidade da feature
+		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //plano de desbaste da feature
+		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste seja maior que a profundidade da feature
 		{
-			planoZ = ((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
+			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
 		}
 		// =========== CUIDADO =====
 		//---- gerando as linhas guia para o trocoidal
@@ -336,10 +336,10 @@ public class MovimentacaoGeneralClosedPocket {
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>(); //Array de elementos do contorno da cavidade
 		entrada.add(addPocket.getElements());
-		double planoZ = ws.getCondicoesUsinagem().getAp();                    //Plano de Desbaste da feature
-		if(planoZ > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
+		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //Plano de Desbaste da feature
+		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
 		{
-			planoZ = ((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
+			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
 		}
 		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe()); 
 		this.elementos = contourn.multipleParallelPath();                     //Offsets do contorno da cavidade

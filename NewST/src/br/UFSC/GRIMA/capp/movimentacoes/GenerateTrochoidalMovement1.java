@@ -58,7 +58,7 @@ public class GenerateTrochoidalMovement1
 //			Point3d pontoInicialTmp = new Point3d(lineAuxTmp.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, lineAuxTmp.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, lineAuxTmp.getInitialPoint().z + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).z);
 			Point3d pontoInicialTmp = new Point3d(lineAuxTmp.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, lineAuxTmp.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
 //			System.out.println("line = " + line.getInitialPoint());
-//			System.out.println("pi = " + pontoInicialTmp);
+			System.out.println("pi = " + pontoInicialTmp);
 			/*
 			 * gerando uma movimentacao circular
 			 */

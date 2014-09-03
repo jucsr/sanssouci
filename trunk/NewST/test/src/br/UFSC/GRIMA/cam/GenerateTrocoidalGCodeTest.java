@@ -120,14 +120,14 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando Condicoes de usinagem -----
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
 		cond.setAp(15);
-		cond.setAe(15);
+		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
 		// ---- criando estrategia -----
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
-		strategy.setTrochoidalRadius(20);
+		strategy.setTrochoidalRadius(50);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 		strategy.setRadialDephtPercent(0.2);

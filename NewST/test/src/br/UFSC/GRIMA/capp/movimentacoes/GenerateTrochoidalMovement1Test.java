@@ -15,6 +15,7 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -25,6 +26,8 @@ public class GenerateTrochoidalMovement1Test
 {
 	private ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	private ArrayList<LimitedElement> formaOriginal;
+	GeneralClosedPocket pocket = new GeneralClosedPocket();
+
 	
 	@Before
 	public void Project(){
@@ -76,6 +79,10 @@ public class GenerateTrochoidalMovement1Test
 		points.add(new Point2D.Double(200, 40));
 		points.add(new Point2D.Double(200, 320));
 		
+		pocket.setPoints(points);
+		pocket.setRadius(30);
+		pocket.setPosicao(50, 50, 0);
+		pocket.setProfundidade(15);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
 		formaOriginal = addPocketVertex.getElements();
 	}
@@ -83,8 +90,17 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateTrochoidalPathTest()
 	{
-		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(formaOriginal, 20, 25);
-		ArrayList<LimitedElement> movimentacoes = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gen.getPaths());
+		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 100, 0);
+		ArrayList<Path> paths = new ArrayList<Path>();
+		for(ArrayList<LimitedElement> tmp : parallel)
+		{
+			GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(tmp, 20, 25);
+			for(Path pathTmp:gen.getPaths())
+			{
+				paths.add(pathTmp);
+			}
+		}
+		ArrayList<LimitedElement> movimentacoes = GenerateTrochoidalMovement1.transformPathsInLimitedElements(paths);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : formaOriginal)

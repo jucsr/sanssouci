@@ -103,9 +103,9 @@ public class GenerateTrochoidalMovement1
 //		ArrayList<Path> saida = new ArrayList<Path>();
 		double norma = Math.abs(arc.getDeltaAngle() * arc.getRadius());
 		double initialAngle = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x); 
-		double deltaAcumulado = 0;
-		int fracionamento = (int)(norma / avanco) + 1;
-		double deltaTmp = avanco / arc.getRadius();
+		double deltaAcumulado = 0;                      //variavel que dita o avanco angular dos circulos
+		int fracionamento = (int)(norma / avanco) + 1;  //Numero de arcos (que interligam os circulos) que cabem no arco guia
+//		double deltaTmp = avanco / arc.getRadius();
 //		System.out.println("fracionamento = " + fracionamento);
 //		System.out.println("norma = " + norma);
 		for(int i = 0; i < fracionamento; i++)
@@ -144,8 +144,8 @@ public class GenerateTrochoidalMovement1
 			
 //			CircularPath arcTmp = new CircularPath(pontoInicialTmp, pontoFinalTmp, arc.getCenter(), sense);
 			double deltaAnguloTmp = avanco / (arc.getRadius()); 
-			double normaAcumulada = Math.abs((i + 1) * deltaTmp * arc.getRadius());
-			double normaAcumulada1 = Math.abs(i * deltaTmp * arc.getRadius());
+			double normaAcumulada = Math.abs((i + 1) *avanco/* * deltaTmp * arc.getRadius()*/);
+			double normaAcumulada1 = Math.abs(i * avanco/*deltaTmp * arc.getRadius()*/);
 			if(arc.getDeltaAngle() < 0)
 			{
 				 if(normaAcumulada > norma)
@@ -190,13 +190,13 @@ public class GenerateTrochoidalMovement1
 //			System.out.println("Raio circular = " + circularTmp.getCenter());
 //			System.out.println("center = " + circularTmp.getCenter());
 //			System.out.println("pontoinicial = " + circularTmp.getInitialPoint());
-			if(arc.getDeltaAngle() > 0)
-			{
-				deltaAcumulado = deltaAcumulado + avanco / arc.getRadius();
-			} else
-			{
-				deltaAcumulado = deltaAcumulado - avanco / arc.getRadius();
-			}
+//			if(arc.getDeltaAngle() > 0)
+//			{
+				deltaAcumulado = deltaAcumulado + deltaAnguloTmp/*avanco / arc.getRadius()*/;
+//			} else
+//			{
+//				deltaAcumulado = deltaAcumulado - avanco / arc.getRadius();
+//			}
 		}
 		return paths;
 	}

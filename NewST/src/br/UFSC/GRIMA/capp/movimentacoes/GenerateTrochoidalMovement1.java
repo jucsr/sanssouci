@@ -32,15 +32,78 @@ public class GenerateTrochoidalMovement1
 	}
 	private void generatePaths()
 	{
-		for(LimitedElement elementTmp : this.elements)
+//		for(LimitedElement elementTmp : this.elements)
+		ArrayList<Path> pathArrayFinal = new ArrayList<Path>();
+		for(int i = 0;i < this.elements.size();i++)
 		{
-			if(elementTmp.isLimitedLine())
+			boolean thereIsNext = false;
+			LimitedElement elementTmp = this.elements.get(i);
+			LimitedElement elementTmpNext = null;
+			
+			if(i < this.elements.size())
 			{
-				this.generatePathsInLimitedLineBase((LimitedLine)elementTmp);
-			} else if(elementTmp.isLimitedArc())
-			{
-				this.generatePathsInLimitedArcBase((LimitedArc)elementTmp);
+				elementTmpNext = this.elements.get(i+1);
+				thereIsNext = true;
 			}
+			
+			if(elementTmp.isLimitedLine()) //Se o elemento i e uma linha guia
+			{
+				Point3d lastPathPoint = null; //Ponto final do ultimo circulo do array
+				ArrayList<Path> pathsInLineBase = generatePathsInLimitedLineBase((LimitedLine)elementTmp);
+				for(int j = 0;j<pathsInLineBase.size();j++) //Gera paths sobre uma linha guia
+				{
+					Path pathTmp = pathsInLineBase.get(j);
+					pathArrayFinal.add(pathTmp);            //Add no array total de paths (que sera retornado pelo metodo)
+					if(j == pathsInLineBase.size()-1)
+					{
+						lastPathPoint = pathTmp.getFinalPoint();  //a variavel, que se refere ao ponto final do ultimo circulo, ganha valor
+					}
+				}
+				
+				if(thereIsNext)
+				{
+					for(Path pathTmp: generatePathsInTransition(lastPathPoint, elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
+					{
+						pathArrayFinal.add(pathTmp);
+					}
+				}
+//				this.generatePathsInLimitedLineBase((LimitedLine)elementTmp);
+			} else if(elementTmp.isLimitedArc()) //Se o elemento i e um arco guia
+			{
+				for(Path pathTmp:generatePathsInLimitedArcBase((LimitedArc)elementTmp)) //Gera paths sobre um arco guia
+				{
+					pathArrayFinal.add(pathTmp);   //Add no array total de paths (que sera retornado pelo metodo)
+				}
+				if(thereIsNext)
+				{
+					for(Path pathTmp: generatePathsInTransition(elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
+					{
+						pathArrayFinal.add(pathTmp);
+					}
+				}
+//				ArrayList<Path> paths = generatePathsInLimitedArcBase((LimitedArc)elementTmp);
+//				this.generatePathsInLimitedArcBase((LimitedArc)elementTmp);
+			}
+		}
+	}
+	private ArrayList<Path>generatePathsInTransition(Point3d lastPoint, LimitedElement element1, LimitedElement element2)
+	{
+		if(element1.isLimitedLine())
+		{
+			LimitedLine l1 = (LimitedLine)element1;
+			if(element2.isLimitedLine())
+			{
+				LimitedLine l2 = (LimitedLine)element1;
+				//Angulo entre linhas (TESTAR!)
+				double d = l1.getInitialPoint().distance(l2.getFinalPoint()); //distancia entre ponto inicial de l1 e ponto final de l2
+				double m = l1.getLenght(); //Tamanho de l1
+				double n = l2.getLenght(); //Tamanho de l2
+				double theta = Math.acos((Math.pow(m, 2) + Math.pow(n, 2) - Math.pow(d, 2))/m*n); //angulo entre as linhas
+				double alpha = Math.PI - theta;
+				
+				
+			}
+			
 		}
 	}
 	private ArrayList<Path> generatePathsInLimitedLineBase(LimitedLine line)

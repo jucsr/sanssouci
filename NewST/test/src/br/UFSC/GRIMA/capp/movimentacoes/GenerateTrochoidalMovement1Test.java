@@ -230,4 +230,26 @@ public class GenerateTrochoidalMovement1Test
 		desenhador.setVisible(true);
 		for(;;);
 	}
+	@Test
+	
+	public void generatePathsInLimitedLineBaseTest()
+	{
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		LimitedLine l1 = new LimitedLine(new Point3d(20,10,0), new Point3d(73,10,0));
+		all.add(l1);
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		elements.add(l1);
+		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elements, 10, 5);
+		ArrayList<Path> paths = gen.getPaths();
+		ArrayList<LimitedElement> pathToElements = GenerateTrochoidalMovement1.transformPathsInLimitedElements(paths);
+		
+		for(LimitedElement tmp : pathToElements)
+		{
+			all.add(tmp);
+		}
+		
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
 }

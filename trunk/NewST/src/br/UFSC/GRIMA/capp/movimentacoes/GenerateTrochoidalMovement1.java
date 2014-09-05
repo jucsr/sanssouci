@@ -48,7 +48,7 @@ public class GenerateTrochoidalMovement1
 			
 			if(elementTmp.isLimitedLine()) //Se o elemento i e uma linha guia
 			{
-				Point3d lastPathPoint = null; //Ponto final do ultimo circulo do array
+				CircularPath circularPath = null; //Ponto final do ultimo circulo do array
 				ArrayList<Path> pathsInLineBase = generatePathsInLimitedLineBase((LimitedLine)elementTmp);
 				for(int j = 0;j<pathsInLineBase.size();j++) //Gera paths sobre uma linha guia
 				{
@@ -56,13 +56,13 @@ public class GenerateTrochoidalMovement1
 					pathArrayFinal.add(pathTmp);            //Add no array total de paths (que sera retornado pelo metodo)
 					if(j == pathsInLineBase.size()-1)
 					{
-						lastPathPoint = pathTmp.getFinalPoint();  //a variavel, que se refere ao ponto final do ultimo circulo, ganha valor
+						circularPath = (CircularPath)pathTmp;  //a variavel, que se refere ao ultimo circulo do array, ganha valor
 					}
 				}
 				
 				if(thereIsNext)
 				{
-					for(Path pathTmp: generatePathsInTransition(lastPathPoint, elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
+					for(Path pathTmp: generatePathsInTransition(circularPath, elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
 					{
 						pathArrayFinal.add(pathTmp);
 					}
@@ -87,8 +87,14 @@ public class GenerateTrochoidalMovement1
 			}
 		}
 	}
-	private ArrayList<Path>generatePathsInTransition(Point3d lastPoint, LimitedElement element1, LimitedElement element2)
+	private ArrayList<Path>generatePathsInTransition(CircularPath circularPath, LimitedElement element1, LimitedElement element2)
 	{
+		ArrayList<Path> saida = new ArrayList<Path>();
+		boolean sense = false;
+		if(circularPath.getAngulo() < 0)
+		{
+			sense = true;
+		}
 		if(element1.isLimitedLine())
 		{
 			LimitedLine l1 = (LimitedLine)element1;
@@ -96,11 +102,25 @@ public class GenerateTrochoidalMovement1
 			{
 				LimitedLine l2 = (LimitedLine)element1;
 				//Angulo entre linhas (TESTAR!)
-				double d = l1.getInitialPoint().distance(l2.getFinalPoint()); //distancia entre ponto inicial de l1 e ponto final de l2
-				double m = l1.getLenght(); //Tamanho de l1
-				double n = l2.getLenght(); //Tamanho de l2
-				double theta = Math.acos((Math.pow(m, 2) + Math.pow(n, 2) - Math.pow(d, 2))/m*n); //angulo entre as linhas
-				double alpha = Math.PI - theta;
+//				double d = l1.getInitialPoint().distance(l2.getFinalPoint()); //distancia entre ponto inicial de l1 e ponto final de l2
+//				double m = l1.getLenght(); //Tamanho de l1
+//				double n = l2.getLenght(); //Tamanho de l2
+//				double theta = Math.acos((Math.pow(m, 2) + Math.pow(n, 2) - Math.pow(d, 2))/m*n); //angulo entre as linhas
+//				double alpha = Math.PI - theta;
+				
+				Point3d unitVector = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint());
+				double distance = circularPath.getCenter().distance(l1.getFinalPoint()); //tamanho do linear path
+				Point3d lineFinalPoint = new Point3d(circularPath.getInitialPoint().x + GeometricOperations.multiply(distance, unitVector).x, circularPath.getInitialPoint().y + GeometricOperations.multiply(distance, unitVector).y,l1.getInitialPoint().z);
+				LinearPath linePath = new LinearPath(circularPath.getInitialPoint(), lineFinalPoint);
+				double alpha = GeometricOperations.calcDeltaAngle(Pi, Pf, center, arcAngle);
+				LimitedLine parallelL2 = GeometricOperations.absoluteParallel(l2, distance, sense);
+				CircularPath arcPath = new CircularPath(l1.getFinalPoint(), lineFinalPoint, parallelL2.getInitialPoint(), alpha);
+				
+				saida.add(arcPath);
+				if(!(GeometricOperations.isTheSamePoint(linePath.getInitialPoint(), linePath.getFinalPoint())))
+				{
+					saida.add(linePath);
+				}
 				
 				
 			}

@@ -166,36 +166,47 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				/* CASO EM QUE A FERRAMENTA PARA EM UM TRECHO LINEAR*/
 					double xk2; /* xk - linear */
 					double yk2;/* yk - linear */
-					double beta2 = Math.atan2((p2Final.y - p2Inicial.y),(p2Final.x - p2Inicial.x)); // beta2 = arco tangente* Y/X
+					Point3d p2Initial = paths.get(cont).getInitialPoint();
+					Point3d p2Final = paths.get(cont).getFinalPoint();
+					double beta2 = Math.atan2((p2Final.y - p2Initial.y),(p2Final.x - p2Initial.x)); // beta2 = arco tangente* Y/X relacao ao eixo x
+					double distToolFinal = temp - course; //sera a distancia entre a ferramenta e o proximo ponto do PATH (nao importa se eh linear ou circular)
+					double distPInicialFinal;
+					double course2;
 					if (paths.get(cont).getClass().equals(LinearPath.class))
 					{
-						double distToolFinal = temp - course; //sera a distancia entre a ferramenta e o proximo ponto do PATH
-						double distPInicialFinal = paths.get(cont).getInitialPoint().distance(paths.get(cont).getFinalPoint());//distancia entre os pontos inicial e final do caminho onde a ferramenta estara situada
-						double course2 = distPInicialFinal - distToolFinal; //distancia entre os pontos inicial e a ferramenta no caminho que a ferramenta começara
-						Point3d p2Inicial = paths.get(cont).getInitialPoint();
-						Point3d p2Final = paths.get(cont).getFinalPoint();
-						if ((p2Final.x - p2Inicial.x)>=0)
-							xk2 = p2Inicial.x + Math.sqrt(Math.pow(course2, 2)/((Math.pow(Math.tan(beta2), 2))+1)); //x do pTool
+						
+						distPInicialFinal = paths.get(cont).getInitialPoint().distance(paths.get(cont).getFinalPoint());//distancia entre os pontos inicial e final do caminho onde a ferramenta estara situada
+						course2 = distPInicialFinal - distToolFinal; //distancia entre os pontos inicial e a ferramenta no caminho que a ferramenta começara
+						if ((p2Final.x - p2Initial.x)>=0)
+							xk2 = p2Initial.x + Math.sqrt(Math.pow(course2, 2)/((Math.pow(Math.tan(beta2), 2))+1)); //x do pTool
 						else
-							xk2 = p2Inicial.x - Math.sqrt(Math.pow(course2, 2)/((Math.pow(Math.tan(beta2), 2))+1)); //x do pTool
+							xk2 = p2Initial.x - Math.sqrt(Math.pow(course2, 2)/((Math.pow(Math.tan(beta2), 2))+1)); //x do pTool
 						if (beta2 == Math.PI/2)
-							yk2 = p2Inicial.y + course2;
+							yk2 = p2Initial.y + course2;
 						else if(beta2 == -Math.PI/2)
-							yk2 = p2Inicial.y - course2;
+							yk2 = p2Initial.y - course2;
 						else
-							yk2 = ((xk2-p2Inicial.x)*Math.tan(beta2))+p2Inicial.y; //y do pTool
+							yk2 = ((xk2-p2Initial.x)*Math.tan(beta2))+p2Initial.y; //y do pTool
 					}
 					/* CASO EM QUE A FERRAMENTA PARA EM UM TRECHO CIRCULAR*/
 					else
 					{
-						xk2=48291879423; //valor qqr
+						CircularPath pathCircular = (CircularPath)paths.get(cont); //precisa declarar o caminho como circular para poder usar o .getRadius e .getAngle
+						Point3d centralPoint = pathCircular.getCenter(); 
+						distPInicialFinal = pathCircular.getAngulo() * pathCircular.getRadius(); //dist = angulo * raio
+						course2 = distPInicialFinal - distToolFinal; //distancia que a ferramenta percorre ate o ponto inicial
+						double crossedAngle = course2/(pathCircular.getRadius()); //angulo = arco/raio - angulo entre ponto inicial e o ponto ferramenta, com o centro do caminho 
+/*TERMINAR A PARTE CIRCULAR - OLHAR DESENHO*/
+						double angleInitialCenter= Math.atan2((centralPoint.y - p2Initial.y),(centralPoint.x - p2Initial.x)); //angulo, em relação ao eixo x, entre ponto inicial e centro
+						
+						xk2=1879423; //valor qqr
 						yk2=4702193;	//valor teste
 					}
 					Point3d p2Tool = new Point3d(xk2,yk2,retractPlane);
 					System.out.println("ponto ferramenta: " + p2Tool);
 					System.out.println("beta: " + beta2);
-					System.out.println("p2Final.x e p2Inicial.x " + p2Final.x + p2Inicial.x);
-					System.out.println("p2Final.y e p2Inicial.y " + p2Final.y + p2Inicial.y);
+					System.out.println("p2Final.x e p2Inicial.x " + p2Final.x + p2Initial.x);
+					System.out.println("p2Final.y e p2Inicial.y " + p2Final.y + p2Initial.y);
 					System.out.println("ultimo Trecho: "+(cont+1)+"\nvoltas: "+voltas);
 		}
 		else if (a == 'z')

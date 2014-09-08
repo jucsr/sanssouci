@@ -40,7 +40,7 @@ public class GenerateTrochoidalMovement1
 			LimitedElement elementTmp = this.elements.get(i);
 			LimitedElement elementTmpNext = null;
 			
-			if(i < this.elements.size())
+			if(i < this.elements.size()-1)
 			{
 				elementTmpNext = this.elements.get(i+1);
 				thereIsNext = true;
@@ -53,10 +53,13 @@ public class GenerateTrochoidalMovement1
 				for(int j = 0;j<pathsInLineBase.size();j++) //Gera paths sobre uma linha guia
 				{
 					Path pathTmp = pathsInLineBase.get(j);
-					pathArrayFinal.add(pathTmp);            //Add no array total de paths (que sera retornado pelo metodo)
+//					pathArrayFinal.add(pathTmp);            //Add no array total de paths (que sera retornado pelo metodo)
 					if(j == pathsInLineBase.size()-1)
 					{
-						circularPath = (CircularPath)pathTmp;  //a variavel, que se refere ao ultimo circulo do array, ganha valor
+						if(pathTmp.isCircular())
+						{
+							circularPath = (CircularPath)pathTmp;  //a variavel, que se refere ao ultimo circulo do array, ganha valor
+						}
 					}
 				}
 				
@@ -64,23 +67,23 @@ public class GenerateTrochoidalMovement1
 				{
 					for(Path pathTmp: generatePathsInTransition(circularPath, elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
 					{
-						pathArrayFinal.add(pathTmp);
+						paths.add(pathTmp);
 					}
 				}
 //				this.generatePathsInLimitedLineBase((LimitedLine)elementTmp);
 			} else if(elementTmp.isLimitedArc()) //Se o elemento i e um arco guia
 			{
-				for(Path pathTmp:generatePathsInLimitedArcBase((LimitedArc)elementTmp)) //Gera paths sobre um arco guia
-				{
-					pathArrayFinal.add(pathTmp);   //Add no array total de paths (que sera retornado pelo metodo)
-				}
-				if(thereIsNext)
-				{
-					for(Path pathTmp: generatePathsInTransition(elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
-					{
-						pathArrayFinal.add(pathTmp);
-					}
-				}
+//				for(Path pathTmp:generatePathsInLimitedArcBase((LimitedArc)elementTmp)) //Gera paths sobre um arco guia
+//				{
+//					pathArrayFinal.add(pathTmp);   //Add no array total de paths (que sera retornado pelo metodo)
+//				}
+//				if(thereIsNext)
+//				{
+//					for(Path pathTmp: generatePathsInTransition(elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
+//					{
+//						pathArrayFinal.add(pathTmp);
+//					}
+//				}
 				
 //				ArrayList<Path> paths = generatePathsInLimitedArcBase((LimitedArc)elementTmp);
 //				this.generatePathsInLimitedArcBase((LimitedArc)elementTmp);
@@ -90,42 +93,55 @@ public class GenerateTrochoidalMovement1
 	private ArrayList<Path>generatePathsInTransition(CircularPath circularPath, LimitedElement element1, LimitedElement element2)
 	{
 		ArrayList<Path> saida = new ArrayList<Path>();
-		boolean sense = false;
-		if(circularPath.getAngulo() < 0)
-		{
-			sense = true;
-		}
+//		boolean inside = false;
+//		if(circularPath.getAngulo() < 0)
+//		{
+//			inside = true;
+//		}
 		if(element1.isLimitedLine())
 		{
 			LimitedLine l1 = (LimitedLine)element1;
 			if(element2.isLimitedLine())
 			{
-				LimitedLine l2 = (LimitedLine)element1;
+				LimitedLine l2 = (LimitedLine)element2;
+				System.out.println("L1: P1F " + l1.getFinalPoint());
+				System.out.println("L2: P2I " + l2.getInitialPoint());
 				//Angulo entre linhas (TESTAR!)
 //				double d = l1.getInitialPoint().distance(l2.getFinalPoint()); //distancia entre ponto inicial de l1 e ponto final de l2
 //				double m = l1.getLenght(); //Tamanho de l1
 //				double n = l2.getLenght(); //Tamanho de l2
 //				double theta = Math.acos((Math.pow(m, 2) + Math.pow(n, 2) - Math.pow(d, 2))/m*n); //angulo entre as linhas
-//				double alpha = Math.PI - theta;
+//				double alpha1 = Math.PI - theta;
+//				System.out.println("alpha1: " + alpha1);
 				
-				Point3d unitVector = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint());
+				Point3d unitVector = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint()); //vetor direcao da linha1
 				double distance = circularPath.getCenter().distance(l1.getFinalPoint()); //tamanho do linear path
 				Point3d lineFinalPoint = new Point3d(circularPath.getInitialPoint().x + GeometricOperations.multiply(distance, unitVector).x, circularPath.getInitialPoint().y + GeometricOperations.multiply(distance, unitVector).y,l1.getInitialPoint().z);
-				LinearPath linePath = new LinearPath(circularPath.getInitialPoint(), lineFinalPoint);
-				double alpha = GeometricOperations.calcDeltaAngle(Pi, Pf, center, arcAngle);
-				LimitedLine parallelL2 = GeometricOperations.absoluteParallel(l2, distance, sense);
-				CircularPath arcPath = new CircularPath(l1.getFinalPoint(), lineFinalPoint, parallelL2.getInitialPoint(), alpha);
+				LinearPath linePath = new LinearPath(circularPath.getInitialPoint(), lineFinalPoint); //path entre circulos
+//				System.out.println("LinearPath: PI " + linePath.getInitialPoint() + " PF " + linePath.getFinalPoint());
 				
+				//CUIDADO COM O "INSIDE"
+				LimitedLine parallelL2 = GeometricOperations.absoluteParallel(l2, circularPath.getRadius(), false);
+				double alpha = GeometricOperations.calcDeltaAngle(parallelL2.getInitialPoint(),linePath.getFinalPoint() , l2.getInitialPoint(), circularPath.getAngulo());
+				System.out.println("alpha2: " + alpha);
+				System.out.println("deltaAngulo: " + circularPath.getAngulo());
+				CircularPath arcPath = new CircularPath(l1.getFinalPoint(), lineFinalPoint, parallelL2.getInitialPoint(), alpha);
+				System.out.println("Centro: "+arcPath.getCenter());
+				System.out.println("PI: " + arcPath.getInitialPoint());
+				System.out.println("PF: " + arcPath.getFinalPoint());
 				saida.add(arcPath);
 				if(!(GeometricOperations.isTheSamePoint(linePath.getInitialPoint(), linePath.getFinalPoint())))
 				{
 					saida.add(linePath);
 				}
-				
+			}
+			else if(element2.isLimitedArc())
+			{
 				
 			}
 			
 		}
+		return saida;
 	}
 	private ArrayList<Path> generatePathsInLimitedLineBase(LimitedLine line)
 	{
@@ -148,10 +164,10 @@ public class GenerateTrochoidalMovement1
 			 */
 //			Point3d centroTmp = new Point3d(line.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, line.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).z);
 			Point3d centroTmp = new Point3d(line.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, line.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
-			CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, -2 * Math.PI);
+			CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, 2 * Math.PI);
 //			System.err.println("RADIUS = " + circuloTmp.getRadius());
 
-			paths.add(circuloTmp);
+//			paths.add(circuloTmp);
 			
 			/*
 			 * gerando uma movimentacao linear
@@ -176,7 +192,7 @@ public class GenerateTrochoidalMovement1
 		Point3d pontoInicialTmp = new Point3d(lineAuxTmp.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, lineAuxTmp.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
 //		Point3d centroTmp = new Point3d(line.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, line.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).z);
 		Point3d centroTmp = new Point3d(line.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, line.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
-		CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, -2 * Math.PI);
+		CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, 2 * Math.PI);
 		paths.add(circuloTmp);
 		
 		return paths;

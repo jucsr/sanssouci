@@ -233,7 +233,7 @@ public class MovimentacaoGeneralClosedPocketTest {
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.getPosicaoZ(),ws.getFerramenta().getDiametroFerramenta());
 //		ArrayList<LimitedElement> elements = GeometricOperations.acabamentoPath(addPocket, ws.getFerramenta().getDiametroFerramenta());
 //		
-		ArrayList<LimitedElement> elementsFirstDesbaste = GeometricOperations.elementsToDesbaste(pocket, ws.getFerramenta().getDiametroFerramenta()/16);
+		ArrayList<LimitedElement> elementsFirstDesbaste = GeometricOperations.elementsToDesbaste(pocket, ws.getFerramenta().getDiametroFerramenta()/16,0);
 		
 		System.out.println("Minimum distance " + GeometricOperations.minimumDistance(addPocket.getElements()));
 		System.out.println("Minimum distance " + GeometricOperations.minimumDistance(elementsFirstDesbaste));

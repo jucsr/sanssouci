@@ -30,6 +30,7 @@ public class GenerateTrochoidalMovement1
 		this.avanco = avanco;
 		this.generatePaths();
 	}
+	//O ADD DOS PATHS CIRCULARES (2 PI) ESTAO COMENTADOS PARA FINS DE TESTE
 	private void generatePaths()
 	{
 //		for(LimitedElement elementTmp : this.elements)
@@ -93,11 +94,6 @@ public class GenerateTrochoidalMovement1
 	private ArrayList<Path>generatePathsInTransition(CircularPath circularPath, LimitedElement element1, LimitedElement element2)
 	{
 		ArrayList<Path> saida = new ArrayList<Path>();
-//		boolean inside = false;
-//		if(circularPath.getAngulo() < 0)
-//		{
-//			inside = true;
-//		}
 		if(element1.isLimitedLine())
 		{
 			LimitedLine l1 = (LimitedLine)element1;
@@ -106,30 +102,25 @@ public class GenerateTrochoidalMovement1
 				LimitedLine l2 = (LimitedLine)element2;
 				System.out.println("L1: P1F " + l1.getFinalPoint());
 				System.out.println("L2: P2I " + l2.getInitialPoint());
-				//Angulo entre linhas (TESTAR!)
-//				double d = l1.getInitialPoint().distance(l2.getFinalPoint()); //distancia entre ponto inicial de l1 e ponto final de l2
-//				double m = l1.getLenght(); //Tamanho de l1
-//				double n = l2.getLenght(); //Tamanho de l2
-//				double theta = Math.acos((Math.pow(m, 2) + Math.pow(n, 2) - Math.pow(d, 2))/m*n); //angulo entre as linhas
-//				double alpha1 = Math.PI - theta;
-//				System.out.println("alpha1: " + alpha1);
-				
 				Point3d unitVector = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint()); //vetor direcao da linha1
 				double distance = circularPath.getCenter().distance(l1.getFinalPoint()); //tamanho do linear path
-				Point3d lineFinalPoint = new Point3d(circularPath.getInitialPoint().x + GeometricOperations.multiply(distance, unitVector).x, circularPath.getInitialPoint().y + GeometricOperations.multiply(distance, unitVector).y,l1.getInitialPoint().z);
-				LinearPath linePath = new LinearPath(circularPath.getInitialPoint(), lineFinalPoint); //path entre circulos
+				Point3d linePathFinalPoint = new Point3d(circularPath.getInitialPoint().x + GeometricOperations.multiply(distance, unitVector).x, circularPath.getInitialPoint().y + GeometricOperations.multiply(distance, unitVector).y,l1.getInitialPoint().z);
+				LinearPath linePath = new LinearPath(circularPath.getInitialPoint(), linePathFinalPoint); //path entre circulos
 //				System.out.println("LinearPath: PI " + linePath.getInitialPoint() + " PF " + linePath.getFinalPoint());
 				
 				//CUIDADO COM O "INSIDE"
-				LimitedLine parallelL2 = GeometricOperations.absoluteParallel(l2, circularPath.getRadius(), false);
-				double alpha = GeometricOperations.calcDeltaAngle(parallelL2.getInitialPoint(),linePath.getFinalPoint() , l2.getInitialPoint(), circularPath.getAngulo());
+				Point3d arcPathFinalPoint = GeometricOperations.absoluteParallel(l2, circularPath.getRadius(), false).getInitialPoint();
+				double alpha = GeometricOperations.calcDeltaAngle(linePathFinalPoint,arcPathFinalPoint , l2.getInitialPoint(), circularPath.getAngulo());
 				System.out.println("alpha2: " + alpha);
 				System.out.println("deltaAngulo: " + circularPath.getAngulo());
-				CircularPath arcPath = new CircularPath(l1.getFinalPoint(), lineFinalPoint, parallelL2.getInitialPoint(), alpha);
+				CircularPath arcPath = new CircularPath(l1.getFinalPoint(), linePathFinalPoint, arcPathFinalPoint, alpha);
 				System.out.println("Centro: "+arcPath.getCenter());
 				System.out.println("PI: " + arcPath.getInitialPoint());
 				System.out.println("PF: " + arcPath.getFinalPoint());
-				saida.add(arcPath);
+				if(!(GeometricOperations.isTheSamePoint(arcPath.getInitialPoint(), arcPath.getFinalPoint())))
+				{
+					saida.add(arcPath);
+				}
 				if(!(GeometricOperations.isTheSamePoint(linePath.getInitialPoint(), linePath.getFinalPoint())))
 				{
 					saida.add(linePath);
@@ -137,7 +128,33 @@ public class GenerateTrochoidalMovement1
 			}
 			else if(element2.isLimitedArc())
 			{
+				LimitedArc a2 = (LimitedArc)element2;
+				System.out.println("L1: P1F " + l1.getFinalPoint());
+				System.out.println("L2: P2I " + a2.getInitialPoint());
+				Point3d unitVector = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint()); //vetor direcao da linha1
+				double distance = circularPath.getCenter().distance(l1.getFinalPoint()); //tamanho do linear path
+				Point3d linePathFinalPoint = new Point3d(circularPath.getInitialPoint().x + GeometricOperations.multiply(distance, unitVector).x, circularPath.getInitialPoint().y + GeometricOperations.multiply(distance, unitVector).y,l1.getInitialPoint().z);
+				LinearPath linePath = new LinearPath(circularPath.getInitialPoint(), linePathFinalPoint); //path entre circulos
+//				System.out.println("LinearPath: PI " + linePath.getInitialPoint() + " PF " + linePath.getFinalPoint());
 				
+				//CUIDADO COM O "INSIDE"
+				Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a2, circularPath.getRadius(), false).getInitialPoint();
+				double alpha = GeometricOperations.calcDeltaAngle(linePathFinalPoint,arcPathFinalPoint , a2.getInitialPoint(), circularPath.getAngulo());
+				System.out.println("alpha2: " + alpha);
+				System.out.println("deltaAngulo: " + circularPath.getAngulo());
+				CircularPath arcPath = new CircularPath(l1.getFinalPoint(), linePathFinalPoint, arcPathFinalPoint, alpha);
+				System.out.println("Centro: "+arcPath.getCenter());
+				System.out.println("PI: " + arcPath.getInitialPoint());
+				System.out.println("PF: " + arcPath.getFinalPoint());
+				if(!(GeometricOperations.isTheSamePoint(arcPath.getInitialPoint(), arcPath.getFinalPoint())))
+				{
+					System.out.println("lol");
+					saida.add(arcPath);
+				}
+				if(!(GeometricOperations.isTheSamePoint(linePath.getInitialPoint(), linePath.getFinalPoint())))
+				{
+					saida.add(linePath);
+				}
 			}
 			
 		}

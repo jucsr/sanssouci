@@ -74,6 +74,28 @@ public class GenerateTrochoidalMovement1
 //				this.generatePathsInLimitedLineBase((LimitedLine)elementTmp);
 			} else if(elementTmp.isLimitedArc()) //Se o elemento i e um arco guia
 			{
+				CircularPath circularPath = null; //Ponto final do ultimo circulo do array
+				ArrayList<Path> pathsInArcBase = generatePathsInLimitedArcBase((LimitedArc)elementTmp);
+				for(int j = 0;j<pathsInArcBase.size();j++) //Gera paths sobre um arco guia
+				{
+					Path pathTmp = pathsInArcBase.get(j);
+//					pathArrayFinal.add(pathTmp);            //Add no array total de paths (que sera retornado pelo metodo)
+					if(j == pathsInArcBase.size()-1)
+					{
+						if(pathTmp.isCircular())
+						{
+							circularPath = (CircularPath)pathTmp;  //a variavel, que se refere ao ultimo circulo do array, ganha valor
+						}
+					}
+				}
+				
+				if(thereIsNext)
+				{
+					for(Path pathTmp: generatePathsInTransition(circularPath, elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
+					{
+						paths.add(pathTmp);
+					}
+				}
 //				for(Path pathTmp:generatePathsInLimitedArcBase((LimitedArc)elementTmp)) //Gera paths sobre um arco guia
 //				{
 //					pathArrayFinal.add(pathTmp);   //Add no array total de paths (que sera retornado pelo metodo)
@@ -253,7 +275,7 @@ public class GenerateTrochoidalMovement1
 			Point3d vetorUnitarioTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseTmp);
 			Point3d pontoInicialTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).y, arc.getCenter().z + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).z);
 			CircularPath circularTmp = new CircularPath(centroBaseTmp, pontoInicialTmp, pontoInicialTmp, -2 * Math.PI);
-			paths.add(circularTmp);
+//			paths.add(circularTmp);
 			
 			Point3d centroBaseProximaTmp = new Point3d(xBaseProxima, yBaseProxima, arc.getCenter().z);
 			Point3d vetorUnitarioProximaTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseProximaTmp);

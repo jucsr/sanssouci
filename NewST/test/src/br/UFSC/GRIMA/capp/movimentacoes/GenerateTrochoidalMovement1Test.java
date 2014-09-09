@@ -252,15 +252,20 @@ public class GenerateTrochoidalMovement1Test
 		desenhador.setVisible(true);
 		for(;;);
 	}
+	//Adicao dos transitionPaths:
+	//-Funcionado para linha-linha
 	@Test
 	public void generatePathsTest()
 	{
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementos = new ArrayList<LimitedElement>();
 		LimitedLine l1 = new LimitedLine(new Point3d(10,10,0),new Point3d(83,10,0));
-		LimitedLine l2 = new LimitedLine(new Point3d(83,10,0), new Point3d(180,50,0));
+		LimitedLine l2 = new LimitedLine(new Point3d(83,10,0), new Point3d(20,53,0));
+		double a2Radius = 15;
+		Point3d a2Center = GeometricOperations.absoluteParallel(l1, a2Radius, true).getFinalPoint();
+		LimitedArc a2 = new LimitedArc(a2Center,l1.getFinalPoint(),Math.PI/2);
 		elementos.add(l1);
-		elementos.add(l2);
+		elementos.add(a2);
 		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elementos, 10, 5);
 		ArrayList<Path> paths = gen.getPaths();
 		ArrayList<LimitedElement> pathToElements = GenerateTrochoidalMovement1.transformPathsInLimitedElements(paths);

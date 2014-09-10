@@ -886,9 +886,11 @@ public class GeometricOperations
 	public static ArrayList<LimitedElement> acabamentoPath (GeneralClosedPocketVertexAdd addPocket, double radius)	
 	{
 		boolean inside = true;
+		boolean isBoss = true;
 		ArrayList<LimitedElement> etmp = new ArrayList<LimitedElement>();
 		etmp = addPocket.getElements();
-		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius,inside);
+		//Cuidado: se o acabamento passar nas bordas (cavidade e protuberancia) o boolean isBoss e inside deve ser modificado
+		ArrayList<LimitedElement> acabamentoElements = parallelPath1(etmp, radius,inside,!isBoss);
 		
 		return acabamentoElements;
 	}
@@ -1225,7 +1227,7 @@ public class GeometricOperations
 
 
 	//Voltei para Array linear (ta ficando complicado de fazer recursivo, toda saída teria que ser transformada em um GeneralClosedPocket)
-	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside)
+	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside, boolean isBoss)
 	{
 //		boolean inside = true;
 //		ArrayList<LimitedElement> saida = new ArrayList<LimitedElement>();
@@ -1261,7 +1263,7 @@ public class GeometricOperations
 					}
 					else
 					{
-						newArc = parallelArc(arcTmp, distance,inside);
+						newArc = parallelArc(arcTmp, distance,inside,isBoss);
 					}
 					if(newArc != null)
 					{
@@ -1285,6 +1287,7 @@ public class GeometricOperations
 		planoZ = 0;
 		System.out.println("Profundidade: " + pocket.getProfundidade());
 		boolean inside = true;
+		boolean isBoss = true;
 		//Erro na criação da cavidade em um plano z != 0
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), planoZ, pocket.getRadius());
 
@@ -1363,9 +1366,9 @@ public class GeometricOperations
 		{
 			formaOriginal.add(tmp);
 		}
-		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside);
+		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside,isBoss);
 		showElements(parallelTemp1);
-		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside);
+		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
 		
 		for(LimitedElement tmp:parallelTemp1)
 		{
@@ -2392,52 +2395,95 @@ public class GeometricOperations
 		return intersect;
 	}
 	
-	public static LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside)
+	public static LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside, boolean isBoss)
 	{
-		boolean isBoss = !inside;
-		Point3d newInitialPoint;
-		LimitedArc newArc = null;
-		if (arc.getDeltaAngle()<0)
+//		boolean isBoss = !inside;
+//		Point3d newInitialPoint = null;
+//		LimitedArc newArc = null;
+		double newRadius;
+		if (arc.getDeltaAngle()<0) //Sentido horario
 		{
-			if(!isBoss)
+			if(isBoss) //Se for boss
 			{
-				newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
+				newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+			}
+			else //Se nao for boss
+			{
+				if(inside) //Se for para dentro
+				{
+					newRadius = arc.getRadius()+distance;
+				}
+				else //Se for para fora
+				{
+					newRadius = arc.getRadius()-distance;
+				}
+			}
+		}
+		else //Sentido anti-horario
+		{
+			if(isBoss) //Se for boss
+			{
+				newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+			}
+			else //Se nao for boss
+			{
+				if(inside) //Se for para dentro
+				{
+					newRadius = arc.getRadius()-distance;
+				}
+				else //Se for para fora
+				{
+					newRadius = arc.getRadius()+distance;
+				}
+			}
+		}
+		
+		return (new LimitedArc(arc.getCenter(), plus(arc.getCenter(),multiply(newRadius,unitVector(arc.getCenter(),arc.getInitialPoint()))), arc.getDeltaAngle()));
+
+		//Se houver erro, descomentar a parte a baixo e comentar a parte a cima
+//		if (arc.getDeltaAngle()<0)
+//		{
+//			if(!isBoss)
+//			{
+//				double newRadius = arc.getRadius()+distance; //Para dentro (da cavidade)
+//				newInitialPoint = plus(arc.getCenter(),multiply(newRadius,unitVector(arc.getCenter(),arc.getInitialPoint())));
+//				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
+////				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
+////				arcs.add(newArc);
+//			}
+//			else
+//			{
+////				if(arc.getRadius() > distance)
+////				{
+//				double newRadius = arc.getRadius()-distance; //Para fora (da protuberancia
+//				newInitialPoint = plus(arc.getCenter(),multiply(newRadius,unitVector(arc.getCenter(),arc.getInitialPoint())));
+//				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
+////				}
+//			}
+//			
+//		}
+//		else
+//		{
+//			if(!isBoss)
+//			{
+////				if(arc.getRadius() > distance)
+////				{
+//				double newRadius = arc.getRadius()-distance;
+//				newInitialPoint = plus(arc.getCenter(),multiply(newRadius,unitVector(arc.getCenter(),arc.getInitialPoint())));
+//				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
+////				}
+//			}
+//			else
+//			{
+//				double newRadius = arc.getRadius()+distance;
+//				newInitialPoint = plus(arc.getCenter(),multiply(newRadius,unitVector(arc.getCenter(),arc.getInitialPoint())));
+//				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
 //				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
 //				arcs.add(newArc);
-			}
-			else
-			{
-//				if(arc.getRadius() > distance)
-//				{
-//					System.out.println("lol");
-					newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-					newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-//				}
-			}
-//			showArcs(arcs);
-			
-		}
-		else
-		{
-			if(!isBoss)
-			{
-//				if(arc.getRadius() > distance)
-//				{
-					newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()-distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-					newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-//				}
-			}
-			else
-			{
-				newInitialPoint = plus(arc.getCenter(),multiply((arc.getRadius()+distance),unitVector(arc.getCenter(),arc.getInitialPoint())));
-				newArc = new LimitedArc(arc.getCenter(), newInitialPoint, arc.getDeltaAngle());
-				ArrayList<LimitedArc> arcs = new ArrayList<LimitedArc>();
-				arcs.add(newArc);
-			}
-		}
-//		System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
-		return newArc;
+//			}
+//		}
+////		System.out.println("Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " delta " + arc.getDeltaAngle()*180/Math.PI + " radius " + arc.getRadius());
+//		return newArc;
 	}
 
 	public static Point3d arcToVertec(LimitedArc arc)	

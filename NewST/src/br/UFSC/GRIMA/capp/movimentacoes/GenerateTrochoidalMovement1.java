@@ -160,7 +160,8 @@ public class GenerateTrochoidalMovement1
 //				System.out.println("LinearPath: PI " + linePath.getInitialPoint() + " PF " + linePath.getFinalPoint());
 				
 				//CUIDADO COM O "INSIDE"
-				Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a2, circularPath.getRadius(), false).getInitialPoint();
+				Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a2, circularPath.getRadius(), false,false).getInitialPoint();
+				System.out.println(arcPathFinalPoint);
 				double alpha = GeometricOperations.calcDeltaAngle(linePathFinalPoint,arcPathFinalPoint , a2.getInitialPoint(), circularPath.getAngulo());
 				System.out.println("alpha2: " + alpha);
 				System.out.println("deltaAngulo: " + circularPath.getAngulo());

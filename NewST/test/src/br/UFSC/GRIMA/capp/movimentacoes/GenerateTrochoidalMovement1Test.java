@@ -261,9 +261,11 @@ public class GenerateTrochoidalMovement1Test
 		ArrayList<LimitedElement> elementos = new ArrayList<LimitedElement>();
 		LimitedLine l1 = new LimitedLine(new Point3d(10,10,0),new Point3d(83,10,0));
 		LimitedLine l2 = new LimitedLine(new Point3d(83,10,0), new Point3d(20,53,0));
+		Point3d unitVectorl1 = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint());
 		double a2Radius = 15;
-		Point3d a2Center = GeometricOperations.pointPlusEscalar(GeometricOperations.absoluteParallel(l1, a2Radius, true).getFinalPoint(),"x",-10);
-		LimitedArc a2 = new LimitedArc(a2Center,l1.getFinalPoint(),Math.PI/2);
+//		Point3d a2Center = GeometricOperations.pointPlusEscalar(GeometricOperations.absoluteParallel(l1, a2Radius, true).getFinalPoint(),"x",-10);
+		Point3d a2Center = new Point3d(l1.getFinalPoint().x + GeometricOperations.multiply(a2Radius, unitVectorl1).x, l1.getFinalPoint().y + GeometricOperations.multiply(a2Radius, unitVectorl1).y,l1.getFinalPoint().z);
+		LimitedArc a2 = new LimitedArc(a2Center,l1.getFinalPoint(),-Math.PI/2);
 		elementos.add(l1);
 		elementos.add(a2);
 		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elementos, 10, 5);

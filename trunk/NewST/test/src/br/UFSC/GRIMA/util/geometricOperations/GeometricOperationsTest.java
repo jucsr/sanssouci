@@ -566,7 +566,7 @@ public class GeometricOperationsTest
 	{
 //		bugado no offset 95 (um elemento a mais, que passou erroneamente no validar2Path (teste da distancia))
 //		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,false);
+		ArrayList<LimitedElement> elements = GeometricOperations.parallelPath1(formaOriginal, 90,false,false);
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		if(elements != null)
@@ -857,7 +857,7 @@ public class GeometricOperationsTest
 		LimitedArc arcoOrig1= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
 		LimitedArc arcoOrig2= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
 		LimitedArc arco0= new LimitedArc(new Point3d(280,150,0),new Point3d(280,200,0), 2*Math.PI);
-		LimitedArc newArc = GeometricOperations.parallelArc(arco0, 5, false);
+		LimitedArc newArc = GeometricOperations.parallelArc(arco0, 5, false,false);
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
     	elements.add(arco0);
     	elements.add(newArc);
@@ -960,12 +960,12 @@ public class GeometricOperationsTest
 		// ------- sentido antihorario
 		LimitedArc arcoAntihorario = new LimitedArc(new Point3d(100, 100, 0), new Point3d(200, 100, 0), Math.PI / 2);
 		elements.add(arcoAntihorario);
-		LimitedArc arcoParalelo = GeometricOperations.parallelArc(arcoAntihorario, 20, true); // ----> estranho: parametro "inside" 
+		LimitedArc arcoParalelo = GeometricOperations.parallelArc(arcoAntihorario, 20, true,false); // ----> estranho: parametro "inside" 
 		elements.add(arcoParalelo);
 		//---------- sentido horario
 		LimitedArc arcoHorario = new LimitedArc(new Point3d(100, 100, 0), new Point3d(200, 100, 0), -Math.PI / 2);
 		elements.add(arcoHorario);
-		LimitedArc arcoParalelo1 = GeometricOperations.parallelArc(arcoHorario, 20, true); // ----> aqui o parametro "inside" inverte
+		LimitedArc arcoParalelo1 = GeometricOperations.parallelArc(arcoHorario, 20, true,false); // ----> aqui o parametro "inside" inverte
 		elements.add(arcoParalelo1);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
 		desenhador.setVisible(true);

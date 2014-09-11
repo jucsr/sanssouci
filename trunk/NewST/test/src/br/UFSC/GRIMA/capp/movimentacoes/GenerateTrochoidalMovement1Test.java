@@ -72,17 +72,22 @@ public class GenerateTrochoidalMovement1Test
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200,160));
 		
-		points.add(new Point2D.Double(700, 320));
-		points.add(new Point2D.Double(700, 160));
-		points.add(new Point2D.Double(480, 160));
-		points.add(new Point2D.Double(480, 40));
-		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200, 320));
+		points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		
 		pocket.setPoints(points);
 		pocket.setRadius(30);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
+		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+
+		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		itsBoss.add(arcBoss);
+		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
 		formaOriginal = addPocketVertex.getElements();
 	}
@@ -90,7 +95,7 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateTrochoidalPathTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 100, 0);
+		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 30, 0);
 		ArrayList<Path> paths = new ArrayList<Path>();
 		for(ArrayList<LimitedElement> tmp : parallel)
 		{
@@ -259,17 +264,41 @@ public class GenerateTrochoidalMovement1Test
 	{
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementos = new ArrayList<LimitedElement>();
-		LimitedLine l1 = new LimitedLine(new Point3d(10,10,0),new Point3d(83,10,0));
+		//----------------------------------------------------------------------------------------------
+		//Linha - Linha
+		LimitedLine l1 = new LimitedLine(new Point3d(50,10,0),new Point3d(83,10,0));
 		LimitedLine l2 = new LimitedLine(new Point3d(83,10,0), new Point3d(20,53,0));
-		LimitedArc a1 = new LimitedArc(new Point3d(50,50,0),new Point3d(50,0,0),Math.PI/2);
-		LimitedArc a2 = new LimitedArc(new Point3d(150,50,0),new Point3d(100,50,0),Math.PI/2);
+		//----------------------------------------------------------------------------------------------
+		//Arco - Arco: Caso 1
+//		LimitedArc a1 = new LimitedArc(new Point3d(50,50,0),new Point3d(50,0,0),Math.PI/2);
+//		LimitedArc a2 = new LimitedArc(new Point3d(150,50,0),new Point3d(100,50,0),Math.PI/2);
+		//Arco - Arco: Caso 2
+		Point3d a1C = new Point3d(50,50,0);
+		Point3d a1I = new Point3d(70,60,0);
+		Point3d a1F = new Point3d(60,70,0);
+		double a1Angle = GeometricOperations.calcDeltaAngle(a1I, a1F, a1C, Math.PI);
+		LimitedArc a1 = new LimitedArc(a1C,a1I,a1Angle);
+		LimitedArc a2 = new LimitedArc(new Point3d(70,50,0),a1F,a1.getDeltaAngle());
+		//-----------------------------------------------------------------------------------------------
+		//Linha(l1) - Arco(a3)
 		Point3d unitVectorl1 = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint());
-		double a2Radius = 15;
-		Point3d a2Center = GeometricOperations.pointPlusEscalar(GeometricOperations.absoluteParallel(l1, a2Radius, true).getFinalPoint(),"x",-10);
-//		Point3d a2Center = new Point3d(l1.getFinalPoint().x + GeometricOperations.multiply(a2Radius, unitVectorl1).x, l1.getFinalPoint().y + GeometricOperations.multiply(a2Radius, unitVectorl1).y,l1.getFinalPoint().z);
-		LimitedArc a3 = new LimitedArc(a2Center,l1.getFinalPoint(),Math.PI/2);
-		elementos.add(a1);
-		elementos.add(a2);
+		double a3Radius = 15;
+//		Point3d a3Center = GeometricOperations.pointPlusEscalar(GeometricOperations.absoluteParallel(l1, a3Radius, true).getFinalPoint(),"x",-10);
+//		Point3d a3InitialPoint = l1.getFinalPoint();
+//		Point3d a3Center = new Point3d(l1.getFinalPoint().x + GeometricOperations.multiply(a3Radius, unitVectorl1).x, l1.getFinalPoint().y + GeometricOperations.multiply(a3Radius, unitVectorl1).y,l1.getFinalPoint().z);
+		
+		//Arco(a3) - Linha(l1): Caso 1
+		LimitedLine parallelL1 = GeometricOperations.absoluteParallel(l1, a3Radius, true);
+		Point3d a3Center = parallelL1.getInitialPoint();
+		Point3d a3InitialPoint = new Point3d(parallelL1.getInitialPoint().x  + GeometricOperations.multiply(-a3Radius, unitVectorl1).x,parallelL1.getInitialPoint().y  + GeometricOperations.multiply(-a3Radius, unitVectorl1).y,parallelL1.getInitialPoint().z);
+		LimitedArc a3 = new LimitedArc(a3Center,a3InitialPoint,Math.PI/2);
+		//Arco(a4) - Linha(l3): Caso 2 (ERRO!)
+		LimitedArc a4 = new LimitedArc(new Point3d(50,50,0),new Point3d(10,50,0),-Math.PI/2);
+		LimitedLine l3 = new LimitedLine(a4.getFinalPoint(),GeometricOperations.pointPlusEscalar(a4.getFinalPoint(), "x", 50));
+		
+		//-----------------------------------------------------------------------------------------------
+		elementos.add(a4);
+		elementos.add(l3);
 		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elementos, 10, 5);
 		ArrayList<Path> paths = gen.getPaths();
 		ArrayList<LimitedElement> pathToElements = GenerateTrochoidalMovement1.transformPathsInLimitedElements(paths);

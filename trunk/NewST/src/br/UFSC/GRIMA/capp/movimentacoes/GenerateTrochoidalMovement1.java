@@ -138,6 +138,11 @@ public class GenerateTrochoidalMovement1
 			LimitedLine l2 = (LimitedLine)element2;
 			//CUIDADO COM O "INSIDE"
 			double arcPathRadius = l1.getFinalPoint().distance(lastPath.getFinalPoint());
+			ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
+			show.add(l1);
+			show.add(l2);
+			GeometricOperations.showElements(show);
+			System.out.println("TransitionPathRadiusLL: " + arcPathRadius);
 			Point3d arcPathFinalPoint = GeometricOperations.absoluteParallel(l2, arcPathRadius, false).getInitialPoint();
 			double alpha = GeometricOperations.calcDeltaAngle(lastPath.getFinalPoint(),arcPathFinalPoint , l2.getInitialPoint(), circularPathAngle);
 			CircularPath arcPath = new CircularPath(l1.getFinalPoint(), lastPath.getFinalPoint(), arcPathFinalPoint, alpha); //path circular (leva a ferramenta ao ponto inicial do primeiro circulo trocoidal da linha guia 2)
@@ -151,6 +156,11 @@ public class GenerateTrochoidalMovement1
 			LimitedArc a2 = (LimitedArc)element2;
 			//CUIDADO COM O "INSIDE" e o "isBoss"
 			double arcPathRadius = l1.getFinalPoint().distance(lastPath.getFinalPoint());
+			ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
+			show.add(l1);
+			show.add(a2);
+			GeometricOperations.showElements(show);
+			System.out.println("TransitionPathRadiusLA: " + arcPathRadius);
 			Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a2,arcPathRadius, false,false).getInitialPoint();
 			double alpha = GeometricOperations.calcDeltaAngle(lastPath.getFinalPoint(),arcPathFinalPoint , a2.getInitialPoint(), circularPathAngle);
 			CircularPath arcPath = new CircularPath(l1.getFinalPoint(), lastPath.getFinalPoint(), arcPathFinalPoint, alpha);
@@ -167,16 +177,30 @@ public class GenerateTrochoidalMovement1
 		if(element2.isLimitedLine())
 		{
 			LimitedLine l2 = (LimitedLine)element2;
+			ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
+			show.add(a1);
+			show.add(l2);
 			//CUIDADO COM O "INSIDE" e o "isBoss"
 			double arcPathRadius = a1.getFinalPoint().distance(lastPath.getFinalPoint());
+			GeometricOperations.showElements(show);
+			System.out.println("TransitionPathRadiusAL: " + arcPathRadius);
 			Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a1,arcPathRadius, false,false).getInitialPoint();
 			double alpha = GeometricOperations.calcDeltaAngle(lastPath.getFinalPoint(),arcPathFinalPoint , a1.getInitialPoint(), circularPathAngle);
-			CircularPath arcPath = new CircularPath(l2.getFinalPoint(), lastPath.getFinalPoint(), arcPathFinalPoint, alpha);
+			CircularPath arcPath = new CircularPath(l2.getInitialPoint(), lastPath.getFinalPoint(), arcPathFinalPoint, alpha);
+			if(!(GeometricOperations.isTheSamePoint(arcPath.getInitialPoint(), arcPath.getFinalPoint())))
+			{
+				saida.add(arcPath);
+			}
 		}
 		else if(element2.isLimitedArc())
 		{
 			LimitedArc a2 = (LimitedArc)element2;
 			double arcPathRadius = a1.getFinalPoint().distance(lastPath.getFinalPoint());
+			ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
+			show.add(a1);
+			show.add(a2);
+			GeometricOperations.showElements(show);
+			System.out.println("TransitionPathRadiusAA: " + arcPathRadius);
 			Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a2,arcPathRadius, false,false).getInitialPoint();
 			double alpha = GeometricOperations.calcDeltaAngle(lastPath.getFinalPoint(),arcPathFinalPoint , a2.getInitialPoint(), circularPathAngle);
 			CircularPath arcPath = new CircularPath(a1.getFinalPoint(), lastPath.getFinalPoint(), arcPathFinalPoint, alpha);
@@ -314,7 +338,7 @@ public class GenerateTrochoidalMovement1
 			CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, 2 * Math.PI);
 //			System.err.println("RADIUS = " + circuloTmp.getRadius());
 
-//			paths.add(circuloTmp);
+			paths.add(circuloTmp);
 			
 			/*
 			 * gerando uma movimentacao linear
@@ -370,55 +394,61 @@ public class GenerateTrochoidalMovement1
 			double yBaseProxima;
 			double radiusTmp = radius;
 			int sense;
-			if(arc.getDeltaAngle() > 0)
-			{
-				xBaseProxima = arc.getCenter().x + arc.getRadius() * Math.cos(initialAngle + deltaAcumulado + avanco / arc.getRadius());
-				yBaseProxima = arc.getCenter().y + arc.getRadius() * Math.sin(initialAngle + deltaAcumulado + avanco / arc.getRadius());
-				sense = CircularPath.CCW;
-			} else
-			{
-				xBaseProxima = arc.getCenter().x + arc.getRadius() * Math.cos(initialAngle + deltaAcumulado - avanco / arc.getRadius());
-				yBaseProxima = arc.getCenter().y + arc.getRadius() * Math.sin(initialAngle + deltaAcumulado - avanco / arc.getRadius());
-				sense = CircularPath.CW;
-				radiusTmp = -radiusTmp;
-			}
-			Point3d vetorUnitarioTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseTmp);
-			Point3d pontoInicialTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).y, arc.getCenter().z + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).z);
-			CircularPath circularTmp = new CircularPath(centroBaseTmp, pontoInicialTmp, pontoInicialTmp, -2 * Math.PI);
-//			paths.add(circularTmp);
-			
-			Point3d centroBaseProximaTmp = new Point3d(xBaseProxima, yBaseProxima, arc.getCenter().z);
-			Point3d vetorUnitarioProximaTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseProximaTmp);
-			//Errado para o ultimo path
-			Point3d pontoFinalTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).y, arc.getCenter().z);
-			
-//			CircularPath arcTmp = new CircularPath(pontoInicialTmp, pontoFinalTmp, arc.getCenter(), sense);
+			//-------------------------------------------------------------------------------------
+			//valida o ultimo arco (quando nao for do mesmo tamanho dos outros)
+			//CUIDADO COM O DELTAANGULOTMP
 			double deltaAnguloTmp = avanco / (arc.getRadius()); 
-			double normaAcumulada = Math.abs((i + 1) *avanco/* * deltaTmp * arc.getRadius()*/);
-			double normaAcumulada1 = Math.abs(i * avanco/*deltaTmp * arc.getRadius()*/);
+			double normaAcumulada = Math.abs((i + 1) *avanco/* * deltaTmp * arc.getRadius()*/); //Norma contando o proximo arco
+			double normaAcumulada1 = Math.abs(i * avanco/*deltaTmp * arc.getRadius()*/);        //Norma Atual
 			if(arc.getDeltaAngle() < 0)
 			{
-				 if(normaAcumulada > norma)
-				 {
-					 deltaAnguloTmp = -(norma - normaAcumulada1) / (arc.getRadius());
+				if(normaAcumulada > norma)
+				{
+					deltaAnguloTmp = -(norma - normaAcumulada1) / (arc.getRadius());
 //					 System.err.println("****\ndeltaAnguloTmp = " + (deltaAnguloTmp * 180 / Math.PI));
 //					 System.err.println("****\ndeltaAnguloTmp = " + (deltaAnguloTmp));
 //					 System.err.println("norma = " + (norma));
 //					 System.err.println("norma acumulada = " + (normaAcumulada));
 //					 System.err.println("norma acumulada1 = " + (normaAcumulada1));
-				 } else
-				 {
-					 deltaAnguloTmp = - deltaAnguloTmp;
-				 }
+				} else
+				{
+					deltaAnguloTmp = - deltaAnguloTmp;
+				}
 			}	
 			else
 			{
-				if(normaAcumulada > norma)
-				 {
-					 deltaAnguloTmp = (norma - normaAcumulada1) / (arc.getRadius());
-					 System.out.println("DeltaAngle: " + deltaAnguloTmp);
-				 }
+				if(normaAcumulada > norma) //Criacao do ultimo arco (pode nao ser do mesmo tamanho dos outros)
+				{
+					deltaAnguloTmp = (norma - normaAcumulada1) / (arc.getRadius());
+//					System.out.println("DeltaAngle: " + deltaAnguloTmp);
+				}
 			}
+			//-------------------------------------------------------------------------------------
+			if(arc.getDeltaAngle() > 0)
+			{
+				xBaseProxima = arc.getCenter().x + arc.getRadius() * Math.cos(initialAngle + deltaAcumulado + deltaAnguloTmp);
+				yBaseProxima = arc.getCenter().y + arc.getRadius() * Math.sin(initialAngle + deltaAcumulado + deltaAnguloTmp);
+				sense = CircularPath.CCW;
+			} else
+			{
+				xBaseProxima = arc.getCenter().x + arc.getRadius() * Math.cos(initialAngle + deltaAcumulado - deltaAnguloTmp);
+				yBaseProxima = arc.getCenter().y + arc.getRadius() * Math.sin(initialAngle + deltaAcumulado - deltaAnguloTmp);
+				sense = CircularPath.CW;
+				radiusTmp = -radiusTmp;
+			}
+			Point3d vetorUnitarioTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseTmp);
+			Point3d pontoInicialTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).y, arc.getCenter().z);
+			CircularPath circularTmp = new CircularPath(centroBaseTmp, pontoInicialTmp, pontoInicialTmp, -2 * Math.PI);
+			paths.add(circularTmp);
+			
+			Point3d centroBaseProximaTmp = new Point3d(xBaseProxima, yBaseProxima, arc.getCenter().z);
+			Point3d vetorUnitarioProximaTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseProximaTmp);
+			/*
+			 * Errado para o ultimo path
+			 */
+			Point3d pontoFinalTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).y, arc.getCenter().z);
+			
+//			CircularPath arcTmp = new CircularPath(pontoInicialTmp, pontoFinalTmp, arc.getCenter(), sense);
 //			System.err.println("normaAcumulada = " + normaAcumulada);
 //			if(arc.getDeltaAngle() < 0)
 //			{

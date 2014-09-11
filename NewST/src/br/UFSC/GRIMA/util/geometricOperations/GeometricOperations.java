@@ -1367,7 +1367,7 @@ public class GeometricOperations
 			formaOriginal.add(tmp);
 		}
 		parallelTemp1 = parallelPath1(elementosProtuberancia, distance,!inside,isBoss);
-		showElements(parallelTemp1);
+//		showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
 		
 		for(LimitedElement tmp:parallelTemp1)
@@ -1644,10 +1644,9 @@ public class GeometricOperations
 			ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
 //			showElements(elementsIntermediario2);
 //			elementsValidated.add(elementsIntermediario2);
-//			showElements(elements);
 //			System.out.println("elementsInter2: " + elementsIntermediario2.size());
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
-//			showElements(elementsIntermediario3.get(0));
+			showElements(elementsIntermediario3.get(0));
 			if(elementsIntermediario3 != null)
 			{
 //				System.out.println("elementsInter3: " + elementsIntermediario3.size());
@@ -1743,13 +1742,25 @@ public class GeometricOperations
 			if(thereIsIntersection == false)
 			{
 //				elementsIntermediario.add(ei);
-				if(ei.isLimitedLine() && !isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
+//				if(ei.isLimitedLine() && !isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
+//				{
+//					elementsIntermediario.add(ei);
+//				}
+//				else if(ei.isLimitedArc() && roundNumber(((LimitedArc)ei).getDeltaAngle(),10) != 0)
+//				{
+//					elementsIntermediario.add(ei);
+//				}
+				if(!isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint())) //Nao add elementos com PI = PF (de tamanho 0)
 				{
 					elementsIntermediario.add(ei);
 				}
-				else if(ei.isLimitedArc() && roundNumber(((LimitedArc)ei).getDeltaAngle(),10) != 0)
+				else if(ei.isLimitedArc())
 				{
-					elementsIntermediario.add(ei);
+					System.out.println(Math.abs(((LimitedArc)ei).getDeltaAngle()));
+					if(Math.abs(((LimitedArc)ei).getDeltaAngle()) == 2*Math.PI) //Circulos (angulo 2pi) possuem PI = PF
+					{
+						elementsIntermediario.add(ei); //add circulos
+					}
 				}
 			}
 			
@@ -1797,6 +1808,7 @@ public class GeometricOperations
 			LimitedElement ei0new = elementsIntermediario2.get(0);
 //			System.out.println("Size:" + elementsIntermediario2.size());
 			Iterator iter = elementsIntermediario2.iterator();
+			int count = 0;
 			while(iter.hasNext())
 			{
 				boolean hasNoFinalPoint = true;
@@ -1808,6 +1820,8 @@ public class GeometricOperations
 				elementsValidated.get(numeroDeLacos).add(ei0);
 				for(int j = 0; j < elementsIntermediario2.size(); j++)
 				{
+					if(count != j)
+					{
 					
 //				System.out.println("Aux2: " + aux2);
 					LimitedElement ej = elementsIntermediario2.get(j);
@@ -1839,28 +1853,20 @@ public class GeometricOperations
 						}
 						break;
 					}
-					if(hasNoFinalPoint)
-					{
-						elementsIntermediario2.remove(ei0);
-						if(iter.hasNext())
-						{
-							ei0new = elementsIntermediario2.get(0);
-						}
-
 					}
+				}
+				if(hasNoFinalPoint)
+				{
+					elementsIntermediario2.remove(ei0);
+					if(iter.hasNext())
+					{
+						ei0new = elementsIntermediario2.get(0);
+					}
+					
 				}
 //			System.out.println("Numero de lacos: " + numeroDeLacos);
 			}
-//			System.out.println("laco1: " + elementsValidated.get(0).size());
-			if(elementsValidated.size() == 2)
-			{
-//				System.out.println("laco2: " + elementsValidated.get(1).size());
-			}
-			if(elementsValidated.size() == 3)
-			{
-//				System.out.println("laco2: " + elementsValidated.get(1).size());
-//				System.out.println("laco3: " + elementsValidated.get(2).size());
-			}
+			
 			
 			return elementsValidated;
 		}

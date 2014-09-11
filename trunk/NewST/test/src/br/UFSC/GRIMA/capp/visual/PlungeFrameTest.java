@@ -33,11 +33,33 @@ public class PlungeFrameTest
 	{
 		CreatePlungeStrategy frame = new CreatePlungeStrategy(path, retractPlane);
 		ArrayList<Path> mergulho = frame.calcularMergulho();
-		for (int i=0;i<mergulho.size();i++)
-			if (mergulho.get(i).getClass() == LinearPath.class) 
-				System.out.println("");
+		int cont=0;
+		int i=0;
+		Point3d pInicial,pFinal,pCentro;
+		double angulo;
+		for (i=0;i<mergulho.size();i++)
+			cont++;
+//DANDO ERRO NA LINHA ABAIXO		
+			if (mergulho.get(i).getClass() == LinearPath.class)
+			{
+				pInicial = mergulho.get(i).getInitialPoint();
+				System.out.println("Ponto inicial #" + cont +": "+ pInicial.x + ", " + pInicial.y + ", " + pInicial.z);
+				pFinal = mergulho.get(i).getFinalPoint();
+				System.out.println("Ponto final #" + cont +": "+ pFinal.x + ", " + pFinal.y + ", " + pFinal.z);
+			}
 			else if(mergulho.get(i).getClass() == CircularPath.class)
-				System.out.println("");
+			{
+				CircularPath circularTemp = (CircularPath)mergulho.get(i);
+				pInicial = circularTemp.getInitialPoint();
+				System.out.println("Ponto inicial #" + cont +": ("+ pInicial.x + ", " + pInicial.y + ", " + pInicial.z+")");
+				pFinal = circularTemp.getFinalPoint();
+				System.out.println("Ponto final #" + cont +": ("+ pFinal.x + ", " + pFinal.y + ", " + pFinal.z+")");
+				pCentro = circularTemp.getCenter();
+				System.out.println("Ponto central #" + cont +": ("+ pCentro.x + ", " + pCentro.y + ", " + pCentro.z+")");
+				angulo = circularTemp.getAngulo();
+				System.out.println("Angulo: "+angulo);
+			}
 		for(;;);
 	}
 }
+

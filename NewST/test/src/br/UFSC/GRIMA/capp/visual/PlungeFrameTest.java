@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.capp.CreatePlungeStrategy;
+import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 
@@ -31,8 +32,12 @@ public class PlungeFrameTest
 	public void test()
 	{
 		CreatePlungeStrategy frame = new CreatePlungeStrategy(path, retractPlane);
-		frame.setTitle(" FRAME");
-		frame.setVisible(true);
+		ArrayList<Path> mergulho = frame.calcularMergulho();
+		for (int i=0;i<mergulho.size();i++)
+			if (mergulho.get(i).getClass() == LinearPath.class) 
+				System.out.println("");
+			else if(mergulho.get(i).getClass() == CircularPath.class)
+				System.out.println("");
 		for(;;);
 	}
 }

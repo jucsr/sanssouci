@@ -102,8 +102,9 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		this.dispose();
 	}
 
-	private void calcularMergulho()
+	public ArrayList<Path> calcularMergulho()
 	{
+		ArrayList<Path>	trajeto = new ArrayList<Path>();
 		double width = ((Double)this.width.getValue());
 		double angle = Math.toRadians((Double)this.angle.getValue());
 		double high = (retractPlane - pInicial.z);
@@ -209,45 +210,63 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			System.out.println("p2Final.y: "+ p2Final.y+"\t\t p2Inicial.y: " + p2Initial.y);
 			System.out.println("ultimo Trecho: "+(cont+1)+"\nvoltas: "+voltas);
 				
-//CRIAR CAMINHOS
-		ArrayList<Path>	trajeto = new ArrayList<Path>();
-		Point3d pontoini = paths.get(cont).getInitialPoint();
-		Point3d pontofin = paths.get(cont).getFinalPoint();
-		if (paths.get(cont).getClass().equals(LinearPath.class))
-		{
-//calcular Z			
-			Point3d pontoI = new Point3d(pontoini.x, pontoini.y, z);
-			trajeto.add(new LinearPath(p2Tool,pontoI));
-		}
-		else
-		{
-			trajeto.add(new CircularPath());
-		}
-		cont--;
-		while (course>0)
-		{
-			pontoini = paths.get(cont).getInitialPoint();
-			pontofin = paths.get(cont).getFinalPoint();
-			if (paths.get(cont).getClass().equals(LinearPath.class))
+			Point3d pontoIni = paths.get(cont).getInitialPoint();
+			Point3d pontoFin = paths.get(cont).getFinalPoint();
+			Point3d pontoI = new Point3d(pontoIni.x, pontoIni.y, (retractPlane - Math.tan(angle)*course2)); //ponto final do primeiro path (descendo), inicial do ultimo caminho
+//PRIMEIRO TRECHO -- OBRIGATORIO			
+			if (paths.get(cont).getClass().equals(LinearPath.class)) //Se for linear
 			{
-				trajeto.add(new LinearPath(pontofin,pontoini));
+				trajeto.add(new LinearPath(p2Tool,pontoI));
 			}
-			else
+			else if (paths.get(cont).getClass().equals(CircularPath.class)) //se for circular
 			{
-				trajeto.add(new CircularPath());
+				CircularPath circularTemp = (CircularPath)paths.get(cont);
+				Point3d pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(retractPlane - pontoI.z)/2);// o z do centro eh a media entre o z do inicio e fim
+				trajeto.add(new CircularPath(pontoC, p2Tool, pontoI, circularTemp.getAngulo()));//c, i, f, a - 
 			}
-			if (course > 0) //verificar se vai continuar no while. se sim, incrementa
-			{						
-				if (cont == 0) //se completou uma volta
-				{
-					cont = paths.size()-1;
-					voltas --;
-				}
-				else
-					cont --;	
-			}
-		}
+			double alturaZ = pontoI.z;// armazena o ultimo valor de z, que vai ser usado a cada 'passo'. no momento esta recebendo o valor do ponto final do primeiro caminho
+			if ((cont!=0) || (voltas!=0))
+			{
+				if (cont!=0)
+					cont--;
+				else   //se cont = 0
+					cont=(paths.size() -1);
+					voltas--;
+				Point3d pontoC;
+				double distTemp;	
+				while ((cont>0) || (voltas>0))
+		 		{
+					pontoIni = new Point3d(paths.get(cont).getFinalPoint().x,paths.get(cont).getFinalPoint().y,alturaZ); //ponto inicial - recebe o FINAL do caminho PATHS, pois aqui ele esta voltando
+					if (paths.get(cont).getClass().equals(LinearPath.class)) //LINEAR
+					{
+						distTemp = (paths.get(cont).getInitialPoint().distance(paths.get(cont).getFinalPoint()));
+						alturaZ = alturaZ - (distTemp*Math.tan(angle));
+						pontoFin = new Point3d (paths.get(cont).getInitialPoint().x, paths.get(cont).getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS
+						trajeto.add(new LinearPath(pontoIni,pontoFin));
+					}
+					else	//CIRCULAR
+					{
+						CircularPath circularTemp = (CircularPath)paths.get(cont);
+						
+						distTemp = circularTemp.getAngulo() * circularTemp.getRadius();
+						alturaZ = alturaZ - (distTemp*Math.tan(angle));
+						pontoFin = new Point3d (paths.get(cont).getInitialPoint().x, paths.get(cont).getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS, com alturaZ
+						pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(pontoIni.z - pontoFin.z)/2);// o z do centro eh a media entre o z do inicio e fim
+						trajeto.add(new CircularPath(pontoC, pontoIni, pontoFin, circularTemp.getAngulo()));//c, i, f, a
+					}
 					
+					if ((cont>0) || (voltas>0)) //verificar se vai continuar no while. se sim, incrementa
+					{						
+						if (cont == 0) //se completou uma volta
+						{
+							cont = paths.size()-1;
+							voltas --;
+						}
+						else
+							cont --;	
+					}
+				}
+			}		
 		}
 		else if (a == 'z')
 		{
@@ -257,5 +276,6 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		{
 			
 		}
+		return trajeto;
 	}
 }

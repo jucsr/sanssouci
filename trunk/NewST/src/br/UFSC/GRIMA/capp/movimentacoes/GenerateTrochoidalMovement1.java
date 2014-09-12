@@ -184,8 +184,11 @@ public class GenerateTrochoidalMovement1
 			double arcPathRadius = a1.getFinalPoint().distance(lastPath.getFinalPoint());
 			GeometricOperations.showElements(show);
 			System.out.println("TransitionPathRadiusAL: " + arcPathRadius);
-			Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a1,arcPathRadius, false,false).getInitialPoint();
+//			Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a1,arcPathRadius, false,false).getInitialPoint();
+			Point3d arcPathFinalPoint = GeometricOperations.absoluteParallel(l2, arcPathRadius, false).getInitialPoint();
 			double alpha = GeometricOperations.calcDeltaAngle(lastPath.getFinalPoint(),arcPathFinalPoint , a1.getInitialPoint(), circularPathAngle);
+			System.out.println("lastPath: " + lastPath.getFinalPoint());
+			System.out.println("arcPathFinalPoint: " + arcPathFinalPoint);
 			CircularPath arcPath = new CircularPath(l2.getInitialPoint(), lastPath.getFinalPoint(), arcPathFinalPoint, alpha);
 			if(!(GeometricOperations.isTheSamePoint(arcPath.getInitialPoint(), arcPath.getFinalPoint())))
 			{
@@ -338,7 +341,7 @@ public class GenerateTrochoidalMovement1
 			CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, 2 * Math.PI);
 //			System.err.println("RADIUS = " + circuloTmp.getRadius());
 
-			paths.add(circuloTmp);
+//			paths.add(circuloTmp);
 			
 			/*
 			 * gerando uma movimentacao linear
@@ -404,7 +407,10 @@ public class GenerateTrochoidalMovement1
 			{
 				if(normaAcumulada > norma)
 				{
-					deltaAnguloTmp = -(norma - normaAcumulada1) / (arc.getRadius());
+					//CUIDADO DELTATMP DO ULTIMO PATH
+					System.out.println("DeltaTmp1: " + deltaAnguloTmp);
+					deltaAnguloTmp = (norma - normaAcumulada1) / (arc.getRadius());
+					System.out.println("DeltaTmp2: " + deltaAnguloTmp);
 //					 System.err.println("****\ndeltaAnguloTmp = " + (deltaAnguloTmp * 180 / Math.PI));
 //					 System.err.println("****\ndeltaAnguloTmp = " + (deltaAnguloTmp));
 //					 System.err.println("norma = " + (norma));
@@ -438,8 +444,9 @@ public class GenerateTrochoidalMovement1
 			}
 			Point3d vetorUnitarioTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseTmp);
 			Point3d pontoInicialTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).y, arc.getCenter().z);
+			System.out.println("PI: " + pontoInicialTmp);
 			CircularPath circularTmp = new CircularPath(centroBaseTmp, pontoInicialTmp, pontoInicialTmp, -2 * Math.PI);
-			paths.add(circularTmp);
+//			paths.add(circularTmp);
 			
 			Point3d centroBaseProximaTmp = new Point3d(xBaseProxima, yBaseProxima, arc.getCenter().z);
 			Point3d vetorUnitarioProximaTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseProximaTmp);
@@ -447,7 +454,7 @@ public class GenerateTrochoidalMovement1
 			 * Errado para o ultimo path
 			 */
 			Point3d pontoFinalTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).y, arc.getCenter().z);
-			
+			System.out.println("PF: " + pontoFinalTmp);
 //			CircularPath arcTmp = new CircularPath(pontoInicialTmp, pontoFinalTmp, arc.getCenter(), sense);
 //			System.err.println("normaAcumulada = " + normaAcumulada);
 //			if(arc.getDeltaAngle() < 0)
@@ -461,7 +468,10 @@ public class GenerateTrochoidalMovement1
 //			System.out.println("ponto inicial " + i + " = " + arcTmp.getInitialPoint());
 //			System.out.println("ponto final " + i + " = " + arcTmp.getFinalPoint());
 //			arcTmp.setAngulo(angulo);
+//			if(i == fracionamento-1)
+//			{
 			paths.add(arcTmp);
+//			}
 
 
 //			System.out.println("RaioArcTmp =  " + pontoInicialTmp.distance(arc.getCenter()));

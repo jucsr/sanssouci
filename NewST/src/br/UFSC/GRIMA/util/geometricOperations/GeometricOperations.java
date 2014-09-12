@@ -2045,7 +2045,7 @@ public class GeometricOperations
 		double newDistanceAngle = angleLine+Math.PI/2;
 		double x = Math.cos(newDistanceAngle);
 		double y = Math.sin(newDistanceAngle);
-		Point3d unitDistance = new Point3d(x,y,line.getInitialPoint().getZ());
+		Point3d unitDistance = new Point3d(x,y,line.getInitialPoint().z);
 		Point3d distanceVector;
 		if(inside)
 		{
@@ -2444,6 +2444,7 @@ public class GeometricOperations
 			}
 		}
 		
+		System.out.println("RADIUS: " + newRadius);
 		return (new LimitedArc(arc.getCenter(), plus(arc.getCenter(),multiply(newRadius,unitVector(arc.getCenter(),arc.getInitialPoint()))), arc.getDeltaAngle()));
 
 		//Se houver erro, descomentar a parte a baixo e comentar a parte a cima

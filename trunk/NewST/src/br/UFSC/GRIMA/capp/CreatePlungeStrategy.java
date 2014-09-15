@@ -12,6 +12,7 @@ import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.GeneralPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 /**
  * 
@@ -21,6 +22,7 @@ import br.UFSC.GRIMA.util.Path;
 public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 {
 	private ArrayList<Path> paths;
+//	public ArrayList<Path> mergulho;
 	private double retractPlane;
 	private char a;
 	Point3d pInicial;
@@ -47,7 +49,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Object source = e.getSource();  
-		if (source == button1)
+		if (source == button1)  //button1 = 'OK'
 		{
 			this.calcularMergulho();
 		} 
@@ -102,7 +104,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		this.dispose();
 	}
 
-	public ArrayList<Path> calcularMergulho()
+	private ArrayList<Path> calcularMergulho()
 	{
 		ArrayList<Path>	trajeto = new ArrayList<Path>();
 		double width = ((Double)this.width.getValue());
@@ -213,7 +215,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			Point3d pontoIni = paths.get(cont).getInitialPoint();
 			Point3d pontoFin = paths.get(cont).getFinalPoint();
 			Point3d pontoI = new Point3d(pontoIni.x, pontoIni.y, (retractPlane - Math.tan(angle)*course2)); //ponto final do primeiro path (descendo), inicial do ultimo caminho
-//PRIMEIRO TRECHO -- OBRIGATORIO			
+//PRIMEIRO TRECHO -- OBRIGATORIO
 			if (paths.get(cont).getClass().equals(LinearPath.class)) //Se for linear
 			{
 				trajeto.add(new LinearPath(p2Tool,pontoI));
@@ -227,15 +229,21 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			double alturaZ = pontoI.z;// armazena o ultimo valor de z, que vai ser usado a cada 'passo'. no momento esta recebendo o valor do ponto final do primeiro caminho
 			if ((cont!=0) || (voltas!=0))
 			{
+				System.out.println("Entrou");
 				if (cont!=0)
 					cont--;
 				else   //se cont = 0
+				{
 					cont=(paths.size() -1);
 					voltas--;
+				}
 				Point3d pontoC;
 				double distTemp;	
-				while ((cont>0) || (voltas>0))
+				System.out.println("cont: " + cont);
+				System.out.println("voltas: " + voltas);
+				while ((cont>=0) && (voltas>=0))
 		 		{
+					System.out.println("Entrou");
 					pontoIni = new Point3d(paths.get(cont).getFinalPoint().x,paths.get(cont).getFinalPoint().y,alturaZ); //ponto inicial - recebe o FINAL do caminho PATHS, pois aqui ele esta voltando
 					if (paths.get(cont).getClass().equals(LinearPath.class)) //LINEAR
 					{
@@ -251,21 +259,21 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 						distTemp = circularTemp.getAngulo() * circularTemp.getRadius();
 						alturaZ = alturaZ - (distTemp*Math.tan(angle));
 						pontoFin = new Point3d (paths.get(cont).getInitialPoint().x, paths.get(cont).getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS, com alturaZ
-						pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(pontoIni.z - pontoFin.z)/2);// o z do centro eh a media entre o z do inicio e fim
+						pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(pontoIni.z + pontoFin.z)/2);// o z do centro eh a media entre o z do inicio e fim
 						trajeto.add(new CircularPath(pontoC, pontoIni, pontoFin, circularTemp.getAngulo()));//c, i, f, a
 					}
 					
-					if ((cont>0) || (voltas>0)) //verificar se vai continuar no while. se sim, incrementa
-					{						
-						if (cont == 0) //se completou uma volta
+					if (cont>0)
+					{		
+						cont --;
+					}
+					else if (cont == 0) //se completou uma volta
 						{
 							cont = paths.size()-1;
 							voltas --;
 						}
-						else
-							cont --;	
+								
 					}
-				}
 			}		
 		}
 		else if (a == 'z')
@@ -276,6 +284,37 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		{
 			
 		}
+		
+		int cont=0;
+		int i=0;
+		Point3d pInicial,pFinal,pCentro;
+		double angulo;
+		System.out.println("tamanho array gerado = " + trajeto.size());
+		for (i=0;i<trajeto.size();i++)
+		{	cont++;
+//DANDO ERRO NA LINHA ABAIXO		
+			if (trajeto.get(i).getClass() == LinearPath.class)
+			{
+				pInicial = trajeto.get(i).getInitialPoint();
+				System.out.println("Ponto inicial #" + cont +": "+ GeometricOperations.roundNumber(pInicial.x,2) + ", " + GeometricOperations.roundNumber(pInicial.y,2) + ", " + GeometricOperations.roundNumber(pInicial.z,2));
+				pFinal = trajeto.get(i).getFinalPoint();
+				System.out.println("Ponto final #" + cont +": "+ GeometricOperations.roundNumber(pFinal.x, 2) + ", " + GeometricOperations.roundNumber(pFinal.y, 2) + ", " + GeometricOperations.roundNumber(pFinal.z, 2));
+			}
+			else if(trajeto.get(i).getClass() == CircularPath.class)
+			{
+				CircularPath circularTemp = (CircularPath)trajeto.get(i);
+				pInicial = circularTemp.getInitialPoint();
+				System.out.println("\tPonto inicial #" + cont +": ("+ pInicial.x + ", " + pInicial.y + ", " + pInicial.z+")");
+				pFinal = circularTemp.getFinalPoint();
+				System.out.println("\tPonto final #" + cont +": ("+ pFinal.x + ", " + pFinal.y + ", " + pFinal.z+")");
+				pCentro = circularTemp.getCenter();
+				System.out.println("\tPonto central #" + cont +": ("+ pCentro.x + ", " + pCentro.y + ", " + pCentro.z+")");
+				angulo = circularTemp.getAngulo();
+				System.out.println("\tAngulo: "+Math.toDegrees(angulo)+"graus");
+			}
+		}
+		
 		return trajeto;
 	}
+
 }

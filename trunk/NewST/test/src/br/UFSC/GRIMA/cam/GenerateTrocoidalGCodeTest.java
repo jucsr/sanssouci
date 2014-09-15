@@ -65,29 +65,32 @@ public class GenerateTrocoidalGCodeTest
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200, 320));
 		
-//		points.add(new Point2D.Double(500, 320));
-//		points.add(new Point2D.Double(500, 160));
-//		points.add(new Point2D.Double(280, 160));
-//		points.add(new Point2D.Double(280, 40));
-//		points.add(new Point2D.Double(0, 40));
-//		points.add(new Point2D.Double(0, 320));
+		points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		
-		points.add(new Point2D.Double(50, 32));
-		points.add(new Point2D.Double(50, 16));
-		points.add(new Point2D.Double(28, 16));
-		points.add(new Point2D.Double(28, 4));
-		points.add(new Point2D.Double(0, 4));
-		points.add(new Point2D.Double(0, 32));
+//		points.add(new Point2D.Double(50, 32));
+//		points.add(new Point2D.Double(50, 16));
+//		points.add(new Point2D.Double(28, 16));
+//		points.add(new Point2D.Double(28, 4));
+//		points.add(new Point2D.Double(0, 4));
+//		points.add(new Point2D.Double(0, 32));
 		
 		pocket.setNome(" cavidade geral");
 		pocket.setPoints(points);
-		pocket.setRadius(3.0);
-		pocket.setPosicao(5.0, 5.0, 0);
-		pocket.setProfundidade(1.5);
+//		pocket.setRadius(3.0);
+//		pocket.setPosicao(5.0, 5.0, 0);
+//		pocket.setProfundidade(1.5);
+		pocket.setRadius(30);
+		pocket.setPosicao(50, 50, 0);
+		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		//Circular Boss
-		CircularBoss arcBoss = new CircularBoss("", 2.00, 2.00, pocket.Z, 3.0, 1.5, pocket.getProfundidade());
-//		itsBoss.add(arcBoss);
+		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
+		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(400, 200, pocket.Z);
@@ -114,27 +117,27 @@ public class GenerateTrocoidalGCodeTest
 		// --- Criando Machining workingstep ----
 		
 		// ---- criando Operacao ----
-		MachiningOperation operation = new BottomAndSideRoughMilling("Desbaste", 5.0);
+		MachiningOperation operation = new BottomAndSideRoughMilling("Desbaste", 50);
 		operation.setCoolant(true);
 		
 		// ---- criando Ferramenta ----
 		FaceMill ferramenta= new FaceMill();
 		ferramenta.setName("1");
-		ferramenta.setDiametroFerramenta(0.20); //Diametro da ferramenta (mudei)
+		ferramenta.setDiametroFerramenta(20); //Diametro da ferramenta (mudei)
 
 		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 			
 		// ---- criando Condicoes de usinagem -----
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(1.5); //15
-		cond.setAe(1.0);
+		cond.setAp(15); //15
+		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
 		
 		// ---- criando estrategia -----
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
-		strategy.setTrochoidalRadius(5.0);
+		strategy.setTrochoidalRadius(50);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 		strategy.setRadialDephtPercent(20);

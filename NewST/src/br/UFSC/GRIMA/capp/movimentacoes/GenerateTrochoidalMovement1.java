@@ -464,6 +464,7 @@ public class GenerateTrochoidalMovement1
 //			System.out.println("delta Acumulado == " + deltaAcumulado);
 //			System.out.println("DeltaTmp: " + deltaAnguloTmp);
 			CircularPath arcTmp = new CircularPath(arc.getCenter(), pontoInicialTmp, pontoFinalTmp, deltaAnguloTmp, sense);
+			System.out.println("arcPath: C" + arcTmp.getCenter() + "PI" + arcTmp.getInitialPoint() + "ANG" + arcTmp.getAngulo() + "R" + arcTmp.getRadius());
 //			System.out.println("lol"+pontoInicialTmp);
 //			System.out.println("delta ANGULO " + i + " = "+ arcTmp.getAngulo());
 //			System.out.println("ponto inicial " + i + " = " + arcTmp.getInitialPoint());

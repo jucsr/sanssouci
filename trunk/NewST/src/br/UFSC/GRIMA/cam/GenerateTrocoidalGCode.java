@@ -29,6 +29,7 @@ public class GenerateTrocoidalGCode
 	}
 	public String getGCode()
 	{
+		System.out.println("Diameter: " + ws.getFerramenta().getDiametroFerramenta());
 		this.paths = mov.getDesbasteTrocoidal();                 //Array de paths (caminhos da ferramenta)
 //		this.paths = mov.getDesbasteContourParallel();
 		this.baseLines = mov.getMultipleLimitedElements();       //Array de linhas guia
@@ -43,7 +44,7 @@ public class GenerateTrocoidalGCode
 			sentidoRotacao = " M04";
 		}
 		GCode += "\nN" + (n + 3 * 10) + "\tS" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF() + sentidoRotacao;
-		GCode += "\nN" + (n + 4 * 10) + "\tT = " + ws.getFerramenta().getName();
+		GCode += "\nN" + (n + 4 * 10) + "\tT" + ws.getFerramenta().getName();
 		GCode += "\nN" + (n + 5 * 10) + "\tM06";
 //		int numeroDeLinha = 0;
 		
@@ -66,7 +67,7 @@ public class GenerateTrocoidalGCode
 					aux = "G0 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y, 5) + " Z" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().z, 5);
 				} else if(linearTmp.getTipoDeMovimento() == LinearPath.SLOW_MOV)
 				{
-					aux = "G1 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y, 5) + " Z = R1";
+					aux = "G1 " + " X" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(pathTmp.getFinalPoint().y, 5) + " ZR1";
 				}
 			} else if(paths.get(i).getClass() == CircularPath.class)
 			{
@@ -76,10 +77,10 @@ public class GenerateTrocoidalGCode
 				
 				if(circularTmp.getAngulo() < 0) // Sentido Horario
 				{
-					aux = "G2 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y, 5) + " Z = R1" + " I" + GeometricOperations.roundNumber(I, 5) + " J" + GeometricOperations.roundNumber(J, 5);
+					aux = "G2 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y, 5) + " ZR1" + " I" + GeometricOperations.roundNumber(I, 5) + " J" + GeometricOperations.roundNumber(J, 5);
 				} else // sentido Antihorario
 				{
-					aux = "G3 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " Z = R1" + " I" + GeometricOperations.roundNumber(I, 5) + " J" + GeometricOperations.roundNumber(J, 5);
+					aux = "G3 " + " X" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().x, 5) + " Y" + GeometricOperations.roundNumber(circularTmp.getFinalPoint().y,5) + " ZR1" + " I" + GeometricOperations.roundNumber(I, 5) + " J" + GeometricOperations.roundNumber(J, 5);
 				}
 			}
 //			GCode += "\nN" + numeroDeLinha + aux;

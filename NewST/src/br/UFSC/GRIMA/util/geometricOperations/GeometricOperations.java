@@ -98,7 +98,8 @@ public class GeometricOperations
 	
 	public static Point3d plus(Point3d p1, Point3d p2)
 	{
-		Point3d plusPoint = new Point3d(p1.getX()+p2.getX(), p1.getY()+p2.getY(),p1.getZ()+p2.getZ());
+		//Estava somando o Z tbm
+		Point3d plusPoint = new Point3d(p1.getX()+p2.getX(), p1.getY()+p2.getY(),p1.getZ()/*+p2.getZ()*/);
 		return plusPoint;
 	}
 	
@@ -1412,7 +1413,7 @@ public class GeometricOperations
 		
 		double saida = 0;
 		saida = Math.atan2(Pf.y - center.y, Pf.x - center.x) - Math.atan2(Pi.y - center.y, Pi.x - center.x);
-		System.out.println("Saida: " + saida);
+//		System.out.println("Saida: " + saida);
 		if(saida < 0)
 		{
 			saida = 2 * Math.PI + saida;
@@ -2055,7 +2056,6 @@ public class GeometricOperations
 		{
 			distanceVector = multiply(-distance, unitDistance);
 		}
-
 		Point3d newInitialPoint = plus(line.getInitialPoint(),distanceVector);
 		Point3d newFinalPoint = plus(line.getFinalPoint(),distanceVector);
 //		System.out.println("Distance Vector " + distanceVector);

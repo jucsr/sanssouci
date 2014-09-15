@@ -292,7 +292,7 @@ public class GenerateTrochoidalMovement1Test
 		//Arco(a3) - Linha(l1): Caso 1
 		LimitedLine parallelL1 = GeometricOperations.absoluteParallel(l1, a3Radius, true);
 		Point3d a3Center = parallelL1.getInitialPoint();
-		Point3d a3InitialPoint = new Point3d(parallelL1.getInitialPoint().x  + GeometricOperations.multiply(-a3Radius, unitVectorl1).x,parallelL1.getInitialPoint().y  + GeometricOperations.multiply(-a3Radius, unitVectorl1).y,parallelL1.getInitialPoint().z);
+		Point3d a3InitialPoint = new Point3d(parallelL1.getInitialPoint().x  + GeometricOperations.multiply(-a3Radius, unitVectorl1).x,parallelL1.getInitialPoint().y  + GeometricOperations.multiply(-a3Radius, unitVectorl1).y,l1.getInitialPoint().z);
 		LimitedArc a3 = new LimitedArc(a3Center,a3InitialPoint,Math.PI/2);
 		
 		//Arco(a4) - Linha(l3): Caso 2 (ERRO!)

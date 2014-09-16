@@ -143,15 +143,16 @@ public class GenerateContournParallel
 	public ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
 	{
 		boolean inside = true;
-
+		boolean isBoss = true;
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
 		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
 		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
 
 		
-		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside);
-		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside);
+		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
+		GeometricOperations.showElements(parallelTemp1);
+		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
 		
 		for(LimitedElement tmp:parallelTemp1)
 		{
@@ -166,7 +167,7 @@ public class GenerateContournParallel
 		
 		return saida;
 	}
-	public ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside)
+	public ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside,boolean isBoss)
 	{
 		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
 		for(int j = 0; j < elements.size();j++)
@@ -193,7 +194,7 @@ public class GenerateContournParallel
 				}
 				else
 				{
-					newArc = parallelArc(arcTmp, distance, inside);
+					newArc = parallelArc(arcTmp, distance, inside,isBoss);
 				}
 				if(newArc != null)
 				{
@@ -426,42 +427,84 @@ public class GenerateContournParallel
 			return lineParallel;
 		}
 	}
-	public LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside)
+//	public LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside)
+//	{
+	public static LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside, boolean isBoss)
 	{
-		Point3d initialPoint = new Point3d(arc.getInitialPoint().x, arc.getInitialPoint().y, planoZ);
-		Point3d center = new Point3d(arc.getCenter().x, arc.getCenter().y, planoZ);
-		boolean isBoss = !inside;
-		Point3d newInitialPoint;
-		LimitedArc newArc = null;
-		if (arc.getDeltaAngle() < 0)
-		{
-			if(!isBoss)
+			double newRadius;
+			if (arc.getDeltaAngle()<0) //Sentido horario
 			{
-				newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
-				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
+				if(isBoss) //Se for boss
+				{
+					newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+				}
+				else //Se nao for boss
+				{
+					if(inside) //Se for para dentro
+					{
+						newRadius = arc.getRadius()+distance;
+					}
+					else //Se for para fora
+					{
+						newRadius = arc.getRadius()-distance;
+					}
+				}
 			}
-			else
+			else //Sentido anti-horario
 			{
-				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()+distance),GeometricOperations.unitVector(center, initialPoint)));
-				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
+				if(isBoss) //Se for boss
+				{
+					newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+				}
+				else //Se nao for boss
+				{
+					if(inside) //Se for para dentro
+					{
+						newRadius = arc.getRadius()-distance;
+					}
+					else //Se for para fora
+					{
+						newRadius = arc.getRadius()+distance;
+					}
+				}
 			}
-		}
-		else
-		{
+			
+//			System.out.println("RADIUS: " + newRadius);
+			return (new LimitedArc(arc.getCenter(), GeometricOperations.plus(arc.getCenter(),GeometricOperations.multiply(newRadius,GeometricOperations.unitVector(arc.getCenter(),arc.getInitialPoint()))), arc.getDeltaAngle()));
+//		Point3d initialPoint = new Point3d(arc.getInitialPoint().x, arc.getInitialPoint().y, planoZ);
+//		Point3d center = new Point3d(arc.getCenter().x, arc.getCenter().y, planoZ);
+//		boolean isBoss = !inside;
+//		Point3d newInitialPoint;
+//		LimitedArc newArc = null;
+//		if (arc.getDeltaAngle() < 0)
+//		{
 //			if(!isBoss)
 //			{
-				if(arc.getRadius() > distance)
-				{
-					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() - distance),GeometricOperations.unitVector(center, initialPoint)));
-					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-				}
+//				newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
+//				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
 //			}
 //			else
 //			{
-//				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() + distance),GeometricOperations.unitVector(center, initialPoint)));
+//				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()+distance),GeometricOperations.unitVector(center, initialPoint)));
 //				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
 //			}
-		}
-		return newArc;
+//		}
+//		else
+//		{
+////			if(!isBoss)
+////			{
+//				if(arc.getRadius() > distance)
+//				{
+//					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() - distance),GeometricOperations.unitVector(center, initialPoint)));
+//					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
+//				}
+////			}
+////			else
+////			{
+////				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() + distance),GeometricOperations.unitVector(center, initialPoint)));
+////				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
+////			}
+//		}
+//		return newArc;
 	}
 }

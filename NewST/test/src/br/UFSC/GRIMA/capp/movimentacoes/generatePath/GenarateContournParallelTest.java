@@ -81,12 +81,12 @@ public class GenarateContournParallelTest
 //		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 //		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
 		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
-		itsBoss.add(arcBoss);
+//		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(20, 200, pocket.Z);
 		rectBoss.setRadius(10);
-//		itsBoss.add(rectBoss);
+		itsBoss.add(rectBoss);
 		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
 		genBoss.setRadius(10);
@@ -117,14 +117,14 @@ public class GenarateContournParallelTest
 				//Tamanho em y
 				double c = tmp.getL2();
 				Point3d position = new Point3d(tmp.X,tmp.Y,tmp.Z);
-				LimitedLine l1 = new LimitedLine(GeometricOperations.pointPlusEscalar(position, "x", tmp.getRadius()),GeometricOperations.pointPlusEscalar(position,"x",(l-tmp.getRadius())));
-				LimitedArc a1 = new LimitedArc(GeometricOperations.pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
-				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),GeometricOperations.pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
-				LimitedArc a2 = new LimitedArc(GeometricOperations.pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
-				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),GeometricOperations.pointPlusEscalar(a2.getFinalPoint(), "x", -(l - 2*tmp.getRadius())));
-				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
-				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),GeometricOperations.pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
-				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
+				LimitedLine l1 = new LimitedLine(GeometricOperations.pointPlusEscalar(position, "x", (l - tmp.getRadius())), GeometricOperations.pointPlusEscalar(position, "x", tmp.getRadius()));
+				LimitedArc a1 = new LimitedArc(GeometricOperations.pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()), l1.getFinalPoint(), -Math.PI / 2);
+				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(), GeometricOperations.pointPlusEscalar(a1.getFinalPoint(), "y", (c - 2 * tmp.getRadius())));
+				LimitedArc a2 = new LimitedArc(GeometricOperations.pointPlusEscalar(l2.getFinalPoint(), "x", tmp.getRadius()), l2.getFinalPoint(), -Math.PI / 2);
+				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),GeometricOperations.pointPlusEscalar(a2.getFinalPoint(), "x", (l - 2 * tmp.getRadius())));
+				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()), l3.getFinalPoint(), -Math.PI / 2);
+				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(), GeometricOperations.pointPlusEscalar(a3.getFinalPoint(), "y", -(c - 2 * tmp.getRadius())));
+				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", -tmp.getRadius()), l4.getFinalPoint(), -Math.PI / 2);
 				formaOriginal.add(l1);
 				formaOriginal.add(a1);
 				formaOriginal.add(l2);

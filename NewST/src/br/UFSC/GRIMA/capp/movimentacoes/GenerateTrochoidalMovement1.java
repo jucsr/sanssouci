@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
@@ -23,11 +25,13 @@ public class GenerateTrochoidalMovement1
 	private ArrayList<Path> paths = new ArrayList<Path>();
 	private double radius;
 	private double avanco;
-	public GenerateTrochoidalMovement1(ArrayList<LimitedElement> elements, double radius, double avanco)
+	private Workingstep ws;
+	public GenerateTrochoidalMovement1(ArrayList<LimitedElement> elements, Workingstep ws)
 	{
+		this.ws = ws;
 		this.elements = elements;
-		this.radius = radius;
-		this.avanco = avanco;
+		this.radius = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalRadius();
+		this.avanco = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalFeedRate();
 		this.generatePaths();
 	}
 	//O ADD DOS PATHS CIRCULARES (2 PI) ESTAO COMENTADOS PARA FINS DE TESTE
@@ -321,6 +325,11 @@ public class GenerateTrochoidalMovement1
 	private ArrayList<Path> generatePathsInLimitedLineBase(LimitedLine line)
 	{
 //		ArrayList<Path> saida = new ArrayList<Path>();
+		double trochoidalAngle = -2*Math.PI;
+		if(((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalSense() == TrochoidalAndContourParallelStrategy.CCW)
+		{
+			trochoidalAngle = -trochoidalAngle;
+		}
 		double norma = line.getInitialPoint().distance(line.getFinalPoint());
 		double distanciaAcumulada = 0;
 		LimitedLine lineAuxTmp = GeometricOperations.absoluteParallel(line, radius, false); // linha paralela
@@ -376,6 +385,7 @@ public class GenerateTrochoidalMovement1
 	}
 	private ArrayList<Path> generatePathsInLimitedArcBase(LimitedArc arc)
 	{
+		boolean senseCCW = true;
 //		System.out.println("arc = " + arc.getCenter());
 //		ArrayList<Path> saida = new ArrayList<Path>();
 		double norma = Math.abs(arc.getDeltaAngle() * arc.getRadius());

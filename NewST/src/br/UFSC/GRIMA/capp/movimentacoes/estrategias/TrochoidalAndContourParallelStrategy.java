@@ -6,9 +6,13 @@ package br.UFSC.GRIMA.capp.movimentacoes.estrategias;
  */
 public class TrochoidalAndContourParallelStrategy extends ContourParallel
 {
+	//Trocar a variavel trocoidal sense por um boolean isCCW
 	private double trochoidalRadius;
 	private int trochoidalSense;
 	private double radialDephtPercent;
+	public static final int CCW = 0;
+	public static final int CW = 1;
+	private double trochoidalFeedRate;
 	
 	public double getRadialDephtPercent()
 	{
@@ -18,8 +22,6 @@ public class TrochoidalAndContourParallelStrategy extends ContourParallel
 	{
 		this.radialDephtPercent = radialDephtPercent;
 	}
-	public static final int CCW = 0;
-	public static final int CW = 1;
 	
 	public double getTrochoidalRadius() 
 	{
@@ -36,5 +38,13 @@ public class TrochoidalAndContourParallelStrategy extends ContourParallel
 	public void setTrochoidalSense(int trochoidalSense) 
 	{
 		this.trochoidalSense = trochoidalSense;
+	}
+	public double getTrochoidalFeedRate() 
+	{
+		return trochoidalFeedRate;
+	}
+	public void setTrochoidalFeedRate(double trochoidalFeedRate)
+	{
+		this.trochoidalFeedRate = trochoidalFeedRate;
 	}
 }

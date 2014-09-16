@@ -274,7 +274,7 @@ public class MovimentacaoGeneralClosedPocket {
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
 			{
-				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe());
+				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), ws/*trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe()*/);
 				Path pathTmp = eMov.getPaths().get(0); //Primeiro path do array
 				Point3d pointTmp = new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, planoSeguranca);
 				/*

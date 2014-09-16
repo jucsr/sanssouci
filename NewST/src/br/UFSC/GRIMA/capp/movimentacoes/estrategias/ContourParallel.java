@@ -12,6 +12,10 @@ public class ContourParallel extends Two5DMillingStrategy
 	public static final int climb = 0;
 	public static final int conventional = 1;
 	
+	/**
+	 * 
+	 * @return return the offsets rotation sense
+	 */
 	public boolean isRotationDirectionCCW() 
 	{
 		return rotationDirectionCCW;

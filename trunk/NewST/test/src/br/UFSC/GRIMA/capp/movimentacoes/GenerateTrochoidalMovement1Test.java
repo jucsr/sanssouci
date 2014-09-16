@@ -2,19 +2,29 @@ package br.UFSC.GRIMA.capp.movimentacoes;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.vecmath.Point3d;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
+import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
+import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
+import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
+import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
@@ -28,6 +38,7 @@ public class GenerateTrochoidalMovement1Test
 	private ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	private ArrayList<LimitedElement> formaOriginal;
 	GeneralClosedPocket pocket = new GeneralClosedPocket();
+	private Workingstep ws;
 
 	
 	@Before
@@ -91,16 +102,56 @@ public class GenerateTrochoidalMovement1Test
 		pocket.setItsBoss(itsBoss);
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
 		formaOriginal = addPocketVertex.getElements();
+		
+		// --- Criando Machining workingstep ----
+		
+		// ---- criando Operacao ----
+		MachiningOperation operation = new BottomAndSideRoughMilling("Desbaste", 50);
+		operation.setCoolant(true);
+		
+		// ---- criando Ferramenta ----
+		FaceMill ferramenta= new FaceMill();
+		ferramenta.setName("1");
+		ferramenta.setDiametroFerramenta(20); //Diametro da ferramenta (mudei)
+		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
+				
+		// ---- criando Condicoes de usinagem -----
+		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
+		cond.setAp(15); //15
+		cond.setAe(10);
+		cond.setF(.0123);
+		cond.setN(1500);
+				
+		// ---- criando estrategia -----
+		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
+		strategy.setAllowMultiplePasses(true);
+		strategy.setTrochoidalRadius(50);
+		strategy.setRotationDirectionCCW(Boolean.TRUE);
+		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
+		strategy.setRadialDephtPercent(20);
+		operation.setMachiningStrategy(strategy);
+				
+		ws = new Workingstep();
+		ws.setId("milling test");
+		ws.setOperation(operation);
+		ws.setFerramenta(ferramenta);
+		ws.setFeature(pocket);
+		ws.setCondicoesUsinagem(cond);
+		Vector workingsteps = new Vector();
+		workingsteps.add(ws);
+		pocket.setWorkingsteps(workingsteps);
 	}
 	
 	@Test
 	public void generateTrochoidalPathTest()
 	{
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(20); //Raio
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(25); //Avanco
 		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 90, 0);
 		ArrayList<Path> paths = new ArrayList<Path>();
 		for(ArrayList<LimitedElement> tmp : parallel)
 		{
-			GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(tmp, 20, 25);
+			GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(tmp, ws);
 			for(Path pathTmp:gen.getPaths())
 			{
 				paths.add(pathTmp);
@@ -126,6 +177,8 @@ public class GenerateTrochoidalMovement1Test
 	{
 		double trochoidalRadius = 10;
 		double trochoidalPercent = 1.5;
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(trochoidalRadius); //Raio
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(15); //Avanco
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
 //		points.add(new Point2D.Double(8, 160));
@@ -206,7 +259,7 @@ public class GenerateTrochoidalMovement1Test
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
-				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), trochoidalRadius, 15);
+				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), ws); //trochoidalRadius, 15
 				ArrayList<LimitedElement> movimentacoes = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gen.getPaths());
 				for(int k = 0; k < movimentacoes.size(); k ++)
 				{
@@ -240,12 +293,14 @@ public class GenerateTrochoidalMovement1Test
 	
 	public void generatePathsInLimitedLineBaseTest()
 	{
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(10); //Raio
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(5); //Avanco
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		LimitedLine l1 = new LimitedLine(new Point3d(20,10,0), new Point3d(73,10,0));
 		all.add(l1);
 		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 		elements.add(l1);
-		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elements, 10, 5);
+		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elements,ws);
 		ArrayList<Path> paths = gen.getPaths();
 		ArrayList<LimitedElement> pathToElements = GenerateTrochoidalMovement1.transformPathsInLimitedElements(paths);
 		
@@ -263,6 +318,9 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generatePathsTest()
 	{
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(10); //Raio
+		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(5); //Avanco
+		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementos = new ArrayList<LimitedElement>();
 		double Z = -10;
@@ -302,7 +360,7 @@ public class GenerateTrochoidalMovement1Test
 		//-----------------------------------------------------------------------------------------------
 		elementos.add(a3);
 		elementos.add(l1);
-		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elementos, 10, 5);
+		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elementos, ws);
 		ArrayList<Path> paths = gen.getPaths();
 		ArrayList<LimitedElement> pathToElements = GenerateTrochoidalMovement1.transformPathsInLimitedElements(paths);
 		for(LimitedElement tmp : elementos)

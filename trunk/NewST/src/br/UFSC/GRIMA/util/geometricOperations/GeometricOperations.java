@@ -2444,7 +2444,7 @@ public class GeometricOperations
 			}
 		}
 		
-		System.out.println("RADIUS: " + newRadius);
+//		System.out.println("RADIUS: " + newRadius);
 		return (new LimitedArc(arc.getCenter(), plus(arc.getCenter(),multiply(newRadius,unitVector(arc.getCenter(),arc.getInitialPoint()))), arc.getDeltaAngle()));
 
 		//Se houver erro, descomentar a parte a baixo e comentar a parte a cima

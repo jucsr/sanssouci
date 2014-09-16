@@ -96,7 +96,7 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateTrochoidalPathTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 30, 0);
+		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 90, 0);
 		ArrayList<Path> paths = new ArrayList<Path>();
 		for(ArrayList<LimitedElement> tmp : parallel)
 		{

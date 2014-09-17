@@ -99,7 +99,7 @@ public class GeometricOperations
 	public static Point3d plus(Point3d p1, Point3d p2)
 	{
 		//Estava somando o Z tbm (na logica do Two5D, o z permanece constante)
-		Point3d plusPoint = new Point3d(p1.getX()+p2.getX(), p1.getY()+p2.getY(),p1.getZ()/*+p2.getZ()*/);
+		Point3d plusPoint = new Point3d(p1.x+p2.x, p1.y+p2.y,p1.z/*+p2.getZ()*/);
 		return plusPoint;
 	}
 	

@@ -125,7 +125,8 @@ public class GenerateTrochoidalMovement1Test
 		// ---- criando estrategia -----
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
-		strategy.setTrochoidalRadius(50);
+		//Setar o trochoidalRadius nos proprios testes
+//		strategy.setTrochoidalRadius(50);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 		strategy.setRadialDephtPercent(20);
@@ -330,15 +331,15 @@ public class GenerateTrochoidalMovement1Test
 		LimitedLine l2 = new LimitedLine(new Point3d(83,10,Z), new Point3d(20,53,Z));
 		//----------------------------------------------------------------------------------------------
 		//Arco - Arco: Caso 1
-//		LimitedArc a1 = new LimitedArc(new Point3d(50,50,0),new Point3d(50,0,0),Math.PI/2);
-//		LimitedArc a2 = new LimitedArc(new Point3d(150,50,0),new Point3d(100,50,0),Math.PI/2);
+		LimitedArc a1 = new LimitedArc(new Point3d(50,50,0),new Point3d(50,0,0),Math.PI/2);
+		LimitedArc a2 = new LimitedArc(new Point3d(150,50,0),new Point3d(100,50,0),Math.PI/2);
 		//Arco - Arco: Caso 2
 		Point3d a1C = new Point3d(50,50,Z);
 		Point3d a1I = new Point3d(70,60,Z);
 		Point3d a1F = new Point3d(60,70,Z);
 		double a1Angle = GeometricOperations.calcDeltaAngle(a1I, a1F, a1C, Math.PI);
-		LimitedArc a1 = new LimitedArc(a1C,a1I,a1Angle);
-		LimitedArc a2 = new LimitedArc(new Point3d(70,50,Z),a1F,a1.getDeltaAngle());
+//		LimitedArc a1 = new LimitedArc(a1C,a1I,a1Angle);
+//		LimitedArc a2 = new LimitedArc(new Point3d(70,50,Z),a1F,a1.getDeltaAngle());
 		//-----------------------------------------------------------------------------------------------
 		//Linha(l1) - Arco(a3)
 		Point3d unitVectorl1 = GeometricOperations.unitVector(l1.getInitialPoint(), l1.getFinalPoint());
@@ -358,8 +359,8 @@ public class GenerateTrochoidalMovement1Test
 		LimitedLine l3 = new LimitedLine(a4.getFinalPoint(),GeometricOperations.pointPlusEscalar(a4.getFinalPoint(), "x", 50));
 		
 		//-----------------------------------------------------------------------------------------------
-		elementos.add(a3);
-		elementos.add(l1);
+		elementos.add(a1);
+		elementos.add(a2);
 		GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(elementos, ws);
 		ArrayList<Path> paths = gen.getPaths();
 		ArrayList<LimitedElement> pathToElements = GenerateTrochoidalMovement1.transformPathsInLimitedElements(paths);

@@ -98,7 +98,7 @@ public class GeometricOperations
 	
 	public static Point3d plus(Point3d p1, Point3d p2)
 	{
-		//Estava somando o Z tbm
+		//Estava somando o Z tbm (na logica do Two5D, o z permanece constante)
 		Point3d plusPoint = new Point3d(p1.getX()+p2.getX(), p1.getY()+p2.getY(),p1.getZ()/*+p2.getZ()*/);
 		return plusPoint;
 	}
@@ -182,7 +182,8 @@ public class GeometricOperations
 	
 	public static Point3d multiply(double m, Point3d p)
 	{
-		return new Point3d(m * p.x, m * p.y, m * p.z);
+		//Na logica do Two5D, o z e constante, logo o m so multiplica x e y
+		return new Point3d(m * p.x, m * p.y, p.z);
 	}
 	
 	public static Point3d crossVector(Vector3d v1, Vector3d v2)

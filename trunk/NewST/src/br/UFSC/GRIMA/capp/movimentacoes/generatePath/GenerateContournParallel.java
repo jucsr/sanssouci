@@ -397,21 +397,30 @@ public class GenerateContournParallel
 		Point3d finalPoint = new Point3d(line.getFinalPoint().x, line.getFinalPoint().y, 0);
 		double angleLine = GeometricOperations.angle(GeometricOperations.minus(initialPoint, finalPoint));
 		double newDistanceAngle = angleLine + Math.PI / 2;
-		double x = Math.cos(newDistanceAngle);
-		double y = Math.sin(newDistanceAngle);
-		Point3d unitDistance = new Point3d(x, y, 0);
+		double x = GeometricOperations.roundNumber(Math.cos(newDistanceAngle),10);
+		double y = GeometricOperations.roundNumber(Math.sin(newDistanceAngle),10);
+		//Cuidado com o Z
+		Point3d unitDistance = new Point3d(x, y, line.getInitialPoint().z);
 		Point3d distanceVector;
 		if(!inside) // ========= Nao entendi ====== 
 		{
 			distanceVector = GeometricOperations.multiply(distance, unitDistance);		
+			System.out.println("Distance: " + distance);
+			System.out.println("unitDistance: " + unitDistance);
 		}
 		else
 		{
 			distanceVector = GeometricOperations.multiply(-distance, unitDistance);
 		}
-
+		System.out.println("distanceVector: " + distanceVector);
+		//Analisar pq o plus nao esta somando...
 		Point3d newInitialPoint = GeometricOperations.plus(initialPoint, distanceVector);
 		Point3d newFinalPoint = GeometricOperations.plus(finalPoint, distanceVector);
+		System.out.println("PI: " + newInitialPoint);
+		System.out.println("PF: " + newFinalPoint);
+		System.out.println("nPI: " + newInitialPoint);
+		System.out.println("nPF: " + newFinalPoint);
+
 		/**
 		 *  ======= fazendo uma gambiarra ...
 		 */

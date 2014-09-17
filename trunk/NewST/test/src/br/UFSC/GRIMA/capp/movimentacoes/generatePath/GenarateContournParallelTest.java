@@ -84,7 +84,7 @@ public class GenarateContournParallelTest
 //		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(20, 200, pocket.Z);
+		rectBoss.setPosicao(50, 200, pocket.Z);
 		rectBoss.setRadius(10);
 		itsBoss.add(rectBoss);
 		//General Boss
@@ -125,14 +125,14 @@ public class GenarateContournParallelTest
 				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()), l3.getFinalPoint(), -Math.PI / 2);
 				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(), GeometricOperations.pointPlusEscalar(a3.getFinalPoint(), "y", -(c - 2 * tmp.getRadius())));
 				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", -tmp.getRadius()), l4.getFinalPoint(), -Math.PI / 2);
-				formaOriginal.add(l1);
-				formaOriginal.add(a1);
-				formaOriginal.add(l2);
-				formaOriginal.add(a2);
-				formaOriginal.add(l3);
-				formaOriginal.add(a3);
-				formaOriginal.add(l4);
-				formaOriginal.add(a4);
+//				formaOriginal.add(l1);
+//				formaOriginal.add(a1);
+//				formaOriginal.add(l2);
+//				formaOriginal.add(a2);
+//				formaOriginal.add(l3);
+//				formaOriginal.add(a3);
+//				formaOriginal.add(l4);
+//				formaOriginal.add(a4);
 			} else if(pocket.getItsBoss().get(i).getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)pocket.getItsBoss().get(i);

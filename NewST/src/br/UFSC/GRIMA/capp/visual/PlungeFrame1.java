@@ -28,6 +28,8 @@ public class PlungeFrame1 extends JFrame {
 		width = new JSpinner();
 		label3 = new JLabel();
 		angle = new JSpinner();
+		label4 = new JLabel();
+		radius = new JSpinner();
 		panel2 = new JPanel();
 		label1 = new JLabel();
 		panel4 = new JPanel();
@@ -56,9 +58,9 @@ public class PlungeFrame1 extends JFrame {
 			{
 				panel1.setLayout(new GridBagLayout());
 				((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {18, 75, 0, 0};
-				((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 50, 0, 0, 9, 0, 0, 0, 0};
+				((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {100, 0, 0, 0, 0, 50, 10, 20, 10, 10, 20, 10, 0, 20, 50, 0};
 				((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
-				((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+				((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
 				//---- bolaVert ----
 				bolaVert.setText("Vertical");
@@ -106,6 +108,16 @@ public class PlungeFrame1 extends JFrame {
 				//---- angle ----
 				angle.setModel(new SpinnerNumberModel(0.0, 0.0, null, 1.0));
 				panel1.add(angle, new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label4 ----
+				label4.setText("Radius");
+				label4.setHorizontalAlignment(SwingConstants.CENTER);
+				panel1.add(label4, new GridBagConstraints(1, 12, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+				panel1.add(radius, new GridBagConstraints(1, 13, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
 			}
@@ -177,10 +189,12 @@ public class PlungeFrame1 extends JFrame {
 	public JRadioButton bolaRamp;
 	public JRadioButton bolaHelix;
 	public JRadioButton bolaZigzag;
-	private JLabel label2;
+	public JLabel label2;
 	public JSpinner width;
-	private JLabel label3;
+	public JLabel label3;
 	public JSpinner angle;
+	public JLabel label4;
+	public JSpinner radius;
 	private JPanel panel2;
 	public JLabel label1;
 	private JPanel panel4;

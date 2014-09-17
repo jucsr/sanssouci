@@ -124,11 +124,23 @@ public class MachiningOperationReader
 			TrochoidalAndContourParallelStrategy trocoidal = new TrochoidalAndContourParallelStrategy();
 			trocoidal.setAllowMultiplePasses(eTrocoidal.getAllow_multiple_passes(null));
 			trocoidal.setTrochoidalRadius(eTrocoidal.getTrochoidal_radius(null));
-			trocoidal.setTrochoidalSense(eTrocoidal.getTrochoidal_rot_direction(null));
-			if(eTrocoidal.getRotation_direction(null) == ERot_direction.CCW)
-				trocoidal.setRotationDirectionCCW(true);
+			if(eTrocoidal.getTrochoidal_rot_direction(null) == ERot_direction.CCW) //Trochoidal rotation
+			{
+				trocoidal.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
+			}
 			else
-				trocoidal.setRotationDirectionCCW(false);
+			{
+				trocoidal.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CW);
+			}
+				
+			if(eTrocoidal.getRotation_direction(null) == ERot_direction.CCW) //baseline direction
+			{
+				trocoidal.setRotationDirectionCCW(TrochoidalAndContourParallelStrategy.CCW);
+			}
+			else
+			{
+				trocoidal.setRotationDirectionCCW(TrochoidalAndContourParallelStrategy.CW);
+			}
 			
 			return trocoidal;
 		}

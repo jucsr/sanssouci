@@ -393,9 +393,11 @@ public class GenerateContournParallel
 	}
 	public LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside)
 	{
-		Point3d initialPoint = new Point3d(line.getInitialPoint().x, line.getInitialPoint().y, 0);
-		Point3d finalPoint = new Point3d(line.getFinalPoint().x, line.getFinalPoint().y, 0);
+		//Fazer um teste de apenas uma paralela
+		Point3d initialPoint = line.getInitialPoint();//new Point3d(line.getInitialPoint().x, line.getInitialPoint().y, 0);
+		Point3d finalPoint = line.getFinalPoint();//new Point3d(line.getFinalPoint().x, line.getFinalPoint().y, 0);
 		double angleLine = GeometricOperations.angle(GeometricOperations.minus(initialPoint, finalPoint));
+		System.out.println("Angle: " + angleLine);
 		double newDistanceAngle = angleLine + Math.PI / 2;
 		double x = GeometricOperations.roundNumber(Math.cos(newDistanceAngle),10);
 		double y = GeometricOperations.roundNumber(Math.sin(newDistanceAngle),10);
@@ -424,15 +426,15 @@ public class GenerateContournParallel
 		/**
 		 *  ======= fazendo uma gambiarra ...
 		 */
-		Point3d newInitialPoint1 = new Point3d(newInitialPoint.x, newInitialPoint.y, planoZ);
-		Point3d newFinalPoint1 = new Point3d(newFinalPoint.x, newFinalPoint.y, planoZ);
+//		Point3d newInitialPoint1 = new Point3d(newInitialPoint.x, newInitialPoint.y, planoZ);
+//		Point3d newFinalPoint1 = new Point3d(newFinalPoint.x, newFinalPoint.y, planoZ);
 		if ((GeometricOperations.roundNumber(newInitialPoint.x, 10) == GeometricOperations.roundNumber(newFinalPoint.x, 10)) && (GeometricOperations.roundNumber(newInitialPoint.y, 10) == GeometricOperations.roundNumber(newFinalPoint.y, 10)))
 		{
 			return null;
 		}
 		else
 		{
-			LimitedLine lineParallel = new LimitedLine(newInitialPoint1, newFinalPoint1);
+			LimitedLine lineParallel = new LimitedLine(newInitialPoint, newFinalPoint);
 			return lineParallel;
 		}
 	}

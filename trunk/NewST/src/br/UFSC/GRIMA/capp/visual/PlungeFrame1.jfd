@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.0.0.109" Java: "1.7.0_67" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.0.0.109" Java: "1.8.0_20" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -23,7 +23,7 @@ new FormModel {
 				"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 					"$columnSpecs": "18:1.0, 75, 0"
-					"$rowSpecs": "center:0:1.0, 0, 0, 0, 0, 50, 0, 0, 9, 0, 0, 0:1.0"
+					"$rowSpecs": "center:100, 0, 0, 0, 0, 50, 10, 20, 10, 10, 20, 10, 0, 20, 50"
 					"$alignTop": true
 					"$alignLeft": true
 				} ) {
@@ -76,6 +76,9 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label2"
 						"text": "Width"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 1
 						"gridy": 6
@@ -98,6 +101,9 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label3"
 						"text": "Angle"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 1
 						"gridy": 9
@@ -116,6 +122,26 @@ new FormModel {
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 1
 						"gridy": 10
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label4"
+						"text": "Radius"
+						"horizontalAlignment": 0
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 1
+						"gridy": 12
+					} )
+					add( new FormComponent( "javax.swing.JSpinner" ) {
+						name: "radius"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 1
+						"gridy": 13
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 					"gridx": 1

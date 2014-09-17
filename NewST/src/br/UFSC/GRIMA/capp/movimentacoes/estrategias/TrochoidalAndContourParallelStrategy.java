@@ -8,10 +8,11 @@ public class TrochoidalAndContourParallelStrategy extends ContourParallel
 {
 	//Trocar a variavel trocoidal sense por um boolean isCCW
 	private double trochoidalRadius;
-	private int trochoidalSense;
+//	private int trochoidalSense;
+	private boolean trochoidalSense;
 	private double radialDephtPercent;
-	public static final int CCW = 0;
-	public static final int CW = 1;
+	public static final boolean CCW = false;
+	public static final boolean CW = true;
 	private double trochoidalFeedRate;
 	
 	public double getRadialDephtPercent()
@@ -31,11 +32,11 @@ public class TrochoidalAndContourParallelStrategy extends ContourParallel
 	{
 		this.trochoidalRadius = trochoidalRadius;
 	}
-	public int getTrochoidalSense() 
+	public boolean getTrochoidalSense() 
 	{
 		return trochoidalSense;
 	}
-	public void setTrochoidalSense(int trochoidalSense) 
+	public void setTrochoidalSense(boolean trochoidalSense) 
 	{
 		this.trochoidalSense = trochoidalSense;
 	}

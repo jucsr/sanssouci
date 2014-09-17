@@ -203,6 +203,7 @@ public class GenerateTrochoidalMovement1
 		else if(element2.isLimitedArc())
 		{
 			LimitedArc a2 = (LimitedArc)element2;
+//			System.out.println("lolo: " + a1.getFinalPoint());
 			double arcPathRadius = a1.getFinalPoint().distance(lastPath.getFinalPoint());
 //			ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
 //			show.add(a1);
@@ -325,8 +326,8 @@ public class GenerateTrochoidalMovement1
 	private ArrayList<Path> generatePathsInLimitedLineBase(LimitedLine line)
 	{
 //		ArrayList<Path> saida = new ArrayList<Path>();
-		double trochoidalAngle = -2*Math.PI;
-		if(((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalSense() == TrochoidalAndContourParallelStrategy.CCW)
+		double trochoidalAngle = 2*Math.PI;
+		if(((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalSense())
 		{
 			trochoidalAngle = -trochoidalAngle;
 		}
@@ -376,7 +377,7 @@ public class GenerateTrochoidalMovement1
 		Point3d pontoInicialTmp = new Point3d(lineAuxTmp.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, lineAuxTmp.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
 //		Point3d centroTmp = new Point3d(line.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, line.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).z);
 		Point3d centroTmp = new Point3d(line.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, line.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
-		CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, 2 * Math.PI);
+		CircularPath circuloTmp = new CircularPath(centroTmp, pontoInicialTmp, pontoInicialTmp, trochoidalAngle);
 		LinearPath linePath = new LinearPath(circuloTmp.getInitialPoint(),lineAuxTmp.getFinalPoint());
 		paths.add(circuloTmp);
 		paths.add(linePath);
@@ -385,8 +386,11 @@ public class GenerateTrochoidalMovement1
 	}
 	private ArrayList<Path> generatePathsInLimitedArcBase(LimitedArc arc)
 	{
-		boolean senseCCW = true;
-//		System.out.println("arc = " + arc.getCenter());
+		double trochoidalAngle = 2*Math.PI;
+		if(((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalSense())
+		{
+			trochoidalAngle = -trochoidalAngle;
+		}//		System.out.println("arc = " + arc.getCenter());
 //		ArrayList<Path> saida = new ArrayList<Path>();
 		double norma = Math.abs(arc.getDeltaAngle() * arc.getRadius());
 		double initialAngle = Math.atan2(arc.getInitialPoint().y - arc.getCenter().y, arc.getInitialPoint().x - arc.getCenter().x); 
@@ -455,7 +459,7 @@ public class GenerateTrochoidalMovement1
 			Point3d vetorUnitarioTmp = GeometricOperations.unitVector(arc.getCenter(), centroBaseTmp);
 			Point3d pontoInicialTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioTmp).y, arc.getCenter().z);
 //			System.out.println("PI: " + pontoInicialTmp);
-			CircularPath circularTmp = new CircularPath(centroBaseTmp, pontoInicialTmp, pontoInicialTmp, -2 * Math.PI);
+			CircularPath circularTmp = new CircularPath(centroBaseTmp, pontoInicialTmp, pontoInicialTmp, trochoidalAngle);
 			paths.add(circularTmp);
 			
 			Point3d centroBaseProximaTmp = new Point3d(xBaseProxima, yBaseProxima, arc.getCenter().z);

@@ -117,7 +117,7 @@ public class GenerateTrochoidalMovement1Test
 				
 		// ---- criando Condicoes de usinagem -----
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(15); //15
+		cond.setAp(2); //15
 		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);

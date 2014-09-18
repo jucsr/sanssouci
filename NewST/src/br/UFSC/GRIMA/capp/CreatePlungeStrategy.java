@@ -25,7 +25,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 {
 	private ArrayList<Path> paths;
 //	public ArrayList<Path> mergulho;
-	private double retractPlane;
+	private double retractPlane; // retract plane eh recebido pelo 'caller'
 	private char a;
 	Point3d pInicial;
 	Point3d pFinal;
@@ -143,6 +143,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		double width = ((Double)this.width.getValue());
 		double angle = Math.toRadians((Double)this.angle.getValue());
 		double high = (retractPlane - pInicial.z);
+		double course; //distancia que devera ser percorrida pela ferramenta do ponto da ferramenta até ponto inicial
 		double x0=pInicial.x;
 		double x1=pFinal.x;
 		double y0=pInicial.y;
@@ -169,7 +170,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			else
 			{
 				System.out.println("distP: " + distP0 );
-				double course = high/Math.tan(angle);  // curso ferramenta (projetado em um plano de z)
+				course = high/Math.tan(angle);  // curso ferramenta (projetado em um plano de z)
 				System.out.println("course: " + course );
 				double perimetro=0;
 				for (int i=0;i<paths.size();i++) //calcular perimetro
@@ -285,7 +286,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 					double distTemp;	
 					System.out.println("cont: " + cont);
 					System.out.println("voltas: " + voltas);
-					while ((cont>=0) && (voltas>=0))
+					while ((cont>=0) && (voltas>=0)) //ADICIONANDO PATHS
 			 		{
 						System.out.println("Entrou");
 						pontoIni = new Point3d(paths.get(cont).getFinalPoint().x,paths.get(cont).getFinalPoint().y,alturaZ); //ponto inicial - recebe o FINAL do caminho PATHS, pois aqui ele esta voltando
@@ -328,13 +329,132 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		{
 			// angle and width
 			Point3d zigzagFirstInitial = paths.get(0).getInitialPoint();
-			Point3d zigzagFirstFinal
-			= paths.get(0).getFinalPoint();
+			Point3d zigzagFirstFinal = paths.get(0).getFinalPoint();
 			double dist = zigzagFirstInitial.distance(zigzagFirstFinal);//distancia entre pontos do primeiro path
-			double deltaX=zigzagFirstInitial.x - zigzagFirstFinal.x;
-			if ( dist > width)
+			double deltaX= zigzagFirstFinal.x - zigzagFirstInitial.x; // decomposicao do vetor em x (positivo ou negativo)
+			double deltaY= zigzagFirstFinal.y - zigzagFirstInitial.y; // decomposicao do vetor em y (positivo ou negativo)
+			course = high/Math.tan(angle);  // curso ferramenta (projetado em um plano de z); 
+			double temp = course;
+			Point3d toolPoint,widthPoint; //ponto inicial da ferramenta
+			if (width <= dist)
 			{
-				//Point3d zigzagLastPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)),(),()); 
+				widthPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*width),((zigzagFirstInitial.y+(deltaY/dist)*width)),(retractPlane)); //(deltaX/dist) -> cosseno
+				long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width
+				temp = temp - width*times; //tera uma sobra no 'temp'
+/***/				
+				
+				if (times%2==0) //se o numero de vezes que passou for par (resto2 == 0)
+				{
+					toolPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*temp),((zigzagFirstInitial.y+(deltaY/dist)*temp)),(retractPlane));
+				}
+				else //se for impar, final - sobra
+				{
+					toolPoint = new Point3d((zigzagFirstFinal.x-(deltaX/dist)*temp),((zigzagFirstFinal.y-(deltaY/dist)*temp)),(retractPlane));
+				}
+				System.out.println("course: " +course);
+				System.out.println("temp: " +temp);
+				System.out.println("ponto ferramenta: "+toolPoint);
+				System.out.println("ponto limite: "+widthPoint);
+				System.out.println("vezes que completa o width: "+times);
+			}
+			else //se width > dist
+			{
+				temp = 0;
+				double temp1=0;
+				int voltas=0;
+				int cont = 0;
+				while (course >= temp) // vai encontrar até onde o width irá percorrer os caminhos
+				{
+					if(paths.get(cont).getClass().equals(LinearPath.class)) //se o caminho for reto
+					{
+						LinearPath pTmp = (LinearPath)paths.get(cont);							
+						temp = temp + pTmp.getInitialPoint().distance(pTmp.getFinalPoint());
+					}
+					else if(paths.get(cont).getClass().equals(CircularPath.class))//se caminho for circular
+					{
+						CircularPath cTmp = (CircularPath)paths.get(cont);
+						temp = temp + cTmp.getAngulo()*cTmp.getRadius();
+					}
+					if (course >= temp) //verificar se vai continuar no while. se sim, incrementa
+					{			
+						temp1=temp; //o que vale eh o temp1, assim ele nao incrementara no final
+						if (cont == paths.size()-1) //se completou uma volta
+						{
+							cont = 0;
+							voltas ++;
+						}
+						else
+							cont ++;	
+					}
+				}//fim while
+				double dX= paths.get(cont).getFinalPoint().x - paths.get(cont).getInitialPoint().x; // decomposicao do vetor em x (positivo ou negativo)
+				double dY= paths.get(cont).getFinalPoint().y - paths.get(cont).getInitialPoint().y; // decomposicao do vetor em y (positivo ou negativo)
+				double ang = Math.atan2(dY, dX); // dx/dy=tan
+				double sobra = course - temp1; // espaco percorrido no ultimo caminho
+				widthPoint = new Point3d (paths.get(cont).getInitialPoint().x + Math.cos(ang)*(sobra), paths.get(cont).getInitialPoint().y + Math.sin(ang)*(sobra), retractPlane );
+				Point3d pontoI = paths.get(cont).getInitialPoint();
+//Adicionando path
+				//PRIMEIRO TRECHO -- OBRIGATORIO
+				if (paths.get(cont).getClass().equals(LinearPath.class)) //Se for linear
+				{
+					trajeto.add(new LinearPath(widthPoint,pontoI)); //do ponto da ferramenta até o proximo, do caminho
+				}
+				else if (paths.get(cont).getClass().equals(CircularPath.class)) //se for circular
+				{
+					CircularPath circularTemp = (CircularPath)paths.get(cont);
+					Point3d pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(retractPlane - pontoI.z)/2);// o z do centro eh a media entre o z do inicio e fim
+					trajeto.add(new CircularPath(pontoC, widthPoint, pontoI, circularTemp.getAngulo()));//c, i, f, a - 
+				}
+				double alturaZ = pontoI.z;// armazena o ultimo valor de z, que vai ser usado a cada 'passo'. no momento esta recebendo o valor do ponto final do primeiro caminho
+				if ((cont!=0) || (voltas!=0))
+				{
+					System.out.println("Entrou");
+					if (cont!=0)
+						cont--;
+					else   //se cont = 0
+					{
+						cont=(paths.size() -1);
+						voltas--;
+					}
+					Point3d pontoC;
+					double distTemp;	
+					System.out.println("cont: " + cont);
+					System.out.println("voltas: " + voltas);
+				
+					while ((cont>=0) && (voltas>=0)) //ADICIONANDO PATHS
+			 		{
+						System.out.println("Entrou");
+						Point3d pontoIni = new Point3d(paths.get(cont).getFinalPoint().x,paths.get(cont).getFinalPoint().y,alturaZ); //ponto inicial - recebe o FINAL do caminho PATHS, pois aqui ele esta voltando
+						if (paths.get(cont).getClass().equals(LinearPath.class)) //LINEAR
+						{
+							distTemp = (paths.get(cont).getInitialPoint().distance(paths.get(cont).getFinalPoint()));
+							alturaZ = alturaZ - (distTemp*Math.tan(angle));
+							Point3d pontoFin = new Point3d (paths.get(cont).getInitialPoint().x, paths.get(cont).getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS
+							trajeto.add(new LinearPath(pontoIni,pontoFin));
+						}
+						else	//CIRCULAR
+						{
+							CircularPath circularTemp = (CircularPath)paths.get(cont);
+							
+							distTemp = circularTemp.getAngulo() * circularTemp.getRadius();
+							alturaZ = alturaZ - (distTemp*Math.tan(angle));
+							Point3d pontoFin = new Point3d (paths.get(cont).getInitialPoint().x, paths.get(cont).getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS, com alturaZ
+							pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(pontoIni.z + pontoFin.z)/2);// o z do centro eh a media entre o z do inicio e fim
+							trajeto.add(new CircularPath(pontoC, pontoIni, pontoFin, circularTemp.getAngulo()));//c, i, f, a
+						}
+						
+						if (cont>0)
+						{		
+							cont --;
+						}
+						else if (cont == 0) //se completou uma volta
+							{
+								cont = paths.size()-1;
+								voltas --;
+							}
+									
+						}
+				}
 			}
 		}
 		

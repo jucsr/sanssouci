@@ -175,7 +175,7 @@ public class GenerateContournParallel
 			if(elements.get(j).isLimitedLine())
 			{
 				LimitedLine lineTmp = (LimitedLine)elements.get(j);
-				LimitedLine newLine = absoluteParallel(lineTmp, distance, inside);
+				LimitedLine newLine = absoluteParallel(lineTmp, distance, inside,isBoss);
 
 				if(newLine != null)
 				{
@@ -206,14 +206,22 @@ public class GenerateContournParallel
 	}
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
+//		System.out.println("Elementos Originais: ");
+//		GeometricOperations.showElements(elements);
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
+//		System.out.println("Elementos Validar1: ");
+//		GeometricOperations.showElements(elementsIntermediario);
 		ArrayList<LimitedElement> elementsIntermediario2 = validar2Path(elementsIntermediario,formaOriginal,distance);
+//		System.out.println("Elementos Validar2: ");
+//		GeometricOperations.showElements(elementsIntermediario2);
 		ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
 		if(elementsIntermediario3 != null)
 		{
 			for (int j = 0; j < elementsIntermediario3.size(); j++)
 			{
+				System.out.println("Elementos Validar3: Array " + j);
+				GeometricOperations.showElements(elementsIntermediario3.get(j));
 				elementsValidated.add(elementsIntermediario3.get(j));					
 			}
 		}
@@ -341,6 +349,7 @@ public class GenerateContournParallel
 			boolean alreadyPassed = false;
 			LimitedElement ei0 = elementsIntermediario2.get(0);
 			LimitedElement ei0new = elementsIntermediario2.get(0);
+			int count = 0;
 			Iterator iter = elementsIntermediario2.iterator();
 			while(iter.hasNext())
 			{
@@ -351,6 +360,9 @@ public class GenerateContournParallel
 				elementsValidated.get(numeroDeLacos).add(ei0);
 				for(int j = 0; j < elementsIntermediario2.size(); j++)
 				{
+					if(count != j)
+					{
+					
 					LimitedElement ej = elementsIntermediario2.get(j);
 					if(!(alreadyPassed))
 					{
@@ -377,6 +389,7 @@ public class GenerateContournParallel
 						}
 						break;
 					}
+					}
 					if(hasNoFinalPoint)
 					{
 						elementsIntermediario2.remove(ei0);
@@ -391,43 +404,44 @@ public class GenerateContournParallel
 			return elementsValidated;
 		}
 	}
-	public static LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside)
+	public static LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside, boolean isBoss)
 	{
 		//Fazer um teste de apenas uma paralela
 		Point3d initialPoint = line.getInitialPoint();//new Point3d(line.getInitialPoint().x, line.getInitialPoint().y, 0);
 		Point3d finalPoint = line.getFinalPoint();//new Point3d(line.getFinalPoint().x, line.getFinalPoint().y, 0);
 		double angleLine = GeometricOperations.angle(GeometricOperations.minus(initialPoint, finalPoint));
-		System.out.println("Angle: " + angleLine);
+//		System.out.println("Angle: " + angleLine);
 		double newDistanceAngle = angleLine + Math.PI / 2;
 		double x = GeometricOperations.roundNumber(Math.cos(newDistanceAngle),10);
 		double y = GeometricOperations.roundNumber(Math.sin(newDistanceAngle),10);
 		//Cuidado com o Z
 		Point3d unitDistance = new Point3d(x, y, line.getInitialPoint().z);
 		Point3d distanceVector;
-		if(!inside) // ========= Nao entendi ====== 
-		{
-			distanceVector = GeometricOperations.multiply(distance, unitDistance);		
-			System.out.println("Distance: " + distance);
-			System.out.println("unitDistance: " + unitDistance);
-		}
-		else
+		if(isBoss)
 		{
 			distanceVector = GeometricOperations.multiply(-distance, unitDistance);
 		}
-		System.out.println("distanceVector: " + distanceVector);
-		//Analisar pq o plus nao esta somando...
+		else
+		{
+			if(!inside) // ========= Nao entendi ====== 
+			{
+				distanceVector = GeometricOperations.multiply(distance, unitDistance);		
+//				System.out.println("Distance: " + distance);
+//				System.out.println("unitDistance: " + unitDistance);
+			}
+			else
+			{
+				distanceVector = GeometricOperations.multiply(-distance, unitDistance);
+			}
+		}
+//		System.out.println("distanceVector: " + distanceVector);
 		Point3d newInitialPoint = GeometricOperations.plus(initialPoint, distanceVector);
 		Point3d newFinalPoint = GeometricOperations.plus(finalPoint, distanceVector);
-		System.out.println("PI: " + initialPoint);
-		System.out.println("PF: " + finalPoint);
-		System.out.println("nPI: " + newInitialPoint);
-		System.out.println("nPF: " + newFinalPoint);
+//		System.out.println("PI: " + initialPoint);
+//		System.out.println("PF: " + finalPoint);
+//		System.out.println("nPI: " + newInitialPoint);
+//		System.out.println("nPF: " + newFinalPoint);
 
-		/**
-		 *  ======= fazendo uma gambiarra ...
-		 */
-//		Point3d newInitialPoint1 = new Point3d(newInitialPoint.x, newInitialPoint.y, planoZ);
-//		Point3d newFinalPoint1 = new Point3d(newFinalPoint.x, newFinalPoint.y, planoZ);
 		if ((GeometricOperations.roundNumber(newInitialPoint.x, 10) == GeometricOperations.roundNumber(newFinalPoint.x, 10)) && (GeometricOperations.roundNumber(newInitialPoint.y, 10) == GeometricOperations.roundNumber(newFinalPoint.y, 10)))
 		{
 			return null;

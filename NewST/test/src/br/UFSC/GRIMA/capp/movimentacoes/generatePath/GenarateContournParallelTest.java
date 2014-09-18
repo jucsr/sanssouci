@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.capp.movimentacoes.generatePath;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -175,5 +176,21 @@ public class GenarateContournParallelTest
 		desenhador.setVisible(true);
 		for(;;);
 	}
-
+	
+	@Test
+	public void absolutParallelTest()
+	{
+		//O erro esta no conceito de inside (quando o sentido do elemento é CW, o inside é considerado para baixo (e nem sempre é o caso)
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>(); //Array do desenhador
+		Point3d p1I = new Point3d(50,50,0);
+		Point3d p1F = new Point3d(100,50,0);
+		LimitedLine l1 = new LimitedLine(p1F, p1I);
+		LimitedLine lineParallel = GenerateContournParallel.absoluteParallel(l1, 10, true);
+		all.add(l1);
+		all.add(lineParallel);
+		GeometricOperations.showElements(all);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
 }

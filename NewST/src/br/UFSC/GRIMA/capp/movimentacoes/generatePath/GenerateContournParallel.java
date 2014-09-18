@@ -391,7 +391,7 @@ public class GenerateContournParallel
 			return elementsValidated;
 		}
 	}
-	public LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside)
+	public static LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside)
 	{
 		//Fazer um teste de apenas uma paralela
 		Point3d initialPoint = line.getInitialPoint();//new Point3d(line.getInitialPoint().x, line.getInitialPoint().y, 0);
@@ -418,8 +418,8 @@ public class GenerateContournParallel
 		//Analisar pq o plus nao esta somando...
 		Point3d newInitialPoint = GeometricOperations.plus(initialPoint, distanceVector);
 		Point3d newFinalPoint = GeometricOperations.plus(finalPoint, distanceVector);
-		System.out.println("PI: " + newInitialPoint);
-		System.out.println("PF: " + newFinalPoint);
+		System.out.println("PI: " + initialPoint);
+		System.out.println("PF: " + finalPoint);
 		System.out.println("nPI: " + newInitialPoint);
 		System.out.println("nPF: " + newFinalPoint);
 

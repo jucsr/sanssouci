@@ -43,9 +43,9 @@ public class GenerateTrocoidalGCode
 		{
 			sentidoRotacao = " M04";
 		}
-		GCode += "\nN" + (n + 3 * 10) + "\tS" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF() + sentidoRotacao;
+		GCode += "\nN" + (n + 3 * 10) + "\tS" + ws.getCondicoesUsinagem().getN() + " F" + ws.getCondicoesUsinagem().getF();
 		GCode += "\nN" + (n + 4 * 10) + "\tT" + ws.getFerramenta().getName();
-		GCode += "\nN" + (n + 5 * 10) + "\tM06";
+		GCode += "\nN" + (n + 5 * 10) + "\tM06" + sentidoRotacao;
 //		int numeroDeLinha = 0;
 		
 		GCode += "\nN" + (n + 6 * 10) + "R2 = -" + ((GeneralClosedPocket)ws.getFeature()).getProfundidade();

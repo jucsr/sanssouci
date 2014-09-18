@@ -184,8 +184,8 @@ public class GenarateContournParallelTest
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>(); //Array do desenhador
 		Point3d p1I = new Point3d(50,50,0);
 		Point3d p1F = new Point3d(100,50,0);
-		LimitedLine l1 = new LimitedLine(p1F, p1I);
-		LimitedLine lineParallel = GenerateContournParallel.absoluteParallel(l1, 10, true);
+		LimitedLine l1 = new LimitedLine(p1I, p1F);
+		LimitedLine lineParallel = GenerateContournParallel.absoluteParallel(l1, 10, true,true);
 		all.add(l1);
 		all.add(lineParallel);
 		GeometricOperations.showElements(all);

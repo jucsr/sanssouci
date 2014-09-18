@@ -218,6 +218,7 @@ public class GenerateTrocoidalGCodeTest
 		{
 			all.add(tmp);
 		}
+//		GeometricOperations.showElements(all);
 		//--------------------------------------------
 
 		// ---- desenha linhas base ----

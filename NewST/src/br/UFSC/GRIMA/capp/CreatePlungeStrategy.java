@@ -23,6 +23,7 @@ import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
  */
 public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 {
+
 	private ArrayList<Path> paths;
 //	public ArrayList<Path> mergulho;
 	private double retractPlane; // retract plane eh recebido pelo 'caller'
@@ -52,6 +53,8 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		this.radius.setVisible(false);
 		this.label4.setVisible(false);
 		this.setResizable(false);
+		this.width.setModel(new SpinnerNumberModel(100,0.1,Math.pow(10, 4),1));
+		this.angle.setModel(new SpinnerNumberModel(5,0.1,179.1,1));
 	}
 
 	@Override
@@ -335,17 +338,20 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			double deltaY= zigzagFirstFinal.y - zigzagFirstInitial.y; // decomposicao do vetor em y (positivo ou negativo)
 			course = high/Math.tan(angle);  // curso ferramenta (projetado em um plano de z); 
 			double temp = course;
-			Point3d toolPoint,widthPoint; //ponto inicial da ferramenta
+			Point3d toolPoint,widthPoint; //ponto inicial da ferramenta , ponto onde o width foi limitado
+			
+			
+			//funciona se for path linear
 			if (width <= dist)
 			{
 				widthPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*width),((zigzagFirstInitial.y+(deltaY/dist)*width)),(retractPlane)); //(deltaX/dist) -> cosseno
-				long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width
+				long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width. (floor -> arredonda para baixo. retorna double) (round -> ARREDONDA pra inteiro)
 				temp = temp - width*times; //tera uma sobra no 'temp'
 /***/				
 				
 				if (times%2==0) //se o numero de vezes que passou for par (resto2 == 0)
 				{
-					toolPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*temp),((zigzagFirstInitial.y+(deltaY/dist)*temp)),(retractPlane));
+					toolPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*temp),((zigzagFirstInitial.y+(deltaY/dist)*temp)),(retractPlane)); //(deltaX/dist) -> cosseno do angulo que determina a direção do caminho atual
 				}
 				else //se for impar, final - sobra
 				{
@@ -356,15 +362,20 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				System.out.println("ponto ferramenta: "+toolPoint);
 				System.out.println("ponto limite: "+widthPoint);
 				System.out.println("vezes que completa o width: "+times);
+				
+				//PRONTO! ponto da ferramenta pro caso de width < first path
 			}
-			else //se width > dist
+			else //se width > distantancia do primeiro path
 			{
+/**verificar pontos de width TERMINAR*/
 				temp = 0;
 				double temp1=0;
 				int voltas=0;
 				int cont = 0;
+				System.out.println(course + "c");
 				while (course >= temp) // vai encontrar até onde o width irá percorrer os caminhos
 				{
+					System.out.println(temp1 + " "+ temp);
 					if(paths.get(cont).getClass().equals(LinearPath.class)) //se o caminho for reto
 					{
 						LinearPath pTmp = (LinearPath)paths.get(cont);							
@@ -377,7 +388,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 					}
 					if (course >= temp) //verificar se vai continuar no while. se sim, incrementa
 					{			
-						temp1=temp; //o que vale eh o temp1, assim ele nao incrementara no final
+						temp1=temp; //o que vale eh o temp1, assim ele nao incrementarah no final(ultima passada do while)
 						if (cont == paths.size()-1) //se completou uma volta
 						{
 							cont = 0;
@@ -387,12 +398,16 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 							cont ++;	
 					}
 				}//fim while
+				//PRONTO! CONTADOR POSICAO PONTO WIDTH, e diferença path - path1
+				
 				double dX= paths.get(cont).getFinalPoint().x - paths.get(cont).getInitialPoint().x; // decomposicao do vetor em x (positivo ou negativo)
 				double dY= paths.get(cont).getFinalPoint().y - paths.get(cont).getInitialPoint().y; // decomposicao do vetor em y (positivo ou negativo)
-				double ang = Math.atan2(dY, dX); // dx/dy=tan
-				double sobra = course - temp1; // espaco percorrido no ultimo caminho
+				double ang = Math.atan2(dY, dX); // delta x/delta y=tan
+				double sobra = temp - temp1; // espaco percorrido no ultimo caminho
 				widthPoint = new Point3d (paths.get(cont).getInitialPoint().x + Math.cos(ang)*(sobra), paths.get(cont).getInitialPoint().y + Math.sin(ang)*(sobra), retractPlane );
 				Point3d pontoI = paths.get(cont).getInitialPoint();
+				System.out.println(temp1 + "  " + temp);
+				
 //Adicionando path
 				//PRIMEIRO TRECHO -- OBRIGATORIO
 				if (paths.get(cont).getClass().equals(LinearPath.class)) //Se for linear

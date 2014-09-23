@@ -53,8 +53,9 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		this.radius.setVisible(false);
 		this.label4.setVisible(false);
 		this.setResizable(false);
-		this.width.setModel(new SpinnerNumberModel(100,0.1,Math.pow(10, 4),1));
-		this.angle.setModel(new SpinnerNumberModel(5,0.1,179.1,1));
+		this.width.setModel(new SpinnerNumberModel(210,0.1,null,1));
+		this.angle.setModel(new SpinnerNumberModel(3,0.1,179.9,1));
+
 	}
 
 	@Override
@@ -340,12 +341,12 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			double temp = course;
 			Point3d toolPoint,widthPoint; //ponto inicial da ferramenta , ponto onde o width foi limitado
 			
+			long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width. (floor -> arredonda para baixo. retorna double) (round -> ARREDONDA pra inteiro)
 			
 			//funciona se for path linear
 			if (width <= dist)
 			{
 				widthPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*width),((zigzagFirstInitial.y+(deltaY/dist)*width)),(retractPlane)); //(deltaX/dist) -> cosseno
-				long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width. (floor -> arredonda para baixo. retorna double) (round -> ARREDONDA pra inteiro)
 				temp = temp - width*times; //tera uma sobra no 'temp'
 /***/				
 				
@@ -368,27 +369,27 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			else //se width > distantancia do primeiro path
 			{
 /**verificar pontos de width TERMINAR*/
-				temp = 0;
-				double temp1=0;
+				double t = 0;
+				double espaco=0;//quantidade que a ferramenta anda até o proximo ponto onde troca de caminho
 				int voltas=0;
 				int cont = 0;
 				System.out.println(course + "c");
-				while (course >= temp) // vai encontrar até onde o width irá percorrer os caminhos
+				while (width >= t) // vai encontrar até onde o width irá percorrer os caminhos
 				{
-					System.out.println(temp1 + " "+ temp);
+					System.out.println(espaco + " "+ t);
 					if(paths.get(cont).getClass().equals(LinearPath.class)) //se o caminho for reto
 					{
 						LinearPath pTmp = (LinearPath)paths.get(cont);							
-						temp = temp + pTmp.getInitialPoint().distance(pTmp.getFinalPoint());
+						t = t + pTmp.getInitialPoint().distance(pTmp.getFinalPoint());
 					}
 					else if(paths.get(cont).getClass().equals(CircularPath.class))//se caminho for circular
 					{
 						CircularPath cTmp = (CircularPath)paths.get(cont);
-						temp = temp + cTmp.getAngulo()*cTmp.getRadius();
+						t = t + cTmp.getAngulo()*cTmp.getRadius();
 					}
-					if (course >= temp) //verificar se vai continuar no while. se sim, incrementa
+					if (width >= t) //verificar se vai continuar no while. se sim, incrementa
 					{			
-						temp1=temp; //o que vale eh o temp1, assim ele nao incrementarah no final(ultima passada do while)
+						espaco=t; //o que vale eh o temp1, assim ele nao incrementarah no final(ultima passada do while)
 						if (cont == paths.size()-1) //se completou uma volta
 						{
 							cont = 0;
@@ -402,13 +403,57 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				
 				double dX= paths.get(cont).getFinalPoint().x - paths.get(cont).getInitialPoint().x; // decomposicao do vetor em x (positivo ou negativo)
 				double dY= paths.get(cont).getFinalPoint().y - paths.get(cont).getInitialPoint().y; // decomposicao do vetor em y (positivo ou negativo)
-				double ang = Math.atan2(dY, dX); // delta x/delta y=tan
-				double sobra = temp - temp1; // espaco percorrido no ultimo caminho
-				widthPoint = new Point3d (paths.get(cont).getInitialPoint().x + Math.cos(ang)*(sobra), paths.get(cont).getInitialPoint().y + Math.sin(ang)*(sobra), retractPlane );
+				System.out.println("dx"+dX+"dy"+dY+"  cont"+cont);
+				double ang = Math.atan2(dY, dX); // delta y/delta x=tan
+				double sobra = width - espaco; // espaco percorrido no ultimo caminho
 				Point3d pontoI = paths.get(cont).getInitialPoint();
-				System.out.println(temp1 + "  " + temp);
+				widthPoint = new Point3d ((pontoI.x + Math.cos(ang)*(sobra)), (pontoI.y + Math.sin(ang)*(sobra)), retractPlane );
+				System.out.println("widthPoint: "+widthPoint);
+//ENCONTRANDO PONTO FERRAMENTA + CRIANDO CAMINHOS
 				
-//Adicionando path
+//=======================
+//				if (times%2==0) //se o numero de vezes que passou for par (resto2 == 0)
+//				{
+					int aux = 0;
+					double sobra1;
+					int voltaZigZag=0;
+					//diminui 'course' e faz os paths 
+					while(course>=0)
+					{
+						if (paths.get(aux).getClass()==LinearPath.class)
+						{
+							course = course - (paths.get(aux).getInitialPoint().distance(paths.get(aux).getFinalPoint()));
+							if (course>=0)
+								trajeto.add(new LinearPath (paths.get(aux).getInitialPoint(),paths.get(aux).getFinalPoint()));
+						}
+						else if(paths.get(aux).getClass()==CircularPath.class)
+						{
+							CircularPath cTmp = (CircularPath)paths.get(aux);
+							course = course - (cTmp.getRadius()*cTmp.getAngulo());
+							if (course>=0)
+								trajeto.add(new CircularPath (cTmp.getCenter(),cTmp.getInitialPoint(),cTmp.getFinalPoint(),cTmp.getAngulo()));
+						}
+						if (course>=0)
+							sobra1=course;//sobra1 serah a quantidade que a ferramenta anda apos o ultimo ponto onde troca de caminho
+							
+							if (aux == cont) //se completou uma volta. (cont eh a quantidade de caminhos usada pelo width) 
+							{
+								aux = 0;
+								voltaZigZag ++;
+							}
+							else
+								aux ++; //eh o contador pra saber quantos caminhos a ferramenta andou
+							
+/**VERIFICAR*/							
+							
+					}
+					toolPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*temp),((zigzagFirstInitial.y+(deltaY/dist)*temp)),(retractPlane)); //(deltaX/dist) -> cosseno do angulo que determina a direção do caminho atual
+//				}
+				
+//=========================
+				
+				
+				//Adicionando path
 				//PRIMEIRO TRECHO -- OBRIGATORIO
 				if (paths.get(cont).getClass().equals(LinearPath.class)) //Se for linear
 				{

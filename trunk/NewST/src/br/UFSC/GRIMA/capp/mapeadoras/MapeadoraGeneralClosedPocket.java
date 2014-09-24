@@ -100,7 +100,7 @@ public class MapeadoraGeneralClosedPocket {
 			wsPrecedenteTmp = null;
 			
 		}
-		System.out.println("AAAAAAAAAAAAAAA = " + genClosed.isAcabamento());
+//		System.out.println("AAAAAAAAAAAAAAA = " + genClosed.isAcabamento());
 		if (genClosed.isAcabamento()) {
 
 			// WORKINGSTEPS DE DESBASTE

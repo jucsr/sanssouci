@@ -331,7 +331,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 /******** CASO ZIGZAG *******/
 		else if (a == 'z')
 		{
-			ArrayList<Path> widthPath; //path com os caminhos do width (desconsiderar eixo z). seu indice zero tem o caminho do primeiro path, e segue o ultimo, o caminho ate widthpoint
+			ArrayList<Path> widthPath = new ArrayList<Path>(); //path com os caminhos do width (desconsiderar eixo z). seu indice zero tem o caminho do primeiro path, e segue o ultimo, o caminho ate widthpoint
 			// angle and width
 			Point3d zigzagFirstInitial = paths.get(0).getInitialPoint();
 			Point3d zigzagFirstFinal = paths.get(0).getFinalPoint();
@@ -395,7 +395,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 					if (width >= t) //verificar se vai continuar no while. se sim, incrementa
 					{	
 						espaco=t; 
-						if (cont == paths.size()-1) //se completou uma volta
+						if (cont == (paths.size()-1)) //se completou uma volta
 						{
 							cont = 0;
 							voltas ++;
@@ -404,37 +404,33 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 							cont ++;	
 					}
 				}//fim while
-				//PRONTO! CONTADOR POSICAO PONTO WIDTH, e diferença path - path1
+				//falta calcular ponto da ferramenta e path final
+				double sobra = width - espaco; // espaco percorrido no ultimo caminho
 				if (paths.get(cont).getClass().equals(LinearPath.class))
 				{
 					double dX= paths.get(cont).getFinalPoint().x - paths.get(cont).getInitialPoint().x; // decomposicao do vetor em x (positivo ou negativo)
 					double dY= paths.get(cont).getFinalPoint().y - paths.get(cont).getInitialPoint().y; // decomposicao do vetor em y (positivo ou negativo)
 					System.out.println("dx"+dX+"dy"+dY+"  cont"+cont);
 					double ang = Math.atan2(dY, dX); // delta y/delta x=tan
-					double sobra = width - espaco; // espaco percorrido no ultimo caminho
 					Point3d pontoI = paths.get(cont).getInitialPoint();
-					widthPoint = new Point3d ((pontoI.x + Math.cos(ang)*(sobra)), (pontoI.y + Math.sin(ang)*(sobra)), retractPlane );
+					widthPoint = new Point3d ((pontoI.x + Math.cos(ang)*(sobra)), (pontoI.y + Math.sin(ang)*(sobra)), 0 );
 					System.out.println("widthPoint: "+widthPoint);
 					widthPath.add(new LinearPath(pontoI,widthPoint));
 				}
+/**VERIFICAR! 
+		* FAZER PEGAR O PONTO WIDTH EM CASO CIRCULAR*/					
 				else if (paths.get(cont).getClass().equals(CircularPath.class))
 				{
 					
-/**ESTA ERRADO! 
- * FAZER PEGAR O PONTO WIDTH EM CASO CIRCULAR*/					
 					CircularPath circular = (CircularPath)paths.get(cont);
 					Point3d pontoI = circular.getInitialPoint();
 					Point3d pontoC = circular.getCenter(); 
-					/*
-					xTool = circular.getRadius() * Math.cos(theta+alfa); //raio * cos (alfa + theta)
-					yTool = circular.getRadius() * Math.sin(theta+alfa); //raio * sen (alfa + theta)
-					
-					CircularPath pathCircular = (CircularPath)paths.get(cont); //precisa declarar o caminho como circular para poder usar o .getRadius e .getAngle
-					distPInicialFinal = pathCircular.getAngulo() * pathCircular.getRadius(); //dist = angulo * raio
-					course2 = distPInicialFinal - distToolFinal; //distancia que a ferramenta percorre ate o ponto inicial
-					double theta = course2/(pathCircular.getRadius()); //angulo = arco/raio - angulo entre ponto inicial e o ponto ferramenta, com o centro do caminho 
-					double alfa = Math.atan2((pathCircular.getInitialPoint().y - centralPoint.y), (pathCircular.getInitialPoint().x - centralPoint.x));// angulo entre centro e inicial, em relação a abscissa
-					*/
+					double theta = sobra/(circular.getRadius()); //angulo = arco/raio - angulo entre ponto inicial e o ponto ferramenta, com o centro do caminho 
+					double alfa = Math.atan2((circular.getInitialPoint().y - pontoC.y), (circular.getInitialPoint().x - pontoC.x));// angulo entre centro e inicial, em relação a abscissa
+					double xTool = pontoC.x + circular.getRadius() * Math.cos(theta+alfa); //raio * cos (alfa + theta)
+					double yTool = pontoC.y + circular.getRadius() * Math.sin(theta+alfa); //raio * sen (alfa + theta)
+					widthPoint = new Point3d(xTool, yTool, 0);
+					widthPath.add(new CircularPath(pontoC, pontoI, widthPoint, theta));
 				}
 				
 //ENCONTRANDO PONTO FERRAMENTA + CRIANDO CAMINHOS
@@ -445,58 +441,56 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 
 /***trajeto esta sendo escrito de tras pra frente. verificar*/
 					int aux = 0;
-					double sobra1;
+					double sobra1=0;
 					int voltaZigZag=0;
-					double alturaZ=retractPlane;
+					double alturaZ=paths.get(0).getInitialPoint().z;
 					//diminui 'course' e faz os paths 
 					while(course>=0)
 					{
 	//	/***/			pontoIni = new Point3d(paths.get(cont).getFinalPoint().x,paths.get(cont).getFinalPoint().y,0); //ponto inicial - recebe o FINAL do caminho PATHS, pois aqui ele esta voltando
 						if (widthPath.get(aux).getClass()==LinearPath.class)
 						{
-							course = course - widthPath.get(aux).getInitialPoint().distance(widthPath.get(aux).getFinalPoint());//(paths.get(aux).getInitialPoint().distance(paths.get(aux).getFinalPoint()));
+							double distTemp = widthPath.get(aux).getInitialPoint().distance(widthPath.get(aux).getFinalPoint());
+							course = course - distTemp;//(paths.get(aux).getInitialPoint().distance(paths.get(aux).getFinalPoint()));
+							alturaZ = alturaZ + (distTemp*Math.tan(angle));
 							if (course>=0)
 								trajeto.add(new LinearPath (widthPath.get(aux).getInitialPoint(),widthPath.get(aux).getFinalPoint()));
 						}
 						else if(widthPath.get(aux).getClass()==CircularPath.class)
 						{
 							CircularPath cTmp = (CircularPath)widthPath.get(aux);
-							course = course - (cTmp.getRadius()*cTmp.getAngulo());
-							
-							
 							double distTemp = cTmp.getAngulo() * cTmp.getRadius();
-							alturaZ = alturaZ - (distTemp*Math.tan(angle));
-							pontoFin = new Point3d (paths.get(cont).getInitialPoint().x, paths.get(cont).getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS, com alturaZ
-							Point3d pontoC = new Point3d(cTmp.getCenter().x,cTmp.getCenter().y,(pontoIni.z + pontoFin.z)/2);// o z do centro eh a media entre o z do inicio e fim
-							trajeto.add(new CircularPath(pontoC, pontoIni, pontoFin, circularTemp.getAngulo()));//c, i, f, a
-						
-							
-							
+							course = course - distTemp;
+							alturaZ = alturaZ + (distTemp*Math.tan(angle));
+							Point3d pontoF = new Point3d (cTmp.getInitialPoint().x, cTmp.getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS, com alturaZ
+							Point3d pontoC = new Point3d(cTmp.getCenter().x,cTmp.getCenter().y,(cTmp.getInitialPoint().z + pontoF.z)/2);// o z do centro eh a media entre o z do inicio e fim
 							if (course>=0)
-								trajeto.add(new CircularPath (cTmp.getCenter(),cTmp.getInitialPoint(),cTmp.getFinalPoint(),cTmp.getAngulo()));
+								trajeto.add(new CircularPath(pontoC, cTmp.getInitialPoint(), pontoF, cTmp.getAngulo()));//c, i, f, a
 						}
 						if (course>=0)
 							sobra1=course;//sobra1 serah a quantidade que a ferramenta anda apos o ultimo ponto onde troca de caminho
-							
-							if (aux == cont) //se completou uma volta. (cont eh a quantidade de caminhos usada pelo width) 
+							double z=alturaZ;
+							if (aux == paths.size()) //se completou uma volta. (cont eh a quantidade de caminhos usada pelo width) 
 							{
 								aux = 0;
 								voltaZigZag ++;
 							}
 							else
-								aux ++; //eh o contador pra saber quantos caminhos a ferramenta andou
-							
-/**VERIFICAR*/							
-							
+								aux ++; //eh o contador pra saber quantos caminhos a ferramenta andou		
+/**VERIFICAR*/				
 					}
-					toolPoint = new Point3d((zigzagFirstInitial.x+(deltaX/dist)*temp),((zigzagFirstInitial.y+(deltaY/dist)*temp)),(retractPlane)); //(deltaX/dist) -> cosseno do angulo que determina a direção do caminho atual
-//				}
+					double dX= paths.get(aux).getFinalPoint().x - paths.get(aux).getInitialPoint().x; // decomposicao do vetor em x (positivo ou negativo)
+					double dY= paths.get(aux).getFinalPoint().y - paths.get(aux).getInitialPoint().y; // decomposicao do vetor em y (positivo ou negativo)
+					double ang = Math.atan2(dY, dX); // delta y/delta x=tan
+					double ultimo = high/Math.tan(angle) - sobra1; //course ja foi reescrito, mas era high/tangente
+					toolPoint = new Point3d (trajeto.get(aux).getInitialPoint().x + ultimo*Math.cos(ang), trajeto.get(aux).getInitialPoint().y + ultimo*Math.sin(ang), retractPlane);
+					trajeto.add(new LinearPath(trajeto.get(aux).getInitialPoint(),toolPoint));
+					
+					
+										
+					
+					
 				
-//=========================
-				
-				
-			
-				double alturaZ = pontoI.z;// armazena o ultimo valor de z, que vai ser usado a cada 'passo'. no momento esta recebendo o valor do ponto final do primeiro caminho
 				if ((cont!=0) || (voltas!=0))
 				{
 					System.out.println("Entrou");
@@ -561,7 +555,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		System.out.println("tamanho array gerado = " + trajeto.size());
 		for (i=0;i<trajeto.size();i++)
 		{	cont++;
-//DANDO ERRO NA LINHA ABAIXO		
+
 			if (trajeto.get(i).getClass() == LinearPath.class)
 			{
 				pInicial = trajeto.get(i).getInitialPoint();

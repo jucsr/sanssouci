@@ -1147,6 +1147,23 @@ public class GeometricOperations
 		}
 		return minimumDistance;
 	}
+	
+	public static double minimumDistance(ArrayList<LimitedElement> elements, Point3d point)
+	{
+		double minimumDistance = 0;
+		for(LimitedElement temp:elements)
+		{
+			if(temp.isLimitedArc())
+			{
+				minimumDistance = minimumDistancePointToArc(point, (LimitedArc)temp);
+			}
+			else
+			{
+				minimumDistance = minimumDistancePointToLine(point, (LimitedLine)temp);
+			}
+		}
+		return minimumDistance;
+	}
 	/**
 	 * 	o metodo calcula a menor maior distancia entre uma lista de elementos (supoe-se que eh uma forma com protuberancias, portanto nao hah intersecoes, ou seja, menor distancia = 0)
 	 * @param elements --> lista de elementos para o qual deseja-se conhecer a menor_maior distancia

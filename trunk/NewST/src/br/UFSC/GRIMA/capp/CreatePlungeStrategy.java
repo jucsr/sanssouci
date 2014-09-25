@@ -548,7 +548,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 									
 				
 				
-/**ESTÁ COM ERRO! VERIFICAR     ||
+/**ESTÁ COM ERRO! VERIFICAR    _||_
  * 							   \  / 
  * 								\/	*/
 				

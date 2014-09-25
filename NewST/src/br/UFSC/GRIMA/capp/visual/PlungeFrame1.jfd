@@ -136,6 +136,10 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JSpinner" ) {
 						name: "radius"
+						"model": new javax.swing.SpinnerNumberModel {
+							stepSize: 1.0
+							value: 0.0
+						}
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}

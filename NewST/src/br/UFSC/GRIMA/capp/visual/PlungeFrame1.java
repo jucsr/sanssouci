@@ -117,6 +117,9 @@ public class PlungeFrame1 extends JFrame {
 				panel1.add(label4, new GridBagConstraints(1, 12, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- radius ----
+				radius.setModel(new SpinnerNumberModel(0.0, null, null, 1.0));
 				panel1.add(radius, new GridBagConstraints(1, 13, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));

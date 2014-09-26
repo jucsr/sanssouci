@@ -3,12 +3,16 @@ package br.UFSC.GRIMA.capp.mapeadoras;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+import javax.vecmath.Point3d;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
+import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
 public class MapeadoraGeneralClosedPocket1Test 
 {
@@ -36,12 +40,19 @@ public class MapeadoraGeneralClosedPocket1Test
 	@Test
 	public void getMenorMaiorDistanciaTest()
 	{
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 		double maiorMenorDistancia = mp.getMaiorMenorDistancia();
-		
+		Point3d point = new Point3d(100,100,0);
+		LimitedLine l = new LimitedLine(point,point);
+		for(LimitedElement elementTmp:addPocketVertex.getElements())
+		{
+			all.add(elementTmp);
+		}
+//		all.add(l);
 		System.out.println("Maior Menor Distancia: " + maiorMenorDistancia);
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(addPocketVertex.getElements());
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
 	}

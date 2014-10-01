@@ -333,16 +333,16 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		{
 			ArrayList<Path> widthPath = new ArrayList<Path>(); //path com os caminhos do width (desconsiderar eixo z). seu indice zero tem o caminho do primeiro path, e segue o ultimo, o caminho ate widthpoint
 			// angle and width
-			Point3d zigzagFirstInitial = paths.get(0).getInitialPoint();
-			Point3d zigzagFirstFinal = paths.get(0).getFinalPoint();
-			double dist = zigzagFirstInitial.distance(zigzagFirstFinal);//distancia entre pontos do primeiro path
-			double deltaX= zigzagFirstFinal.x - zigzagFirstInitial.x; // decomposicao do vetor em x (positivo ou negativo)
-			double deltaY= zigzagFirstFinal.y - zigzagFirstInitial.y; // decomposicao do vetor em y (positivo ou negativo)
+//			Point3d zigzagFirstInitial = paths.get(0).getInitialPoint();
+//			Point3d zigzagFirstFinal = paths.get(0).getFinalPoint();
+//			double dist = zigzagFirstInitial.distance(zigzagFirstFinal);//distancia entre pontos do primeiro path
+//			double deltaX= zigzagFirstFinal.x - zigzagFirstInitial.x; // decomposicao do vetor em x (positivo ou negativo)
+//			double deltaY= zigzagFirstFinal.y - zigzagFirstInitial.y; // decomposicao do vetor em y (positivo ou negativo)
 			course = high/Math.tan(angle);  // curso ferramenta (projetado em um plano de z); 
-			double temp = course;
+//			double temp = course;
 			Point3d toolPoint,widthPoint; //ponto inicial da ferramenta , ponto onde o width foi limitado
 			
-			long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width. (floor -> arredonda para baixo. retorna double) (round -> ARREDONDA pra inteiro)
+//			long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width. (floor -> arredonda para baixo. retorna double) (round -> ARREDONDA pra inteiro)
 			
 		//funciona se for path linear
 			double t = 0;
@@ -352,13 +352,12 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			System.out.println("curso total da ferramenta: " + course);
 			while (width >= t) // vai encontrar até onde o width irá percorrer os caminhos
 			{
-				System.out.println(espaco + " "+ t);
 				if(paths.get(cont).getClass().equals(LinearPath.class)) //se o caminho for reto
 				{
 					LinearPath pTmp = (LinearPath)paths.get(cont);							
 					t = t + pTmp.getInitialPoint().distance(pTmp.getFinalPoint());
 					if (width>=t)
-						widthPath.add(new LinearPath(pTmp.getInitialPoint(),pTmp.getFinalPoint()));
+						widthPath.add(new LinearPath(new Point3d(pTmp.getInitialPoint().x,pTmp.getInitialPoint().y,0),new Point3d(pTmp.getFinalPoint().x, pTmp.getFinalPoint().y, 0)));
 				}
 				else if(paths.get(cont).getClass().equals(CircularPath.class))//se caminho for circular
 				{
@@ -384,11 +383,10 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			{
 				double dX= paths.get(cont).getFinalPoint().x - paths.get(cont).getInitialPoint().x; // decomposicao do vetor em x (positivo ou negativo)
 				double dY= paths.get(cont).getFinalPoint().y - paths.get(cont).getInitialPoint().y; // decomposicao do vetor em y (positivo ou negativo)
-				System.out.println("dx: "+dX+"\tdy: "+dY+"\ncont(indice do array onde fica o pontoWidth): "+cont);
 				double ang = Math.atan2(dY, dX); // delta y/delta x=tan
-				Point3d pontoI = paths.get(cont).getInitialPoint();
+				Point3d pontoI = new Point3d(paths.get(cont).getInitialPoint().x,paths.get(cont).getInitialPoint().y,0);
 				widthPoint = new Point3d (GeometricOperations.roundNumber((pontoI.x + Math.cos(ang)*(sobra)),6), GeometricOperations.roundNumber((pontoI.y + Math.sin(ang)*(sobra)),6), 0 );
-				System.out.println("widthPoint: "+widthPoint); //CERTO
+				System.out.println("\nwidthPoint: "+widthPoint); //CERTO
 				widthPath.add(new LinearPath(pontoI,widthPoint));
 			}
 /**VERIFICAR! CIRCULAR 
@@ -414,7 +412,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			//PRINTANDO WIDTH
 			Point3d ptoInicial, ptoFinal, ptoCentro;
 			double angulo;
-			System.out.println("tamanho array widthPath: "+widthPath.size());
+			System.out.println("tamanho array widthPath: "+widthPath.size()+"\n");
 			for (int i=0;i<widthPath.size();i++)
 			{
 				if (widthPath.get(i).getClass() == LinearPath.class)
@@ -460,6 +458,8 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				//diminui 'course' e faz os paths 
 				while(course>=0) //SE AINDA HA CAMINHO A PERCORRER
 				{
+					System.out.println("\ncourse: " + course);
+					System.out.println("sobra1: " + sobra1);
 					if (widthPath.get(aux).getClass()==LinearPath.class) //SE EH LINEAR
 					{
 						double distTemp = widthPath.get(aux).getInitialPoint().distance(widthPath.get(aux).getFinalPoint());
@@ -492,6 +492,9 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 						/**se esta no penultimo caminho do width*/
 						if (aux == (widthPath.size()-2) && (flag==true)) //QUANDO PASSOU O PENULTIMO PATH, na ida, O ULTIMO EH ESSA EXCESSAO 
 						{
+							System.out.println("\ncourse: " + course);
+							System.out.println("sobra1: " + sobra1);
+							
 							double distTemp = widthPath.get(aux).getFinalPoint().distance(widthPoint);
 							course = course - distTemp;
 							if (course>=0)
@@ -499,6 +502,10 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 								trajeto.add(new LinearPath (widthPath.get(aux).getFinalPoint(),widthPoint));
 								sobra1=course;
 							}
+							
+							System.out.println("\ncourse: " + course);
+							System.out.println("sobra1: " + sobra1);
+							
 							flag = !flag;
 							course = course - distTemp;
 							if((course>=0))
@@ -506,6 +513,10 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 								trajeto.add(new LinearPath (widthPoint,widthPath.get(aux).getFinalPoint()));
 								sobra1=course;
 							}
+							
+							System.out.println("\ncourse: " + course);
+							System.out.println("sobra1: " + sobra1);
+							
 						}
 						else /**se nao esta INDO no penultimo caminho*/
 						{
@@ -528,20 +539,18 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 /**OK*/			}
 					}	
 				}//fim WHILE
-				
-				
 				double deltX= paths.get(aux).getFinalPoint().x - paths.get(aux).getInitialPoint().x; // decomposicao do vetor em x (positivo ou negativo)
 				double deltY= paths.get(aux).getFinalPoint().y - paths.get(aux).getInitialPoint().y; // decomposicao do vetor em y (positivo ou negativo)
 				double ang = Math.atan2(deltY, deltX); // delta y/delta x=tan
 //				double ultimo = high/Math.tan(angle) - sobra1; //course ja foi reescrito, mas era high/tangente
 				if (flag==true) //se estava indo
 				{
-					toolPoint = new Point3d (trajeto.get(aux).getInitialPoint().x + sobra*Math.cos(ang), trajeto.get(aux).getInitialPoint().y + sobra*Math.sin(ang), retractPlane);
+					toolPoint = new Point3d (trajeto.get(aux).getInitialPoint().x + sobra1*Math.cos(ang), trajeto.get(aux).getInitialPoint().y + sobra1*Math.sin(ang), 0/*VAI SER 'retractPlane' QUANDO PRONTO*/);
 					trajeto.add(new LinearPath(trajeto.get(aux).getInitialPoint(),toolPoint));
 				}
 				else //se estava voltando
 				{
-					toolPoint = new Point3d (trajeto.get(aux).getFinalPoint().x - sobra*Math.cos(ang), trajeto.get(aux).getFinalPoint().y - sobra*Math.sin(ang), retractPlane);
+					toolPoint = new Point3d (trajeto.get(aux).getFinalPoint().x - sobra1*Math.cos(ang), trajeto.get(aux).getFinalPoint().y - sobra1*Math.sin(ang), 0/*VAI SER RETRACT PLANE QUANDO PRONTO*/);
 					trajeto.add(new LinearPath(trajeto.get(aux).getFinalPoint(),toolPoint));
 				}
 				

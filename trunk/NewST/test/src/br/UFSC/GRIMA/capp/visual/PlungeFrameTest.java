@@ -50,7 +50,7 @@ public class PlungeFrameTest
 	@Test
 	public void test()
 	{
-		CreatePlungeStrategy frame = new CreatePlungeStrategy(path, retractPlane);
+		CreatePlungeStrategy frame = new CreatePlungeStrategy(path1, retractPlane); //manda os parametros path e retractplane pra execucao
 //		ArrayList<Path> mergulho = frame.getMergulho();
 //		System.err.println("mergulho = " + mergulho);
 //		int cont=0;

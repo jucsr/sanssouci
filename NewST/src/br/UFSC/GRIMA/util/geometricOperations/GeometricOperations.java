@@ -1147,20 +1147,32 @@ public class GeometricOperations
 		}
 		return minimumDistance;
 	}
-	
+	public static double minimumDistance(Point3d point, LimitedElement element)
+	{
+		if(element.isLimitedArc())
+		{
+			return minimumDistancePointToArc(point, (LimitedArc)element);
+		}
+		else
+		{
+			return minimumDistancePointToLine(point, (LimitedLine)element);
+		}
+	}
+
 	public static double minimumDistance(ArrayList<LimitedElement> elements, Point3d point)
 	{
-		double minimumDistance = 0;
+		double minimumDistance = minimumDistance(point, elements.get(0));
 		for(LimitedElement temp:elements)
 		{
-			if(temp.isLimitedArc())
+			double minimumDistanceTmp = minimumDistance(point,temp);
+			if(minimumDistanceTmp < minimumDistance)
 			{
-				minimumDistance = minimumDistancePointToArc(point, (LimitedArc)temp);
+				minimumDistance = minimumDistanceTmp;
 			}
-			else
-			{
-				minimumDistance = minimumDistancePointToLine(point, (LimitedLine)temp);
-			}
+//			ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
+//			show.add(temp);
+//			showElements(show);
+//			System.out.println("MnimumDistance Array: " + minimumDistanceTmp);
 		}
 		return minimumDistance;
 	}

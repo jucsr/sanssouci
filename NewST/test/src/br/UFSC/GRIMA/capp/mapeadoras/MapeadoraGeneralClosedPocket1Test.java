@@ -8,6 +8,8 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.entidades.features.Boss;
+import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
@@ -22,19 +24,29 @@ public class MapeadoraGeneralClosedPocket1Test
 	public void init()
 	{
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
-
+	    //Forma 1
+//		points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 160));
+//		points.add(new Point2D.Double(280, 160));
+//		points.add(new Point2D.Double(280, 40));
+//		points.add(new Point2D.Double(0, 40));
+//		points.add(new Point2D.Double(0, 320));
+		
+		//Forma 2
 		points.add(new Point2D.Double(500, 320));
-		points.add(new Point2D.Double(500, 160));
-		points.add(new Point2D.Double(280, 160));
-		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(500, 40));
 		points.add(new Point2D.Double(0, 40));
 		points.add(new Point2D.Double(0, 320));
 		
+		//Protuberancia
 		pocket.setPoints(points);
 		pocket.setRadius(30);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
-		
+		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+		CircularBoss arcBoss = new CircularBoss("", 250, 140, pocket.Z, 30, 30, pocket.getProfundidade());
+		itsBoss.add(arcBoss);
+		pocket.setItsBoss(itsBoss);
 	}
 	
 	@Test

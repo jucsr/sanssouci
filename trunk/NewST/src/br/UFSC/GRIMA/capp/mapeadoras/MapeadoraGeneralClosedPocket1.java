@@ -1,8 +1,11 @@
 package br.UFSC.GRIMA.capp.mapeadoras;
 
 import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -73,118 +76,108 @@ public class MapeadoraGeneralClosedPocket1
 //		this.mapearGeneralClosedPocket();
 
 	}
-		public double getMaiorMenorDistancia()
+	public double getMaiorMenorDistancia()
+	{
+		ArrayList<Point2D> vertex = new ArrayList<Point2D>();
+		ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
+		double menorDistancia=0;
+		
+		//Posicao da forma
+		Point2D minorPointX = genClosed.getPoints().get(0); //Menor X
+		Point2D maxPointX = genClosed.getPoints().get(0);   //Maior Y
+		Point2D minorPointY = genClosed.getPoints().get(0); //Menor X
+		Point2D maxPointY = genClosed.getPoints().get(0);   //Maior Y
+		for(Point2D pointTmp : genClosed.getPoints())
 		{
-			ArrayList<Point2D> vertex = new ArrayList<Point2D>();
-			ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
-			double menorDistancia=0;
-			
-			//Posicao da forma
-			Point2D minorPointX = genClosed.getPoints().get(0); //Menor X
-			Point2D maxPointX = genClosed.getPoints().get(0);   //Maior Y
-			Point2D minorPointY = genClosed.getPoints().get(0); //Menor X
-			Point2D maxPointY = genClosed.getPoints().get(0);   //Maior Y
-			for(Point2D pointTmp : genClosed.getPoints())
+			if(pointTmp.getX() < minorPointX.getX())
 			{
-				if(pointTmp.getX() < minorPointX.getX())
-				{
-					minorPointX = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-				}
-				if(pointTmp.getX() > maxPointX.getX())
-				{
-					maxPointX = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-				}
-				if(pointTmp.getY() < minorPointY.getY())
-				{
-					minorPointY = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-				}
-				if(pointTmp.getY() > maxPointY.getY())
-				{
-					maxPointY = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-				}
+				minorPointX = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
 			}
-			System.out.println("Xminor: " + minorPointX);
-			System.out.println("Xmax: " + maxPointX);
-			System.out.println("Yminor: " + minorPointY);
-			System.out.println("Ymax: " + maxPointY);
+			if(pointTmp.getX() > maxPointX.getX())
+			{
+				maxPointX = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
+			}
+			if(pointTmp.getY() < minorPointY.getY())
+			{
+				minorPointY = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
+			}
+			if(pointTmp.getY() > maxPointY.getY())
+			{
+				maxPointY = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
+			}
+		}
+		System.out.println("Xminor: " + minorPointX);
+		System.out.println("Xmax: " + maxPointX);
+		System.out.println("Yminor: " + minorPointY);
+		System.out.println("Ymax: " + maxPointY);
 
-			int numeroDePontos = 100;
-			double deltaX = minorPointX.distance(maxPointX)/numeroDePontos;
-			double deltaY = minorPointY.distance(maxPointY)/numeroDePontos;
+		int numeroDePontos = 100;
+		double deltaX = minorPointX.distance(maxPointX)/numeroDePontos;
+		double deltaY = minorPointY.distance(maxPointY)/numeroDePontos;
+		
+		//CRIA O GENERAL PATH DO FORMATO
+//		GeneralPath gp = new GeneralPath();
+//		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(genClosed.getVertexPoints()), genClosed.getRadius());
+//		gp.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
+		GeneralPath gp = (GeneralPath)Face.getShape(genClosed);
 			
-			//CRIA O GENERAL PATH DO FORMATO
-			GeneralPath gp = new GeneralPath();
-			vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(genClosed.getVertexPoints()), genClosed.getRadius());
-			gp.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
-			
-			//Array de LimitedElement da forma da cavidade
-			GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
-			for(int r=0;r<vertex.size();r++)
+		//CRIA UM Shape2D DA PROTUBERANCIA
+		Shape boss = null;
+		for(Boss bossTmp:itsBoss)
+		{
+			if(bossTmp.getClass() == CircularBoss.class)
 			{
-				gp.lineTo(vertex.get(r).getX(), vertex.get(r).getY());				
+//				Ellipse2D circularBossShape = (Ellipse2D)Face.getShape(bossTmp);
+				boss = (Ellipse2D)Face.getShape(bossTmp);
+				System.out.println("CircularBoss: " + boss);
 			}
-			gp.closePath();
-			
-			for(int i = 0; i < numeroDePontos; i++)
+			else if(bossTmp.getClass() == RectangularBoss.class)
 			{
-				ArrayList<Point2D> arrayTmp = new ArrayList<Point2D>();
-				for(int j = 0; j < numeroDePontos; j++)
-				{
-					Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointX.getY() + deltaY*j);
-					if(gp.contains(pointTmp))
-					{
-						double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
-//						System.out.println("Ponto " +i+","+j+ ": "+ pointTmp);
-//						System.out.println("Distancia: " + menorDistanciaTmp);
-						if(menorDistanciaTmp > menorDistancia)
-						{
-							System.out.println("Ponto: "+ pointTmp);
-							menorDistancia = menorDistanciaTmp;
-						}
-					}
-//					arrayTmp.add(pointTmp);
-				}
-//				matrix.add(arrayTmp);
+//				RoundRectangle2D rectangularBossShape = (RoundRectangle2D)Face.getShape(bossTmp);
+				boss = (RoundRectangle2D)Face.getShape(bossTmp);
 			}
-			
-			return menorDistancia;
+			else if(bossTmp.getClass() == GeneralProfileBoss.class)
+			{
+//				GeneralPath gpBoss = (GeneralPath)Face.getShape(genClosed);
+				boss = (GeneralPath)Face.getShape(genClosed);
+			}
 		}
 		
-//		public ArrayList<ArrayList<LimitedElement>> getMatrix()
-//		{
-//			int numeroDePontos = 100;
-//			ArrayList<Point2D> vertex = new ArrayList<Point2D>();
-//			//CRIA O GENERAL PATH DO FORMATO
-//			GeneralPath gp = new GeneralPath();
-//			vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(genClosed.getVertexPoints()), genClosed.getRadius());
-//			gp.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
-//			
-//			//Array de LimitedElement da forma da cavidade
-//			GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
-//			for(int r=0;r<vertex.size();r++)
-//			{
-//				gp.lineTo(vertex.get(r).getX(), vertex.get(r).getY());				
-//			}
-//			gp.closePath();
-//			
-//			for(int i = 0; i < numeroDePontos; i++)
-//			{
-//				ArrayList<Point2D> arrayTmp = new ArrayList<Point2D>();
-//				for(int j = 0; j < numeroDePontos; j++)
-//				{
-//					Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointX.getY() + deltaY*j);
-//					if(gp.contains(pointTmp))
-//					{
-//						double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
-//						if(menorDistanciaTmp > menorDistancia)
-//						{
-//							System.out.println("Ponto: " + pointTmp);
-//							menorDistancia = menorDistanciaTmp;
-//						}
-//					}
-////					arrayTmp.add(pointTmp);
-//				}
-////				matrix.add(arrayTmp);
-//			}
-//		}
+		//Array de LimitedElement da forma da cavidade
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
+		for(int r=0;r<vertex.size();r++)
+		{
+			gp.lineTo(vertex.get(r).getX(), vertex.get(r).getY());				
+		}
+		gp.closePath();
+			
+		for(int i = 0; i < numeroDePontos; i++)
+		{
+			ArrayList<Point2D> arrayTmp = new ArrayList<Point2D>();
+			for(int j = 0; j < numeroDePontos; j++)
+			{
+				Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointX.getY() + deltaY*j);
+				if(gp.contains(pointTmp)) //Se o ponto esta dentro da cavidade
+				{
+					if(boss != null)      //Se possui Protuberancia
+					{
+						if(boss.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
+						{
+							break;
+						}
+					}
+					double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
+					if(menorDistanciaTmp > menorDistancia)
+					{
+						System.out.println("Ponto: "+ pointTmp);
+						menorDistancia = menorDistanciaTmp;
+					}
+				}
+//					arrayTmp.add(pointTmp);
+			}
+//				matrix.add(arrayTmp);
+		}
+			
+		return menorDistancia;
+	}
 }

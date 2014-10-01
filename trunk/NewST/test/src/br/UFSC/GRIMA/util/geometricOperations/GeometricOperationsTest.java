@@ -161,7 +161,7 @@ public class GeometricOperationsTest
 //		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 //		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
 		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
-		itsBoss.add(arcBoss);
+//		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(20, 200, pocket.Z);
@@ -700,6 +700,7 @@ public class GeometricOperationsTest
 	@Test
 	public void minumumDistanceTest()
 	{	
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		//Offset 51
 		LimitedArc arc1= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(355.9661709794729,265.729786275657,0),0.284139186943849);
 		LimitedArc arc2= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(358.04764607319396,269.0,0),0.07602706101202061);
@@ -719,15 +720,27 @@ public class GeometricOperationsTest
 		LimitedArc arc3 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
 		LimitedLine l2 = new LimitedLine(new Point3d(140,90,0),new Point3d(140,110,0));
 //		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc3));
+		
+		//ponto - Array
+		Point3d point =  new Point3d(100,100,0);
+		System.out.println("Minumum Array - Ponto: " + GeometricOperations.minimumDistance(formaOriginal,point));
+	    LimitedLine lp = new LimitedLine(point,point);
 	    
+	    for(LimitedElement temp:formaOriginal)
+	    {
+	    	all.add(temp);
+	    }
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 //	    elements.add(arc4);
 //	    elements.add(l3);
-	    elements.add(arc2);
-	    elements.add(arcBoss);
-		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+//	    elements.add(arc2);
+//	    elements.add(arcBoss);
+	    all.add(lp);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
+		
+		
 	}
 	@Test
 	public void validar2Test()

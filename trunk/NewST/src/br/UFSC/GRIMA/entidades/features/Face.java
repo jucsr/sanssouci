@@ -2402,7 +2402,7 @@ public class Face implements Serializable{
 		// System.out.println(maes);
 		return mae;
 	}
-	public Shape getShape(Feature feature)
+	public static Shape getShape(Feature feature)
 	{
 		Shape shape = null;
 		if(feature.getClass() == FuroBasePlana.class ||feature.getClass() == FuroBaseConica.class || feature.getClass() == FuroBaseEsferica.class || feature.getClass() == Furo.class)

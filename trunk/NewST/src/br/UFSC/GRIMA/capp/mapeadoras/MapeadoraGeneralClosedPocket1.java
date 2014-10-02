@@ -78,6 +78,7 @@ public class MapeadoraGeneralClosedPocket1
 	}
 	public double getMaiorMenorDistancia()
 	{
+		boolean thereIsBoss = false;
 		ArrayList<Point2D> vertex = new ArrayList<Point2D>();
 		ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
 		double menorDistancia=0;
@@ -142,7 +143,11 @@ public class MapeadoraGeneralClosedPocket1
 				boss = (GeneralPath)Face.getShape(genClosed);
 			}
 		}
-		
+		//Verifica se ha protuberanica
+		if(itsBoss != null)
+		{
+			thereIsBoss = true;
+		}
 		//Array de LimitedElement da forma da cavidade
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 		for(int r=0;r<vertex.size();r++)
@@ -150,7 +155,9 @@ public class MapeadoraGeneralClosedPocket1
 			gp.lineTo(vertex.get(r).getX(), vertex.get(r).getY());				
 		}
 		gp.closePath();
-			
+		
+		//Percorre uma matriz de pontos dentro da forma da cavidade, verificando qual e a maior distancia 
+		//entre as menores distancias entre os pontos e os elementos
 		for(int i = 0; i < numeroDePontos; i++)
 		{
 			ArrayList<Point2D> arrayTmp = new ArrayList<Point2D>();
@@ -159,25 +166,53 @@ public class MapeadoraGeneralClosedPocket1
 				Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointX.getY() + deltaY*j);
 				if(gp.contains(pointTmp)) //Se o ponto esta dentro da cavidade
 				{
-					if(boss != null)      //Se possui Protuberancia
+					if(thereIsBoss)      //Se possui Protuberancia
 					{
 						if(boss.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
 						{
+							System.out.println(pointTmp);
 							break;
 						}
+						else //Se o ponto esta fora da protuberancia
+						{
+							double minimumMaxDistancePointToPathTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
+							
+							if(minimumMaxDistancePointToPathTmp > menorDistancia)
+							{
+								menorDistancia = minimumMaxDistancePointToPathTmp;
+							}
+						}
 					}
-					double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
-					if(menorDistanciaTmp > menorDistancia)
+					else //Se nao possui protuberancia
 					{
-						System.out.println("Ponto: "+ pointTmp);
-						menorDistancia = menorDistanciaTmp;
+						//Calcula a menor distancia entre o ponto atual e o array da forma da cavidade
+						double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
+						if(menorDistanciaTmp > menorDistancia)
+						{
+							System.out.println("Ponto: "+ pointTmp);
+							menorDistancia = menorDistanciaTmp;
+						}
 					}
 				}
 //					arrayTmp.add(pointTmp);
 			}
 //				matrix.add(arrayTmp);
 		}
-			
+		
+		//minima distancia entre o array de elementos da forma e o array de elementos da protuberancia(se houver)
+		double minimumMaxDistanceBossToPath = menorDistancia;
+		if(thereIsBoss)
+		{
+			//CUIDADO COM O Z!!
+			minimumMaxDistanceBossToPath = GeometricOperations.minimumDistance(addPocket.getElements(), GeometricOperations.tranformeBossToLimitedElement(itsBoss, genClosed.Z));
+			System.out.println("Menor Distancia (Boss - Forma): " + minimumMaxDistanceBossToPath);
+		}
+		//Verifica se a menor distancia entre a forma da cavidade e a protuberancia e menor do que a menor distancia 
+		//entre um ponto qualquer (dentro da forma e fora da protuberancia) e a forma
+		if(minimumMaxDistanceBossToPath < menorDistancia)
+		{
+			menorDistancia = minimumMaxDistanceBossToPath;
+		}
 		return menorDistancia;
 	}
 }

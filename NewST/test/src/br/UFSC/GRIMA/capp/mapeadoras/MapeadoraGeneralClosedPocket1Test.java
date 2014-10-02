@@ -11,6 +11,7 @@ import org.junit.Test;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -46,7 +47,13 @@ public class MapeadoraGeneralClosedPocket1Test
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		CircularBoss arcBoss = new CircularBoss("", 50, 50, pocket.Z, 60, 60, pocket.getProfundidade());
-		itsBoss.add(arcBoss);
+//		itsBoss.add(arcBoss);
+		
+		//Rectangular Boss
+		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
+		rectBoss.setPosicao(200, 200, pocket.Z);
+		rectBoss.setRadius(10);
+		itsBoss.add(rectBoss);
 		pocket.setItsBoss(itsBoss);
 	}
 	

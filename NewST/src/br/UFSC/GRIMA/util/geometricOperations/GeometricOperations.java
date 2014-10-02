@@ -1080,6 +1080,12 @@ public class GeometricOperations
 		return distance;
 	}
 	
+	/**
+	 * Minima distancia entre dois elementos quaisquer
+	 * @param e1
+	 * @param e2
+	 * @return
+	 */
 	public static double minimumDistance(LimitedElement e1, LimitedElement e2)
 	{
 		double distance=0.0;
@@ -1127,7 +1133,12 @@ public class GeometricOperations
 		}		
 		return distance;
 	}
-	
+	/**
+	 * Minima distancia entre um elemento e um array de elementos
+	 * @param formaOriginal
+	 * @param element
+	 * @return
+	 */
 	public static double minimumDistance(ArrayList<LimitedElement> formaOriginal, LimitedElement element)
 	{
 		double minimumDistance = minimumDistance(formaOriginal.get(0),element);
@@ -1147,6 +1158,34 @@ public class GeometricOperations
 		}
 		return minimumDistance;
 	}
+	/**
+	 * Minima distancia entre dois arrays de LimitedElement
+	 * @param array1
+	 * @param array2
+	 * @return
+	 */
+	public static double minimumDistance(ArrayList<LimitedElement> array1, ArrayList<LimitedElement> array2)
+	{
+		double minimumDistance = minimumDistance(array1.get(0), array2.get(0));
+		for(LimitedElement e1 : array1)
+		{
+			for(LimitedElement e2 : array2)
+			{
+				double minimumDistanceTmp = minimumDistance(e1, e2);
+				if(minimumDistanceTmp < minimumDistance)
+				{
+					minimumDistance = minimumDistanceTmp;
+				}
+			}
+		}
+		return minimumDistance;
+	}
+	/**
+	 * Minima distancia entr um ponto e um elemento qualquer
+	 * @param point
+	 * @param element
+	 * @return
+	 */
 	public static double minimumDistance(Point3d point, LimitedElement element)
 	{
 		if(element.isLimitedArc())
@@ -1158,7 +1197,12 @@ public class GeometricOperations
 			return minimumDistancePointToLine(point, (LimitedLine)element);
 		}
 	}
-
+/**
+ * Minima distancia entre um ponto e um array de elementos
+ * @param elements
+ * @param point
+ * @return
+ */
 	public static double minimumDistance(ArrayList<LimitedElement> elements, Point3d point)
 	{
 		double minimumDistance = minimumDistance(point, elements.get(0));
@@ -1313,23 +1357,16 @@ public class GeometricOperations
 		
 		return lacoTmp;
 	}
-	public static ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
+	
+	/**
+	 * Transforma um array de Boss e transoforma em um array de LimitedElement
+	 * @param bossArray
+	 * @param planoZ
+	 * @return
+	 */
+	public static ArrayList<LimitedElement> tranformeBossToLimitedElement(ArrayList<Boss> bossArray,double planoZ)
 	{
-		planoZ = 0;
-		System.out.println("Profundidade: " + pocket.getProfundidade());
-		boolean inside = true;
-		boolean isBoss = true;
-		//Erro na criação da cavidade em um plano z != 0
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), planoZ, pocket.getRadius());
-
-		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
-		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
-		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
-		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
-		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
-		ArrayList<LimitedElement> elementsCavidade = addPocketVertex.getElements();             //Cavidade
-		ArrayList<Boss> bossArray = pocket.getItsBoss();                                        //Protuberancia
-		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> elementosFromBoss = new ArrayList<LimitedElement>();
 		for(Boss bossTmp: bossArray)
 		{
 			if(bossTmp.getClass() == CircularBoss.class)
@@ -1339,7 +1376,7 @@ public class GeometricOperations
 //				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
 				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), -2 * Math.PI);
 				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
-				elementosProtuberancia.add(arc);
+				elementosFromBoss.add(arc);
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)
 			{
@@ -1357,14 +1394,14 @@ public class GeometricOperations
 				LimitedArc a3 = new LimitedArc(pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
 				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
 				LimitedArc a4 = new LimitedArc(pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
-				elementosProtuberancia.add(l1);
-				elementosProtuberancia.add(a1);
-				elementosProtuberancia.add(l2);
-				elementosProtuberancia.add(a2);
-				elementosProtuberancia.add(l3);
-				elementosProtuberancia.add(a3);
-				elementosProtuberancia.add(l4);
-				elementosProtuberancia.add(a4);
+				elementosFromBoss.add(l1);
+				elementosFromBoss.add(a1);
+				elementosFromBoss.add(l2);
+				elementosFromBoss.add(a2);
+				elementosFromBoss.add(l3);
+				elementosFromBoss.add(a3);
+				elementosFromBoss.add(l4);
+				elementosFromBoss.add(a4);
 				
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
@@ -1373,11 +1410,80 @@ public class GeometricOperations
 				ArrayList<LimitedElement> elementosProtuberanciaGeral = addBossVertex.getElements();
 				for(int i = 0;i < elementosProtuberanciaGeral.size();i++)
 				{
-					elementosProtuberancia.add(elementosProtuberanciaGeral.get(i));
+					elementosFromBoss.add(elementosProtuberanciaGeral.get(i));
 				}
 				
 			}
 		}
+		return elementosFromBoss;
+	}
+	public static ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
+	{
+//		planoZ = 0;
+//		System.out.println("Profundidade: " + pocket.getProfundidade());
+		boolean inside = true;
+		boolean isBoss = true;
+		//CUIDADO COM O Z!!
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), planoZ, pocket.getRadius());
+
+		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
+		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
+		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
+		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
+		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
+		ArrayList<LimitedElement> elementsCavidade = addPocketVertex.getElements();             //Cavidade
+		ArrayList<Boss> bossArray = pocket.getItsBoss();                                        //Protuberancia
+		ArrayList<LimitedElement> elementosProtuberancia = tranformeBossToLimitedElement(bossArray, planoZ);
+
+//		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
+//		for(Boss bossTmp: bossArray)
+//		{
+//			if(bossTmp.getClass() == CircularBoss.class)
+//			{
+//				CircularBoss tmp = (CircularBoss)bossTmp;
+//				System.out.println("Profundidade Boss: " + tmp.Z);
+////				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
+//				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), -2 * Math.PI);
+//				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
+//				elementosProtuberancia.add(arc);
+//			}
+//			else if (bossTmp.getClass() == RectangularBoss.class)
+//			{
+//				RectangularBoss tmp = (RectangularBoss)bossTmp;
+//				//Tamanho em x
+//				double l = tmp.getL1();
+//				//Tamanho em y
+//				double c = tmp.getL2();
+//				Point3d position = new Point3d(tmp.X,tmp.Y,planoZ);
+//				LimitedLine l1 = new LimitedLine(pointPlusEscalar(position, "x", tmp.getRadius()),pointPlusEscalar(position,"x",(l-tmp.getRadius())));
+//				LimitedArc a1 = new LimitedArc(pointPlusEscalar(l1.getFinalPoint(), "y", tmp.getRadius()),l1.getFinalPoint(),Math.PI/2);
+//				LimitedLine l2 = new LimitedLine(a1.getFinalPoint(),pointPlusEscalar(a1.getFinalPoint(), "y", (c-2*tmp.getRadius())));
+//				LimitedArc a2 = new LimitedArc(pointPlusEscalar(l2.getFinalPoint(), "x", -tmp.getRadius()),l2.getFinalPoint(),Math.PI/2);
+//				LimitedLine l3 = new LimitedLine(a2.getFinalPoint(),pointPlusEscalar(a2.getFinalPoint(), "x", -(l - 2*tmp.getRadius())));
+//				LimitedArc a3 = new LimitedArc(pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
+//				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
+//				LimitedArc a4 = new LimitedArc(pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
+//				elementosProtuberancia.add(l1);
+//				elementosProtuberancia.add(a1);
+//				elementosProtuberancia.add(l2);
+//				elementosProtuberancia.add(a2);
+//				elementosProtuberancia.add(l3);
+//				elementosProtuberancia.add(a3);
+//				elementosProtuberancia.add(l4);
+//				elementosProtuberancia.add(a4);
+//				
+//			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
+//			{
+//				GeneralProfileBoss tmp = (GeneralProfileBoss)bossTmp;
+//				GeneralClosedPocketVertexAdd addBossVertex = new GeneralClosedPocketVertexAdd(tmp.getVertexPoints(), planoZ, tmp.getRadius());
+//				ArrayList<LimitedElement> elementosProtuberanciaGeral = addBossVertex.getElements();
+//				for(int i = 0;i < elementosProtuberanciaGeral.size();i++)
+//				{
+//					elementosProtuberancia.add(elementosProtuberanciaGeral.get(i));
+//				}
+//				
+//			}
+//		}
 		for(LimitedElement tmp:elementosProtuberancia)
 		{
 			boolean allowAdd = true;

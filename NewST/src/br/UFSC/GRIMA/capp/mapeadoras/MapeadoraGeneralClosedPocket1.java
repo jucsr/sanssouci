@@ -19,6 +19,8 @@ import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.MachinningStrategy;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Boss;
@@ -73,14 +75,15 @@ public class MapeadoraGeneralClosedPocket1
 		this.genClosed = genClosed;
 		this.itsBoss = genClosed.getItsBoss();
 		
-//		this.mapearGeneralClosedPocket();
+		this.mapearGeneralClosedPocket();
 
 	}
-	public double getMaiorMenorDistancia()
+	public static double getMaiorMenorDistancia(GeneralClosedPocket genClosed)
 	{
 		boolean thereIsBoss = false;
 		ArrayList<Point2D> vertex = new ArrayList<Point2D>();
 		ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
+		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
 		double menorDistancia=0;
 		
 		//Posicao da forma
@@ -214,5 +217,152 @@ public class MapeadoraGeneralClosedPocket1
 			menorDistancia = minimumMaxDistanceBossToPath;
 		}
 		return menorDistancia;
+	}
+	
+	private FaceMill chooseFaceMill(Material material,
+			ArrayList<FaceMill> faceMills, GeneralClosedPocket genClosed,
+			double limite_desbaste, double L) 
+	{
+		ArrayList<FaceMill> faceMillsCandidatas = new ArrayList<FaceMill>();
+
+		FaceMill faceMill = null;
+
+		String ISO = "";
+		
+		String motivo = "";
+
+		ISO = MapeadoraDeWorkingsteps.selectMaterialFerramenta(this.projeto,
+				material, "Condicoes_De_Usinagem_FaceMill");
+
+		double limite_desbaste_fundo = limite_desbaste;
+		
+		if (genClosed.isPassante())
+			limite_desbaste_fundo = 0;
+		
+		for (int i = 0; i < faceMills.size(); i++) { // Seleciona todas as
+			// face mills
+			// candidatas
+
+			faceMill = faceMills.get(i);
+			
+			if (faceMill.getMaterial().equals(ISO)
+					&& faceMill.getDiametroFerramenta() <= (L - 2 * limite_desbaste)
+					&& faceMill.getProfundidadeMaxima() >= (genClosed
+							.getProfundidade() - limite_desbaste_fundo)) {
+
+				faceMillsCandidatas.add(faceMill);
+			}
+		}
+
+		if (faceMillsCandidatas.size() == 0) {
+
+			JOptionPane
+			.showMessageDialog(
+					null,
+					"Não é possível usinar esta Feature com as atuais Face Mills disponíveis! \n" +
+					"__________________________________________________________"+"\n"+
+					"\tFeature: Cavidade Perfil Geral \n" +
+					"\tNome: " + genClosed.getNome() +"\n" +
+//					"\tComprimento: " + genClosed.getComprimento()+" mm"+"\n" +
+//					"\tLargura: " + genClosed.getLargura()+" mm"+"\n" +
+					"\tProfundidade: " + genClosed.getProfundidade()+" mm"+"\n" +
+					"\tRaio: " + genClosed.getRadius()+" mm"+"\n" +
+					"\tMaterial Bloco: " + material.getName()+"\n" +
+					"__________________________________________________________"+"\n"+
+					"\tMotivo: Do grupo das Face Mills do projeto, nenhuma satisfaz os" +"\n"+
+					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
+					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
+					"\tDiametro da Ferramenta deve ser menor igual a: " + (L - 2 * limite_desbaste)+" mm" +"\n" +
+					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (genClosed.getProfundidade() - limite_desbaste_fundo )+" mm"+"\n\n" +
+					"\tAdicione Face Mills adequadas ao projeto."
+					,
+					"Erro", JOptionPane.ERROR_MESSAGE);
+
+			throw new NullPointerException("Nenhuma Face Mill selecionada");
+
+		}
+
+		faceMill = faceMillsCandidatas.get(0);
+
+		for (int i = 1; i < faceMillsCandidatas.size(); i++) {// Seleciona a
+			// face
+			// mill de
+			// maior
+			// diametro
+
+			if (faceMillsCandidatas.get(i).getDiametroFerramenta() > faceMill
+					.getDiametroFerramenta()) {
+				faceMill = faceMillsCandidatas.get(i);
+			}
+
+		}
+
+		return faceMill;
+	}
+	
+	private void mapearGeneralClosedPocket() 
+	{
+		Workingstep wsTmp;
+		Workingstep wsPrecedenteTmp;
+		wssFeature = new Vector<Workingstep>();
+		double retractPlane = 5;
+		if(genClosed.getFeaturePrecedente()!= null)
+		{
+			if(		genClosed.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 
+					genClosed.getFeaturePrecedente().getClass().equals(RectangularBoss.class) ||
+					genClosed.getFeaturePrecedente().getClass().equals(CircularBoss.class))
+			{
+				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getFeaturePrecedente().getWorkingsteps().lastElement();
+			}
+			else{
+				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
+			}			
+			System.out.println("wsp = " + genClosed.getFeaturePrecedente().getWorkingsteps().size());
+			System.out.println("feature Pre = " + genClosed.getFeaturePrecedente());
+		}
+		else
+		{
+			//Nao tem ws precedente
+			wsPrecedenteTmp = null;
+			
+		}
+		if (!genClosed.isAcabamento()) 
+ {
+			// WORKINGSTEPS DE DESBASTE
+
+			// BOTTOM AND SIDE ROUGH MILLING
+			BottomAndSideRoughMilling operation1 = new BottomAndSideRoughMilling(
+					"Bottom And Side Rough Milling", retractPlane);
+			operation1.setAllowanceSide(Feature.LIMITE_DESBASTE);
+
+			if (!genClosed.isPassante())
+				operation1.setAllowanceBottom(Feature.LIMITE_DESBASTE);
+			
+			
+			// FERRAMENTA
+			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
+					genClosed, Feature.LIMITE_DESBASTE, getMaiorMenorDistancia(genClosed));
+			//Estrategia
+			TrochoidalAndContourParallelStrategy machiningStrategy = new TrochoidalAndContourParallelStrategy();
+			operation1.setMachiningStrategy(machiningStrategy);
+			machiningStrategy.setAllowMultiplePasses(true);
+			machiningStrategy.setOverLap(0.25*faceMill.getDiametroFerramenta()); //Overlap
+			machiningStrategy.setRadialDephtPercent(radialDephtPercent);
+			
+			// CONDIÇÕES DE USINAGEM
+			condicoesDeUsinagem = MapeadoraDeWorkingsteps
+					.getCondicoesDeUsinagem(this.projeto, faceMill,
+							bloco.getMaterial());
+			// WORKINGSTEP
+			wsTmp = new Workingstep(genClosed, faceTmp, faceMill,
+					condicoesDeUsinagem, operation1);
+			wsTmp.setTipo(Workingstep.DESBASTE);
+			wsTmp.setId(this.genClosed.getNome() + "_RGH");
+			
+			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
+			wsPrecedenteTmp = wsTmp;
+
+			wssFeature.add(wsTmp);
+		}
 	}
 }

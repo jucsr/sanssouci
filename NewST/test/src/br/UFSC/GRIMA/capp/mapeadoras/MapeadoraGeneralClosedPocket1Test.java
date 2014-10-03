@@ -64,7 +64,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double maiorMenorDistancia = mp.getMaiorMenorDistancia();
+		double maiorMenorDistancia = mp.getMaiorMenorDistancia(pocket);
 		Point3d point = new Point3d(100,100,0);
 		LimitedLine l = new LimitedLine(point,point);
 		for(LimitedElement elementTmp:addPocketVertex.getElements())

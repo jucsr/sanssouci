@@ -176,8 +176,10 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateMultipleParallelAndTrochoidalMovementTest()
 	{
-		double trochoidalRadius = 10;
+		double trochoidalRadius = 5;
 		double trochoidalPercent = 1.5;
+		double raioFerramenta = 5;
+		double overLap = 1;
 		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(trochoidalRadius); //Raio
 		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(15); //Avanco
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
@@ -253,7 +255,7 @@ public class GenerateTrochoidalMovement1Test
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, 0) ;
-		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, trochoidalRadius);
+		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, 2*(trochoidalRadius + raioFerramenta),overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = generateContorun.multipleParallelPath() ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)

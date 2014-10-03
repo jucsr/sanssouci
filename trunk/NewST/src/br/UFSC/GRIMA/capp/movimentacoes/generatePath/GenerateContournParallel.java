@@ -20,16 +20,18 @@ public class GenerateContournParallel
 {
 	private GeneralClosedPocket pocket;
 	private double planoZ;
-	private double distance;
+	private double distance; //2*(raio Ferramenta + raio Trochoidal)
+	private double overLap; //Quantidade de ultrpassagem da ferramenta de uma passada a outra
 	private ArrayList<LimitedElement> elementsCavidade;
 	ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
 	private ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
 	
-	public GenerateContournParallel(GeneralClosedPocket pocket, double planoZ, double distance) 
+	public GenerateContournParallel(GeneralClosedPocket pocket, double planoZ, double distance, double overLap) 
 	{
 		this.pocket = pocket;
 		this.planoZ = planoZ;
 		this.distance = distance;
+		this.overLap = overLap;
 		this.gerarElementosDaCavidade();
 		this.gerarElementosDaProtuberancia();
 	}
@@ -114,13 +116,13 @@ public class GenerateContournParallel
 
 	public ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath()
 	{
-		double percentagem = 0.75;
+//		double percentagem = 0.75;
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 		
 		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath2(pocket, distance, planoZ);
 
 		int aux = 1;
-		double distanceAtualizada = 2*distance*percentagem;
+		double distanceAtualizada = distance - overLap;
 
 		while (parallelPath != null)
 		{

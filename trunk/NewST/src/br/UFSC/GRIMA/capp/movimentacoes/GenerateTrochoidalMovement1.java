@@ -181,12 +181,15 @@ public class GenerateTrochoidalMovement1
 		if(element2.isLimitedLine())
 		{
 			LimitedLine l2 = (LimitedLine)element2;
+//			System.out.println(lastPath.getFinalPoint());
+//			System.out.println(a1.getFinalPoint());
 //			ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
 //			show.add(a1);
 //			show.add(l2);
 			//CUIDADO COM O "INSIDE" e o "isBoss"
-			System.out.println("A1: " + a1.getInitialPoint().z);
+//			System.out.println("A1: " + a1.getInitialPoint().z);
 			double arcPathRadius = a1.getFinalPoint().distance(lastPath.getFinalPoint());
+//			System.out.println(arcPathRadius);
 //			GeometricOperations.showElements(show);
 //			System.out.println("TransitionPathRadiusAL: " + arcPathRadius);
 //			Point3d arcPathFinalPoint = GeometricOperations.parallelArc(a1,arcPathRadius, false,false).getInitialPoint();
@@ -386,6 +389,9 @@ public class GenerateTrochoidalMovement1
 	}
 	private ArrayList<Path> generatePathsInLimitedArcBase(LimitedArc arc)
 	{
+//		System.out.println("lol: " + arc.getFinalPoint());
+//		System.out.println("lol1: " + arc.getInitialPoint());
+
 		double trochoidalAngle = 2*Math.PI;
 		if(((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalSense())
 		{
@@ -468,6 +474,7 @@ public class GenerateTrochoidalMovement1
 			 * Errado para o ultimo path
 			 */
 			Point3d pontoFinalTmp = new Point3d(arc.getCenter().x + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).x, arc.getCenter().y + GeometricOperations.multiply(arc.getRadius() + radiusTmp, vetorUnitarioProximaTmp).y, arc.getCenter().z);
+//			System.out.println("Pf: " + pontoFinalTmp);
 //			System.out.println("PF: " + pontoFinalTmp);
 //			CircularPath arcTmp = new CircularPath(pontoInicialTmp, pontoFinalTmp, arc.getCenter(), sense);
 //			System.err.println("normaAcumulada = " + normaAcumulada);

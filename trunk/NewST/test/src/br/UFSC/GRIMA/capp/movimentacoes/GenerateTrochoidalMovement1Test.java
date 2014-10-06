@@ -15,8 +15,10 @@ import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
+import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
 import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Boss;
@@ -126,10 +128,12 @@ public class GenerateTrochoidalMovement1Test
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
 		//Setar o trochoidalRadius nos proprios testes
-//		strategy.setTrochoidalRadius(50);
+		strategy.setTrochoidalRadius(20);
+		strategy.setTrochoidalFeedRate(20);
+		strategy.setOverLap(0);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
-		strategy.setRadialDephtPercent(20);
+//		strategy.setRadialDephtPercent(20);
 		operation.setMachiningStrategy(strategy);
 				
 		ws = new Workingstep();
@@ -146,8 +150,8 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateTrochoidalPathTest()
 	{
-		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(20); //Raio
-		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(25); //Avanco
+//		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(20); //Raio
+//		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(25); //Avanco
 		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 90, 0);
 		ArrayList<Path> paths = new ArrayList<Path>();
 		for(ArrayList<LimitedElement> tmp : parallel)
@@ -176,12 +180,14 @@ public class GenerateTrochoidalMovement1Test
 	@Test
 	public void generateMultipleParallelAndTrochoidalMovementTest()
 	{
-		double trochoidalRadius = 5;
-		double trochoidalPercent = 1.5;
-		double raioFerramenta = 5;
-		double overLap = 1;
-		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(trochoidalRadius); //Raio
-		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(15); //Avanco
+		double trochoidalRadius = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalRadius();
+		System.out.println("Raio Trochoidal1: " + trochoidalRadius);
+//		double trochoidalPercent = 1.5;
+		double diametroFerramenta = ws.getFerramenta().getDiametroFerramenta();
+		System.out.println("diametro da Ferramenta1: " + diametroFerramenta);
+		double overLap =((Two5DMillingStrategy)ws.getOperation().getMachiningStrategy()).getOverLap();
+//		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(trochoidalRadius); //Raio
+//		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(15); //Avanco
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
 //		points.add(new Point2D.Double(8, 160));
@@ -255,13 +261,14 @@ public class GenerateTrochoidalMovement1Test
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GeometricOperations.multipleParallelPath(pocket, trochoidalRadius, 0) ;
-		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, 2*(trochoidalRadius + raioFerramenta),overLap);
+		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, trochoidalRadius + diametroFerramenta/2 ,overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = generateContorun.multipleParallelPath() ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
 			{
+//				GeometricOperations.showElements(multiplePath.get(i).get(j));
 				GenerateTrochoidalMovement1 gen = new GenerateTrochoidalMovement1(multiplePath.get(i).get(j), ws); //trochoidalRadius, 15
 				ArrayList<LimitedElement> movimentacoes = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gen.getPaths());
 				for(int k = 0; k < movimentacoes.size(); k ++)

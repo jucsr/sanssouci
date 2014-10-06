@@ -137,11 +137,12 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando estrategia -----
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
-		strategy.setTrochoidalRadius(25);
+		strategy.setTrochoidalRadius(20);
 		strategy.setTrochoidalFeedRate(25);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
-		strategy.setRadialDephtPercent(20);
+//		strategy.setRadialDephtPercent(20);
+		strategy.setOverLap(2);
 		operation.setMachiningStrategy(strategy);
 		
 	    ws = new Workingstep();
@@ -222,22 +223,22 @@ public class GenerateTrocoidalGCodeTest
 		//--------------------------------------------
 
 		// ---- desenha linhas base ----
-//		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getBaseLines();
-//		for(int i = 0; i < multiplePath.size(); i++)
-//		{
-//			for(int j = 0; j < multiplePath.get(i).size(); j++)
-//			{
-//				GeometricOperations.showElements(multiplePath.get(i).get(j));
-//				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
-//				{
-//					all.add(multiplePath.get(i).get(j).get(k));
-//				}
-//			}
-//		}
-//		for(LimitedElement tmp : formaOriginal)
-//		{
-//			all.add(tmp);
-//		}
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = gCode.getBaseLines();
+		for(int i = 0; i < multiplePath.size(); i++)
+		{
+			for(int j = 0; j < multiplePath.get(i).size(); j++)
+			{
+				GeometricOperations.showElements(multiplePath.get(i).get(j));
+				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
+				{
+					all.add(multiplePath.get(i).get(j).get(k));
+				}
+			}
+		}
+		for(LimitedElement tmp : formaOriginal)
+		{
+			all.add(tmp);
+		}
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);

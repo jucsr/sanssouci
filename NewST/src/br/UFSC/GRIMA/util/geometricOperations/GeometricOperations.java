@@ -1783,7 +1783,7 @@ public class GeometricOperations
 //			elementsValidated.add(elementsIntermediario2);
 //			System.out.println("elementsInter2: " + elementsIntermediario2.size());
 			ArrayList<ArrayList<LimitedElement>> elementsIntermediario3 = validar3Path(elementsIntermediario2);
-			showElements(elementsIntermediario3.get(0));
+//			showElements(elementsIntermediario3.get(0));
 			if(elementsIntermediario3 != null)
 			{
 //				System.out.println("elementsInter3: " + elementsIntermediario3.size());
@@ -2146,15 +2146,17 @@ public class GeometricOperations
 	//Verifica a igualdade de pontos entre os Limited Elements
 	public static boolean isTheSamePoint(Point3d p1, Point3d p2)
 	{
-		if(roundNumber(p1.x, 5) == roundNumber(p2.x,5) 
-				&& roundNumber(p1.y, 5) == roundNumber(p2.y, 5) 
-				&& roundNumber(p1.z, 5) == roundNumber(p2.z, 5)
+		if(roundNumber(p1.x, 7) == roundNumber(p2.x,7) 
+				&& roundNumber(p1.y, 7) == roundNumber(p2.y, 7) 
+				&& roundNumber(p1.z, 7) == roundNumber(p2.z, 7)
 				)
 		{
 			return true;
 		}
 		else
+		{
 			return false;
+		}
 	}
 	public static Point3d middlePoint(LimitedArc arc)
 	{

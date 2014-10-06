@@ -122,7 +122,9 @@ public class GenerateContournParallel
 		ArrayList<ArrayList<LimitedElement>> parallelPath = parallelPath2(pocket, distance, planoZ);
 
 		int aux = 1;
-		double distanceAtualizada = distance - overLap;
+		double distanceAtualizada = 2*distance - overLap;
+		System.out.println("distance: " + distance);
+		System.out.println("overlap: " + overLap);
 
 		while (parallelPath != null)
 		{
@@ -153,7 +155,7 @@ public class GenerateContournParallel
 
 		
 		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
-		GeometricOperations.showElements(parallelTemp1);
+//		GeometricOperations.showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
 		
 		for(LimitedElement tmp:parallelTemp1)
@@ -209,7 +211,7 @@ public class GenerateContournParallel
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
 //		System.out.println("Elementos Originais: ");
-//		GeometricOperations.showElements(elements);
+		GeometricOperations.showElements(elements);
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
 //		System.out.println("Elementos Validar1: ");
@@ -222,8 +224,8 @@ public class GenerateContournParallel
 		{
 			for (int j = 0; j < elementsIntermediario3.size(); j++)
 			{
-				System.out.println("Elementos Validar3: Array " + j);
-				GeometricOperations.showElements(elementsIntermediario3.get(j));
+//				System.out.println("Elementos Validar3: Array " + j);
+//				GeometricOperations.showElements(elementsIntermediario3.get(j));
 				elementsValidated.add(elementsIntermediario3.get(j));					
 			}
 		}
@@ -296,6 +298,12 @@ public class GenerateContournParallel
 						{
 							elementsIntermediario.add(arcTemp.get(k));
 						}
+						else
+						{
+							System.out.println("PI: " + arcTemp.get(k).getInitialPoint());
+							System.out.println("PF: " + arcTemp.get(k).getFinalPoint());
+							
+						}
 					}
 				}
 			}
@@ -308,7 +316,7 @@ public class GenerateContournParallel
 				}
 				else if(ei.isLimitedArc() && GeometricOperations.roundNumber(((LimitedArc)ei).getDeltaAngle(),10) != 0)
 				{
-					System.out.println("Arco: " + ei.getInitialPoint());
+//					System.out.println("Arco: " + ei.getInitialPoint());
 					elementsIntermediario.add(ei);
 				}
 			}

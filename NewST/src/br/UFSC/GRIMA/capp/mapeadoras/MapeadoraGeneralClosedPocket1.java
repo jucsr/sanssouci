@@ -347,7 +347,7 @@ public class MapeadoraGeneralClosedPocket1
 			operation1.setMachiningStrategy(machiningStrategy);
 			machiningStrategy.setAllowMultiplePasses(true);
 			machiningStrategy.setOverLap(0.25*faceMill.getDiametroFerramenta()); //Overlap
-			machiningStrategy.setRadialDephtPercent(radialDephtPercent);
+//			machiningStrategy.setRadialDephtPercent(radialDephtPercent);
 			
 			// CONDIÇÕES DE USINAGEM
 			condicoesDeUsinagem = MapeadoraDeWorkingsteps

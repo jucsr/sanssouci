@@ -985,6 +985,11 @@ public class GeometricOperationsTest
 		for(;;);
 	}
 	@Test
+	public void isTheSamePointTest()
+	{
+		System.out.println("Same point: " + GeometricOperations.isTheSamePoint(new Point3d(380.0,39.99999999999999, 0.0), new Point3d(380.0,39.99999999999999, 0.0)));
+	}
+	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{
 		

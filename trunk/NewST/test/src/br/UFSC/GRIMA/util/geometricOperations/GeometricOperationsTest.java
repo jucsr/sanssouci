@@ -704,10 +704,10 @@ public class GeometricOperationsTest
 		//Offset 51
 		LimitedArc arc1= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(355.9661709794729,265.729786275657,0),0.284139186943849);
 		LimitedArc arc2= new LimitedArc(new Point3d(400.0,240.0,0),new Point3d(358.04764607319396,269.0,0),0.07602706101202061);
-		System.out.println("MINIMUM1 = " + GeometricOperations.roundNumber(GeometricOperations.minimumDistance(formaOriginal, arc2),9));
+//		System.out.println("MINIMUM1 = " + GeometricOperations.roundNumber(GeometricOperations.minimumDistance(formaOriginal, arc2),9));
 //		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistance(formaOriginal, arc2));
 		LimitedArc arcBoss = new LimitedArc(new Point3d(350.0, 200.0, 0.0),new Point3d(365.0, 200.0, 0.0),2*Math.PI);
-		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistanceArcToArc(arc2, arcBoss));
+//		System.out.println("MINIMUM2 = " + GeometricOperations.minimumDistanceArcToArc(arc2, arcBoss));
 
 		
 		//Offset 53
@@ -719,23 +719,23 @@ public class GeometricOperationsTest
 		//Linha -- Arco
 		LimitedArc arc3 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
 		LimitedLine l2 = new LimitedLine(new Point3d(140,90,0),new Point3d(140,110,0));
-//		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc3));
+		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc3));
 		
 		//ponto - Array
 		Point3d point =  new Point3d(100,100,0);
-		System.out.println("Minumum Array - Ponto: " + GeometricOperations.minimumDistance(formaOriginal,point));
+//		System.out.println("Minumum Array - Ponto: " + GeometricOperations.minimumDistance(formaOriginal,point));
 	    LimitedLine lp = new LimitedLine(point,point);
 	    
-	    for(LimitedElement temp:formaOriginal)
-	    {
-	    	all.add(temp);
-	    }
+//	    for(LimitedElement temp:formaOriginal)
+//	    {
+//	    	all.add(temp);
+//	    }
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-//	    elements.add(arc4);
-//	    elements.add(l3);
+	    all.add(arc3);
+	    all.add(l2);
 //	    elements.add(arc2);
 //	    elements.add(arcBoss);
-	    all.add(lp);
+//	    all.add(lp);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);

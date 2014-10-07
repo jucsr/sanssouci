@@ -211,7 +211,7 @@ public class GenerateContournParallel
 	public static ArrayList<ArrayList<LimitedElement>> validarPath(ArrayList<LimitedElement> elements, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
 //		System.out.println("Elementos Originais: ");
-		GeometricOperations.showElements(elements);
+//		GeometricOperations.showElements(elements);
 		ArrayList<ArrayList<LimitedElement>> elementsValidated = new ArrayList<ArrayList<LimitedElement>>();
 		ArrayList<LimitedElement> elementsIntermediario = validar1Path(elements);
 //		System.out.println("Elementos Validar1: ");
@@ -285,6 +285,8 @@ public class GenerateContournParallel
 						if(!GeometricOperations.isTheSamePoint(lineTemp.get(k).getInitialPoint(), lineTemp.get(k).getFinalPoint()))
 						{
 							elementsIntermediario.add(lineTemp.get(k));
+//							System.out.println("PI: " + lineTemp.get(k).getInitialPoint());
+//							System.out.println("PF: " + lineTemp.get(k).getFinalPoint());
 						}
 					}
 				}
@@ -297,12 +299,8 @@ public class GenerateContournParallel
 						if(!GeometricOperations.isTheSamePoint(arcTemp.get(k).getInitialPoint(), arcTemp.get(k).getFinalPoint()))
 						{
 							elementsIntermediario.add(arcTemp.get(k));
-						}
-						else
-						{
-							System.out.println("PI: " + arcTemp.get(k).getInitialPoint());
-							System.out.println("PF: " + arcTemp.get(k).getFinalPoint());
-							
+//							System.out.println("PI: " + arcTemp.get(k).getInitialPoint());
+//							System.out.println("PF: " + arcTemp.get(k).getFinalPoint());
 						}
 					}
 				}
@@ -314,10 +312,20 @@ public class GenerateContournParallel
 				{
 					elementsIntermediario.add(ei);
 				}
-				else if(ei.isLimitedArc() && GeometricOperations.roundNumber(((LimitedArc)ei).getDeltaAngle(),10) != 0)
+				else if(ei.isLimitedArc())
 				{
+					if(!GeometricOperations.isTheSamePoint(ei.getInitialPoint(), ei.getFinalPoint()))
+					{
+						elementsIntermediario.add(ei);
+					}
+					else
+					{
+						if(((LimitedArc)ei).getDeltaAngle() == 2*Math.PI)
+						{
+							elementsIntermediario.add(ei);
+						}
+					}
 //					System.out.println("Arco: " + ei.getInitialPoint());
-					elementsIntermediario.add(ei);
 				}
 			}
 		}

@@ -55,6 +55,8 @@ public class MapeadoraGeneralClosedPocket1Test
 		rectBoss.setRadius(10);
 		itsBoss.add(rectBoss);
 		pocket.setItsBoss(itsBoss);
+		
+		
 	}
 	
 	@Test
@@ -65,6 +67,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 		double maiorMenorDistancia = mp.getMaiorMenorDistancia(pocket);
+		double menorMenorDistancia = mp.getMenorMenorDistance(pocket);
 		Point3d point = new Point3d(100,100,0);
 		LimitedLine l = new LimitedLine(point,point);
 		for(LimitedElement elementTmp:addPocketVertex.getElements())
@@ -77,8 +80,10 @@ public class MapeadoraGeneralClosedPocket1Test
 		}
 //		all.add(l);
 		System.out.println("Maior Menor Distancia: " + maiorMenorDistancia);
+		System.out.println("Menor Meno distancia: " + menorMenorDistancia);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
 	}
+	
 }

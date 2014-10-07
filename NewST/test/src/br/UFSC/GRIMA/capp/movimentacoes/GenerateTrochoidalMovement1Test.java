@@ -89,23 +89,23 @@ public class GenerateTrochoidalMovement1Test
 //		points.add(new Point2D.Double(200,160));
 		
 		//Forma 2
-//		points.add(new Point2D.Double(500, 320));
-//		points.add(new Point2D.Double(500, 160));
-//		points.add(new Point2D.Double(280, 160));
-//		points.add(new Point2D.Double(280, 40));
-//		points.add(new Point2D.Double(0, 40));
-//		points.add(new Point2D.Double(0, 320));
+		points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		
 	    //Forma 3
-		points.add(new Point2D.Double(8, 160));
-		points.add(new Point2D.Double(8, 320));
-		points.add(new Point2D.Double(480, 320));
-		points.add(new Point2D.Double(700, 500));
-		points.add(new Point2D.Double(700, 160));
-		points.add(new Point2D.Double(480, 160));
-		points.add(new Point2D.Double(480, 40));
-		points.add(new Point2D.Double(200, 40));
-		points.add(new Point2D.Double(200,160));
+//		points.add(new Point2D.Double(8, 160));
+//		points.add(new Point2D.Double(8, 320));
+//		points.add(new Point2D.Double(480, 320));
+//		points.add(new Point2D.Double(700, 500));
+//		points.add(new Point2D.Double(700, 160));
+//		points.add(new Point2D.Double(480, 160));
+//		points.add(new Point2D.Double(480, 40));
+//		points.add(new Point2D.Double(200, 40));
+//		points.add(new Point2D.Double(200,160));
 		
 		//Forma 4
 //		points.add(new Point2D.Double(10, 10));
@@ -181,9 +181,9 @@ public class GenerateTrochoidalMovement1Test
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
 		//Setar o trochoidalRadius nos proprios testes
-		strategy.setTrochoidalRadius(20);
+		strategy.setTrochoidalRadius(10);
 		strategy.setTrochoidalFeedRate(20);
-		strategy.setOverLap(0);
+		strategy.setOverLap(2);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 //		strategy.setRadialDephtPercent(20);

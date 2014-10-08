@@ -9,8 +9,13 @@ import org.junit.Test;
 
 import br.UFSC.GRIMA.capp.CreatePlungeStrategy;
 import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
+import br.UFSC.GRIMA.util.findPoints.LimitedCircle;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
+import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 
 public class PlungeFrameTest 
 {			//array de "Path"s
@@ -46,42 +51,40 @@ public class PlungeFrameTest
 		path1.add(q6);
 		path1.add(q7);
 		
+		
+		
 	}
 	@Test
 	public void test()
 	{
+//		ArrayList<LimitedElement> elements = transformPathInElements(path1);
+//		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);
+//		desenhador.setVisible(true);
+		
 		CreatePlungeStrategy frame = new CreatePlungeStrategy(path1, retractPlane); //manda os parametros path e retractplane pra execucao
-//		ArrayList<Path> mergulho = frame.getMergulho();
-//		System.err.println("mergulho = " + mergulho);
-//		int cont=0;
-//		int i=0;
-//		Point3d pInicial,pFinal,pCentro;
-//		double angulo;
-//		System.out.println("mergulho 1 = " + mergulho.size());
-//		for (i=0;i<mergulho.size();i++)
-//		{	cont++;
-////DANDO ERRO NA LINHA ABAIXO		
-//			if (mergulho.get(i).getClass() == LinearPath.class)
-//			{
-//				pInicial = mergulho.get(i).getInitialPoint();
-//				System.out.println("Ponto inicial #" + cont +": "+ pInicial.x + ", " + pInicial.y + ", " + pInicial.z);
-//				pFinal = mergulho.get(i).getFinalPoint();
-//				System.out.println("Ponto final #" + cont +": "+ pFinal.x + ", " + pFinal.y + ", " + pFinal.z);
-//			}
-//			else if(mergulho.get(i).getClass() == CircularPath.class)
-//			{
-//				CircularPath circularTemp = (CircularPath)mergulho.get(i);
-//				pInicial = circularTemp.getInitialPoint();
-//				System.out.println("Ponto inicial #" + cont +": ("+ pInicial.x + ", " + pInicial.y + ", " + pInicial.z+")");
-//				pFinal = circularTemp.getFinalPoint();
-//				System.out.println("Ponto final #" + cont +": ("+ pFinal.x + ", " + pFinal.y + ", " + pFinal.z+")");
-//				pCentro = circularTemp.getCenter();
-//				System.out.println("Ponto central #" + cont +": ("+ pCentro.x + ", " + pCentro.y + ", " + pCentro.z+")");
-//				angulo = circularTemp.getAngulo();
-//				System.out.println("Angulo: "+angulo);
-//			}
-//		}
+
 		for(;;);
+	}
+	public static ArrayList<LimitedElement> transformPathInElements(ArrayList<Path> paths)
+	{
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		for(Path pathTmp: paths)
+		{
+			if(pathTmp.isLine())
+			{
+				LimitedLine line = new LimitedLine(pathTmp.getInitialPoint(), pathTmp.getFinalPoint());
+				elements.add(line);
+			} else if(pathTmp.isCircular())
+			{
+				CircularPath circular = (CircularPath)pathTmp;
+				LimitedArc arc = new LimitedArc(circular.getCenter(), circular.getInitialPoint(), circular.getAngulo());
+				elements.add(arc);
+			} else if(pathTmp.isGeneral())
+			{
+				//depois
+			}
+		}
+		return elements;
 	}
 }
 

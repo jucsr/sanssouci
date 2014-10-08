@@ -9,6 +9,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.cam.GenerateTrocoidalGCode;
 import br.UFSC.GRIMA.capp.visual.PlungeFrame1;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.GeneralPath;
@@ -608,6 +609,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				System.out.println("\tAngulo: \t"+Math.toDegrees(angulo)+" graus");
 			}
 		}
+		System.out.println(GenerateTrocoidalGCode.transformPathToGCode(trajeto));
 		
 		return trajeto;
 	}

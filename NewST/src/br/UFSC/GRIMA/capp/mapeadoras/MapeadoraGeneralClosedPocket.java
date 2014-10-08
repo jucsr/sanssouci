@@ -58,7 +58,6 @@ public class MapeadoraGeneralClosedPocket {
 
 		this.faceMills = ToolManager.getFaceMills();
 		this.endMills = ToolManager.getEndMills();
-		
 		this.mapearGeneralClosedPocket();
 
 	}

@@ -1180,6 +1180,22 @@ public class GeometricOperations
 		}
 		return minimumDistance;
 	}
+	public static double maxDistance(ArrayList<LimitedElement> array1, ArrayList<LimitedElement> array2)
+	{
+		double minimumDistance = 0;
+		for(LimitedElement e1 : array1)
+		{
+			for(LimitedElement e2 : array2)
+			{
+				double minimumDistanceTmp = minimumDistance(e1, e2);
+				if(minimumDistanceTmp > minimumDistance)
+				{
+					minimumDistance = minimumDistanceTmp;
+				}
+			}
+		}
+		return minimumDistance;
+	}
 	/**
 	 * Minima distancia entr um ponto e um elemento qualquer
 	 * @param point

@@ -268,7 +268,7 @@ public class MapeadoraDeWorkingsteps {
 
 				} else if (featureTmp.getClass() == GeneralClosedPocket.class) {
 
-					MapeadoraGeneralClosedPocket mapeadoraGeneral = new MapeadoraGeneralClosedPocket(
+					MapeadoraGeneralClosedPocket1 mapeadoraGeneral = new MapeadoraGeneralClosedPocket1(
 							this.projeto, faceTmp, (GeneralClosedPocket) featureTmp);
 
 					Vector<Workingstep> wssGeneral = featureTmp

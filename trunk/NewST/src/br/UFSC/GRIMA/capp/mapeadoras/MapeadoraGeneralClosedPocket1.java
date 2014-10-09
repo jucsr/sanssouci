@@ -80,13 +80,18 @@ public class MapeadoraGeneralClosedPocket1
 //		this.mapearGeneralClosedPocket();
 
 	}
+	/**
+	 * Realiza o metodo da minima distancia entre pontos dentro da cavidade e os elementos da borda da cavidade, e retorna o a maior distancia encontrada
+	 * @param genClosed
+	 * @return
+	 */
 	public double getMaiorMenorDistancia(GeneralClosedPocket genClosed)
 	{
 		boolean thereIsBoss = false;
 		ArrayList<Point2D> vertex = new ArrayList<Point2D>();
 		ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
 		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
-		double menorDistancia=0;
+		double minimumMaxDistance=0;
 		
 		//Verifica se ha protuberanica
 		if(itsBoss != null)
@@ -195,10 +200,10 @@ public class MapeadoraGeneralClosedPocket1
 							}
 							double minimumMaxDistancePointToPathTmp = GeometricOperations.minimumDistance(elementsPocketAndBoss, new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
 							
-							if(minimumMaxDistancePointToPathTmp > menorDistancia)
+							if(minimumMaxDistancePointToPathTmp > minimumMaxDistance)
 							{
 //								System.out.println("Ponto: "+ pointTmp);
-								menorDistancia = minimumMaxDistancePointToPathTmp;
+								minimumMaxDistance = minimumMaxDistancePointToPathTmp;
 							}
 						}
 					}
@@ -206,9 +211,9 @@ public class MapeadoraGeneralClosedPocket1
 					{
 						//Calcula a menor distancia entre o ponto atual e o array da forma da cavidade
 						double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
-						if(menorDistanciaTmp > menorDistancia)
+						if(menorDistanciaTmp > minimumMaxDistance)
 						{
-							menorDistancia = menorDistanciaTmp;
+							minimumMaxDistance = menorDistanciaTmp;
 						}
 					}
 				}
@@ -217,7 +222,8 @@ public class MapeadoraGeneralClosedPocket1
 //				matrix.add(arrayTmp);
 		}
 		
-		return menorDistancia;
+		System.out.println("Maior Menor Distancia: " + minimumMaxDistance);
+		return minimumMaxDistance;
 	}
 	
 //	public double getMaiorMenorDistancia(GeneralClosedPocket genClosed)
@@ -309,15 +315,16 @@ public class MapeadoraGeneralClosedPocket1
 
 		//minima distancia entre o array de elementos da forma e o array de elementos da protuberancia(se houver)
 		double menorDistancia = 0;
-		if(itsBoss != null)
+		if(itsBoss.size() != 0) //PADRONIZAR SE A COMPARACAO COM O ITSBOSS SERA COM SIZE == 0, OU COM ITSBOSS == NULL
 		{
-			if(itsBoss.size() != 0)
-			{
-				//CUIDADO COM O Z!!
-				menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), GeometricOperations.tranformeBossToLimitedElement(itsBoss, genClosed.Z));
-				System.out.println("Menor Distancia (Boss - Forma): " + menorDistancia);
-			}
+			//CUIDADO COM O Z!!
+			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), GeometricOperations.tranformeBossToLimitedElement(itsBoss, genClosed.Z));
 		}
+		else
+		{
+			menorDistancia = genClosed.getRadius();
+		}
+		System.out.println("Menor Menor Distancia: " + menorDistancia);
 		return menorDistancia;
 	}
 	
@@ -325,7 +332,7 @@ public class MapeadoraGeneralClosedPocket1
 			ArrayList<FaceMill> faceMills, GeneralClosedPocket genClosed,
 			double limite_desbaste, double L) 
 	{
-		System.out.println("lol: " + L);
+		System.out.println("L: " + L);
 		ArrayList<FaceMill> faceMillsCandidatas = new ArrayList<FaceMill>();
 
 		FaceMill faceMill = null;

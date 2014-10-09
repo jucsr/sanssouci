@@ -171,6 +171,8 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 /******** CASO RAMPA *******/		
 		else if (a == 'r') 
 		{
+		
+			
 			if (angle == 0)
 			{
 				System.out.println("Bad value for 'Angle'");
@@ -253,10 +255,9 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 					Point3d centralPoint = pathCircular.getCenter(); 
 					distPInicialFinal = pathCircular.getAngulo() * pathCircular.getRadius(); //dist = angulo * raio
 					course2 = distPInicialFinal - distToolFinal; //distancia que a ferramenta percorre ate o ponto inicial
-					double theta = course2/(pathCircular.getRadius()); //angulo = arco/raio - angulo entre ponto inicial e o ponto ferramenta, com o centro do caminho 
+					double theta = course2/(pathCircular.getRadius()); //angulo = arco/raio - angulo entre ponto inicial e o ponto ferramenta, com o centro do caminho
 					double alfa = Math.atan2((pathCircular.getInitialPoint().y - centralPoint.y), (pathCircular.getInitialPoint().x - centralPoint.x));// angulo entre ponto central e inicial, em relação a abscissa
 					xTool = pathCircular.getRadius() * Math.cos(theta+alfa); //raio * cos (alfa + theta)
-	System.out.println(); 
 					yTool = pathCircular.getRadius() * Math.sin(theta+alfa); //raio * sen (alfa + theta)
 				}
 				Point3d p2Tool = new Point3d(xTool,yTool,retractPlane); //inicio da ferramenta
@@ -278,7 +279,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				{
 					CircularPath circularTemp = (CircularPath)paths.get(cont);
 					Point3d pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(retractPlane - pontoI.z)/2);// o z do centro eh a media entre o z do inicio e fim
-					trajeto.add(new CircularPath(pontoC, p2Tool, pontoI, circularTemp.getAngulo()));//c, i, f, a - 
+					trajeto.add(new CircularPath(pontoC, p2Tool, pontoI, -circularTemp.getAngulo()));//c, i, f, a - 
 				}
 				double alturaZ = pontoI.z;// armazena o ultimo valor de z, que vai ser usado a cada 'passo'. no momento esta recebendo o valor do ponto final do primeiro caminho
 				if ((cont!=0) || (voltas!=0))
@@ -314,7 +315,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 							alturaZ = alturaZ - (distTemp*Math.tan(angle));
 							pontoFin = new Point3d (paths.get(cont).getInitialPoint().x, paths.get(cont).getInitialPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS, com alturaZ
 							pontoC = new Point3d(circularTemp.getCenter().x,circularTemp.getCenter().y,(pontoIni.z + pontoFin.z)/2);// o z do centro eh a media entre o z do inicio e fim
-							trajeto.add(new CircularPath(pontoC, pontoIni, pontoFin, circularTemp.getAngulo()));//c, i, f, a
+							trajeto.add(new CircularPath(pontoC, pontoIni, pontoFin, -circularTemp.getAngulo()));//c, i, f, a
 						}
 						
 						if (cont>0)
@@ -629,8 +630,37 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		desenhador.setVisible(true);	
 		return trajeto;
 	}
-
+/**
+ * metodo que cria trajeto eliptico com trajetos lineares pequenos
+ * @param base - eh a curva projetada
+ * @param anguloaPercorrer - eh o angulo que vai percorrer na projecao
+ * @param anguloUsuario - esse eh o angulo configurado na janela de interface
+ * @param inicio - ponto onde vc inicia a curva
+ * @param fim - ponto final
+ * @param n - numero de divisoes
+ * @return
+ */
+	
+	private ArrayList<LinearPath> criaLinearArc(CircularPath base, double anguloaPercorrer, double anguloUsuario, Point3d inicio, Point3d fim, int n)
+	{
+		Point3d inicioReal= new Point3d(base.getInitialPoint().x, base.getInitialPoint().y, inicio.z);
+		double deltaAngulo = angulo/n; //angulo de cada divisao
+		double atualZ; //guarda o valor do eixo z do ponto
+		double contadorAngulo=0, contadorCurso=0; //guarda angulos / guarda trajeto percorrido
+		double distProjTotal = base.getRadius()*base.getAngulo(); // tamanho total 
+		for (int i=0; i<n; i++)
+		{
+			double distProj = distProjTotal/Math.cos(anguloUsuario);
+			atualZ =+ quanto andou/Math.sin(angulo) 
+			contadorAngulo=+ deltaAngulo;
+			double pX = inicio.x * Math.cos(deltaAngulo);
+			double pY = inicio.y * Math.sin(deltaAngulo);
+			Point3d beca = new Point3d(pX, pY, atualZ);
+		}
+	}
+	
 }
 
 
 //entender linha 256 e fazer na 415
+//linhas 634+

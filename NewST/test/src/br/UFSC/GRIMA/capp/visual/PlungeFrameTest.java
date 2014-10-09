@@ -20,7 +20,7 @@ import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 public class PlungeFrameTest 
 {			//array de "Path"s
 	private ArrayList<Path> path = new ArrayList<Path>(), path1= new ArrayList<Path>();
-	private double retractPlane = 10;
+	private double retractPlane = 100;
 	@Before
 	public void init()
 	{

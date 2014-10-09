@@ -138,13 +138,5 @@ public class MapeadoraGeneralClosedPocket1Test
 		desenhador.setVisible(true);
 		for(;;);
 	}
-	@Test
-	public void mapearGeneralClosedPocketTest()
-	{
-		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(projeto,faceXY,pocket);
-		
-		
-
-	}
 	
 }

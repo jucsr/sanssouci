@@ -651,7 +651,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		for (int i=0; i<n; i++)
 		{
 			double distProj = distProjTotal/Math.cos(anguloUsuario);
-			atualZ =+ quanto andou/Math.sin(angulo) 
+			atualZ =+ quanto andou/Math.sin(angulo)  
 			contadorAngulo=+ deltaAngulo;
 			double pX = inicio.x * Math.cos(deltaAngulo);
 			double pY = inicio.y * Math.sin(deltaAngulo);

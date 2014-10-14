@@ -86,16 +86,16 @@ public class GenerateTrocoidalGCodeTest
 //		pocket.setProfundidade(1.5);
 		pocket.setRadius(30);
 		pocket.setPosicao(50, 50, 0);
-		pocket.setProfundidade(15);
+		pocket.setProfundidade(20);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		//Circular Boss
-		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
-		itsBoss.add(arcBoss);
+		CircularBoss arcBoss = new CircularBoss("", 150, 200, pocket.Z, 50, 50, pocket.getProfundidade());
+//		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(400, 200, pocket.Z);
+		rectBoss.setPosicao(150, 230, pocket.Z);
 		rectBoss.setRadius(10);
-//		itsBoss.add(rectBoss);
+		itsBoss.add(rectBoss);
 		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
 		genBoss.setRadius(10);
@@ -113,7 +113,13 @@ public class GenerateTrocoidalGCodeTest
 //		itsBoss.add(genBoss);
 		
 		pocket.setItsBoss(itsBoss);
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
+		formaOriginal = addPocketVertex.getElements();
 		
+		// --- Menor distancia entre cavidade e protuberancia ---
+		
+		double menorDistancia = GeometricOperations.minimumDistance(formaOriginal, GeometricOperations.tranformeBossToLimitedElement(itsBoss, pocket.Z));
+				
 		// --- Criando Machining workingstep ----
 		
 		// ---- criando Operacao ----
@@ -123,13 +129,13 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando Ferramenta ----
 		FaceMill ferramenta= new FaceMill();
 		ferramenta.setName("1");
-		ferramenta.setDiametroFerramenta(20); //Diametro da ferramenta (mudei)
+		ferramenta.setDiametroFerramenta(menorDistancia/2); //Diametro da ferramenta (mudei)
 
 		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 			
 		// ---- criando Condicoes de usinagem -----
 		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
-		cond.setAp(15); //15
+		cond.setAp(5); //15
 		cond.setAe(10);
 		cond.setF(.0123);
 		cond.setN(1500);
@@ -137,7 +143,7 @@ public class GenerateTrocoidalGCodeTest
 		// ---- criando estrategia -----
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
-		strategy.setTrochoidalRadius(20);
+		strategy.setTrochoidalRadius(ferramenta.getDiametroFerramenta()/2);
 		strategy.setTrochoidalFeedRate(25);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
@@ -156,9 +162,6 @@ public class GenerateTrocoidalGCodeTest
 		pocket.setWorkingsteps(workingsteps);
 		
 		//========
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
-
-		formaOriginal = addPocketVertex.getElements();
 		for(int i = 0; i < pocket.getItsBoss().size(); i++)
 		{
 			if(pocket.getItsBoss().get(i).getClass() == RectangularBoss.class)
@@ -177,14 +180,14 @@ public class GenerateTrocoidalGCodeTest
 				LimitedArc a3 = new LimitedArc(GeometricOperations.pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
 				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),GeometricOperations.pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
 				LimitedArc a4 = new LimitedArc(GeometricOperations.pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
-				formaOriginal.add(l1);
-				formaOriginal.add(a1);
-				formaOriginal.add(l2);
-				formaOriginal.add(a2);
-				formaOriginal.add(l3);
-				formaOriginal.add(a3);
-				formaOriginal.add(l4);
-				formaOriginal.add(a4);
+//				formaOriginal.add(l1);
+//				formaOriginal.add(a1);
+//				formaOriginal.add(l2);
+//				formaOriginal.add(a2);
+//				formaOriginal.add(l3);
+//				formaOriginal.add(a3);
+//				formaOriginal.add(l4);
+//				formaOriginal.add(a4);
 			} else if(pocket.getItsBoss().get(i).getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)pocket.getItsBoss().get(i);
@@ -211,9 +214,7 @@ public class GenerateTrocoidalGCodeTest
 		System.out.println(gCode.getGCode());
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 //		System.out.println("--------" + gCode.getPaths());
-		
-		//--------Esta muito errado o desenho!--------
-		//------ desenha paths trocoidais ------
+
 		ArrayList<LimitedElement> trochoidalPath = GenerateTrochoidalMovement1.transformPathsInLimitedElements(gCode.getPaths());
 		for(LimitedElement tmp : trochoidalPath)
 		{
@@ -231,13 +232,13 @@ public class GenerateTrocoidalGCodeTest
 				GeometricOperations.showElements(multiplePath.get(i).get(j));
 				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
 				{
-					all.add(multiplePath.get(i).get(j).get(k));
+//					all.add(multiplePath.get(i).get(j).get(k));
 				}
 			}
 		}
 		for(LimitedElement tmp : formaOriginal)
 		{
-			all.add(tmp);
+//			all.add(tmp);
 		}
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);

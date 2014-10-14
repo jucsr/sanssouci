@@ -131,8 +131,8 @@ public class MapeadoraGeneralClosedPocket1Test
 //			all.add(elementTmp);
 //		}
 //		System.out.println("Distance arc-arc: " + GeometricOperations.minimumDistance(a1, a2));
-		System.out.println("Maior Menor Distancia: " + maiorMenorDistancia);
-		System.out.println("Menor Menor distancia: " + menorMenorDistancia);
+//		System.out.println("Maior Menor Distancia: " + maiorMenorDistancia);
+//		System.out.println("Menor Menor distancia: " + menorMenorDistancia);
 //		System.out.println("Proporção (Menor / Maior): " + menorMenorDistancia/maiorMenorDistancia);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);

@@ -123,8 +123,8 @@ public class GenerateContournParallel
 
 		int aux = 1;
 		double distanceAtualizada = 2*distance - overLap;
-		System.out.println("distance: " + distance);
-		System.out.println("overlap: " + overLap);
+//		System.out.println("distance: " + distance);
+//		System.out.println("overlap: " + overLap);
 
 		while (parallelPath != null)
 		{

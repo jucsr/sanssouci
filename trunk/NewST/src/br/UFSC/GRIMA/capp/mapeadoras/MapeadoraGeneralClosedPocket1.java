@@ -1,26 +1,26 @@
 package br.UFSC.GRIMA.capp.mapeadoras;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.vecmath.Point2d;
+import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
-import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
-import br.UFSC.GRIMA.capp.movimentacoes.estrategias.MachinningStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Bloco;
@@ -126,10 +126,10 @@ public class MapeadoraGeneralClosedPocket1
 				maxPointY = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
 			}
 		}
-//		System.out.println("Xminor: " + minorPointX);
-//		System.out.println("Xmax: " + maxPointX);
-//		System.out.println("Yminor: " + minorPointY);
-//		System.out.println("Ymax: " + maxPointY);
+		System.out.println("Xminor: " + minorPointX);
+		System.out.println("Xmax: " + maxPointX);
+		System.out.println("Yminor: " + minorPointY);
+		System.out.println("Ymax: " + maxPointY);
 
 		int numeroDePontos = 100;
 		double deltaX = minorPointX.distance(maxPointX)/numeroDePontos;
@@ -139,7 +139,7 @@ public class MapeadoraGeneralClosedPocket1
 //		GeneralPath gp = new GeneralPath();
 //		vertex = CreateGeneralPocket.transformPolygonInRoundPolygon(CreateGeneralPocket.transformPolygonInCounterClockPolygon(genClosed.getVertexPoints()), genClosed.getRadius());
 //		gp.moveTo(vertex.get(0).getX(), vertex.get(0).getY());
-		GeneralPath gp = (GeneralPath)Face.getShape(genClosed);
+		final GeneralPath gp = (GeneralPath)Face.getShape(genClosed);
 			
 		//CRIA UM Shape2D DA PROTUBERANCIA
 		Shape boss = null;
@@ -164,12 +164,13 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		//Array de LimitedElement da forma da cavidade
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
-		for(int r=0;r<vertex.size();r++)
-		{
-			gp.lineTo(vertex.get(r).getX(), vertex.get(r).getY());				
-		}
-		gp.closePath();
+	
 		
+//		for(int r=0;r<vertex.size();r++)
+//		{
+//			gp.lineTo(vertex.get(r).getX(), vertex.get(r).getY());				
+//		}
+//		gp.closePath();
 		//Percorre uma matriz de pontos dentro da forma da cavidade, verificando qual e a maior distancia 
 		//entre as menores distancias entre os pontos e os elementos
 		for(int i = 0; i < numeroDePontos; i++)
@@ -177,6 +178,7 @@ public class MapeadoraGeneralClosedPocket1
 			ArrayList<Point2D> arrayTmp = new ArrayList<Point2D>();
 			for(int j = 0; j < numeroDePontos; j++)
 			{
+				System.out.println("lololo");
 				Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointX.getY() + deltaY*j);
 				if(gp.contains(pointTmp)) //Se o ponto esta dentro da cavidade
 				{
@@ -184,7 +186,7 @@ public class MapeadoraGeneralClosedPocket1
 					{
 						if(boss.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
 						{
-//							System.out.println(pointTmp);
+							System.err.println(pointTmp);
 							break;
 						}
 						else //Se o ponto esta fora da protuberancia
@@ -205,6 +207,7 @@ public class MapeadoraGeneralClosedPocket1
 //								System.out.println("Ponto: "+ pointTmp);
 								minimumMaxDistance = minimumMaxDistancePointToPathTmp;
 							}
+							System.out.println("Maior Menor Distancia c/protuberancia: " + minimumMaxDistance);
 						}
 					}
 					else //Se nao possui protuberancia
@@ -215,6 +218,7 @@ public class MapeadoraGeneralClosedPocket1
 						{
 							minimumMaxDistance = menorDistanciaTmp;
 						}
+						System.out.println("Maior Menor Distancia s/protuberancia: " + minimumMaxDistance);
 					}
 				}
 //					arrayTmp.add(pointTmp);
@@ -222,7 +226,23 @@ public class MapeadoraGeneralClosedPocket1
 //				matrix.add(arrayTmp);
 		}
 		
-		System.out.println("Maior Menor Distancia: " + minimumMaxDistance);
+		//Desenhador
+		JFrame frame = new JFrame();
+		frame.setSize(new Dimension(300, 300));
+		class Panel extends JPanel
+		{
+			protected void paintComponent(Graphics g)
+			{
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.translate(0, 300);
+				g2d.scale(1, -1);
+				g2d.draw(gp);
+				//g2d.drawelipse2D()
+			}
+		}
+		frame.getContentPane().add(new Panel());
+		frame.setVisible(true);
+		
 		return minimumMaxDistance;
 	}
 	
@@ -319,12 +339,13 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			//CUIDADO COM O Z!!
 			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), GeometricOperations.tranformeBossToLimitedElement(itsBoss, genClosed.Z));
+			System.out.println("Menor Menor Distancia c/protuberancia: " + menorDistancia);
 		}
 		else
 		{
 			menorDistancia = genClosed.getRadius();
+			System.out.println("Menor Menor Distancia s/protuberancia: " + menorDistancia);
 		}
-		System.out.println("Menor Menor Distancia: " + menorDistancia);
 		return menorDistancia;
 	}
 	
@@ -412,7 +433,8 @@ public class MapeadoraGeneralClosedPocket1
 	
 	private void mapearGeneralClosedPocket() 
 	{
-		Workingstep wsTmp;
+		Workingstep wsTmp1;
+		Workingstep wsTmp2;
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
@@ -427,8 +449,8 @@ public class MapeadoraGeneralClosedPocket1
 			else{
 				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
 			}			
-			System.out.println("wsp = " + genClosed.getFeaturePrecedente().getWorkingsteps().size());
-			System.out.println("feature Pre = " + genClosed.getFeaturePrecedente());
+//			System.out.println("wsp = " + genClosed.getFeaturePrecedente().getWorkingsteps().size());
+//			System.out.println("feature Pre = " + genClosed.getFeaturePrecedente());
 		}
 		else
 		{
@@ -452,6 +474,8 @@ public class MapeadoraGeneralClosedPocket1
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
 					genClosed, 0, getMaiorMenorDistancia(genClosed));
+			System.out.println("Ferramenta 1 de Diametro: " + faceMill.getDiametroFerramenta());
+
 			//Estrategia
 			TrochoidalAndContourParallelStrategy machiningStrategy = new TrochoidalAndContourParallelStrategy();
 			operation1.setMachiningStrategy(machiningStrategy);
@@ -467,13 +491,16 @@ public class MapeadoraGeneralClosedPocket1
 					.getCondicoesDeUsinagem(this.projeto, faceMill,
 							bloco.getMaterial());
 			// WORKINGSTEP 1
-			wsTmp = new Workingstep(genClosed, faceTmp, faceMill,
+			wsTmp1 = new Workingstep(genClosed, faceTmp, faceMill,
 					condicoesDeUsinagem, operation1);
-			wsTmp.setTipo(Workingstep.DESBASTE);
-			wsTmp.setId(this.genClosed.getNome() + "_RGH");
+			wsTmp1.setTipo(Workingstep.DESBASTE);
+			wsTmp1.setId(this.genClosed.getNome() + "_RGH");
 			
-			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
-			wsPrecedenteTmp = wsTmp;
+			wsTmp1.setWorkingstepPrecedente(wsPrecedenteTmp);
+			wsPrecedenteTmp = wsTmp1;
+			
+			wssFeature.add(wsTmp1);
+
 			
 			// BOTTOM AND SIDE ROUGH MILLING
 			BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
@@ -487,6 +514,8 @@ public class MapeadoraGeneralClosedPocket1
 			FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(), faceMills,
 					genClosed, 0,
 					getMenorMenorDistance(genClosed));
+			
+			System.out.println("Ferramenta 2 de Diametro: " + faceMill2.getDiametroFerramenta());
 			// Estrategia
 			ContourParallel machiningStrategy2 = new ContourParallel();
 			operation2.setMachiningStrategy(machiningStrategy2);
@@ -498,15 +527,17 @@ public class MapeadoraGeneralClosedPocket1
 					.getCondicoesDeUsinagem(this.projeto, faceMill2,
 							bloco.getMaterial());
 			// WORKINGSTEP 2
-			wsTmp = new Workingstep(genClosed, faceTmp, faceMill2,
+			wsTmp2 = new Workingstep(genClosed, faceTmp, faceMill2,
 					condicoesDeUsinagem, operation2);
-			wsTmp.setTipo(Workingstep.DESBASTE);
-			wsTmp.setId(this.genClosed.getNome() + "_RGH");
+			wsTmp2.setTipo(Workingstep.DESBASTE);
+			wsTmp2.setId(this.genClosed.getNome() + "_RGH");
 
-			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
-			wsPrecedenteTmp = wsTmp;
+			wsTmp2.setWorkingstepPrecedente(wsPrecedenteTmp);
+			wsPrecedenteTmp = wsTmp2;
 
-			wssFeature.add(wsTmp);
+			wssFeature.add(wsTmp2);
+
+			genClosed.setWorkingsteps(wssFeature);
 		}
 		
 	}

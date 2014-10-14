@@ -129,14 +129,14 @@ public class GenerateTrochoidalMovement1Test
 		
 		//Circular Boss
 //		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
-		CircularBoss arcBoss = new CircularBoss("", 250, 150, pocket.Z, 30, 30, pocket.getProfundidade());
-		itsBoss.add(arcBoss);
+		CircularBoss arcBoss = new CircularBoss("", 120, 200, pocket.Z, 30, 30, pocket.getProfundidade());
+//		itsBoss.add(arcBoss);
 		
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(400, 200, pocket.Z);
+		rectBoss.setPosicao(120, 180, pocket.Z);
 		rectBoss.setRadius(10);
-//		itsBoss.add(rectBoss);
+		itsBoss.add(rectBoss);
 		
 		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
@@ -158,6 +158,10 @@ public class GenerateTrochoidalMovement1Test
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
 		formaOriginal = addPocketVertex.getElements();
 		
+		// --- Menor distancia entre cavidade e protuberancia ---
+		
+		double menorDistancia = GeometricOperations.minimumDistance(formaOriginal, GeometricOperations.tranformeBossToLimitedElement(itsBoss, pocket.Z));
+		
 		// --- Criando Machining workingstep ----
 		
 		// ---- criando Operacao ----
@@ -167,7 +171,7 @@ public class GenerateTrochoidalMovement1Test
 		// ---- criando Ferramenta ----
 		FaceMill ferramenta= new FaceMill();
 		ferramenta.setName("1");
-		ferramenta.setDiametroFerramenta(20); //Diametro da ferramenta (mudei)
+		ferramenta.setDiametroFerramenta(menorDistancia/2); //Diametro da ferramenta (mudei)
 		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 				
 		// ---- criando Condicoes de usinagem -----
@@ -181,7 +185,7 @@ public class GenerateTrochoidalMovement1Test
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
 		//Setar o trochoidalRadius nos proprios testes
-		strategy.setTrochoidalRadius(10);
+		strategy.setTrochoidalRadius(ferramenta.getDiametroFerramenta()/2);
 		strategy.setTrochoidalFeedRate(20);
 		strategy.setOverLap(2);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
@@ -260,7 +264,7 @@ public class GenerateTrochoidalMovement1Test
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : formaOriginal)
 		{
-			all.add(tmp);
+//			all.add(tmp);
 		}
 		for(LimitedElement tmp : pathsVector)
 		{

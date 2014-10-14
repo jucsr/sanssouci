@@ -133,15 +133,18 @@ public class PainelDesenhadorDeElementos extends JPanel implements MouseMotionLi
 		for(int i = 0; i < elements.size(); i++)
 		{
 			LimitedElement elementTmp = elements.get(i);
+			Color color = new Color(127, 255, 0);
 			if(elementTmp.isLimitedLine())
 			{
 //				desenharLinha((LimitedLine)elementTmp, g2d, new Color(127, 255, 0));
 //				desenharLinha((LimitedLine) elementTmp, g2d, new Color(0, 100, 255));
-				desenharLinha((LimitedLine) elementTmp, g2d, new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
+//				desenharLinha((LimitedLine) elementTmp, g2d, new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
+				desenharLinha((LimitedLine) elementTmp, g2d, color);
 			} else if(elementTmp.isLimitedArc())
 			{
 //				desenharArco((LimitedArc)elementTmp, g2d, new Color(0, 100, 255));
-				desenharArco((LimitedArc)elementTmp, g2d, new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
+//				desenharArco((LimitedArc)elementTmp, g2d, new Color((int)(Math.random()*254), (int)(Math.random()*254), (int)(Math.random()*254)));
+				desenharArco((LimitedArc)elementTmp, g2d, color);
 			}
 		}
 	}

@@ -85,7 +85,7 @@ public class GenarateContournParallelTest
 //		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
-		rectBoss.setPosicao(50, 200, pocket.Z);
+		rectBoss.setPosicao(150, 180, pocket.Z);
 		rectBoss.setRadius(10);
 		itsBoss.add(rectBoss);
 		//General Boss
@@ -154,7 +154,7 @@ public class GenarateContournParallelTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 10,0);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 15,2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
@@ -169,7 +169,7 @@ public class GenarateContournParallelTest
 		}
 		for(LimitedElement tmp : formaOriginal)
 		{
-			all.add(tmp);
+//			all.add(tmp);
 		}
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);

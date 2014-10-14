@@ -265,7 +265,7 @@ public class MovimentacaoGeneralClosedPocket {
 		// =========== CUIDADO =====
 		//---- gerando as linhas guia para o trocoidal
 //		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
-		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
+//		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
 		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
 
 		this.elementos = contourn.multipleParallelPath();
@@ -316,8 +316,11 @@ public class MovimentacaoGeneralClosedPocket {
 				/*
 				 * subindo
 				 */
-				LinearPath subindo = new LinearPath(lastPoint, new Point3d(lastPoint.x, lastPoint.y, planoSeguranca));
+				LinearPath subindo = new LinearPath(lastPoint, pointTmp/*new Point3d(lastPoint.x, lastPoint.y, planoSeguranca)*/);
 				lastPointPlanoZ = subindo.getFinalPoint();
+//				System.out.println("lol: " + lastPoint);
+//				System.out.println("lol2: " + lastPointPlanoZ);
+//				System.out.println("lol3: " + pointTmp);
 				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
 				desbaste.add(subindo);
 				/*

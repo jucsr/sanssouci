@@ -1171,11 +1171,17 @@ public class GeometricOperations
 		{
 			for(LimitedElement e2 : array2)
 			{
+				ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
+				show.add(e1);
+				show.add(e2);
+				showElements(show);
 				double minimumDistanceTmp = minimumDistance(e1, e2);
+				System.out.println("minimaDistancia: " + minimumDistanceTmp);
 				if(minimumDistanceTmp < minimumDistance)
 				{
 					minimumDistance = minimumDistanceTmp;
 				}
+				System.out.println("menorMinimaDistancia: " + minimumDistance);
 			}
 		}
 		return minimumDistance;
@@ -1388,10 +1394,11 @@ public class GeometricOperations
 			if(bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
-				System.out.println("Profundidade Boss: " + tmp.Z);
+//				System.out.println("Profundidade Boss: " + tmp.Z);
 //				System.out.println(tmp.getCenter().x + (tmp.getDiametro1()/2));
-				LimitedArc arc = new LimitedArc(tmp.getCenter(), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), -2 * Math.PI);
-				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
+				LimitedArc arc = new LimitedArc(new Point3d(tmp.X,tmp.Y,planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), -2 * Math.PI);
+//				System.out.println("BossCenter: " + arc.getCenter());
+//				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
 				elementosFromBoss.add(arc);
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)

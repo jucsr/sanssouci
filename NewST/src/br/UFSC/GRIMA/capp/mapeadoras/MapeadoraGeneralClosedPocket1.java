@@ -8,6 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.Arc2D.Double;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -89,8 +90,10 @@ public class MapeadoraGeneralClosedPocket1
 	{
 		boolean thereIsBoss = false;
 		ArrayList<Point2D> vertex = new ArrayList<Point2D>();
-		ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
+		final ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
 		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
+		System.out.println("LOLOL: " + itsBoss.get(0).X + ", " + itsBoss.get(0).Y + ", " + itsBoss.get(0).Z);
+
 		double minimumMaxDistance=0;
 		
 		//Verifica se ha protuberanica
@@ -178,18 +181,16 @@ public class MapeadoraGeneralClosedPocket1
 			ArrayList<Point2D> arrayTmp = new ArrayList<Point2D>();
 			for(int j = 0; j < numeroDePontos; j++)
 			{
-				System.out.println("lololo");
-				Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointX.getY() + deltaY*j);
+//				System.out.println("lololo");
+				Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointY.getY() + deltaY*j);
+//				if(i<50)
+//				System.err.println(pointTmp);
+				
 				if(gp.contains(pointTmp)) //Se o ponto esta dentro da cavidade
 				{
 					if(thereIsBoss)      //Se possui Protuberancia
 					{
-						if(boss.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
-						{
-							System.err.println(pointTmp);
-							break;
-						}
-						else //Se o ponto esta fora da protuberancia
+						if(!boss.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
 						{
 							ArrayList<LimitedElement> elementsPocketAndBoss = new ArrayList<LimitedElement>();
 							for(LimitedElement tmp:addPocket.getElements())
@@ -207,7 +208,7 @@ public class MapeadoraGeneralClosedPocket1
 //								System.out.println("Ponto: "+ pointTmp);
 								minimumMaxDistance = minimumMaxDistancePointToPathTmp;
 							}
-							System.out.println("Maior Menor Distancia c/protuberancia: " + minimumMaxDistance);
+//							System.out.println("Maior Menor Distancia c/protuberancia: " + minimumMaxDistance);
 						}
 					}
 					else //Se nao possui protuberancia
@@ -218,12 +219,12 @@ public class MapeadoraGeneralClosedPocket1
 						{
 							minimumMaxDistance = menorDistanciaTmp;
 						}
-						System.out.println("Maior Menor Distancia s/protuberancia: " + minimumMaxDistance);
+//						System.out.println("Maior Menor Distancia s/protuberancia: " + minimumMaxDistance);
 					}
 				}
-//					arrayTmp.add(pointTmp);
+				arrayTmp.add(pointTmp);
 			}
-//				matrix.add(arrayTmp);
+			matrix.add(arrayTmp);
 		}
 		
 		//Desenhador
@@ -234,10 +235,17 @@ public class MapeadoraGeneralClosedPocket1
 			protected void paintComponent(Graphics g)
 			{
 				Graphics2D g2d = (Graphics2D)g;
-				g2d.translate(0, 300);
-				g2d.scale(1, -1);
+//				g2d.translate(0, 300);
+//				g2d.scale(1, -1);
 				g2d.draw(gp);
-				//g2d.drawelipse2D()
+				for(ArrayList<Point2D> arrayTmp:matrix)
+				{
+					for(Point2D pointTmp:arrayTmp)
+					{
+//						g2d.drawOval((int)pointTmp.getX(), (int)pointTmp.getY(), 1, 1);
+						g2d.draw(new Ellipse2D.Double(pointTmp.getX(), pointTmp.getY(), 1, 1));
+					}
+				}
 			}
 		}
 		frame.getContentPane().add(new Panel());
@@ -246,91 +254,11 @@ public class MapeadoraGeneralClosedPocket1
 		return minimumMaxDistance;
 	}
 	
-//	public double getMaiorMenorDistancia(GeneralClosedPocket genClosed)
-//	{
-//		ArrayList<Point2D> vertex = new ArrayList<Point2D>();
-//		ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
-//		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
-//		//Forma da Cavidade
-//		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
-//		double maiorMenorDistancia=0;
-//		
-//		//Verifica se ha protuberanica
-//		if(itsBoss != null)
-//		{
-//			maiorMenorDistancia = GeometricOperations.maxDistance(addPocket.getElements(), GeometricOperations.tranformeBossToLimitedElement(itsBoss, genClosed.Z));
-//		}
-//		else
-//		{
-//			//Posicao da forma
-//			Point2D minorPointX = genClosed.getPoints().get(0); //Menor X
-//			Point2D maxPointX = genClosed.getPoints().get(0);   //Maior Y
-//			Point2D minorPointY = genClosed.getPoints().get(0); //Menor X
-//			Point2D maxPointY = genClosed.getPoints().get(0);   //Maior Y
-//			for(Point2D pointTmp : genClosed.getPoints())
-//			{
-//				if(pointTmp.getX() < minorPointX.getX())
-//				{
-//					minorPointX = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-//				}
-//				if(pointTmp.getX() > maxPointX.getX())
-//				{
-//					maxPointX = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-//				}
-//				if(pointTmp.getY() < minorPointY.getY())
-//				{
-//					minorPointY = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-//				}
-//				if(pointTmp.getY() > maxPointY.getY())
-//				{
-//					maxPointY = new Point2D.Double(pointTmp.getX(),pointTmp.getY());
-//				}
-//			}
-//			System.out.println("Xminor: " + minorPointX);
-//			System.out.println("Xmax: " + maxPointX);
-//			System.out.println("Yminor: " + minorPointY);
-//			System.out.println("Ymax: " + maxPointY);
-//			
-//			int numeroDePontos = 100;
-//			double deltaX = minorPointX.distance(maxPointX)/numeroDePontos;
-//			double deltaY = minorPointY.distance(maxPointY)/numeroDePontos;
-//			
-//			//CRIA O GENERAL PATH DO FORMATO
-//			GeneralPath gp = (GeneralPath)Face.getShape(genClosed);
-//			
-//			
-//			for(int r=0;r<vertex.size();r++)
-//			{
-//				gp.lineTo(vertex.get(r).getX(), vertex.get(r).getY());				
-//			}
-//			gp.closePath();
-//			
-//			//Percorre uma matriz de pontos dentro da forma da cavidade, verificando qual e a maior distancia 
-//			//entre as menores distancias entre os pontos e os elementos
-//			for(int i = 0; i < numeroDePontos; i++)
-//			{
-//				for(int j = 0; j < numeroDePontos; j++)
-//				{
-//					Point2D pointTmp = new Point2D.Double(minorPointX.getX() + deltaX*i , minorPointX.getY() + deltaY*j);
-//					if(gp.contains(pointTmp)) //Se o ponto esta dentro da cavidade
-//					{
-//						//Calcula a menor distancia entre o ponto atual e o array da forma da cavidade
-//						double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
-//						if(menorDistanciaTmp > maiorMenorDistancia)
-//						{
-//							maiorMenorDistancia = menorDistanciaTmp;
-//						}
-//					}
-//				}
-//			}
-//			
-//		}
-//		return maiorMenorDistancia;
-//	}
-	
+	//O boss esta chegando centrado na origem (por que ?)
 	public double getMenorMenorDistance(GeneralClosedPocket genClosed)
 	{
 		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
+//		System.out.println("LOLOL: " + ((CircularBoss)itsBoss.get(0)).getCenter());
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 
 		//minima distancia entre o array de elementos da forma e o array de elementos da protuberancia(se houver)

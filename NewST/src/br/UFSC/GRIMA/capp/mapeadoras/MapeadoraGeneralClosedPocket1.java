@@ -35,6 +35,7 @@ import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 import br.UFSC.GRIMA.util.projeto.Projeto;
@@ -59,7 +60,6 @@ public class MapeadoraGeneralClosedPocket1
 
 	public MapeadoraGeneralClosedPocket1(Projeto projeto, Face face, GeneralClosedPocket genClosed) 
 	{
-
 		this.projeto = projeto;
 		this.faceTmp = face;
 		this.genClosed = genClosed;
@@ -361,6 +361,7 @@ public class MapeadoraGeneralClosedPocket1
 	
 	private void mapearGeneralClosedPocket() 
 	{
+		double fator = 3;
 		Workingstep wsTmp1;
 		Workingstep wsTmp2;
 		Workingstep wsPrecedenteTmp;
@@ -401,7 +402,7 @@ public class MapeadoraGeneralClosedPocket1
 			
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
-					genClosed, 0, getMaiorMenorDistancia(genClosed));
+					genClosed, 0, getMaiorMenorDistancia(genClosed)/fator);
 			System.out.println("Ferramenta 1 de Diametro: " + faceMill.getDiametroFerramenta());
 
 			//Estrategia
@@ -409,7 +410,7 @@ public class MapeadoraGeneralClosedPocket1
 			operation1.setMachiningStrategy(machiningStrategy);
 			machiningStrategy.setAllowMultiplePasses(true);
 			machiningStrategy.setOverLap(0.25*faceMill.getDiametroFerramenta()); //Overlap
-			machiningStrategy.setTrochoidalRadius(faceMill.getDiametroFerramenta()/2); //REVER MAIS TARDE
+			machiningStrategy.setTrochoidalRadius(faceMill.getDiametroFerramenta()); //REVER MAIS TARDE
 			machiningStrategy.setTrochoidalFeedRate(0.75*faceMill.getDiametroFerramenta()/2);
 			machiningStrategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 			machiningStrategy.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
@@ -467,6 +468,115 @@ public class MapeadoraGeneralClosedPocket1
 
 			genClosed.setWorkingsteps(wssFeature);
 		}
+		
+//		double fator = 3;
+//		ArrayList<Workingstep> workingSteps;
+//		Workingstep wsPrecedenteTmp;
+//		wssFeature = new Vector<Workingstep>();
+//		double retractPlane = 5;
+//		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(genClosed)/fator;
+//		if(genClosed.getFeaturePrecedente()!= null)
+//		{
+//			if(		genClosed.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 
+//					genClosed.getFeaturePrecedente().getClass().equals(RectangularBoss.class) ||
+//					genClosed.getFeaturePrecedente().getClass().equals(CircularBoss.class))
+//			{
+//				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getFeaturePrecedente().getWorkingsteps().lastElement();
+//			}
+//			else{
+//				wsPrecedenteTmp = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
+//			}			
+////			System.out.println("wsp = " + genClosed.getFeaturePrecedente().getWorkingsteps().size());
+////			System.out.println("feature Pre = " + genClosed.getFeaturePrecedente());
+//		}
+//		else
+//		{
+//			//Nao tem ws precedente
+//			wsPrecedenteTmp = null;
+//			
+//		}
+//		if (!genClosed.isAcabamento()) 
+//		{
+//			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
+//			// WORKINGSTEPS DE DESBASTE
+//
+//			// BOTTOM AND SIDE ROUGH MILLING
+//			BottomAndSideRoughMilling operation1 = new BottomAndSideRoughMilling(
+//					"Bottom And Side Rough Milling", retractPlane);
+//			operation1.setAllowanceSide(Feature.LIMITE_DESBASTE);
+//
+//			if (!genClosed.isPassante())
+//				operation1.setAllowanceBottom(Feature.LIMITE_DESBASTE);
+//			
+//			
+//			// FERRAMENTA
+//			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
+//					genClosed, 0, maiorMenorDistanciaTmp);
+//			System.out.println("Ferramenta 1 de Diametro: " + faceMill.getDiametroFerramenta());
+//
+//			//Estrategia
+//			TrochoidalAndContourParallelStrategy machiningStrategy = new TrochoidalAndContourParallelStrategy();
+//			operation1.setMachiningStrategy(machiningStrategy);
+//			machiningStrategy.setAllowMultiplePasses(true);
+//			machiningStrategy.setOverLap(0.25*faceMill.getDiametroFerramenta()); //Overlap
+//			machiningStrategy.setTrochoidalRadius(faceMill.getDiametroFerramenta()); //REVER MAIS TARDE
+//			machiningStrategy.setTrochoidalFeedRate(0.75*faceMill.getDiametroFerramenta()/2);
+//			machiningStrategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
+//			machiningStrategy.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
+//			
+//			// CONDIÇÕES DE USINAGEM
+//			condicoesDeUsinagem = MapeadoraDeWorkingsteps
+//					.getCondicoesDeUsinagem(this.projeto, faceMill,
+//							bloco.getMaterial());
+//			// WORKINGSTEP 1
+//			wsTmp1 = new Workingstep(genClosed, faceTmp, faceMill,
+//					condicoesDeUsinagem, operation1);
+//			wsTmp1.setTipo(Workingstep.DESBASTE);
+//			wsTmp1.setId(this.genClosed.getNome() + "_RGH");
+//			
+//			wsTmp1.setWorkingstepPrecedente(wsPrecedenteTmp);
+//			wsPrecedenteTmp = wsTmp1;
+//			
+//			wssFeature.add(wsTmp1);
+//
+//			
+//			// BOTTOM AND SIDE ROUGH MILLING
+//			BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
+//					"Bottom And Side Rough Milling", retractPlane);
+//			operation2.setAllowanceSide(Feature.LIMITE_DESBASTE);
+//
+//			if (!genClosed.isPassante())
+//				operation2.setAllowanceBottom(Feature.LIMITE_DESBASTE);
+//
+//			// FERRAMENTA
+//			FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(), faceMills,
+//					genClosed, 0,
+//					getMenorMenorDistance(genClosed));
+//			
+//			System.out.println("Ferramenta 2 de Diametro: " + faceMill2.getDiametroFerramenta());
+//			// Estrategia
+//			ContourParallel machiningStrategy2 = new ContourParallel();
+//			operation2.setMachiningStrategy(machiningStrategy2);
+//			machiningStrategy2.setAllowMultiplePasses(false);
+//			machiningStrategy2.setCutmodeType(ContourParallel.conventional);
+//
+//			// CONDIÇÕES DE USINAGEM
+//			condicoesDeUsinagem = MapeadoraDeWorkingsteps
+//					.getCondicoesDeUsinagem(this.projeto, faceMill2,
+//							bloco.getMaterial());
+//			// WORKINGSTEP 2
+//			wsTmp2 = new Workingstep(genClosed, faceTmp, faceMill2,
+//					condicoesDeUsinagem, operation2);
+//			wsTmp2.setTipo(Workingstep.DESBASTE);
+//			wsTmp2.setId(this.genClosed.getNome() + "_RGH");
+//
+//			wsTmp2.setWorkingstepPrecedente(wsPrecedenteTmp);
+//			wsPrecedenteTmp = wsTmp2;
+//
+//			wssFeature.add(wsTmp2);
+//
+//			genClosed.setWorkingsteps(wssFeature);
+//		}
 		
 	}
 }

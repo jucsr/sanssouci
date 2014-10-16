@@ -16,6 +16,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 import br.UFSC.GRIMA.shopFloor.ProjetoSF;
 import br.UFSC.GRIMA.util.PassaParaString;
 import br.UFSC.GRIMA.util.Ponto;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 
 public class Workingstep implements Serializable{
 		
@@ -45,6 +46,7 @@ public class Workingstep implements Serializable{
 	private int IndiceArvore;
 	private int WSPrecedenteID;
 	private Workingstep wsClone;
+	private ArrayList<LimitedElement> limitedElementShape = new ArrayList<LimitedElement>(); //limitedelements que definem a forma da cavidade (c/protuberancias)
 	
 	public Workingstep(){
 
@@ -336,5 +338,21 @@ public class Workingstep implements Serializable{
 		wsClone.setIndiceArvore(this.getIndiceArvore());
 		wsClone.setWSPrecedenteID(this.getWSPrecedenteID());
 		return wsClone;
+	}
+	/**
+	 *  metodo para pegar os elementos da cavidade (com protuberancias)
+	 * @return getLimitedElementShape
+	 */
+	public ArrayList<LimitedElement> getLimitedElementShape()
+	{
+		return limitedElementShape;
+	}
+	/**
+	 *  setar os elementos da cavidade geral com protuberancia
+	 * @param limitedElementShape
+	 */
+	public void setLimitedElementShape(ArrayList<LimitedElement> limitedElementShape)
+	{
+		this.limitedElementShape = limitedElementShape;
 	}
 }

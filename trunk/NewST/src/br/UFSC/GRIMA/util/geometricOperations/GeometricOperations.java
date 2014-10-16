@@ -1550,7 +1550,7 @@ public class GeometricOperations
 		
 		return saida;
 	}
-	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle)
+	public static double calcDeltaAngle(Point3d Pi, Point3d Pf, Point3d center, double arcAngle /*int sense*/)
 	{
 //		double anglePi = Math.atan2(Pi.y - center.y, Pi.x - center.x);
 //		double anglePf = Math.atan2(Pf.y - center.y, Pf.x - center.x);
@@ -1578,6 +1578,7 @@ public class GeometricOperations
 			saida = 2 * Math.PI + saida;
 		}
 		if(arcAngle < 0)
+//		if(sense == LimitedArc.CW)
 		{
 			saida = -(2 * Math.PI - saida);
 		}

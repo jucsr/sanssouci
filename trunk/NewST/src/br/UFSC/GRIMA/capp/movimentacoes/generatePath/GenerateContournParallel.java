@@ -113,8 +113,7 @@ public class GenerateContournParallel
 //		GeometricOperations.showElements(formaOriginal);		
 //		System.out.println("=====EndformaOriginal ======");
 	}
-
-	public ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath()
+	public ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(/*GeneralClosedPocket pocket, double planoZ, double distance, double overLap*/)
 	{
 //		double percentagem = 0.75;
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
@@ -474,80 +473,81 @@ public class GenerateContournParallel
 //	{
 	public static LimitedArc parallelArc(LimitedArc arc, double distance, boolean inside, boolean isBoss)
 	{
-			double newRadius;
-			if (arc.getDeltaAngle()<0) //Sentido horario
+		double newRadius;
+		if (arc.getDeltaAngle()<0) //Sentido horario
+		{
+			if(isBoss) //Se for boss
 			{
-				if(isBoss) //Se for boss
+				newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+			}
+			else //Se nao for boss
+			{
+				if(inside) //Se for para dentro
 				{
-					newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+					newRadius = arc.getRadius()+distance;
 				}
-				else //Se nao for boss
+				else //Se for para fora
 				{
-					if(inside) //Se for para dentro
-					{
-						newRadius = arc.getRadius()+distance;
-					}
-					else //Se for para fora
-					{
-						newRadius = arc.getRadius()-distance;
-					}
+					newRadius = arc.getRadius()-distance;
 				}
 			}
-			else //Sentido anti-horario
+		}
+		else //Sentido anti-horario
+		{
+			if(isBoss) //Se for boss
 			{
-				if(isBoss) //Se for boss
+				newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+			}
+			else //Se nao for boss
+			{
+				if(inside) //Se for para dentro
 				{
-					newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+					newRadius = arc.getRadius()-distance;
 				}
-				else //Se nao for boss
+				else //Se for para fora
 				{
-					if(inside) //Se for para dentro
-					{
-						newRadius = arc.getRadius()-distance;
-					}
-					else //Se for para fora
-					{
-						newRadius = arc.getRadius()+distance;
-					}
+					newRadius = arc.getRadius()+distance;
 				}
 			}
+		}
 			
 //			System.out.println("RADIUS: " + newRadius);
-			return (new LimitedArc(arc.getCenter(), GeometricOperations.plus(arc.getCenter(),GeometricOperations.multiply(newRadius,GeometricOperations.unitVector(arc.getCenter(),arc.getInitialPoint()))), arc.getDeltaAngle()));
-//		Point3d initialPoint = new Point3d(arc.getInitialPoint().x, arc.getInitialPoint().y, planoZ);
-//		Point3d center = new Point3d(arc.getCenter().x, arc.getCenter().y, planoZ);
-//		boolean isBoss = !inside;
-//		Point3d newInitialPoint;
-//		LimitedArc newArc = null;
-//		if (arc.getDeltaAngle() < 0)
-//		{
-//			if(!isBoss)
-//			{
-//				newInitialPoint = GeometricOperations.plus(center, GeometricOperations.multiply((arc.getRadius() + distance), GeometricOperations.unitVector(center, initialPoint)));
-//				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-//			}
-//			else
-//			{
-//				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius()+distance),GeometricOperations.unitVector(center, initialPoint)));
-//				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-//			}
-//		}
-//		else
-//		{
-////			if(!isBoss)
-////			{
-//				if(arc.getRadius() > distance)
-//				{
-//					newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() - distance),GeometricOperations.unitVector(center, initialPoint)));
-//					newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-//				}
-////			}
-////			else
-////			{
-////				newInitialPoint = GeometricOperations.plus(center,GeometricOperations.multiply((arc.getRadius() + distance),GeometricOperations.unitVector(center, initialPoint)));
-////				newArc = new LimitedArc(center, newInitialPoint, arc.getDeltaAngle());
-////			}
-//		}
-//		return newArc;
+		return (new LimitedArc(arc.getCenter(), GeometricOperations.plus(arc.getCenter(),GeometricOperations.multiply(newRadius,GeometricOperations.unitVector(arc.getCenter(),arc.getInitialPoint()))), arc.getDeltaAngle()));
 	}
+//	public ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelAcabamentoPath(GeneralClosedPocket pocket, double planoZ, double distance, double overLap)
+//	{
+//		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
+//		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = multipleParallelPath(pocket,planoZ,distance,overLap).get(0);
+//		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
+//		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
+//		{
+//			ArrayList<LimitedElement> validationParallelTmp = parallelPath1(firstOffsetMultipleParallel.get(i), distance, false, false); //elementos, nao interligados, dos novos bosses
+//			Point3d firstValidationElementInitialPoint = validationParallelTmp.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
+//			ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
+//			for(int j = 0; j < validationParallelTmp.size(); j++)
+//			{
+//				Point3d firstOffsetElementFinalPoint = firstOffsetMultipleParallel.get(i).get(j).getFinalPoint(); //centro dos arcos de transicao
+//				LimitedElement validationParallelElementTmp = validationParallelTmp.get(j);
+//				alreadyDesbastededAreaTmp.add(validationParallelElementTmp);
+//				if(j == validationParallelTmp.size() - 1)
+//				{
+//					if(validationParallelElementTmp.getFinalPoint() != firstValidationElementInitialPoint)
+//					{
+//						LimitedArc transitionArc = new LimitedArc(firstOffsetElementFinalPoint, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
+//						alreadyDesbastededAreaTmp.add(transitionArc);
+//					}
+//				}
+//				else
+//				{
+//					LimitedElement validationParallelElementTmpNext = validationParallelTmp.get(j+1);
+//					if(validationParallelElementTmp.getFinalPoint() != validationParallelElementTmpNext.getInitialPoint())
+//					{
+//						LimitedArc transitionArc = new LimitedArc(firstOffsetElementFinalPoint, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), firstOffsetElementFinalPoint, -2*Math.PI));
+//						alreadyDesbastededAreaTmp.add(transitionArc);
+//					}
+//				}
+//			}
+//			alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
+//		}
+//	}
 }

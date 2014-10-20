@@ -659,7 +659,6 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		}
 	}
 	
-	
 }
 
 

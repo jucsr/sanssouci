@@ -159,8 +159,15 @@ public class GenerateTrochoidalMovement1Test
 		formaOriginal = addPocketVertex.getElements();
 		
 		// --- Menor distancia entre cavidade e protuberancia ---
-		
-		double menorDistancia = GeometricOperations.minimumDistance(formaOriginal, GeometricOperations.tranformeBossToLimitedElement(itsBoss, pocket.Z));
+		ArrayList<LimitedElement> bossElement = new ArrayList<LimitedElement>();
+		for(ArrayList<LimitedElement> arrayTmp : GeometricOperations.tranformeBossToLimitedElement(itsBoss, pocket.Z))
+		{
+			for(LimitedElement elementTmp : arrayTmp)
+			{
+				bossElement.add(elementTmp);
+			}
+		}
+		double menorDistancia = GeometricOperations.minimumDistance(formaOriginal, bossElement);
 		
 		// --- Criando Machining workingstep ----
 		

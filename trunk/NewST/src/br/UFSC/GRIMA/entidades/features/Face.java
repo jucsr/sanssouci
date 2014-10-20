@@ -17,6 +17,9 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
+import br.UFSC.GRIMA.util.findPoints.LimitedArc;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 
 public class Face implements Serializable{
@@ -2489,6 +2492,37 @@ public class Face implements Serializable{
 			Region region = (Region)feature;
 			shape = new Rectangle2D.Double(region.X, region.Y, region.getLength(), region.getWidth());
 		}
+		return shape;
+	}
+	/**
+	 * Metodo que transforma um array de limited elements em Shape 
+	 * @param elements
+	 * @return Shape
+	 */
+	public static Shape getShape(ArrayList<LimitedElement> elements)
+	{
+		Shape shape = new GeneralPath();
+		((GeneralPath)shape).moveTo(elements.get(0).getInitialPoint().x, elements.get(0).getInitialPoint().y);
+		for(LimitedElement element:elements)
+		{
+			if(element.isLimitedLine())
+			{
+				((GeneralPath)shape).lineTo(element.getFinalPoint().x, element.getFinalPoint().y);
+			}
+			else if(element.isLimitedArc())
+			{
+				LimitedArc arcTmp = (LimitedArc)element;
+				Point2D[] shapeArcPoints = Cavidade.determinarPontosEmCircunferencia(arcTmp.getCenter(), GeometricOperations.angle(arcTmp.getInitialPoint()), arcTmp.getDeltaAngle(), arcTmp.getRadius(), 10);
+				for(int i = 0;i < shapeArcPoints.length; i++)
+				{
+					if(i < shapeArcPoints.length)
+					{
+						((GeneralPath)shape).lineTo(shapeArcPoints[i].getX(), shapeArcPoints[i].getY());
+					}
+				}
+			}
+		}
+		((GeneralPath)shape).closePath();
 		return shape;
 	}
 	public  Point2D[] getShapePontos(Feature feature)

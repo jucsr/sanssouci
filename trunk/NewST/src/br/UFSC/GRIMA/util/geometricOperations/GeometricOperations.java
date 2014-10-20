@@ -1381,16 +1381,18 @@ public class GeometricOperations
 	}
 	
 	/**
-	 * Transforma um array de Boss e transoforma em um array de LimitedElement
+	 * Transforma um array de Boss e transoforma em um array de array de LimitedElement
+	 * Cada Array de LimitedElement corresponde a um boss
 	 * @param bossArray
 	 * @param planoZ
-	 * @return
+	 * @return 
 	 */
-	public static ArrayList<LimitedElement> tranformeBossToLimitedElement(ArrayList<Boss> bossArray,double planoZ)
+	public static ArrayList<ArrayList<LimitedElement>> tranformeBossToLimitedElement(ArrayList<Boss> bossArray,double planoZ)
 	{
-		ArrayList<LimitedElement> elementosFromBoss = new ArrayList<LimitedElement>();
+		ArrayList<ArrayList<LimitedElement>> elementosFromBoss = new ArrayList<ArrayList<LimitedElement>>();
 		for(Boss bossTmp: bossArray)
 		{
+			ArrayList<LimitedElement> elementosFromBossTmp = new ArrayList<LimitedElement>();
 			if(bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
@@ -1399,7 +1401,7 @@ public class GeometricOperations
 				LimitedArc arc = new LimitedArc(new Point3d(tmp.X,tmp.Y,planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ), -2 * Math.PI);
 //				System.out.println("BossCenter: " + arc.getCenter());
 //				System.out.println("Protuberancia Arco: " + arc.getInitialPoint());
-				elementosFromBoss.add(arc);
+				elementosFromBossTmp.add(arc);
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)
 			{
@@ -1417,14 +1419,14 @@ public class GeometricOperations
 				LimitedArc a3 = new LimitedArc(pointPlusEscalar(l3.getFinalPoint(), "y", -tmp.getRadius()),l3.getFinalPoint(),Math.PI/2);
 				LimitedLine l4 = new LimitedLine(a3.getFinalPoint(),pointPlusEscalar(a3.getFinalPoint(),"y",-(c - 2*tmp.getRadius())));
 				LimitedArc a4 = new LimitedArc(pointPlusEscalar(l4.getFinalPoint(), "x", tmp.getRadius()),l4.getFinalPoint(),Math.PI/2);
-				elementosFromBoss.add(l1);
-				elementosFromBoss.add(a1);
-				elementosFromBoss.add(l2);
-				elementosFromBoss.add(a2);
-				elementosFromBoss.add(l3);
-				elementosFromBoss.add(a3);
-				elementosFromBoss.add(l4);
-				elementosFromBoss.add(a4);
+				elementosFromBossTmp.add(l1);
+				elementosFromBossTmp.add(a1);
+				elementosFromBossTmp.add(l2);
+				elementosFromBossTmp.add(a2);
+				elementosFromBossTmp.add(l3);
+				elementosFromBossTmp.add(a3);
+				elementosFromBossTmp.add(l4);
+				elementosFromBossTmp.add(a4);
 				
 			}else if (bossTmp.getClass() == GeneralProfileBoss.class)
 			{
@@ -1433,10 +1435,11 @@ public class GeometricOperations
 				ArrayList<LimitedElement> elementosProtuberanciaGeral = addBossVertex.getElements();
 				for(int i = 0;i < elementosProtuberanciaGeral.size();i++)
 				{
-					elementosFromBoss.add(elementosProtuberanciaGeral.get(i));
+					elementosFromBossTmp.add(elementosProtuberanciaGeral.get(i));
 				}
 				
 			}
+			elementosFromBoss.add(elementosFromBossTmp);
 		}
 		return elementosFromBoss;
 	}
@@ -1455,8 +1458,17 @@ public class GeometricOperations
 		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
 		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
 		ArrayList<LimitedElement> elementsCavidade = addPocketVertex.getElements();             //Cavidade
-		ArrayList<Boss> bossArray = pocket.getItsBoss();                                        //Protuberancia
-		ArrayList<LimitedElement> elementosProtuberancia = tranformeBossToLimitedElement(bossArray, planoZ);
+		ArrayList<Boss> bossArray = pocket.getItsBoss();                                       //Protuberancia
+		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
+		for(ArrayList<LimitedElement> arrayTmp : tranformeBossToLimitedElement(bossArray, planoZ))
+		{
+			for(LimitedElement elementTmp : arrayTmp)
+			{
+				elementosProtuberancia.add(elementTmp);
+			}
+		}
+//		ArrayList<LimitedElement> elementosProtuberancia = tranformeBossToLimitedElement(bossArray, planoZ);
+
 
 //		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
 //		for(Boss bossTmp: bossArray)

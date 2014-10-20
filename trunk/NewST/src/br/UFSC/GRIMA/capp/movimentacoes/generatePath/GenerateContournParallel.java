@@ -22,9 +22,9 @@ public class GenerateContournParallel
 	private double planoZ;
 	private double distance; //2*(raio Ferramenta + raio Trochoidal)
 	private double overLap; //Quantidade de ultrpassagem da ferramenta de uma passada a outra
-	private ArrayList<LimitedElement> elementsCavidade;
-	ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
-	private ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
+//	private ArrayList<LimitedElement> elementsCavidade;
+//	ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
+//	private ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
 	
 	public GenerateContournParallel(GeneralClosedPocket pocket, double planoZ, double distance, double overLap) 
 	{
@@ -32,21 +32,23 @@ public class GenerateContournParallel
 		this.planoZ = planoZ;
 		this.distance = distance;
 		this.overLap = overLap;
-		this.gerarElementosDaCavidade();
-		this.gerarElementosDaProtuberancia();
+//		this.gerarElementosDaCavidade();
+//		this.gerarElementosDaProtuberancia();
 	}
-	private void gerarElementosDaCavidade()
+	public static ArrayList<LimitedElement> gerarElementosDaCavidade(GeneralClosedPocket pocket, double planoZ)
 	{
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), planoZ, pocket.getRadius());
-		elementsCavidade = addPocketVertex.getElements();
+//		elementsCavidade = addPocketVertex.getElements();
+		return addPocketVertex.getElements();
 	}
-	private void gerarElementosDaProtuberancia()
+	public static ArrayList<ArrayList<LimitedElement>> gerarElementosDaProtuberancia(GeneralClosedPocket pocket, double planoZ)
 	{
 		ArrayList<Boss> bossArray = pocket.getItsBoss();                                        //Protuberancia
-		
+		ArrayList<ArrayList<LimitedElement>> arrayProtuberancia = new ArrayList<ArrayList<LimitedElement>>();
+
 		for(Boss bossTmp: bossArray)
 		{
-			
+			ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
 			if(bossTmp.getClass() == CircularBoss.class)
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
@@ -88,32 +90,38 @@ public class GenerateContournParallel
 					elementosProtuberancia.add(elementosProtuberanciaGeral.get(i));
 				}		
 			}
+			arrayProtuberancia.add(elementosProtuberancia);
 		}
 
-		for(LimitedElement tmp:elementosProtuberancia)
-		{
-			boolean allowAdd = true;
-			if(tmp.isLimitedArc())
-			{
-				if(((LimitedArc)tmp).getRadius() == 0)
-				{
-					allowAdd = false;
-				}
-			}
-			if(allowAdd)
-			{
-				formaOriginal.add(tmp);
-			}
-		}
-		for(LimitedElement tmp:elementsCavidade)
-		{
-			formaOriginal.add(tmp);
-		}
+//		for(LimitedElement tmp:elementosProtuberancia)
+//		for(ArrayList<LimitedElement> arrayTmp:arrayProtuberancia)
+//		{
+//			for(LimitedElement tmp:arrayTmp)
+//			{
+//				boolean allowAdd = true;
+//				if(tmp.isLimitedArc())
+//				{
+//					if(((LimitedArc)tmp).getRadius() == 0)
+//					{
+//						allowAdd = false;
+//					}
+//				}
+//				if(allowAdd)
+//				{
+//					formaOriginal.add(tmp);
+//				}
+//			}
+//		}
+//		for(LimitedElement tmp:elementsCavidade)
+//		{
+//			formaOriginal.add(tmp);
+//		}
 //		System.out.println("=====formaOriginal ======");
 //		GeometricOperations.showElements(formaOriginal);		
 //		System.out.println("=====EndformaOriginal ======");
+		return arrayProtuberancia;
 	}
-	public ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(/*GeneralClosedPocket pocket, double planoZ, double distance, double overLap*/)
+	public static ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelPath(GeneralClosedPocket pocket, double planoZ, double distance, double overLap)
 	{
 //		double percentagem = 0.75;
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
@@ -143,16 +151,37 @@ public class GenerateContournParallel
 		}
 		return multipleParallel;
 	}
-	public ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
+	public static ArrayList<ArrayList<LimitedElement>> parallelPath2 (GeneralClosedPocket pocket, double distance, double planoZ)
 	{
 		boolean inside = true;
 		boolean isBoss = true;
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
+		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //forma contendo os elementos da cavidade e da proruberancia
+		ArrayList<LimitedElement> elementsCavidade = gerarElementosDaCavidade(pocket, planoZ);  //elementos da cavidade
+		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();     //elementos da protuberancia
+		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				elementosProtuberancia.add(elementTmp);
+				boolean allowAdd = true;
+				if(elementTmp.isLimitedArc())
+				{
+					if(((LimitedArc)elementTmp).getRadius() == 0)
+					{
+						allowAdd = false;
+					}
+				}
+				if(allowAdd)
+				{
+					formaOriginal.add(elementTmp);
+				}
+			}
+		}
 		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
 		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
 		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
 
-		
 		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
 //		GeometricOperations.showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
@@ -170,7 +199,7 @@ public class GenerateContournParallel
 		
 		return saida;
 	}
-	public ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside,boolean isBoss)
+	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside,boolean isBoss)
 	{
 		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();
 		for(int j = 0; j < elements.size();j++)
@@ -514,40 +543,11 @@ public class GenerateContournParallel
 //			System.out.println("RADIUS: " + newRadius);
 		return (new LimitedArc(arc.getCenter(), GeometricOperations.plus(arc.getCenter(),GeometricOperations.multiply(newRadius,GeometricOperations.unitVector(arc.getCenter(),arc.getInitialPoint()))), arc.getDeltaAngle()));
 	}
-//	public ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallelAcabamentoPath(GeneralClosedPocket pocket, double planoZ, double distance, double overLap)
-//	{
-//		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
-//		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = multipleParallelPath(pocket,planoZ,distance,overLap).get(0);
-//		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
-//		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
-//		{
-//			ArrayList<LimitedElement> validationParallelTmp = parallelPath1(firstOffsetMultipleParallel.get(i), distance, false, false); //elementos, nao interligados, dos novos bosses
-//			Point3d firstValidationElementInitialPoint = validationParallelTmp.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
-//			ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
-//			for(int j = 0; j < validationParallelTmp.size(); j++)
-//			{
-//				Point3d firstOffsetElementFinalPoint = firstOffsetMultipleParallel.get(i).get(j).getFinalPoint(); //centro dos arcos de transicao
-//				LimitedElement validationParallelElementTmp = validationParallelTmp.get(j);
-//				alreadyDesbastededAreaTmp.add(validationParallelElementTmp);
-//				if(j == validationParallelTmp.size() - 1)
-//				{
-//					if(validationParallelElementTmp.getFinalPoint() != firstValidationElementInitialPoint)
-//					{
-//						LimitedArc transitionArc = new LimitedArc(firstOffsetElementFinalPoint, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
-//						alreadyDesbastededAreaTmp.add(transitionArc);
-//					}
-//				}
-//				else
-//				{
-//					LimitedElement validationParallelElementTmpNext = validationParallelTmp.get(j+1);
-//					if(validationParallelElementTmp.getFinalPoint() != validationParallelElementTmpNext.getInitialPoint())
-//					{
-//						LimitedArc transitionArc = new LimitedArc(firstOffsetElementFinalPoint, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), firstOffsetElementFinalPoint, -2*Math.PI));
-//						alreadyDesbastededAreaTmp.add(transitionArc);
-//					}
-//				}
-//			}
-//			alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
-//		}
-//	}
+	public double getDistance() {
+		return distance;
+	}
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+	
 }

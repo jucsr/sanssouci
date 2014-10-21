@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
 import br.UFSC.GRIMA.entidades.features.Bloco;
@@ -62,7 +63,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		CircularBoss arcBoss = new CircularBoss("", 100, 100, pocket.Z, 60, 60, pocket.getProfundidade());
-//		itsBoss.add(arcBoss);
+		itsBoss.add(arcBoss);
 		
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
@@ -117,8 +118,10 @@ public class MapeadoraGeneralClosedPocket1Test
 		
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double maiorMenorDistancia = mp.getMaiorMenorDistancia(pocket);
-		double menorMenorDistancia = mp.getMenorMenorDistance(pocket);
+//		double maiorMenorDistancia = mp.getMaiorMenorDistancia(pocket);
+//		double menorMenorDistancia = mp.getMenorMenorDistance(pocket);
+		double maiorMenorDistancia = mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z));
+		double menorMenorDistancia = mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z));
 //		Point3d point = new Point3d(100,100,0);
 //		LimitedArc a1 = new LimitedArc(new Point3d(230,160,0),new Point3d(230,150,0),Math.PI/2);
 //		LimitedArc a2 = new LimitedArc(new Point3d(470,30,0),new Point3d(470,0,0),Math.PI/2);
@@ -126,13 +129,16 @@ public class MapeadoraGeneralClosedPocket1Test
 		{
 			all.add(elementTmp);
 		}
-//		for(LimitedElement elementTmp:GeometricOperations.tranformeBossToLimitedElement(pocket.getItsBoss(), pocket.Z))
-//		{
-//			all.add(elementTmp);
-//		}
+		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				all.add(elementTmp);
+			}
+		}
 //		System.out.println("Distance arc-arc: " + GeometricOperations.minimumDistance(a1, a2));
-//		System.out.println("Maior Menor Distancia: " + maiorMenorDistancia);
-//		System.out.println("Menor Menor distancia: " + menorMenorDistancia);
+		System.out.println("Maior Menor Distancia: " + maiorMenorDistancia);
+		System.out.println("Menor Menor distancia: " + menorMenorDistancia);
 //		System.out.println("Proporção (Menor / Maior): " + menorMenorDistancia/maiorMenorDistancia);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);

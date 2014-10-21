@@ -266,9 +266,12 @@ public class MovimentacaoGeneralClosedPocket {
 		//---- gerando as linhas guia para o trocoidal
 //		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
 //		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
+		
 		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
-
 		this.elementos = contourn.multipleParallelPath();
+		
+//		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());
+
 		// ========= END CUIDADO ======
 		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 
 		Point3d lastPointPlanoZ = null;  //O ponto descrito acima com a coordenada z do ponto de seguranca
@@ -348,6 +351,8 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0); 
 		this.elementos = contourn.multipleParallelPath();                     //Offsets do contorno da cavidade
+//		this.elementos = GenerateContournParallel.multipleParallelPath(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0);                     //Offsets do contorno da cavidade
+
 		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 
 		Point3d lastPointPlanoZ = null;  //O ponto descrito acima com a coordenada z do ponto de seguranca
 		for(int i = 0; i < elementos.size(); i++)

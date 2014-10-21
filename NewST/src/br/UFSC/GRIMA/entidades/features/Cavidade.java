@@ -594,7 +594,7 @@ public class Cavidade extends Feature implements Serializable {
 		Point2D[] saida = new Point2D [numeroDePontos];
 		double x, y, dAngulo = 0;
 
-		dAngulo = deltaAngulo / numeroDePontos;
+		dAngulo = deltaAngulo / (numeroDePontos - 1); //numero de divisoes no arco
 		anguloInicial = anguloInicial + 0.01;
 		
 		for(int i = 0; i < numeroDePontos; i++)

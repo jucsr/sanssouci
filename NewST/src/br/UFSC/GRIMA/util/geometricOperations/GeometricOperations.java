@@ -1141,6 +1141,7 @@ public class GeometricOperations
 	 */
 	public static double minimumDistance(ArrayList<LimitedElement> formaOriginal, LimitedElement element)
 	{
+//		showElements(formaOriginal);
 		double minimumDistance = minimumDistance(formaOriginal.get(0),element);
 		
 		for(int i = 0;i < formaOriginal.size(); i++)
@@ -1171,17 +1172,17 @@ public class GeometricOperations
 		{
 			for(LimitedElement e2 : array2)
 			{
-				ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
-				show.add(e1);
-				show.add(e2);
-				showElements(show);
+//				ArrayList<LimitedElement> show = new ArrayList<LimitedElement>();
+//				show.add(e1);
+//				show.add(e2);
+//				showElements(show);
 				double minimumDistanceTmp = minimumDistance(e1, e2);
-				System.out.println("minimaDistancia: " + minimumDistanceTmp);
+//				System.out.println("minimaDistancia: " + minimumDistanceTmp);
 				if(minimumDistanceTmp < minimumDistance)
 				{
 					minimumDistance = minimumDistanceTmp;
 				}
-				System.out.println("menorMinimaDistancia: " + minimumDistance);
+//				System.out.println("menorMinimaDistancia: " + minimumDistance);
 			}
 		}
 		return minimumDistance;

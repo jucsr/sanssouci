@@ -270,16 +270,26 @@ public class MapeadoraGeneralClosedPocket1
 //		final ArrayList<ArrayList<Point2D>> matrix = new ArrayList<ArrayList<Point2D>>();
 
 		double minimumMaxDistance=0;
-		
+		ArrayList<LimitedElement> elementsPocketAndBoss = new ArrayList<LimitedElement>();
+		for(LimitedElement tmp:addPocket.getElements())
+		{
+			elementsPocketAndBoss.add(tmp);
+		}
 		//Verifica se ha protuberanica
 		if(bossElements != null)
 		{
 			if(bossElements.size() != 0)
 			{
 				thereIsBoss = true;
+				for(ArrayList<LimitedElement> arrayTmp:bossElements)
+				{
+					for(LimitedElement elementTmp:arrayTmp)
+					{	
+						elementsPocketAndBoss.add(elementTmp);
+					}
+				}
 			}
 		}
-		
 		//Posicao da forma
 		Point2D minorPointX = genClosed.getPoints().get(0); //Menor X
 		Point2D maxPointX = genClosed.getPoints().get(0);   //Maior Y
@@ -363,11 +373,11 @@ public class MapeadoraGeneralClosedPocket1
 				{
 					if(thereIsBoss)      //Se possui Protuberancia
 					{
-						System.out.println("lol");
 						for(Shape bossTmp:bossShape)
 						{
 							if(!bossTmp.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
 							{
+//								System.out.println("lol");
 //								ArrayList<LimitedElement> elementsPocketAndBoss = new ArrayList<LimitedElement>();
 //								for(LimitedElement tmp:addPocket.getElements())
 //								{
@@ -376,7 +386,7 @@ public class MapeadoraGeneralClosedPocket1
 //								for(ArrayList<LimitedElement> arrayTmp:bossElements)
 //								{
 //									for(LimitedElement elementTmp:arrayTmp)
-//									{
+//									{	
 //										elementsPocketAndBoss.add(elementTmp);
 //									}
 //								}
@@ -392,17 +402,24 @@ public class MapeadoraGeneralClosedPocket1
 					}
 					else //Se nao possui protuberancia
 					{
-						//Calcula a menor distancia entre o ponto atual e o array da forma da cavidade
-						double menorDistanciaTmp = GeometricOperations.minimumDistance(addPocket.getElements(), new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
-						if(menorDistanciaTmp > minimumMaxDistance)
-						{
-							minimumMaxDistance = menorDistanciaTmp;
-						}
+//						//Calcula a menor distancia entre o ponto atual e o array da forma da cavidade
+//						double menorDistanciaTmp = GeometricOperations.minimumDistance(elementsPocketAndBoss, new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
+//						if(menorDistanciaTmp > minimumMaxDistance)
+//						{
+//							minimumMaxDistance = menorDistanciaTmp;
+//						}
+						arrayPointTmp.add(pointTmp);
 					}
 				}
-//				arrayTmp.add(pointTmp);
 			}
-//			matrix.add(arrayTmp);
+		}
+		for(Point2D matrixPoint:arrayPointTmp)
+		{
+			double minimumMaxDistancePointToPathTmp = GeometricOperations.minimumDistance(elementsPocketAndBoss, new Point3d(matrixPoint.getX(),matrixPoint.getY(),genClosed.Z));
+			if(minimumMaxDistancePointToPathTmp > minimumMaxDistance)
+			{
+				minimumMaxDistance = minimumMaxDistancePointToPathTmp;
+			}
 		}
 		
 		return minimumMaxDistance;
@@ -410,6 +427,7 @@ public class MapeadoraGeneralClosedPocket1
 		//END Teste
 		//-----------------------------------------------------------------------------------------------------
 	}
+	
 	
 	public double getMenorMenorDistance(/*GeneralClosedPocket genClosed*/ArrayList<ArrayList<LimitedElement>> arrayBossElements)
 	{
@@ -745,8 +763,8 @@ public class MapeadoraGeneralClosedPocket1
 //				
 //				wssFeature.add(wsTmp2);
 //				
-//				genClosed.setWorkingsteps(wssFeature);
 			}
+			genClosed.setWorkingsteps(wssFeature);
 		}
 //-----------------------------------------------------------------------------------------------------
 //END Teste

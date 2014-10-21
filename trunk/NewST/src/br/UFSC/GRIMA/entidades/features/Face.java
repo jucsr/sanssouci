@@ -489,7 +489,7 @@ public class Face implements Serializable{
 								
 								itsBoss.add(tmp);
 							
-								System.out.println("posX" + posX);
+//								System.out.println("posX" + posX);
 								
 							} else if(bossTmp.getClass() == RectangularBoss.class)
 							{
@@ -601,7 +601,7 @@ public class Face implements Serializable{
 						cavidadeNova.setComprimento(cavidadeOriginal.getComprimento());
 						cavidadeNova.setLargura(cavidadeOriginal.getLargura());
 						cavidadeNova.setPassante(cavidadeOriginal.isPassante());
-						System.out.println("CAV X = " + posX);
+//						System.out.println("CAV X = " + posX);
 						/**
 						 *  PASSAR OS BOSS DA CAVIDADE ORIGINAL PARA A CAVIDADE ALTERADA!!!
 						 */
@@ -625,7 +625,7 @@ public class Face implements Serializable{
 								tmp.setDiametro2(cb.getDiametro2());
 								
 								itsBoss.add(tmp);
-								System.out.println("posX case 2" + posX);
+//								System.out.println("posX case 2" + posX);
 								
 							} else if(bossTmp.getClass() == RectangularBoss.class)
 							{
@@ -2502,7 +2502,9 @@ public class Face implements Serializable{
 	public static Shape getShape(ArrayList<LimitedElement> elements)
 	{
 		Shape shape = new GeneralPath();
-		((GeneralPath)shape).moveTo(elements.get(0).getInitialPoint().x, elements.get(0).getInitialPoint().y);
+//		((GeneralPath)shape).moveTo(elements.get(0).getInitialPoint().x, elements.get(0).getInitialPoint().y);
+		((GeneralPath)shape).moveTo(elements.get(0).getFinalPoint().x, elements.get(0).getFinalPoint().y);
+
 		for(LimitedElement element:elements)
 		{
 			if(element.isLimitedLine())
@@ -2512,7 +2514,11 @@ public class Face implements Serializable{
 			else if(element.isLimitedArc())
 			{
 				LimitedArc arcTmp = (LimitedArc)element;
-				Point2D[] shapeArcPoints = Cavidade.determinarPontosEmCircunferencia(arcTmp.getCenter(), GeometricOperations.angle(arcTmp.getInitialPoint()), arcTmp.getDeltaAngle(), arcTmp.getRadius(), 10);
+				Point2D[] shapeArcPoints = Cavidade.determinarPontosEmCircunferencia(arcTmp.getCenter(), arcTmp.getInitialAngle(), arcTmp.getDeltaAngle(), arcTmp.getRadius(), 10);
+//				((GeneralPath)shape).lineTo(shapeArcPoints[0].getX(), shapeArcPoints[0].getY());
+//				((GeneralPath)shape).lineTo(shapeArcPoints[1].getX(), shapeArcPoints[1].getY());
+//				((GeneralPath)shape).lineTo(shapeArcPoints[2].getX(), shapeArcPoints[2].getY());
+
 				for(int i = 0;i < shapeArcPoints.length; i++)
 				{
 					if(i < shapeArcPoints.length)
@@ -2522,7 +2528,7 @@ public class Face implements Serializable{
 				}
 			}
 		}
-		((GeneralPath)shape).closePath();
+//		((GeneralPath)shape).closePath();
 		return shape;
 	}
 	public  Point2D[] getShapePontos(Feature feature)

@@ -20,6 +20,7 @@ public class LimitedArc extends LimitedElement
 	public static final int CW = 0;
 	public static final int CCW = 1;
 	private int sense = 0, n = 50; // n = number of points in arc
+	private double initialAngle;
 	
 	public LimitedArc()
 	{
@@ -108,7 +109,7 @@ public class LimitedArc extends LimitedElement
 		
 //		Point3d axisX = new Point3d(1.0, 0, 0);
 		Point3d vectorInitial = GeometricOperations.minus(this.initialPoint, this.center);
-		double initialAngle = GeometricOperations.angle(vectorInitial);
+		this.initialAngle = GeometricOperations.angle(vectorInitial);
 		
 //		initialAngle = Math.acos(GeometricOperations.escalar(axisX, vectorInitial)/GeometricOperations.norm(axisX)/GeometricOperations.norm(vectorInitial));
 //		if (vectorInitial.getY() < 0)
@@ -224,5 +225,13 @@ public class LimitedArc extends LimitedElement
 
 	public void setDeltaAngle(double deltaAngle) {
 		this.deltaAngle = deltaAngle;
+	}
+
+	public double getInitialAngle() {
+		return initialAngle;
+	}
+
+	public void setInitialAngle(double initialAngle) {
+		this.initialAngle = initialAngle;
 	}
 }

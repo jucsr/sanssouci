@@ -129,14 +129,14 @@ public class GenerateTrochoidalMovement1Test
 		
 		//Circular Boss
 //		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
-		CircularBoss arcBoss = new CircularBoss("", 120, 200, pocket.Z, 30, 30, pocket.getProfundidade());
-//		itsBoss.add(arcBoss);
+		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 30, pocket.getProfundidade());
+		itsBoss.add(arcBoss);
 		
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(120, 180, pocket.Z);
 		rectBoss.setRadius(10);
-		itsBoss.add(rectBoss);
+//		itsBoss.add(rectBoss);
 		
 		//General Boss
 		GeneralProfileBoss genBoss = new GeneralProfileBoss();
@@ -250,8 +250,8 @@ public class GenerateTrochoidalMovement1Test
 		double diametroFerramenta = ws.getFerramenta().getDiametroFerramenta();
 		System.out.println("diametro da Ferramenta1: " + diametroFerramenta);
 		double overLap =((Two5DMillingStrategy)ws.getOperation().getMachiningStrategy()).getOverLap();
-		
-		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, trochoidalRadius + diametroFerramenta/2 ,overLap);
+		double distance = trochoidalRadius + diametroFerramenta/2;
+		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, 20 ,overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = generateContorun.multipleParallelPath() ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)

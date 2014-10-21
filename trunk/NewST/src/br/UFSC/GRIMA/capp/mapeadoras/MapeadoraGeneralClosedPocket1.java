@@ -3,6 +3,7 @@ package br.UFSC.GRIMA.capp.mapeadoras;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
@@ -56,7 +57,8 @@ public class MapeadoraGeneralClosedPocket1
 	private Vector<Workingstep> wssFeature;
 	private CondicoesDeUsinagem condicoesDeUsinagem;
 	private ArrayList<Boss> itsBoss;
-
+	private GeneralClosedPocketVertexAdd addPocket;
+//	private GenerateContournParallel contourn;
 	private ArrayList<FaceMill> faceMills;
 	private ArrayList<EndMill> endMills;
 
@@ -67,7 +69,7 @@ public class MapeadoraGeneralClosedPocket1
 		this.genClosed = genClosed;
 		this.bloco = projeto.getBloco();
 		this.itsBoss = genClosed.getItsBoss();
-
+		this.addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 		this.faceMills = ToolManager.getFaceMills();
 		this.endMills = ToolManager.getEndMills();
 		System.out.println("Tamanho: "+faceMills.size());
@@ -79,19 +81,21 @@ public class MapeadoraGeneralClosedPocket1
 	{
 		this.genClosed = genClosed;
 		this.itsBoss = genClosed.getItsBoss();
+		this.addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
+
 		
 //		this.mapearGeneralClosedPocket();
 
 	}
 	//Array de LimitedElement da forma da cavidade
-	GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
+//	GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 //	GenerateContournParallel contourn = new GenerateContournParallel(genClosed, genClosed.Z, distance, overLap)
 	/**
 	 * Realiza o metodo da minima distancia entre pontos dentro da cavidade e os elementos da borda da cavidade, e retorna o a maior distancia encontrada
 	 * @param genClosed
 	 * @return
 	 */
-	private double getMaiorMenorDistancia(/*GeneralClosedPocket genClosed*/ArrayList<ArrayList<LimitedElement>> bossElements)
+	public double getMaiorMenorDistancia(/*GeneralClosedPocket genClosed*/ArrayList<ArrayList<LimitedElement>> bossElements)
 	{
 //		boolean thereIsBoss = false;
 //		ArrayList<Point2D> vertex = new ArrayList<Point2D>();
@@ -313,11 +317,39 @@ public class MapeadoraGeneralClosedPocket1
 		final GeneralPath gp = (GeneralPath)Face.getShape(genClosed);
 			
 		//CRIA UM Shape2D DA PROTUBERANCIA
-		ArrayList<Shape> bossShape = new ArrayList<Shape>();
+		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
 		for(ArrayList<LimitedElement> bossTmp:bossElements)
 		{
 			bossShape.add(Face.getShape(bossTmp));
 		}
+		//Desenhador
+		JFrame frame = new JFrame();
+		frame.setSize(new Dimension(300, 300));
+		class Panel extends JPanel
+		{
+			protected void paintComponent(Graphics g)
+			{
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+				
+//				g2d.translate(0, 300);
+//				g2d.scale(1, -1);
+//				g2d.draw(gp);
+				g2d.draw(bossShape.get(0));
+//				for(ArrayList<Point2D> arrayTmp:matrix)
+//				{
+//					for(Point2D pointTmp:arrayTmp)
+//					{
+////						g2d.drawOval((int)pointTmp.getX(), (int)pointTmp.getY(), 1, 1);
+//						g2d.draw(new Ellipse2D.Double(pointTmp.getX(), pointTmp.getY(), 1, 1));
+//					}
+//				}
+			}
+		}
+		frame.getContentPane().add(new Panel());
+		frame.setVisible(true);
+		
 		//Percorre uma matriz de pontos dentro da forma da cavidade, verificando qual e a maior distancia 
 		//entre as menores distancias entre os pontos e os elementos
 		ArrayList<Point2D> arrayPointTmp = new ArrayList<Point2D>();    //pontos validos (dentro da cavidade e fora da protuberancia)
@@ -331,6 +363,7 @@ public class MapeadoraGeneralClosedPocket1
 				{
 					if(thereIsBoss)      //Se possui Protuberancia
 					{
+						System.out.println("lol");
 						for(Shape bossTmp:bossShape)
 						{
 							if(!bossTmp.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
@@ -378,30 +411,30 @@ public class MapeadoraGeneralClosedPocket1
 		//-----------------------------------------------------------------------------------------------------
 	}
 	
-	public double getMenorMenorDistance(GeneralClosedPocket genClosed)
+	public double getMenorMenorDistance(/*GeneralClosedPocket genClosed*/ArrayList<ArrayList<LimitedElement>> arrayBossElements)
 	{
-		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
+//		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
 		ArrayList<LimitedElement> bossElements = new ArrayList<LimitedElement>();
-		for(ArrayList<LimitedElement> arrayTmp : GeometricOperations.tranformeBossToLimitedElement(itsBoss, genClosed.Z))
+		for(ArrayList<LimitedElement> arrayTmp : arrayBossElements)
 		{
 			for(LimitedElement elementTmp : arrayTmp)
 			{
 				bossElements.add(elementTmp);
 			}
 		}
-		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
+//		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 		//minima distancia entre o array de elementos da forma e o array de elementos da protuberancia(se houver)
 		double menorDistancia = 0;
-		if(itsBoss.size() != 0) //PADRONIZAR SE A COMPARACAO COM O ITSBOSS SERA COM SIZE == 0, OU COM ITSBOSS == NULL
+		if(bossElements.size() != 0) //PADRONIZAR SE A COMPARACAO COM O ITSBOSS SERA COM SIZE == 0, OU COM ITSBOSS == NULL
 		{
 			//CUIDADO COM O Z!!
-			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), GeometricOperations.tranformeBossToLimitedElement(itsBoss, genClosed.Z));
-			System.out.println("Menor Menor Distancia c/protuberancia: " + menorDistancia);
+			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), bossElements);
+//			System.out.println("Menor Menor Distancia c/protuberancia: " + menorDistancia);
 		}
 		else
 		{
 			menorDistancia = genClosed.getRadius();
-			System.out.println("Menor Menor Distancia s/protuberancia: " + menorDistancia);
+//			System.out.println("Menor Menor Distancia s/protuberancia: " + menorDistancia);
 		}
 		return menorDistancia;
 	}
@@ -603,12 +636,14 @@ public class MapeadoraGeneralClosedPocket1
 //-----------------------------------------------------------------------------------------------------
 		
 		double fator = 3;
-		ArrayList<Workingstep> workingSteps;
+		ArrayList<Workingstep> workingSteps = new ArrayList<Workingstep>();
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
 		ArrayList<ArrayList<LimitedElement>> bossElements = GeometricOperations.tranformeBossToLimitedElement(genClosed.getItsBoss(), genClosed.Z);
-		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(genClosed)/fator;
+		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements)/fator;
+		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
+//		double toolDiameterTmp = maiorMenorDistanciaTmp;
 		if(genClosed.getFeaturePrecedente()!= null)
 		{
 			if(		genClosed.getFeaturePrecedente().getClass().equals(GeneralProfileBoss.class) || 
@@ -635,36 +670,36 @@ public class MapeadoraGeneralClosedPocket1
 			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
 			{
 				// BOTTOM AND SIDE ROUGH MILLING
-				BottomAndSideRoughMilling operation1 = new BottomAndSideRoughMilling(
+				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
 						"Bottom And Side Rough Milling", retractPlane);
-				operation1.setAllowanceSide(Feature.LIMITE_DESBASTE);
+				operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
 	
 				if (!genClosed.isPassante())
-					operation1.setAllowanceBottom(Feature.LIMITE_DESBASTE);
+					operationTmp.setAllowanceBottom(Feature.LIMITE_DESBASTE);
 				
 				
 				// FERRAMENTA
-				FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
+				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 						genClosed, 0, maiorMenorDistanciaTmp);
-				System.out.println("Ferramenta 1 de Diametro: " + faceMill.getDiametroFerramenta());
+//				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
 	
 				//Estrategia
-				TrochoidalAndContourParallelStrategy machiningStrategy = new TrochoidalAndContourParallelStrategy();
-				operation1.setMachiningStrategy(machiningStrategy);
-				machiningStrategy.setAllowMultiplePasses(true);
-				machiningStrategy.setOverLap(0.25*faceMill.getDiametroFerramenta()); //Overlap
-				machiningStrategy.setTrochoidalRadius(faceMill.getDiametroFerramenta()); //REVER MAIS TARDE
-				machiningStrategy.setTrochoidalFeedRate(0.75*faceMill.getDiametroFerramenta()/2);
-				machiningStrategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
-				machiningStrategy.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
+				TrochoidalAndContourParallelStrategy machiningStrategyTmp = new TrochoidalAndContourParallelStrategy();
+				operationTmp.setMachiningStrategy(machiningStrategyTmp);
+				machiningStrategyTmp.setAllowMultiplePasses(true);
+				machiningStrategyTmp.setOverLap(0.25*faceMillTmp.getDiametroFerramenta()); //Overlap
+				machiningStrategyTmp.setTrochoidalRadius(faceMillTmp.getDiametroFerramenta()); //REVER MAIS TARDE
+				machiningStrategyTmp.setTrochoidalFeedRate(0.75*faceMillTmp.getDiametroFerramenta()/2);
+				machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
+				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 				
 				// CONDIÇÕES DE USINAGEM
 				condicoesDeUsinagem = MapeadoraDeWorkingsteps
-						.getCondicoesDeUsinagem(this.projeto, faceMill,
+						.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
 								bloco.getMaterial());
 				// WORKINGSTEP
-				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMill,
-						condicoesDeUsinagem, operation1);
+				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,
+						condicoesDeUsinagem, operationTmp);
 				wsTmp.setTipo(Workingstep.DESBASTE);
 				wsTmp.setId(this.genClosed.getNome() + "_RGH");
 				
@@ -672,44 +707,45 @@ public class MapeadoraGeneralClosedPocket1
 				wsPrecedenteTmp = wsTmp;
 				
 				wssFeature.add(wsTmp);
+				workingSteps.add(wsTmp);
 	
 				
-				// BOTTOM AND SIDE ROUGH MILLING
-				BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
-						"Bottom And Side Rough Milling", retractPlane);
-				operation2.setAllowanceSide(Feature.LIMITE_DESBASTE);
-	
-				if (!genClosed.isPassante())
-					operation2.setAllowanceBottom(Feature.LIMITE_DESBASTE);
-	
-				// FERRAMENTA
-				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(), faceMills,
-						genClosed, 0,
-						getMenorMenorDistance(genClosed));
-				
-				System.out.println("Ferramenta 2 de Diametro: " + faceMill2.getDiametroFerramenta());
-				// Estrategia
-				ContourParallel machiningStrategy2 = new ContourParallel();
-				operation2.setMachiningStrategy(machiningStrategy2);
-				machiningStrategy2.setAllowMultiplePasses(false);
-				machiningStrategy2.setCutmodeType(ContourParallel.conventional);
-	
-				// CONDIÇÕES DE USINAGEM
-				condicoesDeUsinagem = MapeadoraDeWorkingsteps
-						.getCondicoesDeUsinagem(this.projeto, faceMill2,
-								bloco.getMaterial());
-				// WORKINGSTEP 2
-				wsTmp2 = new Workingstep(genClosed, faceTmp, faceMill2,
-						condicoesDeUsinagem, operation2);
-				wsTmp2.setTipo(Workingstep.DESBASTE);
-				wsTmp2.setId(this.genClosed.getNome() + "_RGH");
-	
-				wsTmp2.setWorkingstepPrecedente(wsPrecedenteTmp);
-				wsPrecedenteTmp = wsTmp2;
-	
-				wssFeature.add(wsTmp2);
-	
-				genClosed.setWorkingsteps(wssFeature);
+//				// BOTTOM AND SIDE ROUGH MILLING
+//				BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
+//						"Bottom And Side Rough Milling", retractPlane);
+//				operation2.setAllowanceSide(Feature.LIMITE_DESBASTE);
+//				
+//				if (!genClosed.isPassante())
+//					operation2.setAllowanceBottom(Feature.LIMITE_DESBASTE);
+//				
+//				// FERRAMENTA
+//				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(), faceMills,
+//						genClosed, 0,
+//						getMenorMenorDistance(genClosed));
+//				
+//				System.out.println("Ferramenta 2 de Diametro: " + faceMill2.getDiametroFerramenta());
+//				// Estrategia
+//				ContourParallel machiningStrategy2 = new ContourParallel();
+//				operation2.setMachiningStrategy(machiningStrategy2);
+//				machiningStrategy2.setAllowMultiplePasses(false);
+//				machiningStrategy2.setCutmodeType(ContourParallel.conventional);
+//				
+//				// CONDIÇÕES DE USINAGEM
+//				condicoesDeUsinagem = MapeadoraDeWorkingsteps
+//						.getCondicoesDeUsinagem(this.projeto, faceMill2,
+//								bloco.getMaterial());
+//				// WORKINGSTEP 2
+//				wsTmp2 = new Workingstep(genClosed, faceTmp, faceMill2,
+//						condicoesDeUsinagem, operation2);
+//				wsTmp2.setTipo(Workingstep.DESBASTE);
+//				wsTmp2.setId(this.genClosed.getNome() + "_RGH");
+//				
+//				wsTmp2.setWorkingstepPrecedente(wsPrecedenteTmp);
+//				wsPrecedenteTmp = wsTmp2;
+//				
+//				wssFeature.add(wsTmp2);
+//				
+//				genClosed.setWorkingsteps(wssFeature);
 			}
 		}
 //-----------------------------------------------------------------------------------------------------
@@ -717,16 +753,16 @@ public class MapeadoraGeneralClosedPocket1
 //-----------------------------------------------------------------------------------------------------
 		
 	}
-	public ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted(GenerateContournParallel contourn)
+	public ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted(GeneralClosedPocket pocket, double planoZ, double distance, double overLap)
 	{
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que ser�o convertidos em boss para a nova forma (acabamento) 
-//		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = multipleParallelPath(pocket,planoZ,distance,overLap).get(0);
+//		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = GenerateContournParallel.multipleParallelPath(pocket,planoZ,distance,overLap).get(0);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap);
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
-
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
 		{
-			ArrayList<LimitedElement> validationParallelTmp = GenerateContournParallel.parallelPath1(firstOffsetMultipleParallel.get(i), contourn.getDistance(), false, false); //elementos, nao interligados, dos novos bosses
+			ArrayList<LimitedElement> validationParallelTmp = GenerateContournParallel.parallelPath1(firstOffsetMultipleParallel.get(i), distance, false, false); //elementos, nao interligados, dos novos bosses
 			Point3d firstValidationElementInitialPoint = validationParallelTmp.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
 			ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
 			for(int j = 0; j < validationParallelTmp.size(); j++)

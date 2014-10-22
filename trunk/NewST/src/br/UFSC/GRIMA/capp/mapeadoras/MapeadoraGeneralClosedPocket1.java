@@ -658,7 +658,7 @@ public class MapeadoraGeneralClosedPocket1
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
-		ArrayList<ArrayList<LimitedElement>> bossElements = GeometricOperations.tranformeBossToLimitedElement(genClosed.getItsBoss(), genClosed.Z);
+		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z);
 		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements)/fator;
 		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 //		double toolDiameterTmp = maiorMenorDistanciaTmp;
@@ -685,7 +685,8 @@ public class MapeadoraGeneralClosedPocket1
 		// WORKINGSTEPS DE DESBASTE
 		if (!genClosed.isAcabamento()) 
 		{
-			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
+//			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
+			while(maiorMenorDistanciaTmp > menorMenorDistanciaTmp)
 			{
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
@@ -727,8 +728,10 @@ public class MapeadoraGeneralClosedPocket1
 				wssFeature.add(wsTmp);
 				workingSteps.add(wsTmp);
 	
-				
-//				// BOTTOM AND SIDE ROUGH MILLING
+				bossElements = getAreaAlreadyDesbasted(genClosed, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
+				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
+				// BOTTOM AND SIDE ROUGH MILLING
 //				BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
 //						"Bottom And Side Rough Milling", retractPlane);
 //				operation2.setAllowanceSide(Feature.LIMITE_DESBASTE);
@@ -771,7 +774,7 @@ public class MapeadoraGeneralClosedPocket1
 //-----------------------------------------------------------------------------------------------------
 		
 	}
-	public ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted(GeneralClosedPocket pocket, double planoZ, double distance, double overLap)
+	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted(GeneralClosedPocket pocket, double planoZ, double distance, double overLap)
 	{
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
 //		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = GenerateContournParallel.multipleParallelPath(pocket,planoZ,distance,overLap).get(0);

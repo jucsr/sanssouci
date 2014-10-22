@@ -145,4 +145,15 @@ public class MapeadoraGeneralClosedPocket1Test
 		for(;;);
 	}
 	
+	@Test
+	public void getAlreadyDesbastedArea()
+	{
+		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
+		double diametroFerramenta = mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/3;
+		double overLap = 0.25*diametroFerramenta;
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, overLap);
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,diametroFerramenta,overLap);
+	}
+	
 }

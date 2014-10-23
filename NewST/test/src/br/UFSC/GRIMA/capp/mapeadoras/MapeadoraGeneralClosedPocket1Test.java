@@ -11,6 +11,8 @@ import org.junit.Test;
 
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
@@ -148,12 +150,41 @@ public class MapeadoraGeneralClosedPocket1Test
 	@Test
 	public void getAlreadyDesbastedArea()
 	{
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double diametroFerramenta = mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/3;
+		double diametroFerramenta = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/3,2);
 		double overLap = 0.25*diametroFerramenta;
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, overLap);
+		System.out.println("Offset Distance: " + diametroFerramenta);
+		System.out.println("Overlap: " + overLap);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, 2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,diametroFerramenta,overLap);
+		
+//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
+//		{
+			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
+			{
+				for(LimitedElement elementTmp:arrayTmp)
+				{
+					all.add(elementTmp);
+				}
+			}
+//		}
+		//WorkingStep
+			
+//		GenerateTrochoidalMovement1 trochidalMovment = new GenerateTrochoidalMovement1(elements, ws)
+//		GeometricOperations.showElements(multiplePath.get(0).get(0));
+//		System.out.println(multiplePath);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,40,2);
+//		for(ArrayList<LimitedElement> arrayTmp:bossElements)
+//		{
+//			for(LimitedElement elementTmp:arrayTmp)
+//			{
+//				all.add(elementTmp);
+//			}
+//		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
 	}
 	
 }

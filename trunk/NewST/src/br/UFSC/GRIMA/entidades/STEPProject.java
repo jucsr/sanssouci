@@ -76,7 +76,7 @@ public class STEPProject {
 		{
 			pathRepositories = "C:\\repositories.tmp\\";
 			properties.setProperty("repositories", pathRepositories);
-		} else if(osName.contains("Linux") && osName.contains("Solaris"))
+		} else if(osName.contains("Linux") || osName.contains("Solaris"))
 		{
 			pathRepositories = "/tmp/repositories.tmp/";
 			properties.setProperty("repositories", pathRepositories);

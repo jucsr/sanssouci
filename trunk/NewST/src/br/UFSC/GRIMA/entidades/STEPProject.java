@@ -71,14 +71,12 @@ public class STEPProject {
 		path = "";
 		Properties properties = new Properties();
 		String osName = System.getProperty("os.name");
-		osName = osName.substring(0, 7);
-		System.out.println("subString = " + osName);
-		if(osName.substring(0, 7).equals("Windows"))
+		
+		if(osName.contains("Windows"))
 		{
-			System.out.println("OSNAME ======" + osName);
 			pathRepositories = "C:\\repositories.tmp\\";
 			properties.setProperty("repositories", pathRepositories);
-		} else if(osName.equals("Linux") && osName.equals("Solaris"))
+		} else if(osName.contains("Linux") && osName.contains("Solaris"))
 		{
 			pathRepositories = "/tmp/repositories.tmp/";
 			properties.setProperty("repositories", pathRepositories);

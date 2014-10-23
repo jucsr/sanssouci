@@ -76,14 +76,14 @@ public class STEPProject {
 		{
 			pathRepositories = "C:\\repositories.tmp\\";
 			properties.setProperty("repositories", pathRepositories);
-		} else if(osName.contains("Linux") || osName.contains("Solaris"))
+		} else if(osName.contains("Linux") || osName.contains("Solaris") || osName.contains("Mac"))
 		{
 			pathRepositories = "/tmp/repositories.tmp/";
 			properties.setProperty("repositories", pathRepositories);
-		} else if(osName == "Mac");
+		} else if(osName == "Mac")
 		{
 //			Eu nao sei
-		}
+		} else
 		{
 			System.out.println("sistema operacional desconhecido");
 		}

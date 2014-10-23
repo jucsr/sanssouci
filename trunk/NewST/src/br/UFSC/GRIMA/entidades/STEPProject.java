@@ -60,16 +60,35 @@ public class STEPProject {
 	protected EBlock block;
 	private A_double p4;
 	private A_double p3;
-
-	public STEPProject() throws SdaiException {
-
+	private String pathRepositories = "";
+	
+	public STEPProject() throws SdaiException 
+	{
 		if (SdaiSession.getSession() != null)
 			SdaiSession.getSession().closeSession();
 
 		materialModel = new Material();
 		path = "";
 		Properties properties = new Properties();
-		properties.setProperty("repositories", "C:\\repositories.tmp");
+		String osName = System.getProperty("os.name");
+		osName = osName.substring(0, 7);
+		System.out.println("subString = " + osName);
+		if(osName.substring(0, 7).equals("Windows"))
+		{
+			System.out.println("OSNAME ======" + osName);
+			pathRepositories = "C:\\repositories.tmp\\";
+			properties.setProperty("repositories", pathRepositories);
+		} else if(osName.equals("Linux") && osName.equals("Solaris"))
+		{
+			pathRepositories = "/tmp/repositories.tmp/";
+			properties.setProperty("repositories", pathRepositories);
+		} else if(osName == "Mac");
+		{
+//			Eu nao sei
+		}
+		{
+			System.out.println("sistema operacional desconhecido");
+		}
 		SdaiSession.setSessionProperties(properties);
 		session = SdaiSession.openSession();
 		session.startTransactionReadWriteAccess();
@@ -305,11 +324,9 @@ public class STEPProject {
 	}
 
 	public String createSTEP21File() throws SdaiException {
-		repository.exportClearTextEncoding("C:/repositories.tmp/"
-				+ eProject.getIts_id(eProject));
+		repository.exportClearTextEncoding(pathRepositories + eProject.getIts_id(eProject));
 
-		File file = new File("C:/repositories.tmp/"
-				+ eProject.getIts_id(eProject));
+		File file = new File(pathRepositories + eProject.getIts_id(eProject));
 		System.out.println("====== DONE ======");
 		return Util.getContents(file);
 	}

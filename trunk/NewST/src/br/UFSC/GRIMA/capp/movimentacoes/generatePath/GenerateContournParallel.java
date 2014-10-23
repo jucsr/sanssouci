@@ -203,7 +203,7 @@ public class GenerateContournParallel
 //				}
 //			}
 //		}
-		GeometricOperations.showElements(formaOriginal);
+//		GeometricOperations.showElements(formaOriginal);
 		
 		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
 		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade

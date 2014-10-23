@@ -795,7 +795,16 @@ public class MapeadoraGeneralClosedPocket1
 				{
 					if(validationParallelElementTmp.getFinalPoint() != firstValidationElementInitialPoint)
 					{
-						LimitedArc transitionArc = new LimitedArc(firstOffsetElementFinalPoint, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
+						Point3d transitionArcCenter = null;
+						if(validationParallelElementTmp.isLimitedLine())
+						{
+							transitionArcCenter = firstOffsetElementFinalPoint;
+						}
+						else
+						{
+							transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
+						}
+						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
 				}

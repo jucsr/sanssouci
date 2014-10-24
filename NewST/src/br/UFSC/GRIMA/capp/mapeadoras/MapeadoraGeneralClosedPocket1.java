@@ -686,7 +686,8 @@ public class MapeadoraGeneralClosedPocket1
 		if (!genClosed.isAcabamento()) 
 		{
 //			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
-			while(maiorMenorDistanciaTmp > menorMenorDistanciaTmp)
+			int aux = 0;
+			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < 1)
 			{
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
@@ -765,7 +766,7 @@ public class MapeadoraGeneralClosedPocket1
 //				wsPrecedenteTmp = wsTmp2;
 //				
 //				wssFeature.add(wsTmp2);
-//				
+				aux++;
 			}
 			genClosed.setWorkingsteps(wssFeature);
 		}
@@ -795,16 +796,16 @@ public class MapeadoraGeneralClosedPocket1
 				{
 					if(validationParallelElementTmp.getFinalPoint() != firstValidationElementInitialPoint)
 					{
-						Point3d transitionArcCenter = null;
-						if(validationParallelElementTmp.isLimitedLine())
-						{
-							transitionArcCenter = firstOffsetElementFinalPoint;
-						}
-						else
-						{
-							transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
-						}
-						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
+//						Point3d transitionArcCenter = null;
+						Point3d transitionArcCenter = firstOffsetElementFinalPoint;
+//						if(validationParallelElementTmp.isLimitedArc())
+//						{
+//							if(((LimitedArc)validationParallelElementTmp).getDeltaAngle() < 0)
+//							{
+//								transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
+//							}
+//						}
+						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), 2*Math.PI + GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
 				}
@@ -813,7 +814,15 @@ public class MapeadoraGeneralClosedPocket1
 					LimitedElement validationParallelElementTmpNext = validationParallelTmp.get(j+1);
 					if(validationParallelElementTmp.getFinalPoint() != validationParallelElementTmpNext.getInitialPoint())
 					{
-						LimitedArc transitionArc = new LimitedArc(firstOffsetElementFinalPoint, validationParallelElementTmp.getFinalPoint(), GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), firstOffsetElementFinalPoint, -2*Math.PI));
+						Point3d transitionArcCenter = firstOffsetElementFinalPoint;
+//						if(validationParallelElementTmp.isLimitedArc())
+//						{
+//							if(((LimitedArc)validationParallelElementTmp).getDeltaAngle() < 0)
+//							{
+//								transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
+//							}
+//						}						
+						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), 2*Math.PI + GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), firstOffsetElementFinalPoint, -2*Math.PI));
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
 				}

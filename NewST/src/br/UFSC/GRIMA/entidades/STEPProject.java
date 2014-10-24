@@ -80,7 +80,7 @@ public class STEPProject {
 		{
 			pathRepositories = "/tmp/repositories.tmp/";
 			properties.setProperty("repositories", pathRepositories);
-		} else if(osName == "Mac")
+		} else if(osName.contains("Unix"))
 		{
 //			Eu nao sei
 		} else

@@ -45,18 +45,18 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
-//		points.add(new Point2D.Double(500, 320));
-//		points.add(new Point2D.Double(500, 160));
-//		points.add(new Point2D.Double(280, 160));
-//		points.add(new Point2D.Double(280, 40));
-//		points.add(new Point2D.Double(0, 40));
-//		points.add(new Point2D.Double(0, 320));
+		points.add(new Point2D.Double(500, 320));
+		points.add(new Point2D.Double(500, 160));
+		points.add(new Point2D.Double(280, 160));
+		points.add(new Point2D.Double(280, 40));
+		points.add(new Point2D.Double(0, 40));
+		points.add(new Point2D.Double(0, 320));
 		
 		//Forma 2
-		points.add(new Point2D.Double(500, 320));
-		points.add(new Point2D.Double(500, 0));
-		points.add(new Point2D.Double(0, 0));
-		points.add(new Point2D.Double(0, 320));
+//		points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 0));
+//		points.add(new Point2D.Double(0, 0));
+//		points.add(new Point2D.Double(0, 320));
 		
 		//Protuberancia
 		pocket.setPoints(points);
@@ -64,7 +64,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-		CircularBoss arcBoss = new CircularBoss("", 100, 100, pocket.Z, 60, 60, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
 		itsBoss.add(arcBoss);
 		
 		//Rectangular Boss
@@ -156,12 +156,13 @@ public class MapeadoraGeneralClosedPocket1Test
 		double overLap = 0.25*diametroFerramenta;
 		System.out.println("Offset Distance: " + diametroFerramenta);
 		System.out.println("Overlap: " + overLap);
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, 2);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, 60, 2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		
 //		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
 //		{
 			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
+//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 			{
 				for(LimitedElement elementTmp:arrayTmp)
 				{
@@ -174,14 +175,14 @@ public class MapeadoraGeneralClosedPocket1Test
 //		GenerateTrochoidalMovement1 trochidalMovment = new GenerateTrochoidalMovement1(elements, ws)
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 //		System.out.println(multiplePath);
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,40,2);
-//		for(ArrayList<LimitedElement> arrayTmp:bossElements)
-//		{
-//			for(LimitedElement elementTmp:arrayTmp)
-//			{
-//				all.add(elementTmp);
-//			}
-//		}
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,60,2);
+		for(ArrayList<LimitedElement> arrayTmp:bossElements)
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				all.add(elementTmp);
+			}
+		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);

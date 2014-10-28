@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import jsdai.SCombined_schema.AExecutable;
 import jsdai.SCombined_schema.AProperty_parameter;
@@ -80,12 +81,13 @@ public class STEPProject {
 		{
 			pathRepositories = "/tmp/repositories.tmp/";
 			properties.setProperty("repositories", pathRepositories);
-		} else if(osName.contains("Unix"))
+		} else if(osName.contains("unix"))
 		{
 //			Eu nao sei
 		} else
 		{
 			System.out.println("sistema operacional desconhecido");
+			JOptionPane.showMessageDialog(null, "Operational System Unknown");
 		}
 		SdaiSession.setSessionProperties(properties);
 		session = SdaiSession.openSession();

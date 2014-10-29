@@ -324,7 +324,9 @@ public class MapeadoraGeneralClosedPocket1
 		double deltaY = minorPointY.distance(maxPointY)/numeroDePontos;
 		
 		//CRIA O GENERAL PATH DO FORMATO
-		final GeneralPath gp = (GeneralPath)Face.getShape(genClosed);
+//		final GeneralPath gp = (GeneralPath)Face.getShape(genClosed);
+		final GeneralPath gp = (GeneralPath)Face.getShape(addPocket.getElements());
+
 			
 		//CRIA UM Shape2D DA PROTUBERANCIA
 		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
@@ -332,37 +334,11 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			bossShape.add(Face.getShape(bossTmp));
 		}
-		//Desenhador
-		JFrame frame = new JFrame();
-		frame.setSize(new Dimension(300, 300));
-		class Panel extends JPanel
-		{
-			protected void paintComponent(Graphics g)
-			{
-				Graphics2D g2d = (Graphics2D)g;
-				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
-				
-//				g2d.translate(0, 300);
-//				g2d.scale(1, -1);
-//				g2d.draw(gp);
-				g2d.draw(bossShape.get(0));
-//				for(ArrayList<Point2D> arrayTmp:matrix)
-//				{
-//					for(Point2D pointTmp:arrayTmp)
-//					{
-////						g2d.drawOval((int)pointTmp.getX(), (int)pointTmp.getY(), 1, 1);
-//						g2d.draw(new Ellipse2D.Double(pointTmp.getX(), pointTmp.getY(), 1, 1));
-//					}
-//				}
-			}
-		}
-		frame.getContentPane().add(new Panel());
-		frame.setVisible(true);
+
 		
 		//Percorre uma matriz de pontos dentro da forma da cavidade, verificando qual e a maior distancia 
 		//entre as menores distancias entre os pontos e os elementos
-		ArrayList<Point2D> arrayPointTmp = new ArrayList<Point2D>();    //pontos validos (dentro da cavidade e fora da protuberancia)
+		final ArrayList<Point2D> arrayPointTmp = new ArrayList<Point2D>();    //pontos validos (dentro da cavidade e fora da protuberancia)
 		for(int i = 0; i < numeroDePontos; i++)
 		{
 			for(int j = 0; j < numeroDePontos; j++)
@@ -421,6 +397,37 @@ public class MapeadoraGeneralClosedPocket1
 				minimumMaxDistance = minimumMaxDistancePointToPathTmp;
 			}
 		}
+		
+		//Desenhador
+		JFrame frame = new JFrame();
+		frame.setSize(new Dimension(300, 300));
+		class Panel extends JPanel
+		{
+			protected void paintComponent(Graphics g)
+			{
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+				
+//				g2d.translate(0, 300);
+//				g2d.scale(1, -1);
+				g2d.draw(gp);
+				for(Shape shape:bossShape)
+				{
+					g2d.draw(shape);
+				}
+//				for(ArrayList<Point2D> arrayTmp:matrix)
+//				{
+					for(Point2D pointTmp:arrayPointTmp)
+					{
+////						g2d.drawOval((int)pointTmp.getX(), (int)pointTmp.getY(), 1, 1);
+						g2d.draw(new Ellipse2D.Double(pointTmp.getX(), pointTmp.getY(), 1, 1));
+					}
+//				}
+			}
+		}
+		frame.getContentPane().add(new Panel());
+		frame.setVisible(true);
 		
 		return minimumMaxDistance;
 		//-----------------------------------------------------------------------------------------------------
@@ -653,7 +660,7 @@ public class MapeadoraGeneralClosedPocket1
 //Teste
 //-----------------------------------------------------------------------------------------------------
 		
-		double fator = 3;
+		double fator = 2;
 		ArrayList<Workingstep> workingSteps = new ArrayList<Workingstep>();
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
@@ -794,7 +801,9 @@ public class MapeadoraGeneralClosedPocket1
 				alreadyDesbastededAreaTmp.add(validationParallelElementTmp);
 				if(j == validationParallelTmp.size() - 1)
 				{
-					if(validationParallelElementTmp.getFinalPoint() != firstValidationElementInitialPoint)
+//					if(validationParallelElementTmp.getFinalPoint() != firstValidationElementInitialPoint)
+					if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint))
+
 					{
 //						Point3d transitionArcCenter = null;
 						Point3d transitionArcCenter = firstOffsetElementFinalPoint;
@@ -812,7 +821,8 @@ public class MapeadoraGeneralClosedPocket1
 				else
 				{
 					LimitedElement validationParallelElementTmpNext = validationParallelTmp.get(j+1);
-					if(validationParallelElementTmp.getFinalPoint() != validationParallelElementTmpNext.getInitialPoint())
+//					if(validationParallelElementTmp.getFinalPoint() != validationParallelElementTmpNext.getInitialPoint())
+					if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint()))
 					{
 						Point3d transitionArcCenter = firstOffsetElementFinalPoint;
 //						if(validationParallelElementTmp.isLimitedArc())

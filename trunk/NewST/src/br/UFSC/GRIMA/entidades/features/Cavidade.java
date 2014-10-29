@@ -612,6 +612,30 @@ public class Cavidade extends Feature implements Serializable {
 
 		return saida;
 	}
+	public static Point2D[] determinarPontosEmCircunferencia(Point3d center, Point3d initialPoint, double deltaAngulo, int numeroDePontos)  
+	{
+		Point2D[] saida = new Point2D [numeroDePontos];
+		double raio = center.distance(initialPoint);
+		double x, y, dAngulo = 0;
+		double anguloInicial = Math.atan2(initialPoint.y - center.y, initialPoint.x - center.x);
+		dAngulo = deltaAngulo / (numeroDePontos - 1); //numero de divisoes no arco
+		anguloInicial = anguloInicial + 0.01;
+		
+		for(int i = 0; i < numeroDePontos; i++)
+		{
+			x = center.x + raio * Math.cos(anguloInicial + i * dAngulo);
+			y = center.y + raio * Math.sin(anguloInicial + i * dAngulo);
+			
+			saida[i] = new Point2D.Double(x, y);
+			
+			//System.out.println("posicao x, y : " + x  +y);
+		}
+//		System.out.println("angulo final : " + ( numeroDePontos* dAngulo)*180/Math.PI );
+//		System.out.println("tamanho saida : " + saida.length);
+//		System.out.println("numeroPontos : " + numeroDePontos);
+
+		return saida;
+	}
 	public static Point2D[] determinarPontosEmCircunferenciaV2(Point3d center, double anguloInicial, double deltaAngulo, double raio)  
 	{
 //		System.out.println("center of cincunference: "+center);

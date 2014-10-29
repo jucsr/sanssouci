@@ -784,13 +784,18 @@ public class GeometricOperations
 	{
 		double alpha;
 		Point3d axisX = new Point3d(1.0, 0.0, 0.0);
-		alpha = Math.acos(escalar(axisX, v) / norm(axisX) / norm(v));
-				
-		if (v.getY() < 0)
-			alpha = -alpha + 2 * Math.PI;
+//		alpha = Math.acos(escalar(axisX, v) / norm(axisX) / norm(v));
+		alpha = Math.atan2(v.y, v.x);
+
+//		if (v.getY() < 0)
+//			alpha = -alpha + 2 * Math.PI;
 		//System.out.println("Alpha from angle " + alpha*180/Math.PI);
 
 		return alpha;
+	}
+	public static double angle(Point3d p1, Point3d p2)
+	{
+		return Math.atan2(p1.y - p2.y, p1.x - p2.x);
 	}
 		
 	public static boolean contentsPoint(Point3d p, LimitedArc arc)

@@ -2514,8 +2514,9 @@ public class Face implements Serializable{
 			else if(element.isLimitedArc())
 			{
 				LimitedArc arcTmp = (LimitedArc)element;
-				Point2D[] shapeArcPoints = Cavidade.determinarPontosEmCircunferencia(arcTmp.getCenter(), arcTmp.getInitialAngle(), arcTmp.getDeltaAngle(), arcTmp.getRadius(), 10);
-//				((GeneralPath)shape).lineTo(shapeArcPoints[0].getX(), shapeArcPoints[0].getY());
+//				Point2D[] shapeArcPoints = Cavidade.determinarPontosEmCircunferencia(arcTmp.getCenter(), arcTmp.getInitialAngle(), arcTmp.getDeltaAngle(), arcTmp.getRadius(), 10);
+				Point2D[] shapeArcPoints = Cavidade.determinarPontosEmCircunferencia(arcTmp.getCenter(), arcTmp.getInitialPoint(), arcTmp.getDeltaAngle(), 10);
+//		        ((GeneralPath)shape).lineTo(shapeArcPoints[0].getX(), shapeArcPoints[0].getY());
 //				((GeneralPath)shape).lineTo(shapeArcPoints[1].getX(), shapeArcPoints[1].getY());
 //				((GeneralPath)shape).lineTo(shapeArcPoints[2].getX(), shapeArcPoints[2].getY());
 
@@ -2528,7 +2529,7 @@ public class Face implements Serializable{
 				}
 			}
 		}
-//		((GeneralPath)shape).closePath();
+		((GeneralPath)shape).closePath();
 		return shape;
 	}
 	public  Point2D[] getShapePontos(Feature feature)

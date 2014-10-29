@@ -109,7 +109,9 @@ public class LimitedArc extends LimitedElement
 		
 //		Point3d axisX = new Point3d(1.0, 0, 0);
 		Point3d vectorInitial = GeometricOperations.minus(this.initialPoint, this.center);
+//		this.initialAngle = GeometricOperations.angle(center,initialPoint);
 		this.initialAngle = GeometricOperations.angle(vectorInitial);
+
 		
 //		initialAngle = Math.acos(GeometricOperations.escalar(axisX, vectorInitial)/GeometricOperations.norm(axisX)/GeometricOperations.norm(vectorInitial));
 //		if (vectorInitial.getY() < 0)

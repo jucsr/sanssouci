@@ -1,9 +1,17 @@
 package br.UFSC.GRIMA.capp.mapeadoras;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 
 import org.junit.Before;
@@ -24,6 +32,7 @@ import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
+import br.UFSC.GRIMA.util.GeneralPath;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -152,11 +161,11 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double diametroFerramenta = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/3,2);
-		double overLap = 0.25*diametroFerramenta;
+		double diametroFerramenta = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+		double overLap = 2;//0.25*diametroFerramenta;
 		System.out.println("Offset Distance: " + diametroFerramenta);
 		System.out.println("Overlap: " + overLap);
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, 60, 2);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		
 //		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
@@ -170,12 +179,13 @@ public class MapeadoraGeneralClosedPocket1Test
 				}
 			}
 //		}
-		//WorkingStep
+		//WorkingStep 1
 			
 //		GenerateTrochoidalMovement1 trochidalMovment = new GenerateTrochoidalMovement1(elements, ws)
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 //		System.out.println(multiplePath);
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,60,2);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,diametroFerramenta,overLap);
+		GeometricOperations.showElements(bossElements.get(0));
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
 		{
 			for(LimitedElement elementTmp:arrayTmp)
@@ -183,8 +193,59 @@ public class MapeadoraGeneralClosedPocket1Test
 				all.add(elementTmp);
 			}
 		}
+		//add os elementos das protuberancias reais
+		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
+		{
+			bossElements.add(arrayTmp);
+		}
+		System.out.println("diametro ferramenta 2: " + mp.getMaiorMenorDistancia(bossElements));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
+		for(;;);
+	}
+	
+	@Test
+	public void getShapeTest()
+	{
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,50,2);
+		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.Z, pocket.getRadius());
+		final Shape gp = Face.getShape(pocket);
+//		final Shape gp = Face.getShape(addPocket.getElements());
+		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
+		for(ArrayList<LimitedElement> bossTmp:bossElements)
+		{
+			bossShape.add(Face.getShape(bossTmp));
+		}
+		//Desenhador
+		JFrame frame = new JFrame();
+		frame.setSize(new Dimension(300, 300));
+		class Panel extends JPanel
+		{
+			protected void paintComponent(Graphics g)
+			{
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+				
+				g2d.translate(0, 400);
+				g2d.scale(1, -1);
+//				g2d.draw(gp);
+				for(Shape shape:bossShape)
+				{
+					g2d.draw(shape);
+				}
+//				for(ArrayList<Point2D> arrayTmp:matrix)
+//				{
+//					for(Point2D pointTmp:arrayPointTmp)
+//					{
+////						g2d.drawOval((int)pointTmp.getX(), (int)pointTmp.getY(), 1, 1);
+//						g2d.draw(new Ellipse2D.Double(pointTmp.getX(), pointTmp.getY(), 1, 1));
+//					}
+//				}
+			}
+		}
+		frame.getContentPane().add(new Panel());
+		frame.setVisible(true);
 		for(;;);
 	}
 	

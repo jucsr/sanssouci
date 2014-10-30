@@ -152,32 +152,39 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double diametroFerramenta = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+		double diametroFerramenta = 33;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
 		double overLap = 2;//0.25*diametroFerramenta;
 		System.out.println("Offset Distance: " + diametroFerramenta);
 		System.out.println("Overlap: " + overLap);
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, 30, overLap);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		
-//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
-//		{
-			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
-//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
+		{
+//			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
+			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 			{
 				for(LimitedElement elementTmp:arrayTmp)
 				{
 					all.add(elementTmp);
 				}
 			}
-//		}
+		}
 		//WorkingStep 1
 			
 //		GenerateTrochoidalMovement1 trochidalMovment = new GenerateTrochoidalMovement1(elements, ws)
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 //		System.out.println(multiplePath);
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z, 30, overLap);
-		GeometricOperations.showElements(bossElements.get(0));
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z, diametroFerramenta, overLap);
+//		GeometricOperations.showElements(bossElements.get(0));
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				all.add(elementTmp);
+			}
+		}
+		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
 			for(LimitedElement elementTmp:arrayTmp)
 			{

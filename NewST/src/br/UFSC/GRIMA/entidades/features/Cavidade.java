@@ -619,7 +619,7 @@ public class Cavidade extends Feature implements Serializable {
 		double x, y, dAngulo = 0;
 		double anguloInicial = Math.atan2(initialPoint.y - center.y, initialPoint.x - center.x);
 		dAngulo = deltaAngulo / (numeroDePontos - 1); //numero de divisoes no arco
-		anguloInicial = anguloInicial + 0.01;
+//		anguloInicial = anguloInicial + 0.01;
 		
 		for(int i = 0; i < numeroDePontos; i++)
 		{

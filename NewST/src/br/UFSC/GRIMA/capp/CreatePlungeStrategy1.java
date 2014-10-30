@@ -2,7 +2,7 @@ package br.UFSC.GRIMA.capp;
 
 /**
  * 
- * @author Igor Benincá
+ * @author Igor Benincï¿½
  *
  */
 
@@ -18,14 +18,15 @@ import br.UFSC.GRIMA.capp.visual.PlungeFrame2;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
+import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 
 public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListener
 {
 	private ArrayList<Path> trajetoEntrada;
 	private char plungeType;
-	public CreatePlungeStrategy1(ArrayList<Path> trajetoEntrada) // Criação do metodo, vulgo objeto
+	public CreatePlungeStrategy1(ArrayList<Path> trajetoEntrada) // Criaï¿½ï¿½o do metodo, vulgo objeto
 	{
-		this.okButton.addActionListener(this); // Dando ouvidos ao botão ok
+		this.okButton.addActionListener(this); // Dando ouvidos ao botï¿½o ok
 		this.cancelButton.addActionListener(this);
 		this.bolaVert.addActionListener(this);
 		this.bolaRamp.addActionListener(this);
@@ -44,7 +45,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {  // O que fazer quando o botão for escutado
+	public void actionPerformed(ActionEvent event) {  // O que fazer quando o botï¿½o for escutado
 		Object source = event.getSource();
 		if (source == okButton){
 			this.calcularMergulho();
@@ -93,7 +94,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 	
 	public ArrayList<Path> rampPlunge(){
 		ArrayList<Path> trajeto = new ArrayList<Path>();
-		ArrayList<Path> trajetoT = new ArrayList<Path>(); //Apenas para inversão do array
+		ArrayList<Path> trajetoT = new ArrayList<Path>(); //Apenas para inversï¿½o do array
 		double h= 0 ;
 		double ht = trajetoEntrada.get(0).getInitialPoint().z; // PONTO!!!
 		double nSeparacoes = 0.001;
@@ -124,9 +125,10 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			else if (trajetoEntrada.get(c).isCircular())
 			{
 				CircularPath circularTemp = (CircularPath)trajetoEntrada.get(c);
-				double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x );
-				double dalfa = circularTemp.getAngulo()/100;
-				int j = 1;
+				double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x ) + circularTemp.getAngulo(); // cuidado com angulos negativos
+//				double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x ); // cuidado com angulos negativos
+				double dalfa = -circularTemp.getAngulo()/(10 + 1);
+				int j = 0;
 				dist = circularTemp.getInitialPoint().distance(circularTemp.getCenter())*(alfa);
 				h = Math.tan(alfa)*dist;
 				if (Math.abs(h) > Math.abs(ht))
@@ -134,10 +136,14 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 				else
 					ht = ht + h;
 				
-				while(trajeto.get(i-1).getInitialPoint().z < ht)
+				while(trajeto.get(i-1).getInitialPoint().z < ht && GeometricOperations.roundNumber(dalfa * j, 7) <= GeometricOperations.roundNumber(circularTemp.getAngulo(), 7)) // e se ultrapassar o delta angulo do arco?
 				{
-					System.err.println("Ht acumulados "+trajeto.get(i-1).getFinalPoint().z);
-					LinearPath p0 = new LinearPath (new Point3d(circularTemp.getCenter().x + (circularTemp.getRadius())*Math.cos(alfaZero + dalfa*j), circularTemp.getCenter().y + (circularTemp.getRadius())*Math.sin(alfaZero + dalfa*j), trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
+//					System.err.println("Ht acumulados "+trajeto.get(i-1).getFinalPoint().z);
+//					System.out.println("angulo0 + dalfa = " + (alfaZero + dalfa * j));
+					double x = circularTemp.getCenter().x + circularTemp.getRadius() * Math.cos(alfaZero + dalfa * j);
+					double y = circularTemp.getCenter().y + circularTemp.getRadius() * Math.sin(alfaZero + dalfa * j);
+//					LinearPath p0 = new LinearPath (new Point3d(circularTemp.getCenter().x + (circularTemp.getRadius())*Math.cos(alfaZero + dalfa*j), circularTemp.getCenter().y + (circularTemp.getRadius())*Math.sin(alfaZero + dalfa*j), trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
+					LinearPath p0 = new LinearPath (new Point3d(x, y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
 					trajeto.add(p0);
 					j++;
 					i++;
@@ -145,10 +151,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 				c--;
 				if (c< 0 )
 					c = trajetoEntrada.size()-1;
-				
-				
-				
-				
 			}
 		}
 			if(trajetoEntrada.get(trajetoEntrada.size() -1 ).isLine())
@@ -156,13 +158,13 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 				if (ht >= retractTotal)
 				{
 					dist = trajeto.get(trajeto.size()-1).getFinalPoint().distance(trajeto.get(trajeto.size()-1).getInitialPoint());
-					System.out.println("Distância dos pontos->" + dist);
+					System.out.println("Distï¿½ncia dos pontos->" + dist);
 					vector = new Point3d(trajeto.get(trajeto.size()-1).getFinalPoint().x - trajeto.get(trajeto.size()-1).getInitialPoint().x, trajeto.get(trajeto.size()-1).getFinalPoint().y - trajeto.get(trajeto.size()-1).getInitialPoint().y, trajeto.get(trajeto.size()-1).getFinalPoint().z - trajeto.get(trajeto.size()-1).getInitialPoint().z);
-					vector = new Point3d((vector.x/dist), (vector.y/dist), (vector.z/dist)); // vetor unitário
+					vector = new Point3d((vector.x/dist), (vector.y/dist), (vector.z/dist)); // vetor unitï¿½rio
 					ht = ht - retractTotal;
-					System.out.println("Distância h da dife retract->" + ht);
-					dist = dist - (ht/Math.sin(alfa)); // tanto que eu preciso multiplicar meu vetor unitário.
-					System.out.println("Distância mult->" + dist);
+					System.out.println("Distï¿½ncia h da dife retract->" + ht);
+					dist = dist - (ht/Math.sin(alfa)); // tanto que eu preciso multiplicar meu vetor unitï¿½rio.
+					System.out.println("Distï¿½ncia mult->" + dist);
 					vector = new Point3d(trajeto.get(i-1).getFinalPoint().x + Math.abs(vector.x)*dist,  trajeto.get(i-1).getFinalPoint().y+ Math.abs(vector.y)*dist ,  trajeto.get(i-1).getFinalPoint().z + Math.abs(vector.z)*dist);
 				}
 			}
@@ -186,7 +188,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		}
 
 	public ArrayList<Path> calcularMergulho() {
-		ArrayList<Path> trajeto = null; //Declaração da Variável trajeto e criação desta
+		ArrayList<Path> trajeto = null; //Declaraï¿½ï¿½o da Variï¿½vel trajeto e criaï¿½ï¿½o desta
 		if(bolaVert.isSelected())
 		{
 			trajeto = verticalPlunge();

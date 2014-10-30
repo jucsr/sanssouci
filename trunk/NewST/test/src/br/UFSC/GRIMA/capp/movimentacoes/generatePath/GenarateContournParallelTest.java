@@ -81,7 +81,9 @@ public class GenarateContournParallelTest
 		//Circular Boss
 //		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 //		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
-		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
+//		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
+		CircularBoss arcBoss = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
+
 		itsBoss.add(arcBoss);
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
@@ -154,7 +156,7 @@ public class GenarateContournParallelTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 25,2);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 28,2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GenerateContournParallel.multipleParallelPath(pocket, 0, 25,2);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
@@ -177,7 +179,61 @@ public class GenarateContournParallelTest
 		desenhador.setVisible(true);
 		for(;;);
 	}
-	
+	@Test
+	public void parallelPathTest()
+	{
+		double distance = 30;
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, distance,2);
+		ArrayList<LimitedElement> elementForIntersection = new ArrayList<LimitedElement>();
+		for(ArrayList<LimitedElement> arrayTmp : contourn.parallelPath2(distance))
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				all.add(elementTmp);
+				if(elementTmp.isLimitedArc())
+				{
+					if(((LimitedArc)elementTmp).getDeltaAngle() < 0)
+					{
+						if(((LimitedArc)elementTmp).getDeltaAngle() == Math.abs(2*Math.PI))
+						{
+							elementForIntersection.add(elementTmp);
+						}
+						else
+						{
+							elementForIntersection.add(elementTmp);
+						}
+					}
+				}
+			}
+		}
+//		LimitedElement l = new LimitedLine(new Point3d(250,70,0),new Point3d(250,130,0));
+		elementForIntersection.add(new LimitedLine(new Point3d(250,70,0),new Point3d(250,130,0)));
+		GeometricOperations.showElements(elementForIntersection);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void validarPath1Test()
+	{
+		double distance = 33;
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, distance,2);
+		ArrayList<LimitedElement> all = GenerateContournParallel.validar1Path(contourn.parallelPath2(distance).get(0));//new ArrayList<LimitedElement>();
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
+	@Test
+	public void validarPath2Test()
+	{
+		double distance = 33;
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, distance,2);
+		ArrayList<LimitedElement> all = GenerateContournParallel.validar2Path(GenerateContournParallel.validar1Path(contourn.parallelPath2(distance).get(0)),formaOriginal,distance);//new ArrayList<LimitedElement>();
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
+	}
 	@Test
 	public void absolutParallelTest()
 	{

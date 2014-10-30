@@ -1,14 +1,13 @@
 package br.UFSC.GRIMA.capp.mapeadoras;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,26 +16,18 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
-import br.UFSC.GRIMA.capp.Workingstep;
-import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
-import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Boss;
-import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
-import br.UFSC.GRIMA.util.GeneralPath;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
-import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
-import br.UFSC.GRIMA.util.findPoints.LimitedLine;
 import br.UFSC.GRIMA.util.geometricOperations.GeometricOperations;
 import br.UFSC.GRIMA.util.projeto.Axis2Placement3D;
 import br.UFSC.GRIMA.util.projeto.DadosDeProjeto;
@@ -150,7 +141,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //		System.out.println("Distance arc-arc: " + GeometricOperations.minimumDistance(a1, a2));
 		System.out.println("Maior Menor Distancia: " + maiorMenorDistancia);
 		System.out.println("Menor Menor distancia: " + menorMenorDistancia);
-//		System.out.println("Proporção (Menor / Maior): " + menorMenorDistancia/maiorMenorDistancia);
+//		System.out.println("Proporï¿½ï¿½o (Menor / Maior): " + menorMenorDistancia/maiorMenorDistancia);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
@@ -165,7 +156,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		double overLap = 2;//0.25*diametroFerramenta;
 		System.out.println("Offset Distance: " + diametroFerramenta);
 		System.out.println("Overlap: " + overLap);
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, overLap);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, 30, overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		
 //		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
@@ -184,7 +175,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //		GenerateTrochoidalMovement1 trochidalMovment = new GenerateTrochoidalMovement1(elements, ws)
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 //		System.out.println(multiplePath);
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,diametroFerramenta,overLap);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z, 30, overLap);
 		GeometricOperations.showElements(bossElements.get(0));
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
 		{
@@ -207,10 +198,10 @@ public class MapeadoraGeneralClosedPocket1Test
 	@Test
 	public void getShapeTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z,50,2);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket, pocket.Z, 30, 2);
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.Z, pocket.getRadius());
-		final Shape gp = Face.getShape(pocket);
-//		final Shape gp = Face.getShape(addPocket.getElements());
+//		final Shape gp = Face.getShape(pocket);
+		final Shape gp = Face.getShape(addPocket.getElements());
 		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
 		for(ArrayList<LimitedElement> bossTmp:bossElements)
 		{
@@ -218,7 +209,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		}
 		//Desenhador
 		JFrame frame = new JFrame();
-		frame.setSize(new Dimension(300, 300));
+		frame.setSize(new Dimension(750, 400));
 		class Panel extends JPanel
 		{
 			protected void paintComponent(Graphics g)
@@ -229,9 +220,12 @@ public class MapeadoraGeneralClosedPocket1Test
 				
 				g2d.translate(0, 400);
 				g2d.scale(1, -1);
-//				g2d.draw(gp);
+				g2d.draw(gp);
 				for(Shape shape:bossShape)
 				{
+//					g2d.setColor(new Color(155, 33, 12));
+//					g2d.fill(shape);
+					g2d.setColor(new Color(15, 60, 212));
 					g2d.draw(shape);
 				}
 //				for(ArrayList<Point2D> arrayTmp:matrix)

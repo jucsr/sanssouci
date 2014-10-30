@@ -10,10 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cam.GenerateTrocoidalGCode;
 import br.UFSC.GRIMA.capp.visual.PlungeFrame2;
+import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 
@@ -53,6 +55,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		
 		else if (source == bolaVert)
 		{
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/vertical.png")));
 			this.retractText.setVisible(true);
 			this.retractBox.setVisible(true);
 			this.angleText.setVisible(false);
@@ -65,6 +68,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		
 		else if (source == bolaRamp)
 		{
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Ramp.png")));
 			this.angleText.setVisible(true);
 			this.angleBox.setVisible(true);
 			this.widthText.setVisible(false);
@@ -89,34 +93,58 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 	
 	public ArrayList<Path> rampPlunge(){
 		ArrayList<Path> trajeto = new ArrayList<Path>();
-		trajeto.add(trajetoEntrada.get(trajetoEntrada.size()-1));
 		ArrayList<Path> trajetoT = new ArrayList<Path>(); //Apenas para inversão do array
 		double h= 0 ;
 		double ht = trajetoEntrada.get(0).getInitialPoint().z; // PONTO!!!
+		double nSeparacoes = 0.001;
 		double retractTotal = ((Double)(retractBox.getValue())).doubleValue();
 		double alfa =(((Double)(angleBox.getValue())).doubleValue()*Math.PI)/(180);
 		Point3d vector = null;
-		int i = trajetoEntrada.size()-1;
+		int i = 0;
 		int c = 0;
 		double dist;
-		System.out.println("retract total "+ retractTotal);
 		while (ht <= retractTotal)
 		{
-			if(trajetoEntrada.get(i).isLine())
+			if(trajetoEntrada.get(c).isLine())
 			{
-				dist = new Point3d(trajetoEntrada.get(i).getFinalPoint().x,trajetoEntrada.get(i).getFinalPoint().y, ht).distance(new Point3d(trajetoEntrada.get(i).getInitialPoint().x, trajetoEntrada.get(i).getInitialPoint().y, ht));
+				dist = new Point3d(trajetoEntrada.get(c).getFinalPoint().x,trajetoEntrada.get(c).getFinalPoint().y, ht).distance(new Point3d(trajetoEntrada.get(c).getInitialPoint().x, trajetoEntrada.get(c).getInitialPoint().y, ht));
 				h = Math.tan(alfa)*dist;
 				System.out.println("Acumulador do h "+h);
-				if (Math.abs(h) > Math.abs(trajeto.get(c).getFinalPoint().z))
-					ht = (trajeto.get(c).getInitialPoint().z)+h;
+				if (Math.abs(h) > Math.abs(ht))
+					ht = ht + h;
 				else
-					ht = trajeto.get(c).getInitialPoint().z +h;
-				LinearPath p0 = new LinearPath (new Point3d(trajetoEntrada.get(i).getFinalPoint().x, trajetoEntrada.get(i).getFinalPoint().y, ht), new Point3d(trajetoEntrada.get(i).getInitialPoint().x, trajetoEntrada.get(i).getInitialPoint().y,ht- h));
+					ht = ht + h;
+				LinearPath p0 = new LinearPath (new Point3d(trajetoEntrada.get(c).getInitialPoint().x, trajetoEntrada.get(c).getInitialPoint().y, ht), new Point3d(trajetoEntrada.get(c).getFinalPoint().x, trajetoEntrada.get(c).getFinalPoint().y,ht- h));
 				trajeto.add(p0);
-				c++;
-				i--;
-				if (i <= 0)
-					i = trajetoEntrada.size()-1;
+				c--;
+				i++;
+				if (c<0)
+					c = trajetoEntrada.size()-1;
+			}
+			else if (trajetoEntrada.get(c).isCircular())
+			{
+				CircularPath circularTemp = (CircularPath)trajetoEntrada.get(c);
+				dist = circularTemp.getInitialPoint().distance(circularTemp.getCenter())*(alfa);
+				h = Math.tan(alfa)*dist;
+				if (Math.abs(h) > Math.abs(ht))
+					ht = ht + h;
+				else
+					ht = ht + h;
+				
+				while(trajeto.get(i-1).getInitialPoint().z < ht)
+				{
+					System.err.println("Ht acumulados "+trajeto.get(i-1).getFinalPoint().z);
+					LinearPath p0 = new LinearPath (new Point3d(trajeto.get(i-1).getInitialPoint().x + nSeparacoes, trajeto.get(i-1).getInitialPoint().y + nSeparacoes, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
+					trajeto.add(p0);
+					i++;
+				}
+				c--;
+				if (c<= 0 )
+					c = trajetoEntrada.size()-1;
+				
+				
+				
+				
 			}
 		}
 			if(trajetoEntrada.get(trajetoEntrada.size() -1 ).isLine())
@@ -131,18 +159,26 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					System.out.println("Distância h da dife retract->" + ht);
 					dist = dist - (ht/Math.sin(alfa)); // tanto que eu preciso multiplicar meu vetor unitário.
 					System.out.println("Distância mult->" + dist);
-					vector = new Point3d(trajeto.get(c).getFinalPoint().x + Math.abs(vector.x)*dist,  trajeto.get(c).getFinalPoint().y+ Math.abs(vector.y)*dist ,  trajeto.get(c).getFinalPoint().z + Math.abs(vector.z)*dist);
+					vector = new Point3d(trajeto.get(i-1).getFinalPoint().x + Math.abs(vector.x)*dist,  trajeto.get(i-1).getFinalPoint().y+ Math.abs(vector.y)*dist ,  trajeto.get(i-1).getFinalPoint().z + Math.abs(vector.z)*dist);
 				}
 			}
-		LinearPath p0 = new LinearPath(vector, trajeto.get(c).getFinalPoint());
-		trajeto.add(p0);
-		for (i = c+1; i>0; i--)
+			else if (trajetoEntrada.get(trajetoEntrada.size()-1).isCircular())
+			{
+				while(trajeto.get(i-1).getInitialPoint().z > retractTotal)
+				{
+					i--;
+				}
+				vector = trajeto.get(i-1).getInitialPoint();
+			}
+			
+			
+		LinearPath p0 = new LinearPath(vector, trajeto.get(i-1).getFinalPoint());
+		trajeto.set(i-1,p0);
+		for (c = i-1; c>=0; c--)
 		{
-			trajetoT.add(trajeto.get(i));
+			trajetoT.add(trajeto.get(c));
 		}
-		
-		
-			return trajetoT;
+		 return trajetoT;
 		}
 
 	public ArrayList<Path> calcularMergulho() {

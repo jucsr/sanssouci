@@ -151,13 +151,13 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 		double width = ((Double)this.width.getValue());
 		double angle = Math.toRadians((Double)this.angle.getValue());
 		double high = (retractPlane - pInicial.z);
-		double course; //distancia que devera ser percorrida pela ferramenta do ponto da ferramenta até ponto inicial
+		double course; //distancia que devera ser percorrida pela ferramenta do ponto da ferramenta atï¿½ ponto inicial
 		double x0=pInicial.x;
 		double x1=pFinal.x;
 		double y0=pInicial.y;
 		double y1=pFinal.y;
 		double distP0 = Math.sqrt(Math.pow((x0 - x1),2) + Math.pow((y0 - y1),2) + Math.pow((pInicial.z - pFinal.z),2));  //distancia path
-		double beta = Math.atan2((y1 - y0),(x1 - x0)); // beta = arco tangente* Y/X - * essa funçao especial trata o x=0
+		double beta = Math.atan2((y1 - y0),(x1 - x0)); // beta = arco tangente* Y/X - * essa funï¿½ao especial trata o x=0
 		double xk,yk,zk=retractPlane; 	//pontos de inicio da ferramenta 
 
 		
@@ -236,7 +236,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				{
 					
 					distPInicialFinal = paths.get(cont).getInitialPoint().distance(paths.get(cont).getFinalPoint());//distancia entre os pontos inicial e final do caminho onde a ferramenta estara situada
-					course2 = distPInicialFinal - distToolFinal; //distancia entre os pontos inicial e a ferramenta no caminho que a ferramenta começara
+					course2 = distPInicialFinal - distToolFinal; //distancia entre os pontos inicial e a ferramenta no caminho que a ferramenta comeï¿½ara
 					if ((p2Final.x - p2Initial.x)>=0)
 						xTool = p2Initial.x + Math.sqrt(Math.pow(course2, 2)/((Math.pow(Math.tan(beta2), 2))+1)); //x do pTool
 					else
@@ -256,7 +256,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 					distPInicialFinal = pathCircular.getAngulo() * pathCircular.getRadius(); //dist = angulo * raio
 					course2 = distPInicialFinal - distToolFinal; //distancia que a ferramenta percorre ate o ponto inicial
 					double theta = course2/(pathCircular.getRadius()); //angulo = arco/raio - angulo entre ponto inicial e o ponto ferramenta, com o centro do caminho
-					double alfa = Math.atan2((pathCircular.getInitialPoint().y - centralPoint.y), (pathCircular.getInitialPoint().x - centralPoint.x));// angulo entre ponto central e inicial, em relação a abscissa
+					double alfa = Math.atan2((pathCircular.getInitialPoint().y - centralPoint.y), (pathCircular.getInitialPoint().x - centralPoint.x));// angulo entre ponto central e inicial, em relaï¿½ï¿½o a abscissa
 					xTool = pathCircular.getRadius() * Math.cos(theta+alfa); //raio * cos (alfa + theta)
 					yTool = pathCircular.getRadius() * Math.sin(theta+alfa); //raio * sen (alfa + theta)
 				}
@@ -351,7 +351,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 //			long times = Math.round(Math.floor(course/width)); //numero de vezes que completa o width. (floor -> arredonda para baixo. retorna double) (round -> ARREDONDA pra inteiro)
 		
 			double t = 0; //acumulador usado para armazenar distancia percorrida
-			double espaco=0;//quantidade que a ferramenta anda até o ultimo ponto onde troca de caminho
+			double espaco=0;//quantidade que a ferramenta anda atï¿½ o ultimo ponto onde troca de caminho
 			int voltas=0;
 			int cont = 0;
 			System.out.println("curso total da ferramenta: " + course);
@@ -362,7 +362,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			}
 
 //ADICIONANDO PATHS DO WIDTH
-			while (width >= t) // vai encontrar até onde o width irá percorrer os caminhos
+			while (width >= t) // vai encontrar atï¿½ onde o width irï¿½ percorrer os caminhos
 			{
 				if(paths.get(cont).getClass().equals(LinearPath.class)) //se o caminho for reto
 				{
@@ -416,7 +416,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 				Point3d pontoI = new Point3d(circular.getInitialPoint().x, circular.getInitialPoint().y, 0);
 				Point3d pontoC = new Point3d(circular.getCenter().x, circular.getCenter().y, 0); 
 				double theta = sobra/(circular.getRadius()); //angulo = arco/raio - angulo entre ponto inicial e o ponto ferramenta, com o centro do caminho 
-				double alfa = Math.atan2((circular.getInitialPoint().y - pontoC.y), (circular.getInitialPoint().x - pontoC.x));// angulo entre centro e inicial, em relação a abscissa
+				double alfa = Math.atan2((circular.getInitialPoint().y - pontoC.y), (circular.getInitialPoint().x - pontoC.x));// angulo entre centro e inicial, em relaï¿½ï¿½o a abscissa
 				double xTool = pontoC.x + circular.getRadius() * Math.cos(theta+alfa); //raio * cos (alfa + theta)
 				double yTool = pontoC.y + circular.getRadius() * Math.sin(theta+alfa); //raio * sen (alfa + theta)
 				widthPoint = new Point3d(xTool, yTool, 0);
@@ -467,7 +467,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 			
 				int aux = 0;
 				double sobra1=0; 
-				boolean flag = true; //true = avançando / false = voltando
+				boolean flag = true; //true = avanï¿½ando / false = voltando
 				double alturaZ=paths.get(0).getInitialPoint().z;
 				double novaAlturaZ;
 				Point3d tempInicial, tempFinal;
@@ -508,7 +508,7 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
 						Point3d pontoF = new Point3d (cTmp.getFinalPoint().x, cTmp.getFinalPoint().y, alturaZ);//ponto final - recebe o INICIAL do PATHS, com alturaZ
 						Point3d pontoC = new Point3d(cTmp.getCenter().x,cTmp.getCenter().y,(pontoI.z + pontoF.z)/2);// o z do centro eh a media entre o z do inicio e fim
 						
-						if (course>=0) //aqui eu ia criar uma condicao para verificar se a altura respeita o retractPlane, mas achei desnecessário pois neste caso a verificacao do 'course' tambem falha
+						if (course>=0) //aqui eu ia criar uma condicao para verificar se a altura respeita o retractPlane, mas achei desnecessï¿½rio pois neste caso a verificacao do 'course' tambem falha
 							trajeto.add(new CircularPath(pontoC, pontoI, pontoF, cTmp.getAngulo()));//c, i, f, a
 					}
 					if (course>=0)//SE ADICIONOU O TRAJETO E VAI CONTINUAR NO WHILE
@@ -641,23 +641,23 @@ public class CreatePlungeStrategy extends PlungeFrame1 implements ActionListener
  * @return
  */
 	
-	private ArrayList<LinearPath> criaLinearArc(CircularPath base, double anguloaPercorrer, double anguloUsuario, Point3d inicio, Point3d fim, int n)
-	{
-		Point3d inicioReal= new Point3d(base.getInitialPoint().x, base.getInitialPoint().y, inicio.z);
-		double deltaAngulo = angulo/n; //angulo de cada divisao
-		double atualZ; //guarda o valor do eixo z do ponto
-		double contadorAngulo=0, contadorCurso=0; //guarda angulos / guarda trajeto percorrido
-		double distProjTotal = base.getRadius()*base.getAngulo(); // tamanho total 
-		for (int i=0; i<n; i++)
-		{
-			double distProj = distProjTotal/Math.cos(anguloUsuario);
-			atualZ =+ quanto andou/Math.sin(angulo)  
-			contadorAngulo=+ deltaAngulo;
-			double pX = inicio.x * Math.cos(deltaAngulo);
-			double pY = inicio.y * Math.sin(deltaAngulo);
-			Point3d beca = new Point3d(pX, pY, atualZ);
-		}
-	}
+//	private ArrayList<LinearPath> criaLinearArc(CircularPath base, double anguloaPercorrer, double anguloUsuario, Point3d inicio, Point3d fim, int n)
+//	{
+//		Point3d inicioReal= new Point3d(base.getInitialPoint().x, base.getInitialPoint().y, inicio.z);
+//		double deltaAngulo = angulo/n; //angulo de cada divisao
+//		double atualZ; //guarda o valor do eixo z do ponto
+//		double contadorAngulo=0, contadorCurso=0; //guarda angulos / guarda trajeto percorrido
+//		double distProjTotal = base.getRadius()*base.getAngulo(); // tamanho total 
+//		for (int i=0; i<n; i++)
+//		{
+//			double distProj = distProjTotal/Math.cos(anguloUsuario);
+//			atualZ =+ quanto andou/Math.sin(angulo)  
+//			contadorAngulo=+ deltaAngulo;
+//			double pX = inicio.x * Math.cos(deltaAngulo);
+//			double pY = inicio.y * Math.sin(deltaAngulo);
+//			Point3d beca = new Point3d(pX, pY, atualZ);
+//		}
+//	}
 	
 }
 

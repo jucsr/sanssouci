@@ -31,6 +31,7 @@ public class DesenhadorDeLimitedElements  extends JanelaDesenhadorLimitedElement
 		this.scrollPane1.setViewportView(desenhador);
 		this.desenhador.revalidate();
 		this.scrollPane1.revalidate();
+		this.setVisible(true);
 	}
 
 	@Override

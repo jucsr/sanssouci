@@ -35,10 +35,6 @@ public class GenerateTrocoidalGCode
 	public static String transformPathToGCode(ArrayList<Path> path)
 	{
 		int n = 0;
-//		this.paths = mov.getDesbasteContourParallel();
-//		System.err.println("PATHS = " + baseLines);
-//		System.out.println("PATHS = " + paths.size());
-//		System.out.println("elements = " + mov.getMultipleLimitedElements().size());
 		String GCode = "\nN" + (n + 1 * 10);
 		GCode += "\nN" + (n + 2 * 10) + "\tG54";
 		String sentidoRotacao = " M03";
@@ -46,12 +42,12 @@ public class GenerateTrocoidalGCode
 		{
 			sentidoRotacao = " M04";
 		}
-		GCode += "\nN" + (n + 3 * 10) + "\tS" + 1000;
+		GCode += "\nN" + (n + 3 * 10) + "\tS" + 1000 + "\tF" + 0.01;
 		GCode += "\nN" + (n + 4 * 10) + "\tT1" ;
-		GCode += "\nN" + (n + 5 * 10) + "\tM06" + sentidoRotacao;
+		GCode += "\nN" + (n + 5 * 10) + "M06" + sentidoRotacao;
 //		int numeroDeLinha = 0;
 		
-		GCode += "G0 " + " X" + GeometricOperations.roundNumber(path.get(0).getInitialPoint().x, 5) + " Y" + GeometricOperations.roundNumber(path.get(0).getInitialPoint().y, 5) + " Z" + GeometricOperations.roundNumber(path.get(0).getInitialPoint().z, 5);
+		GCode += "\nN"+ (n + 6 * 10) + "G0 " + " X" + GeometricOperations.roundNumber(path.get(0).getInitialPoint().x, 5) + " Y" + GeometricOperations.roundNumber(path.get(0).getInitialPoint().y, 5) + " Z" + GeometricOperations.roundNumber(path.get(0).getInitialPoint().z, 5);
 		for(int i = 0; i < path.size(); i++)
 		{
 //			numeroDeLinha = (i + 6) * 10;
@@ -85,7 +81,7 @@ public class GenerateTrocoidalGCode
 //			GCode += "\nN" + numeroDeLinha + aux;
 			GCode += "\nN" + n + aux;
 		}
-//		GCode += "\nN" + (n + 1 * 10) + "IF R1>R2 GOTOB LABEL1";
+		GCode += "\nN" + (n + 1 * 10) + "M30";
 		return GCode;
 	}
 	

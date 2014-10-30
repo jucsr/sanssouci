@@ -124,6 +124,9 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			else if (trajetoEntrada.get(c).isCircular())
 			{
 				CircularPath circularTemp = (CircularPath)trajetoEntrada.get(c);
+				double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x );
+				double dalfa = circularTemp.getAngulo()/100;
+				int j = 1;
 				dist = circularTemp.getInitialPoint().distance(circularTemp.getCenter())*(alfa);
 				h = Math.tan(alfa)*dist;
 				if (Math.abs(h) > Math.abs(ht))
@@ -134,12 +137,13 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 				while(trajeto.get(i-1).getInitialPoint().z < ht)
 				{
 					System.err.println("Ht acumulados "+trajeto.get(i-1).getFinalPoint().z);
-					LinearPath p0 = new LinearPath (new Point3d(trajeto.get(i-1).getInitialPoint().x + nSeparacoes, trajeto.get(i-1).getInitialPoint().y + nSeparacoes, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
+					LinearPath p0 = new LinearPath (new Point3d(circularTemp.getCenter().x + (circularTemp.getRadius())*Math.cos(alfaZero + dalfa*j), circularTemp.getCenter().y + (circularTemp.getRadius())*Math.sin(alfaZero + dalfa*j), trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
 					trajeto.add(p0);
+					j++;
 					i++;
 				}
 				c--;
-				if (c<= 0 )
+				if (c< 0 )
 					c = trajetoEntrada.size()-1;
 				
 				

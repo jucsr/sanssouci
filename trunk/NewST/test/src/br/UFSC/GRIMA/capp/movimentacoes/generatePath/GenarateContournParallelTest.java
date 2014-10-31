@@ -156,7 +156,7 @@ public class GenarateContournParallelTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 28,2);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 30,2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GenerateContournParallel.multipleParallelPath(pocket, 0, 25,2);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
@@ -195,20 +195,24 @@ public class GenarateContournParallelTest
 				{
 					if(((LimitedArc)elementTmp).getDeltaAngle() < 0)
 					{
-						if(((LimitedArc)elementTmp).getDeltaAngle() == Math.abs(2*Math.PI))
+						if(((LimitedArc)elementTmp).getDeltaAngle() == -2*Math.PI)
 						{
-							elementForIntersection.add(elementTmp);
+//							elementForIntersection.add(elementTmp);
+//							all.add(elementTmp);
 						}
 						else
 						{
-							elementForIntersection.add(elementTmp);
+//							elementForIntersection.add(elementTmp);
+//							all.add(elementTmp);
 						}
 					}
 				}
 			}
 		}
 //		LimitedElement l = new LimitedLine(new Point3d(250,70,0),new Point3d(250,130,0));
-		elementForIntersection.add(new LimitedLine(new Point3d(250,70,0),new Point3d(250,130,0)));
+//		elementForIntersection.add(new LimitedLine(new Point3d(250,70,0),new Point3d(250,130,0)));
+//		all.add(new LimitedLine(new Point3d(250,70,0),new Point3d(250,130,0)));
+//		System.out.println(all.size());
 		GeometricOperations.showElements(elementForIntersection);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
@@ -217,7 +221,7 @@ public class GenarateContournParallelTest
 	@Test
 	public void validarPath1Test()
 	{
-		double distance = 33;
+		double distance = 28;
 		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, distance,2);
 		ArrayList<LimitedElement> all = GenerateContournParallel.validar1Path(contourn.parallelPath2(distance).get(0));//new ArrayList<LimitedElement>();
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);

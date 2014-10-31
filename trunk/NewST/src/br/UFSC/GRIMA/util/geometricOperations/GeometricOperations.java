@@ -2918,8 +2918,12 @@ public class GeometricOperations
 		LimitedArc arcTmp = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle());
 		if(arc.getDeltaAngle() < 0)
 		{
-//			Point3d temp = arc.getInitialPoint();
 			Point3d temp1 = arc.getFinalPoint();
+//			System.out.println((temp1 == arc.getInitialPoint()));
+			if(Math.abs(arc.getDeltaAngle()) == 2*Math.PI)
+			{
+				temp1 = arc.getInitialPoint();
+			}
 			arcTmp = new LimitedArc(arc.getCenter(), temp1, -arc.getDeltaAngle());
 		}
 		ArrayList<Point3d> intersection = null;
@@ -3126,12 +3130,20 @@ public class GeometricOperations
 		{
 			//Point3d temp = arc1.getInitialPoint();
 			Point3d temp1 = arc1.getFinalPoint();
+			if(Math.abs(arc1.getDeltaAngle()) == 2*Math.PI)
+			{
+				temp1 = arc1.getInitialPoint();
+			}
 			arc1Tmp = new LimitedArc(arc1.getCenter(), temp1, -arc1.getDeltaAngle());
 		}
 		if(arc2.getDeltaAngle() < 0)
 		{
 			//Point3d temp = arc2.getInitialPoint();
 			Point3d temp1 = arc2.getFinalPoint();
+			if(Math.abs(arc2.getDeltaAngle()) == 2*Math.PI)
+			{
+				temp1 = arc2.getInitialPoint();
+			}
 			arc2Tmp = new LimitedArc(arc2.getCenter(), temp1, -arc2.getDeltaAngle());
 
 		}

@@ -222,8 +222,8 @@ public class GenerateContournParallel
 			totalParallel.add(tmp);
 		}
 		
-//		saida = validarPath(totalParallel, formaOriginal, distance);
-		saida.add(totalParallel);
+		saida = validarPath(totalParallel, formaOriginal, distance);
+//		saida.add(totalParallel);
 		return saida;
 	}
 	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside,boolean isBoss)
@@ -279,8 +279,8 @@ public class GenerateContournParallel
 		{
 			for (int j = 0; j < elementsIntermediario3.size(); j++)
 			{
-				System.out.println("Elementos Validar3: Array " + j);
-				GeometricOperations.showElements(elementsIntermediario3.get(j));
+//				System.out.println("Elementos Validar3: Array " + j);
+//				GeometricOperations.showElements(elementsIntermediario3.get(j));
 				elementsValidated.add(elementsIntermediario3.get(j));					
 			}
 		}

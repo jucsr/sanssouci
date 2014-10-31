@@ -205,7 +205,7 @@ public class MapeadoraGeneralClosedPocket1Test
 	@Test
 	public void getShapeTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket, pocket.Z, 30, 2);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket, pocket.Z, 40, 2);
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.Z, pocket.getRadius());
 //		final Shape gp = Face.getShape(pocket);
 		final Shape gp = Face.getShape(addPocket.getElements());
@@ -227,7 +227,7 @@ public class MapeadoraGeneralClosedPocket1Test
 				
 				g2d.translate(0, 400);
 				g2d.scale(1, -1);
-				g2d.draw(gp);
+//				g2d.draw(gp);
 				for(Shape shape:bossShape)
 				{
 //					g2d.setColor(new Color(155, 33, 12));

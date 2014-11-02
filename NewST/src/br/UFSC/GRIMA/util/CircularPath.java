@@ -30,6 +30,8 @@ public class CircularPath extends Path
 		{
 			this.sense = CW;
 		}
+		initialAngle = Math.atan2(initialPoint.y - center.y, initialPoint.x - center.x);
+		finalAngle = Math.atan2(finalPoint.y - center.y, finalPoint.x - center.x);
 	}
 	public CircularPath(Point3d center, Point3d initialPoint, Point3d finalPoint, double angulo, int sense)
 	{
@@ -38,6 +40,8 @@ public class CircularPath extends Path
 		this.sense = sense;
 		this.center = center;
 		this.radius = this.center.distance(initialPoint);
+		initialAngle = Math.atan2(initialPoint.y - center.y, initialPoint.x - center.x);
+		finalAngle = Math.atan2(finalPoint.y - center.y, finalPoint.x - center.x);
 	}
 	
 	public CircularPath(Point3d initialPoint, Point3d finalPoint,  Point3d center) 
@@ -61,10 +65,10 @@ public class CircularPath extends Path
 		super(initialPoint, finalPoint);
 		this.radius = radius;
 	}
-	private void calculateAngle(Point3d initialPoint, Point3d finaPoint)
+	private void calculateAngle(Point3d initialPoint, Point3d finalPoint)
 	{
 		initialAngle = Math.atan2(initialPoint.y - center.y, initialPoint.x - center.x);
-		finalAngle = Math.atan2(finaPoint.y - center.y, finaPoint.x - center.x);
+		finalAngle = Math.atan2(finalPoint.y - center.y, finalPoint.x - center.x);
 		this.angulo = finalAngle - initialAngle;
 	}
 	public double getRadius() 

@@ -35,23 +35,23 @@ public class PlungeFrameTest1
 		path.add(p2);
 		path.add(p3);
 		
-		LinearPath q0 = new LinearPath(new Point3d(10,0,-10), new Point3d(90,0,-10));
-		CircularPath q1 = new CircularPath(new Point3d(90,10,-10), new Point3d(90,0,-10), new Point3d(100,10,-10), Math.PI/2);//centro, inicial, final, angulo
-		LinearPath q2 = new LinearPath(new Point3d(100,10,-10), new Point3d(100,60,-10));
-		CircularPath q3 = new CircularPath(new Point3d(90,60,-10), new Point3d(100,60,-10), new Point3d(90,70,-10), Math.PI/2);//centro, inicial, final, angulo
-		LinearPath q4 = new LinearPath(new Point3d(90,70,-10), new Point3d(10,70,-10));
-		CircularPath q5 = new CircularPath(new Point3d(10,60,-10), new Point3d(10,70,-10), new Point3d(0,60,-10), Math.PI/2);//centro, inicial, final, angulo
-		LinearPath q6= new LinearPath(new Point3d(0,60,-10), new Point3d(0,10,-10));
-		CircularPath q7 = new CircularPath(new Point3d(10,10,-10), new Point3d(0,10,-10), new Point3d(10,0,-10), Math.PI/2);//centro, inicial, final, angulo
+//		LinearPath q0 = new LinearPath(new Point3d(10,0,-10), new Point3d(90,0,-10));
+//		CircularPath q1 = new CircularPath(new Point3d(90,10,-10), new Point3d(90,0,-10), new Point3d(100,10,-10), Math.PI/2);//centro, inicial, final, angulo
+//		LinearPath q2 = new LinearPath(new Point3d(100,10,-10), new Point3d(100,60,-10));
+//		CircularPath q3 = new CircularPath(new Point3d(90,60,-10), new Point3d(100,60,-10), new Point3d(90,70,-10), Math.PI/2);//centro, inicial, final, angulo
+//		LinearPath q4 = new LinearPath(new Point3d(90,70,-10), new Point3d(10,70,-10));
+//		CircularPath q5 = new CircularPath(new Point3d(10,60,-10), new Point3d(10,70,-10), new Point3d(0,60,-10), Math.PI/2);//centro, inicial, final, angulo
+//		LinearPath q6= new LinearPath(new Point3d(0,60,-10), new Point3d(0,10,-10));
+//		CircularPath q7 = new CircularPath(new Point3d(10,10,-10), new Point3d(0,10,-10), new Point3d(10,0,-10), Math.PI/2);//centro, inicial, final, angulo
 		
-//		LinearPath q0 = new LinearPath(new Point3d(30, 10, -10), new Point3d(90, 10, -10));
-//		CircularPath q1 = new CircularPath(new Point3d(90, 30, -10), new Point3d(90, 10, -10), new Point3d(110, 30, -10), Math.PI / 2);// centro, inicial, final, angulo
-//		LinearPath q2 = new LinearPath(new Point3d(110, 30, -10), new Point3d(110, 40, -10));
-//		CircularPath q3 = new CircularPath(new Point3d(90, 40, -10), new Point3d(110, 40, -10), new Point3d(90, 60, -10), Math.PI / 2);// centro, inicial, final, angulo
-//		LinearPath q4 = new LinearPath(new Point3d(90, 60, -10), new Point3d(30, 60, -10));
-//		CircularPath q5 = new CircularPath(new Point3d(30, 40, -10), new Point3d(30, 60, -10), new Point3d(10, 40, -10), Math.PI / 2);// centro, inicial, final, angulo
-//		LinearPath q6 = new LinearPath(new Point3d(10, 40, -10), new Point3d(10, 30, -10));
-//		CircularPath q7 = new CircularPath(new Point3d(30, 30, -10), new Point3d(10, 30, -10), new Point3d(30, 10, -10), Math.PI / 2);// centro, inicial, final, angulo
+		LinearPath q0 = new LinearPath(new Point3d(30, 10, -10), new Point3d(90, 10, -10));
+		CircularPath q1 = new CircularPath(new Point3d(90, 30, -10), new Point3d(90, 10, -10), new Point3d(110, 30, -10), Math.PI / 2);// centro, inicial, final, angulo
+		LinearPath q2 = new LinearPath(new Point3d(110, 30, -10), new Point3d(110, 40, -10));
+		CircularPath q3 = new CircularPath(new Point3d(90, 40, -10), new Point3d(110, 40, -10), new Point3d(90, 60, -10), Math.PI / 2);// centro, inicial, final, angulo
+		LinearPath q4 = new LinearPath(new Point3d(90, 60, -10), new Point3d(30, 60, -10));
+		CircularPath q5 = new CircularPath(new Point3d(30, 40, -10), new Point3d(30, 60, -10), new Point3d(10, 40, -10), Math.PI / 2);// centro, inicial, final, angulo
+		LinearPath q6 = new LinearPath(new Point3d(10, 40, -10), new Point3d(10, 30, -10));
+		CircularPath q7 = new CircularPath(new Point3d(30, 30, -10), new Point3d(10, 30, -10), new Point3d(30, 10, -10), Math.PI / 2);// centro, inicial, final, angulo
 		
 		path1.add(q0);
 		path1.add(q1);

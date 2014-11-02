@@ -104,6 +104,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		int i = 0;
 		int c = 0;
 		double dist;
+		
 		while (ht <= retractTotal)
 		{
 			if(trajetoEntrada.get(c).isLine())
@@ -143,6 +144,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					double x = circularTemp.getCenter().x + circularTemp.getRadius() * Math.cos(alfaZero + dalfa * j);
 					double y = circularTemp.getCenter().y + circularTemp.getRadius() * Math.sin(alfaZero + dalfa * j);
 //					LinearPath p0 = new LinearPath (new Point3d(circularTemp.getCenter().x + (circularTemp.getRadius())*Math.cos(alfaZero + dalfa*j), circularTemp.getCenter().y + (circularTemp.getRadius())*Math.sin(alfaZero + dalfa*j), trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
+//					LinearPath p0 = new LinearPath (new Point3d(x, y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
 					LinearPath p0 = new LinearPath (new Point3d(x, y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
 					trajeto.add(p0);
 					j++;
@@ -186,7 +188,114 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		}
 		 return trajetoT;
 		}
-
+	/**
+	 * metodo que calcula o mergulho em rampa
+	 * @return -- array de paths da rampa
+	 */
+	public ArrayList<Path> rampPlunge1()
+	{
+		ArrayList<Path> trajetoInverso = new ArrayList<Path>(); // cuidado! esta em sentido contrario
+		ArrayList<Path> trajeto = new ArrayList<Path>();
+		double distanceTmp = 0;
+		double alfa = ((Double)angleBox.getValue()).doubleValue() * Math.PI / 180; // angulo em radianos
+		double zRetractPlane = ((Double)(retractBox.getValue())).doubleValue(); // z do retract plane (a ser atingido)
+		double zAtual = trajetoEntrada.get(trajetoEntrada.size() - 1).getInitialPoint().z; // pode ser do ponto final tambem
+	
+		// primeiro elemento dos paths de entrada
+		if(trajetoEntrada.get(trajetoEntrada.size() - 1).isLine()) 
+		{
+			distanceTmp = trajetoEntrada.get(trajetoEntrada.size() - 1).getInitialPoint().distance(trajetoEntrada.get(trajetoEntrada.size() - 1).getFinalPoint());			
+		} else if(trajetoEntrada.get(trajetoEntrada.size() - 1).isCircular())
+		{
+			CircularPath cir = (CircularPath)trajetoEntrada.get(trajetoEntrada.size() - 1);
+			distanceTmp = cir.getAngulo() * cir.getRadius();
+		} else // GeneralPath
+		{
+			//eu nao sei
+		}
+		double deltaZ = distanceTmp * Math.tan(alfa);
+		zAtual = zAtual + deltaZ;
+		/*
+		 *  segundo elemento dos paths de entrada em diante
+		 */
+		int contadorPaths = 0;
+		while(zAtual <= zRetractPlane)
+		{
+			if(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).isLine())
+			{
+				Point3d pontoInicialTmp = new Point3d(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getInitialPoint().x, trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getInitialPoint().y, zAtual);
+				Point3d pontoFinalTmp = new Point3d(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getFinalPoint().x, trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getFinalPoint().y, zAtual - deltaZ);
+				LinearPath linearTmp = new LinearPath(pontoInicialTmp, pontoFinalTmp);
+				trajetoInverso.add(linearTmp);
+				distanceTmp = trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getInitialPoint().distance(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getFinalPoint()); // verificar aqui
+			} else if(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).isCircular())
+			{
+				CircularPath circularTmp = (CircularPath)trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths);
+				double separacao = 2;
+				int n = (int)(circularTmp.getAngulo() * circularTmp.getRadius() / separacao);
+				double dAngle = circularTmp.getAngulo() / (n);
+				double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + circularTmp.getAngulo(); // na verdade é o angulo final
+				distanceTmp = circularTmp.getRadius() * circularTmp.getAngulo(); 
+				deltaZ = distanceTmp * Math.tan(alfa);
+				/*
+				 * interpolacao do arco circular
+				 */
+				for(int i = 0; i < n - 1; i++)
+				{
+					double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * i);
+					double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * i);
+					double z = zAtual - deltaZ + i * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+					Point3d pInitialTmp = new Point3d(x, y, z);
+					
+					x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (i + 1));
+					y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (i + 1));
+					z = zAtual - deltaZ + (i + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+					Point3d pFinalTmp = new Point3d(x, y, z);
+					
+					LinearPath lTmp = new LinearPath(pFinalTmp, pInitialTmp);
+					trajetoInverso.add(lTmp);
+					distanceTmp = circularTmp.getAngulo() * circularTmp.getRadius();
+				}
+			} else // GeneralPath
+			{
+				//eu nao sei
+			}
+			contadorPaths++;
+			
+			deltaZ = distanceTmp * Math.tan(alfa);
+			zAtual = zAtual + deltaZ;
+			if(contadorPaths == trajetoEntrada.size())
+			{
+				contadorPaths = 0;
+			}
+		}
+		zAtual = zAtual - deltaZ; 
+		
+		//ultimo elemento do path de entrada
+		/*
+		 *  IMPLEMENTAR
+		 */
+		Path ultimoPath = trajetoEntrada.get(contadorPaths);
+		if(ultimoPath.isLine())
+		{
+			Point3d vetorUnitario = GeometricOperations.unitVector(ultimoPath.getFinalPoint(), ultimoPath.getInitialPoint());
+		} else if(ultimoPath.isCircular())
+		{
+			
+		} else // GENERAL PATH
+		{
+			
+		}
+		
+		/*
+		 * invertendo o array
+		 */
+		for(int i = 0; i < trajetoInverso.size(); i++)
+		{
+			trajeto.add(trajetoInverso.get(trajetoInverso.size() - 1 - i));
+		}
+		return trajeto;
+	}
 	public ArrayList<Path> calcularMergulho() {
 		ArrayList<Path> trajeto = null; //Declara��o da Vari�vel trajeto e cria��o desta
 		if(bolaVert.isSelected())
@@ -195,7 +304,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		}
 		else if (bolaRamp.isSelected())
 		{
-			trajeto = rampPlunge();
+			trajeto = rampPlunge1();
 		}
 		for(int i = 0; i < trajeto.size(); i++)
 		{

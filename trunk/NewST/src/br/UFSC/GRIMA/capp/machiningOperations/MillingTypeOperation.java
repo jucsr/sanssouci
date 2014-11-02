@@ -6,6 +6,7 @@ package br.UFSC.GRIMA.capp.machiningOperations;
  */
 public abstract class MillingTypeOperation extends MachiningOperation
 { 
+	
 	public MillingTypeOperation(String id, double retractPlane) 
 	{
 		super(id, retractPlane);

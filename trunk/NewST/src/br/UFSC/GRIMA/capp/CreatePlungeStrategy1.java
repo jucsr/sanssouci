@@ -195,13 +195,14 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 	public ArrayList<Path> rampPlunge1()
 	{
 		ArrayList<Path> trajetoInverso = new ArrayList<Path>(); // cuidado! esta em sentido contrario
-		ArrayList<Path> trajeto = new ArrayList<Path>();
+		ArrayList<Path> trajeto = new ArrayList<Path>(); // array de saida
 		double distanceTmp = 0;
 		double alfa = ((Double)angleBox.getValue()).doubleValue() * Math.PI / 180; // angulo em radianos
 		double zRetractPlane = ((Double)(retractBox.getValue())).doubleValue(); // z do retract plane (a ser atingido)
 		double zAtual = trajetoEntrada.get(trajetoEntrada.size() - 1).getInitialPoint().z; // pode ser do ponto final tambem
-	
-		// primeiro elemento dos paths de entrada
+		/*
+		 *  primeiro elemento dos paths de entrada
+		 */
 		if(trajetoEntrada.get(trajetoEntrada.size() - 1).isLine()) 
 		{
 			distanceTmp = trajetoEntrada.get(trajetoEntrada.size() - 1).getInitialPoint().distance(trajetoEntrada.get(trajetoEntrada.size() - 1).getFinalPoint());			
@@ -216,7 +217,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		double deltaZ = distanceTmp * Math.tan(alfa);
 		zAtual = zAtual + deltaZ;
 		/*
-		 *  segundo elemento dos paths de entrada em diante
+		 *  do segundo elemento dos paths de entrada em diante
 		 */
 		int contadorPaths = 0;
 		while(zAtual <= zRetractPlane)
@@ -270,18 +271,24 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			}
 		}
 		zAtual = zAtual - deltaZ; 
-		
-		//ultimo elemento do path de entrada
 		/*
+		 * ultimo elemento do path de entrada
 		 *  IMPLEMENTAR
 		 */
 		Path ultimoPath = trajetoEntrada.get(contadorPaths);
 		if(ultimoPath.isLine())
 		{
-			Point3d vetorUnitario = GeometricOperations.unitVector(ultimoPath.getFinalPoint(), ultimoPath.getInitialPoint());
+			Point3d vetorUnitario = GeometricOperations.unitVector(ultimoPath.getInitialPoint(), ultimoPath.getFinalPoint());
+			double l = (zRetractPlane - zAtual) / Math.tan(alfa);
+			
+			Point3d pontoInicial = GeometricOperations.multiply(l, vetorUnitario);
+			pontoInicial = new Point3d(pontoInicial.x + ultimoPath.getInitialPoint().x, pontoInicial.y + ultimoPath.getInitialPoint().y, zRetractPlane);
+			Point3d pontoFinal = new Point3d(ultimoPath.getFinalPoint());
+//			trajetoInverso.add(new LinearPath(pontoInicial, pontoFinal));
+			System.out.println("linear");
 		} else if(ultimoPath.isCircular())
 		{
-			
+			System.out.println("circular");
 		} else // GENERAL PATH
 		{
 			

@@ -59,6 +59,39 @@ public class GenerateContournParallel
 			}
 		}
 	}
+	public GenerateContournParallel(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap) 
+	{
+		this.pocket = pocket;
+		this.planoZ = planoZ;
+		this.distance = distance;
+		this.overLap = overLap;
+//		this.gerarElementosDaCavidade();
+//		this.gerarElementosDaProtuberancia();
+		this.elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
+		for(LimitedElement elementTmp:elementsCavidade)
+		{
+			formaOriginal.add(elementTmp);
+		}
+		for(ArrayList<LimitedElement> arrayTmp:bossElements)
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				elementosProtuberancia.add(elementTmp);
+//				boolean allowAdd = true;
+//				if(elementTmp.isLimitedArc())
+//				{
+//					if(((LimitedArc)elementTmp).getRadius() == 0)
+//					{
+//						allowAdd = false;
+//					}
+//				}
+//				if(allowAdd)
+//				{
+					formaOriginal.add(elementTmp);
+//				}
+			}
+		}
+	}
 	public static ArrayList<LimitedElement> gerarElementosDaCavidade(GeneralClosedPocket pocket, double planoZ)
 	{
 		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), planoZ, pocket.getRadius());
@@ -349,7 +382,7 @@ public class GenerateContournParallel
 				{
 					LimitedArc arci = (LimitedArc)ei;
 					ArrayList<LimitedArc> arcTemp = GeometricOperations.quebraArco(arci,intersection);
-					GeometricOperations.showArcs(arcTemp);
+//					GeometricOperations.showArcs(arcTemp);
 					for(int k = 0;k < arcTemp.size();k++)
 					{
 						if(!GeometricOperations.isTheSamePoint(arcTemp.get(k).getInitialPoint(), arcTemp.get(k).getFinalPoint()))

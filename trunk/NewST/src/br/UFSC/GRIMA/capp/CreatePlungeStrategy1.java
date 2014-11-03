@@ -126,10 +126,10 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			else if (trajetoEntrada.get(c).isCircular())
 			{
 				CircularPath circularTemp = (CircularPath)trajetoEntrada.get(c);
-				double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x ) + circularTemp.getAngulo(); // cuidado com angulos negativos
-//				double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x ); // cuidado com angulos negativos
-				double dalfa = -circularTemp.getAngulo()/(10 + 1);
-				int j = 0;
+				//double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x ) + circularTemp.getAngulo(); // cuidado com angulos negativos
+				double dalfa = circularTemp.getAngulo()/(300);
+				double x = circularTemp.getCenter().x + circularTemp.getRadius() * Math.cos(dalfa);
+				double y = circularTemp.getCenter().y + circularTemp.getRadius() *Math.sin(dalfa);
 				dist = circularTemp.getInitialPoint().distance(circularTemp.getCenter())*(alfa);
 				h = Math.tan(alfa)*dist;
 				if (Math.abs(h) > Math.abs(ht))
@@ -137,17 +137,15 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 				else
 					ht = ht + h;
 				
-				while(trajeto.get(i-1).getInitialPoint().z < ht && GeometricOperations.roundNumber(dalfa * j, 7) <= GeometricOperations.roundNumber(circularTemp.getAngulo(), 7)) // e se ultrapassar o delta angulo do arco?
+				while(trajeto.get(i-1).getInitialPoint().z < ht && trajeto.get(i-1).getInitialPoint().x < circularTemp.getFinalPoint().x) 
 				{
 //					System.err.println("Ht acumulados "+trajeto.get(i-1).getFinalPoint().z);
 //					System.out.println("angulo0 + dalfa = " + (alfaZero + dalfa * j));
-					double x = circularTemp.getCenter().x + circularTemp.getRadius() * Math.cos(alfaZero + dalfa * j);
-					double y = circularTemp.getCenter().y + circularTemp.getRadius() * Math.sin(alfaZero + dalfa * j);
 //					LinearPath p0 = new LinearPath (new Point3d(circularTemp.getCenter().x + (circularTemp.getRadius())*Math.cos(alfaZero + dalfa*j), circularTemp.getCenter().y + (circularTemp.getRadius())*Math.sin(alfaZero + dalfa*j), trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
 //					LinearPath p0 = new LinearPath (new Point3d(x, y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
-					LinearPath p0 = new LinearPath (new Point3d(x, y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
+					
+					LinearPath p0 = new LinearPath (new Point3d(trajeto.get(i-1).getInitialPoint().x + x, trajeto.get(i-1).getInitialPoint().y +y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
 					trajeto.add(p0);
-					j++;
 					i++;
 				}
 				c--;
@@ -155,7 +153,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					c = trajetoEntrada.size()-1;
 			}
 		}
-			if(trajetoEntrada.get(trajetoEntrada.size() -1 ).isLine())
+			if(trajetoEntrada.get(c).isLine())
 			{
 				if (ht >= retractTotal)
 				{
@@ -170,7 +168,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					vector = new Point3d(trajeto.get(i-1).getFinalPoint().x + Math.abs(vector.x)*dist,  trajeto.get(i-1).getFinalPoint().y+ Math.abs(vector.y)*dist ,  trajeto.get(i-1).getFinalPoint().z + Math.abs(vector.z)*dist);
 				}
 			}
-			else if (trajetoEntrada.get(trajetoEntrada.size()-1).isCircular())
+			else if (trajetoEntrada.get(c).isCircular())
 			{
 				while(trajeto.get(i-1).getInitialPoint().z > retractTotal)
 				{
@@ -278,13 +276,13 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		Path ultimoPath = trajetoEntrada.get(contadorPaths);
 		if(ultimoPath.isLine())
 		{
-			Point3d vetorUnitario = GeometricOperations.unitVector(ultimoPath.getInitialPoint(), ultimoPath.getFinalPoint());
+			Point3d vetorUnitario = new Point3d (ultimoPath.getInitialPoint().x - ultimoPath.getFinalPoint().x , ultimoPath.getInitialPoint().y - ultimoPath.getFinalPoint().y, ultimoPath.getInitialPoint().z - ultimoPath.getFinalPoint().z);
+			double distance = ultimoPath.getInitialPoint().distance(ultimoPath.getFinalPoint());
+			vetorUnitario = new Point3d (vetorUnitario.x / distance, vetorUnitario.y / distance, vetorUnitario.z / distance);
 			double l = (zRetractPlane - zAtual) / Math.tan(alfa);
-			
-			Point3d pontoInicial = GeometricOperations.multiply(l, vetorUnitario);
-			pontoInicial = new Point3d(pontoInicial.x + ultimoPath.getInitialPoint().x, pontoInicial.y + ultimoPath.getInitialPoint().y, zRetractPlane);
-			Point3d pontoFinal = new Point3d(ultimoPath.getFinalPoint());
-//			trajetoInverso.add(new LinearPath(pontoInicial, pontoFinal));
+			//l = ultimoPath.getInitialPoint().distance(ultimoPath.getFinalPoint()) - l;
+			Point3d vetor = new Point3d(ultimoPath.getFinalPoint().x + vetorUnitario.x * l, ultimoPath.getFinalPoint().y + vetorUnitario.y * l, zRetractPlane );
+			trajetoInverso.add(new LinearPath(vetor, new Point3d(ultimoPath.getFinalPoint().x, ultimoPath.getFinalPoint().y, zAtual)));
 			System.out.println("linear");
 		} else if(ultimoPath.isCircular())
 		{

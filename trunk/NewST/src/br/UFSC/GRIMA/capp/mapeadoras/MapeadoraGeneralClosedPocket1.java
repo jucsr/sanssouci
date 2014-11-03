@@ -332,12 +332,16 @@ public class MapeadoraGeneralClosedPocket1
 		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
 		for(ArrayList<LimitedElement> bossTmp:bossElements)
 		{
+//			GeometricOperations.showElements(bossTmp);
 			bossShape.add(Face.getShape(bossTmp));
+//			System.out.println("lol");
+
 		}
 
 		
 		//Percorre uma matriz de pontos dentro da forma da cavidade, verificando qual e a maior distancia 
 		//entre as menores distancias entre os pontos e os elementos
+//		boolean contains = false;
 		final ArrayList<Point2D> arrayPointTmp = new ArrayList<Point2D>();    //pontos validos (dentro da cavidade e fora da protuberancia)
 		for(int i = 0; i < numeroDePontos; i++)
 		{
@@ -347,33 +351,26 @@ public class MapeadoraGeneralClosedPocket1
 				
 				if(gp.contains(pointTmp)) //Se o ponto esta dentro da cavidade
 				{
+					boolean contains = false;
 					if(thereIsBoss)      //Se possui Protuberancia
 					{
 						for(Shape bossTmp:bossShape)
+//						for(int k = 0;k < bossShape.size();k++)
 						{
 							if(!bossTmp.contains(pointTmp)) //Se o ponto esta dentro da protuberancia
+//							if(!bossShape.get(k).contains(pointTmp)) //Se o ponto esta dentro da protuberancia
 							{
-//								System.out.println("lol");
-//								ArrayList<LimitedElement> elementsPocketAndBoss = new ArrayList<LimitedElement>();
-//								for(LimitedElement tmp:addPocket.getElements())
-//								{
-//									elementsPocketAndBoss.add(tmp);
-//								}
-//								for(ArrayList<LimitedElement> arrayTmp:bossElements)
-//								{
-//									for(LimitedElement elementTmp:arrayTmp)
-//									{	
-//										elementsPocketAndBoss.add(elementTmp);
-//									}
-//								}
-//								double minimumMaxDistancePointToPathTmp = GeometricOperations.minimumDistance(elementsPocketAndBoss, new Point3d(pointTmp.getX(),pointTmp.getY(),genClosed.Z));
-//								
-//								if(minimumMaxDistancePointToPathTmp > minimumMaxDistance)
-//								{
-//									minimumMaxDistance = minimumMaxDistancePointToPathTmp;
-//								}
-								arrayPointTmp.add(pointTmp);
+//								arrayPointTmp.add(pointTmp);
+//								contains = false;
 							}
+							else
+							{
+								contains = true;
+							}
+						}
+						if(!contains)
+						{
+							arrayPointTmp.add(pointTmp);
 						}
 					}
 					else //Se nao possui protuberancia
@@ -384,7 +381,7 @@ public class MapeadoraGeneralClosedPocket1
 //						{
 //							minimumMaxDistance = menorDistanciaTmp;
 //						}
-						arrayPointTmp.add(pointTmp);
+//						arrayPointTmp.add(pointTmp);
 					}
 				}
 			}
@@ -694,7 +691,8 @@ public class MapeadoraGeneralClosedPocket1
 		{
 //			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
 			int aux = 0;
-			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < 1)
+			bossElements = null;
+			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < 2)
 			{
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
@@ -736,7 +734,7 @@ public class MapeadoraGeneralClosedPocket1
 				wssFeature.add(wsTmp);
 				workingSteps.add(wsTmp);
 	
-				bossElements = getAreaAlreadyDesbasted(genClosed, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
+				bossElements = getAreaAlreadyDesbasted(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
 				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 				// BOTTOM AND SIDE ROUGH MILLING
@@ -782,11 +780,15 @@ public class MapeadoraGeneralClosedPocket1
 //-----------------------------------------------------------------------------------------------------
 		
 	}
-	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted(GeneralClosedPocket pocket, double planoZ, double distance, double overLap)
+	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap)
 	{
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
 //		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = GenerateContournParallel.multipleParallelPath(pocket,planoZ,distance,overLap).get(0);
 		GenerateContournParallel contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap);
+		if(bossElements != null)
+		{
+			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);
+		}
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
@@ -817,6 +819,7 @@ public class MapeadoraGeneralClosedPocket1
 						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), 2*Math.PI + GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
+					GeometricOperations.showElements(alreadyDesbastededAreaTmp);
 				}
 				else
 				{

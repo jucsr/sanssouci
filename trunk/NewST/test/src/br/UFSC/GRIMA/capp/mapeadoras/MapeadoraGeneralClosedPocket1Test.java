@@ -64,8 +64,12 @@ public class MapeadoraGeneralClosedPocket1Test
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
-		CircularBoss arcBoss = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
-		itsBoss.add(arcBoss);
+		CircularBoss arcBoss1 = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
+		CircularBoss arcBoss2 = new CircularBoss("", 100, 200, pocket.Z, 40, 40, pocket.getProfundidade());
+
+		itsBoss.add(arcBoss1);
+		itsBoss.add(arcBoss2);
+
 		
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
@@ -152,7 +156,7 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double diametroFerramenta = 33;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+		double diametroFerramenta = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
 		double overLap = 2;//0.25*diametroFerramenta;
 		System.out.println("Offset Distance: " + diametroFerramenta);
 		System.out.println("Overlap: " + overLap);
@@ -175,7 +179,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //		GenerateTrochoidalMovement1 trochidalMovment = new GenerateTrochoidalMovement1(elements, ws)
 //		GeometricOperations.showElements(multiplePath.get(0).get(0));
 //		System.out.println(multiplePath);
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,pocket.Z, diametroFerramenta, overLap);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,null,pocket.Z, diametroFerramenta, overLap);
 //		GeometricOperations.showElements(bossElements.get(0));
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
 		{
@@ -194,7 +198,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		//add os elementos das protuberancias reais
 		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
-			bossElements.add(arrayTmp);
+//			bossElements.add(arrayTmp);
 		}
 		System.out.println("diametro ferramenta 2: " + mp.getMaiorMenorDistancia(bossElements));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
@@ -205,7 +209,8 @@ public class MapeadoraGeneralClosedPocket1Test
 	@Test
 	public void getShapeTest()
 	{
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket, pocket.Z, 40, 2);
+		Point2D point = new Point2D.Double(((CircularBoss)pocket.getItsBoss().get(0)).getCenter().x, ((CircularBoss)pocket.getItsBoss().get(0)).getCenter().y+50);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,null, pocket.Z, 75, 2);
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getVertexPoints(), pocket.Z, pocket.getRadius());
 //		final Shape gp = Face.getShape(pocket);
 		final Shape gp = Face.getShape(addPocket.getElements());
@@ -213,6 +218,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		for(ArrayList<LimitedElement> bossTmp:bossElements)
 		{
 			bossShape.add(Face.getShape(bossTmp));
+			System.out.println(Face.getShape(bossTmp).contains(point));
 		}
 		//Desenhador
 		JFrame frame = new JFrame();
@@ -231,7 +237,7 @@ public class MapeadoraGeneralClosedPocket1Test
 				for(Shape shape:bossShape)
 				{
 //					g2d.setColor(new Color(155, 33, 12));
-//					g2d.fill(shape);
+					g2d.fill(shape);
 					g2d.setColor(new Color(15, 60, 212));
 					g2d.draw(shape);
 				}

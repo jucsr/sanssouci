@@ -794,15 +794,15 @@ public class MapeadoraGeneralClosedPocket1
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
 		{
-			ArrayList<LimitedElement> meshInverted = firstOffsetMultipleParallel.get(i);
+//			ArrayList<LimitedElement> meshInverted = firstOffsetMultipleParallel.get(i);
 //			ArrayList<LimitedElement> meshInverted = GeometricOperations.elementInverter(firstOffsetMultipleParallel.get(i));
 //			ArrayList<LimitedElement> meshInverted = GeometricOperations.arrayInverter(GeometricOperations.elementInverter(firstOffsetMultipleParallel.get(i)));
-			ArrayList<LimitedElement> validationParallelTmp = GenerateContournParallel.parallelPath1(meshInverted/*firstOffsetMultipleParallel.get(i)*/, distance, false, false); //elementos, nao interligados, dos novos bosses
+			ArrayList<LimitedElement> validationParallelTmp = GenerateContournParallel.parallelPath1(firstOffsetMultipleParallel.get(i), distance, false, false); //elementos, nao interligados, dos novos bosses
 			Point3d firstValidationElementInitialPoint = validationParallelTmp.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
 			ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
 			for(int j = 0; j < validationParallelTmp.size(); j++)
 			{
-				Point3d firstOffsetElementFinalPoint = /*firstOffsetMultipleParallel.get(i)*/meshInverted.get(j).getFinalPoint(); //centro dos arcos de transicao
+				Point3d firstOffsetElementFinalPoint = firstOffsetMultipleParallel.get(i).get(j).getFinalPoint(); //centro dos arcos de transicao
 				LimitedElement validationParallelElementTmp = validationParallelTmp.get(j);
 				alreadyDesbastededAreaTmp.add(validationParallelElementTmp);
 				if(j == validationParallelTmp.size() - 1)
@@ -820,7 +820,7 @@ public class MapeadoraGeneralClosedPocket1
 //								transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
 //							}
 //						}
-						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), 2*Math.PI + GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, -2*Math.PI));
+						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, 2*Math.PI));
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
 					GeometricOperations.showElements(alreadyDesbastededAreaTmp);
@@ -839,12 +839,12 @@ public class MapeadoraGeneralClosedPocket1
 //								transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
 //							}
 //						}						
-						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), 2*Math.PI + GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), firstOffsetElementFinalPoint, -2*Math.PI));
+						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), firstOffsetElementFinalPoint, 2*Math.PI));
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
 				}
 			}
-			alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
+			alreadyDesbastededArea.add(GeometricOperations.arrayInverter(GeometricOperations.elementInverter(alreadyDesbastededAreaTmp)));
 		}
 		return alreadyDesbastededArea;
 	}

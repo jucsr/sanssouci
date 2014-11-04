@@ -91,6 +91,14 @@ public class GenerateContournParallel
 //				}
 			}
 		}
+//		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
+//		{
+//			for(LimitedElement elementTmp:arrayTmp)
+//			{
+//				elementosProtuberancia.add(elementTmp);
+//				formaOriginal.add(elementTmp);
+//			}
+//		}
 	}
 	public static ArrayList<LimitedElement> gerarElementosDaCavidade(GeneralClosedPocket pocket, double planoZ)
 	{
@@ -293,7 +301,7 @@ public class GenerateContournParallel
 		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
 		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
 
-		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,!isBoss);
+		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
 //		GeometricOperations.showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
 		
@@ -638,7 +646,7 @@ public class GenerateContournParallel
 		{
 			if(isBoss) //Se for boss
 			{
-				newRadius = arc.getRadius()+distance; //o novo raio sera o antigo mais a distancia da paralela
+				newRadius = arc.getRadius()-distance; //o novo raio sera o antigo mais a distancia da paralela
 			}
 			else //Se nao for boss
 			{

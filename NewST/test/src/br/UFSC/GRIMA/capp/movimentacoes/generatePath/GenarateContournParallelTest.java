@@ -156,7 +156,7 @@ public class GenarateContournParallelTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 30,2);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 10,2);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GenerateContournParallel.multipleParallelPath(pocket, 0, 25,2);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();

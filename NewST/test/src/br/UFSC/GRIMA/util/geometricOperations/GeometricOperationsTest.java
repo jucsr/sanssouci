@@ -990,6 +990,16 @@ public class GeometricOperationsTest
 		System.out.println("Same point: " + GeometricOperations.isTheSamePoint(new Point3d(380.0,39.99999999999999, 0.0), new Point3d(380.0,39.99999999999999, 0.0)));
 	}
 	@Test
+	public void elementInverterTest()
+	{
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		LimitedArc arc1 = new LimitedArc(new Point3d(50,50,0),new Point3d(100,50,0),Math.PI/2);
+		elements.add(arc1);
+		LimitedArc arc2 = (LimitedArc)GeometricOperations.elementInverter(elements).get(0);
+		elements.add(arc2);
+		GeometricOperations.showElements(elements);
+	}
+	@Test
 	public void determinarMovimentacaoGenCavTest()
 	{
 		

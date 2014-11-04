@@ -156,31 +156,37 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double diametroFerramenta = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+		double diametroFerramenta1 = 50;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
 		double overLap = 2;//0.25*diametroFerramenta;
-		System.out.println("Offset Distance: " + diametroFerramenta);
+		System.out.println("Offset Distance: " + diametroFerramenta1);
 		System.out.println("Overlap: " + overLap);
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta, overLap);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta1, overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		
-		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
-		{
-//			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
-			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
-			{
-				for(LimitedElement elementTmp:arrayTmp)
-				{
-					all.add(elementTmp);
-				}
-			}
-		}
+//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
+//		{
+////			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
+//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+//			{
+//				for(LimitedElement elementTmp:arrayTmp)
+//				{
+//					all.add(elementTmp);
+//				}
+//			}
+//		}
 		//WorkingStep 1
-			
-//		GenerateTrochoidalMovement1 trochidalMovment = new GenerateTrochoidalMovement1(elements, ws)
-//		GeometricOperations.showElements(multiplePath.get(0).get(0));
-//		System.out.println(multiplePath);
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,null,pocket.Z, diametroFerramenta, overLap);
-//		GeometricOperations.showElements(bossElements.get(0));
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,null,pocket.Z, diametroFerramenta1, overLap);
+		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
+		{
+			bossElements.add(arrayTmp);
+		}
+		double diametroferramenta2 = 20;//mp.getMaiorMenorDistancia(bossElements);
+		System.out.println("diametro ferramenta 2: " + diametroferramenta2);
+		
+//		bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, 20, overLap);
+//		System.out.println("diametro ferramenta 3: " + mp.getMaiorMenorDistancia(bossElements));
+
+		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
 		{
 			for(LimitedElement elementTmp:arrayTmp)
@@ -188,19 +194,17 @@ public class MapeadoraGeneralClosedPocket1Test
 				all.add(elementTmp);
 			}
 		}
-		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
-		{
-			for(LimitedElement elementTmp:arrayTmp)
-			{
-				all.add(elementTmp);
-			}
-		}
+		
+		//WorkingStep 2
+		contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroferramenta2, overLap);
+//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
+//		{
+//			for(LimitedElement elementTmp:arrayTmp)
+//			{
+//				all.add(elementTmp);
+//			}
+//		}
 		//add os elementos das protuberancias reais
-		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
-		{
-//			bossElements.add(arrayTmp);
-		}
-		System.out.println("diametro ferramenta 2: " + mp.getMaiorMenorDistancia(bossElements));
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);

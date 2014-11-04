@@ -662,8 +662,8 @@ public class MapeadoraGeneralClosedPocket1
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
-		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z);
-		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements)/fator;
+		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
+		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements)/fator; //maior menor distancia inicial
 		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 //		double toolDiameterTmp = maiorMenorDistanciaTmp;
 		if(genClosed.getFeaturePrecedente()!= null)
@@ -691,7 +691,7 @@ public class MapeadoraGeneralClosedPocket1
 		{
 //			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
 			int aux = 0;
-			bossElements = null;
+			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
 			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < 2)
 			{
 				// BOTTOM AND SIDE ROUGH MILLING
@@ -733,7 +733,8 @@ public class MapeadoraGeneralClosedPocket1
 				
 				wssFeature.add(wsTmp);
 				workingSteps.add(wsTmp);
-	
+				
+				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
 				bossElements = getAreaAlreadyDesbasted(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
 				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
@@ -784,21 +785,24 @@ public class MapeadoraGeneralClosedPocket1
 	{
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
 //		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = GenerateContournParallel.multipleParallelPath(pocket,planoZ,distance,overLap).get(0);
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap); //contrutor pra a primeira trajetotia do primeiro working step
 		if(bossElements != null)
 		{
-			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);
+			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);//construtor para as trajetorias
 		}
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
 		{
-			ArrayList<LimitedElement> validationParallelTmp = GenerateContournParallel.parallelPath1(firstOffsetMultipleParallel.get(i), distance, false, false); //elementos, nao interligados, dos novos bosses
+			ArrayList<LimitedElement> meshInverted = firstOffsetMultipleParallel.get(i);
+//			ArrayList<LimitedElement> meshInverted = GeometricOperations.elementInverter(firstOffsetMultipleParallel.get(i));
+//			ArrayList<LimitedElement> meshInverted = GeometricOperations.arrayInverter(GeometricOperations.elementInverter(firstOffsetMultipleParallel.get(i)));
+			ArrayList<LimitedElement> validationParallelTmp = GenerateContournParallel.parallelPath1(meshInverted/*firstOffsetMultipleParallel.get(i)*/, distance, false, false); //elementos, nao interligados, dos novos bosses
 			Point3d firstValidationElementInitialPoint = validationParallelTmp.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
 			ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
 			for(int j = 0; j < validationParallelTmp.size(); j++)
 			{
-				Point3d firstOffsetElementFinalPoint = firstOffsetMultipleParallel.get(i).get(j).getFinalPoint(); //centro dos arcos de transicao
+				Point3d firstOffsetElementFinalPoint = /*firstOffsetMultipleParallel.get(i)*/meshInverted.get(j).getFinalPoint(); //centro dos arcos de transicao
 				LimitedElement validationParallelElementTmp = validationParallelTmp.get(j);
 				alreadyDesbastededAreaTmp.add(validationParallelElementTmp);
 				if(j == validationParallelTmp.size() - 1)

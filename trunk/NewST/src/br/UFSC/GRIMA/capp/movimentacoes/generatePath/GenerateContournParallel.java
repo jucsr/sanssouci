@@ -259,6 +259,57 @@ public class GenerateContournParallel
 //		saida.add(totalParallel);
 		return saida;
 	}
+	public ArrayList<ArrayList<LimitedElement>> parallelPath2Test (/*GeneralClosedPocket pocket,*/ double distance/*, double planoZ*/)
+	{
+		boolean inside = true;
+		boolean isBoss = true;
+		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
+//		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //forma contendo os elementos da cavidade e da proruberancia
+//		ArrayList<LimitedElement> elementsCavidade = gerarElementosDaCavidade(pocket, planoZ);  //elementos da cavidade
+//		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();     //elementos da protuberancia
+		
+//		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
+//		{
+//			for(LimitedElement elementTmp:arrayTmp)
+//			{
+//				elementosProtuberancia.add(elementTmp);
+//				boolean allowAdd = true;
+//				if(elementTmp.isLimitedArc())
+//				{
+//					if(((LimitedArc)elementTmp).getRadius() == 0)
+//					{
+//						allowAdd = false;
+//					}
+//				}
+//				if(allowAdd)
+//				{
+//					formaOriginal.add(elementTmp);
+//				}
+//			}
+//		}
+//		GeometricOperations.showElements(formaOriginal);
+		
+		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
+		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
+		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
+
+		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,!isBoss);
+//		GeometricOperations.showElements(parallelTemp1);
+		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
+		
+		for(LimitedElement tmp:parallelTemp1)
+		{
+			totalParallel.add(tmp);
+		}
+		for(LimitedElement tmp:parallelTemp2)
+		{
+			totalParallel.add(tmp);
+		}
+		
+//		saida = validarPath(totalParallel, formaOriginal, distance);
+		saida.add(totalParallel);
+		return saida;
+	}
 	public static ArrayList<LimitedElement> parallelPath1 (ArrayList<LimitedElement> elements, double distance, boolean inside,boolean isBoss)
 	{
 		ArrayList<LimitedElement> lacoTmp = new ArrayList<LimitedElement>();

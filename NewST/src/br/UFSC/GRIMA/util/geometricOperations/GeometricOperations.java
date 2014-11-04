@@ -3226,4 +3226,30 @@ public class GeometricOperations
 		
 		return saida;
 	}
+	public static ArrayList<LimitedElement> elementInverter(ArrayList<LimitedElement> toInvert)
+	{
+		ArrayList<LimitedElement> inverted = new ArrayList<LimitedElement>();
+		for(LimitedElement elementTmp:toInvert)
+		{
+			if(elementTmp.isLimitedLine())
+			{
+				inverted.add(new LimitedLine(elementTmp.getFinalPoint(), elementTmp.getInitialPoint()));
+			}
+			else if(elementTmp.isLimitedArc())
+			{
+				LimitedArc arcTmp = (LimitedArc)elementTmp;
+				inverted.add(new LimitedArc(arcTmp.getCenter(), arcTmp.getFinalPoint(), -arcTmp.getDeltaAngle()));
+			}
+		}
+		return inverted;
+	}
+	public static ArrayList<LimitedElement> arrayInverter(ArrayList<LimitedElement> toInvert)
+	{
+		ArrayList<LimitedElement> inverted = new ArrayList<LimitedElement>();
+		for(int i = toInvert.size()-1;i >-1;i--)
+		{
+			inverted.add(toInvert.get(i));
+		}
+		return inverted;
+	}
 }

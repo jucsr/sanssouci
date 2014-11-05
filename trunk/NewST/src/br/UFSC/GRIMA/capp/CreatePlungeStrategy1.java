@@ -97,12 +97,11 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		ArrayList<Path> trajetoT = new ArrayList<Path>(); //Apenas para invers�o do array
 		double h= 0 ;
 		double ht = trajetoEntrada.get(0).getInitialPoint().z; // PONTO!!!
-		double nSeparacoes = 0.001;
 		double retractTotal = ((Double)(retractBox.getValue())).doubleValue();
 		double alfa =(((Double)(angleBox.getValue())).doubleValue()*Math.PI)/(180);
 		Point3d vector = null;
 		int i = 0;
-		int c = 0;
+		int c = trajetoEntrada.size()-1;
 		double dist;
 		
 		while (ht <= retractTotal)
@@ -111,10 +110,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			{
 				dist = new Point3d(trajetoEntrada.get(c).getFinalPoint().x,trajetoEntrada.get(c).getFinalPoint().y, ht).distance(new Point3d(trajetoEntrada.get(c).getInitialPoint().x, trajetoEntrada.get(c).getInitialPoint().y, ht));
 				h = Math.tan(alfa)*dist;
-				System.out.println("Acumulador do h "+h);
-				if (Math.abs(h) > Math.abs(ht))
-					ht = ht + h;
-				else
 					ht = ht + h;
 				LinearPath p0 = new LinearPath (new Point3d(trajetoEntrada.get(c).getInitialPoint().x, trajetoEntrada.get(c).getInitialPoint().y, ht), new Point3d(trajetoEntrada.get(c).getFinalPoint().x, trajetoEntrada.get(c).getFinalPoint().y,ht- h));
 				trajeto.add(p0);
@@ -125,27 +120,29 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			}
 			else if (trajetoEntrada.get(c).isCircular())
 			{
-				CircularPath circularTemp = (CircularPath)trajetoEntrada.get(c);
-				//double alfaZero = Math.atan2(circularTemp.getInitialPoint().y - circularTemp.getCenter().y,circularTemp.getInitialPoint().x - circularTemp.getCenter().x ) + circularTemp.getAngulo(); // cuidado com angulos negativos
-				double dalfa = circularTemp.getAngulo()/(300);
-				double x = circularTemp.getCenter().x + circularTemp.getRadius() * Math.cos(dalfa);
-				double y = circularTemp.getCenter().y + circularTemp.getRadius() *Math.sin(dalfa);
-				dist = circularTemp.getInitialPoint().distance(circularTemp.getCenter())*(alfa);
+				CircularPath circularTmp = (CircularPath)trajetoEntrada.get(c);
+				double separacao = 2;
+				int n = (int)(circularTmp.getAngulo() * circularTmp.getRadius() / separacao);
+				double dAngle = circularTmp.getAngulo() / (n);
+				double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + circularTmp.getAngulo(); // na verdade é o angulo final
+				dist = circularTmp.getRadius()*circularTmp.getAngulo();
 				h = Math.tan(alfa)*dist;
 				if (Math.abs(h) > Math.abs(ht))
 					ht = ht + h;
 				else
 					ht = ht + h;
-				
-				while(trajeto.get(i-1).getInitialPoint().z < ht && trajeto.get(i-1).getInitialPoint().x < circularTemp.getFinalPoint().x) 
+				for(int j = 0; j < n - 1; j++) 
 				{
-//					System.err.println("Ht acumulados "+trajeto.get(i-1).getFinalPoint().z);
-//					System.out.println("angulo0 + dalfa = " + (alfaZero + dalfa * j));
-//					LinearPath p0 = new LinearPath (new Point3d(circularTemp.getCenter().x + (circularTemp.getRadius())*Math.cos(alfaZero + dalfa*j), circularTemp.getCenter().y + (circularTemp.getRadius())*Math.sin(alfaZero + dalfa*j), trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint() );
-//					LinearPath p0 = new LinearPath (new Point3d(x, y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
+					double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
+					double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
+					double z = ht - h + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+					Point3d pInitialTmp = new Point3d(x, y, z);
 					
-					LinearPath p0 = new LinearPath (new Point3d(trajeto.get(i-1).getInitialPoint().x + x, trajeto.get(i-1).getInitialPoint().y +y, trajeto.get(i-1).getInitialPoint().z + nSeparacoes), trajeto.get(i-1).getInitialPoint());
-					trajeto.add(p0);
+					x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
+					y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
+					z = ht - h + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+					Point3d pFinalTmp = new Point3d(x, y, z);
+					trajeto.add(new LinearPath(pFinalTmp, pInitialTmp));
 					i++;
 				}
 				c--;
@@ -153,37 +150,66 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					c = trajetoEntrada.size()-1;
 			}
 		}
+			c++;
+			if (c>=trajetoEntrada.size())
+				c = 0;
+			System.out.println("Indice de Entrada do ultimo Path Lido! ->"+c);
 			if(trajetoEntrada.get(c).isLine())
 			{
 				if (ht >= retractTotal)
 				{
-					dist = trajeto.get(trajeto.size()-1).getFinalPoint().distance(trajeto.get(trajeto.size()-1).getInitialPoint());
-					System.out.println("Dist�ncia dos pontos->" + dist);
-					vector = new Point3d(trajeto.get(trajeto.size()-1).getFinalPoint().x - trajeto.get(trajeto.size()-1).getInitialPoint().x, trajeto.get(trajeto.size()-1).getFinalPoint().y - trajeto.get(trajeto.size()-1).getInitialPoint().y, trajeto.get(trajeto.size()-1).getFinalPoint().z - trajeto.get(trajeto.size()-1).getInitialPoint().z);
+					int iTmp = trajeto.size() -1;
+					while ((trajeto.get(iTmp).getInitialPoint().z > retractTotal) && (trajeto.get(iTmp).getFinalPoint().z < retractTotal)){
+						System.out.println("Indice do iTmp Linear "+ iTmp);
+						iTmp--;
+						}
+					dist = trajeto.get(iTmp).getFinalPoint().distance(trajeto.get(iTmp).getInitialPoint());
+					vector = new Point3d(trajeto.get(iTmp).getInitialPoint().x - trajeto.get(iTmp).getFinalPoint().x, trajeto.get(iTmp).getInitialPoint().y - trajeto.get(iTmp).getFinalPoint().y, trajeto.get(iTmp).getInitialPoint().z - trajeto.get(iTmp).getFinalPoint().z);
 					vector = new Point3d((vector.x/dist), (vector.y/dist), (vector.z/dist)); // vetor unit�rio
-					ht = ht - retractTotal;
-					System.out.println("Dist�ncia h da dife retract->" + ht);
-					dist = dist - (ht/Math.sin(alfa)); // tanto que eu preciso multiplicar meu vetor unit�rio.
-					System.out.println("Dist�ncia mult->" + dist);
-					vector = new Point3d(trajeto.get(i-1).getFinalPoint().x + Math.abs(vector.x)*dist,  trajeto.get(i-1).getFinalPoint().y+ Math.abs(vector.y)*dist ,  trajeto.get(i-1).getFinalPoint().z + Math.abs(vector.z)*dist);
+					ht = trajeto.get(iTmp).getInitialPoint().z - trajeto.get(iTmp).getFinalPoint().z;
+					alfa = Math.asin(ht/dist);
+					ht = retractTotal - trajeto.get(iTmp).getFinalPoint().z; 
+					dist = (ht/Math.sin(alfa)); // tanto que eu preciso multiplicar meu vetor unit�rio.
+					vector = new Point3d(trajeto.get(iTmp).getFinalPoint().x + vector.x*dist,  trajeto.get(iTmp).getFinalPoint().y+ vector.y*dist ,  trajeto.get(iTmp).getFinalPoint().z + (vector.z)*dist);
+					LinearPath p0 = new LinearPath(vector, trajeto.get(iTmp).getFinalPoint());
+					trajeto.set(iTmp,p0);
+					for (c = iTmp; c>=0; c--)
+					{
+						trajetoT.add(trajeto.get(c));
+					}
 				}
 			}
 			else if (trajetoEntrada.get(c).isCircular())
 			{
-				while(trajeto.get(i-1).getInitialPoint().z > retractTotal)
+				if (ht >= retractTotal)
 				{
-					i--;
+					int iTmp = trajeto.size() -1;
+					System.out.println("Indice do Circular caso entre "+ iTmp);
+					System.err.println("Ponto Z do circular Inicial " + trajeto.get(iTmp).getInitialPoint().z);
+					System.err.println("Ponto Z do circular Final " + trajeto.get(iTmp).getFinalPoint().z);
+					while (trajeto.get(iTmp).getInitialPoint().z > retractTotal && trajeto.get(iTmp).getFinalPoint().z > retractTotal)
+					{
+						System.err.println("Indice do iTmp Circular"+ iTmp);
+						iTmp--;
+					}
+					dist = trajeto.get(iTmp).getFinalPoint().distance(trajeto.get(iTmp).getInitialPoint());
+					vector = new Point3d(trajeto.get(iTmp).getInitialPoint().x - trajeto.get(iTmp).getFinalPoint().x, trajeto.get(iTmp).getInitialPoint().y - trajeto.get(iTmp).getFinalPoint().y, trajeto.get(iTmp).getInitialPoint().z - trajeto.get(iTmp).getFinalPoint().z);
+					vector = new Point3d((vector.x/dist), (vector.y/dist), (vector.z/dist)); // vetor unit�rio
+					ht = trajeto.get(iTmp).getInitialPoint().z - trajeto.get(iTmp).getFinalPoint().z;
+					alfa = Math.asin(ht/dist);
+					ht = retractTotal - trajeto.get(iTmp).getFinalPoint().z; 
+					dist = (ht/Math.sin(alfa)); // tanto que eu preciso multiplicar meu vetor unit�rio.
+					vector = new Point3d(trajeto.get(iTmp).getFinalPoint().x + vector.x*dist,  trajeto.get(iTmp).getFinalPoint().y+ vector.y*dist ,  trajeto.get(iTmp).getFinalPoint().z + (vector.z)*dist);
+					LinearPath p0 = new LinearPath(vector, trajeto.get(iTmp).getFinalPoint());
+					trajeto.set(iTmp,p0);
+					for (c = iTmp; c>=0; c--)
+					{
+						trajetoT.add(trajeto.get(c));
+					}
 				}
-				vector = trajeto.get(i-1).getInitialPoint();
+				
 			}
 			
-			
-		LinearPath p0 = new LinearPath(vector, trajeto.get(i-1).getFinalPoint());
-		trajeto.set(i-1,p0);
-		for (c = i-1; c>=0; c--)
-		{
-			trajetoT.add(trajeto.get(c));
-		}
 		 return trajetoT;
 		}
 	/**
@@ -309,7 +335,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		}
 		else if (bolaRamp.isSelected())
 		{
-			trajeto = rampPlunge1();
+			trajeto = rampPlunge();
 		}
 		for(int i = 0; i < trajeto.size(); i++)
 		{

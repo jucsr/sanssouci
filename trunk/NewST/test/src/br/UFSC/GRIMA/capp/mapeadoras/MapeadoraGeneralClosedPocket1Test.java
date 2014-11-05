@@ -156,11 +156,12 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(),pocket.Z, pocket.getRadius());
 		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement element:addPocket.getElements())
 		{
 			formaOriginal.add(element);
+//			all.add(element);
 		}
-		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 		double diametroFerramenta1 = 50;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
 		double overLap = 2;//0.25*diametroFerramenta;
@@ -186,7 +187,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		{
 			bossElements.add(arrayTmp);
 		}
-		double diametroferramenta2 = 5;//mp.getMaiorMenorDistancia(bossElements);
+		double diametroferramenta2 = 10;//mp.getMaiorMenorDistancia(bossElements);
 		System.out.println("diametro ferramenta 2: " + diametroferramenta2);
 		
 //		bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, 20, overLap);
@@ -198,14 +199,22 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
+				all.add(elementTmp);
 			}
 		}
 		
 		//WorkingStep 2
 		contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroferramenta2, overLap);
+//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
+//		{
+//			for(LimitedElement elementTmp:arrayTmp)
+//			{
+//				all.add(elementTmp);
+//			}
+//		}
 		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
 		{
-			for(LimitedElement elementTmp:arrayTmp)
+			for(LimitedElement elementTmp:GenerateContournParallel.validar1Path(arrayTmp))
 			{
 				all.add(elementTmp);
 			}

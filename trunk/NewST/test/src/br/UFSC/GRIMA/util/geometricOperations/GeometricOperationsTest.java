@@ -719,7 +719,13 @@ public class GeometricOperationsTest
 		//Linha -- Arco
 		LimitedArc arc3 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
 		LimitedLine l2 = new LimitedLine(new Point3d(140,90,0),new Point3d(140,110,0));
-		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc3));
+//		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceLineToArc1(l2, arc3));
+		
+		//Arco -- Arco
+		LimitedArc arc5 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
+		LimitedArc arc6 = new LimitedArc(new Point3d(130,100,0),new Point3d(130,120,0),Math.PI);
+		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceArcToArc(arc5, arc6));
+		System.out.println("Distance: " + arc5.getInitialPoint().distance(arc6.getFinalPoint()));
 		
 		//ponto - Array
 		Point3d point =  new Point3d(100,100,0);
@@ -731,8 +737,8 @@ public class GeometricOperationsTest
 //	    	all.add(temp);
 //	    }
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	    all.add(arc3);
-	    all.add(l2);
+	    all.add(arc5);
+	    all.add(arc6);
 //	    elements.add(arc2);
 //	    elements.add(arcBoss);
 //	    all.add(lp);

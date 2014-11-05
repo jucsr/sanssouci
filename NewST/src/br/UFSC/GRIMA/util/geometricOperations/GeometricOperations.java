@@ -713,6 +713,7 @@ public class GeometricOperations
 			}
 			else if(intersection.size() == 1)
 			{
+				//arc1 intersetado
 				if(belongsArc(arc1,intersection.get(0)))
 				{
 					double distanceTmp1 = minimumDistancePointToArc(arc2.getInitialPoint(), arc1);
@@ -727,6 +728,7 @@ public class GeometricOperations
 					}
 
 				}
+				//arc2 intersetado
 				else if(belongsArc(arc2,intersection.get(0)))
 				{
 					double distanceTmp1 = minimumDistancePointToArc(arc1.getInitialPoint(), arc2);
@@ -2219,7 +2221,10 @@ public class GeometricOperations
 		double angleCurrentBefore = finalAngle-initialAngle;
 		return angleCurrentBefore;
 	}
-	
+//	public static isInside(ArrayList<LimitedElement> arrayElement, LimitedElement element)
+//	{
+//		
+//	}
 	public static LimitedLine absoluteParallel(LimitedLine line, double distance, boolean inside)
 	{
 		double angleLine = angle(minus(line.getFinalPoint(), line.getInitialPoint()));
@@ -3119,6 +3124,7 @@ public class GeometricOperations
 		}
 		return estaContido;
 	}
+	
 	public static ArrayList<Point3d> intersectionPoint(LimitedArc arc1, LimitedArc arc2)
 	{
 //		LimitedArc arc1Tmp = new LimitedArc(arc1.getInitialPoint(), arc1.getFinalPoint(), arc1.getCenter());

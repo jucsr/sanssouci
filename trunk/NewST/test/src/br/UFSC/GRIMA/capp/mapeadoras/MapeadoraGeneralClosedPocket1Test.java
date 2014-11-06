@@ -212,20 +212,20 @@ public class MapeadoraGeneralClosedPocket1Test
 //				all.add(elementTmp);
 //			}
 //		}
-		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
-		{
-			for(LimitedElement elementTmp:GenerateContournParallel.validar1Path(arrayTmp))
-			{
-				all.add(elementTmp);
-			}
-		}
 //		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
 //		{
-//			for(LimitedElement elementTmp:GenerateContournParallel.validar2Path(GenerateContournParallel.validar1Path(arrayTmp),formaOriginal,diametroferramenta2))
+//			for(LimitedElement elementTmp:GenerateContournParallel.validar1Path(arrayTmp))
 //			{
 //				all.add(elementTmp);
 //			}
 //		}
+		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
+		{
+			for(LimitedElement elementTmp:GenerateContournParallel.validar2Path(GenerateContournParallel.validar1Path(arrayTmp),formaOriginal,diametroferramenta2))
+			{
+				all.add(elementTmp);
+			}
+		}
 //		for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
 //		{
 //			for(LimitedElement elementTmp:arrayTmp)

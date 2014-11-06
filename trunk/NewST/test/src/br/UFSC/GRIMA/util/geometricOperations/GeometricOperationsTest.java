@@ -724,8 +724,9 @@ public class GeometricOperationsTest
 		//Arco -- Arco
 		LimitedArc arc5 = new LimitedArc(new Point3d(100,100,0),new Point3d(100,50,0),Math.PI);
 		LimitedArc arc6 = new LimitedArc(new Point3d(130,100,0),new Point3d(130,120,0),Math.PI);
+//		LimitedArc arc7 = GenerateContournParallel.parallelArc(arc5, 30, true, false);
 		System.out.println("MINIMUM1 = " + GeometricOperations.minimumDistanceArcToArc(arc5, arc6));
-		System.out.println("Distance: " + arc5.getInitialPoint().distance(arc6.getFinalPoint()));
+//		System.out.println("Distance: " + arc5.getInitialPoint().distance(arc6.getFinalPoint()));
 		
 		//ponto - Array
 		Point3d point =  new Point3d(100,100,0);

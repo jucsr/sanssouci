@@ -713,33 +713,51 @@ public class GeometricOperations
 			}
 			else if(intersection.size() == 1)
 			{
-				//arc1 intersetado
-				if(belongsArc(arc1,intersection.get(0)))
+//				//arc1 intersetado
+//				if(belongsArc(arc1,intersection.get(0)))
+//				{
+////					if(arc2.getCenter().distance(arg0))
+//					double distanceTmp1 = minimumDistancePointToArc(arc2.getInitialPoint(), arc1);
+//					double distanceTmp2 = minimumDistancePointToArc(arc2.getFinalPoint(), arc1);
+//					if(distanceTmp1 < distanceTmp2)
+//					{
+//						minimumDistance = distanceTmp1;
+//					}
+//					else
+//					{
+//						minimumDistance = distanceTmp2;
+//					}
+//
+//				}
+//				//arc2 intersetado
+//				else if(belongsArc(arc2,intersection.get(0)))
+//				{
+//					double distanceTmp1 = minimumDistancePointToArc(arc1.getInitialPoint(), arc2);
+//					double distanceTmp2 = minimumDistancePointToArc(arc1.getFinalPoint(), arc2);
+//					if(distanceTmp1 < distanceTmp2)
+//					{
+//						minimumDistance = distanceTmp1;
+//					}
+//					else
+//					{
+//						minimumDistance = distanceTmp2;
+//					}
+//				}
+				double distanceTmp1 = minimumDistancePointToArc(arc1.getInitialPoint(), arc2);
+				double distanceTmp2 = minimumDistancePointToArc(arc1.getFinalPoint(), arc2);
+				double distanceTmp3 = minimumDistancePointToArc(arc2.getInitialPoint(), arc1);
+				double distanceTmp4 = minimumDistancePointToArc(arc2.getFinalPoint(), arc1);
+				ArrayList<Double> distanceTemp = new ArrayList<Double>();
+				distanceTemp.add(distanceTmp1);
+				distanceTemp.add(distanceTmp2);
+				distanceTemp.add(distanceTmp3);
+				distanceTemp.add(distanceTmp4);
+				minimumDistance = distanceTemp.get(0);
+				for(Double tmp:distanceTemp)
 				{
-					double distanceTmp1 = minimumDistancePointToArc(arc2.getInitialPoint(), arc1);
-					double distanceTmp2 = minimumDistancePointToArc(arc2.getFinalPoint(), arc1);
-					if(distanceTmp1 < distanceTmp2)
+					if(tmp < minimumDistance)
 					{
-						minimumDistance = distanceTmp1;
-					}
-					else
-					{
-						minimumDistance = distanceTmp2;
-					}
-
-				}
-				//arc2 intersetado
-				else if(belongsArc(arc2,intersection.get(0)))
-				{
-					double distanceTmp1 = minimumDistancePointToArc(arc1.getInitialPoint(), arc2);
-					double distanceTmp2 = minimumDistancePointToArc(arc1.getFinalPoint(), arc2);
-					if(distanceTmp1 < distanceTmp2)
-					{
-						minimumDistance = distanceTmp1;
-					}
-					else
-					{
-						minimumDistance = distanceTmp2;
+						minimumDistance = tmp;
 					}
 				}
 			}
@@ -3258,4 +3276,39 @@ public class GeometricOperations
 		}
 		return inverted;
 	}
+	
+//	public static boolean insidePocketLineLine(LimitedLine linePocket, LimitedLine line)
+//	{
+//		
+//	}
+//	public static boolean insidePocketArcLine(LimitedArc arcPocket, LimitedLine line)
+//	{
+//		
+//	}
+//	public static boolean insidePocketArcLine(LimitedArc arc, LimitedLine linePocket)
+//	{
+//		
+//	}
+//	public static boolean insidePocketArcArc(LimitedArc arcPocket, LimitedArc arc)
+//	{
+//		
+//	}
+//	public static boolean insidePocketElements(LimitedElement e1, LimitedElement e2)
+//	{
+//		
+//	}
+//	/**
+//	 * Antes de utilizar, garantir que não ha intersecao entre os elementos
+//	 * @param pocketElements
+//	 * @param element
+//	 * @return
+//	 */
+//	public static boolean insidePocket(ArrayList<LimitedElement> pocketElements, LimitedElement element)
+//	{
+//		boolean inside = true;
+//		for(LimitedElement elementTmp:pocketElements)
+//		{
+//			
+//		}
+//	}
 }

@@ -844,6 +844,7 @@ public class MapeadoraGeneralClosedPocket1
 					}
 				}
 			}
+//			alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
 			alreadyDesbastededArea.add(GeometricOperations.arrayInverter(GeometricOperations.elementInverter(alreadyDesbastededAreaTmp)));
 		}
 		return alreadyDesbastededArea;

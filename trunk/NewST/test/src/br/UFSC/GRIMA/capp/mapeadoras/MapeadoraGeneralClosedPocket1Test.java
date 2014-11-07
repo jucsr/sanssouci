@@ -199,7 +199,7 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
-				all.add(elementTmp);
+//				all.add(elementTmp);
 			}
 		}
 		

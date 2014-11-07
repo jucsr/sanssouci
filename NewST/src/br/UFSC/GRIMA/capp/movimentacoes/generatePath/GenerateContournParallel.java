@@ -22,8 +22,8 @@ public class GenerateContournParallel
 	private double planoZ;
 	private double distance; //2*(raio Ferramenta + raio Trochoidal)
 	private double overLap; //Quantidade de ultrpassagem da ferramenta de uma passada a outra
-	private ArrayList<LimitedElement> elementsCavidade;
-	ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
+	private static ArrayList<LimitedElement> elementsCavidade;
+	private static ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
 	private ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
 	
 	public GenerateContournParallel(GeneralClosedPocket pocket, double planoZ, double distance, double overLap) 
@@ -34,7 +34,7 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
-		this.elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
+		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
 			formaOriginal.add(elementTmp);
@@ -67,7 +67,7 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
-		this.elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
+		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
 			formaOriginal.add(elementTmp);
@@ -490,7 +490,13 @@ public class GenerateContournParallel
 			LimitedElement ei0 = elementsIntermediario.get(i);
 			if(GeometricOperations.roundNumber(GeometricOperations.minimumDistance(formaOriginal, ei0),5) >= distance)
 			{
-				elementsIntermediario2.add(ei0);
+				if(GeometricOperations.insidePocket(elementsCavidade, ei0))
+				{
+					if(!GeometricOperations.insidePocket(elementosProtuberancia, ei0))
+					{
+						elementsIntermediario2.add(ei0);
+					}
+				}
 			}
 		}
 		return elementsIntermediario2;

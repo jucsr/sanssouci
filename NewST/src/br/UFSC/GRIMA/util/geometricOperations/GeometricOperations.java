@@ -10,6 +10,7 @@ import javax.vecmath.Vector3d;
 
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
+import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
@@ -709,7 +710,26 @@ public class GeometricOperations
 			}
 			if(intersection.size() == 2)
 			{
-				minimumDistance = intersection.get(0).distance(intersection.get(1));
+//				minimumDistance = intersection.get(0).distance(intersection.get(1));
+				double distanceTmp1 = minimumDistancePointToArc(arc1.getInitialPoint(), arc2);
+				double distanceTmp2 = minimumDistancePointToArc(arc1.getFinalPoint(), arc2);
+				double distanceTmp3 = minimumDistancePointToArc(arc2.getInitialPoint(), arc1);
+				double distanceTmp4 = minimumDistancePointToArc(arc2.getFinalPoint(), arc1);
+				double distanceTmp5 = intersection.get(0).distance(intersection.get(1));
+				ArrayList<Double> distanceTemp = new ArrayList<Double>();
+				distanceTemp.add(distanceTmp1);
+				distanceTemp.add(distanceTmp2);
+				distanceTemp.add(distanceTmp3);
+				distanceTemp.add(distanceTmp4);
+				distanceTemp.add(distanceTmp5);
+				minimumDistance = distanceTemp.get(0);
+				for(Double tmp:distanceTemp)
+				{
+					if(tmp < minimumDistance)
+					{
+						minimumDistance = tmp;
+					}
+				}
 			}
 			else if(intersection.size() == 1)
 			{
@@ -1625,20 +1645,30 @@ public class GeometricOperations
 	
 	public static ArrayList<LimitedArc> quebraArco(LimitedArc arc, ArrayList<Point3d> intersecoes)
 	{
+		LimitedArc arcInv = new LimitedArc(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle());
+		if(arc.getDeltaAngle() < 0)
+		{
+			Point3d temp1 = arc.getFinalPoint();
+//			if(Math.abs(arc.getDeltaAngle()) == 2*Math.PI)
+//			{
+//				temp1 = arc.getInitialPoint();
+//			}
+			arcInv = new LimitedArc(arc.getCenter(), temp1, -arc.getDeltaAngle());
+		}
 		double intSize = intersecoes.size();
-		Point3d arcI = arc.getInitialPoint();
-		Point3d arcF = arc.getFinalPoint();
-		Point3d arcCenter = arc.getCenter();
-		double oldDeltaAngle = arc.getDeltaAngle();
+		Point3d arcI = arcInv.getInitialPoint();
+		Point3d arcF = arcInv.getFinalPoint();
+		Point3d arcCenter = arcInv.getCenter();
+		double oldDeltaAngle = arcInv.getDeltaAngle();
 		ArrayList<LimitedArc> arcTemp = new ArrayList<LimitedArc>(); 
 		Point3d intTemp;
 //		System.out.println("Tamanho: " + intSize);
 //		System.out.println("DeltaAngulo: " + Math.abs(roundNumber(arc.getDeltaAngle(),10)));
-		if(Math.abs(arc.getDeltaAngle()) == 2*Math.PI && intersecoes.size() == 1)
+		if(Math.abs(arcInv.getDeltaAngle()) == 2*Math.PI && intersecoes.size() == 1)
 		{
-			arcTemp.add(arc);
+			arcTemp.add(arcInv);
 		}
-		else if(Math.abs(arc.getDeltaAngle()) == 2*Math.PI && intersecoes.size() > 1)
+		else if(Math.abs(arcInv.getDeltaAngle()) == 2*Math.PI && intersecoes.size() > 1)
 		{
 			Point3d pI = intersecoes.get(0);
 			ArrayList<Point3d> intersecoesTmp = new ArrayList<Point3d>();
@@ -1690,7 +1720,7 @@ public class GeometricOperations
 			for(int h = 0;h < intSize;h++)
 			{
 				intTemp = intersecoes.get(h);
-				if(belongsArc(arc,intTemp))
+				if(belongsArc(arcInv,intTemp))
 				{
 					if(arcTemp.size() == 0)
 					{
@@ -1743,6 +1773,10 @@ public class GeometricOperations
 					}
 				}
 			}
+		}
+		if(arc.getDeltaAngle()<0)
+		{
+			return arrayInverter1(elementInverter1(arcTemp));
 		}
 //		showArcs(arcTemp);
 		return arcTemp;
@@ -3267,9 +3301,28 @@ public class GeometricOperations
 		}
 		return inverted;
 	}
+	public static ArrayList<LimitedArc> elementInverter1(ArrayList<LimitedArc> toInvert)
+	{
+		ArrayList<LimitedArc> inverted = new ArrayList<LimitedArc>();
+		for(LimitedArc arcTmp:toInvert)
+		{
+//				LimitedArc arcTmp = (LimitedArc)elementTmp;
+				inverted.add(new LimitedArc(arcTmp.getCenter(), arcTmp.getFinalPoint(), -arcTmp.getDeltaAngle()));
+		}
+		return inverted;
+	}
 	public static ArrayList<LimitedElement> arrayInverter(ArrayList<LimitedElement> toInvert)
 	{
 		ArrayList<LimitedElement> inverted = new ArrayList<LimitedElement>();
+		for(int i = toInvert.size()-1;i >-1;i--)
+		{
+			inverted.add(toInvert.get(i));
+		}
+		return inverted;
+	}
+	public static ArrayList<LimitedArc> arrayInverter1(ArrayList<LimitedArc> toInvert)
+	{
+		ArrayList<LimitedArc> inverted = new ArrayList<LimitedArc>();
 		for(int i = toInvert.size()-1;i >-1;i--)
 		{
 			inverted.add(toInvert.get(i));
@@ -3297,18 +3350,24 @@ public class GeometricOperations
 //	{
 //		
 //	}
-//	/**
-//	 * Antes de utilizar, garantir que não ha intersecao entre os elementos
-//	 * @param pocketElements
-//	 * @param element
-//	 * @return
-//	 */
-//	public static boolean insidePocket(ArrayList<LimitedElement> pocketElements, LimitedElement element)
-//	{
-//		boolean inside = true;
+	/**
+	 * Antes de utilizar, garantir que não ha intersecao entre os elementos
+	 * @param pocketElements
+	 * @param element
+	 * @return
+	 */
+	public static boolean insidePocket(ArrayList<LimitedElement> pocketElements, LimitedElement element)
+	{
+		boolean inside = true;
+		GeneralPath gp = (GeneralPath)Face.getShape(pocketElements); 
 //		for(LimitedElement elementTmp:pocketElements)
 //		{
 //			
 //		}
-//	}
+		if(!gp.contains(new Point2D.Double(element.getInitialPoint().x, element.getInitialPoint().y)))
+		{
+			inside = false;
+		}
+		return inside;
+	}
 }

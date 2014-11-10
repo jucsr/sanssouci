@@ -163,9 +163,10 @@ public class MapeadoraGeneralClosedPocket1Test
 //			all.add(element);
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double diametroFerramenta1 = 50;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+		double diametroFerramenta1 =45;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
 		double overLap = 2;//0.25*diametroFerramenta;
 		System.out.println("Offset Distance: " + diametroFerramenta1);
+//		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
 		System.out.println("Overlap: " + overLap);
 		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta1, overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
@@ -187,9 +188,9 @@ public class MapeadoraGeneralClosedPocket1Test
 		{
 			bossElements.add(arrayTmp);
 		}
-		double diametroferramenta2 = 10;//mp.getMaiorMenorDistancia(bossElements);
+		double diametroferramenta2 = 10;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
 		System.out.println("diametro ferramenta 2: " + diametroferramenta2);
-		
+		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(bossElements));
 //		bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, 20, overLap);
 //		System.out.println("diametro ferramenta 3: " + mp.getMaiorMenorDistancia(bossElements));
 
@@ -228,6 +229,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //		}
 		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
 		{
+//			System.out.println("lol");
 //			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
 			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 			{

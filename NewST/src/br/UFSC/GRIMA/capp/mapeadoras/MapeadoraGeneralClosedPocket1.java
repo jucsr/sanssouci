@@ -790,6 +790,7 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);//construtor para as trajetorias
 		}
+		System.out.println("lolol: " + contourn.multipleParallelPath().get(0));
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)

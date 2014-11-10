@@ -219,20 +219,24 @@ public class MapeadoraGeneralClosedPocket1Test
 //				all.add(elementTmp);
 //			}
 //		}
-		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
-		{
-			for(LimitedElement elementTmp:GenerateContournParallel.validar2Path(GenerateContournParallel.validar1Path(arrayTmp),formaOriginal,diametroferramenta2))
-			{
-				all.add(elementTmp);
-			}
-		}
-//		for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
+//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
 //		{
-//			for(LimitedElement elementTmp:arrayTmp)
+//			for(LimitedElement elementTmp:GenerateContournParallel.validar2Path(GenerateContournParallel.validar1Path(arrayTmp),formaOriginal,diametroferramenta2))
 //			{
 //				all.add(elementTmp);
 //			}
 //		}
+		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
+		{
+//			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
+			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+			{
+				for(LimitedElement elementTmp:arrayTmp)
+				{
+					all.add(elementTmp);
+				}
+			}
+		}
 		//add os elementos das protuberancias reais
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);

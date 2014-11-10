@@ -838,6 +838,7 @@ public class GeometricOperationsTest
 	//Problema no BelongsArc
 	public void quebraArcoTest()
 	{
+		ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
 //		LimitedArc arc1 = new LimitedArc(new Point3d(50,50,0), new Point3d(75,50,0),Math.PI/2);
 //		Point3d p1 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/12), arc1.getCenter().y + 25*Math.sin(Math.PI/12),0);
 //		Point3d p2 = new Point3d(arc1.getCenter().x + 25*Math.cos(Math.PI/6), arc1.getCenter().y + 25*Math.sin(Math.PI/6),0);
@@ -846,22 +847,27 @@ public class GeometricOperationsTest
 		Point3d p1 = new Point3d(135.77383710667436,210,0);
 		Point3d p2 = new Point3d(246.2206916201619,154.29827501993068,0);
 		//---------------------------------------------------------------
-		//Teste Atual
+		//Teste 1
 		LimitedArc arco0= new LimitedArc(new Point3d(320.0,230.0, 0.0),new Point3d(405.0,230.0, 0.0),-6.283185307179586);
 		Point3d pA = new Point3d(237.3864417907085, 250,0);
 		Point3d pB = new Point3d(239.963649065658, 201.3786350934,0);
 		Point3d pC = new Point3d(405, 230,0);
 		Point3d pD = new Point3d(402.6135582092915, 250,0);
+//		intersecoes.add(pA);
+//	    intersecoes.add(pB);
+//	    intersecoes.add(pC);
+//	    intersecoes.add(pD);
 		//---------------------------------------------------------------
+		//Teste 2 
+		LimitedArc arco1= new LimitedArc(new Point3d(50,50,0),new Point3d(100,50, 0.0),-2*Math.PI);
+		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI/4),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI/4),arco1.getCenter().z));
+		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI/2),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI/2),arco1.getCenter().z));
+//		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos((3/4)*Math.PI),arco1.getCenter().y + arco1.getRadius()*Math.sin((3/4)*Math.PI),arco1.getCenter().z));
+//		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI),arco1.getCenter().z));
 
-		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
-	    ArrayList<Point3d> intersecoes = new ArrayList<Point3d>();
-	    intersecoes.add(pA);
-	    intersecoes.add(pB);
-	    intersecoes.add(pC);
-	    intersecoes.add(pD);
+//		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arco0, intersecoes);
+	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arco1, intersecoes);
 	    for(int i = 0;i < arcos.size();i++)
 	    {
 	    	elements.add(arcos.get(i));

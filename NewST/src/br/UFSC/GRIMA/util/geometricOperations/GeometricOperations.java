@@ -1774,6 +1774,7 @@ public class GeometricOperations
 				}
 			}
 		}
+		
 		if(arc.getDeltaAngle()<0)
 		{
 			return arrayInverter1(elementInverter1(arcTemp));

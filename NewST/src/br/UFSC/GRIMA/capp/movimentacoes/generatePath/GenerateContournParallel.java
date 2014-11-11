@@ -118,7 +118,9 @@ public class GenerateContournParallel
 			{
 				CircularBoss tmp = (CircularBoss)bossTmp;
 
-				LimitedArc arc = new LimitedArc(new Point3d(tmp.getCenter().x, tmp.getCenter().y, planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ),  -2 * Math.PI); 
+//				LimitedArc arc = new LimitedArc(new Point3d(tmp.getCenter().x, tmp.getCenter().y, planoZ), new Point3d(tmp.getCenter().x + (tmp.getDiametro1()/2), tmp.getCenter().y, planoZ),  -2 * Math.PI); 
+				LimitedArc arc = new LimitedArc(new Point3d(tmp.X, tmp.Y, planoZ), new Point3d(tmp.X + (tmp.getDiametro1()/2), tmp.Y, planoZ),  -2 * Math.PI); 
+
 				elementosProtuberancia.add(arc);
 			}
 			else if (bossTmp.getClass() == RectangularBoss.class)

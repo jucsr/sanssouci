@@ -48,7 +48,10 @@ public class CircularBoss extends Boss
 	{
 		this.geometricalElements.add(new LimitedCircle(new Point3d(this.X, this.Y, this.Z), this.diametro1 / 2));
 	}
-
+	/**
+	 * Este atributo e o centro em relacao a posicao do Boss (e nao a posicao absoluta!!)
+	 * @return
+	 */
 	public Point3d getCenter() {
 		return center;
 	}

@@ -662,9 +662,12 @@ public class MapeadoraGeneralClosedPocket1
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
-		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
-		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements)/fator; //maior menor distancia inicial
-		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
+		ArrayList<ArrayList<LimitedElement>> bossReal = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z);
+//		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
+		ArrayList<ArrayList<LimitedElement>> bossElements = null; //Array das protuberancias virtuais
+		
+		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossReal/*bossElements*/)/fator; //maior menor distancia inicial
+		double menorMenorDistanciaTmp = getMenorMenorDistance(bossReal/*bossElements*/);
 //		double toolDiameterTmp = maiorMenorDistanciaTmp;
 		if(genClosed.getFeaturePrecedente()!= null)
 		{
@@ -691,7 +694,7 @@ public class MapeadoraGeneralClosedPocket1
 		{
 //			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
 			int aux = 0;
-			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
+//			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
 			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < 2)
 			{
 				// BOTTOM AND SIDE ROUGH MILLING
@@ -704,6 +707,7 @@ public class MapeadoraGeneralClosedPocket1
 				
 				
 				// FERRAMENTA
+				System.out.println("Maior menor distancia: " + maiorMenorDistanciaTmp);
 				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 						genClosed, 0, maiorMenorDistanciaTmp);
 //				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
@@ -736,44 +740,48 @@ public class MapeadoraGeneralClosedPocket1
 				
 				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
 				bossElements = getAreaAlreadyDesbasted(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
+				//Add os elementos das protuberancias reais
+				for(ArrayList<LimitedElement> arrayTmp:bossReal)
+				{
+					bossElements.add(arrayTmp);
+				}
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
 				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
-				// BOTTOM AND SIDE ROUGH MILLING
-//				BottomAndSideRoughMilling operation2 = new BottomAndSideRoughMilling(
-//						"Bottom And Side Rough Milling", retractPlane);
-//				operation2.setAllowanceSide(Feature.LIMITE_DESBASTE);
-//				
-//				if (!genClosed.isPassante())
-//					operation2.setAllowanceBottom(Feature.LIMITE_DESBASTE);
-//				
-//				// FERRAMENTA
-//				FaceMill faceMill2 = chooseFaceMill(bloco.getMaterial(), faceMills,
-//						genClosed, 0,
-//						getMenorMenorDistance(genClosed));
-//				
-//				System.out.println("Ferramenta 2 de Diametro: " + faceMill2.getDiametroFerramenta());
-//				// Estrategia
-//				ContourParallel machiningStrategy2 = new ContourParallel();
-//				operation2.setMachiningStrategy(machiningStrategy2);
-//				machiningStrategy2.setAllowMultiplePasses(false);
-//				machiningStrategy2.setCutmodeType(ContourParallel.conventional);
-//				
-//				// CONDIÇÕES DE USINAGEM
-//				condicoesDeUsinagem = MapeadoraDeWorkingsteps
-//						.getCondicoesDeUsinagem(this.projeto, faceMill2,
-//								bloco.getMaterial());
-//				// WORKINGSTEP 2
-//				wsTmp2 = new Workingstep(genClosed, faceTmp, faceMill2,
-//						condicoesDeUsinagem, operation2);
-//				wsTmp2.setTipo(Workingstep.DESBASTE);
-//				wsTmp2.setId(this.genClosed.getNome() + "_RGH");
-//				
-//				wsTmp2.setWorkingstepPrecedente(wsPrecedenteTmp);
-//				wsPrecedenteTmp = wsTmp2;
-//				
-//				wssFeature.add(wsTmp2);
+			
 				aux++;
 			}
+			// WORKINGSTEP DE ACABAMENTO
+			// BOTTOM AND SIDE ROUGH MILLING
+			BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
+					"Bottom And Side Rough Milling", retractPlane);
+			operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
+
+			// FERRAMENTA
+			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
+					genClosed, 0, menorMenorDistanciaTmp);
+
+			//Estrategia
+			ContourParallel machiningStrategyTmp = new ContourParallel();
+			operationTmp.setMachiningStrategy(machiningStrategyTmp);
+			machiningStrategyTmp.setAllowMultiplePasses(false);
+//			machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
+			
+			// CONDIÇÕES DE USINAGEM
+			condicoesDeUsinagem = MapeadoraDeWorkingsteps
+					.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
+							bloco.getMaterial());
+			// WORKINGSTEP
+			Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,
+					condicoesDeUsinagem, operationTmp);
+			wsTmp.setTipo(Workingstep.DESBASTE);
+			wsTmp.setId(this.genClosed.getNome() + "_RGH");
+			
+			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
+			wsPrecedenteTmp = wsTmp;
+			
+			wssFeature.add(wsTmp);
+			workingSteps.add(wsTmp);
+
 			genClosed.setWorkingsteps(wssFeature);
 		}
 //-----------------------------------------------------------------------------------------------------
@@ -790,7 +798,9 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);//construtor para as trajetorias
 		}
-		System.out.println("lolol: " + contourn.multipleParallelPath().get(0));
+		System.out.println("lolol: " + contourn.multipleParallelPath());
+		if(contourn.multipleParallelPath().size() != 0)
+		{
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
@@ -824,7 +834,7 @@ public class MapeadoraGeneralClosedPocket1
 						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, firstOffsetElementFinalPoint, 2*Math.PI));
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
-					GeometricOperations.showElements(alreadyDesbastededAreaTmp);
+//					GeometricOperations.showElements(alreadyDesbastededAreaTmp);
 				}
 				else
 				{
@@ -846,7 +856,10 @@ public class MapeadoraGeneralClosedPocket1
 				}
 			}
 //			alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
+			//OS ELEMENTOS FORAM GERADOS NO SENTIDO ANTI-HORARIO
+			//DEVEMOS INVERTER O SENTIDO PARA QUE O ARRAY SE PASSE POR UMA PROTUBERANCIA
 			alreadyDesbastededArea.add(GeometricOperations.arrayInverter(GeometricOperations.elementInverter(alreadyDesbastededAreaTmp)));
+		}
 		}
 		return alreadyDesbastededArea;
 	}

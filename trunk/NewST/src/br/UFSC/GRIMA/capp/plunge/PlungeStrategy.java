@@ -8,8 +8,7 @@ import javax.vecmath.Point3d;
  */
 public abstract class PlungeStrategy extends ApproachRetractStrategy
 {
-	public PlungeStrategy(Point3d toolDirection) 
+	public PlungeStrategy() 
 	{
-		super(toolDirection);
 	}
 }

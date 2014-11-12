@@ -722,7 +722,8 @@ public class MapeadoraGeneralClosedPocket1
 				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 				
 				//Estrategia de aproximacao
-//				PlungeStrategy plungeStrategy = new PlungeToolAxis(toolDirection)
+				PlungeStrategy plungeStrategy = new PlungeToolAxis();
+				operationTmp.setApproachStrategy(plungeStrategy);
 				// CONDIÇÕES DE USINAGEM
 				condicoesDeUsinagem = MapeadoraDeWorkingsteps
 						.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
@@ -761,13 +762,17 @@ public class MapeadoraGeneralClosedPocket1
 			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 					genClosed, 0, menorMenorDistanciaTmp);
 
-			//Estrategia
+			//Estrategia de usinagem
 			ContourParallel machiningStrategyTmp = new ContourParallel();
 			operationTmp.setMachiningStrategy(machiningStrategyTmp);
 			machiningStrategyTmp.setAllowMultiplePasses(false);
 //			machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 			
-			// CONDIÇÕES DE USINAGEM
+			//Estrategia de aproximacao
+			PlungeStrategy plungeStrategy = new PlungeToolAxis();
+			operationTmp.setApproachStrategy(plungeStrategy);
+			
+			// CONDICOES DE USINAGEM
 			condicoesDeUsinagem = MapeadoraDeWorkingsteps
 					.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
 							bloco.getMaterial());

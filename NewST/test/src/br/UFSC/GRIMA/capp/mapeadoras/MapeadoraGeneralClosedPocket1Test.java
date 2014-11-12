@@ -164,7 +164,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 		//PRIMEIRA FERRAMENTA
-		double diametroFerramenta1 = 50;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+		double diametroFerramenta1 = 60;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
 		double overLap = 2;//0.25*diametroFerramenta;
 		System.out.println("Offset Distance: " + diametroFerramenta1);
 //		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
@@ -192,7 +192,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		//SEGUNDA FERRAMENTA
 		double diametroferramenta2 = 10;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
 		System.out.println("diametro ferramenta 2: " + diametroferramenta2);
-		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(bossElements));
+//		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(bossElements));
 //		bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, 20, overLap);
 //		System.out.println("diametro ferramenta 3: " + mp.getMaiorMenorDistancia(bossElements));
 

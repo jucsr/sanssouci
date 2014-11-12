@@ -25,6 +25,8 @@ import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
+import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Boss;
@@ -334,11 +336,8 @@ public class MapeadoraGeneralClosedPocket1
 		{
 //			GeometricOperations.showElements(bossTmp);
 			bossShape.add(Face.getShape(bossTmp));
-//			System.out.println("lol");
-
 		}
 
-		
 		//Percorre uma matriz de pontos dentro da forma da cavidade, verificando qual e a maior distancia 
 		//entre as menores distancias entre os pontos e os elementos
 //		boolean contains = false;
@@ -712,7 +711,7 @@ public class MapeadoraGeneralClosedPocket1
 						genClosed, 0, maiorMenorDistanciaTmp);
 //				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
 	
-				//Estrategia
+				//Estrategia de usinagem
 				TrochoidalAndContourParallelStrategy machiningStrategyTmp = new TrochoidalAndContourParallelStrategy();
 				operationTmp.setMachiningStrategy(machiningStrategyTmp);
 				machiningStrategyTmp.setAllowMultiplePasses(true);
@@ -722,6 +721,8 @@ public class MapeadoraGeneralClosedPocket1
 				machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 				
+				//Estrategia de aproximacao
+//				PlungeStrategy plungeStrategy = new PlungeToolAxis(toolDirection)
 				// CONDIÇÕES DE USINAGEM
 				condicoesDeUsinagem = MapeadoraDeWorkingsteps
 						.getCondicoesDeUsinagem(this.projeto, faceMillTmp,

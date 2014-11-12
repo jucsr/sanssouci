@@ -872,6 +872,8 @@ public class GeometricOperationsTest
 		{
 			System.out.println(GeometricOperations.belongsArc(arco1, intTemp));
 		}
+		//Teste 3
+		LimitedLine l1 = new LimitedLine(new Point3d(0,0,0),new Point3d());
 //		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arco1, intersecoes);

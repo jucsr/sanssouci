@@ -5,9 +5,8 @@ import javax.vecmath.Point3d;
 public class PlungeRamp extends PlungeStrategy
 {
 	private double angle;
-	public PlungeRamp(Point3d toolDirection, double angle)
+	public PlungeRamp(double angle)
 	{
-		super(toolDirection);
 		this.angle = angle;
 	}
 	public double getAngle()

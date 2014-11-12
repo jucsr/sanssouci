@@ -862,9 +862,9 @@ public class GeometricOperationsTest
 		LimitedArc arco1= new LimitedArc(new Point3d(50,50,0),new Point3d(100,50, 0.0),-2*Math.PI);
 		//NAO REALIZAR O CALCULO DE FUNCOES SINOTICAS SENDO O PARAMETRO UMA FRACAO (UTILIZAR O NUMERO COM VIRGULA)
 //		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI/4),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI/4),arco1.getCenter().z));
-		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI/2),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI/2),arco1.getCenter().z));
-		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(3*Math.PI/2),arco1.getCenter().y + arco1.getRadius()*Math.sin(3*Math.PI/2),arco1.getCenter().z));
-		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI),arco1.getCenter().z));
+//		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI/2),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI/2),arco1.getCenter().z));
+//		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(3*Math.PI/2),arco1.getCenter().y + arco1.getRadius()*Math.sin(3*Math.PI/2),arco1.getCenter().z));
+//		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI),arco1.getCenter().z));
 //		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(2*Math.PI),arco1.getCenter().y + arco1.getRadius()*Math.sin(2*Math.PI),arco1.getCenter().z));
 		
 		for(Point3d intTemp:intersecoes)
@@ -873,6 +873,7 @@ public class GeometricOperationsTest
 		}
 		//Teste 3
 		LimitedLine l1 = new LimitedLine(new Point3d(0,0,0),new Point3d(100,100,0));
+//		for(Point3d)
 //		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arco1, intersecoes);

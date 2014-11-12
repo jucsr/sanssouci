@@ -5,9 +5,8 @@ import javax.vecmath.Point3d;
 public class PlungeHelix extends PlungeStrategy 
 {
 	private double angle, radius;
-	public PlungeHelix(Point3d toolDirection) 
+	public PlungeHelix() 
 	{
-		super(toolDirection);
 	}
 	public double getAngle() 
 	{

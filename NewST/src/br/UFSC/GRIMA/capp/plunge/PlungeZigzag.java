@@ -6,9 +6,10 @@ public class PlungeZigzag extends PlungeStrategy
 {
 	private double angle, width;
 //						<tipo>	<nome atributo>
-	public PlungeZigzag(Point3d toolDirection)
+	public PlungeZigzag(double angle, double width)
 	{
-		super(toolDirection);
+		this.angle = angle;
+		this.width = width;
 	}
 	public double getAngle() 
 	{

@@ -11,6 +11,9 @@ import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Bidirectional;
+import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
@@ -90,6 +93,15 @@ public class MapeadoraRanhura {
 			// Start Point vai ser setado na otimizacao
 			operation1.setStartPoint(new Point3d(0,0,0));
 
+			// PLUNGE STRATEGY
+			PlungeToolAxis plungeStrategy = new PlungeToolAxis();
+			operation1.setApproachStrategy(plungeStrategy);
+			
+			// MACHINING STRATEGY
+			Bidirectional machiningStrategy = new Bidirectional();
+			machiningStrategy.setAllowMultiplePasses(true);
+			operation1.setMachiningStrategy(machiningStrategy);
+			
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
 					ranhuraTmp, Feature.LIMITE_DESBASTE);
@@ -117,7 +129,16 @@ public class MapeadoraRanhura {
 			operation2.setAllowanceBottom(0);
 			// Start Point vai ser setado na otimizacao
 			operation2.setStartPoint(new Point3d(0,0,0));
+			
+			// PLUNGE STRATEGY
+			PlungeToolAxis plungeStrategy2 = new PlungeToolAxis();
+			operation2.setApproachStrategy(plungeStrategy2);
 
+			// MACHINING STRATEGY
+			Bidirectional machiningStrategy2 = new Bidirectional();
+			machiningStrategy2.setAllowMultiplePasses(true);
+			operation2.setMachiningStrategy(machiningStrategy2);
+			
 			// FERRAMENTA
 			EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills,
 					ranhuraTmp);
@@ -150,6 +171,16 @@ public class MapeadoraRanhura {
 			// Start Point vai ser setado na otimizacao
 			operation1.setStartPoint(new Point3d(0,0,0));
 
+			// PLUNGE STRATEGY
+			PlungeToolAxis plungeStrategy = new PlungeToolAxis();
+			operation1.setApproachStrategy(plungeStrategy);
+
+			// MACHINING STRATEGY
+			Bidirectional machiningStrategy = new Bidirectional();
+			machiningStrategy.setAllowMultiplePasses(true);
+			operation1.setMachiningStrategy(machiningStrategy);
+			
+			
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
 					ranhuraTmp, 0);

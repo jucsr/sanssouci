@@ -25,10 +25,18 @@ import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.CenterDrilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
 import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
+import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
+import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
+import br.UFSC.GRIMA.capp.plunge.ApproachRetractStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeHelix;
+import br.UFSC.GRIMA.capp.plunge.PlungeRamp;
+import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
+import br.UFSC.GRIMA.capp.plunge.PlungeZigzag;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CavidadeFundoArredondado;
@@ -1344,6 +1352,22 @@ public class StepNcProject extends STEPProject
 		}
 		return eDirection;
 	}
+	private EDirection createDirection(String name, Point3d ratios) throws SdaiException
+	{
+		EDirection eDirection = null;
+
+		eDirection = (EDirection) model.createEntityInstance(EDirection.class);
+		if (name != null)
+		{
+			eDirection.setName(null, name);
+		}
+		A_double rat = eDirection.createDirection_ratios(null);
+		rat.addByIndex(1, ratios.x);
+		rat.addByIndex(2, ratios.y);
+		rat.addByIndex(3, ratios.z);
+	
+		return eDirection;
+	}
 	private EAxis2_placement_3d createAxis2Placement3D(String name, Point3d location, ArrayList<Double> axis, ArrayList<Double> refDirection) throws SdaiException
 	{
 		EAxis2_placement_3d eAxis2_placement_3d = (EAxis2_placement_3d)this.model.createEntityInstance(EAxis2_placement_3d.class);
@@ -2629,20 +2653,20 @@ public class StepNcProject extends STEPProject
 		eBottom_and_side_rough_milling.setStart_point(null, this.createCartesianPoint("start point", ws.getOperation().getStartPoint()));
 		//eBottom_and_side_rough_milling.setOvercut_length(null, 0.00);
 		
-		EPlunge_toolaxis strategyApproach = (EPlunge_toolaxis)model.createEntityInstance(EPlunge_toolaxis.class);
+//		EPlunge_toolaxis strategyApproach = (EPlunge_toolaxis)model.createEntityInstance(EPlunge_toolaxis.class);
 		ArrayList<Double> ratios = new ArrayList<Double>();
 		ratios.add(ws.getFeature().getPosition().getAxis().get(0));
 		ratios.add(ws.getFeature().getPosition().getAxis().get(1));
 		ratios.add(ws.getFeature().getPosition().getAxis().get(2));
-		
+		EPlunge_strategy strategyApproach = createPlungeStrategy(bottomAndSideRoughMilling);
 		EPlunge_toolaxis strategyRetract = (EPlunge_toolaxis)model.createEntityInstance(EPlunge_toolaxis.class);
 		ArrayList<Double> ratios1 = new ArrayList<Double>();
 		ratios1.add(ws.getFeature().getPosition().getAxis().get(0));
 		ratios1.add(ws.getFeature().getPosition().getAxis().get(1));
 		ratios1.add(-ws.getFeature().getPosition().getAxis().get(2));
 		
-		EDirection approach = createDirection("approach strategy direction", ratios);
-		strategyApproach.setTool_orientation(null, approach);
+//		EDirection approach = createDirection("approach strategy direction", ratios);
+//		strategyApproach.setTool_orientation(null, approach);
 		
 		EDirection retract = createDirection("retract strategy direction", ratios1);
 		strategyRetract.setTool_orientation(null, retract);
@@ -2650,13 +2674,15 @@ public class StepNcProject extends STEPProject
 		eBottom_and_side_rough_milling.setRetract(null, strategyRetract);
 		eBottom_and_side_rough_milling.setAxial_cutting_depth(null, condicoesDeUsinagem.getAp());
 		eBottom_and_side_rough_milling.setRadial_cutting_depth(null, condicoesDeUsinagem.getAe());
-		EContour_parallel eContour_parallel = (EContour_parallel)model.createEntityInstance(EContour_parallel.class);
-		eContour_parallel.setOverlap(null, 0.2 * ws.getFerramenta().getDiametroFerramenta());
-		eContour_parallel.setAllow_multiple_passes(null, Boolean.TRUE);
-		eContour_parallel.setRotation_direction(null, ERot_direction.CCW);
-		eContour_parallel.setCutmode(null, ECutmode_type.CONVENTIONAL);
-		eBottom_and_side_rough_milling.setIts_machining_strategy(null, eContour_parallel);
 		
+//		EContour_parallel eContour_parallel = (EContour_parallel)model.createEntityInstance(EContour_parallel.class);
+//		eContour_parallel.setOverlap(null, 0.2 * ws.getFerramenta().getDiametroFerramenta());
+//		eContour_parallel.setAllow_multiple_passes(null, Boolean.TRUE);
+//		eContour_parallel.setRotation_direction(null, ERot_direction.CCW);
+//		eContour_parallel.setCutmode(null, ECutmode_type.CONVENTIONAL);
+//		eBottom_and_side_rough_milling.setIts_machining_strategy(null, eContour_parallel);
+		ETwo5d_milling_strategy strategy = createStrategy((Two5DMillingStrategy)bottomAndSideRoughMilling.getMachiningStrategy());
+		eBottom_and_side_rough_milling.setIts_machining_strategy(null, strategy);
 		eBottom_and_side_rough_milling.setAllowance_side(null, bottomAndSideRoughMilling.getAllowanceSide());
 		eBottom_and_side_rough_milling.setAllowance_bottom(null, bottomAndSideRoughMilling.getAllowanceBottom());
 		
@@ -3459,6 +3485,12 @@ public class StepNcProject extends STEPProject
 		functions.createOther_functions(null);
 		return functions;
 	}
+	/**
+	 *  Cria estrategia de usinagem
+	 * @param strategy
+	 * @return
+	 * @throws SdaiException
+	 */
 	private ETwo5d_milling_strategy createStrategy(Two5DMillingStrategy strategy) throws SdaiException
 	{
 		if(strategy.getClass() == ContourParallel.class)
@@ -3497,6 +3529,47 @@ public class StepNcProject extends STEPProject
 			return etrochoidal;
 		}
 		return null;
+	}
+	/**
+	 *  Cria estrategia de mergulho
+	 * @param operation
+	 * @return
+	 * @throws SdaiException
+	 */
+	private EPlunge_strategy createPlungeStrategy(Two5DMillingOperation operation) throws SdaiException
+	{
+		ApproachRetractStrategy plungeStrategy = operation.getApproachStrategy();
+		if(plungeStrategy.getClass().equals(PlungeToolAxis.class))
+		{
+			EPlunge_toolaxis ePlungeStrategy = (EPlunge_toolaxis)model.createEntityInstance(EPlunge_toolaxis.class);
+			ePlungeStrategy.setTool_orientation(null, createDirection("tool orientation", plungeStrategy.getToolDirection()));
+			return ePlungeStrategy; 
+		} else if(plungeStrategy.getClass().equals(PlungeRamp.class))
+		{
+			PlungeRamp ramp = (PlungeRamp)plungeStrategy;
+			EPlunge_ramp ePlungeStrategy = (EPlunge_ramp)model.createEntityInstance(EPlunge_ramp.class);
+			ePlungeStrategy.setTool_orientation(null, createDirection("tool orientation", ramp.getToolDirection()));
+			ePlungeStrategy.setAngle(null, ramp.getAngle());
+			return ePlungeStrategy;
+		} else if(plungeStrategy.getClass().equals(PlungeZigzag.class))
+		{
+			PlungeZigzag zigZag = (PlungeZigzag)plungeStrategy;
+			EPlunge_zigzag ePlungeStrategy = (EPlunge_zigzag)model.createEntityInstance(EPlunge_zigzag.class);
+			ePlungeStrategy.setAngle(null, zigZag.getAngle());
+			ePlungeStrategy.setWidth(null, zigZag.getWidth());
+			return ePlungeStrategy;
+		} else if(plungeStrategy.getClass().equals(PlungeHelix.class))
+		{
+			PlungeHelix helix = (PlungeHelix)plungeStrategy;
+			EPlunge_helix ePlungeStrategy = (EPlunge_helix)model.createEntityInstance(EPlunge_helix.class);
+			ePlungeStrategy.setAngle(null, helix.getAngle());
+			ePlungeStrategy.setRadius(null, helix.getRadius());
+			return ePlungeStrategy;
+		}
+		else 
+		{
+			return null;
+		}
 	}
 //	public void closeProject() throws SdaiException {
 //		session.getActiveTransaction().endTransactionAccessCommit();

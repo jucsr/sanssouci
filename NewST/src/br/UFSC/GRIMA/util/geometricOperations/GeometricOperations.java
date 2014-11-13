@@ -2744,27 +2744,41 @@ public class GeometricOperations
 		Point3d vertex3d = plus(arc.getCenter(), multiply(distanceCenterToVertex,unitarialFromCenterToVertex));
 		return vertex3d;
 	}
+	public static void showElements(LimitedElement element, int i)
+	{
+		if(element.isLimitedArc())
+		{
+			LimitedArc arc = (LimitedArc)element;
+			//System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
+			System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y  + ", " + arc.getCenter().z + ")" + ",new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ", " + arc.getInitialPoint().z + ")" + "," + arc.getDeltaAngle() + ");");		
+		}
+		else if (element.isLimitedLine())
+		{
+//			LimitedLine line = (LimitedLine)e;
+			//System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+			System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + element.getInitialPoint().x + "," + element.getInitialPoint().y + ", " + element.getInitialPoint().z + ");" + ",new Point3d(" + element.getFinalPoint().x + "," + element.getFinalPoint().y + ", " + element.getFinalPoint().z + ");");
+		}			
+	}
 	public static void showElements(ArrayList<LimitedElement> elements)
 	{
 		int i = 0;
 		for (LimitedElement e:elements)
 		{
-			if(e.isLimitedArc())
-			{
-				LimitedArc arc = (LimitedArc)e;
-				//System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
-				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y  + ", " + arc.getCenter().z + ")" + ",new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ", " + arc.getInitialPoint().z + ")" + "," + arc.getDeltaAngle() + ");");		
-			}
-			else if (e.isLimitedLine())
-			{
-				LimitedLine line = (LimitedLine)e;
-				//System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
-				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ", " + line.getInitialPoint().z + ");" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ", " + line.getFinalPoint().z + ");");
-
-			}			
+//			if(e.isLimitedArc())
+//			{
+//				LimitedArc arc = (LimitedArc)e;
+//				//System.out.println(i + "\t Arc from " + arc.getInitialPoint() + " to " + arc.getFinalPoint() + " center " + arc.getCenter() + " angle " + arc.getDeltaAngle()*180/Math.PI  + " radius " + arc.getRadius()); 
+//				System.out.println("LimitedArc " + "arco"+i+"= new " + "LimitedArc("+ "new Point3d(" + arc.getCenter().x + "," + arc.getCenter().y  + ", " + arc.getCenter().z + ")" + ",new Point3d(" + arc.getInitialPoint().x + "," + arc.getInitialPoint().y + ", " + arc.getInitialPoint().z + ")" + "," + arc.getDeltaAngle() + ");");		
+//			}
+//			else if (e.isLimitedLine())
+//			{
+//				LimitedLine line = (LimitedLine)e;
+//				//System.out.println(i + "\t Line from " + line.getInitialPoint() + " to " + line.getFinalPoint());
+//				System.out.println("LimitedLine " + "l"+i+"= new " + "LimitedLine("+ "new Point3d(" + line.getInitialPoint().x + "," + line.getInitialPoint().y + ", " + line.getInitialPoint().z + ");" + ",new Point3d(" + line.getFinalPoint().x + "," + line.getFinalPoint().y + ", " + line.getFinalPoint().z + ");");
+//			}	
+			showElements(e, i);
 			i++;			
 		}
-
 	}
 	public static void showLines(ArrayList<LimitedLine> elements)
 	{
@@ -3285,20 +3299,43 @@ public class GeometricOperations
 		
 		return saida;
 	}
+	/**
+	 * Inverte a sentido de um elemento
+	 * @param toInvert
+	 * @return
+	 */
+	public static LimitedElement elementInverter(LimitedElement toInvert)
+	{
+		if(toInvert.isLimitedLine())
+		{
+			return (new LimitedLine(toInvert.getFinalPoint(), toInvert.getInitialPoint()));
+		}
+		else
+		{
+			LimitedArc arcTmp = (LimitedArc)toInvert;
+			return (new LimitedArc(arcTmp.getCenter(), arcTmp.getFinalPoint(), -arcTmp.getDeltaAngle()));
+		}
+	}
+	/**
+	 * Inverte o sentido dos elementos de um array
+	 * @param toInvert
+	 * @return
+	 */
 	public static ArrayList<LimitedElement> elementInverter(ArrayList<LimitedElement> toInvert)
 	{
 		ArrayList<LimitedElement> inverted = new ArrayList<LimitedElement>();
 		for(LimitedElement elementTmp:toInvert)
 		{
-			if(elementTmp.isLimitedLine())
-			{
-				inverted.add(new LimitedLine(elementTmp.getFinalPoint(), elementTmp.getInitialPoint()));
-			}
-			else if(elementTmp.isLimitedArc())
-			{
-				LimitedArc arcTmp = (LimitedArc)elementTmp;
-				inverted.add(new LimitedArc(arcTmp.getCenter(), arcTmp.getFinalPoint(), -arcTmp.getDeltaAngle()));
-			}
+//			if(elementTmp.isLimitedLine())
+//			{
+//				inverted.add(new LimitedLine(elementTmp.getFinalPoint(), elementTmp.getInitialPoint()));
+//			}
+//			else if(elementTmp.isLimitedArc())
+//			{
+//				LimitedArc arcTmp = (LimitedArc)elementTmp;
+//				inverted.add(new LimitedArc(arcTmp.getCenter(), arcTmp.getFinalPoint(), -arcTmp.getDeltaAngle()));
+//			}
+			inverted.add(elementInverter(elementTmp));
 		}
 		return inverted;
 	}
@@ -3312,6 +3349,11 @@ public class GeometricOperations
 		}
 		return inverted;
 	}
+	/**
+	 * Inverte o sentido do array
+	 * @param toInvert
+	 * @return
+	 */
 	public static ArrayList<LimitedElement> arrayInverter(ArrayList<LimitedElement> toInvert)
 	{
 		ArrayList<LimitedElement> inverted = new ArrayList<LimitedElement>();

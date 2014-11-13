@@ -28,6 +28,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Bidirectional;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
@@ -3527,6 +3528,11 @@ public class StepNcProject extends STEPProject
 				etrochoidal.setTrochoidal_rot_direction(null, ERot_direction.CW);
 			
 			return etrochoidal;
+		} else if(strategy.getClass() == Bidirectional.class)
+		{
+			EBidirectional eBidirectional = (EBidirectional)model.createEntityInstance(EBidirectional.class);
+			eBidirectional.setAllow_multiple_passes(null, true);
+			return eBidirectional;
 		}
 		return null;
 	}

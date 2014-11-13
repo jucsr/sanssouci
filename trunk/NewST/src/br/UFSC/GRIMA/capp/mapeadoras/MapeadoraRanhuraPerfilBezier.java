@@ -12,6 +12,8 @@ import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Bidirectional;
+import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
@@ -232,6 +234,15 @@ public class MapeadoraRanhuraPerfilBezier {
 			// Start Point vai ser setado na otimizacao
 			operation1.setStartPoint(new Point3d(0,0,0));
 
+			// PLUNGE STRATEGY
+			PlungeToolAxis plungeStrategy = new PlungeToolAxis();
+			operation1.setApproachStrategy(plungeStrategy);
+
+			// MACHINING STRATEGY
+			Bidirectional machiningStrategy = new Bidirectional();
+			machiningStrategy.setAllowMultiplePasses(true);
+			operation1.setMachiningStrategy(machiningStrategy);
+			
 			// FERRAMENTA
 			FaceMill faceMill = chooseFaceMill(bloco.getMaterial(), faceMills,
 					ranhuraTmp, ranhuraTmp.getLargura(), Feature.LIMITE_DESBASTE);
@@ -269,7 +280,15 @@ public class MapeadoraRanhuraPerfilBezier {
 				// Start Point vai ser setado na otimizacao
 				operation2.setStartPoint(new Point3d(0,0,z));
 
+				// PLUNGE STRATEGY
+				PlungeToolAxis plungeStrategy2 = new PlungeToolAxis();
+				operation2.setApproachStrategy(plungeStrategy2);
 
+				// MACHINING STRATEGY
+				Bidirectional machiningStrategy2 = new Bidirectional();
+				machiningStrategy2.setAllowMultiplePasses(true);
+				operation2.setMachiningStrategy(machiningStrategy2);				
+				
 				// CONDIÇÕES DE USINAGEM
 				condicoesDeUsinagem = MapeadoraDeWorkingsteps
 				.getCondicoesDeUsinagem(this.projeto, faceMill2, bloco
@@ -299,6 +318,15 @@ public class MapeadoraRanhuraPerfilBezier {
 				// Start Point vai ser setado na otimizacao
 				operation3.setStartPoint(new Point3d(0,0,0));
 
+				// PLUNGE STRATEGY
+				PlungeToolAxis plungeStrategy3 = new PlungeToolAxis();
+				operation3.setApproachStrategy(plungeStrategy3);
+
+				// MACHINING STRATEGY
+				Bidirectional machiningStrategy3 = new Bidirectional();
+				machiningStrategy3.setAllowMultiplePasses(true);
+				operation3.setMachiningStrategy(machiningStrategy3);
+				
 				// FERRAMENTA
 				EndMill endMill = chooseEndMill(bloco.getMaterial(), endMills,
 						ranhuraTmp);
@@ -319,14 +347,17 @@ public class MapeadoraRanhuraPerfilBezier {
 				
 			}
 			
-			// BOTTOM AND SIDE FINNISH MILLING
-//			BottomAndSideFinishMilling operation3 = new BottomAndSideFinishMilling(
-//					"Bottom And Side Finish Milling", retractPlane);
+			// FREE FORM OPERATION
+			
 			FreeformOperation operation3 = new FreeformOperation("Free Form Operaion", retractPlane);
 //			operation3.setAllowanceSide(0);
 //			operation3.setAllowanceBottom(0);
 			// Start Point vai ser setado na otimizacao
 			operation3.setStartPoint(new Point3d(0,0,z));
+
+			// PLUNGE STRATEGY
+			PlungeToolAxis plungeStrategy3 = new PlungeToolAxis();
+			operation3.setApproachStrategy(plungeStrategy3);
 
 			// FERRAMENTA
 			BallEndMill ballEndMill = chooseBallEndMill(bloco.getMaterial(), ballEndMills,

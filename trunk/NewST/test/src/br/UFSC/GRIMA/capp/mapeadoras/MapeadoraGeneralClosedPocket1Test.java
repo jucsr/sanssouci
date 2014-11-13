@@ -156,6 +156,8 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(),pocket.Z, pocket.getRadius());
 		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> firstOffset = new ArrayList<LimitedElement>();
+
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement element:addPocket.getElements())
 		{
@@ -167,7 +169,7 @@ public class MapeadoraGeneralClosedPocket1Test
 
 		//PRIMEIRA FERRAMENTA
 //		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
-		double diametroFerramenta1 = 60;
+		double diametroFerramenta1 = 59;
 		System.out.println("diametro ferramenta 1: " + diametroFerramenta1);
 		double overLap = 2;//0.25*diametroFerramenta;
 //		System.out.println("Offset Distance: " + diametroFerramenta1);
@@ -181,17 +183,18 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
 //			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 			{
-				for(LimitedElement elementTmp:arrayTmp)
+//				for(LimitedElement elementTmp:arrayTmp)
+				for(LimitedElement elementTmp:GeometricOperations.parallelPath1(arrayTmp, diametroFerramenta1, false, false))
 				{
-//					all.add(elementTmp);
+					all.add(elementTmp);
 				}
 			}
 //		}
 		//WorkingStep 1 - GERACAO DO BOSS VIRTUAL (QUE INDICA O QUE JA FOI DESBASTADO)
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,null,pocket.Z, diametroFerramenta1, overLap);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, overLap);
 		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
-			bossElements.add(arrayTmp);
+//			bossElements.add(arrayTmp);
 		}
 		//SEGUNDA FERRAMENTA
 		double diametroFerramenta2 = 10;
@@ -205,12 +208,12 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
-				all.add(elementTmp);
+//				all.add(elementTmp);
 			}
 		}
 		
 		//WorkingStep 2 - GERACAO DO BOSS VIRTUAL DA SEGUNDA FERRAMENTA
-		contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
+//		contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
 		//ELEMENTOS PARALELOS
 //		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroFerramenta2))
 //		{
@@ -249,19 +252,19 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//Terceira ferramenta
-		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
-		
-		double diametroFerramenta3 = 10;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
-		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
-		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
-		for(ArrayList<LimitedElement> arrayTmp:bossElements1)
-		{
-			for(LimitedElement elementTmp:arrayTmp)
-			{
-//				formaOriginal.add(elementTmp);
-				all.add(elementTmp);
-			}
-		}
+//		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
+//		
+//		double diametroFerramenta3 = 10;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
+//		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
+//		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
+//		for(ArrayList<LimitedElement> arrayTmp:bossElements1)
+//		{
+//			for(LimitedElement elementTmp:arrayTmp)
+//			{
+////				formaOriginal.add(elementTmp);
+//				all.add(elementTmp);
+//			}
+//		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);

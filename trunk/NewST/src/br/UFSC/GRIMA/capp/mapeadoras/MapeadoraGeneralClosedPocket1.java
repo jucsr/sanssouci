@@ -805,8 +805,8 @@ public class MapeadoraGeneralClosedPocket1
 			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);//construtor para as trajetorias
 		}
 		System.out.println("lolol: " + contourn.multipleParallelPath());
-		if(contourn.multipleParallelPath().size() != 0)
-		{
+//		if(contourn.multipleParallelPath().size() != 0)
+//		{
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		for(int i = 0; i < firstOffsetMultipleParallel.size(); i++)
@@ -865,7 +865,7 @@ public class MapeadoraGeneralClosedPocket1
 			//OS ELEMENTOS FORAM GERADOS NO SENTIDO ANTI-HORARIO
 			//DEVEMOS INVERTER O SENTIDO PARA QUE O ARRAY SE PASSE POR UMA PROTUBERANCIA
 			alreadyDesbastededArea.add(GeometricOperations.arrayInverter(GeometricOperations.elementInverter(alreadyDesbastededAreaTmp)));
-		}
+//		}
 		}
 		return alreadyDesbastededArea;
 	}
@@ -911,6 +911,7 @@ public class MapeadoraGeneralClosedPocket1
 //							}
 //						}
 						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, transitionArcCenter, -2*Math.PI));
+						GeometricOperations.showElements(transitionArc, 0);
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
 //					GeometricOperations.showElements(alreadyDesbastededAreaTmp);
@@ -930,6 +931,8 @@ public class MapeadoraGeneralClosedPocket1
 //							}
 //						}						
 						LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), transitionArcCenter, -2*Math.PI));
+						GeometricOperations.showElements(transitionArc, 0);
+//						System.out.println("Final Point: " + transitionArc.getFinalPoint());
 						alreadyDesbastededAreaTmp.add(transitionArc);
 					}
 				}
@@ -942,6 +945,56 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		return alreadyDesbastededArea;
 	}
+//	public static ArrayList<LimitedElement> fillArrayWithArcs (ArrayList<LimitedElement> arrayToFill)
+//	{
+//		Point3d firstValidationElementInitialPoint = arrayToFill.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
+//		for(int j = 0; j < arrayToFill.size(); j++) //percorre os elementos paralelos de cada laco
+//		{
+//			Point3d firstOffsetElementFinalPoint = meshInverted.get(j).getFinalPoint(); //centro dos arcos de transicao
+//			LimitedElement validationParallelElementTmp = arrayToFill.get(j);
+//			alreadyDesbastededAreaTmp.add(validationParallelElementTmp);
+//			if(j == arrayToFill.size() - 1)
+//			{
+////				if(validationParallelElementTmp.getFinalPoint() != firstValidationElementInitialPoint)
+//				if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint))
+//				{
+////					Point3d transitionArcCenter = null;
+//					Point3d transitionArcCenter = firstOffsetElementFinalPoint;
+////					if(validationParallelElementTmp.isLimitedArc())
+////					{
+////						if(((LimitedArc)validationParallelElementTmp).getDeltaAngle() < 0)
+////						{
+////							transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
+////						}
+////					}
+//					LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, transitionArcCenter, -2*Math.PI));
+//					GeometricOperations.showElements(transitionArc, 0);
+//					alreadyDesbastededAreaTmp.add(transitionArc);
+//				}
+////				GeometricOperations.showElements(alreadyDesbastededAreaTmp);
+//			}
+//			else
+//			{
+//				LimitedElement validationParallelElementTmpNext = arrayToFill.get(j+1);
+////				if(validationParallelElementTmp.getFinalPoint() != validationParallelElementTmpNext.getInitialPoint())
+//				if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint()))
+//				{
+//					Point3d transitionArcCenter = firstOffsetElementFinalPoint;
+////					if(validationParallelElementTmp.isLimitedArc())
+////					{
+////						if(((LimitedArc)validationParallelElementTmp).getDeltaAngle() < 0)
+////						{
+////							transitionArcCenter = ((LimitedArc)firstOffsetMultipleParallel.get(i).get(j)).getCenter();
+////						}
+////					}						
+//					LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), transitionArcCenter, -2*Math.PI));
+//					GeometricOperations.showElements(transitionArc, 0);
+////					System.out.println("Final Point: " + transitionArc.getFinalPoint());
+//					alreadyDesbastededAreaTmp.add(transitionArc);
+//				}
+//			}
+//		}
+//	}
 }
 
 

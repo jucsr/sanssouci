@@ -963,11 +963,30 @@ public class GeometricOperationsTest
 	@Test
 	public void getDeltaAnguloTest()
 	{
-		Point3d center = new Point3d(100, 100, 0);
-		Point3d p1 = new Point3d(150, 150, 0);
-		Point3d p2 = new Point3d(150, 50, 0);
-		System.out.println((GeometricOperations.getDeltaAngle(center, p1, p2) * 180 / Math.PI));
-		System.err.println((GeometricOperations.calcDeltaAngle(p1, p2, center, 1) * 180 / Math.PI));
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		//Teste 1
+//		Point3d center = new Point3d(100, 100, 0);
+//		Point3d p1 = new Point3d(150, 150, 0);
+//		Point3d p2 = new Point3d(150, 50, 0);
+//		System.out.println((GeometricOperations.getDeltaAngle(center, p1, p2) * 180 / Math.PI));
+//		System.err.println((GeometricOperations.calcDeltaAngle(p1, p2, center, 1) * 180 / Math.PI));
+		
+		//Teste 2
+		Point3d center = new Point3d(59,132, 0);
+		Point3d p1 = new Point3d(90,183,0);
+		Point3d p2 = new Point3d(0, 132, 0);
+		LimitedArc arc = new LimitedArc(center,p2,GeometricOperations.calcDeltaAngle(p2, p1, center, -Math.PI));
+//		all.add(GeometricOperations.elementInverter(arc));
+		all.add(arc);
+		System.out.println("Angulo: " + ((LimitedArc)all.get(0)).getDeltaAngle());
+		
+		//Teste 3
+//		LimitedArc arc1 = new LimitedArc(new Point3d(150,261,0),new Point3d(113,215,0),-2.45);
+//		System.out.println("PF: " + arc1.getFinalPoint());
+//		all.add(arc1);
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
 	}
 	@Test
 	public void minimumMaximunDistanceBetweenElements()

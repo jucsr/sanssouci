@@ -859,7 +859,7 @@ public class GeometricOperationsTest
 //	    intersecoes.add(pD);
 		//---------------------------------------------------------------
 		//Teste 2 
-		LimitedArc arco1= new LimitedArc(new Point3d(50,50,0),new Point3d(100,50, 0.0),-2*Math.PI);
+		LimitedArc arco1= new LimitedArc(new Point3d(50,50,0),new Point3d(100,50, 0.0),2*Math.PI);
 		//NAO REALIZAR O CALCULO DE FUNCOES SINOTICAS SENDO O PARAMETRO UMA FRACAO (UTILIZAR O NUMERO COM VIRGULA)
 //		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI/4),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI/4),arco1.getCenter().z));
 //		intersecoes.add(new Point3d(arco1.getCenter().x + arco1.getRadius()*Math.cos(Math.PI/2),arco1.getCenter().y + arco1.getRadius()*Math.sin(Math.PI/2),arco1.getCenter().z));
@@ -869,17 +869,33 @@ public class GeometricOperationsTest
 		
 		for(Point3d intTemp:intersecoes)
 		{
-			System.out.println(GeometricOperations.belongsArc(arco1, intTemp));
+//			System.out.println(GeometricOperations.belongsArc(arco1, intTemp));
 		}
 		//Teste 3
 		LimitedLine l1 = new LimitedLine(new Point3d(0,0,0),new Point3d(100,100,0));
-//		for(Point3d)
-//		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
+		LimitedLine l2 = new LimitedLine(new Point3d(50,-10,0),new Point3d(50,120,0));
+		LimitedArc arco2 = new LimitedArc(new Point3d(110,110,0),new Point3d(110,60,0),-Math.PI/2);
+		for(Point3d intPoint:GeometricOperations.intersectionElements(arco1, l1))
+		{
+			intersecoes.add(intPoint);
+			System.out.println("intersection " + intPoint);
+		}
+		for(Point3d intPoint:GeometricOperations.intersectionElements(arco1, arco2))
+		{
+			intersecoes.add(intPoint);
+			System.out.println(intPoint);
+		}
+		
+		//		LimitedLine line = new LimitedLine(new Point3d(38,177,0),new Point3d(170,177,0));
 	    ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
 	    ArrayList<LimitedArc> arcos = GeometricOperations.quebraArco(arco1, intersecoes);
 	    for(int i = 0;i < arcos.size();i++)
 	    {
 	    	elements.add(arcos.get(i));
+	    }
+	    for(LimitedArc arcTmp:GeometricOperations.quebraArco(arco2, intersecoes))
+	    {
+	    	//elements.add(arcTmp);
 	    }
 	    System.out.println("Elementos: " + elements.size());
 	    DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);

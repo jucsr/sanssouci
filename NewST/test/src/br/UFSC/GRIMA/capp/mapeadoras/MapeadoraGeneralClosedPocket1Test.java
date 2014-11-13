@@ -163,25 +163,29 @@ public class MapeadoraGeneralClosedPocket1Test
 //			all.add(element);
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
+		System.out.println("Menor Menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
+
 		//PRIMEIRA FERRAMENTA
-		double diametroFerramenta1 = 60;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+//		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
+		double diametroFerramenta1 = 60;
+		System.out.println("diametro ferramenta 1: " + diametroFerramenta1);
 		double overLap = 2;//0.25*diametroFerramenta;
-		System.out.println("Offset Distance: " + diametroFerramenta1);
+//		System.out.println("Offset Distance: " + diametroFerramenta1);
 //		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
-		System.out.println("Overlap: " + overLap);
+//		System.out.println("Overlap: " + overLap);
 		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta1, overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 		//PARA DESENHAR OS OFFSETS DA FORMA ORIGINAL (CAVIDADE + PROTUBERANCIA REAL)
 //		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
 //		{
-////			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
+			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
 //			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
-//			{
-//				for(LimitedElement elementTmp:arrayTmp)
-//				{
+			{
+				for(LimitedElement elementTmp:arrayTmp)
+				{
 //					all.add(elementTmp);
-//				}
-//			}
+				}
+			}
 //		}
 		//WorkingStep 1 - GERACAO DO BOSS VIRTUAL (QUE INDICA O QUE JA FOI DESBASTADO)
 		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,null,pocket.Z, diametroFerramenta1, overLap);
@@ -190,11 +194,10 @@ public class MapeadoraGeneralClosedPocket1Test
 			bossElements.add(arrayTmp);
 		}
 		//SEGUNDA FERRAMENTA
-		double diametroferramenta2 = 10;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
-		System.out.println("diametro ferramenta 2: " + diametroferramenta2);
-//		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(bossElements));
+		double diametroFerramenta2 = 10;
+//		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
+		System.out.println("diametro ferramenta 2: " + diametroFerramenta2);
 //		bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, 20, overLap);
-//		System.out.println("diametro ferramenta 3: " + mp.getMaiorMenorDistancia(bossElements));
 
 		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
@@ -202,14 +205,14 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
-//				all.add(elementTmp);
+				all.add(elementTmp);
 			}
 		}
 		
 		//WorkingStep 2 - GERACAO DO BOSS VIRTUAL DA SEGUNDA FERRAMENTA
-		contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroferramenta2, overLap);
+		contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
 		//ELEMENTOS PARALELOS
-//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
+//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroFerramenta2))
 //		{
 //			for(LimitedElement elementTmp:arrayTmp)
 //			{
@@ -217,35 +220,48 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//ELEMENTOS PARALELOS E QUEBRADOS
-//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
+//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroFerramenta2))
 //		{
 //			for(LimitedElement elementTmp:GenerateContournParallel.validar1Path(arrayTmp))
 //			{
 //				all.add(elementTmp);
 //			}
 //		}
-		//ELEMENTOS PARALELOS, QUEBRADOS E VALIDADOS PELA MENOR DISTANCIA
-//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroferramenta2))
+//		ELEMENTOS PARALELOS, QUEBRADOS E VALIDADOS PELA MENOR DISTANCIA
+//		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroFerramenta2))
 //		{
-//			for(LimitedElement elementTmp:GenerateContournParallel.validar2Path(GenerateContournParallel.validar1Path(arrayTmp),formaOriginal,diametroferramenta2))
+//			for(LimitedElement elementTmp:GenerateContournParallel.validar2Path(GenerateContournParallel.validar1Path(arrayTmp),formaOriginal,diametroFerramenta2))
 //			{
 //				all.add(elementTmp);
 //			}
 //		}
 		//Offset do que falta desbastar (apos utilizar 2 ferramentas)
-		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
-		{
+//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
+//		{
 //			System.out.println("lol");
 //			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
-			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+//			{
+//				for(LimitedElement elementTmp:arrayTmp)
+//				{
+//					all.add(elementTmp);
+//				}
+//			}
+//		}
+		//Terceira ferramenta
+		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
+		
+		double diametroFerramenta3 = 10;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
+		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
+		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
+		for(ArrayList<LimitedElement> arrayTmp:bossElements1)
+		{
+			for(LimitedElement elementTmp:arrayTmp)
 			{
-				for(LimitedElement elementTmp:arrayTmp)
-				{
-					all.add(elementTmp);
-				}
+//				formaOriginal.add(elementTmp);
+				all.add(elementTmp);
 			}
 		}
-		//add os elementos das protuberancias reais
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);

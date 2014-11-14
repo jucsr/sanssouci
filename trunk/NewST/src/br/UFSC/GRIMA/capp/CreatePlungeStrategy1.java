@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.vecmath.Point3d;
 
@@ -34,6 +33,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		this.bolaRamp.addActionListener(this);
 		this.bolaHelix.addActionListener(this);
 		this.bolaZigzag.addActionListener(this);
+		this.setTitle("Plunge");
 		this.setVisible(true);
 		this.widthText.setVisible(false);
 		this.widthBox.setVisible(false);
@@ -81,6 +81,18 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			this.retractText.setVisible(true);
 			this.retractBox.setVisible(true);
 		}
+		else if (source == bolaZigzag)
+		{
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/zigzag.png")));
+			this.angleText.setVisible(true);
+			this.angleBox.setVisible(true);
+			this.retractText.setVisible(true);
+			this.retractBox.setVisible(true);
+			this.widthText.setVisible(true);
+			this.widthBox.setVisible(true);
+			this.radiusText.setVisible(false);
+			this.radiusBox.setVisible(false);
+		}
 
 	
 	}
@@ -113,7 +125,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			ok = false;
 			}
 		else
-			ok = !ok;
+			ok = true;
 			if(ok)
 			{
 				while (zAtual <= retractTotal)
@@ -122,7 +134,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					{
 						dist = new Point3d(trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual).distance(new Point3d(trajetoEntrada.get(contadorPaths).getInitialPoint().x, trajetoEntrada.get(contadorPaths).getInitialPoint().y, zAtual));
 						h = Math.tan(alfa)*dist;
-							zAtual = zAtual + h;
+						zAtual = zAtual + h;
 						LinearPath p0 = new LinearPath (new Point3d(trajetoEntrada.get(contadorPaths).getInitialPoint().x, trajetoEntrada.get(contadorPaths).getInitialPoint().y, zAtual), new Point3d(trajetoEntrada.get(contadorPaths).getFinalPoint().x, trajetoEntrada.get(contadorPaths).getFinalPoint().y,zAtual- h));
 						trajeto.add(p0);
 						contadorPaths--;
@@ -139,10 +151,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 						double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + circularTmp.getAngulo(); // na verdade é o angulo final
 						dist = circularTmp.getRadius()*circularTmp.getAngulo();
 						h = Math.tan(alfa)*dist;
-						if (Math.abs(h) > Math.abs(zAtual))
-							zAtual = zAtual + h;
-						else
-							zAtual = zAtual + h;
+						zAtual = zAtual + h;
 						for(int j = 0; j < n - 1; j++) 
 						{
 							double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
@@ -171,7 +180,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 						if (zAtual >= retractTotal)
 						{
 							int iTmp = trajeto.size() -1;
-							while ((trajeto.get(iTmp).getInitialPoint().z > retractTotal) && (trajeto.get(iTmp).getFinalPoint().z < retractTotal)){
+							while ((trajeto.get(iTmp).getInitialPoint().z > retractTotal) && (trajeto.get(iTmp).getFinalPoint().z > retractTotal)){
 								System.out.println("Indice do iTmp Linear "+ iTmp);
 								iTmp--;
 								}
@@ -221,7 +230,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 						}
 						
 					}
-			}
+				}
 		
 			
 		 return trajetoT;
@@ -341,6 +350,162 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		}
 		return trajeto;
 	}
+	
+	public ArrayList<Path> zigZagPlunge()
+	{
+		ArrayList<Path> trajeto = new ArrayList<Path>();
+		ArrayList<Path> trajetoT = new ArrayList<Path>();
+		ArrayList<Integer> listaPaths = new ArrayList<Integer>();
+		double alfa = ((Double)angleBox.getValue())*Math.PI/180;
+		double retractTotal = (Double)retractBox.getValue();
+		double width = (Double)widthBox.getValue();
+		double zAtual = trajetoEntrada.get(0).getInitialPoint().z; // poderia ser qual quer um deles.
+		double deltaZ = 0;
+		int contadorPaths = trajetoEntrada.size()-1;
+		int  numeroPathsFinal = 0;
+		int paridade = 0;
+		double distance = trajetoEntrada.get(contadorPaths).getInitialPoint().distance(trajetoEntrada.get(contadorPaths).getFinalPoint());
+		if(trajetoEntrada.get(contadorPaths).isLine() && width <= distance )
+			{
+				while (zAtual < retractTotal)
+				{
+					deltaZ = width*Math.tan(alfa);
+					distance = trajetoEntrada.get(contadorPaths).getInitialPoint().distance(trajetoEntrada.get(contadorPaths).getFinalPoint());
+					Point3d vector = new Point3d (trajetoEntrada.get(contadorPaths).getInitialPoint().x - trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getInitialPoint().y - trajetoEntrada.get(contadorPaths).getFinalPoint().y, trajetoEntrada.get(contadorPaths).getInitialPoint().z - trajetoEntrada.get(contadorPaths).getFinalPoint().z);
+					if (paridade%2 == 0)
+					{
+						vector = new Point3d (((vector.x /distance)*width)+ trajetoEntrada.get(contadorPaths).getFinalPoint().x , ((vector.y / distance)*width)+trajetoEntrada.get(contadorPaths).getFinalPoint().y , (vector.z / distance)*width); // vetor contendo as coordenadas x e y exatas.
+						LinearPath p0 = new LinearPath( new Point3d(vector.x, vector.y, zAtual + deltaZ), new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,  trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual) );
+						trajeto.add(p0);
+						paridade++;
+					}
+					else
+					{
+						//vector = new Point3d (-(((vector.x /distance)*width)+ trajeto.get(0).getInitialPoint().x) , -(((vector.y / distance)*width)+trajeto.get(0).getInitialPoint().y) , (vector.z / distance)*width);
+						LinearPath p0 = new LinearPath( new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual + deltaZ), trajeto.get(numeroPathsFinal-1).getInitialPoint());
+						trajeto.add(p0);
+						paridade++;
+					}
+					zAtual = zAtual + deltaZ;
+					numeroPathsFinal++;
+				}
+				
+			}
+			else if (trajetoEntrada.get(contadorPaths).isLine() && width > distance )
+			{
+				
+				while (distance < width)
+				{
+					width = width- distance;
+					listaPaths.add(contadorPaths);
+					contadorPaths--;
+					if (contadorPaths<0)
+						contadorPaths = trajetoEntrada.size()-1;
+					distance = trajetoEntrada.get(contadorPaths).getInitialPoint().distance(trajetoEntrada.get(contadorPaths).getFinalPoint());	
+				}	
+				//Tratando os paths e o Zig-Zag
+				listaPaths.add(contadorPaths);
+				int indicePaths = 0;
+				boolean trocador = true;
+				while (zAtual < retractTotal)
+				{
+						if(listaPaths.get(indicePaths) != contadorPaths)
+						{
+							deltaZ = trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().distance(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint())*Math.tan(alfa);
+							if (trocador == true)
+							{
+								LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().x , trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().y, zAtual+deltaZ), new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().x, trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().y, zAtual));
+								trajeto.add(p0);
+								zAtual = deltaZ + zAtual;
+								numeroPathsFinal++;
+								indicePaths++;
+								System.out.println("teste");
+							}
+							else if (trocador == false)
+							{
+								LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().x , trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().y, zAtual+deltaZ), trajeto.get(numeroPathsFinal-1).getInitialPoint());
+								trajeto.add(p0);
+								zAtual = deltaZ + zAtual;
+								numeroPathsFinal++;
+								indicePaths--;
+								if (indicePaths < 0)
+								{
+									indicePaths = 0;
+									trocador = !trocador;
+								}
+							}
+						
+						}
+						else if(listaPaths.get(indicePaths) == contadorPaths)
+						{
+							deltaZ = width*Math.tan(alfa);
+							Point3d vector = new Point3d (trajetoEntrada.get(contadorPaths).getInitialPoint().x - trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getInitialPoint().y - trajetoEntrada.get(contadorPaths).getFinalPoint().y, trajetoEntrada.get(contadorPaths).getInitialPoint().z - trajetoEntrada.get(contadorPaths).getFinalPoint().z);
+							if (paridade%2 == 0)
+							{
+								vector = new Point3d (((vector.x /distance)*width)+ trajetoEntrada.get(contadorPaths).getFinalPoint().x , ((vector.y / distance)*width)+trajetoEntrada.get(contadorPaths).getFinalPoint().y , (vector.z / distance)*width); // vetor contendo as coordenadas x e y exatas.
+								LinearPath p0 = new LinearPath( new Point3d(vector.x, vector.y, zAtual + deltaZ), new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,  trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual) );
+								trajeto.add(p0);
+								numeroPathsFinal++;
+								zAtual = deltaZ + zAtual;
+							}
+							else if (paridade%2 != 0)
+							{
+								System.out.println("teste");
+								System.out.println("Delta Z "+ deltaZ);
+								LinearPath p0 = new LinearPath( new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual + deltaZ), trajeto.get(numeroPathsFinal-1).getInitialPoint());
+								trajeto.add(p0);
+								numeroPathsFinal++;
+								zAtual = deltaZ + zAtual;
+								System.out.println("Z Atual "+zAtual);
+								indicePaths = listaPaths.size() - 2;
+								System.err.println("Indice do Path Problema "+ listaPaths.get(indicePaths));
+								trocador = !trocador;
+							}
+							paridade++;
+							
+						
+						
+						}
+						
+						
+						
+						
+				}
+			
+			}
+		System.out.println("Ultimo Path-> "+ contadorPaths);
+		if (trajetoEntrada.get(contadorPaths).isLine())
+		{
+			if (zAtual >= retractTotal)
+			{
+				int iTmp = trajeto.size() -1;
+				while ((trajeto.get(iTmp).getInitialPoint().z > retractTotal) && (trajeto.get(iTmp).getFinalPoint().z > retractTotal)){
+					System.out.println("Indice do iTmp Linear "+ iTmp);
+					iTmp--;
+					}
+				distance = trajeto.get(iTmp).getFinalPoint().distance(trajeto.get(iTmp).getInitialPoint());
+				Point3d vector = new Point3d(trajeto.get(iTmp).getInitialPoint().x - trajeto.get(iTmp).getFinalPoint().x, trajeto.get(iTmp).getInitialPoint().y - trajeto.get(iTmp).getFinalPoint().y, trajeto.get(iTmp).getInitialPoint().z - trajeto.get(iTmp).getFinalPoint().z);
+				vector = new Point3d((vector.x/distance), (vector.y/distance), (vector.z/distance)); // vetor unit�rio
+				zAtual = trajeto.get(iTmp).getInitialPoint().z - trajeto.get(iTmp).getFinalPoint().z;
+				alfa = Math.asin(zAtual/distance);
+				zAtual = retractTotal - trajeto.get(iTmp).getFinalPoint().z; 
+				distance = (zAtual/Math.sin(alfa)); // tanto que eu preciso multiplicar meu vetor unit�rio.
+				vector = new Point3d((trajeto.get(iTmp).getFinalPoint().x + vector.x*distance),  (trajeto.get(iTmp).getFinalPoint().y+ vector.y*distance) ,  trajeto.get(iTmp).getFinalPoint().z + (vector.z)*distance);
+				LinearPath p0 = new LinearPath(vector, trajeto.get(iTmp).getFinalPoint());
+				trajeto.set(iTmp,p0);
+				for (contadorPaths = iTmp; contadorPaths>=0; contadorPaths--)
+				
+				{
+					trajetoT.add(trajeto.get(contadorPaths));
+				}
+			}
+		}
+		
+		//for(int i=trajeto.size()-1 ; i>=0; i--)
+		//	trajetoT.add(trajeto.get(i));
+		return trajetoT;
+	}
+	
 	public ArrayList<Path> calcularMergulho() {
 		ArrayList<Path> trajeto = null; //Declara��o da Vari�vel trajeto e cria��o desta
 		if(bolaVert.isSelected())
@@ -350,6 +515,10 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		else if (bolaRamp.isSelected())
 		{
 			trajeto = rampPlunge();
+		}
+		else if (bolaZigzag.isSelected())
+		{
+			trajeto = zigZagPlunge();
 		}
 		for(int i = 0; i < trajeto.size(); i++)
 		{

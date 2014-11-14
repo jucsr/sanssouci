@@ -409,7 +409,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 				boolean trocador = true;
 				while (zAtual < retractTotal)
 				{
-						if(listaPaths.get(indicePaths) != contadorPaths)
+						if(indicePaths != listaPaths.size()-1)
 						{
 							deltaZ = trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().distance(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint())*Math.tan(alfa);
 							if (trocador == true)
@@ -436,7 +436,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 							}
 						
 						}
-						else if(listaPaths.get(indicePaths) == contadorPaths)
+						else if(indicePaths == listaPaths.size()-1)
 						{
 							deltaZ = width*Math.tan(alfa);
 							Point3d vector = new Point3d (trajetoEntrada.get(contadorPaths).getInitialPoint().x - trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getInitialPoint().y - trajetoEntrada.get(contadorPaths).getFinalPoint().y, trajetoEntrada.get(contadorPaths).getInitialPoint().z - trajetoEntrada.get(contadorPaths).getFinalPoint().z);

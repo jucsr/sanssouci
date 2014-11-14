@@ -13,6 +13,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Bidirectional;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.UVStrategy;
 import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.features.Bloco;
@@ -358,7 +359,11 @@ public class MapeadoraRanhuraPerfilBezier {
 			// PLUNGE STRATEGY
 			PlungeToolAxis plungeStrategy3 = new PlungeToolAxis();
 			operation3.setApproachStrategy(plungeStrategy3);
-
+			
+			// MACHINIG STRATEGY
+			UVStrategy uvStrategy = new UVStrategy(); // deixar com os valores default
+			operation3.setMachiningStrategy(uvStrategy);
+			
 			// FERRAMENTA
 			BallEndMill ballEndMill = chooseBallEndMill(bloco.getMaterial(), ballEndMills,
 					ranhuraTmp, L);

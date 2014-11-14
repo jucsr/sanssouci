@@ -494,7 +494,14 @@ public class GenerateContournParallel
 			{
 				if(GeometricOperations.insidePocket(elementsCavidade, ei0))
 				{
-					if(!GeometricOperations.insidePocket(elementosProtuberancia, ei0))
+					if(elementosProtuberancia.size() != 0)
+					{
+						if(!GeometricOperations.insidePocket(elementosProtuberancia, ei0))
+						{
+							elementsIntermediario2.add(ei0);
+						}
+					}
+					else
 					{
 						elementsIntermediario2.add(ei0);
 					}

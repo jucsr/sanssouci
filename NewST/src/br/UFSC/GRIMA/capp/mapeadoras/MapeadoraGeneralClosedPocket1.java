@@ -380,7 +380,7 @@ public class MapeadoraGeneralClosedPocket1
 //						{
 //							minimumMaxDistance = menorDistanciaTmp;
 //						}
-//						arrayPointTmp.add(pointTmp);
+						arrayPointTmp.add(pointTmp);
 					}
 				}
 			}
@@ -665,7 +665,11 @@ public class MapeadoraGeneralClosedPocket1
 //		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
 		ArrayList<ArrayList<LimitedElement>> bossElements = null; //Array das protuberancias virtuais
 		
-		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossReal/*bossElements*/)/fator; //maior menor distancia inicial
+		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossReal/*bossElements*/); //maior menor distancia inicial
+		if(maiorMenorDistanciaTmp >= 40)
+		{
+			maiorMenorDistanciaTmp = maiorMenorDistanciaTmp/fator;
+		}
 		double menorMenorDistanciaTmp = getMenorMenorDistance(bossReal/*bossElements*/);
 //		double toolDiameterTmp = maiorMenorDistanciaTmp;
 		if(genClosed.getFeaturePrecedente()!= null)
@@ -717,7 +721,7 @@ public class MapeadoraGeneralClosedPocket1
 				machiningStrategyTmp.setAllowMultiplePasses(true);
 //				machiningStrategyTmp.setOverLap(0.25*faceMillTmp.getDiametroFerramenta()); //Overlap
 				machiningStrategyTmp.setOverLap(2); //Overlap
-				machiningStrategyTmp.setTrochoidalRadius(faceMillTmp.getDiametroFerramenta()); //REVER MAIS TARDE
+				machiningStrategyTmp.setTrochoidalRadius(faceMillTmp.getDiametroFerramenta()/2); //REVER MAIS TARDE
 				machiningStrategyTmp.setTrochoidalFeedRate(0.75*faceMillTmp.getDiametroFerramenta()/2);
 				machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
@@ -742,12 +746,22 @@ public class MapeadoraGeneralClosedPocket1
 				workingSteps.add(wsTmp);
 				
 				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
-				bossElements = getAreaAlreadyDesbasted(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
+//				if(bossElements != null)
+//				{
+//					for(ArrayList<LimitedElement> arrayTemp:getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap()))
+//					{
+//						bossElements.add(arrayTemp);
+//					}
+//					for(ArrayList<LimitedElement> arrayTmp:bossReal)
+//					{
+//						bossElements.add(arrayTmp);
+//					}
+//				}
+//				else
+//				{
+					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
+//				}
 				//Add os elementos das protuberancias reais
-				for(ArrayList<LimitedElement> arrayTmp:bossReal)
-				{
-					bossElements.add(arrayTmp);
-				}
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
 				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 			
@@ -870,6 +884,7 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		return alreadyDesbastededArea;
 	}
+
 	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted1(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap)
 	{
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
@@ -884,8 +899,9 @@ public class MapeadoraGeneralClosedPocket1
 		{
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
 //		GeometricOperations.showElements(firstOffsetMultipleParallel.get(2));
-		System.out.println(firstOffsetMultipleParallel.size());
+		System.out.println("lololololololo");
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
+		
 		for(int i = 0; i <firstOffsetMultipleParallel.size(); i++) //percorre os lacos do primeiro offset
 		{
 //			ArrayList<LimitedElement> meshInverted = firstOffsetMultipleParallel.get(i);
@@ -895,7 +911,6 @@ public class MapeadoraGeneralClosedPocket1
 //			Point3d firstValidationElementInitialPoint = validationParallelTmp.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
 //			ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
 			ArrayList<LimitedElement> alreadyDesbastededAreaTmp = fillArrayWithArcs(meshInverted, distance); //elementos ordenados dos novos bosses
-
 //			for(int j = 0; j < validationParallelTmp.size(); j++) //percorre os elementos paralelos de cada laco
 //			{
 //				Point3d firstOffsetElementFinalPoint = meshInverted.get(j).getFinalPoint(); //centro dos arcos de transicao
@@ -948,7 +963,7 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		return alreadyDesbastededArea;
 	}
-	public static ArrayList<LimitedElement> fillArrayWithArcs (ArrayList<LimitedElement> arrayToParallelAndFill,double distance)
+	public static ArrayList<LimitedElement> fillArrayWithArcs(ArrayList<LimitedElement> arrayToParallelAndFill,double distance)
 	{
 		ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
 		ArrayList<LimitedElement> arrayToFill = GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true); //elementos, nao interligados, dos novos bosses
@@ -967,7 +982,6 @@ public class MapeadoraGeneralClosedPocket1
 					GeometricOperations.showElements(transitionArc, 0);
 					alreadyDesbastededAreaTmp.add(transitionArc);
 				}
-//				GeometricOperations.showElements(alreadyDesbastededAreaTmp);
 			}
 			else
 			{

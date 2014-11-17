@@ -899,7 +899,7 @@ public class MapeadoraGeneralClosedPocket1
 		{
 		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
 //		GeometricOperations.showElements(firstOffsetMultipleParallel.get(2));
-		System.out.println("lololololololo");
+//		System.out.println("lololololololo");
 		//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 		
 		for(int i = 0; i <firstOffsetMultipleParallel.size(); i++) //percorre os lacos do primeiro offset
@@ -979,7 +979,7 @@ public class MapeadoraGeneralClosedPocket1
 				if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint))
 				{
 					LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, transitionArcCenter, -2*Math.PI));
-					GeometricOperations.showElements(transitionArc, 0);
+//					GeometricOperations.showElements(transitionArc, 0);
 					alreadyDesbastededAreaTmp.add(transitionArc);
 				}
 			}
@@ -989,7 +989,7 @@ public class MapeadoraGeneralClosedPocket1
 				if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint()))
 				{
 					LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), transitionArcCenter, -2*Math.PI));
-					GeometricOperations.showElements(transitionArc, 0);
+//					GeometricOperations.showElements(transitionArc, 0);
 //					System.out.println("Final Point: " + transitionArc.getFinalPoint());
 					alreadyDesbastededAreaTmp.add(transitionArc);
 				}

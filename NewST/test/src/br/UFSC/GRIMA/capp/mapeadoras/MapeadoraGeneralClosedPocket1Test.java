@@ -162,14 +162,14 @@ public class MapeadoraGeneralClosedPocket1Test
 		for(LimitedElement element:addPocket.getElements())
 		{
 			formaOriginal.add(element);
-//			all.add(element);
+			all.add(element);
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 		System.out.println("Menor Menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
 
 		//PRIMEIRA FERRAMENTA
 //		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
-		double diametroFerramenta1 = 59;
+		double diametroFerramenta1 = 60;
 		System.out.println("diametro ferramenta 1: " + diametroFerramenta1);
 		double overLap = 2;//0.25*diametroFerramenta;
 //		System.out.println("Offset Distance: " + diametroFerramenta1);
@@ -200,7 +200,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		}
 		//SEGUNDA FERRAMENTA
 		double diametroFerramenta2 = 10;
-//		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
+//		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
 		System.out.println("diametro ferramenta 2: " + diametroFerramenta2);
 //		bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, 20, overLap);
 
@@ -215,7 +215,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		}
 		
 		//WorkingStep 2 - GERACAO DO BOSS VIRTUAL DA SEGUNDA FERRAMENTA
-//		GenerateContournParallel contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
 		//ELEMENTOS PARALELOS
 //		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroFerramenta2))
 //		{
@@ -241,18 +241,18 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//Offset do que falta desbastar (apos utilizar 2 ferramentas)
-//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
-//		{
-////			System.out.println("lol");
-////			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
-//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
-//			{
-//				for(LimitedElement elementTmp:arrayTmp)
-//				{
-//					all.add(elementTmp);
-//				}
-//			}
-//		}
+		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
+		{
+//			System.out.println("lol");
+//			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
+			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+			{
+				for(LimitedElement elementTmp:arrayTmp)
+				{
+					all.add(elementTmp);
+				}
+			}
+		}
 		//Terceira ferramenta
 //		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
 //		

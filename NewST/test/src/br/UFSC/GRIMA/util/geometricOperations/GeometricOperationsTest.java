@@ -16,6 +16,7 @@ import javax.vecmath.Point3d;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket1;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -160,8 +161,12 @@ public class GeometricOperationsTest
 		//Circular Boss
 //		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 //		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
-		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
-//		itsBoss.add(arcBoss);
+//		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
+		CircularBoss arcBoss1 = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
+		CircularBoss arcBoss2 = new CircularBoss("", 100, 200, pocket.Z, 40, 40, pocket.getProfundidade());
+		itsBoss.add(arcBoss1);
+		itsBoss.add(arcBoss2);
+
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(20, 200, pocket.Z);
@@ -1055,6 +1060,35 @@ public class GeometricOperationsTest
 		LimitedArc arc2 = (LimitedArc)GeometricOperations.elementInverter(elements).get(0);
 		elements.add(arc2);
 		GeometricOperations.showElements(elements);
+	}
+	@Test
+	public void insidePocket()
+	{
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		Point3d c1 = new Point3d(100,200,0);
+		Point3d pI1 = new Point3d(64,124.10533615595888,0);
+		Point3d pF1 = new Point3d(112.03317844574586,116.866356891491,0);
+		LimitedArc arc1 = new LimitedArc(c1, pI1, GeometricOperations.calcDeltaAngle(pI1, pF1, c1, 1));
+		all.add(arc1);
+//		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
+		double diametroFerramenta1 = 50;
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, 2);
+//		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
+//		{
+//			bossElements.add(arrayTmp);
+//		}
+		for(ArrayList<LimitedElement> arrayTmp:bossElements)
+		{
+			System.out.println(GeometricOperations.insidePocket(arrayTmp, arc1));
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+//				formaOriginal.add(elementTmp);
+				all.add(elementTmp);
+			}
+		}
+		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
+		desenhador.setVisible(true);
+		for(;;);
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

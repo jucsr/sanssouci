@@ -23,10 +23,10 @@ public class GenerateContournParallel
 	private double distance; //2*(raio Ferramenta + raio Trochoidal)
 	private double overLap; //Quantidade de ultrpassagem da ferramenta de uma passada a outra
 	private static ArrayList<LimitedElement> elementsCavidade;
-	private static ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
-//	private static ArrayList<ArrayList<LimitedElement>> elementosProtuberancia = new ArrayList<ArrayList<LimitedElement>>();
+//	private static ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
+	private static ArrayList<ArrayList<LimitedElement>> elementosProtuberancia = new ArrayList<ArrayList<LimitedElement>>();
 
-	private ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
+	private static ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
 	
 	public GenerateContournParallel(GeneralClosedPocket pocket, double planoZ, double distance, double overLap) 
 	{
@@ -36,16 +36,17 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
-		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
+		this.elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
-			formaOriginal.add(elementTmp);
+			this.formaOriginal.add(elementTmp);
 		}
 		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
 		{
+			this.elementosProtuberancia.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
-				elementosProtuberancia.add(elementTmp);
+//				elementosProtuberancia.add(elementTmp);
 //				boolean allowAdd = true;
 //				if(elementTmp.isLimitedArc())
 //				{
@@ -56,7 +57,7 @@ public class GenerateContournParallel
 //				}
 //				if(allowAdd)
 //				{
-					formaOriginal.add(elementTmp);
+					this.formaOriginal.add(elementTmp);
 //				}
 			}
 		}
@@ -69,16 +70,18 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
-		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
+		this.elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
-			formaOriginal.add(elementTmp);
+			this.formaOriginal.add(elementTmp);
 		}
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
 		{
+//			GeometricOperations.showElements(arrayTmp);
+			this.elementosProtuberancia.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
-				elementosProtuberancia.add(elementTmp);
+//				elementosProtuberancia.add(elementTmp);
 //				boolean allowAdd = true;
 //				if(elementTmp.isLimitedArc())
 //				{
@@ -89,18 +92,18 @@ public class GenerateContournParallel
 //				}
 //				if(allowAdd)
 //				{
-					formaOriginal.add(elementTmp);
+					this.formaOriginal.add(elementTmp);
 //				}
 			}
 		}
-//		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
-//		{
-//			for(LimitedElement elementTmp:arrayTmp)
-//			{
-//				elementosProtuberancia.add(elementTmp);
-//				formaOriginal.add(elementTmp);
-//			}
-//		}
+		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
+		{
+			elementosProtuberancia.add(arrayTmp);
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				formaOriginal.add(elementTmp);
+			}
+		}
 	}
 	public static ArrayList<LimitedElement> gerarElementosDaCavidade(GeneralClosedPocket pocket, double planoZ)
 	{
@@ -227,34 +230,22 @@ public class GenerateContournParallel
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
 //		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //forma contendo os elementos da cavidade e da proruberancia
 //		ArrayList<LimitedElement> elementsCavidade = gerarElementosDaCavidade(pocket, planoZ);  //elementos da cavidade
-//		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();     //elementos da protuberancia
+		ArrayList<LimitedElement> elementosProtuberanciaTmp = new ArrayList<LimitedElement>();     //elementos da protuberancia
 		
-//		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
-//		{
-//			for(LimitedElement elementTmp:arrayTmp)
-//			{
-//				elementosProtuberancia.add(elementTmp);
-//				boolean allowAdd = true;
-//				if(elementTmp.isLimitedArc())
-//				{
-//					if(((LimitedArc)elementTmp).getRadius() == 0)
-//					{
-//						allowAdd = false;
-//					}
-//				}
-//				if(allowAdd)
-//				{
-//					formaOriginal.add(elementTmp);
-//				}
-//			}
-//		}
-//		GeometricOperations.showElements(formaOriginal);
+		for(ArrayList<LimitedElement> arrayTmp:elementosProtuberancia)
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				elementosProtuberanciaTmp.add(elementTmp);
+			}
+		}
 		
 		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
 		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
 		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
 
-		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
+//		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
+		parallelTemp1 = parallelPath1(elementosProtuberanciaTmp, distance, !inside,isBoss);
 //		GeometricOperations.showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
 		
@@ -278,34 +269,22 @@ public class GenerateContournParallel
 		ArrayList<ArrayList<LimitedElement>> saida = new ArrayList<ArrayList<LimitedElement>>();
 //		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //forma contendo os elementos da cavidade e da proruberancia
 //		ArrayList<LimitedElement> elementsCavidade = gerarElementosDaCavidade(pocket, planoZ);  //elementos da cavidade
-//		ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();     //elementos da protuberancia
+		ArrayList<LimitedElement> elementosProtuberanciaTmp = new ArrayList<LimitedElement>();     //elementos da protuberancia
 		
-//		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
-//		{
-//			for(LimitedElement elementTmp:arrayTmp)
-//			{
-//				elementosProtuberancia.add(elementTmp);
-//				boolean allowAdd = true;
-//				if(elementTmp.isLimitedArc())
-//				{
-//					if(((LimitedArc)elementTmp).getRadius() == 0)
-//					{
-//						allowAdd = false;
-//					}
-//				}
-//				if(allowAdd)
-//				{
-//					formaOriginal.add(elementTmp);
-//				}
-//			}
-//		}
-//		GeometricOperations.showElements(formaOriginal);
+		for(ArrayList<LimitedElement> arrayTmp:elementosProtuberancia)
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+				elementosProtuberanciaTmp.add(elementTmp);
+			}
+		}
 		
 		ArrayList<LimitedElement> parallelTemp1 = new ArrayList<LimitedElement>();      		//Paralela dos elementos da protuberancia
 		ArrayList<LimitedElement> parallelTemp2 = new ArrayList<LimitedElement>();              //Paralela dos elementos da cavidade
 		ArrayList<LimitedElement> totalParallel = new ArrayList<LimitedElement>();              //Array com todas as paralelas
-
-		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
+		
+//		parallelTemp1 = parallelPath1(elementosProtuberancia, distance, !inside,isBoss);
+		parallelTemp1 = parallelPath1(elementosProtuberanciaTmp, distance, !inside,isBoss);
 //		GeometricOperations.showElements(parallelTemp1);
 		parallelTemp2 = parallelPath1(elementsCavidade, distance, inside,!isBoss);
 		
@@ -390,11 +369,11 @@ public class GenerateContournParallel
 		}
 	}
 	
+	/**
+	 * 	Validacao 1: Quebra dos Elementos na intersecao
+	 */
 	public static ArrayList<LimitedElement> validar1Path(ArrayList<LimitedElement> elements)
 	{
-		/**
-		 * 	Validacao 1: Quebra dos Elementos na intersecao
-		 */
 		ArrayList<LimitedElement> elementsIntermediario = new ArrayList<LimitedElement>();
 		
 		for (int i=0; i < elements.size(); i++)
@@ -483,28 +462,32 @@ public class GenerateContournParallel
 		}
 		return elementsIntermediario;
 	}
+	/**
+	 * 	Validacao 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
+	 */
 	public static ArrayList<LimitedElement> validar2Path(ArrayList<LimitedElement> elementsIntermediario, ArrayList<LimitedElement> formaOriginal, double distance)
 	{
-		/**
-		 * 	Validacao 2: Elementos com a minima distancia (em relacao a forma original) menor que a distancia de offset, sao descartados 
-		 */
 		ArrayList<LimitedElement> elementsIntermediario2 = new ArrayList<LimitedElement>();
 		for(int i = 0; i< elementsIntermediario.size();i++)
 		{
 			LimitedElement ei0 = elementsIntermediario.get(i);
-			if(GeometricOperations.roundNumber(GeometricOperations.minimumDistance(formaOriginal, ei0),5) >= distance)
+			//Validacao pela menor distancia
+			if(GeometricOperations.roundNumber(GeometricOperations.minimumDistance(formaOriginal, ei0),7) >= distance)
 			{
+				//Se o elemento esta dentro da forma da cavidade
 				if(GeometricOperations.insidePocket(elementsCavidade, ei0))
 				{
 					if(elementosProtuberancia.size() != 0)
 					{
-						if(!GeometricOperations.insidePocket(elementosProtuberancia, ei0))
+						for(ArrayList<LimitedElement> arrayBossElement:elementosProtuberancia)
 						{
-							elementsIntermediario2.add(ei0);
-						}
-						else
-						{
-							GeometricOperations.showElements(ei0, i);
+							//Se o elemento esta fora da forma da protuberancia
+//							if(!GeometricOperations.insidePocket(elementosProtuberancia, ei0))
+							if(!GeometricOperations.insidePocket(arrayBossElement, ei0))
+							{
+								elementsIntermediario2.add(ei0);
+//								break;
+							}
 						}
 					}
 					else

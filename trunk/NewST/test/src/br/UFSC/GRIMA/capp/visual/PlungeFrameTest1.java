@@ -66,7 +66,7 @@ public class PlungeFrameTest1
 	
 	@Test
 	public void createPlungeStrategy1Test(){
-		CreatePlungeStrategy1 janelaTeste = new CreatePlungeStrategy1(path);
+		CreatePlungeStrategy1 janelaTeste = new CreatePlungeStrategy1(path1);
 		
 //		ArrayList<LimitedElement> elements = transformPathInElements(path1);
 //		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(elements);

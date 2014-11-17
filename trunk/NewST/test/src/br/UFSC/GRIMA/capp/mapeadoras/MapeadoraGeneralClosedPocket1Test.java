@@ -162,10 +162,10 @@ public class MapeadoraGeneralClosedPocket1Test
 		for(LimitedElement element:addPocket.getElements())
 		{
 			formaOriginal.add(element);
-			all.add(element);
+//			all.add(element);
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		System.out.println("Menor Menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
+//		System.out.println("Menor Menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
 
 		//PRIMEIRA FERRAMENTA
 //		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
@@ -175,7 +175,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //		System.out.println("Offset Distance: " + diametroFerramenta1);
 //		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
 //		System.out.println("Overlap: " + overLap);
-//		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta1, overLap);
+//		GenerateContournParallel contourn1 = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta1, overLap);
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 //		//PARA DESENHAR OS OFFSETS DA FORMA ORIGINAL (CAVIDADE + PROTUBERANCIA REAL)
 //		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
@@ -196,7 +196,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, overLap);
 		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
-			bossElements.add(arrayTmp);
+//			bossElements.add(arrayTmp);
 		}
 		//SEGUNDA FERRAMENTA
 		double diametroFerramenta2 = 10;
@@ -210,7 +210,7 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
-				all.add(elementTmp);
+//				all.add(elementTmp);
 			}
 		}
 		
@@ -241,11 +241,11 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//Offset do que falta desbastar (apos utilizar 2 ferramentas)
-		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
+//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
 		{
 //			System.out.println("lol");
-//			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
-			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
+//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 			{
 				for(LimitedElement elementTmp:arrayTmp)
 				{

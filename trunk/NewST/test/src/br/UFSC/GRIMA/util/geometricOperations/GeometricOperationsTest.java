@@ -1,9 +1,12 @@
 package br.UFSC.GRIMA.util.geometricOperations;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -20,6 +23,7 @@ import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket1;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
+import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
@@ -1065,30 +1069,58 @@ public class GeometricOperationsTest
 	public void insidePocket()
 	{
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
+		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
 		Point3d c1 = new Point3d(100,200,0);
 		Point3d pI1 = new Point3d(64,124.10533615595888,0);
 		Point3d pF1 = new Point3d(112.03317844574586,116.866356891491,0);
 		LimitedArc arc1 = new LimitedArc(c1, pI1, GeometricOperations.calcDeltaAngle(pI1, pF1, c1, 1));
+		LimitedLine l1 = new LimitedLine(new Point3d(100,200,0), new Point3d(110,200,0));
 		all.add(arc1);
+		all.add(l1);
 //		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-		double diametroFerramenta1 = 50;
+		double diametroFerramenta1 = 60;
 		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, 2);
-//		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
-//		{
-//			bossElements.add(arrayTmp);
-//		}
+		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
+		{
+			bossElements.add(arrayTmp);
+		}
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
 		{
-			System.out.println(GeometricOperations.insidePocket(arrayTmp, arc1));
+			bossShape.add(Face.getShape(arrayTmp));
+//			System.out.println(GeometricOperations.insidePocket(arrayTmp, arc1));
+			System.out.println(GeometricOperations.insidePocket(arrayTmp, l1));
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 //				formaOriginal.add(elementTmp);
 				all.add(elementTmp);
 			}
 		}
+		//Desenhador
+		JFrame frame = new JFrame();
+		frame.setSize(new Dimension(300, 300));
+		class Panel extends JPanel
+		{
+			protected void paintComponent(Graphics g)
+			{
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+					
+//				g2d.translate(0, 300);
+//				g2d.scale(1, -1);
+//				g2d.draw(gp);
+				for(Shape shape:bossShape)
+				{
+					g2d.draw(shape);
+				}
+			}
+		}
+		frame.getContentPane().add(new Panel());
+		frame.setVisible(true);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);
+		
 	}
 	@Test
 	public void determinarMovimentacaoGenCavTest()

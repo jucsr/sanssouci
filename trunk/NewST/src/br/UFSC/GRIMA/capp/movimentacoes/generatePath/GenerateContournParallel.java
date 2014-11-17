@@ -24,6 +24,8 @@ public class GenerateContournParallel
 	private double overLap; //Quantidade de ultrpassagem da ferramenta de uma passada a outra
 	private static ArrayList<LimitedElement> elementsCavidade;
 	private static ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
+//	private static ArrayList<ArrayList<LimitedElement>> elementosProtuberancia = new ArrayList<ArrayList<LimitedElement>>();
+
 	private ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
 	
 	public GenerateContournParallel(GeneralClosedPocket pocket, double planoZ, double distance, double overLap) 
@@ -499,6 +501,10 @@ public class GenerateContournParallel
 						if(!GeometricOperations.insidePocket(elementosProtuberancia, ei0))
 						{
 							elementsIntermediario2.add(ei0);
+						}
+						else
+						{
+							GeometricOperations.showElements(ei0, i);
 						}
 					}
 					else

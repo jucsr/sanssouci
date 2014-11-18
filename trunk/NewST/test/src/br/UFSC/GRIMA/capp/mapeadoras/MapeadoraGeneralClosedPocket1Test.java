@@ -189,6 +189,10 @@ public class MapeadoraGeneralClosedPocket1Test
 		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
 //			bossElements.add(arrayTmp);
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+//				all.add(elementTmp);
+			}
 		}
 		//SEGUNDA FERRAMENTA
 		double diametroFerramenta2 = 10;
@@ -201,12 +205,12 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
-				all.add(elementTmp);
+//				all.add(elementTmp);
 			}
 		}
 		
 		//WorkingStep 2 - GERACAO DO BOSS VIRTUAL DA SEGUNDA FERRAMENTA
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
+//		GenerateContournParallel contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
 		//ELEMENTOS PARALELOS
 //		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroFerramenta2))
 //		{
@@ -232,33 +236,33 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//Offset do que falta desbastar (apos utilizar 2 ferramentas)
-		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
-		{
-//			System.out.println("lol");
-//			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
-			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
-			{
-				GeometricOperations.showElements(arrayTmp);
-				for(LimitedElement elementTmp:arrayTmp)
-				{
-					all.add(elementTmp);
-				}
-			}
-		}
-		//Terceira ferramenta
-//		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
-//		
-//		double diametroFerramenta3 = 10;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
-//		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
-//		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
-//		for(ArrayList<LimitedElement> arrayTmp:bossElements1)
+//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
 //		{
-//			for(LimitedElement elementTmp:arrayTmp)
+////			System.out.println("lol");
+////			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
+//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 //			{
-////				formaOriginal.add(elementTmp);
-//				all.add(elementTmp);
+//				GeometricOperations.showElements(arrayTmp);
+//				for(LimitedElement elementTmp:arrayTmp)
+//				{
+//					all.add(elementTmp);
+//				}
 //			}
 //		}
+		//Terceira ferramenta
+		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
+//		
+//		double diametroFerramenta3 = 5;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
+//		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
+//		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
+		for(ArrayList<LimitedElement> arrayTmp:bossElements1)
+		{
+			for(LimitedElement elementTmp:arrayTmp)
+			{
+//				formaOriginal.add(elementTmp);
+				all.add(elementTmp);
+			}
+		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);
 		for(;;);

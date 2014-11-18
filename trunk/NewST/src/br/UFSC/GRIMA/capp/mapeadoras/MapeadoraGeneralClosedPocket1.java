@@ -928,6 +928,7 @@ public class MapeadoraGeneralClosedPocket1
 		ArrayList<LimitedElement> arrayToFill = GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true); //elementos, nao interligados, dos novos bosses
 //		ArrayList<LimitedElement> arrayToFill = GeometricOperations.arrayInverter(GeometricOperations.elementInverter(GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true))); //elementos, nao interligados, dos novos bosses
 		Point3d firstValidationElementInitialPoint = arrayToFill.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
+		System.out.println("Offset Initial Point: " + firstValidationElementInitialPoint);
 		for(int j = 0; j < arrayToFill.size(); j++) //percorre os elementos paralelos de cada laco
 		{
 //			Point3d firstOffsetElementFinalPoint = meshInverted.get(j).getFinalPoint(); //centro dos arcos de transicao
@@ -939,7 +940,7 @@ public class MapeadoraGeneralClosedPocket1
 				if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint))
 				{
 					LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), firstValidationElementInitialPoint, transitionArcCenter, -2*Math.PI));
-//					GeometricOperations.showElements(transitionArc, 0);
+					GeometricOperations.showElements(transitionArc, 0);
 					alreadyDesbastededAreaTmp.add(transitionArc);
 				}
 			}
@@ -949,7 +950,7 @@ public class MapeadoraGeneralClosedPocket1
 				if(!GeometricOperations.isTheSamePoint(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint()))
 				{
 					LimitedArc transitionArc = new LimitedArc(transitionArcCenter, validationParallelElementTmp.getFinalPoint(), /*2*Math.PI +*/ GeometricOperations.calcDeltaAngle(validationParallelElementTmp.getFinalPoint(), validationParallelElementTmpNext.getInitialPoint(), transitionArcCenter, -2*Math.PI));
-//					GeometricOperations.showElements(transitionArc, 0);
+					GeometricOperations.showElements(transitionArc, 0);
 //					System.out.println("Final Point: " + transitionArc.getFinalPoint());
 					alreadyDesbastededAreaTmp.add(transitionArc);
 				}

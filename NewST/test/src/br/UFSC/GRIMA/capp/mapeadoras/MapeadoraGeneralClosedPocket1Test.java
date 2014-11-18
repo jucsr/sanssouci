@@ -161,7 +161,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		for(LimitedElement element:addPocket.getElements())
 		{
 			formaOriginal.add(element);
-//			all.add(element);
+			all.add(element);
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 
@@ -191,7 +191,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //			bossElements.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
-//				all.add(elementTmp);
+				all.add(elementTmp);
 			}
 		}
 		//SEGUNDA FERRAMENTA
@@ -205,7 +205,7 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
-//				all.add(elementTmp);
+				all.add(elementTmp);
 			}
 		}
 		

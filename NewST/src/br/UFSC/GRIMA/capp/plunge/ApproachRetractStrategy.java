@@ -1,12 +1,14 @@
 package br.UFSC.GRIMA.capp.plunge;
 
+import java.io.Serializable;
+
 import javax.vecmath.Point3d;
 /**
  * 
  * @author Jc
  *
  */
-public abstract class ApproachRetractStrategy 
+public abstract class ApproachRetractStrategy implements Serializable
 {
 	private Point3d toolDirection = new Point3d(-1, 0, 0); // Vetor diretor do mergulho inicializado para entrada vertical
 

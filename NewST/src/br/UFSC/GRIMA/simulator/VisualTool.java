@@ -31,6 +31,7 @@ import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilQuadradoU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilRoundedU;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRanhuraPerfilVee;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoRegionSuperficieBezier;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.Degrau;
@@ -655,7 +656,16 @@ public class VisualTool {
 				}else if(featClass.equals(GeneralClosedPocket.class) && wsTmp.getOperation().getClass().equals(BottomAndSideRoughMilling.class))
 				{
 					MovimentacaoGeneralClosedPocket detMov = new MovimentacaoGeneralClosedPocket(wsTmp);
-					ArrayList<LinearPath> path = detMov.getDesbaste();
+//					ArrayList<LinearPath> path = detMov.getDesbaste();
+					ArrayList<LinearPath> path = new ArrayList<LinearPath>();
+					if(wsTmp.getOperation().getMachiningStrategy().getClass() == TrochoidalAndContourParallelStrategy.class)
+					{
+						path = MovimentacaoGeneralClosedPocket.linerizatePaths(detMov.getDesbasteTrocoidal());
+					}
+					else
+					{
+						path = MovimentacaoGeneralClosedPocket.linerizatePaths(detMov.getDesbasteContourParallel());
+					}
 					Vector movimentacao = new Vector();
 					 for(int j = 0; j < path.size(); j++)
 						{

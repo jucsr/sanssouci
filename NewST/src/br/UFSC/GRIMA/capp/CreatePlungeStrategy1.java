@@ -374,7 +374,12 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		{
 			CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths); 
 			distance = circularTmp.getInitialPoint().distance(circularTmp.getCenter())*circularTmp.getAngulo();
+			System.out.println("Distancia do Circular " + distance);
 		}
+		
+		//Tratar todos os casos!
+		
+		
 		if(trajetoEntrada.get(contadorPaths).isLine() && width <= distance )
 			{
 				while (zAtual < retractTotal)
@@ -416,23 +421,21 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					{
 						double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
 						double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
-						double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
 						Point3d pInitialTmp = new Point3d(x, y, z);
 						
 						x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
 						y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
-						z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
 						Point3d pFinalTmp = new Point3d(x, y, z);
 						
 						LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
 						trajeto.add(p0);
 						
 					}
-					zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z + deltaZ;
-					teta = width/circularTmp.getRadius();
-					separacao = 1.2;
-					n = (int)(teta * circularTmp.getRadius() / separacao);
-					dAngle = teta / (n);
+					zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
 					initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
 					
 					
@@ -440,27 +443,26 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					{
 						double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * j);
 						double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * j);
-						double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						double z = zAtual  + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
 						Point3d pInitialTmp = new Point3d(x, y, z);
 						
 						x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * (j + 1));
 						y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * (j + 1));
-						z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						z = zAtual + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+						//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
 						Point3d pFinalTmp = new Point3d(x, y, z);
 						
 						LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
 						trajeto.add(p0);
-						}
-						zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z + deltaZ;
-						
-					
-					
-					
-					
-					
-					
+					}
+					zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;	
 				}
 			}
+		
+		// Caso em que o Width é maior que a primeira distancia proposta!	
+
+		
 		else if (trajetoEntrada.get(contadorPaths).isLine() && width > distance )
 			{
 				

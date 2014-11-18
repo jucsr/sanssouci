@@ -1109,10 +1109,12 @@ public class GeometricOperationsTest
 //				g2d.translate(0, 300);
 //				g2d.scale(1, -1);
 //				g2d.draw(gp);
-				for(Shape shape:bossShape)
-				{
-					g2d.draw(shape);
-				}
+//				for(Shape shape:bossShape)
+//				{
+//					g2d.draw(shape);
+//				}
+				g2d.draw(bossShape.get(1));
+
 			}
 		}
 		frame.getContentPane().add(new Panel());

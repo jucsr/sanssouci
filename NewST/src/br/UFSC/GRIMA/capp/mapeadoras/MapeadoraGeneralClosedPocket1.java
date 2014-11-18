@@ -884,7 +884,15 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		return alreadyDesbastededArea;
 	}
-
+	/**
+	 * Cria protuberancias virtuais (que indicam o que ja foi desbastado)
+	 * @param pocket
+	 * @param bossElements
+	 * @param planoZ
+	 * @param distance
+	 * @param overLap
+	 * @return
+	 */
 	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted1(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap)
 	{
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
@@ -896,20 +904,29 @@ public class MapeadoraGeneralClosedPocket1
 		if(contourn.multipleParallelPath().size() != 0)
 		{
 			ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
+			System.out.println(firstOffsetMultipleParallel.size());
 			//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 			for(int i = 0; i <firstOffsetMultipleParallel.size(); i++) //percorre os lacos do primeiro offset
 			{
 				ArrayList<LimitedElement> meshInverted = GeometricOperations.arrayInverter(GeometricOperations.elementInverter(firstOffsetMultipleParallel.get(i)));
 				ArrayList<LimitedElement> alreadyDesbastededAreaTmp = fillArrayWithArcs(meshInverted, distance); //elementos ordenados dos novos bosses
+//				ArrayList<LimitedElement> alreadyDesbastededAreaTmp = fillArrayWithArcs(firstOffsetMultipleParallel.get(i), distance); //elementos ordenados dos novos bosses
 				alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
 			}
 		}
 		return alreadyDesbastededArea;
 	}
+	/**
+	 * Faz a paralela dos elementos de um array e completa as lacunas com arcos
+	 * @param arrayToParallelAndFill
+	 * @param distance
+	 * @return
+	 */
 	public static ArrayList<LimitedElement> fillArrayWithArcs(ArrayList<LimitedElement> arrayToParallelAndFill,double distance)
 	{
 		ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
 		ArrayList<LimitedElement> arrayToFill = GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true); //elementos, nao interligados, dos novos bosses
+//		ArrayList<LimitedElement> arrayToFill = GeometricOperations.arrayInverter(GeometricOperations.elementInverter(GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true))); //elementos, nao interligados, dos novos bosses
 		Point3d firstValidationElementInitialPoint = arrayToFill.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
 		for(int j = 0; j < arrayToFill.size(); j++) //percorre os elementos paralelos de cada laco
 		{

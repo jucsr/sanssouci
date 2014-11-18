@@ -36,14 +36,14 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
-		this.elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
+		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
-			this.formaOriginal.add(elementTmp);
+			formaOriginal.add(elementTmp);
 		}
 		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
 		{
-			this.elementosProtuberancia.add(arrayTmp);
+			elementosProtuberancia.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 //				elementosProtuberancia.add(elementTmp);
@@ -57,7 +57,7 @@ public class GenerateContournParallel
 //				}
 //				if(allowAdd)
 //				{
-					this.formaOriginal.add(elementTmp);
+					formaOriginal.add(elementTmp);
 //				}
 			}
 		}
@@ -70,15 +70,15 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
-		this.elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
+		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
-			this.formaOriginal.add(elementTmp);
+			formaOriginal.add(elementTmp);
 		}
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
 		{
 //			GeometricOperations.showElements(arrayTmp);
-			this.elementosProtuberancia.add(arrayTmp);
+			elementosProtuberancia.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 //				elementosProtuberancia.add(elementTmp);
@@ -92,7 +92,7 @@ public class GenerateContournParallel
 //				}
 //				if(allowAdd)
 //				{
-					this.formaOriginal.add(elementTmp);
+					formaOriginal.add(elementTmp);
 //				}
 			}
 		}
@@ -212,15 +212,15 @@ public class GenerateContournParallel
 			aux++;
 		}	
 		
-		for(int i = 0; i < multipleParallel.size(); i++)
-		{
-			for(int j = 0; j < multipleParallel.get(i).size(); j++)
-			{
+//		for(int i = 0; i < multipleParallel.size(); i++)
+//		{
+//			for(int j = 0; j < multipleParallel.get(i).size(); j++)
+//			{
 //				System.err.println("=====formaOriginal ======");
 //				GeometricOperations.showElements(multipleParallel.get(i).get(j));		
 //				System.err.println("=====EndformaOriginal ======");
-			}
-		}
+//			}
+//		}
 		return multipleParallel;
 	}
 	public ArrayList<ArrayList<LimitedElement>> parallelPath2 (/*GeneralClosedPocket pocket,*/ double distance/*, double planoZ*/)
@@ -479,15 +479,19 @@ public class GenerateContournParallel
 				{
 					if(elementosProtuberancia.size() != 0)
 					{
+						boolean insideBoss = false;
 						for(ArrayList<LimitedElement> arrayBossElement:elementosProtuberancia)
 						{
 							//Se o elemento esta fora da forma da protuberancia
 //							if(!GeometricOperations.insidePocket(elementosProtuberancia, ei0))
-							if(!GeometricOperations.insidePocket(arrayBossElement, ei0))
+							if(GeometricOperations.insidePocket(arrayBossElement, ei0))
 							{
-								elementsIntermediario2.add(ei0);
-//								break;
+								insideBoss = true;
 							}
+						}
+						if(!insideBoss)
+						{
+							elementsIntermediario2.add(ei0);
 						}
 					}
 					else

@@ -156,7 +156,6 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(),pocket.Z, pocket.getRadius());
 		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();
-//		ArrayList<LimitedElement> firstOffset = new ArrayList<LimitedElement>();
 
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement element:addPocket.getElements())
@@ -165,32 +164,25 @@ public class MapeadoraGeneralClosedPocket1Test
 //			all.add(element);
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
-//		System.out.println("Menor Menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
 
 		//PRIMEIRA FERRAMENTA
-//		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/2,2);
-		double diametroFerramenta1 = 60;
+		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/1.5,2);
+//		double diametroFerramenta1 = 82;
 		System.out.println("diametro ferramenta 1: " + diametroFerramenta1);
 		double overLap = 2;//0.25*diametroFerramenta;
-//		System.out.println("Offset Distance: " + diametroFerramenta1);
 //		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
-//		System.out.println("Overlap: " + overLap);
-//		GenerateContournParallel contourn1 = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta1, overLap);
-//		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
-//		//PARA DESENHAR OS OFFSETS DA FORMA ORIGINAL (CAVIDADE + PROTUBERANCIA REAL)
-//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:multiplePath)
+//		GenerateContournParallel contourn = new GenerateContournParallel(pocket, pocket.Z, diametroFerramenta1, overLap);
+//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
 //		{
-//			for(ArrayList<LimitedElement> arrayTmp:multiplePath.get(0))
+//			System.out.println("lol");
+//			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
 ////			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 //			{
 //				for(LimitedElement elementTmp:arrayTmp)
-////				for(LimitedElement elementTmp:MapeadoraGeneralClosedPocket1.fillArrayWithArcs(GeometricOperations.arrayInverter(GeometricOperations.elementInverter(arrayTmp)),diametroFerramenta1))
-////				for(LimitedElement elementTmp:GeometricOperations.parallelPath1(arrayTmp, diametroFerramenta1, false, false))
 //				{
-//					all.add(elementTmp);
+////					all.add(elementTmp);
 //				}
 //			}
-//			System.out.println(multiplePath.get(0).size());
 //		}
 		//WorkingStep 1 - GERACAO DO BOSS VIRTUAL (QUE INDICA O QUE JA FOI DESBASTADO)
 		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, overLap);
@@ -202,7 +194,6 @@ public class MapeadoraGeneralClosedPocket1Test
 		double diametroFerramenta2 = 10;
 //		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
 		System.out.println("diametro ferramenta 2: " + diametroFerramenta2);
-//		bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted(pocket,bossElements,pocket.Z, 20, overLap);
 
 		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
 		for(ArrayList<LimitedElement> arrayTmp:bossElements)
@@ -210,7 +201,7 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
-//				all.add(elementTmp);
+				all.add(elementTmp);
 			}
 		}
 		
@@ -241,12 +232,13 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//Offset do que falta desbastar (apos utilizar 2 ferramentas)
-//		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
+		for(ArrayList<ArrayList<LimitedElement>> matrixTmp:contourn.multipleParallelPath())
 		{
 //			System.out.println("lol");
-			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
-//			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
+//			for(ArrayList<LimitedElement> arrayTmp:contourn.multipleParallelPath().get(0))
+			for(ArrayList<LimitedElement> arrayTmp:matrixTmp)
 			{
+				GeometricOperations.showElements(arrayTmp);
 				for(LimitedElement elementTmp:arrayTmp)
 				{
 					all.add(elementTmp);

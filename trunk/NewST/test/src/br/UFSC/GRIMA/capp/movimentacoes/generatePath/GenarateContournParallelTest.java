@@ -82,9 +82,13 @@ public class GenarateContournParallelTest
 //		CircularBoss arcBoss = new CircularBoss("", 350, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 //		CircularBoss arcBoss = new CircularBoss("", 290, 150, pocket.Z, 30, 30, pocket.getProfundidade());
 //		CircularBoss arcBoss = new CircularBoss("", 320, 230, pocket.Z, 30, 30, pocket.getProfundidade());
-		CircularBoss arcBoss = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
+//		CircularBoss arcBoss = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
+		CircularBoss arcBoss1 = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
+		CircularBoss arcBoss2 = new CircularBoss("", 100, 200, pocket.Z, 40, 40, pocket.getProfundidade());
 
-		itsBoss.add(arcBoss);
+		itsBoss.add(arcBoss1);
+		itsBoss.add(arcBoss2);
+
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
 		rectBoss.setPosicao(150, 180, pocket.Z);
@@ -156,12 +160,17 @@ public class GenarateContournParallelTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 10,2);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 60,2);
+//		GenerateContournParallel contourn1 = new GenerateContournParallel(pocket, 0, 60,2);
+//		GenerateContournParallel contourn2 = new GenerateContournParallel(pocket, 0, 60,2);
+
+
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = contourn.multipleParallelPath();
 //		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = GenerateContournParallel.multipleParallelPath(pocket, 0, 25,2);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
 		{
+			System.out.println(multiplePath.get(i).size());
 			for(int j = 0;j < multiplePath.get(i).size(); j++)
 			{
 				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)

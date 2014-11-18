@@ -1706,5 +1706,26 @@ public class MovimentacaoGeneralClosedPocket {
 		}
 		return saida;
 	}
-	
+	public static ArrayList<LinearPath> linerizatePaths(ArrayList<Path> paths)
+	{
+		ArrayList<LinearPath> saida = new ArrayList<LinearPath>();
+		int numeroDePontos = 20;
+		for(Path pathTmp:paths)
+		{
+			if(pathTmp.getClass() == LinearPath.class)
+			{
+				saida.add((LinearPath)pathTmp);
+			}
+			else if(pathTmp.getClass() == CircularPath.class)
+			{
+				CircularPath circularPathTmp = (CircularPath)pathTmp;
+				Point2D[] interpolationPoints = Cavidade.determinarPontosEmCircunferencia(circularPathTmp.getCenter(), circularPathTmp.getInitialPoint(), circularPathTmp.getAngulo(), numeroDePontos);
+				for(int i = 0;i < interpolationPoints.length-2;i++)
+				{
+					saida.add(new LinearPath(new Point3d(interpolationPoints[i].getX(),interpolationPoints[i].getY(),circularPathTmp.getCenter().z), new Point3d(interpolationPoints[i+1].getX(),interpolationPoints[i+1].getY(),circularPathTmp.getCenter().z)));
+				}
+			}
+		}
+		return saida;
+	}
 }

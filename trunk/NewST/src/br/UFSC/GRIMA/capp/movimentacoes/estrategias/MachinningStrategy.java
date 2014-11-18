@@ -1,6 +1,8 @@
 package br.UFSC.GRIMA.capp.movimentacoes.estrategias;
 
-public abstract class MachinningStrategy 
+import java.io.Serializable;
+
+public abstract class MachinningStrategy implements Serializable
 {
 	
 }

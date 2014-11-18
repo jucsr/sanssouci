@@ -24,9 +24,8 @@ public class GenerateContournParallel
 	private double overLap; //Quantidade de ultrpassagem da ferramenta de uma passada a outra
 	private static ArrayList<LimitedElement> elementsCavidade;
 //	private static ArrayList<LimitedElement> elementosProtuberancia = new ArrayList<LimitedElement>();
-	private static ArrayList<ArrayList<LimitedElement>> elementosProtuberancia = new ArrayList<ArrayList<LimitedElement>>();
-
-	private static ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();              //Array da forma original (cavidade+protuberancia)
+	private static ArrayList<ArrayList<LimitedElement>> elementosProtuberancia;
+	private static ArrayList<LimitedElement> formaOriginal;              //Array da forma original (cavidade+protuberancia)
 	
 	public GenerateContournParallel(GeneralClosedPocket pocket, double planoZ, double distance, double overLap) 
 	{
@@ -36,6 +35,9 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
+		elementsCavidade = new ArrayList<LimitedElement>();
+		elementosProtuberancia = new ArrayList<ArrayList<LimitedElement>>();
+		formaOriginal = new ArrayList<LimitedElement>();
 		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
@@ -70,6 +72,9 @@ public class GenerateContournParallel
 		this.overLap = overLap;
 //		this.gerarElementosDaCavidade();
 //		this.gerarElementosDaProtuberancia();
+		elementsCavidade = new ArrayList<LimitedElement>();
+		elementosProtuberancia = new ArrayList<ArrayList<LimitedElement>>();
+		formaOriginal = new ArrayList<LimitedElement>();
 		elementsCavidade = gerarElementosDaCavidade(pocket,planoZ);
 		for(LimitedElement elementTmp:elementsCavidade)
 		{
@@ -98,7 +103,7 @@ public class GenerateContournParallel
 		}
 		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
 		{
-			elementosProtuberancia.add(arrayTmp);
+//			elementosProtuberancia.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);

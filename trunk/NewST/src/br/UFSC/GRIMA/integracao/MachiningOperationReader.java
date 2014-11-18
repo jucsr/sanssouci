@@ -2,11 +2,16 @@ package br.UFSC.GRIMA.integracao;
 
 import javax.vecmath.Point3d;
 
+import jsdai.SCombined_schema.CBidirectional;
+import jsdai.SCombined_schema.CContour_parallel;
+import jsdai.SCombined_schema.CTrochoidal_and_contourn_parallel;
+import jsdai.SCombined_schema.EBidirectional;
 import jsdai.SCombined_schema.EBoring;
 import jsdai.SCombined_schema.EBottom_and_side_finish_milling;
 import jsdai.SCombined_schema.EBottom_and_side_rough_milling;
 import jsdai.SCombined_schema.ECartesian_point;
 import jsdai.SCombined_schema.ECenter_drilling;
+import jsdai.SCombined_schema.EContour_parallel;
 import jsdai.SCombined_schema.EDrilling;
 import jsdai.SCombined_schema.EFreeform_operation;
 import jsdai.SCombined_schema.EMachining_operation;
@@ -29,6 +34,9 @@ import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Bidirectional;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel.RotationDirection;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
 
@@ -82,7 +90,10 @@ public class MachiningOperationReader
 			/*
 			 *  cuidado, pode dar erro pois algumas operacoes nao tem este tipo de estrategia
 			 */
+			
 			bottomAndSideRoughMilling.setMachiningStrategy(getStrategy(((EBottom_and_side_rough_milling)eMachining_operation).getIts_machining_strategy(null)));
+//			System.err.println(getStrategy(((EBottom_and_side_rough_milling)eMachining_operation).getIts_machining_strategy(null)));
+			
 			return bottomAndSideRoughMilling;
 		} else if (eMachining_operation.isKindOf(EBottom_and_side_finish_milling.class))
 		{
@@ -118,8 +129,10 @@ public class MachiningOperationReader
 		/*
 		 * estrategia trocoidal e contour parallel
 		 */
-		if(eTwo5d_milling_strategy.getClass() == ETrochoidal_and_contourn_parallel.class)
+//		System.out.println("strategy = " + eTwo5d_milling_strategy.getClass());
+		if(eTwo5d_milling_strategy.getClass() == CTrochoidal_and_contourn_parallel.class)
 		{
+//			System.err.println("lololloo");
 			ETrochoidal_and_contourn_parallel eTrocoidal = (ETrochoidal_and_contourn_parallel)eTwo5d_milling_strategy;
 			TrochoidalAndContourParallelStrategy trocoidal = new TrochoidalAndContourParallelStrategy();
 			trocoidal.setAllowMultiplePasses(eTrocoidal.getAllow_multiple_passes(null));
@@ -143,6 +156,39 @@ public class MachiningOperationReader
 			}
 			
 			return trocoidal;
+		} 
+		else if(eTwo5d_milling_strategy.getClass() == CContour_parallel.class)
+		{
+			EContour_parallel eContourn = (EContour_parallel)eTwo5d_milling_strategy;
+			ContourParallel contourn = new ContourParallel();
+			contourn.setAllowMultiplePasses(eContourn.getAllow_multiple_passes(null));
+			contourn.setCutmodeType(eContourn.getCutmode(null));
+//			contourn.setOverLap(eContourn.getOverlap(null));
+			if(eContourn.getRotation_direction(null) == ERot_direction.CCW) //baseline direction
+			{
+				contourn.setRotationDirection(RotationDirection.CCW);
+			}
+			else
+			{
+				contourn.setRotationDirection(RotationDirection.CW);
+			}
+			return contourn;
+		}
+		else if(eTwo5d_milling_strategy.getClass() == CBidirectional.class)
+		{
+			EBidirectional eBidirecional = (EBidirectional)eTwo5d_milling_strategy;
+			Bidirectional bidirecional = new Bidirectional();
+			bidirecional.setAllowMultiplePasses(eBidirecional.getAllow_multiple_passes(null));
+			bidirecional.setOverLap(eBidirecional.getOverlap(null));
+//			bidirecional.setOverLap(eBidirecional.getOverlap(null));
+//			{
+//				bidirecional.setRotationDirection(RotationDirection.CCW);
+//			}
+//			else
+//			{
+//				bidirecional.setRotationDirection(RotationDirection.CW);
+//			}
+			return bidirecional;
 		}
 		return estrategia;
 	}

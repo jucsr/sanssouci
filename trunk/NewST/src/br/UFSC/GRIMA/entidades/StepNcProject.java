@@ -30,6 +30,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.Reaming;
 import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Bidirectional;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel.RotationDirection;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
 import br.UFSC.GRIMA.capp.plunge.ApproachRetractStrategy;
@@ -3499,7 +3500,7 @@ public class StepNcProject extends STEPProject
 			ContourParallel contour = (ContourParallel)strategy;
 			EContour_parallel eStrategy = (EContour_parallel)model.createEntityInstance(EContour_parallel.class);
 			eStrategy.setAllow_multiple_passes(null, contour.isAllowMultiplePasses());
-			if(contour.isRotationDirectionCCW())
+			if(contour.getRotationDirection() == RotationDirection.CCW)
 				eStrategy.setRotation_direction(null, ERot_direction.CCW);
 			else
 				eStrategy.setRotation_direction(null, ERot_direction.CW);

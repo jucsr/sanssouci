@@ -24,6 +24,7 @@ import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel.RotationDirection;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
 import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
@@ -431,7 +432,6 @@ public class MapeadoraGeneralClosedPocket1
 		//-----------------------------------------------------------------------------------------------------
 	}
 	
-	
 	public double getMenorMenorDistance(/*GeneralClosedPocket genClosed*/ArrayList<ArrayList<LimitedElement>> arrayBossElements)
 	{
 //		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
@@ -450,6 +450,7 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			//CUIDADO COM O Z!!
 			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), bossElements);
+			System.out.println("lolol menor: " + menorDistancia);
 //			System.out.println("Menor Menor Distancia c/protuberancia: " + menorDistancia);
 		}
 		else
@@ -671,6 +672,10 @@ public class MapeadoraGeneralClosedPocket1
 			maiorMenorDistanciaTmp = maiorMenorDistanciaTmp/fator;
 		}
 		double menorMenorDistanciaTmp = getMenorMenorDistance(bossReal/*bossElements*/);
+		if(menorMenorDistanciaTmp >= 40)
+		{
+			menorMenorDistanciaTmp = menorMenorDistanciaTmp/fator;
+		}
 //		double toolDiameterTmp = maiorMenorDistanciaTmp;
 		if(genClosed.getFeaturePrecedente()!= null)
 		{
@@ -746,24 +751,28 @@ public class MapeadoraGeneralClosedPocket1
 				workingSteps.add(wsTmp);
 				
 				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
-//				if(bossElements != null)
-//				{
-//					for(ArrayList<LimitedElement> arrayTemp:getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap()))
-//					{
-//						bossElements.add(arrayTemp);
-//					}
+				if(bossElements != null)
+				{
+					for(ArrayList<LimitedElement> arrayTemp:getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap()))
+					{
+						bossElements.add(arrayTemp);
+					}
 //					for(ArrayList<LimitedElement> arrayTmp:bossReal)
 //					{
 //						bossElements.add(arrayTmp);
 //					}
-//				}
-//				else
-//				{
+				}
+				else
+				{
 					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
-//				}
+					for(ArrayList<LimitedElement> arrayTmp:bossReal)
+					{
+						bossElements.add(arrayTmp);
+					}
+				}
 				//Add os elementos das protuberancias reais
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
-				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
+//				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 			
 				aux++;
 			}
@@ -772,7 +781,7 @@ public class MapeadoraGeneralClosedPocket1
 			BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
 					"Bottom And Side Rough Milling", retractPlane);
 			operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
-
+			System.out.println("Menor menor distancia: " + menorMenorDistanciaTmp);
 			// FERRAMENTA
 			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 					genClosed, 0, menorMenorDistanciaTmp);
@@ -781,6 +790,7 @@ public class MapeadoraGeneralClosedPocket1
 			ContourParallel machiningStrategyTmp = new ContourParallel();
 			operationTmp.setMachiningStrategy(machiningStrategyTmp);
 			machiningStrategyTmp.setAllowMultiplePasses(false);
+			machiningStrategyTmp.setRotationDirection(RotationDirection.CCW);
 //			machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 			
 			//Estrategia de aproximacao

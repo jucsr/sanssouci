@@ -608,7 +608,7 @@ public class EditFaceMillFrame extends JDialog {
 						((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
 
 						//---- label1 ----
-						label1.setIcon(new ImageIcon(getClass().getResource("images/Zig Zag Plunge.jpg")));
+						label1.setIcon(new ImageIcon(getClass().getResource("/images/Zig Zag Plunge.jpg")));
 						panel16.add(label1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 5, 5), 0, 0));

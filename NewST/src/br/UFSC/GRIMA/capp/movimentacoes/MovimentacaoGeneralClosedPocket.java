@@ -396,6 +396,7 @@ public class MovimentacaoGeneralClosedPocket {
 					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(transformLimitedElementsInPaths(elementos.get(i).get(j)));
 					approachPaths = plunge.calcularMergulho();
 				}
+				
 				for(Path approachPath:approachPaths)
 				{
 					desbaste.add(approachPath);

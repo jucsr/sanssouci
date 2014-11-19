@@ -92,6 +92,12 @@ public class EditFaceMillFrame extends JDialog {
 		panel14 = new JPanel();
 		radioButton1 = new JRadioButton();
 		radioButton2 = new JRadioButton();
+		panel16 = new JPanel();
+		label1 = new JLabel();
+		panel17 = new JPanel();
+		radioButton3 = new JRadioButton();
+		radioButton4 = new JRadioButton();
+		radioButton5 = new JRadioButton();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -109,9 +115,9 @@ public class EditFaceMillFrame extends JDialog {
 			//======== contentPanel ========
 			{
 				contentPanel.setLayout(new GridBagLayout());
-				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0};
+				((GridBagLayout)contentPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
 				((GridBagLayout)contentPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+				((GridBagLayout)contentPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0E-4};
 				((GridBagLayout)contentPanel.getLayout()).rowWeights = new double[] {0.0, 1.0, 0.0, 1.0E-4};
 
 				//======== panel4 ========
@@ -148,7 +154,7 @@ public class EditFaceMillFrame extends JDialog {
 				}
 				contentPanel.add(panel4, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 5, 0), 0, 0));
+					new Insets(0, 0, 5, 5), 0, 0));
 
 				//======== tabbedPane1 ========
 				{
@@ -591,11 +597,56 @@ public class EditFaceMillFrame extends JDialog {
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 5, 5), 0, 0));
 					}
-					tabbedPane1.addTab("Strategy", panel13);
+					tabbedPane1.addTab("Machine Strategy", panel13);
+
+					//======== panel16 ========
+					{
+						panel16.setLayout(new GridBagLayout());
+						((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
+						((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+						((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+						//---- label1 ----
+						label1.setIcon(new ImageIcon(getClass().getResource("images/Zig Zag Plunge.jpg")));
+						panel16.add(label1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 5, 5), 0, 0));
+
+						//======== panel17 ========
+						{
+							panel17.setLayout(new GridBagLayout());
+							((GridBagLayout)panel17.getLayout()).columnWidths = new int[] {0, 0, 0};
+							((GridBagLayout)panel17.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
+
+							//---- radioButton3 ----
+							radioButton3.setText("Plunge Tool Axis");
+							radioButton3.setVerticalAlignment(SwingConstants.TOP);
+							panel17.add(radioButton3, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 5), 0, 0));
+
+							//---- radioButton4 ----
+							radioButton4.setText("Ramp Plunge");
+							panel17.add(radioButton4, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 5, 5), 0, 0));
+
+							//---- radioButton5 ----
+							radioButton5.setText("Zig Zag Plunge");
+							panel17.add(radioButton5, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+								new Insets(0, 0, 0, 5), 0, 0));
+						}
+						panel16.add(panel17, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 5, 5), 0, 0));
+					}
+					tabbedPane1.addTab("Plunge Strategy", panel16);
 				}
 				contentPanel.add(tabbedPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 5, 0), 0, 0));
+					new Insets(0, 0, 5, 5), 0, 0));
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -699,6 +750,12 @@ public class EditFaceMillFrame extends JDialog {
 	private JPanel panel14;
 	protected JRadioButton radioButton1;
 	protected JRadioButton radioButton2;
+	private JPanel panel16;
+	private JLabel label1;
+	private JPanel panel17;
+	private JRadioButton radioButton3;
+	private JRadioButton radioButton4;
+	private JRadioButton radioButton5;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

@@ -15,8 +15,10 @@ import javax.swing.JOptionPane;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cam.GenerateTrocoidalGCode;
+import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
 import br.UFSC.GRIMA.capp.visual.PlungeFrame2;
 import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 
@@ -729,7 +731,10 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			System.out.println("pi-> " + trajeto.get(i).getInitialPoint() + "\tpf -> " + trajeto.get(i).getFinalPoint());
 		}
 		if (ok)
+		{
 			System.out.println(GenerateTrocoidalGCode.transformPathToGCode(trajeto));
+			DesenhadorDeLimitedElements desenho = new DesenhadorDeLimitedElements(GenerateTrochoidalMovement1.transformPathsInLimitedElements(trajeto));
+		}
 		return trajeto;
 	}
 	

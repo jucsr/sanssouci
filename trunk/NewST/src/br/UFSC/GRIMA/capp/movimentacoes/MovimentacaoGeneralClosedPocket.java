@@ -361,9 +361,22 @@ public class MovimentacaoGeneralClosedPocket {
 		//---- gerando as linhas guia para o trocoidal
 //		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
 //		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
-		
+		//*********Teste*******************
+		System.out.println("Elementos da Cavidade");
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getPoints(), ((GeneralClosedPocket)ws.getFeature()).Z, ((GeneralClosedPocket)ws.getFeature()).getRadius());
+//		GeometricOperations.showElements(addPocketVertex.getElements());
+		GeometricOperations.showPoints(((GeneralClosedPocket)ws.getFeature()).getPoints());
+		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(((GeneralClosedPocket)ws.getFeature()), planoZ))
+		{
+			GeometricOperations.showElements(arrayTmp);
+		}
+		//*********************************
+//		(GeneralClosedPocket)ws.getFeature().get
 		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
 		this.elementos = contourn.multipleParallelPath();
+//		System.err.println("Linhas Base: " + elementos.size());
+//		System.err.println("Linhas Base offset: " + (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)));
+
 		
 //		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());
 

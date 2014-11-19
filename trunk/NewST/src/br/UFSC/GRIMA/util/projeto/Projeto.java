@@ -20,6 +20,8 @@ import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
@@ -174,6 +176,7 @@ public class Projeto implements Serializable{
 				
 				DefaultMutableTreeNode nodoFeatureTmp = new DefaultMutableTreeNode("Its Feature:");
 				DefaultMutableTreeNode nodoOperationTmp = new DefaultMutableTreeNode("Its Operation:");
+				DefaultMutableTreeNode nodoMachinningStrategy = new DefaultMutableTreeNode("Its Machinning Strategy:");
 				DefaultMutableTreeNode nodoFerramentaTmp = new DefaultMutableTreeNode("Its Tool:");
 				DefaultMutableTreeNode nodoCondicoesTmp = new DefaultMutableTreeNode("Its Technology:");
 				
@@ -211,11 +214,24 @@ public class Projeto implements Serializable{
 				CondicoesDeUsinagem condTmp = wsTmp.getCondicoesUsinagem();
 				
 				nodoFeatureTmp.add(new DefaultMutableTreeNode("Name : " + wsTmp.getFeature().getNome()));
-
+				//Criando atributos da movimentacao trochoidal
+				if(operationTmp.getMachiningStrategy().getClass() == TrochoidalAndContourParallelStrategy.class)
+				{
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Radius: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalRadius()));
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Sense: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalSense()));
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Feed Rate: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalFeedRate()));
+				}
+				else if(operationTmp.getMachiningStrategy().getClass() == ContourParallel.class)
+				{
+//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Radius: " + ((ContourParallel)operationTmp.getMachiningStrategy()).));
+//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Sense: " + ((ContourParallel)operationTmp.getMachiningStrategy()).getTrochoidalSense()));
+//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Feed Rate: " + ((ContourParallel)operationTmp.getMachiningStrategy()).getTrochoidalFeedRate()));
+				
+				}
 				nodoOperationTmp.add(new DefaultMutableTreeNode("Type : " + operationTmp.getId()));
 				nodoOperationTmp.add(new DefaultMutableTreeNode("Coolant : " + operationTmp.isCoolant()));
 				nodoOperationTmp.add(new DefaultMutableTreeNode("Retract Plane : " + operationTmp.getRetractPlane()));
-				
+				nodoOperationTmp.add(nodoMachinningStrategy);
 				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Type : " + ferrTmp.getClass().toString().substring(42)));
 				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Name : " + ferrTmp.getName()));
 				nodoFerramentaTmp.add(new DefaultMutableTreeNode("Diameter : " + ferrTmp.getDiametroFerramenta() + " mm"));

@@ -3363,6 +3363,15 @@ public class GeometricOperations
 		}
 		return inverted;
 	}
+	public static ArrayList<Point2D> arrayOfPointsInverter(ArrayList<Point2D> toInvert)
+	{
+		ArrayList<Point2D> inverted = new ArrayList<Point2D>();
+		for(int i = toInvert.size()-1;i >-1;i--)
+		{
+			inverted.add(toInvert.get(i));
+		}
+		return inverted;
+	}
 	public static ArrayList<LimitedArc> arrayInverter1(ArrayList<LimitedArc> toInvert)
 	{
 		ArrayList<LimitedArc> inverted = new ArrayList<LimitedArc>();
@@ -3412,5 +3421,12 @@ public class GeometricOperations
 			inside = false;
 		}
 		return inside;
+	}
+	public static void showPoints(ArrayList<Point2D> points)
+	{
+		for(Point2D pointTmp:points)
+		{
+			System.out.println("points.add(new Point2D.Double(" + pointTmp.getX() + "," + pointTmp.getY() + "));");
+		}
 	}
 }

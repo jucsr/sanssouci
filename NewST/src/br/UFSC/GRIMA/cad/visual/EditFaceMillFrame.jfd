@@ -2384,7 +2384,7 @@
                  <string>icon</string>
                  <object class="com.jformdesigner.model.SwingIcon">
                   <int>0</int>
-                  <string>images/Zig Zag Plunge.jpg</string>
+                  <string>/images/Zig Zag Plunge.jpg</string>
                  </object>
                 </void>
                 <void property="name">

@@ -660,6 +660,7 @@ public class VisualTool {
 					ArrayList<LinearPath> path = new ArrayList<LinearPath>();
 					if(wsTmp.getOperation().getMachiningStrategy().getClass() == TrochoidalAndContourParallelStrategy.class)
 					{
+						System.err.println("Trochoidal Radius: " + ((TrochoidalAndContourParallelStrategy)wsTmp.getOperation().getMachiningStrategy()).getTrochoidalRadius());
 						path = MovimentacaoGeneralClosedPocket.linerizatePaths(detMov.getDesbasteTrocoidal());
 					}
 					else

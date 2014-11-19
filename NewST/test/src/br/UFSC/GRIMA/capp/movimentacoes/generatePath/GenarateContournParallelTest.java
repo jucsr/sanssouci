@@ -53,12 +53,12 @@ public class GenarateContournParallelTest
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200, 320));
 	    
-	    points.add(new Point2D.Double(500, 320));
-		points.add(new Point2D.Double(500, 160));
-		points.add(new Point2D.Double(280, 160));
-		points.add(new Point2D.Double(280, 40));
-		points.add(new Point2D.Double(0, 40));
-		points.add(new Point2D.Double(0, 320));
+//	    points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 160));
+//		points.add(new Point2D.Double(280, 160));
+//		points.add(new Point2D.Double(280, 40));
+//		points.add(new Point2D.Double(0, 40));
+//		points.add(new Point2D.Double(0, 320));
 		//Forma 4
 //		points.add(new Point2D.Double(10, 10));
 //		points.add(new Point2D.Double(200, 10));
@@ -73,8 +73,32 @@ public class GenarateContournParallelTest
 //		points.add(new Point2D.Double(180, 100));
 //		points.add(new Point2D.Double(10, 100));
 		
+		//Forma de Cachorrinho
+		points.add(new Point2D.Double(44.0,89.0));
+		points.add(new Point2D.Double(51.0,68.0));
+		points.add(new Point2D.Double(27.0,22.0));
+		points.add(new Point2D.Double(55.0,20.0));
+		points.add(new Point2D.Double(67.0,50.0));
+		points.add(new Point2D.Double(124.0,65.0));
+		points.add(new Point2D.Double(136.0,20.0));
+		points.add(new Point2D.Double(164.0,19.0));
+		points.add(new Point2D.Double(147.0,66.0));
+		points.add(new Point2D.Double(168.0,116.0));
+		points.add(new Point2D.Double(134.0,84.0));
+		points.add(new Point2D.Double(68.0,84.0));
+		points.add(new Point2D.Double(45.0,120.0));
+		points.add(new Point2D.Double(13.0,93.0));
+		
+		//Forma 5
+//		points.add(new Point2D.Double(29.0,93.0));
+//		points.add(new Point2D.Double(30.0,34.0));
+//		points.add(new Point2D.Double(123.0,34.0));
+//		points.add(new Point2D.Double(123.0,60.0));
+//		points.add(new Point2D.Double(164.0,60.0));
+//		points.add(new Point2D.Double(164.0,96.0));
+		
 		pocket.setPoints(points);
-		pocket.setRadius(30);
+		pocket.setRadius(5);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
@@ -85,9 +109,10 @@ public class GenarateContournParallelTest
 //		CircularBoss arcBoss = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
 		CircularBoss arcBoss1 = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
 		CircularBoss arcBoss2 = new CircularBoss("", 100, 200, pocket.Z, 40, 40, pocket.getProfundidade());
-
-		itsBoss.add(arcBoss1);
-		itsBoss.add(arcBoss2);
+		CircularBoss arcBoss3 = new CircularBoss("", 39, 103, pocket.Z, 4, 4, pocket.getProfundidade());
+//		LimitedArc arco0= new LimitedArc(new Point3d(39.0,103.0, -1.6),new Point3d(43.0,103.0, -1.6),-6.283185307179586);
+//		itsBoss.add(arcBoss1);
+		itsBoss.add(arcBoss3);
 
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
@@ -160,7 +185,7 @@ public class GenarateContournParallelTest
 	@Test
 	public void mutipleParallelPathTest()
 	{
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 60,2);
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket, 0, 10,2);
 //		GenerateContournParallel contourn1 = new GenerateContournParallel(pocket, 0, 60,2);
 //		GenerateContournParallel contourn2 = new GenerateContournParallel(pocket, 0, 60,2);
 
@@ -170,7 +195,7 @@ public class GenarateContournParallelTest
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0;i < multiplePath.size();i++)
 		{
-			System.out.println(multiplePath.get(i).size());
+//			System.out.println(multiplePath.get(i).size());
 			for(int j = 0;j < multiplePath.get(i).size(); j++)
 			{
 				for(int k = 0;k < multiplePath.get(i).get(j).size(); k++)
@@ -181,7 +206,7 @@ public class GenarateContournParallelTest
 		}
 		for(LimitedElement tmp : formaOriginal)
 		{
-//			all.add(tmp);
+			all.add(tmp);
 		}
 
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);

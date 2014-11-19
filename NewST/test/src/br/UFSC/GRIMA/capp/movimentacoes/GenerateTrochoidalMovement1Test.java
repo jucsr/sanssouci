@@ -89,12 +89,12 @@ public class GenerateTrochoidalMovement1Test
 //		points.add(new Point2D.Double(200,160));
 		
 		//Forma 2
-		points.add(new Point2D.Double(500, 320));
-		points.add(new Point2D.Double(500, 160));
-		points.add(new Point2D.Double(280, 160));
-		points.add(new Point2D.Double(280, 40));
-		points.add(new Point2D.Double(0, 40));
-		points.add(new Point2D.Double(0, 320));
+//		points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 160));
+//		points.add(new Point2D.Double(280, 160));
+//		points.add(new Point2D.Double(280, 40));
+//		points.add(new Point2D.Double(0, 40));
+//		points.add(new Point2D.Double(0, 320));
 		
 	    //Forma 3
 //		points.add(new Point2D.Double(8, 160));
@@ -107,7 +107,7 @@ public class GenerateTrochoidalMovement1Test
 //		points.add(new Point2D.Double(200, 40));
 //		points.add(new Point2D.Double(200,160));
 		
-		//Forma 4
+		//Forma 4 raio 30
 //		points.add(new Point2D.Double(10, 10));
 //		points.add(new Point2D.Double(200, 10));
 //		points.add(new Point2D.Double(200, 100));
@@ -121,8 +121,24 @@ public class GenerateTrochoidalMovement1Test
 //		points.add(new Point2D.Double(180, 100));
 //		points.add(new Point2D.Double(10, 100));
 		
+		//Cachorrinho raio 5
+		points.add(new Point2D.Double(44.0,89.0));
+		points.add(new Point2D.Double(51.0,68.0));
+		points.add(new Point2D.Double(27.0,22.0));
+		points.add(new Point2D.Double(55.0,20.0));
+		points.add(new Point2D.Double(67.0,50.0));
+		points.add(new Point2D.Double(124.0,65.0));
+		points.add(new Point2D.Double(136.0,20.0));
+		points.add(new Point2D.Double(164.0,19.0));
+		points.add(new Point2D.Double(147.0,66.0));
+		points.add(new Point2D.Double(168.0,116.0));
+		points.add(new Point2D.Double(134.0,84.0));
+		points.add(new Point2D.Double(68.0,84.0));
+		points.add(new Point2D.Double(45.0,120.0));
+		points.add(new Point2D.Double(13.0,93.0));
+		
 		pocket.setPoints(points);
-		pocket.setRadius(30);
+		pocket.setRadius(5);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
@@ -130,7 +146,11 @@ public class GenerateTrochoidalMovement1Test
 		//Circular Boss
 //		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 15, pocket.getProfundidade());
 		CircularBoss arcBoss = new CircularBoss("", 200, 200, pocket.Z, 30, 30, pocket.getProfundidade());
-		itsBoss.add(arcBoss);
+		CircularBoss arcBossCachorrinho = new CircularBoss("", 39, 103, pocket.Z, 4, 4, pocket.getProfundidade());
+
+//		itsBoss.add(arcBoss);
+		itsBoss.add(arcBossCachorrinho);
+
 		
 		//Rectangular Boss
 		RectangularBoss rectBoss = new RectangularBoss(40, 40, pocket.getProfundidade(), 0);
@@ -155,7 +175,7 @@ public class GenerateTrochoidalMovement1Test
 //		itsBoss.add(genBoss);
 		
 		pocket.setItsBoss(itsBoss);
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points, 0, 25);
+		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(points,pocket.Z, pocket.getRadius());
 		formaOriginal = addPocketVertex.getElements();
 		
 		// --- Menor distancia entre cavidade e protuberancia ---
@@ -178,7 +198,9 @@ public class GenerateTrochoidalMovement1Test
 		// ---- criando Ferramenta ----
 		FaceMill ferramenta= new FaceMill();
 		ferramenta.setName("1");
-		ferramenta.setDiametroFerramenta(menorDistancia/2); //Diametro da ferramenta (mudei)
+//		ferramenta.setDiametroFerramenta(menorDistancia/2); //Diametro da ferramenta (mudei)
+		ferramenta.setDiametroFerramenta(16); //Diametro da ferramenta (mudei)
+
 		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
 				
 		// ---- criando Condicoes de usinagem -----
@@ -193,7 +215,7 @@ public class GenerateTrochoidalMovement1Test
 		strategy.setAllowMultiplePasses(true);
 		//Setar o trochoidalRadius nos proprios testes
 		strategy.setTrochoidalRadius(ferramenta.getDiametroFerramenta()/2);
-		strategy.setTrochoidalFeedRate(20);
+		strategy.setTrochoidalFeedRate(5);
 		strategy.setOverLap(2);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
@@ -216,7 +238,7 @@ public class GenerateTrochoidalMovement1Test
 	{
 //		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(20); //Raio
 //		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(25); //Avanco
-		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 90, 0);
+		ArrayList<ArrayList<LimitedElement>> parallel = GeometricOperations.parallelPath2(pocket, 10, 0);
 		ArrayList<Path> paths = new ArrayList<Path>();
 		for(ArrayList<LimitedElement> tmp : parallel)
 		{
@@ -251,9 +273,12 @@ public class GenerateTrochoidalMovement1Test
 		System.out.println("diametro da Ferramenta1: " + diametroFerramenta);
 		double overLap =((Two5DMillingStrategy)ws.getOperation().getMachiningStrategy()).getOverLap();
 		double distance = trochoidalRadius + diametroFerramenta/2;
-		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, 0, 20 ,overLap);
+//		double distance = 40;
+
+		GenerateContournParallel generateContorun = new GenerateContournParallel(pocket, pocket.Z, distance ,overLap);
 		ArrayList<ArrayList<ArrayList<LimitedElement>>> multiplePath = generateContorun.multipleParallelPath() ;
 		ArrayList<LimitedElement> pathsVector = new ArrayList<LimitedElement>();
+		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(int i = 0; i < multiplePath.size(); i++)
 		{
 			for(int j = 0; j < multiplePath.get(i).size(); j++)
@@ -265,13 +290,16 @@ public class GenerateTrochoidalMovement1Test
 				{
 					pathsVector.add(movimentacoes.get(k));
 				}
+				for(int k = 0;k < multiplePath.get(i).get(j).size();k++)
+				{
+					all.add(multiplePath.get(i).get(j).get(k));
+				}
 			}
 		}
 		
-		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement tmp : formaOriginal)
 		{
-//			all.add(tmp);
+			all.add(tmp);
 		}
 		for(LimitedElement tmp : pathsVector)
 		{

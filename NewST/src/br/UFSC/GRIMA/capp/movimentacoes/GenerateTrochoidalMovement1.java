@@ -37,6 +37,7 @@ public class GenerateTrochoidalMovement1
 	//O ADD DOS PATHS CIRCULARES (2 PI) ESTAO COMENTADOS PARA FINS DE TESTE
 	private void generatePaths()
 	{
+//		System.out.println("lolololol");
 //		for(LimitedElement elementTmp : this.elements)
 //		ArrayList<Path> pathArrayFinal = new ArrayList<Path>();
 		for(int i = 0;i < this.elements.size();i++)
@@ -55,7 +56,10 @@ public class GenerateTrochoidalMovement1
 			{
 				Path lastPath = null; //Ponto final do ultimo circulo do array 
 				double circularPathAngle = 0;
+				System.out.println("lol1");
 				ArrayList<Path> pathsInLineBase = generatePathsInLimitedLineBase((LimitedLine)elementTmp);
+				System.out.println("lol2");
+
 				for(int j = 0;j<pathsInLineBase.size();j++) //Gera paths sobre uma linha guia
 				{
 					Path pathTmp = pathsInLineBase.get(j);
@@ -79,10 +83,10 @@ public class GenerateTrochoidalMovement1
 				
 				if(thereIsNext)
 				{
-					for(Path pathTmp: generatePathsInTransitionLine(lastPath,circularPathAngle, (LimitedLine)elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
-					{
-						paths.add(pathTmp);
-					}
+//					for(Path pathTmp: generatePathsInTransitionLine(lastPath,circularPathAngle, (LimitedLine)elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
+//					{
+//						paths.add(pathTmp);
+//					}
 				}
 //				this.generatePathsInLimitedLineBase((LimitedLine)elementTmp);
 			} else if(elementTmp.isLimitedArc()) //Se o elemento i e um arco guia
@@ -112,10 +116,10 @@ public class GenerateTrochoidalMovement1
 				
 				if(thereIsNext)
 				{
-					for(Path pathTmp: generatePathsInTransitionArc(lastPath, circularPathAngle, (LimitedArc)elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
-					{
-						paths.add(pathTmp);
-					}
+//					for(Path pathTmp: generatePathsInTransitionArc(lastPath, circularPathAngle, (LimitedArc)elementTmp, elementTmpNext)) //Gera paths de transisao entre os elementos guia
+//					{
+//						paths.add(pathTmp);
+//					}
 				}
 //				for(Path pathTmp:generatePathsInLimitedArcBase((LimitedArc)elementTmp)) //Gera paths sobre um arco guia
 //				{
@@ -372,6 +376,7 @@ public class GenerateTrochoidalMovement1
 			Point3d pontoFinalTmp = new Point3d(lineAuxTmp.getInitialPoint().x + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).x, lineAuxTmp.getInitialPoint().y + GeometricOperations.multiply(distanciaAcumulada, vetorUnitario).y, line.getInitialPoint().z);
 			LinearPath linhaTmp = new LinearPath(pontoInicialTmp, pontoFinalTmp, LinearPath.SLOW_MOV);
 			paths.add(linhaTmp);
+//			System.out.println(avanco);
 		}
 		/*
 		 * ultimo circulo no final da linha ------> cuidado! pode nao ser necessario
@@ -385,6 +390,7 @@ public class GenerateTrochoidalMovement1
 		paths.add(circuloTmp);
 		paths.add(linePath);
 		
+//		GeometricOperations.showElements(transformPathsInLimitedElements(paths));
 		return paths;
 	}
 	private ArrayList<Path> generatePathsInLimitedArcBase(LimitedArc arc)

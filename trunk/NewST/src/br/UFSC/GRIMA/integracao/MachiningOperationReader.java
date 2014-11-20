@@ -138,8 +138,9 @@ public class MachiningOperationReader
 			trocoidal.setAllowMultiplePasses(eTrocoidal.getAllow_multiple_passes(null));
 			trocoidal.setCutmodeType(eTrocoidal.getCut_mode(null));
 			trocoidal.setTrochoidalRadius(eTrocoidal.getTrochoidal_radius(null));
-			trocoidal.setTrochoidalFeedRate(6); //FORCEI UM VALOR PARA O TESTE FUNCIONAR (TEM QUE CRIAR UMA REFERENCIA NO STEP-NC)
-//			trocoidal.setOverLap(eTrocoidal.getOverlap(null));
+//			trocoidal.setTrochoidalFeedRate(6); //FORCEI UM VALOR PARA O TESTE FUNCIONAR (TEM QUE CRIAR UMA REFERENCIA NO STEP-NC)
+			System.out.println(eTrocoidal);
+			trocoidal.setOverLap(eTrocoidal.getOverlap(null));
 			if(eTrocoidal.getTrochoidal_rot_direction(null) == ERot_direction.CCW) //Trochoidal rotation
 			{
 				trocoidal.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
@@ -166,7 +167,7 @@ public class MachiningOperationReader
 			ContourParallel contourn = new ContourParallel();
 			contourn.setAllowMultiplePasses(eContourn.getAllow_multiple_passes(null));
 			contourn.setCutmodeType(eContourn.getCutmode(null));
-//			contourn.setOverLap(eContourn.getOverlap(null));
+			contourn.setOverLap(eContourn.getOverlap(null));
 			if(eContourn.getRotation_direction(null) == ERot_direction.CCW) //baseline direction
 			{
 				contourn.setRotationDirection(RotationDirection.CCW);

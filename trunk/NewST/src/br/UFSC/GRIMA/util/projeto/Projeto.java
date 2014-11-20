@@ -221,7 +221,8 @@ public class Projeto implements Serializable{
 				{
 					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Radius: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalRadius()));
 					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Sense: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalSense()));
-					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Feed Rate: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalFeedRate()));
+//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Feed Rate: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalFeedRate()));
+//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Feed Rate: " + (wsTmp.getCondicoesUsinagem().getAe())));
 					nodoMachinningStrategy.add(new DefaultMutableTreeNode("OverLap: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getOverLap()));
 					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Cut Mode Type: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getCutmodeType()));
 					

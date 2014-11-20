@@ -730,6 +730,7 @@ public class MapeadoraDeWorkingsteps {
 				
 				ap = 0.05*diametro;
 			}
+			
 			n = vc * 1000 / (Math.PI * diametro);
 			vf = f * n;
 //			ap = 2;

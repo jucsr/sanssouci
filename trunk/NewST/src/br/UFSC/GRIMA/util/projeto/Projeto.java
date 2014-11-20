@@ -20,8 +20,10 @@ import br.UFSC.GRIMA.capp.machiningOperations.FreeformOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.MachiningOperation;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneFinishMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.PlaneRoughMilling;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Bidirectional;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
 import br.UFSC.GRIMA.entidades.features.Bloco;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.ferramentas.BallEndMill;
@@ -220,13 +222,20 @@ public class Projeto implements Serializable{
 					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Radius: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalRadius()));
 					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Sense: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalSense()));
 					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Feed Rate: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getTrochoidalFeedRate()));
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("OverLap: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getOverLap()));
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Cut Mode Type: " + ((TrochoidalAndContourParallelStrategy)operationTmp.getMachiningStrategy()).getCutmodeType()));
+					
 				}
 				else if(operationTmp.getMachiningStrategy().getClass() == ContourParallel.class)
 				{
-//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Radius: " + ((ContourParallel)operationTmp.getMachiningStrategy()).));
-//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Sense: " + ((ContourParallel)operationTmp.getMachiningStrategy()).getTrochoidalSense()));
-//					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Trochoidal Feed Rate: " + ((ContourParallel)operationTmp.getMachiningStrategy()).getTrochoidalFeedRate()));
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("Rotation Direction: " + ((ContourParallel)operationTmp.getMachiningStrategy()).getRotationDirection()));
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("OverLap: " + ((ContourParallel)operationTmp.getMachiningStrategy()).getOverLap()));
 				
+				}
+				else //Bidirecional
+				{
+					nodoMachinningStrategy.add(new DefaultMutableTreeNode("OverLap: " + ((Bidirectional)operationTmp.getMachiningStrategy()).getOverLap()));
+					
 				}
 				nodoOperationTmp.add(new DefaultMutableTreeNode("Type : " + operationTmp.getId()));
 				nodoOperationTmp.add(new DefaultMutableTreeNode("Coolant : " + operationTmp.isCoolant()));

@@ -93,11 +93,17 @@ public class EditFaceMillFrame extends JDialog {
 		radioButton1 = new JRadioButton();
 		radioButton2 = new JRadioButton();
 		panel16 = new JPanel();
+		layeredPane5 = new JLayeredPane();
+		retractPlane = new JSpinner();
+		angle = new JSpinner();
+		angleZigZag = new JSpinner();
+		retractVertical = new JSpinner();
+		widthBox = new JSpinner();
 		label1 = new JLabel();
 		panel17 = new JPanel();
-		radioButton3 = new JRadioButton();
-		radioButton4 = new JRadioButton();
-		radioButton5 = new JRadioButton();
+		bolaVert = new JRadioButton();
+		bolaRamp = new JRadioButton();
+		bolaZigzag = new JRadioButton();
 		buttonBar = new JPanel();
 		okButton = new JButton();
 		cancelButton = new JButton();
@@ -602,16 +608,53 @@ public class EditFaceMillFrame extends JDialog {
 					//======== panel16 ========
 					{
 						panel16.setLayout(new GridBagLayout());
-						((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
-						((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
-						((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
-						((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+						((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0, 0};
+						((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+
+						//======== layeredPane5 ========
+						{
+							layeredPane5.setMaximumSize(new Dimension(340, 340));
+							layeredPane5.setMinimumSize(new Dimension(340, 340));
+
+							//---- retractPlane ----
+							retractPlane.setModel(new SpinnerNumberModel(20.0, null, null, 1.0));
+							layeredPane5.add(retractPlane, JLayeredPane.DEFAULT_LAYER);
+							retractPlane.setBounds(290, 215, 45, 20);
+
+							//---- angle ----
+							angle.setModel(new SpinnerNumberModel(5.0, null, null, 1.0));
+							layeredPane5.add(angle, JLayeredPane.DEFAULT_LAYER);
+							angle.setBounds(220, 230, 45, angle.getPreferredSize().height);
+
+							//---- angleZigZag ----
+							angleZigZag.setModel(new SpinnerNumberModel(5.0, null, null, 1.0));
+							layeredPane5.add(angleZigZag, JLayeredPane.DEFAULT_LAYER);
+							angleZigZag.setBounds(90, 170, 45, angleZigZag.getPreferredSize().height);
+
+							//---- retractVertical ----
+							retractVertical.setDoubleBuffered(true);
+							retractVertical.setModel(new SpinnerNumberModel(20.0, null, null, 1.0));
+							layeredPane5.add(retractVertical, JLayeredPane.DEFAULT_LAYER);
+							retractVertical.setBounds(205, 170, 45, retractVertical.getPreferredSize().height);
+
+							//---- widthBox ----
+							widthBox.setModel(new SpinnerNumberModel(5.0, 5.0, null, 1.0));
+							layeredPane5.add(widthBox, JLayeredPane.DEFAULT_LAYER);
+							widthBox.setBounds(145, 295, 45, 20);
+						}
+						panel16.add(layeredPane5, new GridBagConstraints(7, 0, 21, 2, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+							new Insets(0, 0, 0, 0), 0, 0));
 
 						//---- label1 ----
-						label1.setIcon(new ImageIcon(getClass().getResource("/images/Zig Zag Plunge.jpg")));
-						panel16.add(label1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+						label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
+						label1.setMaximumSize(new Dimension(340, 340));
+						label1.setMinimumSize(new Dimension(340, 340));
+						panel16.add(label1, new GridBagConstraints(7, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-							new Insets(0, 0, 5, 5), 0, 0));
+							new Insets(0, 0, 0, 5), 0, 0));
 
 						//======== panel17 ========
 						{
@@ -619,34 +662,35 @@ public class EditFaceMillFrame extends JDialog {
 							((GridBagLayout)panel17.getLayout()).columnWidths = new int[] {0, 0, 0};
 							((GridBagLayout)panel17.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
 
-							//---- radioButton3 ----
-							radioButton3.setText("Plunge Tool Axis");
-							radioButton3.setVerticalAlignment(SwingConstants.TOP);
-							panel17.add(radioButton3, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+							//---- bolaVert ----
+							bolaVert.setText("Plunge Tool Axis");
+							bolaVert.setVerticalAlignment(SwingConstants.TOP);
+							bolaVert.setSelected(true);
+							panel17.add(bolaVert, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 5), 0, 0));
 
-							//---- radioButton4 ----
-							radioButton4.setText("Ramp Plunge");
-							panel17.add(radioButton4, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+							//---- bolaRamp ----
+							bolaRamp.setText("Ramp Plunge");
+							panel17.add(bolaRamp, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 5, 5), 0, 0));
 
-							//---- radioButton5 ----
-							radioButton5.setText("Zig Zag Plunge");
-							panel17.add(radioButton5, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+							//---- bolaZigzag ----
+							bolaZigzag.setText("Zig Zag Plunge");
+							panel17.add(bolaZigzag, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 0, 5), 0, 0));
 						}
-						panel16.add(panel17, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
+						panel16.add(panel17, new GridBagConstraints(8, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-							new Insets(0, 0, 5, 5), 0, 0));
+							new Insets(0, 0, 0, 5), 0, 0));
 					}
 					tabbedPane1.addTab("Plunge Strategy", panel16);
 				}
-				contentPanel.add(tabbedPane1, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+				contentPanel.add(tabbedPane1, new GridBagConstraints(1, 1, 1, 2, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 5, 5), 0, 0));
+					new Insets(0, 0, 0, 5), 0, 0));
 			}
 			dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -679,6 +723,12 @@ public class EditFaceMillFrame extends JDialog {
 		ButtonGroup buttonGroup1 = new ButtonGroup();
 		buttonGroup1.add(radioButton1);
 		buttonGroup1.add(radioButton2);
+
+		//---- buttonGroup2 ----
+		ButtonGroup buttonGroup2 = new ButtonGroup();
+		buttonGroup2.add(bolaVert);
+		buttonGroup2.add(bolaRamp);
+		buttonGroup2.add(bolaZigzag);
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
@@ -751,11 +801,17 @@ public class EditFaceMillFrame extends JDialog {
 	protected JRadioButton radioButton1;
 	protected JRadioButton radioButton2;
 	private JPanel panel16;
-	private JLabel label1;
+	private JLayeredPane layeredPane5;
+	public JSpinner retractPlane;
+	public JSpinner angle;
+	public JSpinner angleZigZag;
+	public JSpinner retractVertical;
+	public JSpinner widthBox;
+	public JLabel label1;
 	private JPanel panel17;
-	private JRadioButton radioButton3;
-	private JRadioButton radioButton4;
-	private JRadioButton radioButton5;
+	public JRadioButton bolaVert;
+	public JRadioButton bolaRamp;
+	public JRadioButton bolaZigzag;
 	private JPanel buttonBar;
 	protected JButton okButton;
 	protected JButton cancelButton;

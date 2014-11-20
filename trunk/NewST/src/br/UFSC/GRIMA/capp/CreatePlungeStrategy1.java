@@ -6,6 +6,7 @@ package br.UFSC.GRIMA.capp;
  *
  */
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,37 +15,34 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.cad.JanelaPrincipal;
+import br.UFSC.GRIMA.cad.visual.EditFaceMillFrame;
 import br.UFSC.GRIMA.cam.GenerateTrocoidalGCode;
 import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
-import br.UFSC.GRIMA.capp.visual.PlungeFrame2;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 
-public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListener
+public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionListener
 {
 	private ArrayList<Path> trajetoEntrada;
-	private char plungeType;
 	private boolean ok = true;
+	private double separacao = 2;
 	public CreatePlungeStrategy1(ArrayList<Path> trajetoEntrada) // Cria��o do metodo, vulgo objeto
 	{
+		super(new Frame());
 		this.okButton.addActionListener(this); // Dando ouvidos ao bot�o ok
 		this.cancelButton.addActionListener(this);
 		this.bolaVert.addActionListener(this);
 		this.bolaRamp.addActionListener(this);
-		this.bolaHelix.addActionListener(this);
 		this.bolaZigzag.addActionListener(this);
-		this.setTitle("Plunge");
 		this.setVisible(true);
-		this.widthText.setVisible(false);
 		this.widthBox.setVisible(false);
-		this.retractText.setVisible(true);
-		this.retractBox.setVisible(true);
-		this.angleText.setVisible(false);
-		this.angleBox.setVisible(false);
-		this.radiusText.setVisible(false);
-		this.radiusBox.setVisible(false);
+		this.retractPlane.setVisible(false);
+		this.retractVertical.setVisible(true);
+		this.angle.setVisible(false);
+		this.angleZigZag.setVisible(false);
 		this.trajetoEntrada = trajetoEntrada;
 	}
 
@@ -60,40 +58,40 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		
 		else if (source == bolaVert)
 		{
-			label1.setIcon(new ImageIcon(getClass().getResource("/images/vertical.png")));
-			this.retractText.setVisible(true);
-			this.retractBox.setVisible(true);
-			this.angleText.setVisible(false);
-			this.angleBox.setVisible(false);
-			this.radiusText.setVisible(false);
-			this.radiusBox.setVisible(false);
-			this.widthText.setVisible(false);
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
+			//this.retractText.setVisible(true);
+			this.retractVertical.setVisible(true);
+			this.retractPlane.setVisible(false);
+			//this.angleText.setVisible(false);
+			this.angle.setVisible(false);
+			this.angleZigZag.setVisible(false);
+			//this.widthText.setVisible(false);
 			this.widthBox.setVisible(false);
 		}
 		
 		else if (source == bolaRamp)
 		{
-			label1.setIcon(new ImageIcon(getClass().getResource("/images/Ramp.png")));
-			this.angleText.setVisible(true);
-			this.angleBox.setVisible(true);
-			this.widthText.setVisible(false);
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Ramp Plunge.png")));
+			//this.angleText.setVisible(true);
+			this.angle.setVisible(true);
+			this.angleZigZag.setVisible(false);
+			//this.widthText.setVisible(false);
 			this.widthBox.setVisible(false);
-			this.radiusText.setVisible(false);
-			this.radiusBox.setVisible(false);
-			this.retractText.setVisible(true);
-			this.retractBox.setVisible(true);
+			//this.retractText.setVisible(true);
+			this.retractPlane.setVisible(true);
+			this.retractVertical.setVisible(false);
 		}
 		else if (source == bolaZigzag)
 		{
-			label1.setIcon(new ImageIcon(getClass().getResource("/images/zigzag.png")));
-			this.angleText.setVisible(true);
-			this.angleBox.setVisible(true);
-			this.retractText.setVisible(true);
-			this.retractBox.setVisible(true);
-			this.widthText.setVisible(true);
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Zig Zag.png")));
+			//this.angleText.setVisible(true);
+			this.angleZigZag.setVisible(true);
+			//this.retractText.setVisible(true);
+			this.retractPlane.setVisible(true);
+			//this.widthText.setVisible(true);
 			this.widthBox.setVisible(true);
-			this.radiusText.setVisible(false);
-			this.radiusBox.setVisible(false);
+			this.retractVertical.setVisible(false);
+			this.angle.setVisible(false);
 		}
 
 	
@@ -101,7 +99,7 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 
 	public ArrayList<Path> verticalPlunge() {
 		ArrayList<Path> trajeto = new ArrayList<Path>();
-		double retract = ((Double)(retractBox.getValue())).doubleValue();
+		double retract = ((Double)(retractVertical.getValue())).doubleValue();
 		LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(0).getInitialPoint().x, trajetoEntrada.get(0).getInitialPoint().y, retract), trajetoEntrada.get(0).getInitialPoint());
 		trajeto.add(p0);
 		return trajeto; 
@@ -115,8 +113,8 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		ArrayList<Path> trajetoT = new ArrayList<Path>(); //Apenas para invers�o do array
 		double h= 0 ;
 		double zAtual = trajetoEntrada.get(0).getInitialPoint().z; // PONTO!!!
-		double retractTotal = ((Double)(retractBox.getValue())).doubleValue();
-		double alfa =(((Double)(angleBox.getValue())).doubleValue()*Math.PI)/(180);
+		double retractTotal = ((Double)(retractPlane.getValue())).doubleValue();
+		double alfa =(((Double)(angle.getValue())).doubleValue()*Math.PI)/(180);
 		Point3d vector = null;
 		int numeroPathFinal = 0;
 		int contadorPaths = trajetoEntrada.size()-1;
@@ -147,7 +145,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					else if (trajetoEntrada.get(contadorPaths).isCircular())
 					{
 						CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
-						double separacao = 2;
 						int n = (int)(circularTmp.getAngulo() * circularTmp.getRadius() / separacao);
 						double dAngle = circularTmp.getAngulo() / (n);
 						double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + circularTmp.getAngulo(); // na verdade é o angulo final
@@ -246,8 +243,8 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		ArrayList<Path> trajetoInverso = new ArrayList<Path>(); // cuidado! esta em sentido contrario
 		ArrayList<Path> trajeto = new ArrayList<Path>(); // array de saida
 		double distanceTmp = 0;
-		double alfa = ((Double)angleBox.getValue()).doubleValue() * Math.PI / 180; // angulo em radianos
-		double zRetractPlane = ((Double)(retractBox.getValue())).doubleValue(); // z do retract plane (a ser atingido)
+		double alfa = ((Double)angle.getValue()).doubleValue() * Math.PI / 180; // angulo em radianos
+		double zRetractPlane = ((Double)(retractPlane.getValue())).doubleValue(); // z do retract plane (a ser atingido)
 		double zAtual = trajetoEntrada.get(trajetoEntrada.size() - 1).getInitialPoint().z; // pode ser do ponto final tambem
 		/*
 		 *  primeiro elemento dos paths de entrada
@@ -281,7 +278,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 			} else if(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).isCircular())
 			{
 				CircularPath circularTmp = (CircularPath)trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths);
-				double separacao = 2;
 				int n = (int)(circularTmp.getAngulo() * circularTmp.getRadius() / separacao);
 				double dAngle = circularTmp.getAngulo() / (n);
 				double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + circularTmp.getAngulo(); // na verdade é o angulo final
@@ -359,15 +355,23 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 		ArrayList<Path> trajeto = new ArrayList<Path>();
 		ArrayList<Path> trajetoT = new ArrayList<Path>();
 		ArrayList<Integer> listaPaths = new ArrayList<Integer>();
-		double alfa = ((Double)angleBox.getValue())*Math.PI/180;
-		double retractTotal = (Double)retractBox.getValue();
-		double width = (Double)widthBox.getValue();
+		double alfa = ((Double)angleZigZag.getValue())*Math.PI/180;
+		double retractTotal = (Double)retractPlane.getValue();
+		double width = ((Double)(widthBox.getValue())).doubleValue();
 		double zAtual = trajetoEntrada.get(0).getInitialPoint().z; // poderia ser qual quer um deles.
 		double deltaZ = 0;
 		int contadorPaths = trajetoEntrada.size()-1;
 		int  numeroPathsFinal = 0;
 		int paridade = 0;
 		double distance = 0;
+		if(alfa <= 0 || width<5 ){
+			JOptionPane.showConfirmDialog(null,  "The angle has to be major than Zero", "Error", JOptionPane.ERROR_MESSAGE);
+			ok = false;
+			}
+		else
+			ok = true;
+		if(ok)
+			{	
 		if (trajetoEntrada.get(contadorPaths).isLine())
 		{
 			 distance = trajetoEntrada.get(contadorPaths).getInitialPoint().distance(trajetoEntrada.get(contadorPaths).getFinalPoint());
@@ -415,7 +419,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
 					deltaZ = width*Math.tan(alfa);
 					double teta = width/circularTmp.getRadius();
-					double separacao = 1.2;
 					int n = (int)(teta * circularTmp.getRadius() / separacao);
 					double dAngle = teta / (n);
 					double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + teta;
@@ -526,7 +529,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(listaPaths.get(indicePaths));
 									deltaZ = circularTmp.getRadius()*circularTmp.getAngulo()*(Math.tan(alfa));
 									double teta = circularTmp.getRadius()*circularTmp.getAngulo()/circularTmp.getRadius();
-									double separacao = 1.2;
 									int n = (int)(teta * circularTmp.getRadius() / separacao);
 									double dAngle = teta / (n);
 									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + teta;
@@ -557,7 +559,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(listaPaths.get(indicePaths));
 									deltaZ = circularTmp.getRadius()*circularTmp.getAngulo()*(Math.tan(alfa));
 									double teta = circularTmp.getRadius()*circularTmp.getAngulo()/circularTmp.getRadius();
-									double separacao = 1.2;
 									int n = (int)(teta * circularTmp.getRadius() / separacao);
 									double dAngle = teta / (n);
 									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
@@ -626,7 +627,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
 									deltaZ = width*Math.tan(alfa);
 									double teta = width/circularTmp.getRadius();
-									double separacao = 1.2;
 									int n = (int)(teta * circularTmp.getRadius() / separacao);
 									double dAngle = teta / (n);
 									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + teta;
@@ -655,7 +655,6 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
 									deltaZ = width*Math.tan(alfa);
 									double teta = width/circularTmp.getRadius();
-									double separacao = 1.2;
 									int n = (int)(teta * circularTmp.getRadius() / separacao);
 									double dAngle = teta / (n);
 									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
@@ -709,8 +708,10 @@ public class CreatePlungeStrategy1 extends PlungeFrame2 implements ActionListene
 					trajetoT.add(trajeto.get(contadorPaths));
 				}
 			}
+			}
 		return trajetoT;
-	}
+		}
+			
 	
 	public ArrayList<Path> calcularMergulho() {
 		ArrayList<Path> trajeto = null; //Declara��o da Vari�vel trajeto e cria��o desta

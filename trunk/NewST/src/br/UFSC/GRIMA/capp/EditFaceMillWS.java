@@ -5,15 +5,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.vecmath.Point3d;
-
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
 import br.UFSC.GRIMA.cad.visual.EditFaceMillFrame;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
-import br.UFSC.GRIMA.capp.machiningOperations.Drilling;
+import br.UFSC.GRIMA.capp.plunge.PlungeRamp;
+import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
+import br.UFSC.GRIMA.capp.plunge.PlungeZigzag;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
-import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
 
 public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener, ItemListener{
 
@@ -26,6 +26,7 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 	private String tipo;
 	
 	private BottomAndSideRoughMilling operation;
+	private PlungeStrategy plungeStrategy;
 	private FaceMill faceMill;
 	private CondicoesDeUsinagem condicoes;
 	
@@ -39,7 +40,7 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		this.operation = (BottomAndSideRoughMilling)wsTmp.getOperation();
 		this.faceMill = (FaceMill) wsTmp.getFerramenta();
 		this.condicoes = wsTmp.getCondicoesUsinagem();
-		
+		this.plungeStrategy = (PlungeStrategy)operation.getApproachStrategy();
 		
 		this.okButton.addActionListener(this);
 		this.cancelButton.addActionListener(this);
@@ -79,6 +80,21 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		double allowanceBottom = this.operation.getAllowanceBottom();
 		this.spinner14.setValue(allowanceBottom);
 		
+		//Approach Strategy
+		
+		if (plungeStrategy.getClass() == PlungeRamp.class)
+		{
+			PlungeRamp pl = (PlungeRamp)plungeStrategy;
+			double angle =  pl.getAngle();
+			this.angle.setValue(angle);
+		} else if( plungeStrategy.getClass() == PlungeZigzag.class)
+		{
+			PlungeZigzag pl = (PlungeZigzag)plungeStrategy;
+			double angle = pl.getAngle();
+			double width = pl.getWidth();
+			this.angleZigZag.setValue(angle);
+			this.widthBox.setValue(width);
+		}
 		
 		//TOOL
 		String nome = this.faceMill.getName();
@@ -207,6 +223,25 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		this.operation.setRetractPlane((Double) this.spinner15.getValue());
 		this.operation.setAllowanceSide((Double) this.spinner13.getValue());
 		this.operation.setAllowanceBottom((Double) this.spinner14.getValue());
+		
+		//PLUNGE STRATEGY
+		if(bolaVert.isSelected())
+		{
+			PlungeToolAxis pl = (PlungeToolAxis)plungeStrategy;
+			operation.setApproachStrategy(pl);
+		} else if (bolaRamp.isSelected())
+		{
+			PlungeRamp pl = (PlungeRamp)plungeStrategy;
+			pl.setAngle((Double)angle.getValue());
+			operation.setApproachStrategy(pl);
+		} else if (bolaZigzag.isSelected())
+		{
+			PlungeZigzag pl = (PlungeZigzag)plungeStrategy;
+			pl.setAngle((Double)angle.getValue());
+			pl.setWidth((Double)widthBox.getValue());
+			operation.setApproachStrategy(pl);
+		}
+			
 		
 		//TOOL
 		this.faceMill.setName(this.textField1.getText());

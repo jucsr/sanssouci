@@ -250,99 +250,6 @@ public class MovimentacaoGeneralClosedPocket {
 	 *  
 	 * @return trajetorias trocoidais
 	 */
-//	public ArrayList<Path> getDesbasteTrocoidal()
-//	{
-//		ArrayList<Path> desbaste = new ArrayList<Path>();                    //Array de paths
-//		double planoSeguranca = ws.getOperation().getRetractPlane();         //plano de seguranca da ferramenta
-////		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(), ((GeneralClosedPocket)ws.getFeature()).getRadius());
-//		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
-//		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
-////		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
-////		entrada.add(addPocket.getElements());
-//		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //plano de desbaste da feature
-//		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste seja maior que a profundidade da feature
-//		{
-//			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
-//		}
-//		// =========== CUIDADO =====
-//		//---- gerando as linhas guia para o trocoidal
-////		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
-////		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
-//		
-//		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
-//		this.elementos = contourn.multipleParallelPath();
-//		
-////		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());
-//
-//		// ========= END CUIDADO ======
-//		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 
-//		Point3d lastPointPlanoZ = null;  //O ponto descrito acima com a coordenada z do ponto de seguranca
-//		for(int i = 0; i < elementos.size(); i++)
-//		{
-//			for(int j = 0; j < elementos.get(i).size(); j++)
-//			{
-//				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), ws/*trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe()*/);
-//				Path pathTmp = eMov.getPaths().get(0); //Primeiro path do array
-//				Point3d pointTmp = new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, planoSeguranca);
-//				/*
-//				 * Posicionamento antes de descer (Velocidade rapida)
-//				 */
-//				if (i == 0 && j == 0)
-//				{
-//					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp, pointTmp);
-//					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
-//					desbaste.add(posicionamentoAntesDeDescer);
-//				}
-//				else
-//				{
-//					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
-//					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
-//
-//					desbaste.add(posicionamentoAntesDeDescer);
-//				}
-//
-//				/*
-//				 * descendo em velocidade controlada no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
-//				 */
-////				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
-////				{
-////					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(elementos.get(i).get(j))
-////				}
-////				Path pathTmp = null;
-//				LinearPath descendo = new LinearPath(pointTmp, pathTmp.getInitialPoint());
-//				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
-//				desbaste.add(descendo);
-//				for(int k = 0; k < eMov.getPaths().size(); k++)
-//				{
-//					pathTmp = eMov.getPaths().get(k);
-//					desbaste.add(pathTmp);
-//					if (k == elementos.get(i).get(j).size() - 1)
-//					{
-//						lastPoint = pathTmp.getFinalPoint();
-////						System.out.println(lastPoint);
-//					}
-//				}
-//				/*
-//				 * subindo
-//				 */
-//				LinearPath subindo = new LinearPath(lastPoint, pointTmp/*new Point3d(lastPoint.x, lastPoint.y, planoSeguranca)*/);
-//				lastPointPlanoZ = subindo.getFinalPoint();
-////				System.out.println("lol: " + lastPoint);
-////				System.out.println("lol2: " + lastPointPlanoZ);
-////				System.out.println("lol3: " + pointTmp);
-//				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
-//				desbaste.add(subindo);
-//				/*
-//				 *  indo pro proximo loop
-//				 */
-//			}
-//		}
-//		return desbaste;
-//	}
-	/**
-	 *  
-	 * @return trajetorias trocoidais
-	 */
 	public ArrayList<Path> getDesbasteTrocoidal()
 	{
 		ArrayList<Path> desbaste = new ArrayList<Path>();                    //Array de paths
@@ -361,22 +268,9 @@ public class MovimentacaoGeneralClosedPocket {
 		//---- gerando as linhas guia para o trocoidal
 //		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
 //		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
-		//*********Teste*******************
-		System.out.println("Elementos da Cavidade");
-		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getPoints(), ((GeneralClosedPocket)ws.getFeature()).Z, ((GeneralClosedPocket)ws.getFeature()).getRadius());
-//		GeometricOperations.showElements(addPocketVertex.getElements());
-		GeometricOperations.showPoints(((GeneralClosedPocket)ws.getFeature()).getPoints());
-		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(((GeneralClosedPocket)ws.getFeature()), planoZ))
-		{
-			GeometricOperations.showElements(arrayTmp);
-		}
-		//*********************************
-//		(GeneralClosedPocket)ws.getFeature().get
+		
 		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
 		this.elementos = contourn.multipleParallelPath();
-//		System.err.println("Linhas Base: " + elementos.size());
-//		System.err.println("Linhas Base offset: " + (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)));
-
 		
 //		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());
 
@@ -390,19 +284,34 @@ public class MovimentacaoGeneralClosedPocket {
 				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), ws/*trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe()*/);
 				Path pathTmp = eMov.getPaths().get(0); //Primeiro path do array
 				Point3d pointTmp = new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, planoSeguranca);
-				ArrayList<Path> approachPaths = new ArrayList<Path>();
-				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
+				/*
+				 * Posicionamento antes de descer (Velocidade rapida)
+				 */
+				if (i == 0 && j == 0)
 				{
-					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(transformLimitedElementsInPaths(elementos.get(i).get(j)));
-					approachPaths = plunge.calcularMergulho();
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp, pointTmp);
+					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+					desbaste.add(posicionamentoAntesDeDescer);
 				}
-				
-				for(Path approachPath:approachPaths)
+				else
 				{
-					desbaste.add(approachPath);
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
+					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+
+					desbaste.add(posicionamentoAntesDeDescer);
 				}
+
+				/*
+				 * descendo em velocidade controlada no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
+				 */
+//				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
+//				{
+//					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(elementos.get(i).get(j))
+//				}
 //				Path pathTmp = null;
-//				desbaste.add(descendo);
+				LinearPath descendo = new LinearPath(pointTmp, pathTmp.getInitialPoint());
+				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
+				desbaste.add(descendo);
 				for(int k = 0; k < eMov.getPaths().size(); k++)
 				{
 					pathTmp = eMov.getPaths().get(k);
@@ -410,6 +319,7 @@ public class MovimentacaoGeneralClosedPocket {
 					if (k == elementos.get(i).get(j).size() - 1)
 					{
 						lastPoint = pathTmp.getFinalPoint();
+//						System.out.println(lastPoint);
 					}
 				}
 				/*
@@ -417,6 +327,9 @@ public class MovimentacaoGeneralClosedPocket {
 				 */
 				LinearPath subindo = new LinearPath(lastPoint, pointTmp/*new Point3d(lastPoint.x, lastPoint.y, planoSeguranca)*/);
 				lastPointPlanoZ = subindo.getFinalPoint();
+//				System.out.println("lol: " + lastPoint);
+//				System.out.println("lol2: " + lastPointPlanoZ);
+//				System.out.println("lol3: " + pointTmp);
 				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
 				desbaste.add(subindo);
 				/*
@@ -427,102 +340,89 @@ public class MovimentacaoGeneralClosedPocket {
 		return desbaste;
 	}
 	/**
-	 * 
-	 * @return trajetorias de desbaste usando LIMITED_ELEMENT --> (Toda a trajetoria deve estar contemplada aqui, inclussive as trajetorias de saida e entrada da ferramenta)
+	 *  
+	 * @return trajetorias trocoidais
 	 */
-//	public ArrayList<Path> getDesbasteContourParallel()
+//	public ArrayList<Path> getDesbasteTrocoidal()
 //	{
-//		ArrayList<Path> desbaste = new ArrayList<Path>();                                          //Array de Paths
-//		double planoSeguranca = ws.getOperation().getRetractPlane();                               //Plano em que a ferramenta tem maior velocidade
-//		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
-//		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>(); //Array de elementos do contorno da cavidade
-//		entrada.add(addPocket.getElements());
-//		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //Plano de Desbaste da feature
-//		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
+//		ArrayList<Path> desbaste = new ArrayList<Path>();                    //Array de paths
+//		double planoSeguranca = ws.getOperation().getRetractPlane();         //plano de seguranca da ferramenta
+////		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(), ((GeneralClosedPocket)ws.getFeature()).getRadius());
+//		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
+//		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
+////		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
+////		entrada.add(addPocket.getElements());
+//		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //plano de desbaste da feature
+//		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste seja maior que a profundidade da feature
 //		{
 //			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
 //		}
-//		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0); 
-//		this.elementos = contourn.multipleParallelPath();                     //Offsets do contorno da cavidade
-////		this.elementos = GenerateContournParallel.multipleParallelPath(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0);                     //Offsets do contorno da cavidade
+//		// =========== CUIDADO =====
+//		//---- gerando as linhas guia para o trocoidal
+////		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
+////		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
+//		//*********Teste*******************
+//		System.out.println("Elementos da Cavidade");
+//		GeneralClosedPocketVertexAdd addPocketVertex = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getPoints(), ((GeneralClosedPocket)ws.getFeature()).Z, ((GeneralClosedPocket)ws.getFeature()).getRadius());
+////		GeometricOperations.showElements(addPocketVertex.getElements());
+//		GeometricOperations.showPoints(((GeneralClosedPocket)ws.getFeature()).getPoints());
+//		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(((GeneralClosedPocket)ws.getFeature()), planoZ))
+//		{
+//			GeometricOperations.showElements(arrayTmp);
+//		}
+//		//*********************************
+////		(GeneralClosedPocket)ws.getFeature().get
+//		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
+//		this.elementos = contourn.multipleParallelPath();
+////		System.err.println("Linhas Base: " + elementos.size());
+////		System.err.println("Linhas Base offset: " + (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)));
 //
+//		
+////		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());
+//
+//		// ========= END CUIDADO ======
 //		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 
 //		Point3d lastPointPlanoZ = null;  //O ponto descrito acima com a coordenada z do ponto de seguranca
 //		for(int i = 0; i < elementos.size(); i++)
 //		{
 //			for(int j = 0; j < elementos.get(i).size(); j++)
 //			{
-//				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
-//				Point3d pointTmp = new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca));
-//				if(i==0 && j==0)
+//				GenerateTrochoidalMovement1 eMov = new GenerateTrochoidalMovement1(elementos.get(i).get(j), ws/*trocoidalStrategy.getTrochoidalRadius(), ws.getCondicoesUsinagem().getAe()*/);
+//				Path pathTmp = eMov.getPaths().get(0); //Primeiro path do array
+//				Point3d pointTmp = new Point3d(pathTmp.getFinalPoint().x, pathTmp.getFinalPoint().y, planoSeguranca);
+//				ArrayList<Path> approachPaths = new ArrayList<Path>();
+//				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
 //				{
-//					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp,pointTmp);
-//					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
-//					desbaste.add(posicionamentoAntesDeDescer);
+//					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(transformLimitedElementsInPaths(elementos.get(i).get(j)));
+//					approachPaths = plunge.calcularMergulho();
 //				}
-//				else
+//				
+//				for(Path approachPath:approachPaths)
 //				{
-//					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
-//					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
-//
-//					desbaste.add(posicionamentoAntesDeDescer);
+//					desbaste.add(approachPath);
 //				}
-//				/*
-//				 * descendo no primeiro ponto desde o plano de seguranca ate o primeiro path (jah dentro da peca)
-//				 */
-//				LinearPath descendo = new LinearPath(new Point3d(pointTmp), new Point3d(pointTmp.x, pointTmp.y, eTmp.getInitialPoint().z));
-//				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
-//				desbaste.add(descendo);
-////				System.out.println(j);
-//				for(int k = 0; k < elementos.get(i).get(j).size(); k++)
+////				Path pathTmp = null;
+////				desbaste.add(descendo);
+//				for(int k = 0; k < eMov.getPaths().size(); k++)
 //				{
-//					eTmp = elementos.get(i).get(j).get(k);
-//					if(eTmp.isLimitedLine())
+//					pathTmp = eMov.getPaths().get(k);
+//					desbaste.add(pathTmp);
+//					if (k == elementos.get(i).get(j).size() - 1)
 //					{
-//						LimitedLine eLineTmp = (LimitedLine)eTmp;
-//						LinearPath lineTmp = new LinearPath(eLineTmp.getInitialPoint(), eLineTmp.getFinalPoint());
-//						desbaste.add(lineTmp);
-//					}
-//					else if(eTmp.isLimitedArc())
-//					{
-//						LimitedArc eArcTmp = (LimitedArc)eTmp;
-//						CircularPath circTmp = new CircularPath(eArcTmp.getCenter(), eArcTmp.getInitialPoint(), eArcTmp.getFinalPoint(),eArcTmp.getDeltaAngle()); // ------> verificar este construtor
-//						desbaste.add(circTmp);
-//					}
-//					if(k == elementos.get(i).get(j).size()-1)
-//					{
-//						lastPoint = eTmp.getFinalPoint();
-//						System.out.println(lastPoint);
+//						lastPoint = pathTmp.getFinalPoint();
 //					}
 //				}
 //				/*
 //				 * subindo
 //				 */
-//				LinearPath subindo = new LinearPath(lastPoint, new Point3d(lastPoint.x, lastPoint.y, planoSeguranca));
+//				LinearPath subindo = new LinearPath(lastPoint, pointTmp/*new Point3d(lastPoint.x, lastPoint.y, planoSeguranca)*/);
 //				lastPointPlanoZ = subindo.getFinalPoint();
 //				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
 //				desbaste.add(subindo);
-//				
 //				/*
 //				 *  indo pro proximo loop
 //				 */
-//				
 //			}
-////			try
-////			{
-////				elementos.get(i+1).get(0);
-//////				Point3d pI = subindo.getFinalPoint();  
-////				Point3d pF = new Point3d(elementos.get(i+1).get(0).get(0).getInitialPoint().x,elementos.get(i+1).get(0).get(0).getInitialPoint().y,planoSeguranca);
-////				LinearPath horizontal = new LinearPath(lastPoint, pF);
-////				horizontal.setTipoDeMovimento(LinearPath.FAST_MOV);
-////				System.out.println("pI: " + lastPoint);
-////				System.out.println("pF: " + pF);
-////				desbaste.add(horizontal);
-////			}
-////			catch (Exception e)
-////			{
-////				
-////			}
 //		}
 //		return desbaste;
 //	}
@@ -537,7 +437,6 @@ public class MovimentacaoGeneralClosedPocket {
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
 		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>(); //Array de elementos do contorno da cavidade
 		entrada.add(addPocket.getElements());
-		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
 		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //Plano de Desbaste da feature
 		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
 		{
@@ -555,36 +454,26 @@ public class MovimentacaoGeneralClosedPocket {
 			{
 				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
 				Point3d pointTmp = new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca));
-//				if(i==0 && j==0)
-//				{
-//					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp,pointTmp);
-//					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
-//					desbaste.add(posicionamentoAntesDeDescer);
-//				}
-//				else
-//				{
-//					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
-//					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
-//
-//					desbaste.add(posicionamentoAntesDeDescer);
-//				}
+				if(i==0 && j==0)
+				{
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp,pointTmp);
+					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+					desbaste.add(posicionamentoAntesDeDescer);
+				}
+				else
+				{
+					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
+					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+
+					desbaste.add(posicionamentoAntesDeDescer);
+				}
 				/*
 				 * descendo no primeiro ponto desde o plano de seguranca ate o primeiro path (jah dentro da peca)
 				 */
-//				LinearPath descendo = new LinearPath(new Point3d(pointTmp), new Point3d(pointTmp.x, pointTmp.y, eTmp.getInitialPoint().z));
-//				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
-//				desbaste.add(descendo);
+				LinearPath descendo = new LinearPath(new Point3d(pointTmp), new Point3d(pointTmp.x, pointTmp.y, eTmp.getInitialPoint().z));
+				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
+				desbaste.add(descendo);
 //				System.out.println(j);
-				ArrayList<Path> approachPaths = new ArrayList<Path>();
-				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
-				{
-					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(transformLimitedElementsInPaths(elementos.get(i).get(j)));
-					approachPaths = plunge.calcularMergulho();
-				}
-				for(Path approachPath:approachPaths)
-				{
-					desbaste.add(approachPath);
-				}
 				for(int k = 0; k < elementos.get(i).get(j).size(); k++)
 				{
 					eTmp = elementos.get(i).get(j).get(k);
@@ -619,9 +508,120 @@ public class MovimentacaoGeneralClosedPocket {
 				 */
 				
 			}
+//			try
+//			{
+//				elementos.get(i+1).get(0);
+////				Point3d pI = subindo.getFinalPoint();  
+//				Point3d pF = new Point3d(elementos.get(i+1).get(0).get(0).getInitialPoint().x,elementos.get(i+1).get(0).get(0).getInitialPoint().y,planoSeguranca);
+//				LinearPath horizontal = new LinearPath(lastPoint, pF);
+//				horizontal.setTipoDeMovimento(LinearPath.FAST_MOV);
+//				System.out.println("pI: " + lastPoint);
+//				System.out.println("pF: " + pF);
+//				desbaste.add(horizontal);
+//			}
+//			catch (Exception e)
+//			{
+//				
+//			}
 		}
 		return desbaste;
 	}
+	/**
+	 * 
+	 * @return trajetorias de desbaste usando LIMITED_ELEMENT --> (Toda a trajetoria deve estar contemplada aqui, inclussive as trajetorias de saida e entrada da ferramenta)
+	 */
+//	public ArrayList<Path> getDesbasteContourParallel()
+//	{
+//		ArrayList<Path> desbaste = new ArrayList<Path>();                                          //Array de Paths
+//		double planoSeguranca = ws.getOperation().getRetractPlane();                               //Plano em que a ferramenta tem maior velocidade
+//		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
+//		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>(); //Array de elementos do contorno da cavidade
+//		entrada.add(addPocket.getElements());
+//		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
+//		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //Plano de Desbaste da feature
+//		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
+//		{
+//			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
+//		}
+//		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0); 
+//		this.elementos = contourn.multipleParallelPath();                     //Offsets do contorno da cavidade
+////		this.elementos = GenerateContournParallel.multipleParallelPath(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0);                     //Offsets do contorno da cavidade
+//
+//		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 
+//		Point3d lastPointPlanoZ = null;  //O ponto descrito acima com a coordenada z do ponto de seguranca
+//		for(int i = 0; i < elementos.size(); i++)
+//		{
+//			for(int j = 0; j < elementos.get(i).size(); j++)
+//			{
+//				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
+//				Point3d pointTmp = new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca));
+////				if(i==0 && j==0)
+////				{
+////					LinearPath posicionamentoAntesDeDescer = new LinearPath(pointTmp,pointTmp);
+////					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+////					desbaste.add(posicionamentoAntesDeDescer);
+////				}
+////				else
+////				{
+////					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
+////					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
+////
+////					desbaste.add(posicionamentoAntesDeDescer);
+////				}
+//				/*
+//				 * descendo no primeiro ponto desde o plano de seguranca ate o primeiro path (jah dentro da peca)
+//				 */
+////				LinearPath descendo = new LinearPath(new Point3d(pointTmp), new Point3d(pointTmp.x, pointTmp.y, eTmp.getInitialPoint().z));
+////				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
+////				desbaste.add(descendo);
+////				System.out.println(j);
+//				ArrayList<Path> approachPaths = new ArrayList<Path>();
+//				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
+//				{
+//					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(transformLimitedElementsInPaths(elementos.get(i).get(j)));
+//					approachPaths = plunge.calcularMergulho();
+//				}
+//				for(Path approachPath:approachPaths)
+//				{
+//					desbaste.add(approachPath);
+//				}
+//				for(int k = 0; k < elementos.get(i).get(j).size(); k++)
+//				{
+//					eTmp = elementos.get(i).get(j).get(k);
+//					if(eTmp.isLimitedLine())
+//					{
+//						LimitedLine eLineTmp = (LimitedLine)eTmp;
+//						LinearPath lineTmp = new LinearPath(eLineTmp.getInitialPoint(), eLineTmp.getFinalPoint());
+//						desbaste.add(lineTmp);
+//					}
+//					else if(eTmp.isLimitedArc())
+//					{
+//						LimitedArc eArcTmp = (LimitedArc)eTmp;
+//						CircularPath circTmp = new CircularPath(eArcTmp.getCenter(), eArcTmp.getInitialPoint(), eArcTmp.getFinalPoint(),eArcTmp.getDeltaAngle()); // ------> verificar este construtor
+//						desbaste.add(circTmp);
+//					}
+//					if(k == elementos.get(i).get(j).size()-1)
+//					{
+//						lastPoint = eTmp.getFinalPoint();
+//						System.out.println(lastPoint);
+//					}
+//				}
+//				/*
+//				 * subindo
+//				 */
+//				LinearPath subindo = new LinearPath(lastPoint, new Point3d(lastPoint.x, lastPoint.y, planoSeguranca));
+//				lastPointPlanoZ = subindo.getFinalPoint();
+//				subindo.setTipoDeMovimento(LinearPath.FAST_MOV);
+//				desbaste.add(subindo);
+//				
+//				/*
+//				 *  indo pro proximo loop
+//				 */
+//				
+//			}
+//		}
+//		return desbaste;
+//	}
 	/**
 	 * 
 	 * @return multiple parallel elements

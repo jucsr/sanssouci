@@ -32,6 +32,7 @@ public class GenerateTrochoidalMovement1
 		this.elements = elements;
 		this.radius = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalRadius();
 		this.avanco = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalFeedRate();
+		System.out.println("Avanco: "+avanco);
 		this.generatePaths();
 	}
 	//O ADD DOS PATHS CIRCULARES (2 PI) ESTAO COMENTADOS PARA FINS DE TESTE

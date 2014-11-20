@@ -136,7 +136,10 @@ public class MachiningOperationReader
 			ETrochoidal_and_contourn_parallel eTrocoidal = (ETrochoidal_and_contourn_parallel)eTwo5d_milling_strategy;
 			TrochoidalAndContourParallelStrategy trocoidal = new TrochoidalAndContourParallelStrategy();
 			trocoidal.setAllowMultiplePasses(eTrocoidal.getAllow_multiple_passes(null));
+			trocoidal.setCutmodeType(eTrocoidal.getCut_mode(null));
 			trocoidal.setTrochoidalRadius(eTrocoidal.getTrochoidal_radius(null));
+			trocoidal.setTrochoidalFeedRate(6); //FORCEI UM VALOR PARA O TESTE FUNCIONAR (TEM QUE CRIAR UMA REFERENCIA NO STEP-NC)
+//			trocoidal.setOverLap(eTrocoidal.getOverlap(null));
 			if(eTrocoidal.getTrochoidal_rot_direction(null) == ERot_direction.CCW) //Trochoidal rotation
 			{
 				trocoidal.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);

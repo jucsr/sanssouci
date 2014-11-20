@@ -719,7 +719,12 @@ public class MapeadoraGeneralClosedPocket1
 				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 						genClosed, 0, maiorMenorDistanciaTmp);
 //				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
-	
+				
+				// CONDIÇÕES DE USINAGEM
+				condicoesDeUsinagem = MapeadoraDeWorkingsteps
+						.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
+								bloco.getMaterial());
+				
 				//Estrategia de usinagem
 				TrochoidalAndContourParallelStrategy machiningStrategyTmp = new TrochoidalAndContourParallelStrategy();
 				operationTmp.setMachiningStrategy(machiningStrategyTmp);
@@ -727,17 +732,16 @@ public class MapeadoraGeneralClosedPocket1
 //				machiningStrategyTmp.setOverLap(0.25*faceMillTmp.getDiametroFerramenta()); //Overlap
 				machiningStrategyTmp.setOverLap(2); //Overlap
 				machiningStrategyTmp.setTrochoidalRadius(faceMillTmp.getDiametroFerramenta()/2); //REVER MAIS TARDE
-				machiningStrategyTmp.setTrochoidalFeedRate(0.75*faceMillTmp.getDiametroFerramenta()/2);
+//				machiningStrategyTmp.setTrochoidalFeedRate(0.75*faceMillTmp.getDiametroFerramenta()/2);
+				machiningStrategyTmp.setTrochoidalFeedRate(condicoesDeUsinagem.getAe());
+				System.out.println("Feed Rate: " + machiningStrategyTmp.getTrochoidalFeedRate());
 				machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 				
 				//Estrategia de aproximacao
 				PlungeStrategy plungeStrategy = new PlungeToolAxis();
 				operationTmp.setApproachStrategy(plungeStrategy);
-				// CONDIÇÕES DE USINAGEM
-				condicoesDeUsinagem = MapeadoraDeWorkingsteps
-						.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
-								bloco.getMaterial());
+				
 				// WORKINGSTEP
 				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,
 						condicoesDeUsinagem, operationTmp);

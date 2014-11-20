@@ -45,12 +45,12 @@ public class MapeadoraGeneralClosedPocket1Test
 	{
 	    ArrayList<Point2D> points = new ArrayList<Point2D>();
 	    //Forma 1
-		points.add(new Point2D.Double(500, 320));
-		points.add(new Point2D.Double(500, 160));
-		points.add(new Point2D.Double(280, 160));
-		points.add(new Point2D.Double(280, 40));
-		points.add(new Point2D.Double(0, 40));
-		points.add(new Point2D.Double(0, 320));
+//		points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 160));
+//		points.add(new Point2D.Double(280, 160));
+//		points.add(new Point2D.Double(280, 40));
+//		points.add(new Point2D.Double(0, 40));
+//		points.add(new Point2D.Double(0, 320));
 		
 		//Forma 2
 //		points.add(new Point2D.Double(500, 320));
@@ -58,17 +58,36 @@ public class MapeadoraGeneralClosedPocket1Test
 //		points.add(new Point2D.Double(0, 0));
 //		points.add(new Point2D.Double(0, 320));
 		
+		//Forma de Cachorrinho --> raio 5
+		points.add(new Point2D.Double(44.0,89.0));
+		points.add(new Point2D.Double(51.0,68.0));
+		points.add(new Point2D.Double(27.0,22.0));
+		points.add(new Point2D.Double(55.0,20.0));
+		points.add(new Point2D.Double(67.0,50.0));
+		points.add(new Point2D.Double(124.0,65.0));
+		points.add(new Point2D.Double(136.0,20.0));
+		points.add(new Point2D.Double(164.0,19.0));
+		points.add(new Point2D.Double(147.0,66.0));
+		points.add(new Point2D.Double(168.0,116.0));
+		points.add(new Point2D.Double(134.0,84.0));
+		points.add(new Point2D.Double(68.0,84.0));
+		points.add(new Point2D.Double(45.0,120.0));
+		points.add(new Point2D.Double(13.0,93.0));
+		
 		//Protuberancia
 		pocket.setPoints(points);
-		pocket.setRadius(30);
+		pocket.setRadius(5);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		CircularBoss arcBoss1 = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
 		CircularBoss arcBoss2 = new CircularBoss("", 100, 200, pocket.Z, 40, 40, pocket.getProfundidade());
+		CircularBoss arcBoss3 = new CircularBoss("", 39, 103, pocket.Z, 4, 4, pocket.getProfundidade());
 
-		itsBoss.add(arcBoss1);
-		itsBoss.add(arcBoss2);
+
+//		itsBoss.add(arcBoss1);
+//		itsBoss.add(arcBoss2);
+		itsBoss.add(arcBoss3);
 
 		
 		//Rectangular Boss
@@ -166,7 +185,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 
 		//PRIMEIRA FERRAMENTA
-		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))/1.5,2);
+		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)),2);
 //		double diametroFerramenta1 = 82;
 		System.out.println("diametro ferramenta 1: " + diametroFerramenta1);
 		double overLap = 2;//0.25*diametroFerramenta;
@@ -195,8 +214,8 @@ public class MapeadoraGeneralClosedPocket1Test
 			}
 		}
 		//SEGUNDA FERRAMENTA
-		double diametroFerramenta2 = 10;
-//		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
+//		double diametroFerramenta2 = 6;
+		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
 		System.out.println("diametro ferramenta 2: " + diametroFerramenta2);
 
 		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
@@ -252,7 +271,7 @@ public class MapeadoraGeneralClosedPocket1Test
 		//Terceira ferramenta
 		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
 //		
-//		double diametroFerramenta3 = 5;//GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements)/2,2);
+//		double diametroFerramenta3 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
 //		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
 //		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
 		for(ArrayList<LimitedElement> arrayTmp:bossElements1)

@@ -671,7 +671,8 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			maiorMenorDistanciaTmp = maiorMenorDistanciaTmp/fator;
 		}
-		double menorMenorDistanciaTmp = getMenorMenorDistance(bossReal/*bossElements*/);
+		double menorMenorDistanciaTmp = getMenorMenorDistance(bossReal);
+//		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 		if(menorMenorDistanciaTmp >= 40)
 		{
 			menorMenorDistanciaTmp = menorMenorDistanciaTmp/fator;
@@ -700,10 +701,11 @@ public class MapeadoraGeneralClosedPocket1
 		// WORKINGSTEPS DE DESBASTE
 		if (!genClosed.isAcabamento()) 
 		{
+//			bossElements = null; //Array das protuberancias virtuais
 //			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
 			int aux = 0;
 //			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
-			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < 2)
+			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < 3)
 			{
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
@@ -733,8 +735,8 @@ public class MapeadoraGeneralClosedPocket1
 				machiningStrategyTmp.setOverLap(2); //Overlap
 				machiningStrategyTmp.setTrochoidalRadius(faceMillTmp.getDiametroFerramenta()/2); //REVER MAIS TARDE
 //				machiningStrategyTmp.setTrochoidalFeedRate(0.75*faceMillTmp.getDiametroFerramenta()/2);
-				machiningStrategyTmp.setTrochoidalFeedRate(condicoesDeUsinagem.getAe());
-				System.out.println("Feed Rate: " + machiningStrategyTmp.getTrochoidalFeedRate());
+//				machiningStrategyTmp.setTrochoidalFeedRate(condicoesDeUsinagem.getAe());
+//				System.out.println("Feed Rate: " + machiningStrategyTmp.getTrochoidalFeedRate());
 				machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 				
@@ -776,6 +778,11 @@ public class MapeadoraGeneralClosedPocket1
 				}
 				//Add os elementos das protuberancias reais
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+				if(aux == 1)
+				{
+//					maiorMenorDistanciaTmp = maiorMenorDistanciaTmp/2;
+					maiorMenorDistanciaTmp = menorMenorDistanciaTmp;
+				}
 //				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 			
 				aux++;

@@ -31,8 +31,9 @@ public class GenerateTrochoidalMovement1
 		this.ws = ws;
 		this.elements = elements;
 		this.radius = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalRadius();
-		this.avanco = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalFeedRate();
-		System.out.println("Avanco: "+avanco);
+//		this.avanco = ((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).getTrochoidalFeedRate();
+		this.avanco = ws.getCondicoesUsinagem().getAe();
+//		System.out.println("Avanco: "+avanco);
 		this.generatePaths();
 	}
 	//O ADD DOS PATHS CIRCULARES (2 PI) ESTAO COMENTADOS PARA FINS DE TESTE
@@ -57,9 +58,9 @@ public class GenerateTrochoidalMovement1
 			{
 				Path lastPath = null; //Ponto final do ultimo circulo do array 
 				double circularPathAngle = 0;
-				System.out.println("lol1");
+//				System.out.println("lol1");
 				ArrayList<Path> pathsInLineBase = generatePathsInLimitedLineBase((LimitedLine)elementTmp);
-				System.out.println("lol2");
+//				System.out.println("lol2");
 
 				for(int j = 0;j<pathsInLineBase.size();j++) //Gera paths sobre uma linha guia
 				{

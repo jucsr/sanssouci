@@ -3500,6 +3500,7 @@ public class StepNcProject extends STEPProject
 			ContourParallel contour = (ContourParallel)strategy;
 			EContour_parallel eStrategy = (EContour_parallel)model.createEntityInstance(EContour_parallel.class);
 			eStrategy.setAllow_multiple_passes(null, contour.isAllowMultiplePasses());
+			eStrategy.setOverlap(null, strategy.getOverLap());
 			if(contour.getRotationDirection() == RotationDirection.CCW)
 				eStrategy.setRotation_direction(null, ERot_direction.CCW);
 			else
@@ -3514,6 +3515,7 @@ public class StepNcProject extends STEPProject
 			TrochoidalAndContourParallelStrategy trochoidal = (TrochoidalAndContourParallelStrategy)strategy;
 			ETrochoidal_and_contourn_parallel etrochoidal = (ETrochoidal_and_contourn_parallel)model.createEntityInstance(ETrochoidal_and_contourn_parallel.class);
 			etrochoidal.setAllow_multiple_passes(null, trochoidal.isAllowMultiplePasses());
+			etrochoidal.setOverlap(null, strategy.getOverLap());
 			if(trochoidal.isRotationDirectionCCW())
 				etrochoidal.setRotation_direction(null, ERot_direction.CCW);
 			else
@@ -3533,6 +3535,7 @@ public class StepNcProject extends STEPProject
 		{
 			EBidirectional eBidirectional = (EBidirectional)model.createEntityInstance(EBidirectional.class);
 			eBidirectional.setAllow_multiple_passes(null, true);
+			eBidirectional.setOverlap(null, strategy.getOverLap());
 			return eBidirectional;
 		}
 		return null;

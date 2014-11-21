@@ -13,7 +13,7 @@ public class TrochoidalAndContourParallelStrategy extends ContourParallel
 	private double radialDephtPercent;
 	public static final boolean CCW = false;
 	public static final boolean CW = true;
-	private double trochoidalFeedRate;
+//	private double trochoidalFeedRate;
 	
 	public double getRadialDephtPercent()
 	{
@@ -40,12 +40,12 @@ public class TrochoidalAndContourParallelStrategy extends ContourParallel
 	{
 		this.trochoidalSense = trochoidalSense;
 	}
-	public double getTrochoidalFeedRate() 
-	{
-		return trochoidalFeedRate;
-	}
-	public void setTrochoidalFeedRate(double trochoidalFeedRate)
-	{
-		this.trochoidalFeedRate = trochoidalFeedRate;
-	}
+//	public double getTrochoidalFeedRate() 
+//	{
+//		return trochoidalFeedRate;
+//	}
+//	public void setTrochoidalFeedRate(double trochoidalFeedRate)
+//	{
+//		this.trochoidalFeedRate = trochoidalFeedRate;
+//	}
 }

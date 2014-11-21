@@ -191,7 +191,7 @@ public class GenerateTrochoidalMovement1Main
 		strategy.setAllowMultiplePasses(true);
 		//Setar o trochoidalRadius nos proprios testes
 		strategy.setTrochoidalRadius(ferramenta.getDiametroFerramenta()/2);
-		strategy.setTrochoidalFeedRate(20);
+//		strategy.setTrochoidalFeedRate(20);
 		strategy.setOverLap(2);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
@@ -284,7 +284,7 @@ public class GenerateTrochoidalMovement1Main
 	public void generatePathsInLimitedLineBaseTest()
 	{
 		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(10); //Raio
-		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(5); //Avanco
+//		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(5); //Avanco
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		LimitedLine l1 = new LimitedLine(new Point3d(20,10,0), new Point3d(73,10,0));
 		all.add(l1);
@@ -309,7 +309,7 @@ public class GenerateTrochoidalMovement1Main
 	public void generatePathsTest()
 	{
 		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalRadius(10); //Raio
-		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(5); //Avanco
+//		((TrochoidalAndContourParallelStrategy)ws.getOperation().getMachiningStrategy()).setTrochoidalFeedRate(5); //Avanco
 		
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		ArrayList<LimitedElement> elementos = new ArrayList<LimitedElement>();

@@ -151,7 +151,7 @@ public class GenerateTrocoidalGCodeTest
 		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
 		strategy.setAllowMultiplePasses(true);
 		strategy.setTrochoidalRadius(ferramenta.getDiametroFerramenta()/2);
-		strategy.setTrochoidalFeedRate(25);
+//		strategy.setTrochoidalFeedRate(25);
 		strategy.setRotationDirectionCCW(Boolean.TRUE);
 		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 //		strategy.setRadialDephtPercent(20);

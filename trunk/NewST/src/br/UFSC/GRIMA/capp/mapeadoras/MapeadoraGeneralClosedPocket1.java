@@ -855,6 +855,50 @@ public class MapeadoraGeneralClosedPocket1
 		frame.getContentPane().add(new Panel());
 		frame.setVisible(true);
 	}
+	public static void drawShapeAndPoints(ArrayList<LimitedElement> pocketElements, ArrayList<ArrayList<LimitedElement>> bossElements, final ArrayList<Point3d> points)
+	{
+//		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
+		//CRIA O GENERAL PATH DO FORMATO
+		final GeneralPath gp = (GeneralPath)Face.getShape(pocketElements);
+
+		//CRIA Shape2D DAS PROTUBERANCIAS
+		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
+		for(ArrayList<LimitedElement> bossTmp:bossElements)
+		{
+			bossShape.add(Face.getShape(bossTmp));
+		}
+		//Desenhador
+		JFrame frame = new JFrame();
+		frame.setSize(new Dimension(300, 300));
+		class Panel extends JPanel
+		{
+			protected void paintComponent(Graphics g)
+			{
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+				
+				g2d.translate(0, 400);
+				g2d.scale(1, -1);
+//				g2d.setColor(new Color(0, 0, 0));
+//				g2d.fill(gp);
+				g2d.draw(gp);
+				for(Shape shape:bossShape)
+				{
+//					g2d.setColor(new Color(15, 60, 212));
+//					g2d.fill(shape);
+					g2d.draw(shape);
+				}
+				for(Point3d pointTmp:points)
+				{
+////					g2d.drawOval((int)pointTmp.getX(), (int)pointTmp.getY(), 1, 1);
+					g2d.draw(new Ellipse2D.Double(pointTmp.x, pointTmp.y, 1, 1));
+				}
+			}
+		}
+		frame.getContentPane().add(new Panel());
+		frame.setVisible(true);
+	}
 }
 
 

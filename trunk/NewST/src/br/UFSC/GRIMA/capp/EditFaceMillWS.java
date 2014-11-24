@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.ImageIcon;
+
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
 import br.UFSC.GRIMA.cad.visual.EditFaceMillFrame;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
@@ -46,6 +48,15 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		this.cancelButton.addActionListener(this);
 		this.comboBox1.addItemListener(this);
 		this.comboBox3.addItemListener(this);
+		this.bolaVert.addActionListener(this);
+		this.bolaRamp.addActionListener(this);
+		this.bolaZigzag.addActionListener(this);
+		this.setVisible(true);
+		this.widthBox.setVisible(false);
+		this.retractPlane.setVisible(false);
+		this.retractVertical.setVisible(true);
+		this.angle.setVisible(false);
+		this.angleZigZag.setVisible(false);
 		
 		this.lerCampos();
 		
@@ -82,11 +93,36 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		
 		//Approach Strategy
 		
-		if (plungeStrategy.getClass() == PlungeRamp.class)
+		if (plungeStrategy.getClass() == PlungeToolAxis.class)
+		{
+			PlungeToolAxis pl = (PlungeToolAxis)plungeStrategy;
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
+			this.retractVertical.setVisible(true);
+			this.retractPlane.setVisible(false);
+			this.angle.setVisible(false);
+			this.angleZigZag.setVisible(false);
+			this.widthBox.setVisible(false);
+			this.bolaVert.setSelected(true);
+			this.retractVertical.setValue(retractPlane);
+			
+		}
+		
+		
+		else if (plungeStrategy.getClass() == PlungeRamp.class)
 		{
 			PlungeRamp pl = (PlungeRamp)plungeStrategy;
 			double angle =  pl.getAngle();
 			this.angle.setValue(angle);
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Ramp Plunge.png")));
+			this.angle.setVisible(true);
+			this.angleZigZag.setVisible(false);
+			this.widthBox.setVisible(false);
+			this.retractPlane.setVisible(true);
+			this.retractVertical.setVisible(false);
+			this.bolaRamp.setSelected(true);
+			this.retractPlane.setValue(retractPlane);
+			
+			
 		} else if( plungeStrategy.getClass() == PlungeZigzag.class)
 		{
 			PlungeZigzag pl = (PlungeZigzag)plungeStrategy;
@@ -94,6 +130,14 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 			double width = pl.getWidth();
 			this.angleZigZag.setValue(angle);
 			this.widthBox.setValue(width);
+			this.retractPlane.setValue(retractPlane);
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Zig Zag.png")));
+			this.angleZigZag.setVisible(true);
+			this.retractPlane.setVisible(true);
+			this.widthBox.setVisible(true);
+			this.retractVertical.setVisible(false);
+			this.angle.setVisible(false);
+			this.bolaZigzag.setSelected(true);
 		}
 		
 		//TOOL
@@ -210,6 +254,34 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		} else if (object == cancelButton)
 		{
 			this.dispose();
+		}
+		else if (object == bolaVert)
+		{
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
+			this.retractVertical.setVisible(true);
+			this.retractPlane.setVisible(false);
+			this.angle.setVisible(false);
+			this.angleZigZag.setVisible(false);
+			this.widthBox.setVisible(false);
+		}
+		
+		else if (object == bolaRamp)
+		{
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Ramp Plunge.png")));
+			this.angle.setVisible(true);
+			this.angleZigZag.setVisible(false);
+			this.widthBox.setVisible(false);
+			this.retractPlane.setVisible(true);
+			this.retractVertical.setVisible(false);
+		}
+		else if (object == bolaZigzag)
+		{
+			label1.setIcon(new ImageIcon(getClass().getResource("/images/Zig Zag.png")));
+			this.angleZigZag.setVisible(true);
+			this.retractPlane.setVisible(true);
+			this.widthBox.setVisible(true);
+			this.retractVertical.setVisible(false);
+			this.angle.setVisible(false);
 		}
 	}
 	private void ok() 

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraDeWorkingsteps;
+import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket1;
 import br.UFSC.GRIMA.entidades.Material;
 import br.UFSC.GRIMA.entidades.PropertyParameter;
@@ -73,7 +74,7 @@ public class GenerateVoronoiTest
 
 //		itsBoss.add(arcBoss1);
 //		itsBoss.add(arcBoss2);
-		itsBoss.add(arcBoss4);
+//		itsBoss.add(arcBoss4);
 
 		
 		//Rectangular Boss
@@ -88,7 +89,9 @@ public class GenerateVoronoiTest
 	public void getVoronoiTest()
 	{
 		GenerateVoronoiArray voronoi = new GenerateVoronoiArray(pocket);
-		MapeadoraGeneralClosedPocket1.drawShapeAndPoints(voronoi.getPocketElements(), voronoi.getBossElements(), voronoi.getVornoiPoints());
+//		ConsolePrinter.showPointsToMatLabTest(voronoi.getVornoiPoints());
+//		MapeadoraGeneralClosedPocket1.drawShapeAndPoints(voronoi.getPocketElements(), voronoi.getBossElements(), voronoi.getVornoiPoints());
+		MapeadoraGeneralClosedPocket1.drawShapeAndPoints(voronoi.getPocketElements(), voronoi.getBossElements(), MapeadoraGeneralClosedPocket.getPontosPeriferiaGeneral(pocket.getPoints(), pocket.Z, pocket.getRadius()));
 		for(;;);
 	}
 

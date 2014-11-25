@@ -271,6 +271,10 @@ public class MovimentacaoGeneralClosedPocket {
 //		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
 		
 		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
+//		if()
+//		{
+//			
+//		}
 		this.elementos = contourn.multipleParallelPath();
 		
 //		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());

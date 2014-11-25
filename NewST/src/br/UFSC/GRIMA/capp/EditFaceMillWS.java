@@ -6,6 +6,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import br.UFSC.GRIMA.cad.JanelaPrincipal;
 import br.UFSC.GRIMA.cad.visual.EditFaceMillFrame;
@@ -17,7 +19,8 @@ import br.UFSC.GRIMA.capp.plunge.PlungeZigzag;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
 
-public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener, ItemListener{
+public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener, ItemListener, ChangeListener
+{
 
 
 	JanelaPrincipal janelaPrincipal;
@@ -51,10 +54,11 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		this.bolaVert.addActionListener(this);
 		this.bolaRamp.addActionListener(this);
 		this.bolaZigzag.addActionListener(this);
+		this.retractPlane.addChangeListener(this);
+		this.spinner15.addChangeListener(this);
 		this.setVisible(true);
 		this.widthBox.setVisible(false);
 		this.retractPlane.setVisible(false);
-		this.retractVertical.setVisible(true);
 		this.angle.setVisible(false);
 		this.angleZigZag.setVisible(false);
 		
@@ -97,14 +101,12 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		{
 			PlungeToolAxis pl = (PlungeToolAxis)plungeStrategy;
 			label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
-			this.retractVertical.setVisible(true);
-			this.retractPlane.setVisible(false);
+			this.retractPlane.setVisible(true);
 			this.angle.setVisible(false);
 			this.angleZigZag.setVisible(false);
 			this.widthBox.setVisible(false);
 			this.bolaVert.setSelected(true);
-			this.retractVertical.setValue(retractPlane);
-			
+			this.retractPlane.setValue(retractPlane);
 		}
 		
 		
@@ -118,10 +120,10 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 			this.angleZigZag.setVisible(false);
 			this.widthBox.setVisible(false);
 			this.retractPlane.setVisible(true);
-			this.retractVertical.setVisible(false);
 			this.bolaRamp.setSelected(true);
 			this.retractPlane.setValue(retractPlane);
-			
+			this.retractPlane.setBounds(265, 215, 45, this.retractPlane.getPreferredSize().height);
+
 			
 		} else if( plungeStrategy.getClass() == PlungeZigzag.class)
 		{
@@ -135,9 +137,9 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 			this.angleZigZag.setVisible(true);
 			this.retractPlane.setVisible(true);
 			this.widthBox.setVisible(true);
-			this.retractVertical.setVisible(false);
 			this.angle.setVisible(false);
 			this.bolaZigzag.setSelected(true);
+			this.retractPlane.setBounds(265, 215, 45, this.retractPlane.getPreferredSize().height);
 		}
 		
 		//TOOL
@@ -258,11 +260,11 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		else if (object == bolaVert)
 		{
 			label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
-			this.retractVertical.setVisible(true);
-			this.retractPlane.setVisible(false);
+			this.retractPlane.setVisible(true);
 			this.angle.setVisible(false);
 			this.angleZigZag.setVisible(false);
 			this.widthBox.setVisible(false);
+			retractPlane.setBounds(205, 170, 45, retractPlane.getPreferredSize().height);
 		}
 		
 		else if (object == bolaRamp)
@@ -272,7 +274,8 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 			this.angleZigZag.setVisible(false);
 			this.widthBox.setVisible(false);
 			this.retractPlane.setVisible(true);
-			this.retractVertical.setVisible(false);
+			retractPlane.setBounds(265, 215, 45, retractPlane.getPreferredSize().height);
+
 		}
 		else if (object == bolaZigzag)
 		{
@@ -280,8 +283,9 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 			this.angleZigZag.setVisible(true);
 			this.retractPlane.setVisible(true);
 			this.widthBox.setVisible(true);
-			this.retractVertical.setVisible(false);
 			this.angle.setVisible(false);
+			retractPlane.setBounds(265, 215, 45, retractPlane.getPreferredSize().height);
+
 		}
 	}
 	private void ok() 
@@ -303,14 +307,11 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 			operation.setApproachStrategy(pl);
 		} else if (bolaRamp.isSelected())
 		{
-			PlungeRamp pl = (PlungeRamp)plungeStrategy;
-			pl.setAngle((Double)angle.getValue());
+			PlungeRamp pl = new PlungeRamp ((Double) angle.getValue());
 			operation.setApproachStrategy(pl);
 		} else if (bolaZigzag.isSelected())
 		{
-			PlungeZigzag pl = (PlungeZigzag)plungeStrategy;
-			pl.setAngle((Double)angle.getValue());
-			pl.setWidth((Double)widthBox.getValue());
+			PlungeZigzag pl = new PlungeZigzag((Double)angle.getValue(), (Double)widthBox.getValue());
 			operation.setApproachStrategy(pl);
 		}
 			
@@ -338,6 +339,21 @@ public class EditFaceMillWS extends EditFaceMillFrame implements ActionListener,
 		this.janelaPrincipal.atualizarArvore();
 		
 		this.dispose();
+	}
+
+
+	@Override
+	public void stateChanged(ChangeEvent e)
+	{
+		Object object = e.getSource();
+		if (object == retractPlane)
+		{
+			spinner15.setValue(retractPlane.getValue());
+		}
+		else if (object == spinner15)
+		{
+			retractPlane.setValue(spinner15.getValue());
+		}
 	}
 
 }

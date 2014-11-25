@@ -7,17 +7,18 @@ import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
-import br.UFSC.GRIMA.capp.CreatePlungeStrategy1;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
+import br.UFSC.GRIMA.capp.plunge.calculus.CalculusPlungeStrategy;
 import br.UFSC.GRIMA.entidades.features.Boss;
 import br.UFSC.GRIMA.entidades.features.Cavidade;
 import br.UFSC.GRIMA.entidades.features.CircularBoss;
@@ -293,7 +294,7 @@ public class MovimentacaoGeneralClosedPocket {
 					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
 					desbaste.add(posicionamentoAntesDeDescer);
 				}
-				else
+				/*else
 				{
 					LinearPath posicionamentoAntesDeDescer = new LinearPath(lastPointPlanoZ, pointTmp);
 					posicionamentoAntesDeDescer.setTipoDeMovimento(LinearPath.FAST_MOV);
@@ -304,14 +305,14 @@ public class MovimentacaoGeneralClosedPocket {
 				/*
 				 * descendo em velocidade controlada no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
 				 */
-//				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
-//				{
-//					CreatePlungeStrategy1 plunge = new CreatePlungeStrategy1(elementos.get(i).get(j))
-//				}
+				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
+				{
+					CalculusPlungeStrategy plunge = new CalculusPlungeStrategy(MovimentacaoGeneralClosedPocket.transformLimitedElementsInPaths(elementos.get(i).get(j)), this.ws);
+				} 
 //				Path pathTmp = null;
-				LinearPath descendo = new LinearPath(pointTmp, pathTmp.getInitialPoint());
-				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
-				desbaste.add(descendo);
+//				LinearPath descendo = new LinearPath(pointTmp, pathTmp.getInitialPoint());
+//				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);
+//				desbaste.add(descendo);
 				for(int k = 0; k < eMov.getPaths().size(); k++)
 				{
 					pathTmp = eMov.getPaths().get(k);

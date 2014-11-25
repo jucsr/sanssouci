@@ -1364,7 +1364,7 @@ public class GeometricOperations
 			aux++;
 		}		
 	//		System.out.println("mutilplePath: " + multipleParallel.size());
-	//		showElements(multipleParallel.get(0).get(0));
+//			showElements(multipleParallel.get(0).get(0));
 		return multipleParallel;
 	}
 
@@ -3429,4 +3429,5 @@ public class GeometricOperations
 			System.out.println("points.add(new Point2D.Double(" + pointTmp.getX() + "," + pointTmp.getY() + "));");
 		}
 	}
+	
 }

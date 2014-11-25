@@ -1111,7 +1111,7 @@ public class MapeadoraGeneralClosedPocket {
 	}
 	*/
 	
-	private static ArrayList<Point3d> getPontosPeriferiaGeneral(ArrayList<Point2D> vertex, double z, double raio){
+	public static ArrayList<Point3d> getPontosPeriferiaGeneral(ArrayList<Point2D> vertex, double z, double raio){
 
 		GeneralPath path = new GeneralPath();
 		path.moveTo(vertex.get(0).getX(), vertex.get(0).getY());

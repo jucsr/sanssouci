@@ -165,7 +165,7 @@ public class MapeadoraGeneralClosedPocket1
 
 			
 		//CRIA UM Shape2D DA PROTUBERANCIA
-		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
+		ArrayList<Shape> bossShape = new ArrayList<Shape>();
 		for(ArrayList<LimitedElement> bossTmp:bossElements)
 		{
 //			GeometricOperations.showElements(bossTmp);
@@ -593,7 +593,7 @@ public class MapeadoraGeneralClosedPocket1
 				
 				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
 //				if(bossElements != null)
-//				if(aux != numeroDeFerramentas)
+				if(aux != numeroDeFerramentas)
 				{
 					for(ArrayList<LimitedElement> arrayTemp:getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap()))
 					{

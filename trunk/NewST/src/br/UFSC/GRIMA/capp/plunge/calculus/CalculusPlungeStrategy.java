@@ -1,118 +1,56 @@
-package br.UFSC.GRIMA.capp;
+package br.UFSC.GRIMA.capp.plunge.calculus;
 
-/**
- * 
- * @author Igor Beninc�
- *
- */
-
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.vecmath.Point3d;
 
-import br.UFSC.GRIMA.cad.visual.EditFaceMillFrame;
-import br.UFSC.GRIMA.cam.GenerateTrocoidalGCode;
-import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
+import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideMilling;
+import br.UFSC.GRIMA.capp.plunge.PlungeRamp;
 import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
+import br.UFSC.GRIMA.capp.plunge.PlungeZigzag;
 import br.UFSC.GRIMA.util.CircularPath;
-import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 
-public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionListener
+public class CalculusPlungeStrategy
 {
-	private ArrayList<Path> trajetoEntrada;
-	private boolean ok = true;
-	private double separacao = 2;
-	public CreatePlungeStrategy1(ArrayList<Path> trajetoEntrada) // Cria��o do metodo, vulgo objeto
-	{
-		super(new Frame());
-		this.okButton.addActionListener(this); // Dando ouvidos ao bot�o ok
-		this.cancelButton.addActionListener(this);
-		this.bolaVert.addActionListener(this);
-		this.bolaRamp.addActionListener(this);
-		this.bolaZigzag.addActionListener(this);
-		this.setVisible(true);
-		this.widthBox.setVisible(false);
-		this.retractPlane.setVisible(true);
-		this.angle.setVisible(false);
-		this.angleZigZag.setVisible(false);
-		this.trajetoEntrada = trajetoEntrada;
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent event) {  // O que fazer quando o bot�o for escutado
-		Object source = event.getSource();
-		if (source == okButton){
-			this.calcularMergulho();
-		}
-		else if (source == cancelButton){
-			this.dispose(); // Fecha a janela.
-			}
-		
-		else if (source == bolaVert)
-		{
-			label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
-			//this.retractText.setVisible(true);
-			this.retractPlane.setVisible(true);
-			//this.angleText.setVisible(false);
-			this.angle.setVisible(false);
-			this.angleZigZag.setVisible(false);
-			//this.widthText.setVisible(false);
-			this.widthBox.setVisible(false);
-		}
-		
-		else if (source == bolaRamp)
-		{
-			label1.setIcon(new ImageIcon(getClass().getResource("/images/Ramp Plunge.png")));
-			//this.angleText.setVisible(true);
-			this.angle.setVisible(true);
-			this.angleZigZag.setVisible(false);
-			//this.widthText.setVisible(false);
-			this.widthBox.setVisible(false);
-			//this.retractText.setVisible(true);
-			this.retractPlane.setVisible(true);
-			this.retractPlane.setBounds(265, 215, 45, this.retractPlane.getPreferredSize().height);
-		}
-		else if (source == bolaZigzag)
-		{
-			label1.setIcon(new ImageIcon(getClass().getResource("/images/Zig Zag.png")));
-			//this.angleText.setVisible(true);
-			this.angleZigZag.setVisible(true);
-			//this.retractText.setVisible(true);
-			this.retractPlane.setVisible(true);
-			//this.widthText.setVisible(true);
-			this.widthBox.setVisible(true);
-			this.angle.setVisible(false);
-			this.retractPlane.setBounds(265, 215, 45, this.retractPlane.getPreferredSize().height);
-		}
+	private Workingstep workingStep;
+	private ArrayList<Path> trajeto;
+	private ArrayList<Path> trajetoEntrada;
+	private double separacao = 2;
+	private PlungeStrategy plungeType;
+	private boolean ok = true;
 
 	
+	public CalculusPlungeStrategy(ArrayList<Path> trajetoEntrada, Workingstep workingStep)
+	{
+		this.trajetoEntrada = trajetoEntrada;
+		this.workingStep = workingStep;
+		this.plungeType = (PlungeStrategy)((BottomAndSideMilling)workingStep.getOperation()).getApproachStrategy();
+		this.trajeto = trajeto;
 	}
 
-	public ArrayList<Path> verticalPlunge() {
+	public ArrayList<Path> verticalPlunge()
+	{
 		ArrayList<Path> trajeto = new ArrayList<Path>();
-		double retract = ((Double)(retractPlane.getValue())).doubleValue();
+		double retract = workingStep.getOperation().getRetractPlane();
 		LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(0).getInitialPoint().x, trajetoEntrada.get(0).getInitialPoint().y, retract), trajetoEntrada.get(0).getInitialPoint());
 		trajeto.add(p0);
 		return trajeto; 
-		
 	}
-	// Metodo de Mergulho em Rampa.
-	
-	
+
 	public ArrayList<Path> rampPlunge(){
 		ArrayList<Path> trajeto = new ArrayList<Path>();
 		ArrayList<Path> trajetoT = new ArrayList<Path>(); //Apenas para invers�o do array
-		double h= 0 ;
+		PlungeRamp pl = (PlungeRamp)plungeType;
+		double deltaZ= 0 ;
 		double zAtual = trajetoEntrada.get(0).getInitialPoint().z; // PONTO!!!
-		double retractTotal = ((Double)(retractPlane.getValue())).doubleValue();
-		double alfa =(((Double)(angle.getValue())).doubleValue()*Math.PI)/(180);
+		double retractTotal = workingStep.getOperation().getRetractPlane();
+		double alfa = pl.getAngle() * Math.PI / 180;
 		Point3d vector = null;
 		int numeroPathFinal = 0;
 		int contadorPaths = trajetoEntrada.size()-1;
@@ -131,9 +69,9 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 					if(trajetoEntrada.get(contadorPaths).isLine())
 					{
 						dist = new Point3d(trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual).distance(new Point3d(trajetoEntrada.get(contadorPaths).getInitialPoint().x, trajetoEntrada.get(contadorPaths).getInitialPoint().y, zAtual));
-						h = Math.tan(alfa)*dist;
-						zAtual = zAtual + h;
-						LinearPath p0 = new LinearPath (new Point3d(trajetoEntrada.get(contadorPaths).getInitialPoint().x, trajetoEntrada.get(contadorPaths).getInitialPoint().y, zAtual), new Point3d(trajetoEntrada.get(contadorPaths).getFinalPoint().x, trajetoEntrada.get(contadorPaths).getFinalPoint().y,zAtual- h));
+						deltaZ = Math.tan(alfa)*dist;
+						zAtual = zAtual + deltaZ;
+						LinearPath p0 = new LinearPath (new Point3d(trajetoEntrada.get(contadorPaths).getInitialPoint().x, trajetoEntrada.get(contadorPaths).getInitialPoint().y, zAtual), new Point3d(trajetoEntrada.get(contadorPaths).getFinalPoint().x, trajetoEntrada.get(contadorPaths).getFinalPoint().y,zAtual- deltaZ));
 						trajeto.add(p0);
 						contadorPaths--;
 						numeroPathFinal++;
@@ -147,18 +85,18 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 						double dAngle = circularTmp.getAngulo() / (n);
 						double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + circularTmp.getAngulo(); // na verdade é o angulo final
 						dist = circularTmp.getRadius()*circularTmp.getAngulo();
-						h = Math.tan(alfa)*dist;
-						zAtual = zAtual + h;
+						deltaZ = Math.tan(alfa)*dist;
+						zAtual = zAtual + deltaZ;
 						for(int j = 0; j < n - 1; j++) 
 						{
 							double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
 							double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
-							double z = zAtual - h + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+							double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
 							Point3d pInitialTmp = new Point3d(x, y, z);
 							
 							x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
 							y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
-							z = zAtual - h + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+							z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
 							Point3d pFinalTmp = new Point3d(x, y, z);
 							trajeto.add(new LinearPath(pFinalTmp, pInitialTmp));
 							numeroPathFinal++;
@@ -232,130 +170,16 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 			
 		 return trajetoT;
 		}
-	/**
-	 * metodo que calcula o mergulho em rampa
-	 * @return -- array de paths da rampa
-	 */
-	public ArrayList<Path> rampPlunge1()
-	{
-		ArrayList<Path> trajetoInverso = new ArrayList<Path>(); // cuidado! esta em sentido contrario
-		ArrayList<Path> trajeto = new ArrayList<Path>(); // array de saida
-		double distanceTmp = 0;
-		double alfa = ((Double)angle.getValue()).doubleValue() * Math.PI / 180; // angulo em radianos
-		double zRetractPlane = ((Double)(retractPlane.getValue())).doubleValue(); // z do retract plane (a ser atingido)
-		double zAtual = trajetoEntrada.get(trajetoEntrada.size() - 1).getInitialPoint().z; // pode ser do ponto final tambem
-		/*
-		 *  primeiro elemento dos paths de entrada
-		 */
-		if(trajetoEntrada.get(trajetoEntrada.size() - 1).isLine()) 
-		{
-			distanceTmp = trajetoEntrada.get(trajetoEntrada.size() - 1).getInitialPoint().distance(trajetoEntrada.get(trajetoEntrada.size() - 1).getFinalPoint());			
-		} else if(trajetoEntrada.get(trajetoEntrada.size() - 1).isCircular())
-		{
-			CircularPath cir = (CircularPath)trajetoEntrada.get(trajetoEntrada.size() - 1);
-			distanceTmp = cir.getAngulo() * cir.getRadius();
-		} else // GeneralPath
-		{
-			//eu nao sei
-		}
-		double deltaZ = distanceTmp * Math.tan(alfa);
-		zAtual = zAtual + deltaZ;
-		/*
-		 *  do segundo elemento dos paths de entrada em diante
-		 */
-		int contadorPaths = 0;
-		while(zAtual <= zRetractPlane)
-		{
-			if(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).isLine())
-			{
-				Point3d pontoInicialTmp = new Point3d(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getInitialPoint().x, trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getInitialPoint().y, zAtual);
-				Point3d pontoFinalTmp = new Point3d(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getFinalPoint().x, trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getFinalPoint().y, zAtual - deltaZ);
-				LinearPath linearTmp = new LinearPath(pontoInicialTmp, pontoFinalTmp);
-				trajetoInverso.add(linearTmp);
-				distanceTmp = trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getInitialPoint().distance(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).getFinalPoint()); // verificar aqui
-			} else if(trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths).isCircular())
-			{
-				CircularPath circularTmp = (CircularPath)trajetoEntrada.get(trajetoEntrada.size() - 1 - contadorPaths);
-				int n = (int)(circularTmp.getAngulo() * circularTmp.getRadius() / separacao);
-				double dAngle = circularTmp.getAngulo() / (n);
-				double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + circularTmp.getAngulo(); // na verdade é o angulo final
-				distanceTmp = circularTmp.getRadius() * circularTmp.getAngulo(); 
-				deltaZ = distanceTmp * Math.tan(alfa);
-				/*
-				 * interpolacao do arco circular
-				 */
-				for(int i = 0; i < n - 1; i++)
-				{
-					double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * i);
-					double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * i);
-					double z = zAtual - deltaZ + i * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-					Point3d pInitialTmp = new Point3d(x, y, z);
-					
-					x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (i + 1));
-					y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (i + 1));
-					z = zAtual - deltaZ + (i + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
-					Point3d pFinalTmp = new Point3d(x, y, z);
-					
-					LinearPath lTmp = new LinearPath(pFinalTmp, pInitialTmp);
-					trajetoInverso.add(lTmp);
-					distanceTmp = circularTmp.getAngulo() * circularTmp.getRadius();
-				}
-			} else // GeneralPath
-			{
-				//eu nao sei
-			}
-			contadorPaths++;
-			
-			deltaZ = distanceTmp * Math.tan(alfa);
-			zAtual = zAtual + deltaZ;
-			if(contadorPaths == trajetoEntrada.size())
-			{
-				contadorPaths = 0;
-			}
-		}
-		zAtual = zAtual - deltaZ; 
-		/*
-		 * ultimo elemento do path de entrada
-		 *  IMPLEMENTAR
-		 */
-		Path ultimoPath = trajetoEntrada.get(contadorPaths);
-		if(ultimoPath.isLine())
-		{
-			Point3d vetorUnitario = new Point3d (ultimoPath.getInitialPoint().x - ultimoPath.getFinalPoint().x , ultimoPath.getInitialPoint().y - ultimoPath.getFinalPoint().y, ultimoPath.getInitialPoint().z - ultimoPath.getFinalPoint().z);
-			double distance = ultimoPath.getInitialPoint().distance(ultimoPath.getFinalPoint());
-			vetorUnitario = new Point3d (vetorUnitario.x / distance, vetorUnitario.y / distance, vetorUnitario.z / distance);
-			double l = (zRetractPlane - zAtual) / Math.tan(alfa);
-			//l = ultimoPath.getInitialPoint().distance(ultimoPath.getFinalPoint()) - l;
-			Point3d vetor = new Point3d(ultimoPath.getFinalPoint().x + vetorUnitario.x * l, ultimoPath.getFinalPoint().y + vetorUnitario.y * l, zRetractPlane );
-			trajetoInverso.add(new LinearPath(vetor, new Point3d(ultimoPath.getFinalPoint().x, ultimoPath.getFinalPoint().y, zAtual)));
-			System.out.println("linear");
-		} else if(ultimoPath.isCircular())
-		{
-			System.out.println("circular");
-		} else // GENERAL PATH
-		{
-			
-		}
-		
-		/*
-		 * invertendo o array
-		 */
-		for(int i = 0; i < trajetoInverso.size(); i++)
-		{
-			trajeto.add(trajetoInverso.get(trajetoInverso.size() - 1 - i));
-		}
-		return trajeto;
-	}
-	//Metodo que calcula o mergulho em Zigzag
-	
+
 	public ArrayList<Path> zigZagPlunge()
 	{
 		ArrayList<Path> trajeto = new ArrayList<Path>();
 		ArrayList<Path> trajetoT = new ArrayList<Path>();
 		ArrayList<Integer> listaPaths = new ArrayList<Integer>();
-		double alfa = ((Double)angleZigZag.getValue())*Math.PI/180;
-		double retractTotal = (Double)retractPlane.getValue();
-		double width = ((Double)(widthBox.getValue())).doubleValue();
+		PlungeZigzag pl = (PlungeZigzag)plungeType;
+		double alfa = pl.getAngle()*Math.PI/180;
+		double retractTotal = workingStep.getOperation().getRetractPlane();
+		double width = pl.getWidth();
 		double zAtual = trajetoEntrada.get(0).getInitialPoint().z; // poderia ser qual quer um deles.
 		double deltaZ = 0;
 		int contadorPaths = trajetoEntrada.size()-1;
@@ -709,32 +533,22 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 			}
 		return trajetoT;
 		}
-			
 	
-	public ArrayList<Path> calcularMergulho() {
-		ArrayList<Path> trajeto = null; //Declara��o da Vari�vel trajeto e cria��o desta
-		if(bolaVert.isSelected())
-		{
+	public ArrayList<Path> getTrajeto()
+	{
+		if (plungeType.getClass() == PlungeToolAxis.class)
 			trajeto = verticalPlunge();
-		}
-		else if (bolaRamp.isSelected())
-		{
+		if (plungeType.getClass() == PlungeRamp.class)
 			trajeto = rampPlunge();
-		}
-		else if (bolaZigzag.isSelected())
-		{
+		if (plungeType.getClass() == PlungeZigzag.class)
 			trajeto = zigZagPlunge();
-		}
-		for(int i = 0; i < trajeto.size(); i++)
-		{
-			System.out.println("pi-> " + trajeto.get(i).getInitialPoint() + "\tpf -> " + trajeto.get(i).getFinalPoint());
-		}
-		if (ok)
-		{
-			System.out.println(GenerateTrocoidalGCode.transformPathToGCode(trajeto));
-			DesenhadorDeLimitedElements desenho = new DesenhadorDeLimitedElements(GenerateTrochoidalMovement1.transformPathsInLimitedElements(trajeto));
-		}
+		
 		return trajeto;
 	}
 	
+	
+	
+	
+	
+
 }

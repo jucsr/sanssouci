@@ -2351,7 +2351,7 @@
                <class>java.awt.GridBagLayout</class>
                <void method="setProperty">
                 <string>$columnSpecs</string>
-                <string>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</string>
+                <string>0, 0</string>
                </void>
                <void method="setProperty">
                 <string>$rowSpecs</string>
@@ -2399,50 +2399,6 @@
                 </void>
                 <void property="name">
                  <string>layeredPane5</string>
-                </void>
-                <void method="add">
-                 <object class="com.jformdesigner.model.FormComponent">
-                  <string>javax.swing.JSpinner</string>
-                  <void method="setProperty">
-                   <string>model</string>
-                   <object class="javax.swing.SpinnerNumberModel">
-                    <void property="stepSize">
-                     <double>1.0</double>
-                    </void>
-                    <void property="value">
-                     <double>20.0</double>
-                    </void>
-                   </object>
-                  </void>
-                  <void property="name">
-                   <string>retractPlane</string>
-                  </void>
-                  <void method="auxiliary">
-                   <void method="setProperty">
-                    <string>JavaCodeGenerator.variableModifiers</string>
-                    <int>1</int>
-                   </void>
-                  </void>
-                 </object>
-                 <object class="com.jformdesigner.model.FormLayoutConstraints">
-                  <null/>
-                  <void method="setProperty">
-                   <string>x</string>
-                   <int>290</int>
-                  </void>
-                  <void method="setProperty">
-                   <string>y</string>
-                   <int>215</int>
-                  </void>
-                  <void method="setProperty">
-                   <string>width</string>
-                   <int>45</int>
-                  </void>
-                  <void method="setProperty">
-                   <string>height</string>
-                   <int>20</int>
-                  </void>
-                 </object>
                 </void>
                 <void method="add">
                  <object class="com.jformdesigner.model.FormComponent">
@@ -2534,16 +2490,19 @@
                   <void method="setProperty">
                    <string>model</string>
                    <object class="javax.swing.SpinnerNumberModel">
+                    <void property="minimum">
+                     <double>0.0</double>
+                    </void>
                     <void property="stepSize">
                      <double>1.0</double>
                     </void>
                     <void property="value">
-                     <double>20.0</double>
+                     <double>10.0</double>
                     </void>
                    </object>
                   </void>
                   <void property="name">
-                   <string>retractVertical</string>
+                   <string>retractPlane</string>
                   </void>
                   <void method="auxiliary">
                    <void method="setProperty">
@@ -2620,15 +2579,11 @@
                 <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
                 <void method="setProperty">
                  <string>gridwidth</string>
-                 <int>21</int>
+                 <int>2</int>
                 </void>
                 <void method="setProperty">
                  <string>gridheight</string>
                  <int>2</int>
-                </void>
-                <void method="setProperty">
-                 <string>gridx</string>
-                 <int>7</int>
                 </void>
                </object>
               </void>
@@ -2668,10 +2623,6 @@
                </object>
                <object class="com.jformdesigner.model.FormLayoutConstraints">
                 <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
-                <void method="setProperty">
-                 <string>gridx</string>
-                 <int>7</int>
-                </void>
                 <void method="setProperty">
                  <string>gridy</string>
                  <int>1</int>
@@ -2809,7 +2760,7 @@
                 <class>com.jformdesigner.runtime.GridBagConstraintsEx</class>
                 <void method="setProperty">
                  <string>gridx</string>
-                 <int>8</int>
+                 <int>1</int>
                 </void>
                 <void method="setProperty">
                  <string>gridy</string>

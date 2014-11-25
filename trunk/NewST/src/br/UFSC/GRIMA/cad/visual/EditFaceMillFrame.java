@@ -94,10 +94,9 @@ public class EditFaceMillFrame extends JDialog {
 		radioButton2 = new JRadioButton();
 		panel16 = new JPanel();
 		layeredPane5 = new JLayeredPane();
-		retractPlane = new JSpinner();
 		angle = new JSpinner();
 		angleZigZag = new JSpinner();
-		retractVertical = new JSpinner();
+		retractPlane = new JSpinner();
 		widthBox = new JSpinner();
 		label1 = new JLabel();
 		panel17 = new JPanel();
@@ -608,20 +607,15 @@ public class EditFaceMillFrame extends JDialog {
 					//======== panel16 ========
 					{
 						panel16.setLayout(new GridBagLayout());
-						((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+						((GridBagLayout)panel16.getLayout()).columnWidths = new int[] {0, 0, 0};
 						((GridBagLayout)panel16.getLayout()).rowHeights = new int[] {0, 0, 0};
-						((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+						((GridBagLayout)panel16.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0E-4};
 						((GridBagLayout)panel16.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
 
 						//======== layeredPane5 ========
 						{
 							layeredPane5.setMaximumSize(new Dimension(340, 340));
 							layeredPane5.setMinimumSize(new Dimension(340, 340));
-
-							//---- retractPlane ----
-							retractPlane.setModel(new SpinnerNumberModel(20.0, null, null, 1.0));
-							layeredPane5.add(retractPlane, JLayeredPane.DEFAULT_LAYER);
-							retractPlane.setBounds(290, 215, 45, 20);
 
 							//---- angle ----
 							angle.setModel(new SpinnerNumberModel(5.0, null, null, 1.0));
@@ -633,18 +627,18 @@ public class EditFaceMillFrame extends JDialog {
 							layeredPane5.add(angleZigZag, JLayeredPane.DEFAULT_LAYER);
 							angleZigZag.setBounds(90, 170, 45, angleZigZag.getPreferredSize().height);
 
-							//---- retractVertical ----
-							retractVertical.setDoubleBuffered(true);
-							retractVertical.setModel(new SpinnerNumberModel(20.0, null, null, 1.0));
-							layeredPane5.add(retractVertical, JLayeredPane.DEFAULT_LAYER);
-							retractVertical.setBounds(205, 170, 45, retractVertical.getPreferredSize().height);
+							//---- retractPlane ----
+							retractPlane.setDoubleBuffered(true);
+							retractPlane.setModel(new SpinnerNumberModel(10.0, 0.0, null, 1.0));
+							layeredPane5.add(retractPlane, JLayeredPane.DEFAULT_LAYER);
+							retractPlane.setBounds(205, 170, 45, retractPlane.getPreferredSize().height);
 
 							//---- widthBox ----
 							widthBox.setModel(new SpinnerNumberModel(5.0, 5.0, null, 1.0));
 							layeredPane5.add(widthBox, JLayeredPane.DEFAULT_LAYER);
 							widthBox.setBounds(145, 295, 45, 20);
 						}
-						panel16.add(layeredPane5, new GridBagConstraints(7, 0, 21, 2, 0.0, 0.0,
+						panel16.add(layeredPane5, new GridBagConstraints(0, 0, 2, 2, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 0, 0), 0, 0));
 
@@ -652,7 +646,7 @@ public class EditFaceMillFrame extends JDialog {
 						label1.setIcon(new ImageIcon(getClass().getResource("/images/Axis.png")));
 						label1.setMaximumSize(new Dimension(340, 340));
 						label1.setMinimumSize(new Dimension(340, 340));
-						panel16.add(label1, new GridBagConstraints(7, 1, 1, 1, 0.0, 0.0,
+						panel16.add(label1, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 							new Insets(0, 0, 0, 5), 0, 0));
 
@@ -682,9 +676,9 @@ public class EditFaceMillFrame extends JDialog {
 								GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 								new Insets(0, 0, 0, 5), 0, 0));
 						}
-						panel16.add(panel17, new GridBagConstraints(8, 1, 1, 1, 0.0, 0.0,
+						panel16.add(panel17, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 							GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-							new Insets(0, 0, 0, 5), 0, 0));
+							new Insets(0, 0, 0, 0), 0, 0));
 					}
 					tabbedPane1.addTab("Plunge Strategy", panel16);
 				}
@@ -802,10 +796,9 @@ public class EditFaceMillFrame extends JDialog {
 	protected JRadioButton radioButton2;
 	private JPanel panel16;
 	private JLayeredPane layeredPane5;
-	public JSpinner retractPlane;
 	public JSpinner angle;
 	public JSpinner angleZigZag;
-	public JSpinner retractVertical;
+	public JSpinner retractPlane;
 	public JSpinner widthBox;
 	public JLabel label1;
 	private JPanel panel17;

@@ -319,11 +319,13 @@ public class MapeadoraGeneralClosedPocket1
 
 			faceMill = faceMills.get(i);
 			
+			System.err.println(faceMill.getDiametroFerramenta());
+			System.err.println(L);
 			if (faceMill.getMaterial().equals(ISO)
 					&& faceMill.getDiametroFerramenta() <= (L - 2 * limite_desbaste)
 					&& faceMill.getProfundidadeMaxima() >= (genClosed
-							.getProfundidade() - limite_desbaste_fundo)) {
-
+							.getProfundidade() - limite_desbaste_fundo))
+			{
 				faceMillsCandidatas.add(faceMill);
 			}
 		}
@@ -489,7 +491,7 @@ public class MapeadoraGeneralClosedPocket1
 //-----------------------------------------------------------------------------------------------------
 		
 		double fator = 0.75;
-		int numeroDeFerramentas = 3; //Fora a ferramenta de acabamento
+		int numeroDeFerramentas = 2; //Fora a ferramenta de acabamento
 		ArrayList<Workingstep> workingSteps = new ArrayList<Workingstep>();
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
@@ -543,9 +545,9 @@ public class MapeadoraGeneralClosedPocket1
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
 				if(aux >= numeroDeFerramentas-2)
 				{
-					maiorMenorDistanciaTmp = maiorMenorDistanciaTmp * fator;
+//					maiorMenorDistanciaTmp = maiorMenorDistanciaTmp * fator;
 				}
-				
+//				System.err.println(maiorMenorDistanciaTmp);
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
 						"Bottom And Side Rough Milling", retractPlane);
@@ -555,9 +557,11 @@ public class MapeadoraGeneralClosedPocket1
 					operationTmp.setAllowanceBottom(Feature.LIMITE_DESBASTE);
 				
 				// FERRAMENTA
-				System.out.println("Maior menor distancia: " + maiorMenorDistanciaTmp);
+//				System.out.println("Maior menor distancia: " + maiorMenorDistanciaTmp);
 				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 						genClosed, 0, maiorMenorDistanciaTmp);
+//				System.err.println(faceMillTmp);
+//				System.err.println(faceMillTmp.getDiametroFerramenta());
 //				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
 				
 				// CONDIÇÕES DE USINAGEM

@@ -3565,6 +3565,7 @@ public class StepNcProject extends STEPProject
 		{
 			PlungeZigzag zigZag = (PlungeZigzag)plungeStrategy;
 			EPlunge_zigzag ePlungeStrategy = (EPlunge_zigzag)model.createEntityInstance(EPlunge_zigzag.class);
+			ePlungeStrategy.setTool_orientation(null, createDirection("tool orientation", zigZag.getToolDirection()));
 			ePlungeStrategy.setAngle(null, zigZag.getAngle());
 			ePlungeStrategy.setWidth(null, zigZag.getWidth());
 			return ePlungeStrategy;
@@ -3572,6 +3573,7 @@ public class StepNcProject extends STEPProject
 		{
 			PlungeHelix helix = (PlungeHelix)plungeStrategy;
 			EPlunge_helix ePlungeStrategy = (EPlunge_helix)model.createEntityInstance(EPlunge_helix.class);
+			ePlungeStrategy.setTool_orientation(null, createDirection("tool orientation", helix.getToolDirection()));
 			ePlungeStrategy.setAngle(null, helix.getAngle());
 			ePlungeStrategy.setRadius(null, helix.getRadius());
 			return ePlungeStrategy;

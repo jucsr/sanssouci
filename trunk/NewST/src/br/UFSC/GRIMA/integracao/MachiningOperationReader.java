@@ -4,10 +4,14 @@ import javax.vecmath.Point3d;
 
 import jsdai.SCombined_schema.CBidirectional;
 import jsdai.SCombined_schema.CContour_parallel;
+import jsdai.SCombined_schema.CPlunge_ramp;
+import jsdai.SCombined_schema.CPlunge_toolaxis;
+import jsdai.SCombined_schema.CPlunge_zigzag;
 import jsdai.SCombined_schema.CTrochoidal_and_contourn_parallel;
 import jsdai.SCombined_schema.EBidirectional;
 import jsdai.SCombined_schema.EBoring;
 import jsdai.SCombined_schema.EBottom_and_side_finish_milling;
+import jsdai.SCombined_schema.EBottom_and_side_milling;
 import jsdai.SCombined_schema.EBottom_and_side_rough_milling;
 import jsdai.SCombined_schema.ECartesian_point;
 import jsdai.SCombined_schema.ECenter_drilling;
@@ -17,8 +21,13 @@ import jsdai.SCombined_schema.EFreeform_operation;
 import jsdai.SCombined_schema.EMachining_operation;
 import jsdai.SCombined_schema.EMachining_workingstep;
 import jsdai.SCombined_schema.EMilling_machine_functions;
+import jsdai.SCombined_schema.EMilling_type_operation;
 import jsdai.SCombined_schema.EPlane_finish_milling;
 import jsdai.SCombined_schema.EPlane_rough_milling;
+import jsdai.SCombined_schema.EPlunge_ramp;
+import jsdai.SCombined_schema.EPlunge_strategy;
+import jsdai.SCombined_schema.EPlunge_toolaxis;
+import jsdai.SCombined_schema.EPlunge_zigzag;
 import jsdai.SCombined_schema.EReaming;
 import jsdai.SCombined_schema.ERot_direction;
 import jsdai.SCombined_schema.ETrochoidal_and_contourn_parallel;
@@ -39,6 +48,10 @@ import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel.RotationDirection;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.Two5DMillingStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeRamp;
+import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
+import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
+import br.UFSC.GRIMA.capp.plunge.PlungeZigzag;
 
 public class MachiningOperationReader 
 {
@@ -92,6 +105,7 @@ public class MachiningOperationReader
 			 */
 			
 			bottomAndSideRoughMilling.setMachiningStrategy(getStrategy(((EBottom_and_side_rough_milling)eMachining_operation).getIts_machining_strategy(null)));
+			bottomAndSideRoughMilling.setApproachStrategy(getPlungeStrategy(((EBottom_and_side_rough_milling)eMachining_operation)));
 //			System.err.println(getStrategy(((EBottom_and_side_rough_milling)eMachining_operation).getIts_machining_strategy(null)));
 			
 			return bottomAndSideRoughMilling;
@@ -195,6 +209,36 @@ public class MachiningOperationReader
 			return bidirecional;
 		}
 		return estrategia;
+	}
+	private static PlungeStrategy getPlungeStrategy(EMilling_type_operation operation) throws SdaiException
+	{
+		EPlunge_strategy plungeType = (EPlunge_strategy)operation.getApproach(null);
+		PlungeStrategy plungeStrategy = null;
+		if (plungeType.getClass() == CPlunge_toolaxis.class)
+		{
+			EPlunge_toolaxis pl = (EPlunge_toolaxis)plungeType;
+			Point3d direction = new Point3d (pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(1),pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(2), pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(3));
+			plungeStrategy = new PlungeToolAxis();
+			plungeStrategy.setToolDirection(direction);
+		}
+		if(plungeType.getClass() == CPlunge_ramp.class)
+		{
+			EPlunge_ramp pl = (EPlunge_ramp)plungeType;
+			Point3d direction = new Point3d (pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(1),pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(2), pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(3));
+			double angle = pl.getAngle(null);
+			plungeStrategy = new PlungeRamp(angle);
+			plungeStrategy.setToolDirection(direction);
+		}
+		if(plungeType.getClass() == CPlunge_zigzag.class)
+		{
+			EPlunge_zigzag pl = (EPlunge_zigzag)plungeType;
+			Point3d direction = new Point3d (pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(1),pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(2), pl.getTool_orientation(null).getDirection_ratios(null).getByIndex(3));
+			double angle = pl.getAngle(null);
+			double width = pl.getWidth(null);
+			plungeStrategy = new PlungeZigzag(angle, width);
+			plungeStrategy.setToolDirection(direction);
+		}
+		return plungeStrategy;
 	}
 	private static Point3d cartesianPoint(ECartesian_point eCartesian_point) throws SdaiException
 	{

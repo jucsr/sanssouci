@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.cam.GenerateTrocoidalGCode;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideMilling;
+import br.UFSC.GRIMA.capp.movimentacoes.GenerateTrochoidalMovement1;
 import br.UFSC.GRIMA.capp.plunge.PlungeRamp;
 import br.UFSC.GRIMA.capp.plunge.PlungeStrategy;
 import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
 import br.UFSC.GRIMA.capp.plunge.PlungeZigzag;
 import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.DesenhadorDeLimitedElements;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
 
@@ -542,6 +545,7 @@ public class CalculusPlungeStrategy
 			trajeto = rampPlunge();
 		if (plungeType.getClass() == PlungeZigzag.class)
 			trajeto = zigZagPlunge();
+		System.out.println(GenerateTrocoidalGCode.transformPathToGCode(trajeto));
 		
 		return trajeto;
 	}

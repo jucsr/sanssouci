@@ -309,10 +309,9 @@ public class MovimentacaoGeneralClosedPocket {
 				/*
 				 * descendo em velocidade controlada no primeiro ponto desde o plano de segurança ate o primeiro path (jah dentro da peca)
 				 */
-				if(two5.getApproachStrategy().getClass().equals(PlungeToolAxis.class))
-				{
 					CalculusPlungeStrategy plunge = new CalculusPlungeStrategy(MovimentacaoGeneralClosedPocket.transformLimitedElementsInPaths(elementos.get(i).get(j)), this.ws);
-				} 
+					for(int k = 0 ; k<plunge.getTrajeto().size() -1 ; k++)
+						desbaste.add(plunge.getTrajeto().get(k));
 //				Path pathTmp = null;
 //				LinearPath descendo = new LinearPath(pointTmp, pathTmp.getInitialPoint());
 //				descendo.setTipoDeMovimento(LinearPath.SLOW_MOV);

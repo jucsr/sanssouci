@@ -76,7 +76,7 @@ public class MapeadoraGeneralClosedPocket1
 		this.addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 		this.faceMills = ToolManager.getFaceMills();
 		this.endMills = ToolManager.getEndMills();
-		System.out.println("Tamanho: "+faceMills.size());
+//		System.out.println("Tamanho: "+faceMills.size());
 		
 		this.mapearGeneralClosedPocket();
 
@@ -281,7 +281,7 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			//CUIDADO COM O Z!!
 			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), bossElements);
-			System.out.println("lolol menor: " + menorDistancia);
+//			System.out.println("lolol menor: " + menorDistancia);
 //			System.out.println("Menor Menor Distancia c/protuberancia: " + menorDistancia);
 		}
 		else
@@ -296,7 +296,7 @@ public class MapeadoraGeneralClosedPocket1
 			ArrayList<FaceMill> faceMills, GeneralClosedPocket genClosed,
 			double limite_desbaste, double L) 
 	{
-		System.out.println("L: " + L);
+//		System.out.println("L: " + L);
 		ArrayList<FaceMill> faceMillsCandidatas = new ArrayList<FaceMill>();
 
 		FaceMill faceMill = null;
@@ -319,8 +319,8 @@ public class MapeadoraGeneralClosedPocket1
 
 			faceMill = faceMills.get(i);
 			
-			System.err.println(faceMill.getDiametroFerramenta());
-			System.err.println(L);
+//			System.err.println(faceMill.getDiametroFerramenta());
+//			System.err.println(L);
 			if (faceMill.getMaterial().equals(ISO)
 					&& faceMill.getDiametroFerramenta() <= (L - 2 * limite_desbaste)
 					&& faceMill.getProfundidadeMaxima() >= (genClosed
@@ -597,7 +597,7 @@ public class MapeadoraGeneralClosedPocket1
 				
 				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
 //				if(bossElements != null)
-				if(aux != numeroDeFerramentas)
+				if(aux != numeroDeFerramentas-1)
 				{
 					for(ArrayList<LimitedElement> arrayTemp:getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap()))
 					{
@@ -766,7 +766,7 @@ public class MapeadoraGeneralClosedPocket1
 		if(contourn.multipleParallelPath().size() != 0)
 		{
 			ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = contourn.multipleParallelPath().get(0);
-			System.out.println(firstOffsetMultipleParallel.size());
+//			System.out.println(firstOffsetMultipleParallel.size());
 			//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
 			for(int i = 0; i <firstOffsetMultipleParallel.size(); i++) //percorre os lacos do primeiro offset
 			{
@@ -790,7 +790,7 @@ public class MapeadoraGeneralClosedPocket1
 		ArrayList<LimitedElement> arrayToFill = GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true); //elementos, nao interligados, dos novos bosses
 //		ArrayList<LimitedElement> arrayToFill = GeometricOperations.arrayInverter(GeometricOperations.elementInverter(GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true))); //elementos, nao interligados, dos novos bosses
 		Point3d firstValidationElementInitialPoint = arrayToFill.get(0).getInitialPoint(); //ponto inicial do primeiro elemento do array
-		System.out.println("Offset Initial Point: " + firstValidationElementInitialPoint);
+//		System.out.println("Offset Initial Point: " + firstValidationElementInitialPoint);
 		for(int j = 0; j < arrayToFill.size(); j++) //percorre os elementos paralelos de cada laco
 		{
 //			Point3d firstOffsetElementFinalPoint = meshInverted.get(j).getFinalPoint(); //centro dos arcos de transicao

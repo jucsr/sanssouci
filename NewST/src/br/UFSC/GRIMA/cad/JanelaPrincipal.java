@@ -1561,22 +1561,22 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			this.projeto.getDadosDeProjeto().setUserName(userNameAtual);
 	
 			//chamar o m�todo de cria��o de preced�ncias do stepNcReader
-			Vector<Feature> featuresTmp = new Vector<Feature>();
-			//System.out.println("tamanho: "+featuresXY.size());
-			/*
-			for(int j=0; j<featuresXY.size();j++)
-			{
-				System.out.println("precedente da feature "+j+ ": " + featuresXY.get(j).getFeaturePrecedente());
-			}*/	
-			//System.out.println("precedente da feature 1 : " + featuresXY.get(0).getFeaturePrecedente());
-			//System.out.println("precedente da feature 2 : " + featuresXY.get(1).getFeaturePrecedente());
-			
-
-			for(int k=0;k<this.projeto.getBloco().getFaces().size();k++)
-			{
-				featuresTmp = ((Face)this.projeto.getBloco().getFaces().get(k)).features;
-				stepNcReader.setFeaturesPrecedences(featuresTmp);
-			}
+//			Vector<Feature> featuresTmp = new Vector<Feature>();
+//			//System.out.println("tamanho: "+featuresXY.size());
+//			/*
+//			for(int j=0; j<featuresXY.size();j++)
+//			{
+//				System.out.println("precedente da feature "+j+ ": " + featuresXY.get(j).getFeaturePrecedente());
+//			}*/	
+//			//System.out.println("precedente da feature 1 : " + featuresXY.get(0).getFeaturePrecedente());
+//			//System.out.println("precedente da feature 2 : " + featuresXY.get(1).getFeaturePrecedente());
+//			
+//
+//			for(int k=0;k<this.projeto.getBloco().getFaces().size();k++)
+//			{
+//				featuresTmp = ((Face)this.projeto.getBloco().getFaces().get(k)).features;
+//				stepNcReader.setFeaturesPrecedences(featuresTmp);
+//			}
 			/*
 			for(int j=0; j<featuresXY.size();j++)
 			{

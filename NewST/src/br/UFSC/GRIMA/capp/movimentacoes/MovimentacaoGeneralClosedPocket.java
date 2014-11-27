@@ -13,8 +13,10 @@ import javax.vecmath.Point3d;
 
 import br.UFSC.GRIMA.cad.CreateGeneralPocket;
 import br.UFSC.GRIMA.capp.Workingstep;
+import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
+import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket1;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
@@ -253,28 +255,39 @@ public class MovimentacaoGeneralClosedPocket {
 	 */
 	public ArrayList<Path> getDesbasteTrocoidal()
 	{
+		//atributos do Workingstep atual---------------------------------------------------------------------
 		ArrayList<Path> desbaste = new ArrayList<Path>();                    //Array de paths
 		double planoSeguranca = ws.getOperation().getRetractPlane();         //plano de seguranca da ferramenta
-//		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(), ((GeneralClosedPocket)ws.getFeature()).getRadius());
 		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
 		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
-//		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>();
-//		entrada.add(addPocket.getElements());
 		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //plano de desbaste da feature
 		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste seja maior que a profundidade da feature
 		{
 			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
 		}
-		// =========== CUIDADO =====
-		//---- gerando as linhas guia para o trocoidal
-//		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)); 
-//		System.out.println("Raio Trochoidal2: " + trocoidalStrategy.getTrochoidalRadius());
-		
-		GenerateContournParallel contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap()); 
-//		if()
-//		{
-//			
-//		}
+		double offsetDistance = (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2));
+		//-------------------------------------------------------------------------------------------------------
+		GenerateContournParallel contourn = null;
+//		if(ws.getWorkingstepPrecedente() == null)
+		if(genClosed.getFeaturePrecedente().getWorkingsteps().lastElement() == null)
+		{
+			contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, offsetDistance,trocoidalStrategy.getOverLap()); 
+		}
+		else
+		{
+			System.err.println("Tenho Precedente!!");
+//			Workingstep wsPrecedente = ws.getWorkingstepPrecedente();
+			Workingstep wsPrecedente = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
+			if(ws.getFeature().equals(wsPrecedente.getFeature()))
+			{
+				ArrayList<ArrayList<LimitedElement>> bossVirtualPrecedente = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, null, planoZ, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getTrochoidalRadius() + wsPrecedente.getFerramenta().getDiametroFerramenta()/2, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getOverLap());
+				contourn = new GenerateContournParallel(genClosed, MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, offsetDistance, trocoidalStrategy.getOverLap()), planoZ, offsetDistance, trocoidalStrategy.getOverLap());
+			}
+			else
+			{
+				contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, offsetDistance,trocoidalStrategy.getOverLap()); 
+			}
+		}
 		this.elementos = contourn.multipleParallelPath();
 		
 //		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());
@@ -439,26 +452,42 @@ public class MovimentacaoGeneralClosedPocket {
 	public ArrayList<Path> getDesbasteContourParallel()
 	{
 		ArrayList<Path> desbaste = new ArrayList<Path>();                                          //Array de Paths
+		//atributos do workingstep atual----------------------------------------------------------------------------------------------------------
 		double planoSeguranca = ws.getOperation().getRetractPlane();                               //Plano em que a ferramenta tem maior velocidade
-		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(((GeneralClosedPocket)ws.getFeature()).getVertexPoints(), ((GeneralClosedPocket)ws.getFeature()).getPosicaoZ(),((GeneralClosedPocket)ws.getFeature()).getRadius());
-		ArrayList<ArrayList<LimitedElement>> entrada = new ArrayList<ArrayList<LimitedElement>>(); //Array de elementos do contorno da cavidade
-		entrada.add(addPocket.getElements());
-		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //Plano de Desbaste da feature
-		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
+		double planoZ = -ws.getCondicoesUsinagem().getAp();                                        //Plano de Desbaste da feature
+		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade())            //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
 		{
-			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
+			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();                    //O plano de desbaste se torna a propria profundidade da feature
 		}
-		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0); 
+		//------------------------------------------------------------------------------------------------------------------------------------------
+//		GenerateContournParallel contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0); 
+		GenerateContournParallel contourn = null;
+		if(ws.getWorkingstepPrecedente() == null)
+		{
+			contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0); 
+		}
+		else
+		{
+			Workingstep wsPrecedente = ws.getWorkingstepPrecedente();
+			if(ws.getFeature().equals(wsPrecedente.getFeature()))
+			{
+				ArrayList<ArrayList<LimitedElement>> bossVirtualPrecedente = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, null, planoZ, wsPrecedente.getCondicoesUsinagem().getAe(), 0);
+				contourn = new GenerateContournParallel(genClosed, MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, this.ws.getCondicoesUsinagem().getAe(), 0), planoZ, this.ws.getCondicoesUsinagem().getAe(), 0);
+			}
+			else
+			{
+				contourn = new GenerateContournParallel(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0); 
+			}
+		}
 		this.elementos = contourn.multipleParallelPath();                     //Offsets do contorno da cavidade
-//		this.elementos = GenerateContournParallel.multipleParallelPath(genClosed, planoZ, this.ws.getCondicoesUsinagem().getAe(),0);                     //Offsets do contorno da cavidade
 
-		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 
-		Point3d lastPointPlanoZ = null;  //O ponto descrito acima com a coordenada z do ponto de seguranca
+		Point3d lastPoint = null;                                             //Ultimo ponto do ultimo elemento de cada offset 
+		Point3d lastPointPlanoZ = null;                                       //O ponto descrito acima com a coordenada z do ponto de seguranca
 		for(int i = 0; i < elementos.size(); i++)
 		{
 			for(int j = 0; j < elementos.get(i).size(); j++)
 			{
-				LimitedElement eTmp = elementos.get(i).get(j).get(0); // primeiro elemento da lista
+				LimitedElement eTmp = elementos.get(i).get(j).get(0);         // primeiro elemento da lista
 				Point3d pointTmp = new Point3d(new Point3d(eTmp.getInitialPoint().x, eTmp.getInitialPoint().y, planoSeguranca));
 				if(i==0 && j==0)
 				{
@@ -498,7 +527,7 @@ public class MovimentacaoGeneralClosedPocket {
 					if(k == elementos.get(i).get(j).size()-1)
 					{
 						lastPoint = eTmp.getFinalPoint();
-						System.out.println(lastPoint);
+//						System.out.println(lastPoint);
 					}
 				}
 				/*
@@ -514,21 +543,6 @@ public class MovimentacaoGeneralClosedPocket {
 				 */
 				
 			}
-//			try
-//			{
-//				elementos.get(i+1).get(0);
-////				Point3d pI = subindo.getFinalPoint();  
-//				Point3d pF = new Point3d(elementos.get(i+1).get(0).get(0).getInitialPoint().x,elementos.get(i+1).get(0).get(0).getInitialPoint().y,planoSeguranca);
-//				LinearPath horizontal = new LinearPath(lastPoint, pF);
-//				horizontal.setTipoDeMovimento(LinearPath.FAST_MOV);
-//				System.out.println("pI: " + lastPoint);
-//				System.out.println("pF: " + pF);
-//				desbaste.add(horizontal);
-//			}
-//			catch (Exception e)
-//			{
-//				
-//			}
 		}
 		return desbaste;
 	}

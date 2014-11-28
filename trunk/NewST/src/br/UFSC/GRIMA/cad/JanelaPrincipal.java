@@ -569,7 +569,8 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.desenhador.repaint();
 	}
 
-	public void editarFeature() {
+	public void editarFeature() //Falta implementar
+	{
 
 	}
 
@@ -597,14 +598,11 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 				if (pos != -1) {
 					Feature featureRemovida = (Feature) face.features
 							.elementAt(pos);
-					Rectangle2D removida2d = face
-							.criarRetanguloShape(featureRemovida);
+					Rectangle2D removida2d = face.criarRetanguloShape(featureRemovida);
 					Vector removidas = new Vector();
 					for (int i = 0; i < face.features.size(); i++) {
-						Feature featureTmp = (Feature) face.features
-								.elementAt(i);
-						Rectangle2D rect2dTmp = face
-								.criarRetanguloShape(featureTmp);
+						Feature featureTmp = (Feature) face.features.elementAt(i);
+						Rectangle2D rect2dTmp = face.criarRetanguloShape(featureTmp);
 						if (removida2d.contains(rect2dTmp)) {
 							removidas.add(featureTmp);
 						}
@@ -800,15 +798,13 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.scrollPaneTree2.setViewportView(tree3);
 		this.scrollPaneTree2.revalidate();
 	}
-	public void atualizarArvoreCAPP() {
-
-		
+	public void atualizarArvoreCAPP() 
+	{
 		DefaultMutableTreeNode nodoPrincipal = new DefaultMutableTreeNode
 		("Roughing & Finishing Workingsteps");
 		
 		DefaultMutableTreeNode nodoPrincipalWorkplan = new DefaultMutableTreeNode
 		("Main Workplan");
-		
 		
 //		DefaultMutableTreeNode nodosSetups = this.projeto.getNodosSetups(nodoPrincipal);
 //		
@@ -1284,7 +1280,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		 * deve-se perguntar ao usuario a quantidade de peças que ele deseja.
 		 * 
 		 * IMPORTANTE: O codigo HPGL formatado so deve ser gerado quando o
-		 * usuaro solicitar uma ordem de fabricacao, por causa do parametro
+		 * usuario solicitar uma ordem de fabricacao, por causa do parametro
 		 * quantidade.
 		 */
 		{
@@ -1619,7 +1615,8 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.atualizarArvoreCAPP();
 		
 		this.atualizarArvorePrecedencias(); //New
-		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(this.projeto); //New
+		//Acho que esse era o problema do arquivo p21 (chama a classe a baixo e essa classe chama a MapeadoraDe
+//		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(this.projeto); //New
 		this.atualizarArvorePrecendences();
 
 	}
@@ -1696,8 +1693,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 		this.atualizarArvoreCAPP();
 		this.atualizarArvorePrecedencias(); //New
 		
-		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(
-				this.getProjeto()); //New
+//		MapeadoraDeWorkingsteps mapeadora = new MapeadoraDeWorkingsteps(this.getProjeto()); //New
 		
 	}
 	

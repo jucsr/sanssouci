@@ -26,14 +26,8 @@ public class PlungeFrameTest1
 	@Before
 	public void init()
 	{
-		LinearPath p0 = new LinearPath(new Point3d(10,10,-10), new Point3d(110,10,-10));
-		LinearPath p1 = new LinearPath(new Point3d(110,10,-10), new Point3d(110,60,-10));
-		LinearPath p2 = new LinearPath(new Point3d(110,60,-10), new Point3d(10,60,-10));
-		LinearPath p3 = new LinearPath(new Point3d(10,60,-10), new Point3d(10,10,-10));
-		path.add(p0);
+		CircularPath p1 = new CircularPath(new Point3d(90, 30, -10), new Point3d(90, 10, -10), new Point3d(120, 40, -10), 2*Math.PI);
 		path.add(p1);
-		path.add(p2);
-		path.add(p3);
 		
 //		LinearPath q0 = new LinearPath(new Point3d(10,0,-10), new Point3d(90,0,-10));
 //		CircularPath q1 = new CircularPath(new Point3d(90,10,-10), new Point3d(90,0,-10), new Point3d(100,10,-10), Math.PI/2);//centro, inicial, final, angulo

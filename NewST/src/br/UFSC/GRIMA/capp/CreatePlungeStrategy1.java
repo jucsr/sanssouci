@@ -676,6 +676,8 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 									}
 									zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;	
 									indicePaths = listaPaths.size() - 2;
+									if (indicePaths < 0)
+										indicePaths = 0;
 									trocador = !trocador;
 								}
 								paridade++;

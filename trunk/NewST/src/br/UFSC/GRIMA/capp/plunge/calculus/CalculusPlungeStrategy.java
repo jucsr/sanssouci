@@ -204,7 +204,7 @@ public class CalculusPlungeStrategy
 		else if(trajetoEntrada.get(contadorPaths).isCircular())
 		{
 			CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths); 
-			distance = circularTmp.getInitialPoint().distance(circularTmp.getCenter())*circularTmp.getAngulo();
+			distance = Math.abs(circularTmp.getInitialPoint().distance(circularTmp.getCenter())*circularTmp.getAngulo());
 			System.out.println("Distancia do Circular " + distance);
 		}
 		

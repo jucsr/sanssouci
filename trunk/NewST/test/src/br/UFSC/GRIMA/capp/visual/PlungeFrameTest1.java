@@ -26,7 +26,7 @@ public class PlungeFrameTest1
 	@Before
 	public void init()
 	{
-		CircularPath p1 = new CircularPath(new Point3d(90, 30, -10), new Point3d(90, 10, -10), new Point3d(120, 40, -10), 2*Math.PI);
+		CircularPath p1 = new CircularPath(new Point3d(90, 30, -10), new Point3d(90, 10, -10), new Point3d(90, 10, -10), 2*Math.PI);
 		path.add(p1);
 		
 //		LinearPath q0 = new LinearPath(new Point3d(10,0,-10), new Point3d(90,0,-10));

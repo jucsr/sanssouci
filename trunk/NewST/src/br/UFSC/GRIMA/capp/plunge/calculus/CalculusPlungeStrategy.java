@@ -27,6 +27,7 @@ public class CalculusPlungeStrategy
 	private double separacao = 2;
 	private PlungeStrategy plungeType;
 	private boolean ok = true;
+	private double angleCont;
 
 	
 	public CalculusPlungeStrategy(ArrayList<Path> trajetoEntrada, Workingstep workingStep)
@@ -290,54 +291,177 @@ public class CalculusPlungeStrategy
 				}
 			}
 		
-		// Caso em que o Width é maior que a primeira distancia proposta!	
-		
-		while (distance < width)
+		// Caso em que o Width é maior que a primeira distancia proposta!
+		if (trajetoEntrada.size() == 1 & trajetoEntrada.get(0).isCircular() & distance<width)
 		{
-			width = width- distance;
-			listaPaths.add(contadorPaths);
-			contadorPaths--;
-			if (contadorPaths<0)
-				contadorPaths = trajetoEntrada.size()-1;
-			if (trajetoEntrada.get(contadorPaths).isLine())
+			while (zAtual < retractTotal){
+			CircularPath circularTmp = (CircularPath)trajetoEntrada.get(0);
+			deltaZ = width*(Math.tan(alfa)) + zAtual;
+			double teta = width/circularTmp.getRadius();
+			int n = (int)(teta * circularTmp.getRadius() / separacao);
+			double dAngle = teta / (n);
+			double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
+			for(int j = 0; j < n - 1; j++) 
 			{
-				distance = trajetoEntrada.get(contadorPaths).getInitialPoint().distance(trajetoEntrada.get(contadorPaths).getFinalPoint());
+				double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
+				double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
+				//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pInitialTmp = new Point3d(x, y, z);
+				
+				x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
+				y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
+				z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pFinalTmp = new Point3d(x, y, z);
+				
+				LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+				trajeto.add(p0);
+				numeroPathsFinal++;
+				angleCont = initialAngle - dAngle * (j + 1);
 			}
-			else if(trajetoEntrada.get(contadorPaths).isCircular())
+			zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
+			initialAngle = angleCont;
+			for(int j = 0; j < n - 1; j++){	
+				
+				double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * j);
+				double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * j);
+				//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pInitialTmp = new Point3d(x, y, z);
+				
+				x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * (j + 1));
+				y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * (j + 1));
+				z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pFinalTmp = new Point3d(x, y, z);
+				
+				LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+				trajeto.add(p0);
+				numeroPathsFinal++;
+			}
+			zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
+
+			}
+		}
+		
+		
+		
+		
+		else if (trajetoEntrada.size() > 1)
+			while (distance < width)
 			{
-				CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths); 
-				distance = circularTmp.getInitialPoint().distance(circularTmp.getCenter())*circularTmp.getAngulo();
-			}
-		}	
-				//Tratando os paths e o Zig-Zag
+				width = width- distance;
 				listaPaths.add(contadorPaths);
-				int indicePaths = 0;
-				boolean trocador = true;
-				while (zAtual < retractTotal)
+				contadorPaths--;
+				if (contadorPaths<0)
+					contadorPaths = trajetoEntrada.size()-1;
+				if (trajetoEntrada.get(contadorPaths).isLine())
 				{
-						if(indicePaths != listaPaths.size()-1)
-						{
-							if(trajetoEntrada.get(listaPaths.get(indicePaths)).isLine())
+					distance = trajetoEntrada.get(contadorPaths).getInitialPoint().distance(trajetoEntrada.get(contadorPaths).getFinalPoint());
+				}
+				else if(trajetoEntrada.get(contadorPaths).isCircular())
+				{
+					CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths); 
+					distance = circularTmp.getInitialPoint().distance(circularTmp.getCenter())*circularTmp.getAngulo();
+				}
+			}	
+					//Tratando os paths e o Zig-Zag
+					listaPaths.add(contadorPaths);
+					int indicePaths = 0;
+					boolean trocador = true;
+					while (zAtual < retractTotal)
+					{
+							if(indicePaths != listaPaths.size()-1)
 							{
-								deltaZ = trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().distance(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint())*Math.tan(alfa);
-								if (trocador == true)
+								if(trajetoEntrada.get(listaPaths.get(indicePaths)).isLine())
 								{
-									LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().x , trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().y, zAtual+deltaZ), new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().x, trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().y, zAtual));
-									trajeto.add(p0);
-									zAtual = deltaZ + zAtual;
-									numeroPathsFinal++;
-									indicePaths++;
-									System.out.println("teste");
-								}
-							
-								else if (trocador == false)
-								{
-									if(trajetoEntrada.get(listaPaths.get(indicePaths)).isLine())
+									deltaZ = trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().distance(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint())*Math.tan(alfa);
+									if (trocador == true)
 									{
-										LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().x , trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().y, zAtual+deltaZ), trajeto.get(numeroPathsFinal-1).getInitialPoint());
+										LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().x , trajetoEntrada.get(listaPaths.get(indicePaths)).getInitialPoint().y, zAtual+deltaZ), new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().x, trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().y, zAtual));
 										trajeto.add(p0);
 										zAtual = deltaZ + zAtual;
 										numeroPathsFinal++;
+										indicePaths++;
+										System.out.println("teste");
+									}
+								
+									else if (trocador == false)
+									{
+										if(trajetoEntrada.get(listaPaths.get(indicePaths)).isLine())
+										{
+											LinearPath p0 = new LinearPath(new Point3d(trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().x , trajetoEntrada.get(listaPaths.get(indicePaths)).getFinalPoint().y, zAtual+deltaZ), trajeto.get(numeroPathsFinal-1).getInitialPoint());
+											trajeto.add(p0);
+											zAtual = deltaZ + zAtual;
+											numeroPathsFinal++;
+											indicePaths--;
+											if (indicePaths < 0)
+											{
+												indicePaths = 0;
+												trocador = !trocador;
+											}
+										}
+									}	
+								}
+								else if(trajetoEntrada.get(listaPaths.get(indicePaths)).isCircular())
+								{
+									if(trocador==true)
+									{
+										CircularPath circularTmp = (CircularPath)trajetoEntrada.get(listaPaths.get(indicePaths));
+										deltaZ = circularTmp.getRadius()*circularTmp.getAngulo()*(Math.tan(alfa));
+										double teta = circularTmp.getRadius()*circularTmp.getAngulo()/circularTmp.getRadius();
+										int n = (int)(teta * circularTmp.getRadius() / separacao);
+										double dAngle = teta / (n);
+										double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + teta;
+										for(int j = 0; j < n - 1; j++) 
+										{
+											double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
+											double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
+											//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pInitialTmp = new Point3d(x, y, z);
+											
+											x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
+											y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
+											z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pFinalTmp = new Point3d(x, y, z);
+											
+											LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+											trajeto.add(p0);
+											numeroPathsFinal++;
+										}
+										indicePaths++;
+										zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
+										System.out.println("estive aqui");
+										
+									}
+									else if(trocador == false)
+									{
+										CircularPath circularTmp = (CircularPath)trajetoEntrada.get(listaPaths.get(indicePaths));
+										deltaZ = circularTmp.getRadius()*circularTmp.getAngulo()*(Math.tan(alfa));
+										double teta = circularTmp.getRadius()*circularTmp.getAngulo()/circularTmp.getRadius();
+										int n = (int)(teta * circularTmp.getRadius() / separacao);
+										double dAngle = teta / (n);
+										double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
+										
+										for(int j = 0; j < n - 1; j++) 
+										{
+											double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * j);
+											double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * j);
+											double z = zAtual  + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pInitialTmp = new Point3d(x, y, z);
+											
+											x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * (j + 1));
+											y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * (j + 1));
+											z = zAtual + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pFinalTmp = new Point3d(x, y, z);
+											
+											LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+											trajeto.add(p0);
+											numeroPathsFinal++;
+										}
+										zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
 										indicePaths--;
 										if (indicePaths < 0)
 										{
@@ -345,173 +469,104 @@ public class CalculusPlungeStrategy
 											trocador = !trocador;
 										}
 									}
-								}	
-							}
-							else if(trajetoEntrada.get(listaPaths.get(indicePaths)).isCircular())
-							{
-								if(trocador==true)
-								{
-									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(listaPaths.get(indicePaths));
-									deltaZ = circularTmp.getRadius()*circularTmp.getAngulo()*(Math.tan(alfa));
-									double teta = circularTmp.getRadius()*circularTmp.getAngulo()/circularTmp.getRadius();
-									int n = (int)(teta * circularTmp.getRadius() / separacao);
-									double dAngle = teta / (n);
-									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + teta;
-									for(int j = 0; j < n - 1; j++) 
-									{
-										double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
-										double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
-										//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pInitialTmp = new Point3d(x, y, z);
-										
-										x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
-										y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
-										z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pFinalTmp = new Point3d(x, y, z);
-										
-										LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
-										trajeto.add(p0);
-										numeroPathsFinal++;
-									}
-									indicePaths++;
-									zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
-									System.out.println("estive aqui");
-									
 								}
-								else if(trocador == false)
+							}
+							else if(indicePaths == listaPaths.size()-1)
+							{
+								if(trajetoEntrada.get(contadorPaths).isLine())
 								{
-									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(listaPaths.get(indicePaths));
-									deltaZ = circularTmp.getRadius()*circularTmp.getAngulo()*(Math.tan(alfa));
-									double teta = circularTmp.getRadius()*circularTmp.getAngulo()/circularTmp.getRadius();
-									int n = (int)(teta * circularTmp.getRadius() / separacao);
-									double dAngle = teta / (n);
-									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
-									
-									for(int j = 0; j < n - 1; j++) 
+									deltaZ = width*Math.tan(alfa);
+									Point3d vector = new Point3d (trajetoEntrada.get(contadorPaths).getInitialPoint().x - trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getInitialPoint().y - trajetoEntrada.get(contadorPaths).getFinalPoint().y, trajetoEntrada.get(contadorPaths).getInitialPoint().z - trajetoEntrada.get(contadorPaths).getFinalPoint().z);
+									if (paridade%2 == 0)
 									{
-										double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * j);
-										double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * j);
-										double z = zAtual  + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pInitialTmp = new Point3d(x, y, z);
-										
-										x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * (j + 1));
-										y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * (j + 1));
-										z = zAtual + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pFinalTmp = new Point3d(x, y, z);
-										
-										LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+										vector = new Point3d (((vector.x /distance)*width)+ trajetoEntrada.get(contadorPaths).getFinalPoint().x , ((vector.y / distance)*width)+trajetoEntrada.get(contadorPaths).getFinalPoint().y , (vector.z / distance)*width); // vetor contendo as coordenadas x e y exatas.
+										LinearPath p0 = new LinearPath( new Point3d(vector.x, vector.y, zAtual + deltaZ), new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,  trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual) );
 										trajeto.add(p0);
 										numeroPathsFinal++;
+										zAtual = deltaZ + zAtual;
 									}
-									zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
-									indicePaths--;
-									if (indicePaths < 0)
+									else if (paridade%2 != 0)
 									{
-										indicePaths = 0;
+										System.out.println("teste");
+										System.out.println("Delta Z "+ deltaZ);
+										LinearPath p0 = new LinearPath( new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual + deltaZ), trajeto.get(numeroPathsFinal-1).getInitialPoint());
+										trajeto.add(p0);
+										numeroPathsFinal++;
+										zAtual = deltaZ + zAtual;
+										System.out.println("Z Atual "+zAtual);
+										indicePaths = listaPaths.size() - 2;
+										System.err.println("Indice do Path Problema "+ listaPaths.get(indicePaths));
 										trocador = !trocador;
 									}
+									paridade++;
 								}
-							}
-						}
-						else if(indicePaths == listaPaths.size()-1)
-						{
-							if(trajetoEntrada.get(contadorPaths).isLine())
-							{
-								deltaZ = width*Math.tan(alfa);
-								Point3d vector = new Point3d (trajetoEntrada.get(contadorPaths).getInitialPoint().x - trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getInitialPoint().y - trajetoEntrada.get(contadorPaths).getFinalPoint().y, trajetoEntrada.get(contadorPaths).getInitialPoint().z - trajetoEntrada.get(contadorPaths).getFinalPoint().z);
-								if (paridade%2 == 0)
+								else if (trajetoEntrada.get(contadorPaths).isCircular())
 								{
-									vector = new Point3d (((vector.x /distance)*width)+ trajetoEntrada.get(contadorPaths).getFinalPoint().x , ((vector.y / distance)*width)+trajetoEntrada.get(contadorPaths).getFinalPoint().y , (vector.z / distance)*width); // vetor contendo as coordenadas x e y exatas.
-									LinearPath p0 = new LinearPath( new Point3d(vector.x, vector.y, zAtual + deltaZ), new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,  trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual) );
-									trajeto.add(p0);
-									numeroPathsFinal++;
-									zAtual = deltaZ + zAtual;
-								}
-								else if (paridade%2 != 0)
-								{
-									System.out.println("teste");
-									System.out.println("Delta Z "+ deltaZ);
-									LinearPath p0 = new LinearPath( new Point3d (trajetoEntrada.get(contadorPaths).getFinalPoint().x,trajetoEntrada.get(contadorPaths).getFinalPoint().y, zAtual + deltaZ), trajeto.get(numeroPathsFinal-1).getInitialPoint());
-									trajeto.add(p0);
-									numeroPathsFinal++;
-									zAtual = deltaZ + zAtual;
-									System.out.println("Z Atual "+zAtual);
-									indicePaths = listaPaths.size() - 2;
-									System.err.println("Indice do Path Problema "+ listaPaths.get(indicePaths));
-									trocador = !trocador;
-								}
-								paridade++;
-							}
-							else if (trajetoEntrada.get(contadorPaths).isCircular())
-							{
-								if(paridade%2==0)
-								{
-									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
-									deltaZ = width*Math.tan(alfa);
-									double teta = width/circularTmp.getRadius();
-									int n = (int)(teta * circularTmp.getRadius() / separacao);
-									double dAngle = teta / (n);
-									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + teta;
-									for(int j = 0; j < n - 1; j++) 
+									if(paridade%2==0)
 									{
-										double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
-										double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
-										//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pInitialTmp = new Point3d(x, y, z);
-										
-										x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
-										y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
-										z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pFinalTmp = new Point3d(x, y, z);
-										LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
-										trajeto.add(p0);
-										numeroPathsFinal++;
-										
+										CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
+										deltaZ = width*Math.tan(alfa);
+										double teta = width/circularTmp.getRadius();
+										int n = (int)(teta * circularTmp.getRadius() / separacao);
+										double dAngle = teta / (n);
+										double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x) + teta;
+										for(int j = 0; j < n - 1; j++) 
+										{
+											double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
+											double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
+											//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pInitialTmp = new Point3d(x, y, z);
+											
+											x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
+											y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
+											z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pFinalTmp = new Point3d(x, y, z);
+											LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+											trajeto.add(p0);
+											numeroPathsFinal++;
+											
+										}
+										zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
 									}
-									zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
-								}
-								else if (paridade%2 !=2)
-								{
-									CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
-									deltaZ = width*Math.tan(alfa);
-									double teta = width/circularTmp.getRadius();
-									int n = (int)(teta * circularTmp.getRadius() / separacao);
-									double dAngle = teta / (n);
-									double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
-									for(int j = 0; j < n - 1; j++) 
+									else if (paridade%2 !=2)
 									{
-										double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * j);
-										double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * j);
-										double z = zAtual  + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pInitialTmp = new Point3d(x, y, z);
-										
-										x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * (j + 1));
-										y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * (j + 1));
-										z = zAtual + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
-										Point3d pFinalTmp = new Point3d(x, y, z);
-										
-										LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
-										trajeto.add(p0);
-										numeroPathsFinal++;
+										CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths);
+										deltaZ = width*Math.tan(alfa);
+										double teta = width/circularTmp.getRadius();
+										int n = (int)(teta * circularTmp.getRadius() / separacao);
+										double dAngle = teta / (n);
+										double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
+										for(int j = 0; j < n - 1; j++) 
+										{
+											double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * j);
+											double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * j);
+											double z = zAtual  + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pInitialTmp = new Point3d(x, y, z);
+											
+											x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * (j + 1));
+											y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * (j + 1));
+											z = zAtual + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											//z = zAtual - deltaZ + (j + 1)* dAngle * circularTmp.getRadius() * Math.tan(alfa);
+											Point3d pFinalTmp = new Point3d(x, y, z);
+											
+											LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+											trajeto.add(p0);
+											numeroPathsFinal++;
+										}
+										zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;	
+										indicePaths = listaPaths.size() - 2;
+										if (indicePaths < 0)
+											indicePaths = 0;
+										trocador = !trocador;
 									}
-									zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;	
-									indicePaths = listaPaths.size() - 2;
-									if (indicePaths < 0)
-										indicePaths = 0;
-									trocador = !trocador;
+									paridade++;
+									
 								}
-								paridade++;
-								
 							}
-						}
-				}
+					}
 		System.out.println("Ultimo Path-> "+ contadorPaths);
 			if (zAtual >= retractTotal)
 			{

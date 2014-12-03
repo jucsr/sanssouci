@@ -29,6 +29,7 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 	private ArrayList<Path> trajetoEntrada;
 	private boolean ok = true;
 	private double separacao = 2;
+	private double angleCont;
 	public CreatePlungeStrategy1(ArrayList<Path> trajetoEntrada) // Criaï¿½ï¿½o do metodo, vulgo objeto
 	{
 		super(new Frame());
@@ -464,7 +465,58 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 			}
 		
 		// Caso em que o Width é maior que a primeira distancia proposta!	
+		if (trajetoEntrada.size() == 1 & trajetoEntrada.get(0).isCircular() & distance<width)
+		{
+			while (zAtual < retractTotal){
+			CircularPath circularTmp = (CircularPath)trajetoEntrada.get(0);
+			deltaZ = width*(Math.tan(alfa)) + zAtual;
+			double teta = width/circularTmp.getRadius();
+			int n = (int)(teta * circularTmp.getRadius() / separacao);
+			double dAngle = teta / (n);
+			double initialAngle = Math.atan2(circularTmp.getInitialPoint().y - circularTmp.getCenter().y, circularTmp.getInitialPoint().x - circularTmp.getCenter().x);
+			for(int j = 0; j < n - 1; j++) 
+			{
+				double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * j);
+				double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * j);
+				//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pInitialTmp = new Point3d(x, y, z);
+				
+				x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle - dAngle * (j + 1));
+				y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle - dAngle * (j + 1));
+				z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pFinalTmp = new Point3d(x, y, z);
+				
+				LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+				trajeto.add(p0);
+				numeroPathsFinal++;
+				angleCont = initialAngle - dAngle * (j + 1);
+			}
+			zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
+			initialAngle = angleCont;
+			for(int j = 0; j < n - 1; j++){	
+				
+				double x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * j);
+				double y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * j);
+				//double z = zAtual - deltaZ + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				double z = zAtual + j * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pInitialTmp = new Point3d(x, y, z);
+				
+				x = circularTmp.getCenter().x + circularTmp.getRadius() * Math.cos(initialAngle + dAngle * (j + 1));
+				y = circularTmp.getCenter().y + circularTmp.getRadius() * Math.sin(initialAngle + dAngle * (j + 1));
+				z = zAtual + (j+1) * dAngle * circularTmp.getRadius() * Math.tan(alfa);
+				Point3d pFinalTmp = new Point3d(x, y, z);
+				
+				LinearPath p0 = new LinearPath(pFinalTmp, pInitialTmp);
+				trajeto.add(p0);
+				numeroPathsFinal++;
+			}
+			zAtual = trajeto.get(trajeto.size()-1).getInitialPoint().z;
+
+			}
+		}
 		
+		else{
 		while (distance < width)
 		{
 			width = width- distance;
@@ -481,12 +533,12 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 				CircularPath circularTmp = (CircularPath)trajetoEntrada.get(contadorPaths); 
 				distance = circularTmp.getInitialPoint().distance(circularTmp.getCenter())*circularTmp.getAngulo();
 			}
-		}	
-				//Tratando os paths e o Zig-Zag
-				listaPaths.add(contadorPaths);
-				int indicePaths = 0;
-				boolean trocador = true;
-				while (zAtual < retractTotal)
+		}			
+			//Tratando os paths e o Zig-Zag
+			listaPaths.add(contadorPaths);
+			int indicePaths = 0;
+			boolean trocador = true;
+			while (zAtual < retractTotal)
 				{
 						if(indicePaths != listaPaths.size()-1)
 						{
@@ -685,6 +737,7 @@ public class CreatePlungeStrategy1 extends EditFaceMillFrame implements ActionLi
 							}
 						}
 				}
+		}
 		System.out.println("Ultimo Path-> "+ contadorPaths);
 			if (zAtual >= retractTotal)
 			{

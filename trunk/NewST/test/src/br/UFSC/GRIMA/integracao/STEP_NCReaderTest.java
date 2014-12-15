@@ -2,8 +2,6 @@ package br.UFSC.GRIMA.integracao;
 
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Vector;
 
 import jsdai.lang.ASdaiModel;
@@ -18,30 +16,96 @@ import br.UFSC.GRIMA.STEPmanager.Util;
 import br.UFSC.GRIMA.acceptance.STEP_NCReader;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
-import br.UFSC.GRIMA.entidades.features.Cavidade;
-import br.UFSC.GRIMA.entidades.features.Feature;
-import br.UFSC.GRIMA.entidades.features.Furo;
-import br.UFSC.GRIMA.entidades.features.Ranhura;
-import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
-import br.UFSC.GRIMA.entidades.ferramentas.TwistDrill;
+import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
+import br.UFSC.GRIMA.util.projeto.Projeto;
 
 public class STEP_NCReaderTest {
 
 	public Util util = new Util();
 	public ASdaiModel model;
 	public STEP_NCReader reader;
+	private Workingstep ws1;
+	private Workingstep ws2;
+	private GeneralClosedPocket pocket = new GeneralClosedPocket();
 
 	@Before
 	public void setUp() {
 		try {
 			model = util.openFile21(Util.getUserPath()
-					+ "test\\res\\testBoxy.p21" );
+					+ "test\\res\\testePrecedencias.p21" );
 			reader = new STEP_NCReader(model);
 		} catch (SdaiException e) {
 			e.printStackTrace();
 		}
 	}
-
+//	public void init()
+//	{
+//	    ArrayList<Point2D> points = new ArrayList<Point2D>();
+//	
+//		points.add(new Point2D.Double(500, 320));
+//		points.add(new Point2D.Double(500, 160));
+//		points.add(new Point2D.Double(280, 160));
+//		points.add(new Point2D.Double(280, 40));
+//		points.add(new Point2D.Double(0, 40));
+//		points.add(new Point2D.Double(0, 320));
+//		pocket.setNome(" cavidade geral");
+//		pocket.setPoints(points);
+//		pocket.setRadius(30);
+//		pocket.setPosicao(50, 50, 0);
+//		pocket.setProfundidade(20);
+//		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
+//		CircularBoss arcBoss = new CircularBoss("", 150, 200, pocket.Z, 50, 50, pocket.getProfundidade());
+//		pocket.setItsBoss(itsBoss);
+//		// ---- criando Operacao ----
+//		MachiningOperation operation = new BottomAndSideRoughMilling("Desbaste", 50);
+//		operation.setCoolant(true);
+//		// ---- criando Ferramenta ----
+//		FaceMill ferramenta= new FaceMill();
+//		ferramenta.setName("1");
+//		ferramenta.setDiametroFerramenta(20);
+//		ferramenta.setMaterialClasse(Material.ACO_ALTA_LIGA);
+//		// ---- criando Condicoes de usinagem -----
+//		CondicoesDeUsinagem cond = new CondicoesDeUsinagem();
+//		cond.setAp(5); //15
+//		cond.setAe(10);
+//		cond.setF(.0123);
+//		cond.setN(1500);
+//		// ---- criando estrategia -----
+//		TrochoidalAndContourParallelStrategy strategy = new TrochoidalAndContourParallelStrategy();
+//		strategy.setAllowMultiplePasses(true);
+//		strategy.setTrochoidalRadius(ferramenta.getDiametroFerramenta()/2);
+////		strategy.setTrochoidalFeedRate(25);
+//		strategy.setRotationDirectionCCW(Boolean.TRUE);
+//		strategy.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
+////		strategy.setRadialDephtPercent(20);
+//		strategy.setOverLap(2);
+//		operation.setMachiningStrategy(strategy);
+//		// ---- workingstep 1 -----
+//		ws1 = new Workingstep();
+//		ws1.setId("milling test");
+//		ws1.setOperation(operation);
+//		ws1.setFerramenta(ferramenta);
+//		ws1.setFeature(pocket);
+//		ws1.setCondicoesUsinagem(cond);
+//		Vector workingsteps = new Vector();
+//		workingsteps.add(ws1);
+//		pocket.setWorkingsteps(workingsteps);
+//		// ---- criando estrategia -----
+//		ContourParallel strategy2 = new ContourParallel();
+//		strategy2.setAllowMultiplePasses(false);
+//		strategy2.setOverLap(2);
+//		strategy2.setRotationDirectionCCW(true);
+//		// ---- workingstep 2 -----
+//		ws1 = new Workingstep();
+//		ws1.setId("milling test2");
+//		ws1.setOperation(operation);
+//		ws1.setFerramenta(ferramenta);
+//		ws1.setFeature(pocket);
+//		ws1.setCondicoesUsinagem(cond);
+//		workingsteps.add(ws1);
+//		pocket.setWorkingsteps(workingsteps);
+//	}
 	@Test
 	public void getPiecePropsTest() {
 		Rectangle3D rectangle = reader.getPieceProps();
@@ -188,6 +252,17 @@ public class STEP_NCReaderTest {
 		} catch (SdaiException e) {
 			e.printStackTrace();
 		} 
+	}
+	@Test
+	public void setWorkingstepsPrecedentesTest()
+	{
+		Projeto projeto = reader.getProjeto();
+		System.out.println(((Face)projeto.getBloco().faces.firstElement()).features.size());
+		for(int i = 0;i < projeto.getWorkingsteps().size();i++)
+		{
+			System.out.println("Workingstep: " + projeto.getWorkingsteps().get(i));
+			System.out.println("Workingstep precedente: " + (((Workingstep)projeto.getWorkingsteps().get(0).get(i)).getWorkingstepPrecedente()));
+		}
 	}
 	
 	@After

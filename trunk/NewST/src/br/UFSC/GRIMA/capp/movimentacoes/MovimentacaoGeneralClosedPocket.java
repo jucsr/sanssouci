@@ -268,16 +268,19 @@ public class MovimentacaoGeneralClosedPocket {
 		double offsetDistance = (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2));
 		//-------------------------------------------------------------------------------------------------------
 		GenerateContournParallel contourn = null;
-//		if(ws.getWorkingstepPrecedente() == null)
-		if(genClosed.getFeaturePrecedente().getWorkingsteps().lastElement() == null)
+//		if(genClosed.getFeaturePrecedente().getWorkingsteps().lastElement() == null)
+		
+		if(ws.getWorkingstepPrecedente() == null)
 		{
+			System.err.println("Nao tenho Precedente!!");
 			contourn = new GenerateContournParallel((GeneralClosedPocket)ws.getFeature(), planoZ, offsetDistance,trocoidalStrategy.getOverLap()); 
 		}
 		else
 		{
 			System.err.println("Tenho Precedente!!");
 //			Workingstep wsPrecedente = ws.getWorkingstepPrecedente();
-			Workingstep wsPrecedente = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
+//			Workingstep wsPrecedente = genClosed.getFeaturePrecedente().getWorkingsteps().lastElement();
+			Workingstep wsPrecedente = ws.getWorkingstepPrecedente();
 			if(ws.getFeature().equals(wsPrecedente.getFeature()))
 			{
 				ArrayList<ArrayList<LimitedElement>> bossVirtualPrecedente = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, null, planoZ, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getTrochoidalRadius() + wsPrecedente.getFerramenta().getDiametroFerramenta()/2, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getOverLap());
@@ -292,7 +295,6 @@ public class MovimentacaoGeneralClosedPocket {
 		
 //		this.elementos = GenerateContournParallel.multipleParallelPath((GeneralClosedPocket)ws.getFeature(), planoZ, (trocoidalStrategy.getTrochoidalRadius() + (ws.getFerramenta().getDiametroFerramenta()/2)),trocoidalStrategy.getOverLap());
 
-		// ========= END CUIDADO ======
 		Point3d lastPoint = null;        //Ultimo ponto do ultimo elemento de cada offset 
 		Point3d lastPointPlanoZ = null;  //O ponto descrito acima com a coordenada z do ponto de seguranca
 		for(int i = 0; i < elementos.size(); i++)

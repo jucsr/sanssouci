@@ -192,7 +192,6 @@ public class STEP_NCReader  {
 			
 		}
 	}
-
 	/*public void setFeaturesPrecedences(Vector<Feature> features)
 	{
 		Vector<Feature> featuresTmp = new Vector<Feature>();
@@ -264,13 +263,37 @@ public class STEP_NCReader  {
 		}
 		return answer;
 	}
-	public Projeto getProjeto() {
+	public void setWorkingstepsPrecedentes(Vector<Feature> features)
+	{
+		for(Feature featureTmp:features)
+		{
+			Vector<Workingstep> vectorWs = featureTmp.getWorkingsteps();
+			if(featureTmp.getFeaturePrecedente() == null)
+			{
+				vectorWs.get(0).setWorkingstepPrecedente(null);
+			}
+			else
+			{
+				vectorWs.get(0).setWorkingstepPrecedente(featureTmp.getFeaturePrecedente().getWorkingsteps().lastElement());
+			}
+			if(vectorWs.size() > 1)
+			{
+				for(int i = 1;i < vectorWs.size();i++)
+				{
+					vectorWs.get(i).setWorkingstepPrecedente(vectorWs.get(i-1));
+				}
+			}
+		}
+	}
+	public Projeto getProjeto() 
+	{
 		//chamar o m�todo de cria��o de preced�ncias do stepNcReader
 		Vector<Feature> featuresTmp = new Vector<Feature>();
 		for(int k=0;k<this.projeto.getBloco().getFaces().size();k++)
 		{
 			featuresTmp = ((Face)this.projeto.getBloco().getFaces().get(k)).features;
 			this.setFeaturesPrecedences(featuresTmp);
+			this.setWorkingstepsPrecedentes(featuresTmp);
 		}
 		return projeto;
 	}

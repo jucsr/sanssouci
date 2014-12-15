@@ -25,7 +25,7 @@ public class Util {
 
 		try {
 			Properties properties = new Properties();
-			properties.load(new FileInputStream("res/Util.properties"));
+			properties.load(new FileInputStream("test/res/Util.properties"));
 			path = properties.getProperty("path");
 		} catch (Exception e) {
 			e.printStackTrace();

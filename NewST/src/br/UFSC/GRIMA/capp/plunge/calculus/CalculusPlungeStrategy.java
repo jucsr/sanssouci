@@ -113,7 +113,7 @@ public class CalculusPlungeStrategy
 					contadorPaths++;
 					if (contadorPaths>=trajetoEntrada.size())
 						contadorPaths = 0;
-					System.out.println("Indice de Entrada do ultimo Path Lido! ->"+contadorPaths);
+//					System.out.println("Indice de Entrada do ultimo Path Lido! ->"+contadorPaths);
 					if(trajetoEntrada.get(contadorPaths).isLine())
 					{
 						if (zAtual >= retractTotal)
@@ -567,7 +567,7 @@ public class CalculusPlungeStrategy
 								}
 							}
 					}
-		System.out.println("Ultimo Path-> "+ contadorPaths);
+//		System.out.println("Ultimo Path-> "+ contadorPaths);
 			if (zAtual >= retractTotal)
 			{
 				int iTmp = trajeto.size() -1;
@@ -602,7 +602,7 @@ public class CalculusPlungeStrategy
 			trajeto = rampPlunge();
 		if (plungeType.getClass() == PlungeZigzag.class)
 			trajeto = zigZagPlunge();
-		System.out.println(GenerateTrocoidalGCode.transformPathToGCode(trajeto));
+//		System.out.println(GenerateTrocoidalGCode.transformPathToGCode(trajeto));
 		
 		return trajeto;
 	}

@@ -16,6 +16,7 @@ import javax.vecmath.Point3d;
 import jsdai.lang.SdaiException;
 import br.UFSC.GRIMA.acceptance.STEP_NCReader;
 import br.UFSC.GRIMA.cad.visual.JanelaCodigoSTEP_view;
+import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.entidades.Rectangle3D;
 import br.UFSC.GRIMA.entidades.StepNcProject;
 import br.UFSC.GRIMA.entidades.features.Bloco;
@@ -65,11 +66,17 @@ public class JanelaCodigoStep extends JanelaCodigoSTEP_view implements
 		
 		
 		try {
-			this.workingsteps = reader.getAllWorkingSteps();
+			//this.workingsteps = reader.getAllWorkingSteps();
 			
 			this.projeto = reader.getProjeto();
+			this.workingsteps = projeto.getWorkingsteps();
 			this.editTextArea(HeaderUtil.changeHeader(stepNcProject.createSTEP21File(), "GRIMA"));
-		
+			
+//			for(Workingstep ws:projeto.getWorkingsteps().get(0))
+//			{
+//				System.err.println("Workingstep: " + ws);
+//				System.err.println("Workingstep precedente: " + (ws.getWorkingstepPrecedente()));
+//			}
 //			stepNcProject.closeAndDeleteSession();
 
 		} catch (SdaiException e1) {

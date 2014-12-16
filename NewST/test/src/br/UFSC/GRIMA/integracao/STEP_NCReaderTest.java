@@ -233,7 +233,8 @@ public class STEP_NCReaderTest {
 			Assert.assertEquals(100.0, wksList.get(0).getCondicoesUsinagem().getVc(), 0);
 			Assert.assertEquals(-15.0, wksList.get(0).getCondicoesUsinagem().getN(), 0);
 			
-		} catch (SdaiException e) {
+		} catch (SdaiException e) 
+		{
 			e.printStackTrace();
 			fail();
 		}
@@ -254,14 +255,19 @@ public class STEP_NCReaderTest {
 		} 
 	}
 	@Test
-	public void setWorkingstepsPrecedentesTest()
+	public void setWorkingstepsPrecedentesTest() throws SdaiException
 	{
+		//reader.set
 		Projeto projeto = reader.getProjeto();
-		System.out.println(((Face)projeto.getBloco().faces.firstElement()).features.size());
-		for(int i = 0;i < projeto.getWorkingsteps().size();i++)
+		//reader.getAllWorkingSteps();
+//		System.out.println(((Face)projeto.getBloco().faces.firstElement()).features.size());
+		//System.out.println(reader.getAllWorkingSteps().get(0).size());
+//		for(int i = 0;i < reader.getAllWorkingSteps().get(0).size();i++)
+		for(Workingstep ws:projeto.getWorkingsteps().get(0))
 		{
-			System.out.println("Workingstep: " + projeto.getWorkingsteps().get(i));
-			System.out.println("Workingstep precedente: " + (((Workingstep)projeto.getWorkingsteps().get(0).get(i)).getWorkingstepPrecedente()));
+			//System.out.println("lol");
+			System.out.println("Workingstep: " + ws);
+			System.out.println("Workingstep precedente: " + (ws.getWorkingstepPrecedente()));
 		}
 	}
 	

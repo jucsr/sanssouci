@@ -205,6 +205,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //		}
 		//WorkingStep 1 - GERACAO DO BOSS VIRTUAL (QUE INDICA O QUE JA FOI DESBASTADO)
 		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, overLap);
+		MapeadoraGeneralClosedPocket1.drawShape(formaOriginal, bossElements);
 		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
 //			bossElements.add(arrayTmp);
@@ -270,7 +271,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //		}
 		//Terceira ferramenta
 		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
-//		
+		MapeadoraGeneralClosedPocket1.drawShape(formaOriginal, bossElements1);
 //		double diametroFerramenta3 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
 //		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
 //		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador

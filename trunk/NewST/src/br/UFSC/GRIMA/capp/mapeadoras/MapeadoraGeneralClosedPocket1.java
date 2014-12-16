@@ -492,7 +492,7 @@ public class MapeadoraGeneralClosedPocket1
 		
 		double fator = 0.75;
 		int numeroDeFerramentas = 2; //Fora a ferramenta de acabamento
-		ArrayList<Workingstep> workingSteps = new ArrayList<Workingstep>();
+		//ArrayList<Workingstep> workingSteps = new ArrayList<Workingstep>();
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
@@ -593,7 +593,7 @@ public class MapeadoraGeneralClosedPocket1
 				wsPrecedenteTmp = wsTmp;
 				
 				wssFeature.add(wsTmp);
-				workingSteps.add(wsTmp);
+				//workingSteps.add(wsTmp);
 				
 				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
 //				if(bossElements != null)
@@ -663,7 +663,7 @@ public class MapeadoraGeneralClosedPocket1
 			wsPrecedenteTmp = wsTmp;
 			
 			wssFeature.add(wsTmp);
-			workingSteps.add(wsTmp);
+			//workingSteps.add(wsTmp);
 
 			genClosed.setWorkingsteps(wssFeature);
 		}
@@ -758,10 +758,14 @@ public class MapeadoraGeneralClosedPocket1
 	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted1(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap)
 	{
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
-		GenerateContournParallel contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap); //contrutor pra a primeira trajetotia do primeiro working step
+		GenerateContournParallel contourn = null; //contrutor pra a primeira trajetotia do primeiro working step
 		if(bossElements != null)
 		{
 			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);//construtor para as trajetorias
+		}
+		else
+		{
+			contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap);
 		}
 		if(contourn.multipleParallelPath().size() != 0)
 		{
@@ -774,6 +778,13 @@ public class MapeadoraGeneralClosedPocket1
 				ArrayList<LimitedElement> alreadyDesbastededAreaTmp = fillArrayWithArcs(meshInverted, distance); //elementos ordenados dos novos bosses
 //				ArrayList<LimitedElement> alreadyDesbastededAreaTmp = fillArrayWithArcs(firstOffsetMultipleParallel.get(i), distance); //elementos ordenados dos novos bosses
 				alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
+			}
+		}
+		if(bossElements != null)
+		{
+			for(ArrayList<LimitedElement> arrayTmp:bossElements)
+			{
+				alreadyDesbastededArea.add(arrayTmp);
 			}
 		}
 		return alreadyDesbastededArea;

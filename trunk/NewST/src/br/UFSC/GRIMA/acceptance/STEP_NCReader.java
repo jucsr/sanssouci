@@ -289,6 +289,15 @@ public class STEP_NCReader  {
 	{
 		//chamar o m�todo de cria��o de preced�ncias do stepNcReader
 		Vector<Feature> featuresTmp = new Vector<Feature>();
+		try
+		{
+			getAllFeatures(getAllWorkingSteps());
+		}
+		catch(SdaiException e)
+		{
+			e.printStackTrace();
+		}
+		//this.setFeaturesBloco(allFeatures, bloco);
 		for(int k=0;k<this.projeto.getBloco().getFaces().size();k++)
 		{
 			featuresTmp = ((Face)this.projeto.getBloco().getFaces().get(k)).features;

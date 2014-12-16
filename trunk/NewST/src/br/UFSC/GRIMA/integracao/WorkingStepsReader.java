@@ -90,16 +90,16 @@ public class WorkingStepsReader {
 				String wsTipo = arrayId[last];
 					
 				if(wsTipo.equals("RGH")){
-						System.err.println("wstipo = " + wsTipo);
+//						System.err.println("wstipo = " + wsTipo);
 					wsTmp.setTipo(Workingstep.DESBASTE);
 						
 				}else if(wsTipo.equals("FNS")){
-					System.err.println("wstipo ELSE = " + wsTipo);
+//					System.err.println("wstipo ELSE = " + wsTipo);
 
 					wsTmp.setTipo(Workingstep.ACABAMENTO);
 						
 				}else{
-					System.out.println("Tipo de Ws desconhecido: " + wsTipo);
+//					System.out.println("Tipo de Ws desconhecido: " + wsTipo);
 				}
 				workingsteps.add(wsTmp);
 				
@@ -142,7 +142,7 @@ public class WorkingStepsReader {
 					wsTmp.setTipo(Workingstep.ACABAMENTO);
 						
 				}else{
-					System.out.println("Tipo de Ws desconhecido: " + wsTipo);
+//					System.out.println("Tipo de Ws desconhecido: " + wsTipo);
 				}
 				workingsteps.add(wsTmp);
 			}

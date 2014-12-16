@@ -234,7 +234,7 @@ public class GeneralClosedPocketReader
 						LinearPath path = new LinearPath(new Point3d(p1.getX(), p1.getY(), 0), new Point3d(p2.getX(), p2.getY(), 0));
 						paths.add(path);
 						if(contador!=0){
-							System.out.println(p1 +" "+p2+" "+p1I+" "+p2I);
+//							System.out.println(p1 +" "+p2+" "+p1I+" "+p2I);
 							vertexPoints.add(OperationsVector.getIntersectionPoint(p1, p2, p1I, p2I));
 						}else{
 							p1Comeco = p1;
@@ -242,7 +242,7 @@ public class GeneralClosedPocketReader
 						}
 						
 						if(numeroDePolylines==contador+1){
-							System.out.println(p1 +" "+p2+" "+p1Comeco+" "+p2Comeco);
+//							System.out.println(p1 +" "+p2+" "+p1Comeco+" "+p2Comeco);
 							vertexPoints.add(OperationsVector.getIntersectionPoint(p1, p2, p1Comeco, p2Comeco));	
 						}
 

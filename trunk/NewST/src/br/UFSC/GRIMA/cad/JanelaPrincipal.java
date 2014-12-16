@@ -1546,7 +1546,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			deleteFile(new File("C:\\repositories.tmp"));
 			
 			stepNcReader = new STEP_NCReader(filePath, ProjectReader.FILE_21);
-			stepNcReader.getAllFeatures(stepNcReader.getAllWorkingSteps());
+			//stepNcReader.getAllFeatures(stepNcReader.getAllWorkingSteps());
 
 			int idAtual = this.projeto.getDadosDeProjeto().getUserID();
 			String userNameAtual = this.projeto.getDadosDeProjeto().getUserName();
@@ -1646,7 +1646,7 @@ public class JanelaPrincipal extends JanelaPrincipalFrame{
 			deleteFile(new File("C:\\repositories.tmp"));
 			
 			stepNcReader = new STEP_NCReader(filePath, ProjectReader.FILE_XML);
-			stepNcReader.getAllFeatures(stepNcReader.getAllWorkingSteps());
+//			stepNcReader.getAllFeatures(stepNcReader.getAllWorkingSteps());
 			
 			int idAtual = this.projeto.getDadosDeProjeto().getUserID();
 			String userNameAtual = this.projeto.getDadosDeProjeto().getUserName();

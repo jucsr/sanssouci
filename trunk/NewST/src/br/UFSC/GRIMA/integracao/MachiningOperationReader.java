@@ -153,7 +153,7 @@ public class MachiningOperationReader
 			trocoidal.setCutmodeType(eTrocoidal.getCut_mode(null));
 			trocoidal.setTrochoidalRadius(eTrocoidal.getTrochoidal_radius(null));
 //			trocoidal.setTrochoidalFeedRate(6); //FORCEI UM VALOR PARA O TESTE FUNCIONAR (TEM QUE CRIAR UMA REFERENCIA NO STEP-NC)
-			System.out.println(eTrocoidal);
+//			System.out.println(eTrocoidal);
 			trocoidal.setOverLap(eTrocoidal.getOverlap(null));
 			if(eTrocoidal.getTrochoidal_rot_direction(null) == ERot_direction.CCW) //Trochoidal rotation
 			{

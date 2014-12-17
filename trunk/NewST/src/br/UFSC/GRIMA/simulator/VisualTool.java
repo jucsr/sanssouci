@@ -83,8 +83,8 @@ public class VisualTool {
 	int i,j;
 	private boolean calculouMov;
 	
-	public VisualTool(ProjetoDeSimulacao projetoDeSimulacao, ToolPanel toolPanel) {
-
+	public VisualTool(ProjetoDeSimulacao projetoDeSimulacao, ToolPanel toolPanel) 
+	{
 		setInicialConditions();
 		this.block = projetoDeSimulacao.getBlock();
 		velocity = 2;

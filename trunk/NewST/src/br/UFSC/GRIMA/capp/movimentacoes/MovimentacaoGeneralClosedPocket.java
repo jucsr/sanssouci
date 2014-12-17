@@ -18,6 +18,7 @@ import br.UFSC.GRIMA.capp.machiningOperations.BottomAndSideRoughMilling;
 import br.UFSC.GRIMA.capp.machiningOperations.Two5DMillingOperation;
 import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket1;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndBidirectionalStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.capp.plunge.PlungeToolAxis;
@@ -285,14 +286,44 @@ public class MovimentacaoGeneralClosedPocket {
 			Workingstep wsPrecedente = ws.getWorkingstepPrecedente();
 			if(ws.getFeature().equals(wsPrecedente.getFeature()))
 			{
-				ArrayList<ArrayList<LimitedElement>> bossVirtualPrecedente = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, null, planoZ, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getTrochoidalRadius() + wsPrecedente.getFerramenta().getDiametroFerramenta()/2, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getOverLap());
-				System.err.println("Precedente");
-				MapeadoraGeneralClosedPocket1.drawShape(addPocket.getElements(), bossVirtualPrecedente);
-				ArrayList<ArrayList<LimitedElement>> bossVirtual = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, offsetDistance, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getOverLap());
-//				contourn = new GenerateContournParallel(genClosed, MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, offsetDistance, trocoidalStrategy.getOverLap()), planoZ, offsetDistance, trocoidalStrategy.getOverLap());
-				System.err.println("Atual");
-				MapeadoraGeneralClosedPocket1.drawShape(addPocket.getElements(), bossVirtual);
-				contourn = new GenerateContournParallel(genClosed, bossVirtualPrecedente, planoZ, offsetDistance, trocoidalStrategy.getOverLap());
+				int i = 0;
+				ArrayList<ArrayList<LimitedElement>> bossElements = null;
+				while(!(ws.getFeature().getWorkingsteps().get(i).equals(ws)))
+				{
+					Workingstep wsTmp = ws.getFeature().getWorkingsteps().get(i);
+					if(ws.getFeature().equals(wsTmp.getFeature()))
+					{
+						double offsetDistanceTmp = 0;
+						double overLapTmp = 0;
+						if(wsTmp.getOperation().getMachiningStrategy().getClass() == ContourParallel.class)
+						{
+							offsetDistanceTmp = wsTmp.getFerramenta().getDiametroFerramenta()/2;
+							overLapTmp = ((ContourParallel)wsTmp.getOperation().getMachiningStrategy()).getOverLap();
+						}
+						else if(wsTmp.getOperation().getMachiningStrategy().getClass() == TrochoidalAndContourParallelStrategy.class)
+						{
+							offsetDistanceTmp = ((TrochoidalAndContourParallelStrategy)wsTmp.getOperation().getMachiningStrategy()).getTrochoidalRadius() + wsTmp.getFerramenta().getDiametroFerramenta()/2;
+							overLapTmp = ((TrochoidalAndContourParallelStrategy)wsTmp.getOperation().getMachiningStrategy()).getOverLap();
+						}
+						else if(wsTmp.getOperation().getMachiningStrategy().getClass() == TrochoidalAndBidirectionalStrategy.class)
+						{
+							offsetDistanceTmp = ((TrochoidalAndBidirectionalStrategy)wsTmp.getOperation().getMachiningStrategy()).getTrochoidalRadius() + wsTmp.getFerramenta().getDiametroFerramenta()/2;
+							overLapTmp = ((TrochoidalAndBidirectionalStrategy)wsTmp.getOperation().getMachiningStrategy()).getOverLap();
+						}
+						bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1((GeneralClosedPocket)ws.getFeature(), bossElements, planoZ, offsetDistanceTmp, overLapTmp);
+					}
+					i++;
+				}
+				contourn = new GenerateContournParallel(genClosed, bossElements, planoZ, offsetDistance, trocoidalStrategy.getOverLap());
+				
+//				ArrayList<ArrayList<LimitedElement>> bossVirtualPrecedente = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, null, planoZ, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getTrochoidalRadius() + wsPrecedente.getFerramenta().getDiametroFerramenta()/2, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getOverLap());
+//				System.err.println("Precedente");
+//				MapeadoraGeneralClosedPocket1.drawShape(addPocket.getElements(), bossVirtualPrecedente);
+//				ArrayList<ArrayList<LimitedElement>> bossVirtual = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, offsetDistance, ((TrochoidalAndContourParallelStrategy)((BottomAndSideMilling)wsPrecedente.getOperation()).getMachiningStrategy()).getOverLap());
+////				contourn = new GenerateContournParallel(genClosed, MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, offsetDistance, trocoidalStrategy.getOverLap()), planoZ, offsetDistance, trocoidalStrategy.getOverLap());
+//				System.err.println("Atual");
+//				MapeadoraGeneralClosedPocket1.drawShape(addPocket.getElements(), bossVirtual);
+//				contourn = new GenerateContournParallel(genClosed, bossVirtualPrecedente, planoZ, offsetDistance, trocoidalStrategy.getOverLap());
 			}
 			else
 			{

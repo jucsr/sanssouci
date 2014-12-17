@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.cam.GenerateTrocoidalGCode;
 import br.UFSC.GRIMA.capp.DeterminarMovimentacao;
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.machiningOperations.Boring;
@@ -1344,81 +1345,83 @@ public class GCodeGenerator {
 
 						/********************************************************DESBASTE***************************************************/	
 						if(wsTmp.getOperation().getClass() == BottomAndSideRoughMilling.class){
-
-							ArrayList<LinearPath> desbaste = null;
-							ArrayList<LinearPath> contorno = null;
-							int l=0;
-
-							//			    			if(wsTmp.getFerramenta().getClass() == EndMill.class){
-							//			    				desbaste = regionBezier.desbaste();
-							//			    			}
-							//			    			else 
-							if(wsTmp.getFerramenta().getClass() == FaceMill.class){
-								desbaste = genClosed.getDesbaste();
-							}
-
-							int GAux = 0;
-							if (rotationDirection == 1){GAux = 3;}
-							else if (rotationDirection == 2){GAux = 4;}
-							else if (rotationDirection == 3){GAux = 5;}
-
-							GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
-							lineNumber = lineNumber + 10;
-
-							GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
-							lineNumber = lineNumber + 10;
-
-							GCode = GCode +"N"+lineNumber+ " M6" + "\n";
-							lineNumber = lineNumber + 10;
-
-							if (wsTmp.getOperation().isCoolant()){
-								GCode = GCode +"N" + lineNumber + " M8" + "\n";
-								lineNumber = lineNumber + 10;
-							}
-
-							double xAux = desbaste.get(0).getInitialPoint().getX();
-							double yAux = desbaste.get(0).getInitialPoint().getY();
-							double zAux = desbaste.get(0).getInitialPoint().getZ();
-
-							if(desbaste.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
-								GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
-								lineNumber = lineNumber + 10;
-							}
-							else{
-								GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
-								lineNumber = lineNumber + 10;
-							}
-
-							for(int j = 0; j < desbaste.size(); j++)
-							{
-								xAux = desbaste.get(j).getFinalPoint().getX();
-								yAux = desbaste.get(j).getFinalPoint().getY();
-								zAux = desbaste.get(j).getFinalPoint().getZ();
-
-
-								if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
-									if(l==0){
-										GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
-										lineNumber = lineNumber + 10;
-									}
-									else{
-										if(desbaste.get(j-1).getFinalPoint().getZ()==zAux){
-											GCode = GCode + "N" + lineNumber + " X" + xAux + " Y" + yAux + "\n";
-											lineNumber = lineNumber + 10;
-										}
-										else{
-											GCode = GCode + "N" + lineNumber + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
-											lineNumber = lineNumber + 10;			    						
-										}
-									}
-									l=1;
-								}
-								else{
-									GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
-									lineNumber = lineNumber + 10;
-									l=0;
-								}
-							}
+							
+							GenerateTrocoidalGCode gCode = new GenerateTrocoidalGCode(wsTmp, lineNumber);
+							GCode += gCode.getGCode(); 
+//							ArrayList<LinearPath> desbaste = null;
+//							ArrayList<LinearPath> contorno = null;
+//							int l=0;
+//
+//							//			    			if(wsTmp.getFerramenta().getClass() == EndMill.class){
+//							//			    				desbaste = regionBezier.desbaste();
+//							//			    			}
+//							//			    			else 
+//							if(wsTmp.getFerramenta().getClass() == FaceMill.class){
+//								desbaste = genClosed.getDesbaste();
+//							}
+//
+//							int GAux = 0;
+//							if (rotationDirection == 1){GAux = 3;}
+//							else if (rotationDirection == 2){GAux = 4;}
+//							else if (rotationDirection == 3){GAux = 5;}
+//
+//							GCode = GCode +"N" + lineNumber + " S"+ spindleRotation +" F" +feedRate +" M"+GAux + "\n";
+//							lineNumber = lineNumber + 10;
+//
+//							GCode = GCode +"N"+lineNumber+ " T = " + "\""+ wsTmp.getFerramenta().getName()+ "\"" + "\n";
+//							lineNumber = lineNumber + 10;
+//
+//							GCode = GCode +"N"+lineNumber+ " M6" + "\n";
+//							lineNumber = lineNumber + 10;
+//
+//							if (wsTmp.getOperation().isCoolant()){
+//								GCode = GCode +"N" + lineNumber + " M8" + "\n";
+//								lineNumber = lineNumber + 10;
+//							}
+//
+//							double xAux = desbaste.get(0).getInitialPoint().getX();
+//							double yAux = desbaste.get(0).getInitialPoint().getY();
+//							double zAux = desbaste.get(0).getInitialPoint().getZ();
+//
+//							if(desbaste.get(0).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+//								GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//								lineNumber = lineNumber + 10;
+//							}
+//							else{
+//								GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//								lineNumber = lineNumber + 10;
+//							}
+//
+//							for(int j = 0; j < desbaste.size(); j++)
+//							{
+//								xAux = desbaste.get(j).getFinalPoint().getX();
+//								yAux = desbaste.get(j).getFinalPoint().getY();
+//								zAux = desbaste.get(j).getFinalPoint().getZ();
+//
+//
+//								if(desbaste.get(j).getTipoDeMovimento()==LinearPath.SLOW_MOV){
+//									if(l==0){
+//										GCode = GCode + "N" + lineNumber + " G1" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//										lineNumber = lineNumber + 10;
+//									}
+//									else{
+//										if(desbaste.get(j-1).getFinalPoint().getZ()==zAux){
+//											GCode = GCode + "N" + lineNumber + " X" + xAux + " Y" + yAux + "\n";
+//											lineNumber = lineNumber + 10;
+//										}
+//										else{
+//											GCode = GCode + "N" + lineNumber + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//											lineNumber = lineNumber + 10;			    						
+//										}
+//									}
+//									l=1;
+//								}
+//								else{
+//									GCode = GCode + "N" + lineNumber + " G0" + " X" + xAux + " Y" + yAux + " Z" + zAux + "\n";
+//									lineNumber = lineNumber + 10;
+//									l=0;
+//								}
+//							}
 						}	
 					}
 					//			    	if(wsTmp.getFeature().getClass().equals(Cavidade.class) && wsTmp.getFerramenta().getClass().equals(BallEndMill.class)){

@@ -491,7 +491,7 @@ public class MapeadoraGeneralClosedPocket1
 //-----------------------------------------------------------------------------------------------------
 		
 		double fator = 0.75;
-		int numeroDeFerramentas = 2; //Fora a ferramenta de acabamento
+		int numeroDeWorkingsteps = 2; //Fora a ferramenta de acabamento
 		//ArrayList<Workingstep> workingSteps = new ArrayList<Workingstep>();
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
@@ -500,7 +500,7 @@ public class MapeadoraGeneralClosedPocket1
 		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
 //		ArrayList<ArrayList<LimitedElement>> bossElements = null; //Array das protuberancias virtuais
 		
-		double maiorMenorDistanciaTmp = 0;//getMaiorMenorDistancia(bossReal/*bossElements*/); //maior menor distancia inicial
+		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements); //maior menor distancia inicial
 //		if(maiorMenorDistanciaTmp >= 40)
 //		{
 //			maiorMenorDistanciaTmp = maiorMenorDistanciaTmp/fator;
@@ -538,12 +538,12 @@ public class MapeadoraGeneralClosedPocket1
 //			bossElements = null; //Array das protuberancias virtuais
 //			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
 			int aux = 0;
-//			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
-			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < numeroDeFerramentas)
+			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
+			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < numeroDeWorkingsteps)
 			{
 				//Calcula a maior menor distancia
-				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
-				if(aux >= numeroDeFerramentas-2)
+//				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+				if(aux >= numeroDeWorkingsteps-2)
 				{
 //					maiorMenorDistanciaTmp = maiorMenorDistanciaTmp * fator;
 				}
@@ -565,10 +565,7 @@ public class MapeadoraGeneralClosedPocket1
 //				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
 				
 				// CONDIÇÕES DE USINAGEM
-				condicoesDeUsinagem = MapeadoraDeWorkingsteps
-						.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
-								bloco.getMaterial());
-				
+				condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp, bloco.getMaterial());
 				//Estrategia de usinagem
 				TrochoidalAndContourParallelStrategy machiningStrategyTmp = new TrochoidalAndContourParallelStrategy();
 				operationTmp.setMachiningStrategy(machiningStrategyTmp);
@@ -583,49 +580,32 @@ public class MapeadoraGeneralClosedPocket1
 				PlungeStrategy plungeStrategy = new PlungeToolAxis();
 				operationTmp.setApproachStrategy(plungeStrategy);
 				
+				//workingSteps.add(wsTmp);
+				
+				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
+				FaceMill faceMillTmp2 = faceMillTmp;
+				if(aux != numeroDeWorkingsteps-1)
+				{
+					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
+					maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+					drawShape(addPocket.getElements(), bossElements);
+					faceMillTmp2 = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
+					if((faceMillTmp.getDiametroFerramenta() - faceMillTmp2.getDiametroFerramenta()) <= 4)
+					{
+						System.err.println(faceMillTmp.getDiametroFerramenta() - faceMillTmp2.getDiametroFerramenta());
+						condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp2,bloco.getMaterial());
+						machiningStrategyTmp.setTrochoidalRadius(faceMillTmp2.getDiametroFerramenta()/2); //REVER MAIS TARDE
+						aux++;
+					}
+				}
 				// WORKINGSTEP
-				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,
-						condicoesDeUsinagem, operationTmp);
+				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp2,condicoesDeUsinagem, operationTmp);
 				wsTmp.setTipo(Workingstep.DESBASTE);
 				wsTmp.setId(this.genClosed.getNome() + "_RGH");
-				
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
 				wsPrecedenteTmp = wsTmp;
 				
 				wssFeature.add(wsTmp);
-				//workingSteps.add(wsTmp);
-				
-				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
-//				if(bossElements != null)
-				if(aux != numeroDeFerramentas-1)
-				{
-					for(ArrayList<LimitedElement> arrayTemp:getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap()))
-					{
-						bossElements.add(arrayTemp);
-					}
-					drawShape(addPocket.getElements(), bossElements);
-////					for(ArrayList<LimitedElement> arrayTmp:bossReal)
-////					{
-////						bossElements.add(arrayTmp);
-////					}
-				}
-//				else
-//				{
-//					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
-//					for(ArrayList<LimitedElement> arrayTmp:bossReal)
-//					{
-//						bossElements.add(arrayTmp);
-//					}
-//				}
-				//Add os elementos das protuberancias reais
-//				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
-//				if(aux == 1)
-//				{
-//					maiorMenorDistanciaTmp = maiorMenorDistanciaTmp/2;
-////					maiorMenorDistanciaTmp = menorMenorDistanciaTmp;
-//				}
-//				menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
-			
 				aux++;
 			}
 			// WORKINGSTEP DE ACABAMENTO
@@ -635,8 +615,13 @@ public class MapeadoraGeneralClosedPocket1
 			operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
 			System.out.println("Menor menor distancia: " + menorMenorDistanciaTmp);
 			// FERRAMENTA
+			double diametroFerramentaAcabamento = menorMenorDistanciaTmp;
+			if(menorMenorDistanciaTmp > maiorMenorDistanciaTmp)
+			{
+				diametroFerramentaAcabamento = maiorMenorDistanciaTmp;
+			}
 			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
-					genClosed, 0, menorMenorDistanciaTmp);
+					genClosed, 0, diametroFerramentaAcabamento);
 
 			//Estrategia de usinagem
 			ContourParallel machiningStrategyTmp = new ContourParallel();

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import br.UFSC.GRIMA.capp.Workingstep;
 import br.UFSC.GRIMA.capp.movimentacoes.MovimentacaoGeneralClosedPocket;
+import br.UFSC.GRIMA.capp.movimentacoes.estrategias.ContourParallel;
 import br.UFSC.GRIMA.capp.movimentacoes.estrategias.TrochoidalAndContourParallelStrategy;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
@@ -88,8 +89,14 @@ public class GenerateTrocoidalGCode
 	public String getGCode()
 	{
 		System.out.println("Diameter: " + ws.getFerramenta().getDiametroFerramenta());
-		this.paths = mov.getDesbasteTrocoidal();                 //Array de paths (caminhos da ferramenta)
-//		this.paths = mov.getDesbasteContourParallel();
+		if(ws.getOperation().getMachiningStrategy().getClass() == TrochoidalAndContourParallelStrategy.class)
+		{
+			this.paths = mov.getDesbasteTrocoidal();                 //Array de paths (caminhos da ferramenta)
+		}
+		else if(ws.getOperation().getMachiningStrategy().getClass() == ContourParallel.class)
+		{
+			this.paths = mov.getDesbasteContourParallel();
+		}
 		this.baseLines = mov.getMultipleLimitedElements();       //Array de linhas guia
 //		System.err.println("PATHS = " + baseLines);
 //		System.out.println("PATHS = " + paths.size());

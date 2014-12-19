@@ -3422,6 +3422,18 @@ public class GeometricOperations
 		}
 		return inside;
 	}
+	public static boolean insideShape(ArrayList<LimitedElement> pocketElements, LimitedLine line)
+	{
+		boolean inside = true;
+		GeneralPath gp = (GeneralPath)Face.getShape(pocketElements); 
+		Point3d unit = unitVector(line.getInitialPoint(), line.getFinalPoint());
+		Point3d validation = new Point3d(line.getInitialPoint().x + multiply(line.getInitialPoint().distance(line.getFinalPoint())/2, unit).x, line.getInitialPoint().y + multiply(line.getInitialPoint().distance(line.getFinalPoint())/2, unit).y,line.getInitialPoint().z);
+		if(!gp.contains(new Point2D.Double(validation.x, validation.y)))
+		{
+			inside = false;
+		}
+		return inside;
+	}
 	public static void showPoints(ArrayList<Point2D> points)
 	{
 		for(Point2D pointTmp:points)

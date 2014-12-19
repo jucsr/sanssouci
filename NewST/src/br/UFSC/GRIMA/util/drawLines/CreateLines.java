@@ -15,6 +15,9 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import br.UFSC.GRIMA.entidades.features.Face;
+import br.UFSC.GRIMA.util.Triangulation;
+
 public class CreateLines extends LineFrame implements ActionListener
 {
 	static LinePanel linePanel = new LinePanel();
@@ -178,6 +181,8 @@ public class CreateLines extends LineFrame implements ActionListener
 		forma.closePath();
 		*/
 		triangulation(poligonoAuxiliar);
+		
+//		Triangulation triangulation = new Triangulation(Face.)
 		
 //		linePanel.poligono = new GeneralPath();
 //		

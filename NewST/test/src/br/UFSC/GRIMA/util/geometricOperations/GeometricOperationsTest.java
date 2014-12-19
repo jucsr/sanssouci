@@ -353,7 +353,7 @@ public class GeometricOperationsTest
 		LimitedLine line2 = new LimitedLine(new Point3d(20,10,0), new Point3d(20,20,0));
 		
 		//Retas sobrepostas
-//		LimitedLine l10 = new LimitedLine(new Point3d(50,50,0),new Point3d())
+		LimitedLine l10 = new LimitedLine(new Point3d(50,50,0),new Point3d());
 		
 		//Retas que n�o se tocam
 		LimitedLine line3 = new LimitedLine(new Point3d(10,10,0), new Point3d(20,10,0));
@@ -414,11 +414,13 @@ public class GeometricOperationsTest
 		
 		
 		
-		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(l97, arco55);
+//		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(l97, arco55);
+		ArrayList<Point3d> intersection = GeometricOperations.intersectionElements(l3, l4);
 		System.err.println("Intersection Validated: " + intersection);
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
-		all.add(arc8);
-		all.add(arc9);
+		all.add(l3);
+		all.add(l4);
+//		all.add(l10);
 //		all.add(arc10);
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);
 		desenhador.setVisible(true);

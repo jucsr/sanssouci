@@ -76,7 +76,7 @@ public class MapeadoraGeneralClosedPocket1
 		this.addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 		this.faceMills = ToolManager.getFaceMills();
 		this.endMills = ToolManager.getEndMills();
-//		System.out.println("Tamanho: "+faceMills.size());
+		System.out.println("Tamanho: "+faceMills.size());
 		
 		this.mapearGeneralClosedPocket();
 
@@ -541,6 +541,7 @@ public class MapeadoraGeneralClosedPocket1
 			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
 			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < numeroDeWorkingsteps)
 			{
+				System.err.println("counter: "+aux);
 				//Calcula a maior menor distancia
 //				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
 				if(aux >= numeroDeWorkingsteps-2)
@@ -564,6 +565,24 @@ public class MapeadoraGeneralClosedPocket1
 //				System.err.println(faceMillTmp.getDiametroFerramenta());
 //				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
 				
+				//Criacao de um boss virtual (indicando a area que sera desbastada pela ferramenta de diametro escolhido acima)
+				//FaceMill faceMillTmp2Next = faceMillTmp;
+				double trochoidalRadius = faceMillTmp.getDiametroFerramenta()/2;
+				double overLap = 2;
+				if(aux != numeroDeWorkingsteps-1)
+				{
+					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, trochoidalRadius + faceMillTmp.getDiametroFerramenta()/2, overLap);
+					maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+					drawShape(addPocket.getElements(), bossElements);
+					FaceMill faceMillTmp2Next = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
+					System.err.println("Diferenca entre Ferramentas: "+ (faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()));
+					if((faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()) <= 4)
+					{
+						faceMillTmp = faceMillTmp2Next;
+						aux++;
+					}
+				}
+				
 				// CONDIÇÕES DE USINAGEM
 				condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp, bloco.getMaterial());
 				//Estrategia de usinagem
@@ -583,23 +602,23 @@ public class MapeadoraGeneralClosedPocket1
 				//workingSteps.add(wsTmp);
 				
 				//novo array de protuberancias virtuais, partindo dos antigos (se houver)
-				FaceMill faceMillTmp2 = faceMillTmp;
-				if(aux != numeroDeWorkingsteps-1)
-				{
-					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
-					maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
-					drawShape(addPocket.getElements(), bossElements);
-					faceMillTmp2 = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
-					if((faceMillTmp.getDiametroFerramenta() - faceMillTmp2.getDiametroFerramenta()) <= 4)
-					{
-						System.err.println(faceMillTmp.getDiametroFerramenta() - faceMillTmp2.getDiametroFerramenta());
-						condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp2,bloco.getMaterial());
-						machiningStrategyTmp.setTrochoidalRadius(faceMillTmp2.getDiametroFerramenta()/2); //REVER MAIS TARDE
-						aux++;
-					}
-				}
+//				FaceMill faceMillTmp2 = faceMillTmp;
+//				if(aux != numeroDeWorkingsteps-1)
+//				{
+//					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, machiningStrategyTmp.getTrochoidalRadius() + faceMillTmp.getDiametroFerramenta()/2, machiningStrategyTmp.getOverLap());
+//					maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+//					drawShape(addPocket.getElements(), bossElements);
+//					faceMillTmp2 = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
+//					if((faceMillTmp.getDiametroFerramenta() - faceMillTmp2.getDiametroFerramenta()) <= 4)
+//					{
+//						System.err.println(faceMillTmp.getDiametroFerramenta() - faceMillTmp2.getDiametroFerramenta());
+//						condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp2,bloco.getMaterial());
+//						machiningStrategyTmp.setTrochoidalRadius(faceMillTmp2.getDiametroFerramenta()/2); //REVER MAIS TARDE
+//						aux++;
+//					}
+//				}
 				// WORKINGSTEP
-				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp2,condicoesDeUsinagem, operationTmp);
+				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,condicoesDeUsinagem, operationTmp);
 				wsTmp.setTipo(Workingstep.DESBASTE);
 				wsTmp.setId(this.genClosed.getNome() + "_RGH");
 				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
@@ -824,9 +843,12 @@ public class MapeadoraGeneralClosedPocket1
 
 		//CRIA Shape2D DAS PROTUBERANCIAS
 		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
-		for(ArrayList<LimitedElement> bossTmp:bossElements)
+		if(bossElements != null)
 		{
-			bossShape.add(Face.getShape(bossTmp));
+			for(ArrayList<LimitedElement> bossTmp:bossElements)
+			{
+				bossShape.add(Face.getShape(bossTmp));
+			}
 		}
 		//Desenhador
 		JFrame frame = new JFrame();

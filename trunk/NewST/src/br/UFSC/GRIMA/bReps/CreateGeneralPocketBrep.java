@@ -142,7 +142,7 @@ public class CreateGeneralPocketBrep
 			oldIndexes.add(i);
 		}
 		
-		while (oldPolygon.size()>4)
+		while (oldPolygon.size()>=4)
 		{
 			ArrayList<Point2D> newPolygon = new ArrayList<Point2D>();
 			ArrayList<Integer> newIndexes = new ArrayList<Integer>();

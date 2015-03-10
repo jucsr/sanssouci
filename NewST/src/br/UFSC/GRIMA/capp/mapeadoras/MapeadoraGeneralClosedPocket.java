@@ -32,6 +32,8 @@ import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
+import br.UFSC.GRIMA.util.Transformer;
+import br.UFSC.GRIMA.util.findPoints.LimitedElement;
 import br.UFSC.GRIMA.util.operationsVector.OperationsVector;
 import br.UFSC.GRIMA.util.projeto.Projeto;
 
@@ -1535,6 +1537,25 @@ public class MapeadoraGeneralClosedPocket {
 
 		return menorDistancia;
 	}
+//	private ArrayList<Double> getMenorDistancia1(ArrayList<Point3d> pontosPossiveis, ArrayList<Point3d> pontosPeriferia) 
+//	{
+//		double distanciaTmp;
+//		ArrayList<Double> menorDistancia = new ArrayList<Double>();
+//		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+//		for(LimitedElement e:)
+//		
+//		for(int i=0;i<pontosPossiveis.size();i++){
+//			distanciaTmp=100;
+//			for(int k=0;k<pontosPeriferia.size();k++){
+//				if(OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i))<distanciaTmp){
+//					distanciaTmp=OperationsVector.distanceVector(pontosPeriferia.get(k), pontosPossiveis.get(i));
+//				}
+//			}
+//			menorDistancia.add(distanciaTmp);
+//		}
+//
+//		return menorDistancia;
+//	}
 	
 	private double[][] getMalhaMenoresDistancias(int numeroDePontosDaMalha, ArrayList<Point3d> pontosPossiveis , ArrayList<Point3d> pontosPeriferia, ArrayList<Point2d> coordenadas) 
 	{

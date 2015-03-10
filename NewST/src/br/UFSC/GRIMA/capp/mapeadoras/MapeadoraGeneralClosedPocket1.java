@@ -40,6 +40,7 @@ import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
+import br.UFSC.GRIMA.samples.PocketTest;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -68,6 +69,7 @@ public class MapeadoraGeneralClosedPocket1
 
 	public MapeadoraGeneralClosedPocket1(Projeto projeto, Face face, GeneralClosedPocket genClosed) 
 	{
+//		wssFeature = new Vector();
 		this.projeto = projeto;
 		this.faceTmp = face;
 		this.genClosed = genClosed;
@@ -266,6 +268,7 @@ public class MapeadoraGeneralClosedPocket1
 	public double getMenorMenorDistance(/*GeneralClosedPocket genClosed*/ArrayList<ArrayList<LimitedElement>> arrayBossElements)
 	{
 //		ArrayList<Boss> itsBoss = genClosed.getItsBoss(); //Array de protuberancias
+		//Linearizar o array de boss (o metodo requer um array unidimensional)
 		ArrayList<LimitedElement> bossElements = new ArrayList<LimitedElement>();
 		for(ArrayList<LimitedElement> arrayTmp : arrayBossElements)
 		{
@@ -286,8 +289,9 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		else
 		{
-			menorDistancia = genClosed.getRadius();
+//			menorDistancia = genClosed.getRadius();
 //			System.out.println("Menor Menor Distancia s/protuberancia: " + menorDistancia);
+			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements());
 		}
 		return menorDistancia;
 	}
@@ -539,9 +543,13 @@ public class MapeadoraGeneralClosedPocket1
 //			while(genClosed.getRadius() < maiorMenorDistanciaTmp)
 			int aux = 0;
 			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
-			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < numeroDeWorkingsteps)
+//			while(/*maiorMenorDistanciaTmp > menorMenorDistanciaTmp*/aux < numeroDeWorkingsteps)
+//			boolean flag = true;
+			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp)
 			{
 				System.err.println("counter: "+aux);
+				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
+				System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
 				//Calcula a maior menor distancia
 //				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
 				if(aux >= numeroDeWorkingsteps-2)
@@ -569,17 +577,21 @@ public class MapeadoraGeneralClosedPocket1
 				//FaceMill faceMillTmp2Next = faceMillTmp;
 				double trochoidalRadius = faceMillTmp.getDiametroFerramenta()/2;
 				double overLap = 2;
-				if(aux != numeroDeWorkingsteps-1)
+				//if(aux != numeroDeWorkingsteps-1)
 				{
 					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, trochoidalRadius + faceMillTmp.getDiametroFerramenta()/2, overLap);
 					maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+					System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 					drawShape(addPocket.getElements(), bossElements);
-					FaceMill faceMillTmp2Next = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
-					System.err.println("Diferenca entre Ferramentas: "+ (faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()));
-					if((faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()) <= 4)
+					if(maiorMenorDistanciaTmp != 0)
 					{
-						faceMillTmp = faceMillTmp2Next;
-						aux++;
+						FaceMill faceMillTmp2Next = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
+						System.err.println("Diferenca entre Ferramentas: "+ (faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()));
+						if((faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()) <= 4)
+						{
+							faceMillTmp = faceMillTmp2Next;
+							aux++;
+						}
 					}
 				}
 				
@@ -635,10 +647,10 @@ public class MapeadoraGeneralClosedPocket1
 			System.out.println("Menor menor distancia: " + menorMenorDistanciaTmp);
 			// FERRAMENTA
 			double diametroFerramentaAcabamento = menorMenorDistanciaTmp;
-			if(menorMenorDistanciaTmp > maiorMenorDistanciaTmp)
-			{
-				diametroFerramentaAcabamento = maiorMenorDistanciaTmp;
-			}
+//			if(menorMenorDistanciaTmp > maiorMenorDistanciaTmp && maiorMenorDistanciaTmp != 0)
+//			{
+//				diametroFerramentaAcabamento = maiorMenorDistanciaTmp;
+//			}
 			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 					genClosed, 0, diametroFerramentaAcabamento);
 

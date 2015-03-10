@@ -136,6 +136,7 @@ public class GenerateVoronoiArray
 		ArrayList<Point3d> max = new ArrayList<Point3d>();
 //		ArrayList<Point3d> max = new ArrayList<Point3d>();
 //		System.out.println("X: " + malha.size());
+		int contador = 0;
 		for(int i = 1;i < malha.size()-1;i++)
 		{
 //			System.out.println("Y: " + malha.get(i).size());
@@ -148,16 +149,41 @@ public class GenerateVoronoiArray
 					double zAtual = malha.get(i).get(j).z;
 					double zPosterior = malha.get(i).get(j+1).z;
 					
-					if((zAtual >= zAnterior) &&(zAtual >= zPosterior))
+					contador = 0;
+					if(malha.get(i).get(j).z>=malha.get(i).get(j+1).z)
+						contador++;
+					if(malha.get(i).get(j).z>=malha.get(i).get(j-1).z)
+						contador++;
+					if(malha.get(i).get(j).z>=malha.get(i-1).get(j+1).z)
+						contador++;
+					if(malha.get(i).get(j).z>=malha.get(i+1).get(j+1).z)
+						contador++;
+					if(malha.get(i).get(j).z>=malha.get(i+1).get(j-1).z)
+						contador++;
+					if(malha.get(i).get(j).z>=malha.get(i-1).get(j-1).z)
+						contador++;
+					if(malha.get(i).get(j).z>=malha.get(i+1).get(j).z)
+						contador++;
+					if(malha.get(i).get(j).z>=malha.get(i-1).get(j).z)
+						contador++;
+					if(malha.get(i).get(j).z<=2)
+						contador=0;
+					
+					if(contador>=6)
 					{
-						//Maximo na direcao y
-						zAnterior = malha.get(i-1).get(j).z;
-						zPosterior = malha.get(i+1).get(j).z;
-						if((zAtual >= zAnterior) &&(zAtual >= zPosterior))
-						{
-							max.add(malha.get(i).get(j));
-						}
+						max.add(malha.get(i).get(j));
 					}
+//					if((zAtual >= zAnterior) &&(zAtual >= zPosterior))
+//					{
+//						//Maximo na direcao y
+//						zAnterior = malha.get(i-1).get(j).z;
+//						zPosterior = malha.get(i+1).get(j).z;
+//						if((zAtual >= zAnterior) &&(zAtual >= zPosterior))
+//						{
+//							max.add(malha.get(i).get(j));
+//						}
+//					}
+					
 //					double zAnterior = malha.get(i-1).get(j).z;
 //					double zAtual = malha.get(i).get(j).z;
 //					double zPosterior = malha.get(i+1).get(j).z;

@@ -90,8 +90,8 @@ public class GenerateVoronoiTest
 	{
 		GenerateVoronoiArray voronoi = new GenerateVoronoiArray(pocket);
 //		ConsolePrinter.showPointsToMatLabTest(voronoi.getVornoiPoints());
-//		MapeadoraGeneralClosedPocket1.drawShapeAndPoints(voronoi.getPocketElements(), voronoi.getBossElements(), voronoi.getVornoiPoints());
-		MapeadoraGeneralClosedPocket1.drawShapeAndPoints(voronoi.getPocketElements(), voronoi.getBossElements(), MapeadoraGeneralClosedPocket.getPontosPeriferiaGeneral(pocket.getPoints(), pocket.Z, pocket.getRadius()));
+		MapeadoraGeneralClosedPocket1.drawShapeAndPoints(voronoi.getPocketElements(), voronoi.getBossElements(), voronoi.getVornoiPoints());
+//		MapeadoraGeneralClosedPocket1.drawShapeAndPoints(voronoi.getPocketElements(), voronoi.getBossElements(), MapeadoraGeneralClosedPocket.getPontosPeriferiaGeneral(pocket.getPoints(), pocket.Z, pocket.getRadius()));
 		for(;;);
 	}
 

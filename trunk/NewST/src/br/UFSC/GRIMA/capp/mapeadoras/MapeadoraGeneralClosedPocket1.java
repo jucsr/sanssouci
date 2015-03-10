@@ -289,9 +289,9 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		else
 		{
-//			menorDistancia = genClosed.getRadius();
+			menorDistancia = genClosed.getRadius();
 //			System.out.println("Menor Menor Distancia s/protuberancia: " + menorDistancia);
-			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements());
+			//menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements());
 		}
 		return menorDistancia;
 	}

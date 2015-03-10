@@ -39,30 +39,30 @@ public class GenerateVoronoiTest
 //		points.add(new Point2D.Double(0, 320));
 		
 		//Forma 2
-		points.add(new Point2D.Double(100, 64));
-		points.add(new Point2D.Double(100, 0));
-		points.add(new Point2D.Double(0, 0));
-		points.add(new Point2D.Double(0, 64));
+//		points.add(new Point2D.Double(100, 64));
+//		points.add(new Point2D.Double(100, 0));
+//		points.add(new Point2D.Double(0, 0));
+//		points.add(new Point2D.Double(0, 64));
 		
 		//Forma de Cachorrinho --> raio 5
-//		points.add(new Point2D.Double(44.0,89.0));
-//		points.add(new Point2D.Double(51.0,68.0));
-//		points.add(new Point2D.Double(27.0,22.0));
-//		points.add(new Point2D.Double(55.0,20.0));
-//		points.add(new Point2D.Double(67.0,50.0));
-//		points.add(new Point2D.Double(124.0,65.0));
-//		points.add(new Point2D.Double(136.0,20.0));
-//		points.add(new Point2D.Double(164.0,19.0));
-//		points.add(new Point2D.Double(147.0,66.0));
-//		points.add(new Point2D.Double(168.0,116.0));
-//		points.add(new Point2D.Double(134.0,84.0));
-//		points.add(new Point2D.Double(68.0,84.0));
-//		points.add(new Point2D.Double(45.0,120.0));
-//		points.add(new Point2D.Double(13.0,93.0));
+		points.add(new Point2D.Double(44.0,89.0));
+		points.add(new Point2D.Double(51.0,68.0));
+		points.add(new Point2D.Double(27.0,22.0));
+		points.add(new Point2D.Double(55.0,20.0));
+		points.add(new Point2D.Double(67.0,50.0));
+		points.add(new Point2D.Double(124.0,65.0));
+		points.add(new Point2D.Double(136.0,20.0));
+		points.add(new Point2D.Double(164.0,19.0));
+		points.add(new Point2D.Double(147.0,66.0));
+		points.add(new Point2D.Double(168.0,116.0));
+		points.add(new Point2D.Double(134.0,84.0));
+		points.add(new Point2D.Double(68.0,84.0));
+		points.add(new Point2D.Double(45.0,120.0));
+		points.add(new Point2D.Double(13.0,93.0));
 		
 		//Protuberancia
 		pocket.setPoints(points);
-		pocket.setRadius(0);
+		pocket.setRadius(5);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();

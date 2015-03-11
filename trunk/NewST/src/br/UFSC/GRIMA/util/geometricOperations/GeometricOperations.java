@@ -1070,60 +1070,60 @@ public class GeometricOperations
 		return acabamentoPath(addPocket, allowance);
 	}
 	
-	public static double minimumDistance(ArrayList<LimitedElement> elementsToAssess)
-	{
-		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
-		elements = elementsToAssess;
-		
-		double distance;		
-		System.out.println("Elements " + elements.size());
-		if (elements.size()<=3)
-		{
-			distance = 0;
-			return distance;
-		}
-		else
-		{
-			distance = minimumDistance(elements.get(0), elements.get(2));
-		}
-		
-		for (int i = 0; i < elements.size(); i++)
-		{
-			LimitedElement e;;
-			LimitedElement eBefore;
-			LimitedElement eAfter;
-			double distanceT=distance;
-			if(i==0)
-			{
-				e = elements.get(i);
-				eBefore = elements.get(elements.size()-1);
-				eAfter = elements.get(i+1);
-				distance = minimumDistance(eBefore, eAfter);
-			}
-			else if(i==elements.size()-1)
-			{
-				e = elements.get(i);
-				eBefore = elements.get(i-1);
-				eAfter = elements.get(0);
-				distanceT = minimumDistance(eBefore, eAfter);
-			}
-			else
-			{
-				e = elements.get(i);
-				eBefore = elements.get(i-1);
-				eAfter = elements.get(i+1);
-				distanceT = minimumDistance(eBefore, eAfter);
-			}
-			
-			if (distanceT<distance)
-			{
-				distance = distanceT;
-				System.out.println("Distance changed " + distanceT + " i = " +i);
-			}
-		}	
-//		System.out.println("Minimum distance " + distance);
-		return distance;
-	}
+//	public static double minimumDistance(ArrayList<LimitedElement> elementsToAssess)
+//	{
+//		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+//		elements = elementsToAssess;
+//		
+//		double distance;		
+//		System.out.println("Elements " + elements.size());
+//		if (elements.size()<=3)
+//		{
+//			distance = 0;
+//			return distance;
+//		}
+//		else
+//		{
+//			distance = minimumDistance(elements.get(0), elements.get(2));
+//		}
+//		
+//		for (int i = 0; i < elements.size(); i++)
+//		{
+//			LimitedElement e;;
+//			LimitedElement eBefore;
+//			LimitedElement eAfter;
+//			double distanceT=distance;
+//			if(i==0)
+//			{
+//				e = elements.get(i);
+//				eBefore = elements.get(elements.size()-1);
+//				eAfter = elements.get(i+1);
+//				distance = minimumDistance(eBefore, eAfter);
+//			}
+//			else if(i==elements.size()-1)
+//			{
+//				e = elements.get(i);
+//				eBefore = elements.get(i-1);
+//				eAfter = elements.get(0);
+//				distanceT = minimumDistance(eBefore, eAfter);
+//			}
+//			else
+//			{
+//				e = elements.get(i);
+//				eBefore = elements.get(i-1);
+//				eAfter = elements.get(i+1);
+//				distanceT = minimumDistance(eBefore, eAfter);
+//			}
+//			
+//			if (distanceT<distance)
+//			{
+//				distance = distanceT;
+//				System.out.println("Distance changed " + distanceT + " i = " +i);
+//			}
+//		}	
+////		System.out.println("Minimum distance " + distance);
+//		return distance;
+//	}
 	
 	/**
 	 * Minima distancia entre dois elementos quaisquer
@@ -1326,6 +1326,19 @@ public class GeometricOperations
 					if(!isInList(negativos, dTmp))
 						minimumDistance = dTmp;
 				}
+			}
+		}
+		return minimumDistance;
+	}
+	public static double minimumDistance(ArrayList<LimitedElement> array)
+	{
+		double minimumDistance = minimumDistance(array, array.get(0));
+		for(int i = 0;i < array.size();i++)
+		{
+			double minimumDistanceTmp = minimumDistance(array, array.get(i));
+			if(minimumDistanceTmp < minimumDistance)
+			{
+				minimumDistance = minimumDistanceTmp;
 			}
 		}
 		return minimumDistance;

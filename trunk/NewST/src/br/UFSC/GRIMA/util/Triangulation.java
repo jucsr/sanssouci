@@ -23,15 +23,18 @@ public class Triangulation
 //		this.elements = Transformer.transformPathsInLimitedElements(Transformer.linerizatePaths1(Transformer.transformLimitedElementsInPaths(elements)));
 //	}
 	ArrayList<Point2D> polygon = new ArrayList<Point2D>();
+	ArrayList<Integer> triangulesIndex = new ArrayList<Integer>();
 	public Triangulation(ArrayList<Point2D> polygon)
 	{
 		this.polygon = polygon;
+		this.triangulesIndex = triangulation(polygon);
 	}
 	public ArrayList<Integer> getTriangulesIndex()
 	{
-		return triangulation(polygon);
+//		return triangulation(polygon);
+		return triangulesIndex;
 	}
-	public double getArea(ArrayList<Integer> triangulesIndex)
+	public double getArea(/*ArrayList<Integer> triangulesIndex*/)
 	{
 		int flag = 0;
 		ArrayList<Integer> triangulesIndexTmp = new ArrayList<Integer>();
@@ -42,7 +45,6 @@ public class Triangulation
 			flag++;
 			if(flag==3)
 			{
-				System.out.println("lol");
 				double a = polygon.get(triangulesIndexTmp.get(0)).distance(polygon.get(triangulesIndexTmp.get(1)));
 				double b = polygon.get(triangulesIndexTmp.get(0)).distance(polygon.get(triangulesIndexTmp.get(2)));
 				double c = polygon.get(triangulesIndexTmp.get(1)).distance(polygon.get(triangulesIndexTmp.get(2)));
@@ -262,7 +264,6 @@ public class Triangulation
 				}
 			}
 			
-			System.out.println("Oldpolygon: " + oldPolygon);
 			oldIndexes=new ArrayList<Integer>();
 
 			for (int i=0;i<newIndexes.size();i++)
@@ -281,7 +282,6 @@ public class Triangulation
 				oldPolygon.add(polygon.get(oldIndexes.get(i)));
 			}
 		}
-		System.out.println("Oldpolygon: " + oldPolygon);
 		
 		allIndexFace.add(oldIndexes.get(0));
 		allIndexFace.add(oldIndexes.get(1));

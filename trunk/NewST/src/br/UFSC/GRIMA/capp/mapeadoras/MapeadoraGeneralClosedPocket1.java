@@ -41,6 +41,8 @@ import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.samples.PocketTest;
+import br.UFSC.GRIMA.util.Transformer;
+import br.UFSC.GRIMA.util.Triangulation;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
 import br.UFSC.GRIMA.util.findPoints.LimitedArc;
 import br.UFSC.GRIMA.util.findPoints.LimitedElement;
@@ -500,10 +502,24 @@ public class MapeadoraGeneralClosedPocket1
 		Workingstep wsPrecedenteTmp;
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
+		
+		Triangulation triangulation = new Triangulation(genClosed.getPoints());
+		double areaCavidade = triangulation.getArea();
+		System.err.println("area da cavidade: " + areaCavidade);
+		
 //		ArrayList<ArrayList<LimitedElement>> bossReal = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z);
 		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
 //		ArrayList<ArrayList<LimitedElement>> bossElements = null; //Array das protuberancias virtuais
-		
+		double areaBoss = 0;
+		for(ArrayList<LimitedElement> array:bossElements)
+		{
+			triangulation = new Triangulation(Transformer.limitedElementToPoints2D(array));
+			areaBoss += triangulation.getArea();
+		}
+		double areaDeDesbaste = areaCavidade - areaBoss;
+		System.err.println("area dos bosses: " + areaBoss);
+		System.err.println("area a ser desbastada: " + areaDeDesbaste);
+
 		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements); //maior menor distancia inicial
 //		if(maiorMenorDistanciaTmp >= 40)
 //		{
@@ -547,16 +563,15 @@ public class MapeadoraGeneralClosedPocket1
 //			boolean flag = true;
 			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp)
 			{
-				System.err.println("counter: "+aux);
+				//System.err.println("counter: "+aux);
 				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 				System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
 				//Calcula a maior menor distancia
 //				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
-				if(aux >= numeroDeWorkingsteps-2)
-				{
+//				if(aux >= numeroDeWorkingsteps-2)
+//				{
 //					maiorMenorDistanciaTmp = maiorMenorDistanciaTmp * fator;
-				}
-//				System.err.println(maiorMenorDistanciaTmp);
+//				}
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
 						"Bottom And Side Rough Milling", retractPlane);
@@ -566,12 +581,8 @@ public class MapeadoraGeneralClosedPocket1
 					operationTmp.setAllowanceBottom(Feature.LIMITE_DESBASTE);
 				
 				// FERRAMENTA
-//				System.out.println("Maior menor distancia: " + maiorMenorDistanciaTmp);
 				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 						genClosed, 0, maiorMenorDistanciaTmp);
-//				System.err.println(faceMillTmp);
-//				System.err.println(faceMillTmp.getDiametroFerramenta());
-//				System.out.println("Ferramenta 1 de Diametro: " + faceMillTmp.getDiametroFerramenta());
 				
 				//Criacao de um boss virtual (indicando a area que sera desbastada pela ferramenta de diametro escolhido acima)
 				//FaceMill faceMillTmp2Next = faceMillTmp;
@@ -581,6 +592,15 @@ public class MapeadoraGeneralClosedPocket1
 				{
 					bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, trochoidalRadius + faceMillTmp.getDiametroFerramenta()/2, overLap);
 					maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+					double areaFerramentaAtual = 0;
+					for(ArrayList<LimitedElement> array:bossElements)
+					{
+						triangulation = new Triangulation(Transformer.limitedElementToPoints2D(array));
+						areaFerramentaAtual += triangulation.getArea();
+					}
+					//double areaCavidade = 
+					System.err.println("Area desbastada: " + areaFerramentaAtual);
+					System.err.println("Area restante: " + (areaDeDesbaste - areaFerramentaAtual));
 					System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 					drawShape(addPocket.getElements(), bossElements);
 					if(maiorMenorDistanciaTmp != 0)

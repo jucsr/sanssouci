@@ -26,6 +26,8 @@ public class Triangulation
 	ArrayList<Integer> triangulesIndex = new ArrayList<Integer>();
 	public Triangulation(ArrayList<Point2D> polygon)
 	{
+		//polygon = new ArrayList<Point2D>();
+		//triangulesIndex = new ArrayList<Integer>();
 		this.polygon = polygon;
 		this.triangulesIndex = triangulation(polygon);
 	}
@@ -245,6 +247,7 @@ public class Triangulation
 			//newPolygon = cutEar(oldPolygon);
 			
 			tempTriangleIndex = cutEarByIndex(oldPolygon);
+			System.err.println("Index: " + tempTriangleIndex.size());
 			//System.out.println("tempTriangleIndex: "+tempTriangleIndex);
 			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(0)));
 			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(1)));

@@ -84,6 +84,6 @@ public class TriangulationTest
 	{
 		Triangulation triangulation = new Triangulation(points);
 		System.out.println(triangulation.getTriangulesIndex());
-		System.out.println(triangulation.getArea(triangulation.getTriangulesIndex()));
+		System.out.println(triangulation.getArea());
 	}
 }

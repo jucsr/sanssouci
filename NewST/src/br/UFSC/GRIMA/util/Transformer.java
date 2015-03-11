@@ -1,6 +1,7 @@
 package br.UFSC.GRIMA.util;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
@@ -131,6 +132,39 @@ public class Transformer {
 			matrixPoint2D.add(arrayPoint2DtoPoint3d(arrayPoint3d));
 		}
 		return matrixPoint2D;
+	}
+	public static ArrayList<LimitedElement> arrayDimensioning(ArrayList<ArrayList<LimitedElement>> matrix)
+	{
+		ArrayList<LimitedElement> arrayDimensioned = new ArrayList<LimitedElement>();
+		for(ArrayList<LimitedElement> array:matrix)
+		{
+			for(LimitedElement e:array)
+			{
+				arrayDimensioned.add(e);
+			}
+		}
+		return arrayDimensioned;
+	}
+	public static ArrayList<Point2D> limitedElementToPoints2D(ArrayList<LimitedElement> arrayLimitedElements)
+	{
+		ArrayList<Point2D> arrayPoint2D = new ArrayList<Point2D>();
+		for(LimitedElement e : arrayLimitedElements)
+		{
+			if(e.isLimitedLine())
+			{
+				Point2D point = new Point2D.Double(e.getInitialPoint().x,e.getInitialPoint().y);
+				arrayPoint2D.add(point);
+			}
+			else if(e.isLimitedArc())
+			{
+				LimitedArc arc = (LimitedArc)e;
+				for(Point2D point:Cavidade.determinarPontosEmCircunferencia(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle(), 10))
+				{
+					arrayPoint2D.add(point);
+				}
+			}
+		}
+		return arrayPoint2D;
 	}
 	
 //	public static ArrayList<LimitedElement> ShapeToElements(GeneralPath gp)

@@ -51,7 +51,7 @@ public class GenerateVoronoiArray
 				maxPointY = new Point2D.Double(pointTmp.getX(), pointTmp.getY());
 			}
 		}
-		int numeroDePontos = 100;
+		int numeroDePontos = 50;
 		double deltaX = minorPointX.distance(maxPointX)/numeroDePontos;
 		double deltaY = minorPointY.distance(maxPointY)/numeroDePontos;
 //		System.out.println("DeltaX: " + deltaX);

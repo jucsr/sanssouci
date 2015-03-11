@@ -154,6 +154,7 @@ public class Transformer {
 			{
 				Point2D point = new Point2D.Double(e.getInitialPoint().x,e.getInitialPoint().y);
 				arrayPoint2D.add(point);
+				System.out.println("point: " + point.getX() + ", " + point.getY());
 			}
 			else if(e.isLimitedArc())
 			{
@@ -161,6 +162,7 @@ public class Transformer {
 				for(Point2D point:Cavidade.determinarPontosEmCircunferencia(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle(), 10))
 				{
 					arrayPoint2D.add(point);
+					System.out.println("point: " + point.getX() + ", " + point.getY());
 				}
 			}
 		}

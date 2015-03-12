@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
+import br.UFSC.GRIMA.capp.mapeadoras.MapeadoraGeneralClosedPocket;
 import br.UFSC.GRIMA.capp.movimentacoes.generatePath.GenerateContournParallel;
 import br.UFSC.GRIMA.entidades.features.Face;
 import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
@@ -51,7 +52,7 @@ public class GenerateVoronoiArray
 				maxPointY = new Point2D.Double(pointTmp.getX(), pointTmp.getY());
 			}
 		}
-		int numeroDePontos = 50;
+		int numeroDePontos = 100;
 		double deltaX = minorPointX.distance(maxPointX)/numeroDePontos;
 		double deltaY = minorPointY.distance(maxPointY)/numeroDePontos;
 //		System.out.println("DeltaX: " + deltaX);
@@ -116,7 +117,18 @@ public class GenerateVoronoiArray
 					}
 					else //Se nao possui protuberancia
 					{
-//						//Calcula a menor distancia entre o ponto atual e o array da forma da cavidade
+//						ArrayList<Point3d> pontosPeriferia = MapeadoraGeneralClosedPocket.getPontosPeriferiaGeneral(pocket.getPoints(), pocket.Z, pocket.getRadius());
+//						double aux = pontosPeriferia.get(0).distance(new Point3d(pointTmp.getX(),pointTmp.getY(),pocket.Z));
+//						for(int k = 0;k < pontosPeriferia.size();k++)
+//						{
+//							double aux2 = pontosPeriferia.get(k).distance(new Point3d(pointTmp.getX(),pointTmp.getY(),pocket.Z));
+//							if(aux > aux2)
+//							{
+//								aux = aux2;
+//							}
+//						}
+//						arrayTmp.add(new Point3d(pointTmp.getX(),pointTmp.getY(),aux));
+						//Calcula a menor distancia entre o ponto atual e o array da forma da cavidade
 						arrayTmp.add(new Point3d(pointTmp.getX(),pointTmp.getY(),GeometricOperations.minimumDistance(elementsPocketAndBoss, new Point3d(pointTmp.getX(),pointTmp.getY(),pocket.Z))));
 //						arrayTest.add(new Point3d(pointTmp.getX(),pointTmp.getY(),GeometricOperations.minimumDistance(elementsPocketAndBoss, new Point3d(pointTmp.getX(),pointTmp.getY(),pocket.Z))));
 					}
@@ -150,26 +162,26 @@ public class GenerateVoronoiArray
 					double zPosterior = malha.get(i).get(j+1).z;
 					
 					contador = 0;
-					if(malha.get(i).get(j).z>=malha.get(i).get(j+1).z)
+					if(malha.get(i).get(j).z>malha.get(i).get(j+1).z)
 						contador++;
 					if(malha.get(i).get(j).z>=malha.get(i).get(j-1).z)
 						contador++;
-					if(malha.get(i).get(j).z>=malha.get(i-1).get(j+1).z)
+					if(malha.get(i).get(j).z>malha.get(i-1).get(j+1).z)
 						contador++;
-					if(malha.get(i).get(j).z>=malha.get(i+1).get(j+1).z)
+					if(malha.get(i).get(j).z>malha.get(i+1).get(j+1).z)
 						contador++;
-					if(malha.get(i).get(j).z>=malha.get(i+1).get(j-1).z)
+					if(malha.get(i).get(j).z>malha.get(i+1).get(j-1).z)
 						contador++;
-					if(malha.get(i).get(j).z>=malha.get(i-1).get(j-1).z)
+					if(malha.get(i).get(j).z>malha.get(i-1).get(j-1).z)
 						contador++;
 					if(malha.get(i).get(j).z>=malha.get(i+1).get(j).z)
 						contador++;
 					if(malha.get(i).get(j).z>=malha.get(i-1).get(j).z)
 						contador++;
-					if(malha.get(i).get(j).z<=2)
+					if(malha.get(i).get(j).z<=pocket.getRadius())
 						contador=0;
 					
-					if(contador>=6)
+					if(contador==6)
 					{
 						max.add(malha.get(i).get(j));
 					}

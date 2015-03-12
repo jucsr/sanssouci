@@ -286,6 +286,10 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			//CUIDADO COM O Z!!
 			menorDistancia = GeometricOperations.minimumDistance(addPocket.getElements(), bossElements);
+			if(menorDistancia > genClosed.getRadius())
+			{
+				menorDistancia = genClosed.getRadius();
+			}
 //			System.out.println("lolol menor: " + menorDistancia);
 //			System.out.println("Menor Menor Distancia c/protuberancia: " + menorDistancia);
 		}
@@ -503,9 +507,9 @@ public class MapeadoraGeneralClosedPocket1
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
 		
-		System.err.println("lol");
+//		System.err.println("lol");
 		Triangulation triangulation = new Triangulation(genClosed.getPoints());
-		System.err.println("lol");
+//		System.err.println("lol");
 		double areaCavidade = triangulation.getArea();
 		System.err.println("area da cavidade: " + areaCavidade);
 		
@@ -529,6 +533,8 @@ public class MapeadoraGeneralClosedPocket1
 //		}
 //		double menorMenorDistanciaTmp = getMenorMenorDistance(bossReal);
 		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
+		System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
+		System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
 //		if(menorMenorDistanciaTmp >= 40)
 //		{
 //			menorMenorDistanciaTmp = menorMenorDistanciaTmp/fator;
@@ -585,7 +591,7 @@ public class MapeadoraGeneralClosedPocket1
 				// FERRAMENTA
 				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
 						genClosed, 0, maiorMenorDistanciaTmp);
-				
+				System.err.println("Ferramenta: " + faceMillTmp.getDiametroFerramenta());
 				//Criacao de um boss virtual (indicando a area que sera desbastada pela ferramenta de diametro escolhido acima)
 				//FaceMill faceMillTmp2Next = faceMillTmp;
 				double trochoidalRadius = faceMillTmp.getDiametroFerramenta()/2;
@@ -621,22 +627,24 @@ public class MapeadoraGeneralClosedPocket1
 					System.err.println("Area restante: " + (areaDeDesbaste - areaFerramentaAtual));
 					System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 					drawShape(addPocket.getElements(), bossElements);
-					if(maiorMenorDistanciaTmp != 0)
+					if(maiorMenorDistanciaAtual != 0)
 					{
 						FaceMill faceMillTmp2Next = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaAtual*fator);
+						System.err.println("Ferramenta Aux: " + faceMillTmp2Next.getDiametroFerramenta());
+
 						double trochoidalRadiusAux = faceMillTmp2Next.getDiametroFerramenta()/2;
-						bossElementsAux = getAreaAlreadyDesbasted1(genClosed,bossElementsAux, genClosed.Z, trochoidalRadius + faceMillTmp2Next.getDiametroFerramenta()/2, overLap);
+						bossElementsAux = getAreaAlreadyDesbasted1(genClosed,bossElementsAux, genClosed.Z, trochoidalRadiusAux + faceMillTmp2Next.getDiametroFerramenta()/2, overLap);
 						double maiorMenorDistanciaAux = getMaiorMenorDistancia(bossElementsAux);
 						double areaFerramentaAux = 0;
 						drawShape(addPocket.getElements(), bossElementsAux);
 						for(ArrayList<LimitedElement> array:bossElementsAux)
 						{
 							ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(array);
-							System.err.println("polygon size: " + points.size());
+//							System.err.println("polygon size: " + points.size());
 							triangulation = new Triangulation(points);
 							areaFerramentaAux += triangulation.getArea();
 						}
-						System.err.println("Diferenca entre Ferramentas: "+ (faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()));
+//						System.err.println("Diferenca entre Ferramentas: "+ (faceMillTmp.getDiametroFerramenta() - faceMillTmp2Next.getDiametroFerramenta()));
 						System.err.println("Area desbastada aux: " + areaFerramentaAux);
 						System.err.println("Area restante aux: " + (areaDeDesbaste - areaFerramentaAux));
 						System.err.println("Maior Distancia aux: " + maiorMenorDistanciaAux);
@@ -744,7 +752,7 @@ public class MapeadoraGeneralClosedPocket1
 	}
 	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap)
 	{
-		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
+		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serï¿½o convertidos em boss para a nova forma (acabamento) 
 //		ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = GenerateContournParallel.multipleParallelPath(pocket,planoZ,distance,overLap).get(0);
 		GenerateContournParallel contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap); //contrutor pra a primeira trajetotia do primeiro working step
 		if(bossElements != null)
@@ -827,7 +835,7 @@ public class MapeadoraGeneralClosedPocket1
 	 */
 	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted1(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap)
 	{
-		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serão convertidos em boss para a nova forma (acabamento) 
+		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que serï¿½o convertidos em boss para a nova forma (acabamento) 
 		GenerateContournParallel contourn = null; //contrutor pra a primeira trajetotia do primeiro working step
 		if(bossElements != null)
 		{

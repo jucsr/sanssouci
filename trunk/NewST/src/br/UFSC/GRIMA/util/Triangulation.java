@@ -247,8 +247,7 @@ public class Triangulation
 			//newPolygon = cutEar(oldPolygon);
 			
 			tempTriangleIndex = cutEarByIndex(oldPolygon);
-			System.err.println("Index: " + tempTriangleIndex.size());
-			//System.out.println("tempTriangleIndex: "+tempTriangleIndex);
+			System.out.println("tempTriangleIndex: "+tempTriangleIndex);
 			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(0)));
 			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(1)));
 			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(2)));

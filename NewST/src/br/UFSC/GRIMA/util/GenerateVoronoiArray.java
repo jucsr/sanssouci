@@ -27,6 +27,19 @@ public class GenerateVoronoiArray
 		this.elementosCavidade = GenerateContournParallel.gerarElementosDaCavidade(pocket, pocket.Z);
 		this.elementosProtuberancia = GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z);
 	}
+	public double getMinimumMax()
+	{
+		ArrayList<Point3d> voronoi = getVornoiPoints();
+		double min = voronoi.get(0).z;
+		for(Point3d point:voronoi)
+		{
+			if(min > point.z)
+			{
+				min = point.z;
+			}
+		}
+		return min;
+	}
 	public ArrayList<Point3d> getVornoiPoints()
 	{
 		boolean thereIsBoss = false;

@@ -56,7 +56,7 @@ public class TransformerTest
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		CircularBoss arcBoss1 = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
 		itsBoss.add(arcBoss1);
-		pocket.setItsBoss(itsBoss);
+//		pocket.setItsBoss(itsBoss);
 		addPocket = new GeneralClosedPocketVertexAdd(points, pocket.Z, pocket.getRadius());
 		bossVirtual = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket, bossVirtual, pocket.Z, 20, 2);
 		bossReal = GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z);
@@ -64,28 +64,30 @@ public class TransformerTest
 	@Test
 	public void limitedElementToPoints2DTest()
 	{
-		Triangulation triangulation = new Triangulation(pocket.getPoints());
-		double areaCavidade = triangulation.getArea();
-		System.out.println("Area Cavidade: " + areaCavidade);
-		double areaBoss = 0;
-		for(ArrayList<LimitedElement> array:bossReal)
-		{
-			triangulation = new Triangulation(Transformer.limitedElementToPoints2D(array));
-			areaBoss += triangulation.getArea();
-		}
-		System.out.println("Area Protuberancia: " + areaBoss);
-		double areaDesbaste = (areaCavidade - areaBoss);
-		System.out.println("Area a ser desbastada: " + areaDesbaste);
+//		Triangulation triangulation = new Triangulation(pocket.getPoints());
+//		double areaCavidade = triangulation.getArea();
+//		System.out.println("Area Cavidade: " + areaCavidade);
+//		double areaBoss = 0;
+//		for(ArrayList<LimitedElement> array:bossReal)
+//		{
+//			triangulation = new Triangulation(Transformer.limitedElementToPoints2D(array));
+//			areaBoss += triangulation.getArea();
+//		}
+//		System.out.println("Area Protuberancia: " + areaBoss);
+//		double areaDesbaste = (areaCavidade - areaBoss);
+//		System.out.println("Area a ser desbastada: " + areaDesbaste);
 		
-		areaBoss = 0;
-		triangulation = null;
+		double areaBoss = 0;
+//		MapeadoraGeneralClosedPocket1.drawShape(addPocket.getElements(), bossVirtual);
+		Triangulation triangulation = null;
 		for(ArrayList<LimitedElement> array:bossVirtual)
 		{
 			triangulation = new Triangulation(Transformer.limitedElementToPoints2D(array));
+			System.err.println(triangulation.getTriangulesIndex());
 			areaBoss += triangulation.getArea();
 		}
 		System.out.println("Area desbastada: " + areaBoss);
-		System.out.println("Area restante: " + (areaDesbaste - areaBoss));
+//		System.out.println("Area restante: " + (areaDesbaste - areaBoss));
 //		MapeadoraGeneralClosedPocket1.drawShape(Transformer.ArrayPoint2DToArrayLimitedElement(Transformer.limitedElementToPoints2D(bossVirtual.get(0)), pocket.Z), null);
 //		for(;;);
 	}

@@ -168,6 +168,26 @@ public class Transformer {
 		}
 		return arrayPoint2D;
 	}
+	public static ArrayList<LimitedElement> ArrayPoint2DToArrayLimitedElement(ArrayList<Point2D> points, double zCoordinate)
+	{
+		ArrayList<LimitedElement> elements = new ArrayList<LimitedElement>();
+		for(int i = 0;i < points.size();i++)
+		{
+			Point2D point = points.get(i);
+			Point2D pointNext = null;
+			if(i != points.size()-1)
+			{
+				pointNext = points.get(i+1);
+			}
+			else
+			{
+				pointNext = points.get(0);
+			}
+			LimitedLine line = new LimitedLine(new Point3d(point.getX(),point.getY(),zCoordinate),new Point3d(pointNext.getX(),pointNext.getY(),zCoordinate));
+			elements.add(line);
+		}
+		return elements;
+	}
 	
 //	public static ArrayList<LimitedElement> ShapeToElements(GeneralPath gp)
 //	{

@@ -236,6 +236,7 @@ public class Triangulation
 		
 		while (oldPolygon.size()>=4)
 		{
+//			System.out.println("lol");
 			ArrayList<Point2D> newPolygon = new ArrayList<Point2D>();
 			ArrayList<Integer> newIndexes = new ArrayList<Integer>();
 			ArrayList<Integer> tempTriangleIndex = new ArrayList<Integer>();
@@ -247,41 +248,48 @@ public class Triangulation
 			//newPolygon = cutEar(oldPolygon);
 			
 			tempTriangleIndex = cutEarByIndex(oldPolygon);
-			System.out.println("tempTriangleIndex: "+tempTriangleIndex);
-			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(0)));
-			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(1)));
-			triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(2)));
-			
-			//System.out.println(allIndexFace.size() + " IndexTriangle: " + triangleIndex);
-			
-			allIndexFace.add(triangleIndex.get(0));
-			allIndexFace.add(triangleIndex.get(1));
-			allIndexFace.add(triangleIndex.get(2));
-			
-			for(int i=0;i<oldPolygon.size();i++)
+			if(tempTriangleIndex.size() != 0)
 			{
-				if(i!=tempTriangleIndex.get(1))
+				System.out.println("tempTriangleIndex: "+tempTriangleIndex);
+				triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(0)));
+				triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(1)));
+				triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(2)));
+				
+				//System.out.println(allIndexFace.size() + " IndexTriangle: " + triangleIndex);
+				
+				allIndexFace.add(triangleIndex.get(0));
+				allIndexFace.add(triangleIndex.get(1));
+				allIndexFace.add(triangleIndex.get(2));
+				
+				for(int i=0;i<oldPolygon.size();i++)
 				{
-					newIndexes.add(oldIndexes.get(i));
+					if(i!=tempTriangleIndex.get(1))
+					{
+						newIndexes.add(oldIndexes.get(i));
+					}
+				}
+				
+				oldIndexes=new ArrayList<Integer>();
+				
+				for (int i=0;i<newIndexes.size();i++)
+				{
+					//System.out.println("Adding Point:"+newPolygon.get(i));
+					oldIndexes.add(newIndexes.get(i));
+				}			
+				
+				oldPolygon = new ArrayList<Point2D>();
+				
+				iPolygon++;
+				
+				for (int i=0;i<oldIndexes.size();i++)
+				{
+					//System.out.println("Adding Point:"+oldIndexes.get(i));
+					oldPolygon.add(polygon.get(oldIndexes.get(i)));
 				}
 			}
-			
-			oldIndexes=new ArrayList<Integer>();
-
-			for (int i=0;i<newIndexes.size();i++)
+			else
 			{
-				//System.out.println("Adding Point:"+newPolygon.get(i));
-				oldIndexes.add(newIndexes.get(i));
-			}			
-						
-			oldPolygon = new ArrayList<Point2D>();
-			
-			iPolygon++;
-
-			for (int i=0;i<oldIndexes.size();i++)
-			{
-				//System.out.println("Adding Point:"+oldIndexes.get(i));
-				oldPolygon.add(polygon.get(oldIndexes.get(i)));
+				break;
 			}
 		}
 		

@@ -44,7 +44,7 @@ public class CreateGeneralPocketBrep
 		for(int i = 0; i < vertices.size(); i++)
 		{
 			vertexArray[i] = new Point3d(vertices.get(i).getX(), vertices.get(i).getY(), 0);
-			//System.out.println("i:"+i);
+			System.out.println("VertexArray[i]: "+vertexArray[i]);
 		}
 		a = vertices.size();
 		//System.out.println("Size VertexArray: " + a);
@@ -71,11 +71,16 @@ public class CreateGeneralPocketBrep
 	
 		indexArray = new int [vertexArray.length * 3000];
 		int a = 0;
-		
+		int aux = 1;
 		for(int i=0;i<indexListTemp1.size();i++)
 		{
 			indexArray[i]=indexListTemp1.get(i);
-			///System.out.println("IndexList1: "+indexListTemp1.get(i));
+			if(aux == 3)
+			{
+				System.out.println("IndexList1: "+indexListTemp1.get(i-2)+", " + indexListTemp1.get(i-1)+", " + indexListTemp1.get(i));
+				aux = 0;
+			}
+			aux++;
 			//indexArray[i+indexListTemp1.size()]=indexListTemp1.get(indexListTemp1.size()-1-i);
 		}
 		

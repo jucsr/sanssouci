@@ -32,7 +32,7 @@ public class CreateGeneralClosedPocketTest
 		
 		props.add(properties);
 		
-		Material material = new Material("Aço", Material.ACO_ALTO_CARBONO, props);
+		Material material = new Material("aco", Material.ACO_ALTO_CARBONO, props);
 		
 		bloco = new Bloco(200.0, 150.0, 80.0, material);
 		faceXY = (Face) bloco.faces.get(Face.XY);
@@ -47,15 +47,28 @@ public class CreateGeneralClosedPocketTest
 		this.cavidade.setNome("Cavidade Perfil Geral Fechado");
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(40);
-		this.cavidade.setRadius(10);
+		this.cavidade.setRadius(0);
 		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
-		points.add(new Point2D.Double(10, 10));
-		points.add(new Point2D.Double(100, 10));
-		points.add(new Point2D.Double(100, 100));
-		points.add(new Point2D.Double(10, 100));
-		points.add(new Point2D.Double(50, 50));
-
+//		points.add(new Point2D.Double(10, 10));
+//		points.add(new Point2D.Double(100, 10));
+//		points.add(new Point2D.Double(100, 100));
+//		points.add(new Point2D.Double(10, 100));
+//		points.add(new Point2D.Double(50, 50));
+		points.add(new Point2D.Double(44.0,89.0));
+		points.add(new Point2D.Double(51.0,68.0));
+		points.add(new Point2D.Double(27.0,22.0));
+		points.add(new Point2D.Double(55.0,20.0));
+		points.add(new Point2D.Double(67.0,50.0));
+		points.add(new Point2D.Double(124.0,65.0));
+		points.add(new Point2D.Double(136.0,20.0));
+		points.add(new Point2D.Double(164.0,19.0));
+		points.add(new Point2D.Double(147.0,66.0));
+		points.add(new Point2D.Double(168.0,116.0));
+		points.add(new Point2D.Double(134.0,84.0));
+		points.add(new Point2D.Double(68.0,84.0));
+		points.add(new Point2D.Double(45.0,120.0));
+		points.add(new Point2D.Double(13.0,93.0));
 		this.cavidade.setPoints(points);
 
 		faceXY.addFeature(this.cavidade);

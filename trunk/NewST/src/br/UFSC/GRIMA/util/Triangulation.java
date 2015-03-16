@@ -1,11 +1,19 @@
 package br.UFSC.GRIMA.util;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
@@ -248,9 +256,9 @@ public class Triangulation
 			//newPolygon = cutEar(oldPolygon);
 			
 			tempTriangleIndex = cutEarByIndex(oldPolygon);
+			System.out.println("tempTriangleIndex: "+tempTriangleIndex);
 			if(tempTriangleIndex.size() != 0)
 			{
-				System.out.println("tempTriangleIndex: "+tempTriangleIndex);
 				triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(0)));
 				triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(1)));
 				triangleIndex.add(oldIndexes.get(tempTriangleIndex.get(2)));
@@ -336,7 +344,6 @@ public class Triangulation
 				pTemp = pointIteration(i,polygon);
 				ear = isEar(i, polygon);
 				//System.out.println(i + " alfa " + ear +" "+ 1/Math.PI*180*solveAngle(pTemp.get(0), pTemp.get(1), pTemp.get(2), forma) + " " + pTemp.get(0));				
-				
 				//System.out.println(" ear " + ear);
 				if (ear)
 				{
@@ -503,7 +510,7 @@ public class Triangulation
 		{
 			ear=false;
 		}
-		//System.out.println("alfaTestEar:"+alfa*180/Math.PI + " ear:" + ear);
+		System.out.println("alfaTestEar:"+alfa*180/Math.PI + " ear:" + ear);
 		return ear;
 	}
 	public static double solveAngle(Point2D p0, Point2D p1, Point2D p2, GeneralPath forma, ArrayList<Point2D> pointList)
@@ -541,5 +548,59 @@ public class Triangulation
 		}
 		//System.out.println("alfaAf="+alfa*180/Math.PI);
 		return alfa;
+	}
+	public ArrayList<ArrayList<Integer>> splitTriangleIndex()
+	{
+		ArrayList<ArrayList<Integer>> saida = new ArrayList<ArrayList<Integer>>();
+		for(int i = 1;i < triangulesIndex.size()-1;i++)
+		{
+			ArrayList<Integer> saidaAux = new ArrayList<Integer>();
+			saidaAux.add(triangulesIndex.get(i-1));
+			saidaAux.add(triangulesIndex.get(i));
+			saidaAux.add(triangulesIndex.get(i+1));
+			saida.add(saidaAux);
+			System.err.println("Index: " + saidaAux);
+		}
+		return saida;
+	}
+	public void drawTriangles()
+	{
+		JFrame frame = new JFrame();
+		frame.setSize(new Dimension(300, 300));
+		class Panel extends JPanel
+		{
+			protected void paintComponent(Graphics g)
+			{
+				ArrayList<ArrayList<Integer>> triangles = splitTriangleIndex();
+				Graphics2D g2d = (Graphics2D)g;
+				g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	
+				
+				g2d.translate(0, 400);
+				g2d.scale(1, -1);
+				g2d.setColor(new Color(0, 0, 0));
+				for(int i = 0; i < triangles.size(); i++)
+				{
+					GeneralPath trianguloTmp = new GeneralPath();
+					trianguloTmp.moveTo(polygon.get(triangles.get(i).get(0)).getX(), polygon.get(triangles.get(i).get(0)).getY());
+					for(int j = 0; j < triangles.get(i).size(); j++)
+					{
+						if(j != triangles.get(i).size()-1)
+						{
+							trianguloTmp.lineTo(polygon.get(triangles.get(i).get(j+1)).getX(), polygon.get(triangles.get(i).get(j+1)).getY());
+						}
+						else
+						{
+							trianguloTmp.lineTo(polygon.get(triangles.get(i).get(0)).getX(), polygon.get(triangles.get(i).get(0)).getY());
+						}
+					}
+//					trianguloTmp.closePath();
+					g2d.draw(trianguloTmp);
+				}
+				
+			}
+		}
+		frame.getContentPane().add(new Panel());
+		frame.setVisible(true);
 	}
 }

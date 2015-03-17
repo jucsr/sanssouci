@@ -159,9 +159,10 @@ public class Transformer {
 			else if(e.isLimitedArc())
 			{
 				LimitedArc arc = (LimitedArc)e;
-				for(Point2D point:Cavidade.determinarPontosEmCircunferencia(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle(), 10))
+				Point2D[] pointTmp = Cavidade.determinarPontosEmCircunferencia(arc.getCenter(), arc.getInitialPoint(), arc.getDeltaAngle(), 10);
+				for(int i = 0;i < pointTmp.length-1;i++)
 				{
-					arrayPoint2D.add(point);
+					arrayPoint2D.add(pointTmp[i]);
 //					System.out.println("points.add(new Point2D.Double( " + point.getX() + ", " + point.getY() + "));");
 				}
 			}

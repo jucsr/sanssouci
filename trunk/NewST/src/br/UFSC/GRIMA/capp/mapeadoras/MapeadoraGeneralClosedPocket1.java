@@ -949,7 +949,7 @@ public class MapeadoraGeneralClosedPocket1
 				g2d.translate(0, 400);
 				g2d.scale(1, -1);
 				g2d.setColor(new Color(0, 0, 0));
-				g2d.fill(gp);
+//				g2d.fill(gp);
 				g2d.draw(gp);
 				for(Shape shape:bossShape)
 				{

@@ -105,7 +105,7 @@ public class BezierSurfaceBrepTest
 		frame.getContentPane().add(painel);
 		J3D j3d = new J3D(painel);
 		CSGSolid.appearance = true;
-		OperationBezierSurface operation = new OperationBezierSurface("BEZIER_SURFACE", controlVertex, 3, 2);
+		OperationBezierSurface operation = new OperationBezierSurface("BEZIER_SURFACE", controlVertex, 11, 11);
 		
 		j3d.addSolid(operation);
 		

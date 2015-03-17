@@ -68,7 +68,7 @@ public class CreateGeneralPocketBrep
 		}
 		
 		indexListTemp1=triangulation(vertexTmp);
-	
+		
 		indexArray = new int [vertexArray.length * 3000];
 		int a = 0;
 		int aux = 1;
@@ -96,7 +96,7 @@ public class CreateGeneralPocketBrep
 		
 		for(int i = 0; i < vertexArray.length / 2; i++)
 		{
-			if(i<vertexArray.length / 2-1)
+			if(i<vertexArray.length / 2 - 1)
 			{
 				indexArray[a] = vertexArray.length / 2 + i;
 				a=a+1;

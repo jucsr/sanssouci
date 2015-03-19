@@ -10,7 +10,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.geom.Arc2D.Double;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -43,7 +42,9 @@ import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.samples.PocketTest;
+import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.GenerateVoronoiArray;
+import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.Transformer;
 import br.UFSC.GRIMA.util.Triangulation;
 import br.UFSC.GRIMA.util.entidadesAdd.GeneralClosedPocketVertexAdd;
@@ -308,9 +309,7 @@ public class MapeadoraGeneralClosedPocket1
 		return menorDistancia;
 	}
 	
-	private FaceMill chooseFaceMill(Material material,
-			ArrayList<FaceMill> faceMills, GeneralClosedPocket genClosed,
-			double limite_desbaste, double L) 
+	private FaceMill chooseFaceMill(Material material,ArrayList<FaceMill> faceMills, GeneralClosedPocket genClosed,double limite_desbaste, double L) 
 	{
 //		System.out.println("L: " + L);
 		ArrayList<FaceMill> faceMillsCandidatas = new ArrayList<FaceMill>();
@@ -391,10 +390,91 @@ public class MapeadoraGeneralClosedPocket1
 
 		return faceMill;
 	}
+	private ArrayList<FaceMill> chooseFaceMills(Material material,ArrayList<FaceMill> faceMills, GeneralClosedPocket genClosed,double limite_desbaste, double L) 
+	{
+//		System.out.println("L: " + L);
+		ArrayList<FaceMill> faceMillsCandidatas = new ArrayList<FaceMill>();
+
+		FaceMill faceMill = null;
+
+		String ISO = "";
+		
+		String motivo = "";
+
+		ISO = MapeadoraDeWorkingsteps.selectMaterialFerramenta(this.projeto,
+				material, "Condicoes_De_Usinagem_FaceMill");
+
+		double limite_desbaste_fundo = limite_desbaste;
+		
+		if (genClosed.isPassante())
+			limite_desbaste_fundo = 0;
+		
+		for (int i = 0; i < faceMills.size(); i++) { // Seleciona todas as
+			// face mills
+			// candidatas
+
+			faceMill = faceMills.get(i);
+			
+//			System.err.println(faceMill.getDiametroFerramenta());
+//			System.err.println(L);
+			if (faceMill.getMaterial().equals(ISO)
+					&& faceMill.getDiametroFerramenta() <= (L - 2 * limite_desbaste)
+					&& faceMill.getProfundidadeMaxima() >= (genClosed
+							.getProfundidade() - limite_desbaste_fundo))
+			{
+				faceMillsCandidatas.add(faceMill);
+			}
+		}
+
+		if (faceMillsCandidatas.size() == 0) {
+
+			JOptionPane
+			.showMessageDialog(
+					null,
+					"Não é possível usinar esta Feature com as atuais Face Mills disponíveis! \n" +
+					"__________________________________________________________"+"\n"+
+					"\tFeature: Cavidade Perfil Geral \n" +
+					"\tNome: " + genClosed.getNome() +"\n" +
+//					"\tComprimento: " + genClosed.getComprimento()+" mm"+"\n" +
+//					"\tLargura: " + genClosed.getLargura()+" mm"+"\n" +
+					"\tProfundidade: " + genClosed.getProfundidade()+" mm"+"\n" +
+					"\tRaio: " + genClosed.getRadius()+" mm"+"\n" +
+					"\tMaterial Bloco: " + material.getName()+"\n" +
+					"__________________________________________________________"+"\n"+
+					"\tMotivo: Do grupo das Face Mills do projeto, nenhuma satisfaz os" +"\n"+
+					"\tseguintes requisitos necessários para a usinagem desta feature:"+"\n\n" +
+					"\tMaterial da Ferramenta deve ser do tipo: "+ ISO +"\n" +
+					"\tDiametro da Ferramenta deve ser menor igual a: " + (L - 2 * limite_desbaste)+" mm" +"\n" +
+					"\tProfundidade Máxima da Ferramenta deve ser maior igual a: " + (genClosed.getProfundidade() - limite_desbaste_fundo )+" mm"+"\n\n" +
+					"\tAdicione Face Mills adequadas ao projeto."
+					,
+					"Erro", JOptionPane.ERROR_MESSAGE);
+
+			throw new NullPointerException("Nenhuma Face Mill selecionada");
+
+		}
+		//Maior diametro possivel
+		faceMill = faceMillsCandidatas.get(faceMillsCandidatas.size()-1);
+		ArrayList<FaceMill> saida = new ArrayList<FaceMill>();
+		saida.add(faceMill);
+		
+		//Seleciona as faceMills que cabem no diametro passado, ate a que seja 75% do valor da primeira
+		for (int i = 1; i < faceMillsCandidatas.size(); i++) 
+		{
+			FaceMill faceMillTmp = faceMillsCandidatas.get(i);
+			System.err.println("Facemill: " + faceMillTmp.getDiametroFerramenta());
+			if (faceMillTmp.getDiametroFerramenta() >= faceMill.getDiametroFerramenta()*0.75) 
+			{
+				saida.add(faceMillsCandidatas.get(i));
+			}
+
+		}
+
+		return saida;
+	}
 	
 	private void mapearGeneralClosedPocket() 
 	{
-		double aux = 0;
 		double fator = 0.75; //Para verificar a possibilidade de outra ferramenta menor
 		//ArrayList<Workingstep> workingSteps = new ArrayList<Workingstep>();
 		Workingstep wsPrecedenteTmp;
@@ -451,143 +531,56 @@ public class MapeadoraGeneralClosedPocket1
 		{
 			bossElements = null; //a partir de agora esse array guarda as protuberancias virtuais
 //			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp)
-			while(aux < 2)
-			{
-				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
-				System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
-				boolean flag = false;
-				// BOTTOM AND SIDE ROUGH MILLING
-				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
-				operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
-	
-				if (!genClosed.isPassante())
-				{
-					operationTmp.setAllowanceBottom(Feature.LIMITE_DESBASTE);
-				}
-				
-				// FERRAMENTA
-				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
-				
-				System.err.println("Ferramenta: " + faceMillTmp.getDiametroFerramenta());
-				//Criacao de um boss virtual (indicando a area que sera desbastada pela ferramenta de diametro escolhido acima)
-				double trochoidalRadius = faceMillTmp.getDiametroFerramenta()/2;
-				double overLap = 2;
-				//Uma copia dos bosses virtuais (o original sera modificado)
-				ArrayList<ArrayList<LimitedElement>> bossElementsAux = new ArrayList<ArrayList<LimitedElement>>();
-				if(bossElements != null)
-				{
-					for(ArrayList<LimitedElement> array:bossElements)
-					{
-						bossElementsAux.add(array);
-					}
-				}
-				else
-				{
-					bossElementsAux = null;
-				}
-				
-				// CONDIÇÕES DE USINAGEM
-				condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp, bloco.getMaterial());
-				//Estrategia de usinagem
-				TrochoidalAndContourParallelStrategy machiningStrategyTmp = new TrochoidalAndContourParallelStrategy();
-				machiningStrategyTmp.setAllowMultiplePasses(true);
-//				machiningStrategyTmp.setOverLap(0.25*faceMillTmp.getDiametroFerramenta()); //Overlap
-				machiningStrategyTmp.setOverLap(2); //Overlap
-				machiningStrategyTmp.setTrochoidalRadius(trochoidalRadius); //REVER MAIS TARDE
-				machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
-				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
-				operationTmp.setMachiningStrategy(machiningStrategyTmp);
-				
-				//Estrategia de aproximacao
-				PlungeStrategy plungeStrategy = new PlungeToolAxis();
-				operationTmp.setApproachStrategy(plungeStrategy);
-				
-				// WORKINGSTEP
-				Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,condicoesDeUsinagem, operationTmp);
-				wsTmp.setTipo(Workingstep.DESBASTE);
-				wsTmp.setId(this.genClosed.getNome() + "_RGH");
-				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
-				
-				//Boss virtual referente a ferramenta escolhida
-				bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, trochoidalRadius + faceMillTmp.getDiametroFerramenta()/2, overLap);
-				double maiorMenorDistanciaAtual = maiorMenorDistanciaTmp;
-				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
-				
-				//Obtencao da area desbastada pela ferramenta escolhida
-				double areaFerramentaAtual = 0;
-				for(ArrayList<LimitedElement> array:bossElements)
-				{
-					ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(array);
-					triangulation = new Triangulation(points);
-					areaFerramentaAtual += triangulation.getArea();
-				}
-				System.err.println("Area desbastada: " + areaFerramentaAtual);
-				double areaRestanteFerramentaAtual = (areaDeDesbaste - areaFerramentaAtual);
-				System.err.println("Area restante: " + areaRestanteFerramentaAtual);
-				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
-				drawShape(addPocket.getElements(), bossElements);
-				
-				//Verifica a possibilidade de uma outra ferramenta ser mais apropriada
-				if(maiorMenorDistanciaAtual != 0)
-				{
-					//Pega uma ferramenta auxiliar com o diametro um percentual menor do que a ja escolhida
-					FaceMill faceMillTmpAux = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaAtual*fator);
-					System.err.println("Ferramenta Aux: " + faceMillTmpAux.getDiametroFerramenta());
-					double trochoidalRadiusAux = faceMillTmpAux.getDiametroFerramenta()/2;
-					
-					CondicoesDeUsinagem condicoesDeUsinagemAux = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmpAux, bloco.getMaterial());
-					BottomAndSideRoughMilling operationAux = (BottomAndSideRoughMilling)wsTmp.getOperation();
-					TrochoidalAndContourParallelStrategy machiningStrategyAux = (TrochoidalAndContourParallelStrategy)wsTmp.getOperation().getMachiningStrategy();
-					machiningStrategyAux.setTrochoidalRadius(trochoidalRadiusAux); //REVER MAIS TARDE
-					operationAux.setMachiningStrategy(machiningStrategyAux);
-					
-					//Ws referente a ferramenta aux
-					Workingstep wsAux = wsTmp;
-					wsAux.setCondicoesUsinagem(condicoesDeUsinagemAux);
-					wsAux.setFerramenta(faceMillTmpAux);
-					
-					//Boss virtual referente a ferramenta auxiliar
-					bossElementsAux = getAreaAlreadyDesbasted1(genClosed,bossElementsAux, genClosed.Z, trochoidalRadiusAux + faceMillTmpAux.getDiametroFerramenta()/2, overLap);
-					double maiorMenorDistanciaAux = getMaiorMenorDistancia(bossElementsAux);
-					
-					//Obtencao da area desbastada pela ferramenta escolhida
-					double areaFerramentaAux = 0;
-					for(ArrayList<LimitedElement> array:bossElementsAux)
-					{
-						ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(array);
-						triangulation = new Triangulation(points);
-						areaFerramentaAux += triangulation.getArea();
-					}
-					System.err.println("Area desbastada aux: " + areaFerramentaAux);
-					double areaRestanteFerramentaAux = (areaDeDesbaste - areaFerramentaAux);
-					System.err.println("Area restante aux: " + areaRestanteFerramentaAux);
-					System.err.println("Maior Distancia aux: " + maiorMenorDistanciaAux);
-					//percentual de diferenca entre o desbaste referente a cada ferramenta
-					double diferancaRelativaDeDesbaste = (Math.abs(areaRestanteFerramentaAux - areaRestanteFerramentaAtual)/areaRestanteFerramentaAtual)*100;
-//					double diferancaRelativaDeDesbaste = (Math.abs(areaFerramentaAux - areaFerramentaAtual)/areaFerramentaAux)*100;
-					System.err.println("Diferanca relativa: " + diferancaRelativaDeDesbaste);
-					drawShape(addPocket.getElements(), bossElementsAux);
-					//se o percentual de diferenca for maior que 30%, troca a ferramenta atual pela auxiliar
-					if(diferancaRelativaDeDesbaste >= 30)
-					{
-						//faceMillTmp = faceMillTmpAux;
-						wsPrecedenteTmp = wsAux;
-						wssFeature.add(wsAux);
-						flag = true;
-					}
-				}
-				
-//				// CONDIÇÕES DE USINAGEM
+//			{
+//				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
+//				System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
+//				boolean flag = false;
+//				// BOTTOM AND SIDE ROUGH MILLING
+//				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
+//				operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
+//	
+//				if (!genClosed.isPassante())
+//				{
+//					operationTmp.setAllowanceBottom(Feature.LIMITE_DESBASTE);
+//				}
+//				
+//				// FERRAMENTA
+//				
+////				FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
+//				//array de facemills que possuem diamentro maior que 75% do maior diametro
+//				ArrayList<FaceMill> faceMillsTmp = chooseFaceMills(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
+//				//facemill de maior diametro
+//				FaceMill faceMillTmp = faceMillsTmp.get(faceMillsTmp.size()-1);
+//				
+//				System.err.println("Ferramenta: " + faceMillTmp.getDiametroFerramenta());
+//				//Criacao de um boss virtual (indicando a area que sera desbastada pela ferramenta de diametro escolhido acima)
+//				double trochoidalRadius = faceMillTmp.getDiametroFerramenta()/2;
+//				double overLap = 2;
+//				//Uma copia dos bosses virtuais (o original sera modificado)
+//				ArrayList<ArrayList<LimitedElement>> bossElementsAux = new ArrayList<ArrayList<LimitedElement>>();
+//				if(bossElements != null)
+//				{
+//					for(ArrayList<LimitedElement> array:bossElements)
+//					{
+//						bossElementsAux.add(array);
+//					}
+//				}
+//				else
+//				{
+//					bossElementsAux = null;
+//				}
+//				
+//				// CONDICOES DE USINAGEM
 //				condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp, bloco.getMaterial());
 //				//Estrategia de usinagem
 //				TrochoidalAndContourParallelStrategy machiningStrategyTmp = new TrochoidalAndContourParallelStrategy();
-//				operationTmp.setMachiningStrategy(machiningStrategyTmp);
 //				machiningStrategyTmp.setAllowMultiplePasses(true);
 ////				machiningStrategyTmp.setOverLap(0.25*faceMillTmp.getDiametroFerramenta()); //Overlap
 //				machiningStrategyTmp.setOverLap(2); //Overlap
-//				machiningStrategyTmp.setTrochoidalRadius(faceMillTmp.getDiametroFerramenta()/2); //REVER MAIS TARDE
+//				machiningStrategyTmp.setTrochoidalRadius(trochoidalRadius); //REVER MAIS TARDE
 //				machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
 //				machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
+//				operationTmp.setMachiningStrategy(machiningStrategyTmp);    
 //				
 //				//Estrategia de aproximacao
 //				PlungeStrategy plungeStrategy = new PlungeToolAxis();
@@ -598,27 +591,188 @@ public class MapeadoraGeneralClosedPocket1
 //				wsTmp.setTipo(Workingstep.DESBASTE);
 //				wsTmp.setId(this.genClosed.getNome() + "_RGH");
 //				wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
-				if(!flag)
+//				
+//				//Boss virtual referente a ferramenta escolhida
+//				bossElements = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, trochoidalRadius + faceMillTmp.getDiametroFerramenta()/2, overLap,wsTmp);
+//				System.err.println("Time: " + time);
+//				double maiorMenorDistanciaAtual = maiorMenorDistanciaTmp;
+//				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+//				
+//				//Obtencao da area desbastada pela ferramenta escolhida
+//				double areaFerramentaAtual = 0;
+//				for(ArrayList<LimitedElement> array:bossElements)
+//				{
+//					ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(array);
+//					triangulation = new Triangulation(points);
+//					areaFerramentaAtual += triangulation.getArea();
+//				}
+//				System.err.println("Area desbastada: " + areaFerramentaAtual);
+//				double areaRestanteFerramentaAtual = (areaDeDesbaste - areaFerramentaAtual);
+//				System.err.println("Area restante: " + areaRestanteFerramentaAtual);
+//				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
+//				drawShape(addPocket.getElements(), bossElements);
+//				
+//				//Verifica a possibilidade de uma outra ferramenta ser mais apropriada
+//				if(maiorMenorDistanciaAtual != 0)
+//				{
+//					//Pega uma ferramenta auxiliar com o diametro um percentual menor do que a ja escolhida
+//					FaceMill faceMillAux = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaAtual*fator);
+//					System.err.println("Ferramenta Aux: " + faceMillAux.getDiametroFerramenta());
+//					double trochoidalRadiusAux = faceMillAux.getDiametroFerramenta()/2;
+//					
+//					// CONDICOES DE USINAGEM
+//					CondicoesDeUsinagem condicoesDeUsinagemAux = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillAux, bloco.getMaterial());
+//					BottomAndSideRoughMilling operationAux = (BottomAndSideRoughMilling)wsTmp.getOperation();
+//					
+//					//Estrategia de usinagem
+//					TrochoidalAndContourParallelStrategy machiningStrategyAux = (TrochoidalAndContourParallelStrategy)wsTmp.getOperation().getMachiningStrategy();
+//					machiningStrategyAux.setTrochoidalRadius(trochoidalRadiusAux); //REVER MAIS TARDE
+//					operationAux.setMachiningStrategy(machiningStrategyAux);
+//					
+//					//Ws referente a ferramenta aux
+//					Workingstep wsAux = new Workingstep(genClosed, faceTmp, faceMillAux,condicoesDeUsinagemAux, operationAux);
+//					wsAux.setTipo(wsTmp.getTipo());
+//					wsAux.setId(wsTmp.getId());
+//					wsAux.setWorkingstepPrecedente(wsPrecedenteTmp);
+//					
+//					//Boss virtual referente a ferramenta auxiliar
+//					bossElementsAux = getAreaAlreadyDesbasted1(genClosed,bossElementsAux, genClosed.Z, trochoidalRadiusAux + faceMillAux.getDiametroFerramenta()/2, overLap,wsAux);
+//					System.err.println("TimeAux: " + time);
+//					double maiorMenorDistanciaAux = getMaiorMenorDistancia(bossElementsAux);
+//					
+//					//Obtencao da area desbastada pela ferramenta escolhida
+//					double areaFerramentaAux = 0;
+//					for(ArrayList<LimitedElement> array:bossElementsAux)
+//					{
+//						ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(array);
+//						triangulation = new Triangulation(points);
+//						areaFerramentaAux += triangulation.getArea();
+//					}
+//					System.err.println("Area desbastada aux: " + areaFerramentaAux);
+//					double areaRestanteFerramentaAux = (areaDeDesbaste - areaFerramentaAux);
+//					System.err.println("Area restante aux: " + areaRestanteFerramentaAux);
+//					System.err.println("Maior Distancia aux: " + maiorMenorDistanciaAux);
+//					//percentual de diferenca entre o desbaste referente a cada ferramenta
+//					double diferancaRelativaDeDesbaste = (Math.abs(areaRestanteFerramentaAux - areaRestanteFerramentaAtual)/areaRestanteFerramentaAtual);
+////					double diferancaRelativaDeDesbaste = (Math.abs(areaFerramentaAux - areaFerramentaAtual)/areaFerramentaAux)*100;
+//					System.err.println("Diferanca relativa: " + diferancaRelativaDeDesbaste);
+//					System.err.println("Fator: " + diferancaRelativaDeDesbaste/time);
+//					drawShape(addPocket.getElements(), bossElementsAux);
+//					//se o percentual de diferenca for maior que 30%, troca a ferramenta atual pela auxiliar
+//					if(diferancaRelativaDeDesbaste >= 0.3)
+//					{
+//						//faceMillTmp = faceMillTmpAux;
+//						wsPrecedenteTmp = wsAux;
+//						maiorMenorDistanciaTmp = maiorMenorDistanciaAux;
+//						wssFeature.add(wsAux);
+//						flag = true;
+//					}
+//				}
+//				if(!flag)
+//				{
+//					wsPrecedenteTmp = wsTmp;
+//					wssFeature.add(wsTmp);
+//				}
+//			}
+			
+			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp)
+			{
+				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
+				System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
+				boolean flag = false;
+				
+				// BOTTOM AND SIDE ROUGH MILLING
+				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
+				operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
+				if (!genClosed.isPassante())
 				{
-					wsPrecedenteTmp = wsTmp;
-					wssFeature.add(wsTmp);
+					operationTmp.setAllowanceBottom(Feature.LIMITE_DESBASTE);
 				}
-				aux++;
-			}
+					
+				// FERRAMENTA
+				//array de facemills que possuem diamentro maior que 75% do maior diametro
+				ArrayList<FaceMill> faceMillsTmp = chooseFaceMills(bloco.getMaterial(), faceMills,genClosed, 0, maiorMenorDistanciaTmp);
+				//facemill de maior diametro
+				double maiorFerramenta = faceMillsTmp.get(faceMillsTmp.size()-1).getDiametroFerramenta();
+				System.err.println("Ferramenta: " + maiorFerramenta);
+				
+				//laco para criar os possiveis ws
+				ArrayList<Workingstep> wsPossiveis = new ArrayList<Workingstep>();
+				ArrayList<Double> maioresMenoresDistancias = new ArrayList<Double>();
+				ArrayList<Double> fatores = new ArrayList<Double>();
+				for(FaceMill faceMillTmp:faceMillsTmp)
+				{
+					double trochoidalRadius = faceMillTmp.getDiametroFerramenta()/2;
+					double overLap = 2;
+					//Criacao de um boss virtual (indicando a area que sera desbastada pela ferramenta de diametro escolhido acima)
+					//Uma copia dos bosses virtuais (o original sera modificado)
+					ArrayList<ArrayList<LimitedElement>> bossElementsAux = new ArrayList<ArrayList<LimitedElement>>();
+					if(bossElements != null)
+					{
+						for(ArrayList<LimitedElement> array:bossElements)
+						{
+							bossElementsAux.add(array);
+						}
+					}
+					else
+					{
+						bossElementsAux = null;
+					}
+					
+					// CONDICOES DE USINAGEM
+					condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp, bloco.getMaterial());
+					//Estrategia de usinagem
+					TrochoidalAndContourParallelStrategy machiningStrategyTmp = new TrochoidalAndContourParallelStrategy();
+					machiningStrategyTmp.setAllowMultiplePasses(true);
+//				    machiningStrategyTmp.setOverLap(0.25*faceMillTmp.getDiametroFerramenta()); //Overlap
+					machiningStrategyTmp.setOverLap(2); //Overlap
+					machiningStrategyTmp.setTrochoidalRadius(trochoidalRadius); //REVER MAIS TARDE
+					machiningStrategyTmp.setTrochoidalSense(TrochoidalAndContourParallelStrategy.CCW);
+					machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
+					operationTmp.setMachiningStrategy(machiningStrategyTmp);    
+					
+					//Estrategia de aproximacao
+					PlungeStrategy plungeStrategy = new PlungeToolAxis();
+					operationTmp.setApproachStrategy(plungeStrategy);
+					
+					// WORKINGSTEP
+					Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,condicoesDeUsinagem, operationTmp);
+					wsTmp.setTipo(Workingstep.DESBASTE);
+					wsTmp.setId(this.genClosed.getNome() + "_RGH");
+					wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
+					
+					//Boss virtual referente a ferramenta escolhida
+					bossElementsAux = getAreaAlreadyDesbasted1(genClosed,bossElements, genClosed.Z, trochoidalRadius + faceMillTmp.getDiametroFerramenta()/2, overLap,wsTmp);
+					double maiorMenorDistanciaAux = getMaiorMenorDistancia(bossElementsAux);
+					
+					//Obtencao da area desbastada pela ferramenta escolhida
+					double areaFerramentaAux = 0;
+					for(ArrayList<LimitedElement> array:bossElementsAux)
+					{
+						ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(array);
+						triangulation = new Triangulation(points);
+						areaFerramentaAux += triangulation.getArea();
+					}
+					double fatorDeDesbaste = (areaFerramentaAux/areaDeDesbaste)/time;
+					wsPossiveis.add(wsTmp);
+					maioresMenoresDistancias.add(maiorMenorDistanciaAux);
+					fatores.add(fatorDeDesbaste);
+					
+					drawShape(addPocket.getElements(), bossElementsAux);
+				}
+				
+				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
+				//wsPrecedenteTmp = wsTmp;
+				//wssFeature.add(wsTmp);
+			}			
 			// WORKINGSTEP DE ACABAMENTO
 			// BOTTOM AND SIDE ROUGH MILLING
-			BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling(
-					"Bottom And Side Rough Milling", retractPlane);
+			BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
 			operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
 			System.out.println("Menor menor distancia: " + menorMenorDistanciaTmp);
 			// FERRAMENTA
 			double diametroFerramentaAcabamento = menorMenorDistanciaTmp;
-//			if(menorMenorDistanciaTmp > maiorMenorDistanciaTmp && maiorMenorDistanciaTmp != 0)
-//			{
-//				diametroFerramentaAcabamento = maiorMenorDistanciaTmp;
-//			}
-			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,
-					genClosed, 0, diametroFerramentaAcabamento);
+			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, diametroFerramentaAcabamento);
 
 			//Estrategia de usinagem
 			ContourParallel machiningStrategyTmp = new ContourParallel();
@@ -632,12 +786,10 @@ public class MapeadoraGeneralClosedPocket1
 			operationTmp.setApproachStrategy(plungeStrategy);
 			
 			// CONDICOES DE USINAGEM
-			condicoesDeUsinagem = MapeadoraDeWorkingsteps
-					.getCondicoesDeUsinagem(this.projeto, faceMillTmp,
-							bloco.getMaterial());
+			condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp, bloco.getMaterial());
+			
 			// WORKINGSTEP
-			Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp,
-					condicoesDeUsinagem, operationTmp);
+			Workingstep wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp, condicoesDeUsinagem, operationTmp);
 			wsTmp.setTipo(Workingstep.DESBASTE);
 			wsTmp.setId(this.genClosed.getNome() + "_RGH");
 			
@@ -737,8 +889,9 @@ public class MapeadoraGeneralClosedPocket1
 	 * @param overLap
 	 * @return
 	 */
-	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted1(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap/*,Workingstep ws*/)
+	public ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbasted1(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap,Workingstep ws)
 	{
+		double timeAux = 0;
 		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que ser�o convertidos em boss para a nova forma (acabamento) 
 		GenerateContournParallel contourn = null; //contrutor pra a primeira trajetotia do primeiro working step
 		if(bossElements != null)
@@ -762,13 +915,15 @@ public class MapeadoraGeneralClosedPocket1
 //				ArrayList<LimitedElement> alreadyDesbastededAreaTmp = fillArrayWithArcs(firstOffsetMultipleParallel.get(i), distance); //elementos ordenados dos novos bosses
 				alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
 			}
-//			for(ArrayList<ArrayList<LimitedElement>> offset:multipleParallel)
-//			{
-//				for(ArrayList<LimitedElement> insideOffset:offset)
-//				{
-////					GenerateTrochoidalMovement1 trochoidalMovement = new GenerateTrochoidalMovement1(insideOffset, ws)
-//				}
-//			}
+			for(ArrayList<ArrayList<LimitedElement>> offset:multipleParallel)
+			{
+				for(ArrayList<LimitedElement> insideOffset:offset)
+				{
+					GenerateTrochoidalMovement1 trochoidalMovement = new GenerateTrochoidalMovement1(insideOffset, ws);
+					double timeTmp = getTime(trochoidalMovement.getPaths(), ws.getCondicoesUsinagem().getVf());
+					timeAux += timeTmp;
+				}
+			}
 		}
 		if(bossElements != null)
 		{
@@ -777,6 +932,7 @@ public class MapeadoraGeneralClosedPocket1
 				alreadyDesbastededArea.add(arrayTmp);
 			}
 		}
+		time = timeAux;
 		return alreadyDesbastededArea;
 	}
 	/**
@@ -785,7 +941,7 @@ public class MapeadoraGeneralClosedPocket1
 	 * @param distance
 	 * @return
 	 */
-	public static ArrayList<LimitedElement> fillArrayWithArcs(ArrayList<LimitedElement> arrayToParallelAndFill,double distance)
+	public ArrayList<LimitedElement> fillArrayWithArcs(ArrayList<LimitedElement> arrayToParallelAndFill,double distance)
 	{
 		ArrayList<LimitedElement> alreadyDesbastededAreaTmp = new ArrayList<LimitedElement>(); //elementos ordenados dos novos bosses
 		ArrayList<LimitedElement> arrayToFill = GenerateContournParallel.parallelPath1(arrayToParallelAndFill, distance, false, true); //elementos, nao interligados, dos novos bosses
@@ -821,10 +977,7 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		return alreadyDesbastededAreaTmp;
 	}
-//	public double getTime()
-//	{
-//		
-//	}
+
 	public static void drawShape(ArrayList<LimitedElement> pocketElements, ArrayList<ArrayList<LimitedElement>> bossElements)
 	{
 //		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
@@ -910,6 +1063,23 @@ public class MapeadoraGeneralClosedPocket1
 		}
 		frame.getContentPane().add(new Panel());
 		frame.setVisible(true);
+	}
+	public static double getTime(ArrayList<Path> paths,double speed)
+	{
+		double totalDistance = 0;
+		for(Path path:paths)
+		{
+			if(path.isLine())
+			{
+				totalDistance += path.getInitialPoint().distance(path.getFinalPoint());
+			}
+			else if(path.isCircular())
+			{
+				CircularPath circularPath = (CircularPath)path;
+				totalDistance += circularPath.getAngulo()*circularPath.getRadius();
+			}
+		}
+		return totalDistance/speed;
 	}
 }
 

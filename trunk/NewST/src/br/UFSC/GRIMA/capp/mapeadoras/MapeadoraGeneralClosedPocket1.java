@@ -760,10 +760,22 @@ public class MapeadoraGeneralClosedPocket1
 					
 					drawShape(addPocket.getElements(), bossElementsAux);
 				}
-				
+				int index = 0;
+				double maiorFator = fatores.get(0);
+				for(int i = 1;i < fatores.size();i++)
+				{
+					System.err.println("Fator " + i + ": " + fatores.get(i));
+					if(maiorFator < fatores.get(i))
+					{
+						maiorFator = fatores.get(i);
+						index = i;
+					}
+				}
+				System.err.println("Fator " + index + ": " + maiorFator);
+				maiorMenorDistanciaTmp = maioresMenoresDistancias.get(index);
 				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
-				//wsPrecedenteTmp = wsTmp;
-				//wssFeature.add(wsTmp);
+				wsPrecedenteTmp = wsPossiveis.get(index);
+				wssFeature.add(wsPossiveis.get(index));
 			}			
 			// WORKINGSTEP DE ACABAMENTO
 			// BOTTOM AND SIDE ROUGH MILLING

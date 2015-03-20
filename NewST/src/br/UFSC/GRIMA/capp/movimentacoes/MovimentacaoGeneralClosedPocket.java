@@ -310,7 +310,7 @@ public class MovimentacaoGeneralClosedPocket {
 							offsetDistanceTmp = ((TrochoidalAndBidirectionalStrategy)wsTmp.getOperation().getMachiningStrategy()).getTrochoidalRadius() + wsTmp.getFerramenta().getDiametroFerramenta()/2;
 							overLapTmp = ((TrochoidalAndBidirectionalStrategy)wsTmp.getOperation().getMachiningStrategy()).getOverLap();
 						}
-						bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1((GeneralClosedPocket)ws.getFeature(), bossElements, planoZ, offsetDistanceTmp, overLapTmp);
+						bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1((GeneralClosedPocket)ws.getFeature(), bossElements, planoZ, offsetDistanceTmp, overLapTmp,ws);
 					}
 					i++;
 				}
@@ -515,8 +515,8 @@ public class MovimentacaoGeneralClosedPocket {
 				Workingstep wsPrecedente = ws.getWorkingstepPrecedente();
 				if(ws.getFeature().equals(wsPrecedente.getFeature()))
 				{
-					ArrayList<ArrayList<LimitedElement>> bossVirtualPrecedente = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, null, planoZ, wsPrecedente.getCondicoesUsinagem().getAe(), 0);
-					contourn = new GenerateContournParallel(genClosed, MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, this.ws.getCondicoesUsinagem().getAe(), 0), planoZ, this.ws.getCondicoesUsinagem().getAe(), 0);
+					ArrayList<ArrayList<LimitedElement>> bossVirtualPrecedente = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, null, planoZ, wsPrecedente.getCondicoesUsinagem().getAe(), 0,ws);
+					contourn = new GenerateContournParallel(genClosed, MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(genClosed, bossVirtualPrecedente, planoZ, this.ws.getCondicoesUsinagem().getAe(), 0,ws), planoZ, this.ws.getCondicoesUsinagem().getAe(), 0);
 				}
 				else
 				{

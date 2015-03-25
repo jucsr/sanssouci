@@ -36,7 +36,8 @@ public class CreateGeneralClosedPocketTest
 	CircularBoss boss;
 	Face faceXY;
 	ArrayList<ArrayList<LimitedElement>> bossVirtual = null;
-	ArrayList<Point2D> pointsTmp = new ArrayList<Point2D>();
+//	ArrayList<Point2D> pointsTmp = new ArrayList<Point2D>();
+	ArrayList<Point2D> points = new ArrayList<Point2D>();
 
 	@Before
 	public void createProject()
@@ -61,7 +62,6 @@ public class CreateGeneralClosedPocketTest
 		this.cavidade.setPosicao(10, 10, 0);
 		this.cavidade.setProfundidade(40);
 		this.cavidade.setRadius(5);
-		ArrayList<Point2D> points = new ArrayList<Point2D>();
 		
 //		points.add(new Point2D.Double(44.0,89.0));
 //		points.add(new Point2D.Double(51.0,68.0));
@@ -86,8 +86,8 @@ public class CreateGeneralClosedPocketTest
 		
 		
 		this.cavidade.setPoints(points);
-		bossVirtual = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(cavidade, bossVirtual, cavidade.Z, 20, 2);
-		pointsTmp = Transformer.limitedElementToPoints2D(bossVirtual.get(0));
+//		bossVirtual = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(cavidade, bossVirtual, cavidade.Z, 20, 2);
+//		pointsTmp = Transformer.limitedElementToPoints2D(bossVirtual.get(0));
 
 	}
 	@Test
@@ -113,7 +113,7 @@ public class CreateGeneralClosedPocketTest
 		frame.getContentPane().add(painel);
 		J3D j3d = new J3D(painel);
 		CSGSolid.appearance = true;
-		OperationGeneralClosedPocked operation = new OperationGeneralClosedPocked("BEZIER_SURFACE", (float)cavidade.getProfundidade() ,0, pointsTmp);
+		OperationGeneralClosedPocked operation = new OperationGeneralClosedPocked("BEZIER_SURFACE", (float)cavidade.getProfundidade() ,0, points);
 		
 		j3d.addSolid(operation);
 		

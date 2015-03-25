@@ -1,5 +1,6 @@
 package br.UFSC.GRIMA.capp.mapeadoras;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
@@ -486,8 +488,8 @@ public class MapeadoraGeneralClosedPocket1
 		double retractPlane = 5;
 		
 		//Calculo da area da cavidade
-//		Triangulation triangulation = new Triangulation(genClosed.getPoints());
-		Triangulation triangulation = new Triangulation(Transformer.limitedElementToPoints2D(addPocket.getElements()));
+		Triangulation triangulation = new Triangulation(genClosed.getPoints());
+//		Triangulation triangulation = new Triangulation(Transformer.limitedElementToPoints2D(addPocket.getElements()));
 		double areaCavidade = triangulation.getArea();
 		System.err.println("area da cavidade: " + areaCavidade);
 		
@@ -680,7 +682,7 @@ public class MapeadoraGeneralClosedPocket1
 //				}
 //			}
 			int aux = 0;
-			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp && aux < 2)
+			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp && aux < 3)
 //			while(aux < 2)
 			{
 				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
@@ -770,6 +772,7 @@ public class MapeadoraGeneralClosedPocket1
 						fatorDeDesbaste = (areaFerramentaAux/areaDeDesbaste)/time;
 					}
 					System.err.println("Fator: " + fatorDeDesbaste);
+					System.err.println("Area de Desbaste da Ferramenta: " + areaFerramentaAux);
 //					
 //					if(noPaths)
 //					{
@@ -1081,9 +1084,6 @@ public class MapeadoraGeneralClosedPocket1
 //		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		//CRIA O GENERAL PATH DO FORMATO
 		final GeneralPath gp = (GeneralPath)Face.getShape(pocketElements);
-		final char[] ch = new char[2];
-		ch[0] = (char)diametroFerramenta;
-		final String str = new String(ch);
 		//CRIA Shape2D DAS PROTUBERANCIAS
 		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
 		if(bossElements != null)
@@ -1109,7 +1109,6 @@ public class MapeadoraGeneralClosedPocket1
 				g2d.setColor(new Color(0, 0, 0));
 //				g2d.fill(gp);
 				g2d.draw(gp);
-				g2d.drawString(str, 0, 0);
 				for(Shape shape:bossShape)
 				{
 					g2d.setColor(new Color(15, 60, 212));
@@ -1118,7 +1117,10 @@ public class MapeadoraGeneralClosedPocket1
 				}
 			}
 		}
-		frame.getContentPane().add(new Panel());
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(BorderLayout.CENTER, new Panel());
+		JLabel label =  new JLabel("Diametro Ferramenta = " + diametroFerramenta);
+		frame.getContentPane().add(BorderLayout.SOUTH, label);
 		frame.setVisible(true);
 	}
 	public static void drawShapeAndPoints(ArrayList<LimitedElement> pocketElements, ArrayList<ArrayList<LimitedElement>> bossElements, final ArrayList<Point3d> points)
@@ -1163,6 +1165,8 @@ public class MapeadoraGeneralClosedPocket1
 			}
 		}
 		frame.getContentPane().add(new Panel());
+		
+		
 		frame.setVisible(true);
 	}
 	public static double getTime(ArrayList<Path> paths,double speed)

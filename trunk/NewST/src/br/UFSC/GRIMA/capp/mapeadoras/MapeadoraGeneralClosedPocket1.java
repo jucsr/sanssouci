@@ -43,6 +43,7 @@ import br.UFSC.GRIMA.entidades.ferramentas.EndMill;
 import br.UFSC.GRIMA.entidades.ferramentas.FaceMill;
 import br.UFSC.GRIMA.samples.PocketTest;
 import br.UFSC.GRIMA.util.CircularPath;
+import br.UFSC.GRIMA.util.ConsolePrinter;
 import br.UFSC.GRIMA.util.GenerateVoronoiArray;
 import br.UFSC.GRIMA.util.Path;
 import br.UFSC.GRIMA.util.Transformer;
@@ -81,8 +82,10 @@ public class MapeadoraGeneralClosedPocket1
 		this.projeto = projeto;
 		this.faceTmp = face;
 		this.genClosed = genClosed;
+		ConsolePrinter.showPoints(genClosed.getPoints());
 		this.bloco = projeto.getBloco();
 		this.itsBoss = genClosed.getItsBoss();
+		System.out.println("Boss: " + itsBoss.get(0).X + " " + itsBoss.get(0).Y + " " + ((CircularBoss)itsBoss.get(0)).getDiametro1());
 		this.addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 		this.faceMills = ToolManager.getFaceMills();
 		this.endMills = ToolManager.getEndMills();
@@ -677,8 +680,8 @@ public class MapeadoraGeneralClosedPocket1
 //				}
 //			}
 			int aux = 0;
-//			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp)
-			while(aux < 2)
+			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp && aux < 2)
+//			while(aux < 2)
 			{
 				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 				System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
@@ -784,7 +787,7 @@ public class MapeadoraGeneralClosedPocket1
 					fatores.add(fatorDeDesbaste);
 					virtualBossList.add(bossElementsAux);
 					
-					drawShape(addPocket.getElements(), bossElementsAux);
+					drawShape(addPocket.getElements(), bossElementsAux,faceMillTmp.getDiametroFerramenta());
 				}
 				int index = 0;
 				double maiorFator = fatores.get(0);
@@ -999,6 +1002,40 @@ public class MapeadoraGeneralClosedPocket1
 		time = timeAux;
 		return alreadyDesbastededArea;
 	}
+	
+	public static ArrayList<ArrayList<LimitedElement>> getAreaAlreadyDesbastedTeste(GeneralClosedPocket pocket,ArrayList<ArrayList<LimitedElement>> bossElements, double planoZ, double distance, double overLap)
+	{
+		ArrayList<ArrayList<LimitedElement>> alreadyDesbastededArea = new ArrayList<ArrayList<LimitedElement>>(); //Array de array de elementos que ser�o convertidos em boss para a nova forma (acabamento) 
+		GenerateContournParallel contourn = null; //contrutor pra a primeira trajetotia do primeiro working step
+		if(bossElements != null)
+		{
+			contourn = new GenerateContournParallel(pocket,bossElements, planoZ, distance, overLap);//construtor para as trajetorias
+		}
+		else
+		{
+			contourn = new GenerateContournParallel(pocket, planoZ, distance, overLap);
+		}
+		ArrayList<ArrayList<ArrayList<LimitedElement>>> multipleParallel = contourn.multipleParallelPath();
+		if(multipleParallel.size() != 0)
+		{
+			ArrayList<ArrayList<LimitedElement>> firstOffsetMultipleParallel = multipleParallel.get(0);
+			//Estamos interessados do primeiro offset. Ele nos dira o que falta desbastar.
+			for(int i = 0; i <firstOffsetMultipleParallel.size(); i++) //percorre os lacos do primeiro offset
+			{
+				ArrayList<LimitedElement> meshInverted = GeometricOperations.arrayInverter(GeometricOperations.elementInverter(firstOffsetMultipleParallel.get(i)));
+				ArrayList<LimitedElement> alreadyDesbastededAreaTmp = fillArrayWithArcs(meshInverted, distance); //elementos ordenados dos novos bosses
+				alreadyDesbastededArea.add(alreadyDesbastededAreaTmp);
+			}
+		}
+		if(bossElements != null)
+		{
+			for(ArrayList<LimitedElement> arrayTmp:bossElements)
+			{
+				alreadyDesbastededArea.add(arrayTmp);
+			}
+		}
+		return alreadyDesbastededArea;
+	}
 	/**
 	 * Faz a paralela dos elementos de um array e completa as lacunas com arcos
 	 * @param arrayToParallelAndFill
@@ -1039,12 +1076,14 @@ public class MapeadoraGeneralClosedPocket1
 		return alreadyDesbastededAreaTmp;
 	}
 
-	public static void drawShape(ArrayList<LimitedElement> pocketElements, ArrayList<ArrayList<LimitedElement>> bossElements)
+	public static void drawShape(ArrayList<LimitedElement> pocketElements, ArrayList<ArrayList<LimitedElement>> bossElements, double diametroFerramenta)
 	{
 //		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(), pocket.Z, pocket.getRadius());
 		//CRIA O GENERAL PATH DO FORMATO
 		final GeneralPath gp = (GeneralPath)Face.getShape(pocketElements);
-
+		final char[] ch = new char[2];
+		ch[0] = (char)diametroFerramenta;
+		final String str = new String(ch);
 		//CRIA Shape2D DAS PROTUBERANCIAS
 		final ArrayList<Shape> bossShape = new ArrayList<Shape>();
 		if(bossElements != null)
@@ -1070,10 +1109,11 @@ public class MapeadoraGeneralClosedPocket1
 				g2d.setColor(new Color(0, 0, 0));
 //				g2d.fill(gp);
 				g2d.draw(gp);
+				g2d.drawString(str, 0, 0);
 				for(Shape shape:bossShape)
 				{
 					g2d.setColor(new Color(15, 60, 212));
-					g2d.fill(shape);
+//					g2d.fill(shape);
 					g2d.draw(shape);
 				}
 			}

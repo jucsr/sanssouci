@@ -59,35 +59,43 @@ public class MapeadoraGeneralClosedPocket1Test
 //		points.add(new Point2D.Double(0, 320));
 		
 		//Forma de Cachorrinho --> raio 5
-		points.add(new Point2D.Double(44.0,89.0));
-		points.add(new Point2D.Double(51.0,68.0));
-		points.add(new Point2D.Double(27.0,22.0));
-		points.add(new Point2D.Double(55.0,20.0));
-		points.add(new Point2D.Double(67.0,50.0));
-		points.add(new Point2D.Double(124.0,65.0));
-		points.add(new Point2D.Double(136.0,20.0));
-		points.add(new Point2D.Double(164.0,19.0));
-		points.add(new Point2D.Double(147.0,66.0));
-		points.add(new Point2D.Double(168.0,116.0));
-		points.add(new Point2D.Double(134.0,84.0));
-		points.add(new Point2D.Double(68.0,84.0));
-		points.add(new Point2D.Double(45.0,120.0));
-		points.add(new Point2D.Double(13.0,93.0));
+//		points.add(new Point2D.Double(44.0,89.0));
+//		points.add(new Point2D.Double(51.0,68.0));
+//		points.add(new Point2D.Double(27.0,22.0));
+//		points.add(new Point2D.Double(55.0,20.0));
+//		points.add(new Point2D.Double(67.0,50.0));
+//		points.add(new Point2D.Double(124.0,65.0));
+//		points.add(new Point2D.Double(136.0,20.0));
+//		points.add(new Point2D.Double(164.0,19.0));
+//		points.add(new Point2D.Double(147.0,66.0));
+//		points.add(new Point2D.Double(168.0,116.0));
+//		points.add(new Point2D.Double(134.0,84.0));
+//		points.add(new Point2D.Double(68.0,84.0));
+//		points.add(new Point2D.Double(45.0,120.0));
+//		points.add(new Point2D.Double(13.0,93.0));
+		
+		//Forma 3
+		points.add(new Point2D.Double(30.0,64.0));
+		points.add(new Point2D.Double(75.0,28.0));
+		points.add(new Point2D.Double(160.0,78.0));
+		points.add(new Point2D.Double(141.0,125.0));
 		
 		//Protuberancia
 		pocket.setPoints(points);
-		pocket.setRadius(5);
+		pocket.setRadius(10);
 		pocket.setPosicao(50, 50, 0);
 		pocket.setProfundidade(15);
 		ArrayList<Boss> itsBoss = new ArrayList<Boss>();
 		CircularBoss arcBoss1 = new CircularBoss("", 200, 150, pocket.Z, 60, 60, pocket.getProfundidade());
 		CircularBoss arcBoss2 = new CircularBoss("", 100, 200, pocket.Z, 40, 40, pocket.getProfundidade());
 		CircularBoss arcBoss3 = new CircularBoss("", 39, 103, pocket.Z, 4, 4, pocket.getProfundidade());
+		CircularBoss arcBossForma3 = new CircularBoss("", 97, 71, pocket.Z, 19, 19, pocket.getProfundidade());
 
 
 //		itsBoss.add(arcBoss1);
 //		itsBoss.add(arcBoss2);
-		itsBoss.add(arcBoss3);
+//		itsBoss.add(arcBoss3);
+		itsBoss.add(arcBossForma3);
 
 		
 		//Rectangular Boss
@@ -174,19 +182,21 @@ public class MapeadoraGeneralClosedPocket1Test
 	public void getAlreadyDesbastedArea()
 	{
 		GeneralClosedPocketVertexAdd addPocket = new GeneralClosedPocketVertexAdd(pocket.getPoints(),pocket.Z, pocket.getRadius());
+		//Elementos da cavidade
 		ArrayList<LimitedElement> formaOriginal = new ArrayList<LimitedElement>();
-
+		//Todos os elementos (para printar)
 		ArrayList<LimitedElement> all = new ArrayList<LimitedElement>();
 		for(LimitedElement element:addPocket.getElements())
 		{
 			formaOriginal.add(element);
+			//Comentar para nao ver os elementos da cavidade no desenhador
 			all.add(element);
 		}
 		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 
 		//PRIMEIRA FERRAMENTA
-		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)),2);
-//		double diametroFerramenta1 = 82;
+//		double diametroFerramenta1 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)),2);
+		double diametroFerramenta1 = 20;
 		System.out.println("diametro ferramenta 1: " + diametroFerramenta1);
 		double overLap = 2;//0.25*diametroFerramenta;
 //		System.out.println("Menor menor distancia: " + mp.getMenorMenorDistance(GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z)));
@@ -204,19 +214,20 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//WorkingStep 1 - GERACAO DO BOSS VIRTUAL (QUE INDICA O QUE JA FOI DESBASTADO)
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, overLap);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbastedTeste(pocket,null,pocket.Z, diametroFerramenta1, overLap);
 		MapeadoraGeneralClosedPocket1.drawShape(formaOriginal, bossElements);
 		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
 //			bossElements.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
+				//Comentar para nao ver o boss real no desenhador
 				all.add(elementTmp);
 			}
 		}
 		//SEGUNDA FERRAMENTA
-//		double diametroFerramenta2 = 6;
-		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
+		double diametroFerramenta2 = 8;
+//		double diametroFerramenta2 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
 		System.out.println("diametro ferramenta 2: " + diametroFerramenta2);
 
 		//Add os elementos das protuberancias (virtuais + reais) no array do desenhador
@@ -225,13 +236,14 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);
+				//Comentar para nao ver o bossvirtual da primeira ferramenta no desenhador
 				all.add(elementTmp);
 			}
 		}
 		
-		//WorkingStep 2 - GERACAO DO BOSS VIRTUAL DA SEGUNDA FERRAMENTA
-//		GenerateContournParallel contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
-		//ELEMENTOS PARALELOS
+//		WorkingStep 2 - GERACAO DO BOSS VIRTUAL DA SEGUNDA FERRAMENTA
+		GenerateContournParallel contourn = new GenerateContournParallel(pocket,bossElements, pocket.Z, diametroFerramenta2, overLap);
+//		ELEMENTOS PARALELOS
 //		for(ArrayList<LimitedElement> arrayTmp:contourn.parallelPath2Test(diametroFerramenta2))
 //		{
 //			for(LimitedElement elementTmp:arrayTmp)
@@ -270,7 +282,7 @@ public class MapeadoraGeneralClosedPocket1Test
 //			}
 //		}
 		//Terceira ferramenta
-		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
+		ArrayList<ArrayList<LimitedElement>> bossElements1 = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbastedTeste(pocket,bossElements,pocket.Z, diametroFerramenta2, overLap);
 		MapeadoraGeneralClosedPocket1.drawShape(formaOriginal, bossElements1);
 //		double diametroFerramenta3 = GeometricOperations.roundNumber(mp.getMaiorMenorDistancia(bossElements),2);
 //		System.out.println("diametro ferramenta 3: " + diametroFerramenta3);
@@ -280,7 +292,8 @@ public class MapeadoraGeneralClosedPocket1Test
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 //				formaOriginal.add(elementTmp);
-				all.add(elementTmp);
+				//Comentar para nao ver o bossvirtual da segunda ferramenta no desenhador
+//				all.add(elementTmp);
 			}
 		}
 		DesenhadorDeLimitedElements desenhador = new DesenhadorDeLimitedElements(all);

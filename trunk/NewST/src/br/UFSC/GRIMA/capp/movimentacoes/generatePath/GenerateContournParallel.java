@@ -103,7 +103,7 @@ public class GenerateContournParallel
 		}
 		for(ArrayList<LimitedElement> arrayTmp:gerarElementosDaProtuberancia(pocket, planoZ))
 		{
-//			elementosProtuberancia.add(arrayTmp);
+			elementosProtuberancia.add(arrayTmp);
 			for(LimitedElement elementTmp:arrayTmp)
 			{
 				formaOriginal.add(elementTmp);

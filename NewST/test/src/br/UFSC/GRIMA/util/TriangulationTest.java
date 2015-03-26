@@ -141,7 +141,7 @@ public class TriangulationTest
 //		Triangulation triangulation = new Triangulation(points);
 //		System.out.println(triangulation.getTriangulesIndex());
 //		System.out.println(triangulation.getArea());
-		MapeadoraGeneralClosedPocket1.drawShape(addPocketVertex.getElements(), null);
+		MapeadoraGeneralClosedPocket1.drawShape(addPocketVertex.getElements(), null,0);
 		for(;;);
 	}
 }

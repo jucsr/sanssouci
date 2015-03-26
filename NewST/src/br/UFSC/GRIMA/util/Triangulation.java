@@ -425,17 +425,20 @@ public class Triangulation
 				{
 					GeneralPath trianguloTmp = new GeneralPath();
 					trianguloTmp.moveTo(polygon.get(triangles.get(i).get(0)).getX(), polygon.get(triangles.get(i).get(0)).getY());
-					for(int j = 0; j < triangles.get(i).size(); j++)
-					{
-						if(j != triangles.get(i).size()-1)
-						{
-							trianguloTmp.lineTo(polygon.get(triangles.get(i).get(j+1)).getX(), polygon.get(triangles.get(i).get(j+1)).getY());
-						}
-						else
-						{
-							trianguloTmp.lineTo(polygon.get(triangles.get(i).get(0)).getX(), polygon.get(triangles.get(i).get(0)).getY());
-						}
-					}
+					trianguloTmp.lineTo(polygon.get(triangles.get(i).get(1)).getX(), polygon.get(triangles.get(i).get(1)).getY());
+					trianguloTmp.lineTo(polygon.get(triangles.get(i).get(2)).getX(), polygon.get(triangles.get(i).get(2)).getY());
+					trianguloTmp.lineTo(polygon.get(triangles.get(i).get(0)).getX(), polygon.get(triangles.get(i).get(0)).getY());
+//					for(int j = 0; j < triangles.get(i).size(); j++)
+//					{
+//						if(j != triangles.get(i).size()-1)
+//						{
+//							trianguloTmp.lineTo(polygon.get(triangles.get(i).get(j+1)).getX(), polygon.get(triangles.get(i).get(j+1)).getY());
+//						}
+//						else
+//						{
+//							trianguloTmp.lineTo(polygon.get(triangles.get(i).get(0)).getX(), polygon.get(triangles.get(i).get(0)).getY());
+//						}
+//					}
 //					trianguloTmp.closePath();
 					g2d.draw(trianguloTmp);
 				}

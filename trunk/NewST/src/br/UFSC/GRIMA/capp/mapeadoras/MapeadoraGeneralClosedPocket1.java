@@ -682,7 +682,7 @@ public class MapeadoraGeneralClosedPocket1
 //				}
 //			}
 			int aux = 0;
-			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp && aux < 3)
+			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp)
 //			while(aux < 2)
 			{
 				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
@@ -709,6 +709,7 @@ public class MapeadoraGeneralClosedPocket1
 				ArrayList<Workingstep> wsPossiveis = new ArrayList<Workingstep>();
 				ArrayList<Double> maioresMenoresDistancias = new ArrayList<Double>();
 				ArrayList<Double> fatores = new ArrayList<Double>();
+				ArrayList<Double> areasDeDesbaste = new ArrayList<Double>();
 				ArrayList<ArrayList<ArrayList<LimitedElement>>> virtualBossList = new ArrayList<ArrayList<ArrayList<LimitedElement>>>();
 				for(FaceMill faceMillTmp:faceMillsTmp)
 				{
@@ -762,7 +763,7 @@ public class MapeadoraGeneralClosedPocket1
 					double areaFerramentaAux = 0;
 					for(ArrayList<LimitedElement> array:bossElementsAux)
 					{
-						ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(array);
+						ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(GeometricOperations.arrayInverter(GeometricOperations.elementInverter(array)));
 						triangulation = new Triangulation(points);
 						areaFerramentaAux += triangulation.getArea();
 					}
@@ -789,22 +790,31 @@ public class MapeadoraGeneralClosedPocket1
 					maioresMenoresDistancias.add(maiorMenorDistanciaAux);
 					fatores.add(fatorDeDesbaste);
 					virtualBossList.add(bossElementsAux);
-					
+					areasDeDesbaste.add(areaFerramentaAux);
 					drawShape(addPocket.getElements(), bossElementsAux,faceMillTmp.getDiametroFerramenta());
 				}
+//				int index = 0;
+//				double maiorFator = fatores.get(0);
+//				for(int i = 1;i < fatores.size();i++)
+//				{
+////					System.err.println("Fator " + i + ": " + fatores.get(i));
+//					if(maiorFator < fatores.get(i))
+//					{
+//						maiorFator = fatores.get(i);
+//						index = i;
+//					}
+//				}
 				int index = 0;
-				double maiorFator = fatores.get(0);
-				for(int i = 1;i < fatores.size();i++)
+				for(int i = 0;i < areasDeDesbaste.size();i++)
 				{
-//					System.err.println("Fator " + i + ": " + fatores.get(i));
-					if(maiorFator < fatores.get(i))
+					if(areasDeDesbaste.get(i) >= areaDeDesbaste/2)
 					{
-						maiorFator = fatores.get(i);
 						index = i;
 					}
 				}
-				System.err.println("Fator Escolhido: " + maiorFator);
+//				System.err.println("Fator Escolhido: " + maiorFator);
 				System.err.println("Ferramenta escolhida: " + wsPossiveis.get(index).getFerramenta().getDiametroFerramenta());
+				System.err.println("Area Escolhida: " + areasDeDesbaste.get(index));
 				maiorMenorDistanciaTmp = maioresMenoresDistancias.get(index);
 				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 				

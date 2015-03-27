@@ -1081,7 +1081,7 @@ public class GeometricOperationsTest
 		all.add(l1);
 //		MapeadoraGeneralClosedPocket1 mp = new MapeadoraGeneralClosedPocket1(pocket);
 		double diametroFerramenta1 = 60;
-		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbasted1(pocket,null,pocket.Z, diametroFerramenta1, 2);
+		ArrayList<ArrayList<LimitedElement>> bossElements = MapeadoraGeneralClosedPocket1.getAreaAlreadyDesbastedTeste(pocket,null,pocket.Z, diametroFerramenta1, 2);
 		for(ArrayList<LimitedElement> arrayTmp:GenerateContournParallel.gerarElementosDaProtuberancia(pocket, pocket.Z))
 		{
 			bossElements.add(arrayTmp);

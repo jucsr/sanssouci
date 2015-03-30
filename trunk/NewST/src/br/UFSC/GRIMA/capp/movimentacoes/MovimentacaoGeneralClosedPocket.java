@@ -30,6 +30,7 @@ import br.UFSC.GRIMA.entidades.features.GeneralClosedPocket;
 import br.UFSC.GRIMA.entidades.features.GeneralProfileBoss;
 import br.UFSC.GRIMA.entidades.features.RectangularBoss;
 import br.UFSC.GRIMA.entidades.ferramentas.Ferramenta;
+import br.UFSC.GRIMA.samples.PocketTest;
 import br.UFSC.GRIMA.util.CircularPath;
 import br.UFSC.GRIMA.util.LinearPath;
 import br.UFSC.GRIMA.util.Path;
@@ -263,7 +264,9 @@ public class MovimentacaoGeneralClosedPocket {
 		double planoSeguranca = ws.getOperation().getRetractPlane();         //plano de seguranca da ferramenta
 		Two5DMillingOperation two5 = (Two5DMillingOperation)this.ws.getOperation();
 		TrochoidalAndContourParallelStrategy trocoidalStrategy = (TrochoidalAndContourParallelStrategy)two5.getMachiningStrategy();
-		double planoZ = -ws.getCondicoesUsinagem().getAp();                    //plano de desbaste da feature
+//		double planoZ = -(ws.getCondicoesUsinagem().getAp()+genClosed.Z);                    //plano de desbaste da feature
+		double planoZ = -(ws.getCondicoesUsinagem().getAp());                    //plano de desbaste da feature
+//		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()+genClosed.Z) //Caso o plano de desbaste seja maior que a profundidade da feature
 		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade()) //Caso o plano de desbaste seja maior que a profundidade da feature
 		{
 			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();//O plano de desbaste se torna a propria profundidade da feature
@@ -496,7 +499,9 @@ public class MovimentacaoGeneralClosedPocket {
 		ArrayList<Path> desbaste = new ArrayList<Path>();                                          //Array de Paths
 		//atributos do workingstep atual----------------------------------------------------------------------------------------------------------
 		double planoSeguranca = ws.getOperation().getRetractPlane();                               //Plano em que a ferramenta tem maior velocidade
-		double planoZ = -ws.getCondicoesUsinagem().getAp();                                        //Plano de Desbaste da feature
+//		double planoZ = -(ws.getCondicoesUsinagem().getAp()+genClosed.Z);                                        //Plano de Desbaste da feature
+		double planoZ = -(ws.getCondicoesUsinagem().getAp());                                        //Plano de Desbaste da feature
+//		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade() + genClosed.Z)            //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
 		if(Math.abs(planoZ) > ((GeneralClosedPocket)ws.getFeature()).getProfundidade())            //Caso o plano de desbaste ultrapasse o valor da profundidade da feature
 		{
 			planoZ = -((GeneralClosedPocket)ws.getFeature()).getProfundidade();                    //O plano de desbaste se torna a propria profundidade da feature

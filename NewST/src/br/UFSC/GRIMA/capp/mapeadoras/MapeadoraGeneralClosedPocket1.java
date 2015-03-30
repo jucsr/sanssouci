@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 
+import sun.awt.VerticalBagLayout;
 import br.UFSC.GRIMA.capp.CondicoesDeUsinagem;
 import br.UFSC.GRIMA.capp.ToolManager;
 import br.UFSC.GRIMA.capp.Workingstep;
@@ -91,7 +92,6 @@ public class MapeadoraGeneralClosedPocket1
 		ConsolePrinter.showPoints(genClosed.getPoints());
 		this.bloco = projeto.getBloco();
 		this.itsBoss = genClosed.getItsBoss();
-		System.out.println("Boss: " + itsBoss.get(0).X + " " + itsBoss.get(0).Y + " " + ((CircularBoss)itsBoss.get(0)).getDiametro1());
 		this.addPocket = new GeneralClosedPocketVertexAdd(genClosed.getVertexPoints(), genClosed.Z, genClosed.getRadius());
 		this.faceMills = ToolManager.getFaceMills();
 		this.endMills = ToolManager.getEndMills();
@@ -492,7 +492,7 @@ public class MapeadoraGeneralClosedPocket1
 		double retractPlane = 5;
 		
 		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
-		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements); //maior menor distancia inicial
+		double maiorMenorDistancia = getMaiorMenorDistancia(bossElements); //maior menor distancia inicial
 		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 		
 		//Calculo da area da cavidade
@@ -551,6 +551,7 @@ public class MapeadoraGeneralClosedPocket1
 			int aux = 0;
 			//area desbastada pela ferramenta
 			double areaFerramentaTmp = 0;
+			double maiorMenorDistanciaTmp = maiorMenorDistancia;
 			while((maiorMenorDistanciaTmp >= menorMenorDistanciaTmp) && (areaDeDesbaste >= areaFerramentaDeContorno*0.3))
 //			while(aux < 2)
 			{
@@ -614,7 +615,7 @@ public class MapeadoraGeneralClosedPocket1
 					operationTmp.setMachiningStrategy(machiningStrategyTmp);    
 					
 					//Estrategia de aproximacao
-					PlungeStrategy plungeStrategy = new PlungeToolAxis();
+					PlungeToolAxis plungeStrategy = new PlungeToolAxis();
 					operationTmp.setApproachStrategy(plungeStrategy);
 					
 					// WORKINGSTEP
@@ -643,6 +644,7 @@ public class MapeadoraGeneralClosedPocket1
 					if(time != 0)
 					{
 						fatorDeDesbaste = (areaFerramentaAux/areaDeDesbaste)/time;
+//						fatorDeDesbaste = Math.pow((areaFerramentaAux/areaDeDesbaste),2)/time;
 					}
 					System.err.println("Fator: " + fatorDeDesbaste);
 					System.err.println("Area de Desbaste da Ferramenta: " + areaFerramentaAux);
@@ -728,6 +730,7 @@ public class MapeadoraGeneralClosedPocket1
 //				{
 //					bossElements.add(array);
 //				}
+				System.err.println("trochoidalradius: " + ((TrochoidalAndContourParallelStrategy)wsPossiveis.get(index).getOperation().getMachiningStrategy()).getTrochoidalRadius());
 				wsPrecedenteTmp = wsPossiveis.get(index);
 				wssFeature.add(wsPossiveis.get(index));
 				drawShape(addPocket.getElements(), bossElements);
@@ -735,14 +738,14 @@ public class MapeadoraGeneralClosedPocket1
 			}	
 			
 			
-			// WORKINGSTEP DE ACABAMENTO
+			// WORKINGSTEP DE CONTORNO
 			// BOTTOM AND SIDE ROUGH MILLING
 			BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
 			operationTmp.setAllowanceSide(Feature.LIMITE_DESBASTE);
 //			System.out.println("Menor menor distancia: " + menorMenorDistanciaTmp);
 			// FERRAMENTA
-			double diametroFerramentaAcabamento = menorMenorDistanciaTmp;
-			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, diametroFerramentaAcabamento);
+			double diametroContorno = menorMenorDistanciaTmp;
+			FaceMill faceMillTmp = chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, diametroContorno);
 
 			//Estrategia de usinagem
 			ContourParallel machiningStrategyTmp = new ContourParallel();
@@ -752,7 +755,9 @@ public class MapeadoraGeneralClosedPocket1
 //			machiningStrategyTmp.setCutmodeType(TrochoidalAndContourParallelStrategy.conventional);
 			
 			//Estrategia de aproximacao
-			PlungeStrategy plungeStrategy = new PlungeToolAxis();
+//			PlungeStrategy plungeStrategy = new PlungeToolAxis();
+			
+			PlungeToolAxis plungeStrategy = new PlungeToolAxis();
 			operationTmp.setApproachStrategy(plungeStrategy);
 			
 			// CONDICOES DE USINAGEM
@@ -767,8 +772,26 @@ public class MapeadoraGeneralClosedPocket1
 			wsPrecedenteTmp = wsTmp;
 			
 			wssFeature.add(wsTmp);
-			//workingSteps.add(wsTmp);
-
+			
+			
+			//CONTORNO AUX
+			//--FERRAMENTA
+			double diametroContornoAux = maiorMenorDistancia/2;
+			faceMillTmp =  chooseFaceMill(bloco.getMaterial(), faceMills,genClosed, 0, diametroContornoAux);
+			
+			//--CONDICOES DE USINAGEM
+			condicoesDeUsinagem = MapeadoraDeWorkingsteps.getCondicoesDeUsinagem(this.projeto, faceMillTmp, bloco.getMaterial());
+			
+			//--WORKINGSTEP
+			wsTmp = new Workingstep(genClosed, faceTmp, faceMillTmp, condicoesDeUsinagem, operationTmp);
+			wsTmp.setTipo(Workingstep.DESBASTE);
+			wsTmp.setId(this.genClosed.getNome() + "_RGH");
+			
+			wsTmp.setWorkingstepPrecedente(wsPrecedenteTmp);
+			wsPrecedenteTmp = wsTmp;
+			drawShape(addPocket.getElements(), getAreaAlreadyDesbasted1(genClosed, null, retractPlane, wsTmp.getFerramenta().getDiametroFerramenta(), 2, wsTmp));
+			
+			wssFeature.add(wsTmp);
 			genClosed.setWorkingsteps(wssFeature);
 		}
 //-----------------------------------------------------------------------------------------------------
@@ -888,9 +911,17 @@ public class MapeadoraGeneralClosedPocket1
 			{
 				for(ArrayList<LimitedElement> insideOffset:offset)
 				{
-					GenerateTrochoidalMovement1 trochoidalMovement = new GenerateTrochoidalMovement1(insideOffset, ws);
-					ArrayList<Path> paths = trochoidalMovement.getPaths();
-					double timeTmp = getTime(paths, ws.getCondicoesUsinagem().getVf());
+					double timeTmp = 0;
+					if(ws.getOperation().getMachiningStrategy().getClass() == TrochoidalAndContourParallelStrategy.class)
+					{
+						GenerateTrochoidalMovement1 trochoidalMovement = new GenerateTrochoidalMovement1(insideOffset, ws);
+						ArrayList<Path> paths = trochoidalMovement.getPaths();
+						timeTmp = getTime(paths, ws.getCondicoesUsinagem().getVf());
+					}
+					else if(ws.getOperation().getMachiningStrategy().getClass() == ContourParallel.class)
+					{
+						timeTmp = getTime(Transformer.transformLimitedElementsInPaths(insideOffset), ws.getCondicoesUsinagem().getVf());
+					}
 					timeAux += timeTmp;
 				}
 			}

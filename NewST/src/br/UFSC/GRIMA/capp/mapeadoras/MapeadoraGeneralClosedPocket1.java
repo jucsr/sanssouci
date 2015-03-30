@@ -76,11 +76,10 @@ public class MapeadoraGeneralClosedPocket1
 //	private GenerateContournParallel contourn;
 	private ArrayList<FaceMill> faceMills;
 	private ArrayList<EndMill> endMills;
-	private static double time;
-	private static double area;
-	private static double fator;
-	private static double ferramentaAtual;
-	private static boolean noPaths = false;
+	private static double time = 0;
+	private static double areaRelativa = 0;
+	private static double fator = 0;
+	private static double ferramentaAtual = 0;
 	
 	
 	public MapeadoraGeneralClosedPocket1(Projeto projeto, Face face, GeneralClosedPocket genClosed) 
@@ -492,6 +491,10 @@ public class MapeadoraGeneralClosedPocket1
 		wssFeature = new Vector<Workingstep>();
 		double retractPlane = 5;
 		
+		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
+		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements); //maior menor distancia inicial
+		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
+		
 		//Calculo da area da cavidade
 		Triangulation triangulation = new Triangulation(genClosed.getPoints());
 //		Triangulation triangulation = new Triangulation(Transformer.limitedElementToPoints2D(addPocket.getElements()));
@@ -499,7 +502,6 @@ public class MapeadoraGeneralClosedPocket1
 		System.err.println("area da cavidade: " + areaCavidade);
 		
 		//Calculo da area das protuberancias
-		ArrayList<ArrayList<LimitedElement>> bossElements = GenerateContournParallel.gerarElementosDaProtuberancia(genClosed, genClosed.Z); //protuberancias reais
 		double areaBoss = 0;
 		for(ArrayList<LimitedElement> array:bossElements)
 		{
@@ -509,12 +511,16 @@ public class MapeadoraGeneralClosedPocket1
 		
 		//Area total a ser desbastada
 		double areaDeDesbaste = areaCavidade - areaBoss;
+		//Area que sera desbastada pela ferramenta de contorno
+		triangulation = new Triangulation(Transformer.limitedElementToPoints2D(GenerateContournParallel.parallelPath1(addPocket.getElements(), menorMenorDistanciaTmp, true, false)));
+		double areaFerramentaDeContorno = areaCavidade - triangulation.getArea();
+		drawShape(GenerateContournParallel.parallelPath1(addPocket.getElements(), menorMenorDistanciaTmp, true, false), bossElements);
+		
 		System.err.println("area dos bosses: " + areaBoss);
 		System.err.println("area a ser desbastada: " + areaDeDesbaste);
+		System.err.println("area a ser desbastada pela ferramenta de contorno: " + areaFerramentaDeContorno);
 		
 		//
-		double maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements); //maior menor distancia inicial
-		double menorMenorDistanciaTmp = getMenorMenorDistance(bossElements);
 //		System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 //		System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
 		
@@ -545,13 +551,13 @@ public class MapeadoraGeneralClosedPocket1
 			int aux = 0;
 			//area desbastada pela ferramenta
 			double areaFerramentaTmp = 0;
-			while(maiorMenorDistanciaTmp >= menorMenorDistanciaTmp)
+			while((maiorMenorDistanciaTmp >= menorMenorDistanciaTmp) && (areaDeDesbaste >= areaFerramentaDeContorno*0.3))
 //			while(aux < 2)
 			{
 				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 				System.err.println("Menor Distancia: " + menorMenorDistanciaTmp);
 				boolean flag = false;
-				areaDeDesbaste = areaDeDesbaste - areaFerramentaTmp;
+				
 				System.err.println("Area a ser desbastada: " + areaDeDesbaste);
 				// BOTTOM AND SIDE ROUGH MILLING
 				BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
@@ -627,6 +633,8 @@ public class MapeadoraGeneralClosedPocket1
 					double areaFerramentaAux = 0;
 					for(ArrayList<LimitedElement> array:bossElementsAux)
 					{
+						//para calcular a area de um boss (mesmo que seja o virtual) e necessario inverter o sentido de seus elementos (como se fosse uma cavidade)
+						//pois o metodo trata todas as formas como cavidades
 						ArrayList<Point2D> points = Transformer.limitedElementToPoints2D(GeometricOperations.arrayInverter(GeometricOperations.elementInverter(array)));
 						triangulation = new Triangulation(points);
 						areaFerramentaAux += triangulation.getArea();
@@ -638,21 +646,11 @@ public class MapeadoraGeneralClosedPocket1
 					}
 					System.err.println("Fator: " + fatorDeDesbaste);
 					System.err.println("Area de Desbaste da Ferramenta: " + areaFerramentaAux);
-//					
-//					if(noPaths)
-//					{
-//						ContourParallel contornTmp = new ContourParallel();
-//						contornTmp.setCutmodeType(machiningStrategyTmp.getCutmodeType());
-//						contornTmp.setAllowMultiplePasses(machiningStrategyTmp.isAllowMultiplePasses());
-//						contornTmp.setRotationDirection(machiningStrategyTmp.getRotationDirection());
-//						contornTmp.setOverLap(machiningStrategyTmp.getOverLap());
-//						wsTmp.getOperation().setMachiningStrategy(contornTmp);
-//					}
+					
 					fator = fatorDeDesbaste;
-					area = areaFerramentaAux;
+					areaRelativa = (areaFerramentaAux/areaDeDesbaste)*100;
 					ferramentaAtual = faceMillTmp.getDiametroFerramenta();
 					
-					System.err.println("Operation: " + wsTmp.getOperation().getMachiningStrategy().getClass());
 					wsPossiveis.add(wsTmp);
 					//maioresMenoresDistancias.add(maiorMenorDistanciaAux);
 					fatores.add(fatorDeDesbaste);
@@ -660,18 +658,40 @@ public class MapeadoraGeneralClosedPocket1
 					areasDeDesbaste.add(areaFerramentaAux);
 					drawShape(addPocket.getElements(), bossElementsAux);
 				}
+				ArrayList<Integer> indexPossiveis = new ArrayList<Integer>();
+				double maiorArea = 0;
 				int index = 0;
-				//Para a primeira ferramenta, o criterio de escolha da ferramenta sera se esta consegue desbastar no minimo 50% da area total
-//				if(aux == 0)
-//				{
-					for(int i = 0;i < areasDeDesbaste.size();i++)
+				for(int i = 0;i < areasDeDesbaste.size();i++)
+				{
+					if(areasDeDesbaste.get(i) >= areaDeDesbaste/2)
 					{
-						if(areasDeDesbaste.get(i) >= areaDeDesbaste/2)
+						indexPossiveis.add(i);
+					}
+					//se todas as ferramentas desbastarem menos do que 50%, a ferramenta escolhida sera a que desbastar mais
+					if(maiorArea < areasDeDesbaste.get(i))
+					{
+						maiorArea = areasDeDesbaste.get(i);
+						index = i;
+					}
+				}
+
+				System.out.println("indexarray: " + indexPossiveis);
+				System.out.println(fatores);
+				if(indexPossiveis.size() != 0)
+				{
+					index = indexPossiveis.get(0);
+					double maiorFator = fatores.get(indexPossiveis.get(0));
+					for(int i = 0;i < indexPossiveis.size();i++)
+					{
+						if(maiorFator < fatores.get(indexPossiveis.get(i)))
 						{
-							index = i;
+							System.out.println(fatores.get(i));
+							maiorFator = fatores.get(i);
+							index = indexPossiveis.get(i);
+							System.out.println(index);
 						}
 					}
-//				}
+				}
 				//Para as ferramentas seguintes, o criterio sera o fator (area / tempo)
 //				else
 //				{
@@ -686,11 +706,9 @@ public class MapeadoraGeneralClosedPocket1
 //						}
 //					}
 //				}
-//				System.err.println("Fator Escolhido: " + maiorFator);
 				System.err.println("Ferramenta escolhida: " + wsPossiveis.get(index).getFerramenta().getDiametroFerramenta());
 				System.err.println("Area Escolhida: " + areasDeDesbaste.get(index));
 //				maiorMenorDistanciaTmp = maioresMenoresDistancias.get(index);
-//				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 				
 				//o bossVirtual e inicialmente null por uma convencao no metodo do calculo dos bosses virtuais (se for null, e o primeiro boss virutal criado na cavidade)
 				if(bossElements == null)
@@ -703,15 +721,20 @@ public class MapeadoraGeneralClosedPocket1
 					bossElements.add(array);
 				}
 				maiorMenorDistanciaTmp = getMaiorMenorDistancia(bossElements);
+				System.err.println("Maior Distancia: " + maiorMenorDistanciaTmp);
 				areaFerramentaTmp = areasDeDesbaste.get(index);
+				areaDeDesbaste = areaDeDesbaste - areaFerramentaTmp;
 //				for(ArrayList<LimitedElement> array:virtualBossList.get(index))
 //				{
 //					bossElements.add(array);
 //				}
 				wsPrecedenteTmp = wsPossiveis.get(index);
 				wssFeature.add(wsPossiveis.get(index));
+				drawShape(addPocket.getElements(), bossElements);
 				aux++;
-			}			
+			}	
+			
+			
 			// WORKINGSTEP DE ACABAMENTO
 			// BOTTOM AND SIDE ROUGH MILLING
 			BottomAndSideRoughMilling operationTmp = new BottomAndSideRoughMilling("Bottom And Side Rough Milling", retractPlane);
@@ -867,17 +890,7 @@ public class MapeadoraGeneralClosedPocket1
 				{
 					GenerateTrochoidalMovement1 trochoidalMovement = new GenerateTrochoidalMovement1(insideOffset, ws);
 					ArrayList<Path> paths = trochoidalMovement.getPaths();
-					double timeTmp = 0;
-//					if(paths.size() != 0)
-//					{
-						timeTmp = getTime(paths, ws.getCondicoesUsinagem().getVf());
-//						System.err.println("Trochidal Time: " + timeTmp);
-//					}
-//					else
-//					{
-//						timeTmp = getTime(Transformer.transformLimitedElementsInPaths(insideOffset), ws.getCondicoesUsinagem().getVf());
-//						System.err.println("Contourn time: " + timeTmp);
-//					}
+					double timeTmp = getTime(paths, ws.getCondicoesUsinagem().getVf());
 					timeAux += timeTmp;
 				}
 			}
@@ -888,14 +901,6 @@ public class MapeadoraGeneralClosedPocket1
 //			{
 //				alreadyDesbastededArea.add(arrayTmp);
 //			}
-//		}
-//		if(timeAux==0)
-//		{
-//			noPaths = true;
-//		}
-//		else
-//		{
-//			noPaths = false;
 //		}
 		time = timeAux;
 		return alreadyDesbastededArea;
@@ -1016,7 +1021,7 @@ public class MapeadoraGeneralClosedPocket1
 		frame.getContentPane().add(BorderLayout.CENTER, new Panel());
 		JLabel label1 =  new JLabel("Diametro Ferramenta = " + ferramentaAtual);
 		JLabel label2 =  new JLabel("Fator = " + fator);
-		JLabel label3 =  new JLabel("Area = " + area);
+		JLabel label3 =  new JLabel("Area Relativa = " + areaRelativa);
 		JPanel panelTmp = new JPanel();
 		panelTmp.setLayout(new BorderLayout());
 		frame.getContentPane().add(BorderLayout.SOUTH, panelTmp);
